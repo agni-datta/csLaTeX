@@ -1,6 +1,6 @@
 # csLaTeX
 
-Welcome to the csLaTeX repository! This repository hosts a curated collection of LaTeX packages tailored specifically for computer scientists. Whether you’re a researcher, student, or industry professional in the realm of computer science, our repository is dedicated to providing you with LaTeX tools to optimize your document preparation workflow.    
+Welcome to the csLaTeX repository! This repository hosts a curated collection of LaTeX macros tailored specifically for computer scientists. Whether you’re a researcher, student, or industry professional in the field of computer science, our repository is dedicated to providing you with LaTeX commands to optimize your document preparation workflow.    
 
 ## Repository Contents
 
