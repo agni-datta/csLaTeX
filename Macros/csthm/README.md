@@ -71,7 +71,7 @@ The package includes custom list environments tailored for use within the case e
 
 ## QED Symbol
 
-The package defines a custom QED symbol, which is automatically appended to the end-of-proof environments. The default symbol is a filled black square (¦), but users can customize it according to their preferences.
+The package defines a custom QED symbol, which is automatically appended to the end-of-proof environments. The default symbol is a filled black square (■), but users can customize it according to their preferences.
 
 ## Package Clash Check
 
