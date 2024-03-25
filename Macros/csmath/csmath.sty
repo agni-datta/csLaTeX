@@ -54,6 +54,7 @@
 % The package includes commands for probability and statistics:
 % - \Prob{#1}: Represents the probability of an event.
 % - \Exp{#1}: Represents the expectation of a random variable.
+% - \half: Represents half as a fraction.
 % These commands simplify the notation for probability and statistical calculations.
 
 % LOGIC COMMANDS:
@@ -118,22 +119,22 @@
 % Arguments:
 %   #1: The expression inside the floor function
 \newcommand{\floor}[1]{%
-  \ifmmode
-    \left\lfloor #1 \right\rfloor
-  \else
-    \PackageError{csmath}{\string\floor\space outside math mode}{Use \string\floor\space only in math mode}%
-  \fi
+	\ifmmode
+		\left\lfloor #1 \right\rfloor
+	\else
+		\PackageError{csmath}{\string\floor\space outside math mode}{Use \string\floor\space only in math mode}%
+	\fi
 }
 
 % Ceiling function
 % Arguments:
 %   #1: The expression inside the ceiling function
 \newcommand{\ceil}[1]{%
-  \ifmmode
-    \left\lceil #1 \right\rceil
-  \else
-    \PackageError{csmath}{\string\ceil\space outside math mode}{Use \string\ceil\space only in math mode}%
-  \fi
+	\ifmmode
+		\left\lceil #1 \right\rceil
+	\else
+		\PackageError{csmath}{\string\ceil\space outside math mode}{Use \string\ceil\space only in math mode}%
+	\fi
 }
 
 % Number theory commands
@@ -147,7 +148,7 @@
 % Arguments:
 %   #1: The set of numbers
 \newcommand{\lcmset}[1]{%
-  \ensuremath{\mathrm{lcm}\left(#1\right)}%
+	\ensuremath{\mathrm{lcm}\left(#1\right)}%
 } % Least common multiple of a set
 
 % Jacobi symbol
@@ -155,7 +156,7 @@
 %   #1: The numerator
 %   #2: The denominator
 \newcommand{\jacobi}[2]{%
-  \ensuremath{\left(\frac{#1}{#2}\right)}%
+	\ensuremath{\left(\frac{#1}{#2}\right)}%
 } % Jacobi symbol
 
 % Legendre symbol
@@ -163,7 +164,7 @@
 %   #1: The numerator
 %   #2: The prime modulus
 \newcommand{\legendre}[2]{%
-  \ensuremath{\left(\frac{#1}{#2}\right)}%
+	\ensuremath{\left(\frac{#1}{#2}\right)}%
 } % Legendre symbol
 
 % Absolute value
@@ -187,6 +188,7 @@
 % Probability and statistics commands
 \newcommand{\Prob}[1]{\mathify{\mathrm{Pr}\left[#1\right]}} % Probability notation
 \newcommand{\Exp}[1]{\mathify{\mathrm{Exp}\left[#1\right]}} % Expectation notation
+\newcommand{\half}{\frac{1}{2}} % half as a fraction
 
 % Logic commands
 \newcommand{\true}{\texttt{\textbf{true}}} % True
@@ -256,4 +258,3 @@
 \newcommand{\poly}{\mathsf{poly}}
 
 \endinput
-

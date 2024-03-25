@@ -37,6 +37,7 @@
 % - problem
 % - solution
 % - case
+% - example
 % These environments can be used to structure and organize your mathematical content effectively.
 
 % CUSTOMIZATION:
@@ -107,22 +108,22 @@
 
 % Custom names for theorem-like environments
 \newcommand{\customNames}{%
-  % Define commands for custom names
-  \newcommand{\caseName}{Case}
-  \newcommand{\claimName}{Claim}
-  \newcommand{\conjectureName}{Conjecture}
-  \newcommand{\corollaryName}{Corollary}
-  \newcommand{\definitionName}{Definition}
-  \newcommand{\exampleName}{Example}
-  \newcommand{\exerciseName}{Exercise}
-  \newcommand{\factName}{Fact}
-  \newcommand{\lemmaName}{Lemma}
-  \newcommand{\problemName}{Problem}
-  \newcommand{\propositionName}{Proposition}
-  \newcommand{\remarkName}{Remark}
-  \newcommand{\solutionName}{Solution}
-  \newcommand{\theoremName}{Theorem}
-  \newcommand{\assumptionName}{Assumption}
+	% Define commands for custom names
+	\newcommand{\caseName}{Case}
+	\newcommand{\claimName}{Claim}
+	\newcommand{\conjectureName}{Conjecture}
+	\newcommand{\corollaryName}{Corollary}
+	\newcommand{\definitionName}{Definition}
+	\newcommand{\exampleName}{Example}
+	\newcommand{\exerciseName}{Exercise}
+	\newcommand{\factName}{Fact}
+	\newcommand{\lemmaName}{Lemma}
+	\newcommand{\problemName}{Problem}
+	\newcommand{\propositionName}{Proposition}
+	\newcommand{\remarkName}{Remark}
+	\newcommand{\solutionName}{Solution}
+	\newcommand{\theoremName}{Theorem}
+	\newcommand{\assumptionName}{Assumption}
 }
 \customNames
 
@@ -142,36 +143,37 @@
 \newtheorem{assumption}[theorem]{\protect\assumptionName}
 \newtheorem{remark}{\protect\remarkName}[chapter]
 \newtheorem{conjecture}{\protect\conjectureName}[chapter]
+\newtheorem{example}{\protect\exampleName}[chapter]
 
 % Custom lists for case environment
 \newcommand{\caseEnvironment}{%
-  % Define custom list for case environment
-  \newlist{caseEnv}{enumerate}{4}
-  \setlist[caseEnv]{leftmargin=*,align=left,widest={iiii}}
-  \setlist[caseEnv,1]{label={{\itshape\caseName} \arabic*.},ref=\arabic*}
-  \setlist[caseEnv,2]{label={{\itshape\caseName} \roman*.},ref=\roman*}
-  \setlist[caseEnv,3]{label={{\itshape\caseName} \alph*.},ref=\alph*}
-  \setlist[caseEnv,4]{label={{\itshape\caseName} \arabic*.},ref=\arabic*}
+	% Define custom list for case environment
+	\newlist{caseEnv}{enumerate}{4}
+	\setlist[caseEnv]{leftmargin=*,align=left,widest={iiii}}
+	\setlist[caseEnv,1]{label={{\itshape\caseName} \arabic*.},ref=\arabic*}
+	\setlist[caseEnv,2]{label={{\itshape\caseName} \roman*.},ref=\roman*}
+	\setlist[caseEnv,3]{label={{\itshape\caseName} \alph*.},ref=\alph*}
+	\setlist[caseEnv,4]{label={{\itshape\caseName} \arabic*.},ref=\arabic*}
 }
 \caseEnvironment
 
 % Proof environments
 \newcommand{\proofEnvironments}{%
-  % Define proof environments
-  \renewenvironment{proof}{\noindent\textbf{Proof}\hspace*{1em}}{\qed\bigskip}
-  \newenvironment{proofSketch}{\noindent\textbf{Sketch of Proof}\hspace*{1em}}{\qed\bigskip}
-  \newenvironment{proofIdea}{\noindent\textbf{Proof Idea}\hspace*{1em}}{\qed\bigskip}
-  \newenvironment{proofOfLemma}[1]{\noindent\textbf{Proof of Lemma ##1}\hspace*{1em}}{\qed\bigskip}
-  \newenvironment{proofAttempt}{\noindent\textbf{Proof Attempt}\hspace*{1em}}{\qed\bigskip}
-  \newenvironment{proofOf}[1]{\noindent\textbf{Proof of ##1}\hspace*{1em}}{\qed\bigskip}
+	% Define proof environments
+	\renewenvironment{proof}{\noindent\textit{Proof.}\hspace*{0.25em}}{\qed\bigskip}
+	\newenvironment{proofSketch}{\noindent\textit{Sketch of Proof.}\hspace*{0.25em}}{\qed\bigskip}
+	\newenvironment{proofIdea}{\noindent\textit{Proof Idea.}\hspace*{0.25em}}{\qed\bigskip}
+	\newenvironment{proofOfLemma}[1]{\noindent\textit{Proof of Lemma ##1.}\hspace*{0.25em}}{\qed\bigskip}
+	\newenvironment{proofAttempt}{\noindent\textit{Proof Attempt.}\hspace*{0.25em}}{\qed\bigskip}
+	\newenvironment{proofOf}[1]{\noindent\textit{Proof of ##1.}\hspace*{0.25em}}{\qed\bigskip}
 }
 \proofEnvironments
 
 % Problem and solution environments
 \newcommand{\problemSolutionEnvironments}{%
-  % Define problem and solution environments
-  \newtheorem{problem}{\protect\problemName}[chapter]
-  \newtheorem{solution}{\protect\solutionName}[chapter]
+	% Define problem and solution environments
+	\newtheorem{problem}{\protect\problemName}[chapter]
+	\newtheorem{solution}{\protect\solutionName}[chapter]
 }
 \problemSolutionEnvironments
 

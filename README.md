@@ -1,6 +1,16 @@
+---
+title: csLaTeX
+linter-yaml-title-alias: csLaTeX
+date created: Monday, March 25th 2024, 14:13:16
+date modified: Monday, March 25th 2024, 14:15:46
+aliases: [csLaTeX]
+---
+
 # csLaTeX
 
-Welcome to the csLaTeX repository! This repository hosts a curated collection of LaTeX macros tailored specifically for computer scientists. Whether you’re a researcher, student, or industry professional in the field of computer science, our repository is dedicated to providing you with LaTeX commands to optimize your document preparation workflow.    
+Welcome to the csLaTeX repository! This repository hosts a curated collection of LaTeX macros tailored specifically for computer scientists. Whether you’re a researcher, student, or industry professional in the field of computer science, our repository is dedicated to providing you with LaTeX commands to optimize your document preparation workflow.
+
+---
 
 ## Repository Contents
 
@@ -29,4 +39,6 @@ Contributions to this repository are highly encouraged! Whether you have insight
 
 This repository operates under the [MIT License](LICENSE.md). You are welcome to leverage, modify, and distribute the packages under the terms delineated in the license.
 
-Thank you for exploring the csLaTeX repository. These LaTeX packages aim to facilitate and enhance your computer science endeavours. For inquiries or feedback, please reach out. Here's to seamless typesetting experiences!
+---
+
+Thank you for exploring the csLaTeX repository. These LaTeX packages aim to facilitate and enhance your computer science endeavours. For inquiries or feedback, please reach out. Here’s to seamless typesetting experiences!

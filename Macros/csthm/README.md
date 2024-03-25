@@ -1,3 +1,11 @@
+---
+title: Theorem Environments for Computer Science (thmcs.sty)
+linter-yaml-title-alias: Theorem Environments for Computer Science (thmcs.sty)
+date created: Monday, March 25th 2024, 14:13:16
+date modified: Monday, March 25th 2024, 14:37:12
+aliases: [Theorem Environments for Computer Science (thmcs.sty)]
+---
+
 # Theorem Environments for Computer Science (thmcs.sty)
 
 This LaTeX package provides a set of theorem-like environments tailored for use in computer science documents. It includes theorem, lemma, corollary, proposition, definition, remark, claim, fact, assumption, conjecture, problem, solution, and case environments, along with custom lists and proof environments.
@@ -36,7 +44,8 @@ The `thmcs` package provides the following theorem-like environments:
 - `conjecture`
 - `problem`
 - `solution`
-- `case`  
+- `case`
+- `example`  
 These environments can be used to structure and organize your mathematical content effectively.
 
 ## Customization
