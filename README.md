@@ -6,7 +6,7 @@ Welcome to the csLaTeX repository! This repository hosts a curated collection of
 
 ### 1. csmath
 
-The `csmath.sty` package furnishes an extensive array of custom LaTeX commands crafted for computer scientists. Encompassing a wide spectrum of mathematical expressions, number theory, probability and statistics, logic, document structuring, theoretical computer science articles, cryptographic notation, and assorted functions prevalent in the field, this package serves as an indispensable resource.
+The `csmath.sty` package furnishes various custom LaTeX commands crafted for computer scientists. Encompassing a wide spectrum of mathematical expressions, number theory, probability and statistics, logic, document structuring, theoretical computer science articles, cryptographic notation, and assorted functions prevalent in the field, this package serves as an indispensable resource.
 
 ### 2. thmcs
 
@@ -27,6 +27,6 @@ Contributions to this repository are highly encouraged! Whether you have insight
 
 ## License
 
-This repository operates under the [MIT License](LICENSE). You are welcome to leverage, modify, and distribute the packages in accordance with the terms delineated in the license.
+This repository operates under the [MIT License](LICENSE.md). You are welcome to leverage, modify, and distribute the packages under the terms delineated in the license.
 
 Thank you for exploring the csLaTeX repository. These LaTeX packages aim to facilitate and enhance your computer science endeavours. For inquiries or feedback, please reach out. Here's to seamless typesetting experiences!
