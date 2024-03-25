@@ -2,7 +2,7 @@
 title: LaTeX Commands for Computer Scientists (csmath.sty)
 linter-yaml-title-alias: LaTeX Commands for Computer Scientists (csmath.sty)
 date created: Monday, March 25th 2024, 13:49:48
-date modified: Monday, March 25th 2024, 14:16:50
+date modified: Monday, March 25th 2024, 21:29:39
 aliases: [LaTeX Commands for Computer Scientists (csmath.sty)]
 ---
 
@@ -64,8 +64,8 @@ These commands facilitate the representation of sets in various contexts.
 The package includes commands for probability and statistics:
 
 - `\Prob{#1}`: Represents the probability of an event.
-- `\Exp{#1}`: Represents the expectation of a random variable. 
-- `\half`: Represents half as a fraction. 
+- `\Exp{#1}`: Represents the expectation of a random variable.
+- `\half`: Represents half as a fraction.  
 These commands simplify the notation for probability and statistical calculations.
 
 ## Logic Commands
