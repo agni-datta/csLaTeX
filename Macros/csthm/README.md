@@ -41,7 +41,7 @@ These environments can be used to structure and organize your mathematical conte
 
 ## Customization
 
-The package allows users to customize the names of theorem-like environments by redefining the corresponding commands. For example, to change the name of the theorem environment to ìPropositionî, use the following command:
+The package allows users to customize the names of theorem-like environments by redefining the corresponding commands. For example, to change the name of the theorem environment to ‚ÄúProposition‚Äù, use the following command:
 
 ```latex
 \renewcommand{\theoremName}{Proposition}
@@ -53,7 +53,7 @@ Similarly, other environment names can be customized using the corresponding com
 
 The `thmcs` package also provides several proof environments for writing proofs and related content:
 
-- `proof`: Standard proof environment.
+- `proof`: Standard-proof environment.
 - `proofSketch`: Environment for sketching proofs.
 - `proofIdea`: Environment for outlining proof ideas.
 - `proofOfLemma`: Environment for proving a specific lemma.
@@ -71,15 +71,11 @@ The package includes custom list environments tailored for use within the case e
 
 ## QED Symbol
 
-The package defines a custom QED symbol, which is automatically appended to the end-of-proof environments. The default symbol is a filled black square (¶), but users can customize it according to their preferences.
+The package defines a custom QED symbol, which is automatically appended to the end-of-proof environments. The default symbol is a filled black square (¬¶), but users can customize it according to their preferences.
 
 ## Package Clash Check
 
 The `thmcs` package includes a check for package clashes with the amsthm package. If the amsthm package is already loaded, the package will issue a warning message to alert the user.
-
-## Versioning and Date
-
-The package includes versioning information and the date of the last update to facilitate tracking changes and ensuring compatibility with different versions of the package.
 
 ## Example
 
