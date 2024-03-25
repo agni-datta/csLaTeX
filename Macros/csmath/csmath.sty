@@ -1,0 +1,259 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% csmath.sty - Custom LaTeX Commands for Computer Scientists
+%
+% This LaTeX package provides a collection of custom commands and notations tailored for use
+% in computer science documents. It includes commands for mathematical expressions, number theory,
+% probability and statistics, logic, document structure, theoretical computer science articles,
+% cryptographic notation, and various functions commonly used in the field.
+%
+% Author: Agni Datta
+% Version: 1.0
+% Date: 2024/03/25
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% PACKAGE OVERVIEW:
+% The csmath package offers a comprehensive set of custom LaTeX commands designed specifically
+% for computer scientists. It covers a wide range of mathematical expressions, number theory,
+% probability and statistics, logic, document structure, theoretical computer science articles,
+% cryptographic notation, and various functions commonly used in the field. The package aims to
+% enhance the readability and expressiveness of computer science documents by providing intuitive
+% and consistent commands for frequently used symbols and notations.
+
+% USAGE:
+% To use the csmath package, simply include the following line in the preamble of your LaTeX document:
+% \usepackage{csmath}
+% This will import the package and make its features available for use throughout your document.
+
+% MATH COMMANDS:
+% The csmath package provides several custom commands for mathematical expressions:
+% - \mathify{#1}: Ensures that the argument is in math mode.
+% - \dd: Represents the differential operator "d".
+% - \bigO: Represents the Big O notation for asymptotic analysis.
+% - \set{#1}: Represents a set with the given elements.
+% - \floor{#1}: Represents the floor function.
+% - \ceil{#1}: Represents the ceiling function.
+% These commands enhance the typesetting of mathematical expressions and provide a consistent
+% formatting style across the document.
+
+% NUMBER THEORY COMMANDS:
+% The package includes commands related to number theory:
+% - \gcd: Represents the greatest common divisor.
+% - \lcm: Represents the least common multiple.
+% - \lcmset{#1}: Represents the least common multiple of a set of numbers.
+% - \jacobi{#1}{#2}: Represents the Jacobi symbol.
+% - \legendre{#1}{#2}: Represents the Legendre symbol.
+% These commands simplify the notation for number theoretic concepts and operations.
+
+% SET NOTATION COMMANDS:
+% The package provides commands for common set notation:
+% - \N, \Z, \Q, \R, \C: Sets of natural, integer, rational, real, and complex numbers.
+% - \Zplus, \Znonneg, \Rplus, \Rnonneg, \Qplus, \Qnonneg: Sets of positive and non-negative numbers.
+% These commands facilitate the representation of sets in various contexts.
+
+% PROBABILITY AND STATISTICS COMMANDS:
+% The package includes commands for probability and statistics:
+% - \Prob{#1}: Represents the probability of an event.
+% - \Exp{#1}: Represents the expectation of a random variable.
+% These commands simplify the notation for probability and statistical calculations.
+
+% LOGIC COMMANDS:
+% The package provides commands for logic:
+% - \true, \false: Represent true and false values.
+% - \var{#1}: Represents a variable.
+% These commands aid in expressing logical statements and formulas.
+
+% DOCUMENT STRUCTURE COMMANDS:
+% The package includes commands for document structure and formatting:
+% - \figcaption{#1}: Formats a figure caption.
+% - \tabcaption{#1}: Formats a table caption.
+% - \head{#1}: Formats a lecture heading.
+% These commands improve the organization and presentation of the document.
+
+% THEORETICAL COMPUTER SCIENCE COMMANDS:
+% The package offers commands for theoretical computer science articles:
+% - Complexity classes: \Pclass, \NPclass, \coNPclass, \BPPclass, \RPclass, \coRPclass, \ZPPclass, \IPclass, \PHclass, \PSPACEclass, \EXPclass, \NEXPclass.
+% - Notations for polynomial hierarchy: \SigmaP{#1}, \PiP{#1}, \DeltaP{#1}.
+% These commands simplify the representation of complexity classes and hierarchy levels.
+
+% CRYPTOGRAPHIC NOTATION COMMANDS:
+% The package provides commands for cryptographic notation:
+% - Cryptographic primitives: \cipher, \hash, \mac, \prf, \prp, \prg, \sig, \vrfy, \enc, \dec, \keygen, \keyexchange.
+% - Notations for cryptographic protocols: \protocol, \attack, \advantage, \securityparam.
+% - Security notions: \indcpa, \indcca, \authint, \nmac, \sufcma, \ufcma, \eav, \cca, \cpa.
+% These commands aid in expressing cryptographic algorithms, protocols, and security properties.
+
+% FUNCTION COMMANDS:
+% The package includes commands for various functions:
+% - Negligible functions: \negl.
+% - Noticeable functions: \notice.
+% - Polynomial functions: \poly.
+% These commands provide shorthand notations for common functions used in computational analysis.
+
+% END OF DOCUMENTATION
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{csmath}[2024/03/25 Custom LaTeX commands for computer scientists]
+
+% Check if amsmath package is loaded, and if not, load it
+\@ifpackageloaded{amsmath}{}{\RequirePackage{amsmath}} % Enhance math features
+
+% Math commands
+% Ensure math mode
+% Arguments:
+%   #1: The mathematical expression
+\newcommand{\mathify}[1]{\ensuremath{#1}} % Ensure math mode
+
+% Differential operator
+\newcommand{\dd}{\mathrm{d}}
+
+% Big O notation
+\newcommand{\bigO}{\mathcal{O}}
+
+% Set notation
+% Arguments:
+%   #1: The elements of the set
+\newcommand{\set}[1]{\mathify{\left\{ #1 \right\}}}
+
+% Floor function
+% Arguments:
+%   #1: The expression inside the floor function
+\newcommand{\floor}[1]{%
+  \ifmmode
+    \left\lfloor #1 \right\rfloor
+  \else
+    \PackageError{csmath}{\string\floor\space outside math mode}{Use \string\floor\space only in math mode}%
+  \fi
+}
+
+% Ceiling function
+% Arguments:
+%   #1: The expression inside the ceiling function
+\newcommand{\ceil}[1]{%
+  \ifmmode
+    \left\lceil #1 \right\rceil
+  \else
+    \PackageError{csmath}{\string\ceil\space outside math mode}{Use \string\ceil\space only in math mode}%
+  \fi
+}
+
+% Number theory commands
+% Greatest common divisor
+\renewcommand{\gcd}{\mathrm{gcd}}
+
+% Least common multiple
+\newcommand{\lcm}{\mathrm{lcm}}
+
+% Least common multiple of a set of numbers
+% Arguments:
+%   #1: The set of numbers
+\newcommand{\lcmset}[1]{%
+  \ensuremath{\mathrm{lcm}\left(#1\right)}%
+} % Least common multiple of a set
+
+% Jacobi symbol
+% Arguments:
+%   #1: The numerator
+%   #2: The denominator
+\newcommand{\jacobi}[2]{%
+  \ensuremath{\left(\frac{#1}{#2}\right)}%
+} % Jacobi symbol
+
+% Legendre symbol
+% Arguments:
+%   #1: The numerator
+%   #2: The prime modulus
+\newcommand{\legendre}[2]{%
+  \ensuremath{\left(\frac{#1}{#2}\right)}%
+} % Legendre symbol
+
+% Absolute value
+% Arguments:
+%   #1: The expression whose absolute value is to be taken
+\newcommand{\abs}[1]{\mathify{\left| #1 \right|}}
+
+% Set notation commands
+\newcommand{\N}{\mathbb{N}} % Set of natural numbers
+\newcommand{\Z}{\mathbb{Z}} % Set of integers
+\newcommand{\Q}{\mathbb{Q}} % Set of rational numbers
+\newcommand{\R}{\mathbb{R}} % Set of real numbers
+\newcommand{\C}{\mathbb{C}} % Set of complex numbers
+\newcommand{\Zplus}{\mathbb{Z}^+} % Set of positive integers
+\newcommand{\Znonneg}{\mathbb{Z}_0^+} % Set of non-negative integers
+\newcommand{\Rplus}{\mathbb{R}^+} % Set of positive real numbers
+\newcommand{\Rnonneg}{\mathbb{R}_0^+} % Set of non-negative real numbers
+\newcommand{\Qplus}{\mathbb{Q}^+} % Set of positive rational numbers
+\newcommand{\Qnonneg}{\mathbb{Q}_0^+} % Set of non-negative rational numbers
+
+% Probability and statistics commands
+\newcommand{\Prob}[1]{\mathify{\mathrm{Pr}\left[#1\right]}} % Probability notation
+\newcommand{\Exp}[1]{\mathify{\mathrm{Exp}\left[#1\right]}} % Expectation notation
+
+% Logic commands
+\newcommand{\true}{\texttt{\textbf{true}}} % True
+\newcommand{\false}{\texttt{\textbf{false}}} % False
+\newcommand{\var}[1]{\operatorname{#1}} % Variable representation
+
+% Custom commands for document structure and formatting
+\newcommand{\figcaption}[1]{\caption[]{#1}} % Figure caption
+\newcommand{\tabcaption}[1]{\caption[]{#1}} % Table caption
+\newcommand{\head}[1]{\chapter[Lecture \##1]{}} % Lecture heading
+
+% Commands for theoretical computer science articles
+\newcommand{\Pclass}[1]{\textbf{P}{#1}} % Complexity classes
+\newcommand{\NPclass}[1]{\textbf{NP}{#1}}
+\newcommand{\coNPclass}[1]{\textbf{co-NP}{#1}}
+\newcommand{\BPPclass}[1]{\textbf{BPP}{#1}}
+\newcommand{\RPclass}[1]{\textbf{RP}{#1}}
+\newcommand{\coRPclass}[1]{\textbf{co-RP}{#1}}
+\newcommand{\ZPPclass}[1]{\textbf{ZPP}{#1}}
+\newcommand{\IPclass}[1]{\textbf{IP}{#1}}
+\newcommand{\PHclass}[1]{\textbf{PH}{#1}}
+\newcommand{\PSPACEclass}[1]{\textbf{PSPACE}{#1}}
+\newcommand{\EXPclass}[1]{\textbf{EXP}{#1}}
+\newcommand{\NEXPclass}[1]{\textbf{NEXP}{#1}}
+\newcommand{\SigmaP}[1]{\Sigma_{{#1}}} % Notation for polynomial hierarchy
+\newcommand{\PiP}[1]{\Pi_{{#1}}}
+\newcommand{\DeltaP}[1]{\Delta_{{#1}}}
+
+% Cryptographic notation
+\newcommand{\cipher}{\textsc{Cipher}}
+\newcommand{\hash}{\textsc{Hash}}
+\newcommand{\mac}{\textsc{Mac}}
+\newcommand{\prf}{\textsc{Prf}}
+\newcommand{\prp}{\textsc{Prp}}
+\newcommand{\prg}{\textsc{Prg}}
+\newcommand{\sig}{\textsc{Sig}}
+\newcommand{\vrfy}{\textsc{Vrfy}}
+\newcommand{\enc}{\textsc{Enc}}
+\newcommand{\dec}{\textsc{Dec}}
+\newcommand{\keygen}{\textsc{KeyGen}}
+\newcommand{\keyexchange}{\textsc{KeyExchange}}
+
+% Notation for cryptographic protocols
+\newcommand{\protocol}{\textsc{Protocol}}
+\newcommand{\attack}{\textsc{Attack}}
+\newcommand{\advantage}{\textsc{Adv}}
+\newcommand{\securityparam}{\lambda}
+
+% Security notions
+\newcommand{\indcpa}{\textsc{IndCpa}}
+\newcommand{\indcca}{\textsc{IndCca}}
+\newcommand{\authint}{\textsc{AuthInt}}
+\newcommand{\nmac}{\textsc{NMac}}
+\newcommand{\sufcma}{\textsc{SufCma}}
+\newcommand{\ufcma}{\textsc{UfCma}}
+\newcommand{\eav}{\textsc{Eav}}
+\newcommand{\cca}{\textsc{Cca}}
+\newcommand{\cpa}{\textsc{Cpa}}
+
+% Negligible functions
+\newcommand{\negl}{\mathsf{negl}}
+
+% Noticeable functions
+\newcommand{\notice}{\mathsf{noticeable}}
+
+% Polynomial functions
+\newcommand{\poly}{\mathsf{poly}}
+
+\endinput
+

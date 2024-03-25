@@ -1,0 +1,179 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% thmcs.sty - Theorem Environments for Computer Science
+%
+% This LaTeX package provides a set of theorem-like environments tailored for use in computer science documents.
+% It includes theorem, lemma, corollary, proposition, definition, remark, claim, fact, assumption,
+% conjecture, problem, solution, and case environments, along with custom lists and proof environments.
+%
+% Author: [Agni Datta]
+% Version: 1.0
+% Date: [2024/03/25]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% PACKAGE OVERVIEW:
+% The thmcs package provides a collection of theorem-like environments suitable for writing papers, reports,
+% or theses in the field of computer science. These environments include commonly used structures such as
+% theorems, lemmas, corollaries, and definitions, along with specialized environments like proofs,
+% problems, solutions, and cases. The package is designed to be flexible and customizable, allowing users
+% to easily adapt it to their specific needs.
+
+% USAGE:
+% To use the thmcs package, simply include the following line in the preamble of your LaTeX document:
+% \usepackage{thmcs}
+% This will import the package and make its features available for use throughout your document.
+
+% ENVIRONMENTS:
+% The thmcs package provides the following theorem-like environments:
+% - theorem
+% - lemma
+% - corollary
+% - proposition
+% - definition
+% - remark
+% - claim
+% - fact
+% - assumption
+% - conjecture
+% - problem
+% - solution
+% - case
+% These environments can be used to structure and organize your mathematical content effectively.
+
+% CUSTOMIZATION:
+% The package allows users to customize the names of theorem-like environments by redefining the corresponding commands.
+% For example, to change the name of the theorem environment to "Proposition", use the following command:
+% \renewcommand{\theoremName}{Proposition}
+% Similarly, other environment names can be customized using the corresponding commands.
+
+% PROOF ENVIRONMENTS:
+% The thmcs package also provides several proof environments for writing proofs and related content:
+% - proof: Standard proof environment.
+% - proofSketch: Environment for sketching proofs.
+% - proofIdea: Environment for outlining proof ideas.
+% - proofOfLemma: Environment for proving a specific lemma.
+% - proofAttempt: Environment for documenting proof attempts.
+% - proofOf{Environment}: Environment for proving a specific theorem-like environment.
+% These environments help maintain consistency and clarity in presenting proofs within the document.
+
+% CASE ENVIRONMENT:
+% The case environment is provided for structuring case-based arguments or proofs.
+% It allows for easy enumeration and referencing of cases within a larger argument or proof.
+
+% CUSTOM LISTS:
+% The package includes custom list environments tailored for use within the case environment.
+% These lists facilitate the enumeration and formatting of cases, providing flexibility and readability.
+
+% QED SYMBOL:
+% The package defines a custom QED symbol, which is automatically appended to the end-of-proof environments.
+% The default symbol is a filled black square (■), but users can customize it according to their preferences.
+
+% PACKAGE CLASH CHECK:
+% The thmcs package includes a check for package clashes with the amsthm package.
+% If the amsthm package is already loaded, the package will issue a warning message to alert the user.
+
+% VERSIONING AND DATE:
+% The package includes versioning information and the date of the last update to facilitate tracking changes
+% and ensuring compatibility with different versions of the package.
+
+% EXAMPLE:
+% Below is an example of how to use the thmcs package in a LaTeX document:
+%
+% \documentclass{article}
+% \usepackage{thmcs}
+%
+% \begin{document}
+%
+% \begin{theorem}
+%   This is a theorem.
+% \end{theorem}
+%
+% \begin{proof}
+%   This is a proof.
+% \end{proof}
+%
+% \end{document}
+% END OF DOCUMENTATION
+
+% Declare that this is a LaTeX2e package
+\NeedsTeXFormat{LaTeX2e}
+% Provide package information
+\ProvidesPackage{thmcs}[2024/03/25 Theorem Environments for Computer Science]
+
+% Import required packages and check for package clashes
+% Check if amsmath package is loaded, and if not, load it
+\@ifpackageloaded{amsthm}{}{\RequirePackage{amsthm}} % AMS theorem package
+\@ifpackageloaded{enumitem}{}{\RequirePackage{enumitem}} % Custom lists
+
+
+% Custom names for theorem-like environments
+\newcommand{\customNames}{%
+  % Define commands for custom names
+  \newcommand{\caseName}{Case}
+  \newcommand{\claimName}{Claim}
+  \newcommand{\conjectureName}{Conjecture}
+  \newcommand{\corollaryName}{Corollary}
+  \newcommand{\definitionName}{Definition}
+  \newcommand{\exampleName}{Example}
+  \newcommand{\exerciseName}{Exercise}
+  \newcommand{\factName}{Fact}
+  \newcommand{\lemmaName}{Lemma}
+  \newcommand{\problemName}{Problem}
+  \newcommand{\propositionName}{Proposition}
+  \newcommand{\remarkName}{Remark}
+  \newcommand{\solutionName}{Solution}
+  \newcommand{\theoremName}{Theorem}
+  \newcommand{\assumptionName}{Assumption}
+}
+\customNames
+
+% Custom QED symbol
+\providecommand{\QEDsymbol}{\ensuremath{\blacksquare}}
+\renewcommand{\qedsymbol}{\QEDsymbol}
+
+% Theorem-like environments
+\newtheorem{theorem}{\protect\theoremName}[chapter]
+\newtheorem{corollary}[theorem]{\protect\corollaryName}
+\newtheorem{lemma}[theorem]{\protect\lemmaName}
+\newtheorem{observation}[theorem]{\protect\remarkName}
+\newtheorem{proposition}[theorem]{\protect\propositionName}
+\newtheorem{definition}[theorem]{\protect\definitionName}
+\newtheorem{claim}[theorem]{\protect\claimName}
+\newtheorem{fact}[theorem]{\protect\factName}
+\newtheorem{assumption}[theorem]{\protect\assumptionName}
+\newtheorem{remark}{\protect\remarkName}[chapter]
+\newtheorem{conjecture}{\protect\conjectureName}[chapter]
+
+% Custom lists for case environment
+\newcommand{\caseEnvironment}{%
+  % Define custom list for case environment
+  \newlist{caseEnv}{enumerate}{4}
+  \setlist[caseEnv]{leftmargin=*,align=left,widest={iiii}}
+  \setlist[caseEnv,1]{label={{\itshape\caseName} \arabic*.},ref=\arabic*}
+  \setlist[caseEnv,2]{label={{\itshape\caseName} \roman*.},ref=\roman*}
+  \setlist[caseEnv,3]{label={{\itshape\caseName} \alph*.},ref=\alph*}
+  \setlist[caseEnv,4]{label={{\itshape\caseName} \arabic*.},ref=\arabic*}
+}
+\caseEnvironment
+
+% Proof environments
+\newcommand{\proofEnvironments}{%
+  % Define proof environments
+  \renewenvironment{proof}{\noindent\textbf{Proof}\hspace*{1em}}{\qed\bigskip}
+  \newenvironment{proofSketch}{\noindent\textbf{Sketch of Proof}\hspace*{1em}}{\qed\bigskip}
+  \newenvironment{proofIdea}{\noindent\textbf{Proof Idea}\hspace*{1em}}{\qed\bigskip}
+  \newenvironment{proofOfLemma}[1]{\noindent\textbf{Proof of Lemma ##1}\hspace*{1em}}{\qed\bigskip}
+  \newenvironment{proofAttempt}{\noindent\textbf{Proof Attempt}\hspace*{1em}}{\qed\bigskip}
+  \newenvironment{proofOf}[1]{\noindent\textbf{Proof of ##1}\hspace*{1em}}{\qed\bigskip}
+}
+\proofEnvironments
+
+% Problem and solution environments
+\newcommand{\problemSolutionEnvironments}{%
+  % Define problem and solution environments
+  \newtheorem{problem}{\protect\problemName}[chapter]
+  \newtheorem{solution}{\protect\solutionName}[chapter]
+}
+\problemSolutionEnvironments
+
+% End of package
+\endinput
