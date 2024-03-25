@@ -29,4 +29,4 @@ Contributions to this repository are highly encouraged! Whether you have insight
 
 This repository operates under the [MIT License](LICENSE). You are welcome to leverage, modify, and distribute the packages in accordance with the terms delineated in the license.
 
-Thank you for exploring the csLaTeX repository. It is my fervent aspiration that these LaTeX packages facilitate and enhance your pursuits in the realm of computer science. Should you harbour any inquiries or feedback, please do not hesitate to reach out. Here’s to seamless and gratifying typesetting experiences!
+Thank you for exploring the csLaTeX repository. These LaTeX packages aim to facilitate and enhance your computer science endeavours. For inquiries or feedback, please reach out. Here's to seamless typesetting experiences!
