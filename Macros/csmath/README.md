@@ -2,7 +2,7 @@
 title: LaTeX Commands for Computer Scientists (csmath.sty)
 linter-yaml-title-alias: LaTeX Commands for Computer Scientists (csmath.sty)
 date created: Monday, March 25th 2024, 13:49:48
-date modified: Monday, March 25th 2024, 21:29:39
+date modified: Tuesday, March 26th 2024, 21:38:12
 aliases: [LaTeX Commands for Computer Scientists (csmath.sty)]
 ---
 
@@ -33,11 +33,12 @@ This will import the package and make its features available for use throughout 
 The `csmath` package provides several custom commands for mathematical expressions:
 
 - `\mathify{#1}`: Ensures that the argument is in math mode.
-- `\dd`: Represents the differential operator �d�.
+- `\dd`: Represents the differential operator d.
 - `\bigO`: Represents the Big O notation for asymptotic analysis.
 - `\set{#1}`: Represents a set with the given elements.
 - `\floor{#1}`: Represents the floor function.
 - `\ceil{#1}`: Represents the ceiling function.  
+
 These commands enhance the typesetting of mathematical expressions and provide a consistent formatting style across the document.
 
 ## Number Theory Commands
@@ -49,6 +50,7 @@ The package includes commands related to number theory:
 - `\lcmset{#1}`: Represents the least common multiple of a set of numbers.
 - `\jacobi{#1}{#2}`: Represents the Jacobi symbol.
 - `\legendre{#1}{#2}`: Represents the Legendre symbol.  
+
 These commands simplify the notation for number theoretic concepts and operations.
 
 ## Set Notation Commands
@@ -57,6 +59,7 @@ The package provides commands for common set notation:
 
 - `\N`, `\Z`, `\Q`, `\R`, `\C`: Sets of natural, integer, rational, real, and complex numbers.
 - `\Zplus`, `\Znonneg`, `\Rplus`, `\Rnonneg`, `\Qplus`, `\Qnonneg`: Sets of positive and non-negative numbers.  
+
 These commands facilitate the representation of sets in various contexts.
 
 ## Probability and Statistics Commands
@@ -66,6 +69,7 @@ The package includes commands for probability and statistics:
 - `\Prob{#1}`: Represents the probability of an event.
 - `\Exp{#1}`: Represents the expectation of a random variable.
 - `\half`: Represents half as a fraction.  
+
 These commands simplify the notation for probability and statistical calculations.
 
 ## Logic Commands
@@ -74,6 +78,7 @@ The package provides commands for logic:
 
 - `\true`, `\false`: Represent true and false values.
 - `\var{#1}`: Represents a variable.  
+
 These commands aid in expressing logical statements and formulas.
 
 ## Document Structure Commands
@@ -83,6 +88,7 @@ The package includes commands for document structure and formatting:
 - `\figcaption{#1}`: Formats a figure caption.
 - `\tabcaption{#1}`: Formats a table caption.
 - `\head{#1}`: Formats a lecture heading.  
+
 These commands improve the organization and presentation of the document.
 
 ## Theoretical Computer Science Commands
@@ -91,6 +97,7 @@ The package offers commands for theoretical computer science mainly computationa
 
 - Complexity classes: `\Pclass`, `\NPclass`, `\coNPclass`, `\BPPclass`, `\RPclass`, `\coRPclass`, `\ZPPclass`, `\IPclass`, `\PHclass`, `\PSPACEclass`, `\EXPclass`, `\NEXPclass`.
 - Notations for polynomial hierarchy: `\SigmaP{#1}`, `\PiP{#1}`, `\DeltaP{#1}`.  
+
 These commands simplify the representation of complexity classes and hierarchy levels.
 
 ## Cryptographic Notation Commands
@@ -100,6 +107,7 @@ The package provides commands for cryptographic notation:
 - Cryptographic primitives: `\cipher`, `\hash`, `\mac`, `\prf`, `\prp`, `\prg`, `\sig`, `\vrfy`, `\enc`, `\dec`, `\keygen`, `\keyexchange`.
 - Notations for cryptographic protocols: `\protocol`, `\attack`, `\advantage`, `\securityparam`.
 - Security notions: `\indcpa`, `\indcca`, `\authint`, `\nmac`, `\sufcma`, `\ufcma`, `\eav`, `\cca`, `\cpa`.  
+
 These commands aid in expressing cryptographic algorithms, protocols, and security properties.
 
 ## Function Commands
@@ -109,4 +117,5 @@ The package includes commands for various functions:
 - Negligible functions: `\negl`.
 - Noticeable functions: `\notice`.
 - Polynomial functions: `\poly`.  
+
 These commands provide shorthand notations for common functions used in computational complexity analysis.
