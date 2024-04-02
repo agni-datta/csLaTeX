@@ -132,17 +132,18 @@
 \renewcommand{\qedsymbol}{\QEDsymbol}
 
 % Theorem-like environments
+\theoremstyle{plain}
 \newtheorem{theorem}{\protect\theoremName}[chapter]
 \newtheorem{corollary}[theorem]{\protect\corollaryName}
 \newtheorem{lemma}[theorem]{\protect\lemmaName}
 \newtheorem{observation}[theorem]{\protect\remarkName}
+\newtheorem{conjecture}{\protect\conjectureName}[chapter]
 \newtheorem{proposition}[theorem]{\protect\propositionName}
-\newtheorem{definition}[theorem]{\protect\definitionName}
 \newtheorem{claim}[theorem]{\protect\claimName}
 \newtheorem{fact}[theorem]{\protect\factName}
 \newtheorem{assumption}[theorem]{\protect\assumptionName}
+\newtheorem{definition}[theorem]{\protect\definitionName}
 \newtheorem{remark}{\protect\remarkName}[chapter]
-\newtheorem{conjecture}{\protect\conjectureName}[chapter]
 \newtheorem{example}{\protect\exampleName}[chapter]
 
 % Custom lists for case environment
