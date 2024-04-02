@@ -54,6 +54,7 @@
 % The package includes commands for probability and statistics:
 % - \Prob{#1}: Represents the probability of an event.
 % - \Exp{#1}: Represents the expectation of a random variable.
+% - \Pr: Represents the probablity notation.
 % - \half: Represents half as a fraction.
 % These commands simplify the notation for probability and statistical calculations.
 
@@ -186,7 +187,8 @@
 \newcommand{\Qnonneg}{\mathbb{Q}_0^+} % Set of non-negative rational numbers
 
 % Probability and statistics commands
-\newcommand{\Prob}[1]{\mathify{\mathrm{Pr}\left[#1\right]}} % Probability notation
+\newcommand{\Prob}[1]{\mathify{\mathrm{Pr}\left[#1\right]}} % Probability grouped notation
+\renewcommand{\Pr}{\mathrm{Pr}} % Probablity Theory 
 \newcommand{\Exp}[1]{\mathify{\mathrm{Exp}\left[#1\right]}} % Expectation notation
 \newcommand{\half}{\frac{1}{2}} % half as a fraction
 
