@@ -73,6 +73,7 @@
 
 % THEORETICAL COMPUTER SCIENCE COMMANDS:
 % The package offers commands for theoretical computer science articles:
+% - \Lang: For calligraphic mathematical font L to represent languages related to theory of computation.
 % - Complexity classes: \Pclass, \NPclass, \coNPclass, \BPPclass, \RPclass, \coRPclass, \ZPPclass, \IPclass, \PHclass, \PSPACEclass, \EXPclass, \NEXPclass.
 % - Notations for polynomial hierarchy: \SigmaP{#1}, \PiP{#1}, \DeltaP{#1}.
 % These commands simplify the representation of complexity classes and hierarchy levels.
@@ -120,36 +121,36 @@
 % Arguments:
 %   #1: The expression inside the floor function
 \newcommand{\floor}[1]{%
-	\ifmmode
-		\left\lfloor #1 \right\rfloor
-	\else
-		\PackageError{csmath}{\string\floor\space outside math mode}{Use \string\floor\space only in math mode}%
-	\fi
+        \ifmmode
+                \left\lfloor #1 \right\rfloor
+        \else
+                \PackageError{csmath}{\string\floor\space outside math mode}{Use \string\floor\space only in math mode}%
+        \fi
 }
 
 % Ceiling function
 % Arguments:
 %   #1: The expression inside the ceiling function
 \newcommand{\ceil}[1]{%
-	\ifmmode
-		\left\lceil #1 \right\rceil
-	\else
-		\PackageError{csmath}{\string\ceil\space outside math mode}{Use \string\ceil\space only in math mode}%
-	\fi
+        \ifmmode
+                \left\lceil #1 \right\rceil
+        \else
+                \PackageError{csmath}{\string\ceil\space outside math mode}{Use \string\ceil\space only in math mode}%
+        \fi
 }
 
 % Number theory commands
 % Greatest common divisor
-\renewcommand{\gcd}{\mathrm{gcd}}
+\renewcommand{\gcd}{\mathtt{gcd}}
 
 % Least common multiple
-\newcommand{\lcm}{\mathrm{lcm}}
+\newcommand{\lcm}{\mathtt{lcm}}
 
 % Least common multiple of a set of numbers
 % Arguments:
 %   #1: The set of numbers
 \newcommand{\lcmset}[1]{%
-	\ensuremath{\mathrm{lcm}\left(#1\right)}%
+        \ensuremath{\mathtt{lcm}\left(#1\right)}%
 } % Least common multiple of a set
 
 % Jacobi symbol
@@ -157,7 +158,7 @@
 %   #1: The numerator
 %   #2: The denominator
 \newcommand{\jacobi}[2]{%
-	\ensuremath{\left(\frac{#1}{#2}\right)}%
+        \ensuremath{\left(\frac{#1}{#2}\right)}%
 } % Jacobi symbol
 
 % Legendre symbol
@@ -165,7 +166,7 @@
 %   #1: The numerator
 %   #2: The prime modulus
 \newcommand{\legendre}[2]{%
-	\ensuremath{\left(\frac{#1}{#2}\right)}%
+        \ensuremath{\left(\frac{#1}{#2}\right)}%
 } % Legendre symbol
 
 % Absolute value
@@ -187,8 +188,8 @@
 \newcommand{\Qnonneg}{\mathbb{Q}_0^+} % Set of non-negative rational numbers
 
 % Probability and statistics commands
-\newcommand{\Prob}[1]{\mathify{\mathrm{Pr}\left[#1\right]}} % Probability grouped notation
-\renewcommand{\Pr}{\mathrm{Pr}} % Probablity Theory 
+\newcommand{\Prob}[1]{\mathify{\mathsf{Pr}\left[#1\right]}} % Probability grouped notation
+\renewcommand{\Pr}{\mathsf{Pr}} % Probability Theory 
 \newcommand{\Exp}[1]{\mathify{\mathrm{Exp}\left[#1\right]}} % Expectation notation
 \newcommand{\half}{\frac{1}{2}} % half as a fraction
 
@@ -203,6 +204,7 @@
 \newcommand{\head}[1]{\chapter[Lecture \##1]{}} % Lecture heading
 
 % Commands for theoretical computer science articles
+\newcommand{\Lang}[1]{\mathcal{L}} % Language
 \newcommand{\Pclass}[1]{\textsf{P}{#1}} % Complexity classes
 \newcommand{\NPclass}[1]{\textsf{NP}{#1}}
 \newcommand{\coNPclass}[1]{\textsf{co-NP}{#1}}
@@ -251,12 +253,12 @@
 \newcommand{\cpa}{\textsc{Cpa}}
 
 % Negligible functions
-\newcommand{\negl}{\mathsf{negl}}
+\newcommand{\negl}{\mathtt{negl}}
 
 % Noticeable functions
-\newcommand{\notice}{\mathsf{noticeable}}
+\newcommand{\notice}{\mathtt{noticeable}}
 
 % Polynomial functions
-\newcommand{\poly}{\mathsf{poly}}
+\newcommand{\poly}{\mathtt{poly}}
 
 \endinput
