@@ -54,7 +54,7 @@
 % The package includes commands for probability and statistics:
 % - \Prob{#1}: Represents the probability of an event.
 % - \Exp{#1}: Represents the expectation of a random variable.
-% - \Pr: Represents the probablity notation.
+% - \Pr: Represents the probability notation.
 % - \half: Represents half as a fraction.
 % These commands simplify the notation for probability and statistical calculations.
 
@@ -98,13 +98,13 @@
 \ProvidesPackage{csmath}[2024/03/25 Custom LaTeX commands for computer scientists]
 
 % Check if amsmath package is loaded, and if not, load it
-\@ifpackageloaded{amsmath}{}{\RequirePackage{amsmath}} % Enhance math features
+\@ifpackageloaded{amsmath}{}{\RequirePackage{amsmath}} % Enhance mathematics features
 
-% Math commands
-% Ensure math mode
+% Mathematics commands
+% Ensure mathematics mode
 % Arguments:
 %   #1: The mathematical expression
-\newcommand{\mathify}[1]{\ensuremath{#1}} % Ensure math mode
+\newcommand{\mathify}[1]{\ensuremath{#1}} % Ensure mathematics mode
 
 % Differential operator
 \newcommand{\dd}{\mathrm{d}}
@@ -121,22 +121,22 @@
 % Arguments:
 %   #1: The expression inside the floor function
 \newcommand{\floor}[1]{%
-        \ifmmode
-                \left\lfloor #1 \right\rfloor
-        \else
-                \PackageError{csmath}{\string\floor\space outside math mode}{Use \string\floor\space only in math mode}%
-        \fi
+	\ifmmode
+		\left\lfloor #1 \right\rfloor
+	\else
+		\PackageError{csmath}{\string\floor\space outside math mode}{Use \string\floor\space only in math mode}%
+	\fi
 }
 
 % Ceiling function
 % Arguments:
 %   #1: The expression inside the ceiling function
 \newcommand{\ceil}[1]{%
-        \ifmmode
-                \left\lceil #1 \right\rceil
-        \else
-                \PackageError{csmath}{\string\ceil\space outside math mode}{Use \string\ceil\space only in math mode}%
-        \fi
+	\ifmmode
+		\left\lceil #1 \right\rceil
+	\else
+		\PackageError{csmath}{\string\ceil\space outside math mode}{Use \string\ceil\space only in math mode}%
+	\fi
 }
 
 % Number theory commands
@@ -150,7 +150,7 @@
 % Arguments:
 %   #1: The set of numbers
 \newcommand{\lcmset}[1]{%
-        \ensuremath{\mathtt{lcm}\left(#1\right)}%
+	\ensuremath{\mathtt{lcm}\left(#1\right)}%
 } % Least common multiple of a set
 
 % Jacobi symbol
@@ -158,7 +158,7 @@
 %   #1: The numerator
 %   #2: The denominator
 \newcommand{\jacobi}[2]{%
-        \ensuremath{\left(\frac{#1}{#2}\right)}%
+	\ensuremath{\left(\frac{#1}{#2}\right)}%
 } % Jacobi symbol
 
 % Legendre symbol
@@ -166,7 +166,7 @@
 %   #1: The numerator
 %   #2: The prime modulus
 \newcommand{\legendre}[2]{%
-        \ensuremath{\left(\frac{#1}{#2}\right)}%
+	\ensuremath{\left(\frac{#1}{#2}\right)}%
 } % Legendre symbol
 
 % Absolute value
