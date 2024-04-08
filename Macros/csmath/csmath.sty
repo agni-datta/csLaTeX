@@ -26,7 +26,7 @@
 
 % MATH COMMANDS:
 % The csmath package provides several custom commands for mathematical expressions:
-% - \mathify{#1}: Ensures that the argument is in math mode.
+% - \mathify{#1}: Ensures that the argument is in mathematics mode.
 % - \dd: Represents the differential operator "d".
 % - \bigO: Represents the Big O notation for asymptotic analysis.
 % - \set{#1}: Represents a set with the given elements.
@@ -47,7 +47,7 @@
 % SET NOTATION COMMANDS:
 % The package provides commands for common set notation:
 % - \N, \Z, \Q, \R, \C: Sets of natural, integer, rational, real, and complex numbers.
-% - \Zplus, \Znonneg, \Rplus, \Rnonneg, \Qplus, \Qnonneg: Sets of positive and non-negative numbers.
+% - \Zplus, \Znonneg, \Rplus, \Rnonneg, \Qplus, \Qnonneg, \F: Sets of positive and non-negative numbers and Fields.
 % These commands facilitate the representation of sets in various contexts.
 
 % PROBABILITY AND STATISTICS COMMANDS:
@@ -124,7 +124,7 @@
 	\ifmmode
 		\left\lfloor #1 \right\rfloor
 	\else
-		\PackageError{csmath}{\string\floor\space outside math mode}{Use \string\floor\space only in math mode}%
+		\PackageError{csmath}{\string\floor\space outside mathematics mode}{Use \string\floor\space only in mathematics mode}%
 	\fi
 }
 
@@ -135,7 +135,7 @@
 	\ifmmode
 		\left\lceil #1 \right\rceil
 	\else
-		\PackageError{csmath}{\string\ceil\space outside math mode}{Use \string\ceil\space only in math mode}%
+		\PackageError{csmath}{\string\ceil\space outside mathematics mode}{Use \string\ceil\space only in mathematics mode}%
 	\fi
 }
 
@@ -186,6 +186,7 @@
 \newcommand{\Rnonneg}{\mathbb{R}_0^+} % Set of non-negative real numbers
 \newcommand{\Qplus}{\mathbb{Q}^+} % Set of positive rational numbers
 \newcommand{\Qnonneg}{\mathbb{Q}_0^+} % Set of non-negative rational numbers
+\newcommand{\F}{\mathbb{F}} % Finite Fields
 
 % Probability and statistics commands
 \newcommand{\Prob}[1]{\mathify{\mathsf{Pr}\left[#1\right]}} % Probability grouped notation
@@ -204,7 +205,7 @@
 \newcommand{\head}[1]{\chapter[Lecture \##1]{}} % Lecture heading
 
 % Commands for theoretical computer science articles
-\newcommand{\Lang}[1]{\mathcal{L}} % Language
+\newcommand{\Lang}[1]{\mathcal{L}#1} % Language
 \newcommand{\Pclass}[1]{\textsf{P}{#1}} % Complexity classes
 \newcommand{\NPclass}[1]{\textsf{NP}{#1}}
 \newcommand{\coNPclass}[1]{\textsf{co-NP}{#1}}
