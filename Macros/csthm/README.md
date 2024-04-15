@@ -1,12 +1,12 @@
 ---
-title: Theorem Environments for Computer Science (csthm.sty)
-linter-yaml-title-alias: Theorem Environments for Computer Science (csthm.sty)
+title: Theorem Environments for Computer Science (`csthm.sty`)
+linter-yaml-title-alias: Theorem Environments for Computer Science (`csthm.sty`)
 date created: Monday, March 25th 2024, 14:13:16
-date modified: Tuesday, March 26th 2024, 21:38:58
-aliases: [Theorem Environments for Computer Science (csthm.sty)]
+date modified: Monday, April 15th 2024, 10:43:55
+aliases: [Theorem Environments for Computer Science (`csthm.sty`)]
 ---
 
-# Theorem Environments for Computer Science (csthm.sty)
+# Theorem Environments for Computer Science (`csthm.sty`)
 
 This LaTeX package provides a set of theorem-like environments tailored for use in computer science documents. It includes theorem, lemma, corollary, proposition, definition, remark, claim, fact, assumption, conjecture, problem, solution, and case environments, along with custom lists and proof environments.
 

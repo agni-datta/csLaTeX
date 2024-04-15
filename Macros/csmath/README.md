@@ -1,22 +1,22 @@
 ---
-title: LaTeX Commands for Computer Scientists (csmath.sty)
-linter-yaml-title-alias: LaTeX Commands for Computer Scientists (csmath.sty)
+title: LaTeX Commands for Computer Scientists (`csmath.sty`)
+linter-yaml-title-alias: LaTeX Commands for Computer Scientists (`csmath.sty`)
 date created: Monday, March 25th 2024, 13:49:48
-date modified: Tuesday, March 26th 2024, 21:38:12
-aliases: [LaTeX Commands for Computer Scientists (csmath.sty)]
+date modified: Monday, April 15th 2024, 10:48:06
+aliases: [LaTeX Commands for Computer Scientists (`csmath.sty`)]
 ---
 
-# LaTeX Commands for Computer Scientists (csmath.sty)
+# LaTeX Commands for Computer Scientists (`csmath.sty`)
 
-This LaTeX package provides a collection of custom commands and notations tailored for use in computer science documents. It includes commands for mathematical expressions, number theory, probability and statistics, logic, document structure, theoretical computer science articles, cryptographic notation, and various functions commonly used in the field.
+This LaTeX package provides a collection of custom commands and notations tailored for use in computer science documents. It includes commands for mathematical expressions, number theory, set notation, calculus, vectors, combinatorics, trigonometric functions, probability and statistics, logic, document structure and formatting, language, complexity classes, polynomial hierarchy, basic complexity theory notations, and cryptographic notation.
 
-**Author:** Agni Datta  
-**Version:** 1.0  
-**Date:** 2024/03/25
+- **Author:** Agni Datta
+- **Version:** 1.0
+- **Date:** 2024/04/15
 
 ## Package Overview
 
-The `csmath` package offers a comprehensive set of custom LaTeX commands designed specifically for computer scientists. It covers a wide range of mathematical expressions, number theory, probability and statistics, logic, document structure, theoretical computer science articles, cryptographic notation, and various functions commonly used in the field. The package aims to enhance the readability and expressiveness of computer science documents by providing intuitive and consistent commands for frequently used symbols and notations.
+The `csmath` package offers a comprehensive set of custom LaTeX commands designed specifically for computer scientists. It covers a wide range of mathematical expressions, number theory, set notation, calculus, vectors, combinatorics, trigonometric functions, probability and statistics, logic, document structure and formatting, language, complexity classes, polynomial hierarchy, basic complexity theory notations, and cryptographic notation. The package aims to enhance the readability and expressiveness of computer science documents by providing intuitive and consistent commands for frequently used symbols and notations.
 
 ## Usage
 
@@ -28,94 +28,75 @@ To use the `csmath` package, simply include the following line in the preamble o
 
 This will import the package and make its features available for use throughout your document.
 
-## Math Commands
+## Contents
 
-The `csmath` package provides several custom commands for mathematical expressions:
+1. **Mathematical Notation**
+   - `\mathify{…}`: Ensure math mode for the argument.
+   - `\set{…}`: Format a set with curly braces.
+   - `\floor{…}`: Format the floor function.
+   - `\abs{…}`: Format the absolute value function.
+   - `\intersection`: Format the intersection symbol.
+   - `\union`: Format the union symbol.
+   - `\xor`: Format the XOR symbol.
+   - `\Xor`: Format the big XOR symbol.
+   - `\eqdef`: Format the equality by definition symbol.
+   - `\eqq`: Format the uncertain equality symbol.
+   - `\inq`: Format the uncertain membership symbol.
+   - `\paren{…}`: Format parentheses without automatic sizing.
+   - `\Paren{…}`: Format parentheses with automatic sizing.
 
-- `\mathify{#1}`: Ensures that the argument is in math mode.
-- `\dd`: Represents the differential operator d.
-- `\bigO`: Represents the Big O notation for asymptotic analysis.
-- `\set{#1}`: Represents a set with the given elements.
-- `\floor{#1}`: Represents the floor function.
-- `\ceil{#1}`: Represents the ceiling function.  
+2. **Number Theory**
+   - `\gcd`: Format the greatest common divisor command.
+   - `\lcm`: Format the least common multiple command.
+   - `\lcmset{…}`: Format the least common multiple set command.
+   - `\jacobi{…}{…}`: Format the Jacobi symbol.
+   - `\legendre{…}{…}`: Format the Legendre symbol.
 
-These commands enhance the typesetting of mathematical expressions and provide a consistent formatting style across the document.
+3. **Set Notation**
+   - `\N, \Z, \Q, \R, \C, \Zplus, \Znonneg, \Rplus, \Rnonneg, \Qplus, \Qnonneg, \F`: Set notations for various number sets.
 
-## Number Theory Commands
+4. **Calculus and Analysis**
+   - `\dd`: Differential operator.
+   - `\ddiff{…}{…}`: Differential quotient.
+   - `\pdiff{…}{…}`: Partial derivative.
+   - `\gradientd{…}`: Gradient.
+   - `\Diff{…}`: Differential of order n.
 
-The package includes commands related to number theory:
+5. **Vectors**
+   - `\i, \j, \k`: Unit vectors.
 
-- `\gcd`: Represents the greatest common divisor.
-- `\lcm`: Represents the least common multiple.
-- `\lcmset{#1}`: Represents the least common multiple of a set of numbers.
-- `\jacobi{#1}{#2}`: Represents the Jacobi symbol.
-- `\legendre{#1}{#2}`: Represents the Legendre symbol.  
+6. **Combinatorics**
+   - `\nPr{…}{…}`: Permutations.
+   - `\nPrf{…}{…}`: Permutations with factorials.
+   - `\nCr{…}{…}`: Combinations.
+   - `\nCrf{…}{…}`: Combinations with factorials.
 
-These commands simplify the notation for number theoretic concepts and operations.
+7. **Trigonometric Functions**
+   - `\arcsin, \arccos, \arctan, \arccot, \arcsec, \arccsc`: Inverse trigonometric functions.
 
-## Set Notation Commands
+8. **Probability and Statistics**
+   - `\Prob{…}, \Pr`: Probability notation.
+   - `\Exp{…}`: Expectation notation.
+   - `\half`: Half as a fraction.
 
-The package provides commands for common set notation:
+9. **Logic**
+   - `\true, \false`: True and false symbols.
+   - `\var{…}`: Variable representation.
 
-- `\N`, `\Z`, `\Q`, `\R`, `\C`: Sets of natural, integer, rational, real, and complex numbers.
-- `\Zplus`, `\Znonneg`, `\Rplus`, `\Rnonneg`, `\Qplus`, `\Qnonneg`: Sets of positive and non-negative numbers.  
+10. **Document Structure and Formatting**
+	- `\figcaption{…}`: Custom figure caption command.
+	- `\tabcaption{…}`: Custom table caption command.
+	- `\head{…}`: Custom chapter heading command.
 
-These commands facilitate the representation of sets in various contexts.
+11. **Language**
+	- `\Lang`: Language notation.
 
-## Probability and Statistics Commands
+12. **Complexity Classes**
+	- `\Pclass, \NPclass, \coNPclass, \BPPclass, \RPclass, \coRPclass, \ZPPclass, \IPclass, \PHclass, \PSPACEclass, \EXPclass, \NEXPclass`
+	- `\SigmaP{…}, \PiP{…}, \DeltaP{…}`: Notations for polynomial hierarchy.
 
-The package includes commands for probability and statistics:
+13. **Basic Complexity Theory Notations**
+	- `\bigO, \bigo{…}, \negl, \notice, \poly, \ppt, \PPT, \ind`: Notations for basic complexity theory.
 
-- `\Prob{#1}`: Represents the probability of an event.
-- `\Exp{#1}`: Represents the expectation of a random variable.
-- `\half`: Represents half as a fraction.  
-
-These commands simplify the notation for probability and statistical calculations.
-
-## Logic Commands
-
-The package provides commands for logic:
-
-- `\true`, `\false`: Represent true and false values.
-- `\var{#1}`: Represents a variable.  
-
-These commands aid in expressing logical statements and formulas.
-
-## Document Structure Commands
-
-The package includes commands for document structure and formatting:
-
-- `\figcaption{#1}`: Formats a figure caption.
-- `\tabcaption{#1}`: Formats a table caption.
-- `\head{#1}`: Formats a lecture heading.  
-
-These commands improve the organization and presentation of the document.
-
-## Theoretical Computer Science Commands
-
-The package offers commands for theoretical computer science mainly computational complexity:
-
-- Complexity classes: `\Pclass`, `\NPclass`, `\coNPclass`, `\BPPclass`, `\RPclass`, `\coRPclass`, `\ZPPclass`, `\IPclass`, `\PHclass`, `\PSPACEclass`, `\EXPclass`, `\NEXPclass`.
-- Notations for polynomial hierarchy: `\SigmaP{#1}`, `\PiP{#1}`, `\DeltaP{#1}`.  
-
-These commands simplify the representation of complexity classes and hierarchy levels.
-
-## Cryptographic Notation Commands
-
-The package provides commands for cryptographic notation:
-
-- Cryptographic primitives: `\cipher`, `\hash`, `\mac`, `\prf`, `\prp`, `\prg`, `\sig`, `\vrfy`, `\enc`, `\dec`, `\keygen`, `\keyexchange`.
-- Notations for cryptographic protocols: `\protocol`, `\attack`, `\advantage`, `\securityparam`.
-- Security notions: `\indcpa`, `\indcca`, `\authint`, `\nmac`, `\sufcma`, `\ufcma`, `\eav`, `\cca`, `\cpa`.  
-
-These commands aid in expressing cryptographic algorithms, protocols, and security properties.
-
-## Function Commands
-
-The package includes commands for various functions:
-
-- Negligible functions: `\negl`.
-- Noticeable functions: `\notice`.
-- Polynomial functions: `\poly`.  
-
-These commands provide shorthand notations for common functions used in computational complexity analysis.
+14. **Cryptographic Notation**
+	- `\cipher, \hash, \mac, \prf, \prp, \prg, \sig, \vrfy, \enc, \dec, \keygen, \keyexchange, \protocol, \attack, \advantage, \securityparam, \indcpa, \indcca, \authint, \nmac, \sufcma, \ufcma, \eav, \cca, \cpa, \sk, \pk`
