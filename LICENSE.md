@@ -1,3 +1,11 @@
+---
+title: License
+aliases: [License]
+linter-yaml-title-alias: License
+date created: Monday, April 15th 2024, 12:24:14
+date modified: Wednesday, April 17th 2024, 15:08:46
+---
+
 # License
 
 ## MIT License

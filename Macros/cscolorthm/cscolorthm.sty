@@ -1,0 +1,147 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% cscolorthm Package
+%% Version: 1.0
+%% Date: 2024/04/17
+%% Description: This package provides a collection of coloured theorem environments and proof environments using tcolorbox.
+%% Author: Agni Datta
+%% Email: agnidatta.org@gmail.com
+%% Maintainer: Agni Datta
+%% License: MIT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% This package offers a comprehensive set of coloured theorem environments and proof environments utilizing the powerful tcolorbox package. It aims to enhance the visual appeal of theorem-like environments while maintaining readability and clarity in academic documents.
+
+% Usage:
+%   1. Load the package in the preamble using \usepackage{cscolorthm}.
+%   2. After loading, custom theorem environments such as theorem, lemma, corollary, etc., can be defined and used in the document.
+%   3. Proof environments are also provided, including standard proof, proof sketch, proof idea, etc.
+
+% Contents:
+%   1. \CreateColorTheoremEnvironments: Main function for creating coloured theorem environments.
+%   2. \CreateProofEnvironments: Function for creating proof environments.
+%   3. Custom coloured theorem environments:
+%       - theorem, lemma, corollary, proposition, claim, conjecture
+%       - definition, example, remark
+%       - fact, note, question
+%       - case, exercise, problem, property
+%       - solution, important, keypoint, highlight
+%   4. Proof environments:
+%       - proof, proofSketch, proofIdea, proofOfLemma, proofAttempt, proofOf
+
+% Example usage:
+%   \begin{theorem}[Pythagorean Theorem]
+%       In a right triangle, the square of the length of the hypotenuse is equal to the sum of the squares of the lengths of the other two sides.
+%   \end{theorem}
+%   \begin{proof}
+%       The proof follows directly from the definition of a right triangle and the Pythagorean theorem.
+%   \end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Declare that this is a LaTeX2e package
+\def\filename{cscolorthm}
+\def\fileversion{v1}
+\def\filedate{2024/04/17}
+\def\fileauthor{Agni Datta}
+
+\NeedsTeXFormat{LaTeX2e}
+\AtEndOfPackage{\ProvidesPackage{\filename}[\filedate\space\fileversion\space(\fileauthor)]}
+\typeout{Package `\filename', \fileversion, <\filedate>}
+\ProvidesPackage{cscolorthm}[2024/04/17 v1.0 Colored Theorem Environments]
+
+% Import required packages
+\RequirePackage{etoolbox} % For conditional statements
+\RequirePackage[x11names, dvipsnames, svgnames]{xcolor} % Support for color
+\RequirePackage{amsthm} % AMS theorem package
+\RequirePackage{amsmath} % AMS math package
+\RequirePackage{amssymb} % AMS symbols package
+\RequirePackage[most]{tcolorbox} % Custom lists
+\RequirePackage{enumitem} % Custom lists
+\RequirePackage{hyperref} % Hyperlinks
+\RequirePackage{cleveref} % Clever cross-referencing
+
+% Define the main function for creating color theorem environments
+\newcommand{\CreateColorTheoremEnvironments}{%
+	% Define QED symbol
+	\providecommand{\QEDsymbol}{\ensuremath{\blacksquare}}
+	\renewcommand{\qedsymbol}{\QEDsymbol}
+	
+	% Define new environments with tcolorbox using soothing colors
+	\newcommand{\newcolorboxes}[6]{%
+		\newtcbtheorem{##1}{##2}{%
+			enhanced,
+			colback=##3!5,
+			colframe=##3!80!black,
+			arc=2pt,
+			boxrule=0.5pt,
+			fonttitle=\color{##4}\scshape,
+			fontupper={\color{black}\normalfont ##5},
+			fontlower={\color{black}\normalfont ##5},
+			left=10pt,
+			right=10pt,
+			top=10pt,
+			bottom=10pt,
+			attach boxed title to top left={yshift=-2mm,xshift=4mm},
+			boxed title style={
+				colback=##3!20,
+				colframe=##3!80!black,
+				boxrule=0.5pt
+			},
+			label={##6:\thetcbcounter} % Hyperref label
+			}{##6}%
+	}
+	
+	% Define a function to define tcolorbox environments for various cases using soothing colors
+	\newcommand{\DefineColorBox}[6]{%
+		\ifcsdef{tcb@theoremlist@##1}%
+		{%
+			\PackageWarning{cscolorthm}{The environment ##1 is already defined.}
+		}%
+		{%
+			\newcolorboxes{##1}{##2}{##3}{##4}{##5}{##6}
+		}%
+	}
+	
+	% Define tcolorbox environments for various cases using soothing colors
+	\DefineColorBox{theorem}{Theorem}{PeachPuff}{black}{\itshape}{thm}
+	\DefineColorBox{lemma}{Lemma}{Lavender}{black}{\itshape}{lem}
+	\DefineColorBox{corollary}{Corollary}{PaleGreen}{black}{\itshape}{cor}
+	\DefineColorBox{proposition}{Proposition}{SkyBlue}{black}{\itshape}{prop}
+	\DefineColorBox{claim}{Claim}{LightSteelBlue}{black}{\itshape}{clm}
+	\DefineColorBox{conjecture}{Conjecture}{PowderBlue}{black}{\itshape}{conj}
+	
+	\DefineColorBox{definition}{Definition}{Honeydew}{black}{\normalfont}{def}
+	\DefineColorBox{example}{Example}{LightCyan}{black}{\normalfont}{ex}
+	\DefineColorBox{remark}{Remark}{LightGray}{black}{\normalfont}{rem}
+	
+	\DefineColorBox{fact}{Fact}{Thistle}{black}{\normalfont}{fact}
+	\DefineColorBox{note}{Note}{LemonChiffon}{black}{\normalfont}{note}
+	\DefineColorBox{question}{Question}{LightGoldenrod}{black}{\normalfont}{ques}
+	
+	\DefineColorBox{case}{Case}{MistyRose}{black}{\normalfont}{case}
+	\DefineColorBox{exercise}{Exercise}{PaleTurquoise}{black}{\normalfont}{exer}
+	\DefineColorBox{problem}{Problem}{LightPink}{black}{\normalfont}{prob}
+	\DefineColorBox{property}{Property}{AliceBlue}{black}{\normalfont}{prop}
+	\DefineColorBox{solution}{Solution}{PapayaWhip}{black}{\normalfont}{sol}
+	\DefineColorBox{important}{Important}{LightSalmon}{black}{\normalfont}{imp}
+	\DefineColorBox{keypoint}{Keypoint}{LightSkyBlue}{black}{\normalfont}{key}
+	\DefineColorBox{highlight}{Highlight}{PaleGreen}{black}{\normalfont}{high}
+}
+
+% Define the function for creating proof environments
+\newcommand{\CreateProofEnvironments}{%
+	% Define proof environments
+	\renewenvironment{proof}{\noindent\textit{Proof.}\hspace*{0.25em}}{\qed\bigskip}
+	\newenvironment{proofSketch}{\noindent\textit{Sketch of Proof.}\hspace*{0.25em}}{\qed\bigskip}
+	\newenvironment{proofIdea}{\noindent\textit{Proof Idea.}\hspace*{0.25em}}{\qed\bigskip}
+	\newenvironment{proofOfLemma}[1]{\noindent\textit{Proof of Lemma ##1.}\hspace*{0.25em}}{\qed\bigskip}
+	\newenvironment{proofAttempt}{\noindent\textit{Proof Attempt.}\hspace*{0.25em}}{\qed\bigskip}
+	\newenvironment{proofOf}[1]{\noindent\textit{Proof of ##1.}\hspace*{0.25em}}{\qed\bigskip}
+}
+
+% Call the main functions to create colour theorem environments and proof environments
+\CreateColorTheoremEnvironments
+\CreateProofEnvironments
+
+% End of package
+\endinput

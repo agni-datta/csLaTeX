@@ -1,29 +1,28 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% thmcs.sty - Theorem Environments for Computer Science
-%
-% This LaTeX package provides a set of theorem-like environments tailored for use in computer science documents.
-% It includes theorem, lemma, corollary, proposition, definition, remark, claim, fact, assumption,
-% conjecture, problem, solution, and case environments, along with custom lists and proof environments.
-%
-% Author: [Agni Datta]
-% Version: 1.0
-% Date: [2024/03/25]
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% csthm Package
+%% Version: 1.0
+%% Date: 2024/04/17
+%% Description: This LaTeX package provides a set of theorem-like environments tailored for use in computer science documents.
+%% Author: Agni Datta
+%% Email: agnidatta.org@gmail.com
+%% Maintainer: Agni Datta
+%% License: MIT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % PACKAGE OVERVIEW:
-% The thmcs package provides a collection of theorem-like environments suitable for writing papers, reports,
+% The csthm package provides a collection of theorem-like environments suitable for writing papers, reports,
 % or theses in the field of computer science. These environments include commonly used structures such as
 % theorems, lemmas, corollaries, and definitions, along with specialized environments like proofs,
 % problems, solutions, and cases. The package is designed to be flexible and customizable, allowing users
 % to easily adapt it to their specific needs.
 
 % USAGE:
-% To use the thmcs package, simply include the following line in the preamble of your LaTeX document:
-% \usepackage{thmcs}
+% To use the csthm package, simply include the following line in the preamble of your LaTeX document:
+% \usepackage{csthm}
 % This will import the package and make its features available for use throughout your document.
 
 % ENVIRONMENTS:
-% The thmcs package provides the following theorem-like environments:
+% The csthm package provides the following theorem-like environments:
 % - theorem
 % - lemma
 % - corollary
@@ -47,7 +46,7 @@
 % Similarly, other environment names can be customized using the corresponding commands.
 
 % PROOF ENVIRONMENTS:
-% The thmcs package also provides several proof environments for writing proofs and related content:
+% The csthm package also provides several proof environments for writing proofs and related content:
 % - proof: Standard proof environment.
 % - proofSketch: Environment for sketching proofs.
 % - proofIdea: Environment for outlining proof ideas.
@@ -69,7 +68,7 @@
 % The default symbol is a filled black square (■), but users can customize it according to their preferences.
 
 % PACKAGE CLASH CHECK:
-% The thmcs package includes a check for package clashes with the amsthm package.
+% The csthm package includes a check for package clashes with the amsthm package.
 % If the amsthm package is already loaded, the package will issue a warning message to alert the user.
 
 % VERSIONING AND DATE:
@@ -77,10 +76,10 @@
 % and ensuring compatibility with different versions of the package.
 
 % EXAMPLE:
-% Below is an example of how to use the thmcs package in a LaTeX document:
+% Below is an example of how to use the csthm package in a LaTeX document:
 %
 % \documentclass{article}
-% \usepackage{thmcs}
+% \usepackage{csthm}
 %
 % \begin{document}
 %
@@ -96,9 +95,16 @@
 % END OF DOCUMENTATION
 
 % Declare that this is a LaTeX2e package
+\def\filename{csthm}
+\def\fileversion{v1}
+\def\filedate{2024/04/17}
+\def\fileauthor{Agni Datta}
+
 \NeedsTeXFormat{LaTeX2e}
+\AtEndOfPackage{\ProvidesPackage{\filename}[\filedate\space\fileversion\space(\fileauthor)]}
+\typeout{Package `\filename', \fileversion, <\filedate>}
 % Provide package information
-\ProvidesPackage{thmcs}[2024/03/25 Theorem Environments for Computer Science]
+\ProvidesPackage{csthm}[2024/03/25 Theorem Environments for Computer Science]
 
 % Import required packages and check for package clashes
 % Check if amsmath package is loaded, and if not, load it

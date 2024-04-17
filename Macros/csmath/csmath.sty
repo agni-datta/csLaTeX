@@ -1,7 +1,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% csmath Package
-%% Version: 2024/03/25
-%% Description: Custom LaTeX commands for computer scientists.
+%% Version: 1.0
+%% Date: 2024/04/17
+%% Description: LaTeX macros for computer scientists.
+%% Author: Agni Datta
+%% Email: agnidatta.org@gmail.com
+%% Maintainer: Agni Datta
+%% License: MIT
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % This package provides custom LaTeX commands tailored for computer scientists. It includes various mathematical notation, number theory, set notation, calculus, vectors, combinatorics, trigonometric functions, probability and statistics, logic, document structure and formatting, language, complexity classes, polynomial hierarchy, basic complexity theory notations, and cryptographic notation.
@@ -84,7 +89,15 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Declare that this is a LaTeX2e package
+\def\filename{csmath}
+\def\fileversion{v1}
+\def\filedate{2024/04/17}
+\def\fileauthor{Agni Datta}
+
 \NeedsTeXFormat{LaTeX2e}
+\AtEndOfPackage{\ProvidesPackage{\filename}[\filedate\space\fileversion\space(\fileauthor)]}
+\typeout{Package `\filename', \fileversion, <\filedate>}
 \ProvidesPackage{csmath}[2024/03/25 Custom LaTeX commands for computer scientists]
 
 % Check if amsmath package is loaded, and if not, load it
@@ -109,7 +122,7 @@
 % Number Theory
 \renewcommand*{\gcd}{\ensuremath{\mathsf{gcd}}} % Format the greatest common divisor command
 \newcommand{\lcm}{\ensuremath{\mathsf{lcm}}} % Format the least common multiple command
-\newcommand{\lcmset}[1]{\ensuremath{\mathtt{lcm}\left(#1\right)}} % Format the least common multiple set command
+\newcommand{\lcmset}[1]{\ensuremath{\mathsf{lcm}\left(#1\right)}} % Format the least common multiple set command
 \newcommand{\jacobi}[2]{\ensuremath{\left(\frac{#1}{#2}\right)}} % Format the Jacobi symbol
 \newcommand{\legendre}[2]{\ensuremath{\left(\frac{#1}{#2}\right)}} % Format the Legendre symbol
 
@@ -155,13 +168,13 @@
 
 % Probability and statistics commands
 \newcommand{\Prob}[1]{\ensuremath{\mathsf{Prob}\left[#1\right]}} % Probability grouped notation
-\renewcommand*{\Pr}{\ensuremath{\mathsf{Prob}}} % Probability Theory 
+\renewcommand*{\Pr}{\ensuremath{\mathsf{Prob}}} % Probability Theory
 \newcommand{\Exp}[1]{\ensuremath{\mathrm{Exp}\left[#1\right]}} % Expectation notation
 \newcommand{\half}{\ensuremath{\frac{1}{2}}} % Half as a fraction
 
 % Logic commands
-\newcommand{\true}{\texttt{\textbf{true}}} % True
-\newcommand{\false}{\texttt{\textbf{false}}} % False
+\newcommand{\true}{\ensuremath{\mathtt{\mathbf{true}}}} % True
+\newcommand{\false}{\ensuremath{\mathtt{\mathbf{false}}}} % False
 \newcommand{\var}[1]{\operatorname{#1}} % Variable representation
 
 % Custom commands for document structure and formatting
