@@ -2,13 +2,13 @@
 title: csLaTeX
 linter-yaml-title-alias: csLaTeX
 date created: Monday, March 25th 2024, 14:13:16
-date modified: Wednesday, April 24th 2024, 21:30:32
+date modified: Wednesday, April 24th 2024, 21:39:52
 aliases: [csLaTeX]
 ---
 
 # csLaTeX
 
-> Welcome to the csLaTeX repository! This repository hosts a curated collection of LaTeX macros tailored specifically for computer scientists. Whether you’re a researcher, student, or industry professional in the field of computer science, our repository is dedicated to providing you with LaTeX commands to optimize your document preparation workflow.
+> Welcome to the `csLaTeX` repository! This repository hosts a curated collection of LaTeX macros tailored specifically for computer scientists. Whether you’re a researcher, student, or industry professional in the field of computer science, our repository is dedicated to providing you with LaTeX commands to optimize your document preparation workflow.
 
 ## Repository Contents
 
