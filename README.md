@@ -37,8 +37,4 @@ Leveraging these packages in your LaTeX documents is straightforward:
 
 Contributions to this repository are highly encouraged! Whether you have insights for enhancements, bug rectifications, or additional features, feel empowered to open an issue or submit a pull request.
 
-## License
-
-This repository operates under the [MIT License](LICENSE.md). You are welcome to leverage, modify, and distribute the packages under the terms delineated in the license.
-
 > Thank you for exploring the csLaTeX repository. These LaTeX packages aim to facilitate and enhance your computer science endeavours. For inquiries or feedback, please reach out. Here’s to seamless typesetting experiences!
