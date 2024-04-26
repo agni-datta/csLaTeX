@@ -2,7 +2,7 @@
 title: csLaTeX
 linter-yaml-title-alias: csLaTeX
 date created: Monday, March 25th 2024, 14:13:16
-date modified: Wednesday, April 24th 2024, 21:39:52
+date modified: Friday, April 26th 2024, 18:20:11
 aliases: [csLaTeX]
 ---
 
@@ -20,6 +20,10 @@ The `cscolorthm.sty` package provides a range of colourful theorem and proof env
 
 The `csmath.sty` package furnishes various custom LaTeX commands crafted for computer scientists. Encompassing a wide spectrum of mathematical expressions, number theory, probability and statistics, logic, document structuring, theoretical computer science articles, cryptographic notation, and assorted functions prevalent in the field, this package serves as a useful resource.
 
+### `cslecture`
+
+The `cslecture` LaTeX package is a versatile tool designed specifically for computer science lectures. It provides a wide range of features to help educators and researchers improve their documents. It ensures that documents are easy to read and visually appealing. It includes various coloured theorem environments for different topics, and users can customize the appearance of these environments to suit their needs. In addition, the package seamlessly integrates with other LaTeX packages to enhance page layout, headers/footers, tables, figures, algorithms, cross-referencing, and bibliography management. With `cslecture`, creating professional-quality lecture materials is simple and straightforward.
+
 ### `csthm`
 
 The `csthm.sty` package offers a suite of theorem-like environments tailored specifically for incorporation into computer science documents. Featuring theorem, lemma, corollary, proposition, definition, remark, claim, fact, assumption, conjecture, problem, solution, and case environments, alongside bespoke lists and proof environments, these constructs are designed to facilitate the structured organization of mathematical content.
@@ -29,8 +33,8 @@ The `csthm.sty` package offers a suite of theorem-like environments tailored spe
 Leveraging these packages in your LaTeX documents is straightforward:
 
 1. Clone or download this repository to your local machine.
-2. Transfer the desired package (`csmath.sty` or `csthm.sty` or `cscolorthm.sty`) into your LaTeX project directory.
-3. In the preamble of your LaTeX document, import the package using `\usepackage{csmath}` or `\usepackage{thmcs}` or `\usepackage{cscolorthm}`.
+2. Transfer the desired package (`csmath.sty` or `csthm.sty` or `\usepackage{cslecture}` or `cscolorthm.sty`) into your LaTeX project directory.
+3. In the preamble of your LaTeX document, import the package using `\usepackage{csmath}` or `\usepackage{thmcs}` or `\usepackage{cslecture}` or `\usepackage{cscolorthm}`.
 4. Begin utilizing the provided commands and environments within your document to augment its clarity and expressiveness.
 
 ## Contributions
