@@ -138,9 +138,7 @@
 \RequirePackage{cleveref} % Intelligent cross-referencing
 
 % Bibliography
-\RequirePackage[square, semicolon, sort, compress]{natbib} % Flexible citation and bibliography management
-\RequirePackage{hypernat}
-\bibliographystyle{ieeetr} % Bibliography Style
+\RequirePackage[hyperref=auto, style=alphabetic, citestyle=alphabetic, backref=true, sorting=anyt, autocite=superscript, maxnames=999, backend=biber]{biblatex} % Flexible citation and bibliography management
 
 % Miscellaneous
 \RequirePackage[2.0, compress]{bxpdfver} % PDF version control
