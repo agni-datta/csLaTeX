@@ -2,7 +2,7 @@
 title: CS Lecture Package (`cslecture.sty`)
 linter-yaml-title-alias: CS Lecture Package (`cslecture.sty`)
 date created: Friday, April 26th 2024, 18:13:44
-date modified: Friday, April 26th 2024, 18:17:38
+date modified: Thursday, May 2nd 2024, 23:42:36
 aliases: [CS Lecture Package (`cslecture.sty`)]
 ---
 
@@ -57,7 +57,7 @@ These environments are defined using the powerful `tcolorbox` package, allowing 
 
 ### Page Layout and Headers/Footers
 
-- Sets the page layout to A4 paper size with 3cm margins using the `geometry` package, optimizing space utilization and readability.
+- Sets the page layout to `A4 paper size` with `3cm` margins using the `geometry` package, optimizing space utilization and readability.
 - Customizes headers and footers using the `fancyhdr` package, providing flexibility in formatting document headers and footers.
 
 ### Colours
