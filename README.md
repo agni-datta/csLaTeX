@@ -2,7 +2,7 @@
 title: csLaTeX
 linter-yaml-title-alias: csLaTeX
 date created: Monday, March 25th 2024, 14:13:16
-date modified: Friday, April 26th 2024, 18:20:11
+date modified: Friday, May 17th 2024, 15:59:47
 aliases: [csLaTeX]
 ---
 
@@ -15,6 +15,10 @@ aliases: [csLaTeX]
 ### `cscolorthm`
 
 The `cscolorthm.sty` package provides a range of colourful theorem and proof environments for LaTeX documents. It uses the `tcolorbox` package to make theorem-like structures visually appealing while maintaining readability. Users can easily create custom theorem environments like theorem, lemma, corollary, etc., and various proof environments like standard proof, proof sketch, etc. This package aims to enhance the presentation of mathematical content.
+
+### `csindex`
+
+The `csindex.ist` file is a LaTeX index style configuration designed for professional formatting of indexes. It defines a two-column layout, groups entries by their initial letter, and uses bold headings for each letter group. Symbols and numbers are categorized and grouped respectively. The file specifies dotted line delimiters between entries and page numbers, enhancing readability. It also switches to a sans-serif font for the entire index. To use, save the `.ist` file, include the `makeidx` package in your LaTeX document, specify the style file when running the `makeindex` command, add index entries with `\index`, and insert the index with `\printindex`. This setup ensures a clear, organized index.
 
 ### `csmath`
 
@@ -34,7 +38,7 @@ Leveraging these packages in your LaTeX documents is straightforward:
 
 1. Clone or download this repository to your local machine.
 2. Transfer the desired package (`csmath.sty` or `csthm.sty` or `\usepackage{cslecture}` or `cscolorthm.sty`) into your LaTeX project directory.
-3. In the preamble of your LaTeX document, import the package using `\usepackage{csmath}` or `\usepackage{thmcs}` or `\usepackage{cslecture}` or `\usepackage{cscolorthm}`.
+3. In the preamble of your LaTeX document, import the package using `\usepackage{csmath}` or `\usepackage{thmcs}` or `\usepackage{cslecture}` or `\usepackage{cscolorthm}`. For index style (`csindex.ist`), read the package documentation.
 4. Begin utilizing the provided commands and environments within your document to augment its clarity and expressiveness.
 
 ## Contributions
