@@ -1,0 +1,14 @@
+quote '+'
+columns 2
+letter_group
+symhead_positive "Symbole"
+numhead_positive "Zahlen"
+headings_flag 1
+heading_prefix "\\textbf{"
+heading_suffix "}\n"
+delim_0 "\\dotfill"
+delim_1 "\\dotfill"
+delim_2 "\\dotfill"
+delim_r "\\dotfill"
+preamble "\\begin{theindex}\n\\sffamily\n"
+postamble "\n\\end{theindex}\n"
