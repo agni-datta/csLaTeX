@@ -1,9 +1,9 @@
 ---
-title: "`csLaTeX`"
-linter-yaml-title-alias: "`csLaTeX`"
+title: csLaTeX
+linter-yaml-title-alias: csLaTeX
 date created: Monday, March 25th 2024, 14:13:16
-date modified: Friday, May 17th 2024, 16:12:45
-aliases: ["`csLaTeX`"]
+date modified: Friday, May 17th 2024, 16:13:45
+aliases: [csLaTeX]
 ---
 
 # csLaTeX
@@ -43,6 +43,6 @@ Leveraging these packages in your LaTeX documents is straightforward:
 
 ## Contributions
 
-Contributions to this repository are highly encouraged! Whether you have insights for enhancements, bug rectifications, or additional features, feel empowered to open an issue or submit a pull request. For detailed view go through [[CONTRIBUTION](CONTRIBUTION.md)].
+Contributions to this repository are highly encouraged! Whether you have insights for enhancements, bug rectifications, or additional features, feel empowered to open an issue or submit a pull request. For detailed view go through [CONTRIBUTION](CONTRIBUTION.md).
 
 > Thank you for exploring the `csLaTeX` repository. These LaTeX packages aim to facilitate and enhance your computer science endeavours. For inquiries or feedback, please reach out. Here’s to seamless typesetting experiences!
