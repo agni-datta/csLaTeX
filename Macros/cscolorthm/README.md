@@ -2,7 +2,7 @@
 title: Coloured Theorem Environments for Computer Science (`cscolorthm.sty`)
 linter-yaml-title-alias: Coloured Theorem Environments for Computer Science (`cscolorthm.sty`)
 date created: Wednesday, April 17th 2024, 14:56:05
-date modified: Thursday, April 18th 2024, 00:37:31
+date modified: Sunday, May 19th 2024, 08:21:12
 aliases: [Coloured Theorem Environments for Computer Science (`cscolorthm.sty`)]
 ---
 
@@ -74,12 +74,12 @@ The package defines proof environments for various purposes:
 
 ## Customization
 
-Users can customize the appearance of theorem environments by adjusting the color schemes and box styling parameters within the package file.
+Users can customize the appearance of theorem environments by adjusting the colour schemes and box styling parameters within the package file.
 
 ## Dependencies
 
 - `etoolbox`: For conditional statements.
-- `xcolor`: For support of color.
+- `xcolor`: For support of colour.
 - `amsthm`: AMS theorem package.
 - `amsmath`: AMS math package.
 - `amssymb`: AMS symbols package.

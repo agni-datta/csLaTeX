@@ -28,6 +28,7 @@
 %   4. Proof environments:
 %       - proof, proofSketch, proofIdea, proofOfLemma, proofAttempt, proofOf
 
+% Enable the use of '@' in command names
 \makeatletter
 
 % Declare that this is a LaTeX2e package
@@ -160,6 +161,7 @@
 \BeforeBeginEnvironment{keypoint}{\savenotes} \AfterEndEnvironment{keypoint}{\spewnotes}
 \BeforeBeginEnvironment{highlight}{\savenotes} \AfterEndEnvironment{highlight}{\spewnotes}
 
+% Disable the use of '@' in command names
 \makeatother
 
 % End of package
