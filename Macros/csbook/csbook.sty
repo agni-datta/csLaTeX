@@ -81,7 +81,7 @@
 % This command takes one argument and simply returns it without modification.
 % It sets the accent colour for various elements in the document.
 % Usage: \accentcolor{black}
-\providecommand{\accentcolor}{black}
+\providecommand{\accentcolor}{Blue4}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Support for creating indexes
@@ -213,14 +213,14 @@
 
 % \toc
 % This command generates a customized Table of Contents (TOC).
-% It formats the TOC using a sans-serif and small caps style,
+% It formats the TOC using a sans-serif style,
 % and additionally adds an entry labelled "Contents" 
 % to the TOC as a chapter-level entry.
 %
 % Usage:
 % \toc
 \newcommand{\toc}{%
-  {\sffamily\scshape\tableofcontents}
+  {\sffamily\tableofcontents}
   \addcontentsline{toc}{chapter}{Contents}
 }
 
