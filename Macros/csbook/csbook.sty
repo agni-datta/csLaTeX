@@ -81,7 +81,7 @@
 % This command takes one argument and simply returns it without modification.
 % It sets the accent colour for various elements in the document.
 % Usage: \accentcolor{black}
-\providecommand{\accentcolor}{RoyalBlue4}
+\providecommand{\accentcolor}{black}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Support for creating indexes
@@ -262,10 +262,14 @@
 % Usage: \mynote{This is a note}
 \newcommand{\mynote}[1]{\smallskip\todo[inline, color=Chartreuse1!20]{\scshape\sffamily#1}\smallskip}
 
+% Define a command for indicating the need to cite
+% Usage: \needcite
+\newcommand{\needcite}{\todo{\textsc{\textcolor{Firebrick1}{cite}}}}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Glossary and acronym support
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage[automake, nogroupskip, indexonlyfirst, acronym, symbols, style=super, nopostdot, toc]{glossaries}
+\usepackage[automake, nogroupskip, indexonlyfirst, acronym, symbols, style=super, nopostdot, toc]{glossaries-extra}
 
 % Define new glossary style with \accentcolor color for the term
 \newglossarystyle{define}{%
@@ -294,7 +298,7 @@
 	}%
 }
 
-%\setabbreviationstyle[acronym]{long-short}
+\setabbreviationstyle[acronym]{long-short}
 
 % Define a command named \igls with two arguments
 % The argument is the label of the acronym and the text to be indexed
