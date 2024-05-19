@@ -28,6 +28,8 @@
 %   4. Proof environments:
 %       - proof, proofSketch, proofIdea, proofOfLemma, proofAttempt, proofOf
 
+\makeatletter
+
 % Declare that this is a LaTeX2e package
 \def\filename{cscolorthm}
 \def\fileversion{v1}
@@ -42,9 +44,7 @@
 \ProvidesPackage{cscolorthm}[2024/04/17 v1.0 Colored Theorem Environments]
 
 % Check if a package is already loaded
-\makeatletter
 \newcommand{\IfPackageLoaded}[2]{\@ifpackageloaded{#1}{#2}{}}
-\makeatother
 
 % Import required packages
 \IfPackageLoaded{etoolbox}{}{\RequirePackage{etoolbox}} % For conditional statements
@@ -54,92 +54,113 @@
 \IfPackageLoaded{amsmath}{}{\RequirePackage{amsmath}} % AMS math package
 \IfPackageLoaded{amssymb}{}{\RequirePackage{amssymb}} % AMS symbols package
 \IfPackageLoaded{enumitem}{}{\RequirePackage{enumitem}} % Custom lists
+\IfPackageLoaded{footnote}{}{\RequirePackage{footnote}} % For footnotes management
 \IfPackageLoaded{hyperref}{}{\RequirePackage{hyperref}} % Hyperlinks
 \IfPackageLoaded{cleveref}{}{\RequirePackage{cleveref}} % Clever cross-referencing
 
-% Define the main function for creating color theorem environments
-\newcommand{\CreateColorTheoremEnvironments}{%
-	% Define QED symbol
-	\providecommand{\QEDsymbol}{\ensuremath{\blacksquare}}
-	\renewcommand{\qedsymbol}{\QEDsymbol}
-				
-	% Define new environments with tcolorbox using soothing colors
-	\newcommand{\newcolorboxes}[6]{%
-		\newtcbtheorem[number within=section]{##1}{##2}{%
-			enhanced,
-			colback=##3!5,
-			colframe=##3!80!black,
-			arc=2pt,
-			boxrule=0.5pt,
-			fonttitle=\color{##4}\scshape,
-			fontupper={\color{black}\normalfont ##5},
-			fontlower={\color{black}\normalfont ##5},
-			left=10pt,
-			right=10pt,
-			top=10pt,
-			bottom=10pt,
-			attach boxed title to top left={yshift=-2mm,xshift=4mm},
-			boxed title style={
-				colback=##3!20,
-				colframe=##3!80!black,
-				boxrule=0.5pt
-			},
-			label={##6:\thetcbcounter} % Hyperref label
-			}{##6}%
-	}
-				
-	% Define a function to define tcolorbox environments for various cases using soothing colors
-	\newcommand{\DefineColorBox}[6]{%
-		\IfPackageLoaded{tcolorbox}{%
-			\ifcsdef{tcb@theoremlist@##1}{%
-				\PackageWarning{cscolorthm}{The environment ##1 is already defined.}
-				}{%
-				\newcolorboxes{##1}{##2}{##3}{##4}{##5}{##6}
-			}%
-			}{\RequirePackage[most]{tcolorbox} % Custom lists
-		}
-	}
-				
-	% Define tcolorbox environments for various cases using soothing colors
-	\DefineColorBox{theorem}{Theorem}{PeachPuff}{black}{\itshape}{thm}
-	\DefineColorBox{lemma}{Lemma}{Lavender}{black}{\itshape}{lem}
-	\DefineColorBox{corollary}{Corollary}{PaleGreen}{black}{\itshape}{cor}
-	\DefineColorBox{proposition}{Proposition}{SkyBlue}{black}{\itshape}{prop}
-	\DefineColorBox{claim}{Claim}{LightSteelBlue}{black}{\itshape}{clm}
-	\DefineColorBox{conjecture}{Conjecture}{PowderBlue}{black}{\itshape}{conj}
-				
-	\DefineColorBox{definition}{Definition}{Honeydew}{black}{\normalfont}{def}
-	\DefineColorBox{example}{Example}{LightCyan}{black}{\normalfont}{ex}
-	\DefineColorBox{remark}{Remark}{LightGray}{black}{\normalfont}{rem}
-				
-	\DefineColorBox{fact}{Fact}{Thistle}{black}{\normalfont}{fact}
-	\DefineColorBox{note}{Note}{LemonChiffon}{black}{\normalfont}{note}
-	\DefineColorBox{question}{Question}{LightGoldenrod}{black}{\normalfont}{ques}
-				
-	\DefineColorBox{case}{Case}{MistyRose}{black}{\normalfont}{case}
-	\DefineColorBox{exercise}{Exercise}{PaleTurquoise}{black}{\normalfont}{exer}
-	\DefineColorBox{problem}{Problem}{LightPink}{black}{\normalfont}{prob}
-	\DefineColorBox{property}{Property}{AliceBlue}{black}{\normalfont}{prop}
-	\DefineColorBox{solution}{Solution}{PapayaWhip}{black}{\normalfont}{sol}
-	\DefineColorBox{important}{Important}{LightSalmon}{black}{\normalfont}{imp}
-	\DefineColorBox{keypoint}{Keypoint}{LightSkyBlue}{black}{\normalfont}{key}
-	\DefineColorBox{highlight}{Highlight}{PaleGreen}{black}{\normalfont}{high}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Definition of New Environments with tcolorbox
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Define new environments with tcolorbox using soothing colours
+\newcommand{\newcolorboxes}[6]{%
+	% Arguments:
+	%   #1: Environment name
+	%   #2: Display name of the environment
+	%   #3: Background color of the box
+	%   #4: Color of the title font
+	%   #5: Font style for the content
+	%   #6: Label prefix for hyperref
+	\newtcbtheorem[number within=chapter]{#1}{#2}{%
+		enhanced,
+		colback=#3!5,
+		colframe=#3!80!black,
+		arc=2pt,
+		boxrule=0.5pt,
+		fonttitle=\color{#4}\sffamily\scshape,
+		before upper={\parindent15pt},
+		before lower={\parindent15pt},
+		fontupper={\color{black}\normalfont #5},
+		fontlower={\color{black}\normalfont #5},
+		left=10pt,
+		right=10pt,
+		top=10pt,
+		bottom=10pt,
+		attach boxed title to top left={yshift=-2mm,xshift=4mm},
+		boxed title style={
+			colback=#3!20,
+			colframe=#3!80!black,
+			boxrule=0.5pt
+		},
+		label={#6:\thetcbcounter} % Hyperref label
+		}{#6}%
 }
 
-% Define the function for creating proof environments
-\newcommand{\CreateProofEnvironments}{%
-	% Define proof environments
-	\renewenvironment{proof}{\noindent\textit{Proof.}\hspace*{0.25em}}{\qed\bigskip}
-	\newenvironment{proofSketch}{\noindent\textit{Sketch of Proof.}\hspace*{0.25em}}{\qed\bigskip}
-	\newenvironment{proofIdea}{\noindent\textit{Proof Idea.}\hspace*{0.25em}}{\qed\bigskip}
-	\newenvironment{proofOfLemma}[1]{\noindent\textit{Proof of Lemma ##1.}\hspace*{0.25em}}{\qed\bigskip}
-	\newenvironment{proofAttempt}{\noindent\textit{Proof Attempt.}\hspace*{0.25em}}{\qed\bigskip}
-	\newenvironment{proofOf}[1]{\noindent\textit{Proof of ##1.}\hspace*{0.25em}}{\qed\bigskip}
-}
+% Define tcolorbox environments for various cases using soothing colours
+\newcolorboxes{theorem}{Theorem}{SlateBlue1}{black}{\itshape}{thm}
+\newcolorboxes{lemma}{Lemma}{DarkSeaGreen1}{black}{\itshape}{lem}
+\newcolorboxes{corollary}{Corollary}{SeaGreen1}{black}{\itshape}{cor}
+\newcolorboxes{proposition}{Proposition}{LightBlue1}{black}{\itshape}{prop}
+\newcolorboxes{claim}{Claim}{Aquamarine1}{black}{\itshape}{clm}
+\newcolorboxes{conjecture}{Conjecture}{PaleTurquoise1}{black}{\itshape}{conj}
 
-% Call the main functions to create colour theorem environments and proof environments
-\CreateColorTheoremEnvironments
-\CreateProofEnvironments
+\newcolorboxes{definition}{Definition}{RoyalBlue1}{black}{\normalfont}{def}
+\newcolorboxes{remark}{Remark}{DeepSkyBlue1}{black}{\normalfont}{rem}
+\newcolorboxes{example}{Example}{Chartreuse1}{black}{\normalfont}{ex}
+
+\newcolorboxes{fact}{Fact}{IndianRed1}{black}{\normalfont}{fact}
+\newcolorboxes{note}{Note}{Maroon1}{black}{\normalfont}{note}
+\newcolorboxes{question}{Question}{Sienna1}{black}{\normalfont}{ques}
+
+\newcolorboxes{case}{Case}{Magenta1}{black}{\normalfont}{case}
+\newcolorboxes{exercise}{Exercise}{Chocolate1}{black}{\normalfont}{exer}
+\newcolorboxes{problem}{Problem}{MediumPurple1}{black}{\normalfont}{prob}
+\newcolorboxes{property}{Property}{SpringGreen1}{black}{\normalfont}{prop}
+\newcolorboxes{solution}{Solution}{Gold1}{black}{\normalfont}{sol}
+\newcolorboxes{important}{Important}{Pink1}{black}{\normalfont}{imp}
+\newcolorboxes{keypoint}{Keypoint}{Tomato1}{black}{\normalfont}{key}
+\newcolorboxes{highlight}{Highlight}{Red1}{black}{\normalfont}{high}
+
+% Define proof environments
+\renewenvironment{proof}{\noindent\textit{Proof.}\hspace*{0.25em}}{\qed\bigskip}
+\newenvironment{proofSketch}{\noindent\textit{Sketch of Proof.}\hspace*{0.25em}}{\qed\bigskip}
+\newenvironment{proofIdea}{\noindent\textit{Proof Idea.}\hspace*{0.25em}}{\qed\bigskip}
+\newenvironment{proofOfLemma}[1]{\noindent\textit{Proof of Lemma ##1.}\hspace*{0.25em}}{\qed\bigskip}
+\newenvironment{proofAttempt}{\noindent\textit{Proof Attempt.}\hspace*{0.25em}}{\qed\bigskip}
+\newenvironment{proofOf}[1]{\noindent\textit{Proof of ##1.}\hspace*{0.25em}}{\qed\bigskip}
+
+% Custom QED symbol
+\providecommand{\QEDsymbol}{\color{\accentcolor}\ensuremath{\blacksquare}}
+\renewcommand{\qedsymbol}{\QEDsymbol}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Save and Restore Footnotes in Environments
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% These lines ensure that footnotes can be used within the specified environments (theorem, lemma, etc.)
+
+\BeforeBeginEnvironment{theorem}{\savenotes} \AfterEndEnvironment{theorem}{\spewnotes}
+\BeforeBeginEnvironment{lemma}{\savenotes} \AfterEndEnvironment{lemma}{\spewnotes}
+\BeforeBeginEnvironment{corollary}{\savenotes} \AfterEndEnvironment{corollary}{\spewnotes}
+\BeforeBeginEnvironment{proposition}{\savenotes} \AfterEndEnvironment{proposition}{\spewnotes}
+\BeforeBeginEnvironment{definition}{\savenotes} \AfterEndEnvironment{definition}{\spewnotes}
+\BeforeBeginEnvironment{remark}{\savenotes} \AfterEndEnvironment{remark}{\spewnotes}
+\BeforeBeginEnvironment{claim}{\savenotes} \AfterEndEnvironment{claim}{\spewnotes}
+\BeforeBeginEnvironment{fact}{\savenotes} \AfterEndEnvironment{fact}{\spewnotes}
+\BeforeBeginEnvironment{assumption}{\savenotes} \AfterEndEnvironment{assumption}{\spewnotes}
+\BeforeBeginEnvironment{conjecture}{\savenotes} \AfterEndEnvironment{conjecture}{\spewnotes}
+\BeforeBeginEnvironment{problem}{\savenotes} \AfterEndEnvironment{problem}{\spewnotes}
+\BeforeBeginEnvironment{solution}{\savenotes} \AfterEndEnvironment{solution}{\spewnotes}
+\BeforeBeginEnvironment{case}{\savenotes} \AfterEndEnvironment{case}{\spewnotes}
+\BeforeBeginEnvironment{example}{\savenotes} \AfterEndEnvironment{example}{\spewnotes}
+\BeforeBeginEnvironment{problem}{\savenotes} \AfterEndEnvironment{problem}{\spewnotes}
+\BeforeBeginEnvironment{property}{\savenotes} \AfterEndEnvironment{property}{\spewnotes}
+\BeforeBeginEnvironment{solution}{\savenotes} \AfterEndEnvironment{solution}{\spewnotes}
+\BeforeBeginEnvironment{important}{\savenotes} \AfterEndEnvironment{important}{\spewnotes}
+\BeforeBeginEnvironment{keypoint}{\savenotes} \AfterEndEnvironment{keypoint}{\spewnotes}
+\BeforeBeginEnvironment{highlight}{\savenotes} \AfterEndEnvironment{highlight}{\spewnotes}
+
+\makeatother
 
 % End of package
 \endinput
