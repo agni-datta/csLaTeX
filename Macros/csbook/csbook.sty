@@ -260,11 +260,12 @@
 % Arguments:
 %   #1: The note text
 % Usage: \mynote{This is a note}
-\newcommand{\mynote}[1]{\smallskip\todo[inline, color=Chartreuse1!20]{\scshape\sffamily#1}\smallskip}
+\newcommand{\mynote}[1]{\smallskip\todo[inline, size=\small, bordercolor=Firebrick1!20, color=Firebrick1!20]{\sffamily#1}\smallskip}
 
 % Define a command for indicating the need to cite
 % Usage: \needcite
-\newcommand{\needcite}{\todo{\textsc{\textcolor{Firebrick1}{cite}}}}
+\setlength{\marginparwidth}{2cm}
+\newcommand{\needcite}{\todo[noline, size=\small, bordercolor=Firebrick1!20, color=Firebrick1!20]{\sffamily Requires citation.}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Glossary and acronym support
