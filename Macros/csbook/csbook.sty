@@ -16,7 +16,7 @@
 % It aims to streamline the creation process while maintaining a professional and visually appealing output.
 
 % Usage:
-% 1. Load the package in the preamble using \usepackage{csbook}.
+% 1. Load the package in the preamble using \RequirePackage{csbook}.
 % 2. After loading, utilize the provided environments and tools to structure and format your document efficiently.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -39,29 +39,29 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Language settings
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage[british]{babel} % Package for language settings
-\usepackage[autostyle=true, csdisplay=true]{csquotes} % Package for handling quotations
-\usepackage[protrusion=true, expansion=true]{microtype} % Package for micro typographic enhancements
-\usepackage[onehalfspacing]{setspace} % Package for line spacing
-\usepackage[x11names, dvipsnames, svgnames]{xcolor} % Package for support for colour
-\usepackage{indentfirst} % Package for indenting the first paragraph
+\RequirePackage[british]{babel} % Package for language settings
+\RequirePackage[autostyle=true, csdisplay=true]{csquotes} % Package for handling quotations
+\RequirePackage[protrusion=true, expansion=true]{microtype} % Package for micro typographic enhancements
+\RequirePackage[onehalfspacing]{setspace} % Package for line spacing
+\RequirePackage[x11names, dvipsnames, svgnames]{xcolor} % Package for support for colour
+\RequirePackage{indentfirst} % Package for indenting the first paragraph
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Font encoding and math
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\usepackage[T1]{fontenc} % Font encoding package
-\usepackage{amsmath} % Package for enhanced math capabilities
-\usepackage{amsfonts} % Package for additional mathematical symbols
-\usepackage{amssymb} % Package for additional mathematical symbols
-\usepackage{amsthm} % Package for theorem environments
-\usepackage[vvarbb, amsthm, ebgaramond, smallerops]{newtx} % Package for Times-like fonts with enhanced math support
-\usepackage{fontspec} % Package for selecting fonts at the document level
+\RequirePackage[T1]{fontenc} % Font encoding package
+\RequirePackage{amsmath} % Package for enhanced math capabilities
+\RequirePackage{amsfonts} % Package for additional mathematical symbols
+\RequirePackage{amssymb} % Package for additional mathematical symbols
+\RequirePackage{amsthm} % Package for theorem environments
+\RequirePackage[vvarbb, amsthm, ebgaramond, smallerops]{newtx} % Package for Times-like fonts with enhanced math support
+\RequirePackage{fontspec} % Package for selecting fonts at the document level
 \setmainfont[Numbers=Lining, Kerning=On, RawFeature={+ss05, +lnum, +mark, +mkmk, +pnum, +hlig, +liga, +calt, +lnum, +kern}, Ligatures={TeX, Historic}]{EB Garamond} % Package for loading the EB Garamond font family
-\usepackage{biolinum} % Package for loading the Biolinum font family for sans-serif text
-\usepackage[scale=0.75]{AnonymousPro} % Package for loading the anonymous pro font for monospaced text
-\usepackage[bb=stixtwo, cal=cm]{mathalpha} % Package for providing additional math fonts for different styles
-\usepackage{nicefrac} % Provides a visually appealing alternative to standard fractions
+\RequirePackage{biolinum} % Package for loading the Biolinum font family for sans-serif text
+\RequirePackage[scale=0.75]{AnonymousPro} % Package for loading the anonymous pro font for monospaced text
+\RequirePackage[bb=stixtwo, cal=cm]{mathalpha} % Package for providing additional math fonts for different styles
+\RequirePackage{nicefrac} % Provides a visually appealing alternative to standard fractions
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Custom Commands
@@ -81,19 +81,19 @@
 % This command takes one argument and simply returns it without modification.
 % It sets the accent colour for various elements in the document.
 % Usage: \accentcolor{black}
-\providecommand{\accentcolor}{Blue4}
+\providecommand{\accentcolor}{black}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Support for creating indexes
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage[makeindex]{imakeidx} % Package for index support
+\RequirePackage[makeindex]{imakeidx} % Package for index support
 \makeindex[intoc, title=Index, options=-s csindex]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Hyperlinks and metadata
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Package for hyperlinks and bookmarks
-\usepackage[pdfusetitle]{hyperref}
+\RequirePackage[pdfusetitle]{hyperref}
 
 % Hyperref setup for metadata and appearance
 \hypersetup{
@@ -111,41 +111,44 @@
 	pdfborderstyle={}, % Border style for links
 }
 
+% Package for clever references
+\RequirePackage{cleveref}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Page layout
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Package for setting page layout
-\usepackage[a4paper, margin=3cm, inner=2.75cm, outer=2.75cm, footskip=1cm]{geometry}
+\RequirePackage[a4paper, margin=3cm, inner=2.75cm, outer=2.75cm, footskip=1cm]{geometry}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Formatting and miscellaneous
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Packages for managing PDF version and compression
-\usepackage[2.0, compress]{bxpdfver}
+\RequirePackage[2.0, compress]{bxpdfver}
 
 % Packages for typesetting algorithms
-\usepackage[algoruled, linesnumbered, longend]{algorithm2e}
+\RequirePackage[algoruled, linesnumbered, longend]{algorithm2e}
 % Algorithm Styling
 \SetAlgoCaptionSeparator{.} % Set the separator between the algorithm caption and the algorithm content
 \SetAlgoNlRelativeSize{0} % Set the relative size of line numbers
 \SetNlSty{texttt}{(}{)} % Set the style for line numbers to bold
 
 % Packages for text justification and footnote formatting
-\usepackage{ragged2e} % Enhanced support compared to standard LaTeX commands
-\usepackage[bottom, multiple, hang]{footmisc} % Ensures footnotes are placed at the bottom of the page
+\RequirePackage{ragged2e} % Enhanced support compared to standard LaTeX commands
+\RequirePackage[bottom, multiple, hang]{footmisc} % Ensures footnotes are placed at the bottom of the page
 
 % Package for managing page breaks
-\usepackage{needspace} % Allows specifying minimum space required on a page before a break
+\RequirePackage{needspace} % Allows specifying minimum space required on a page before a break
 
 % Package for creating framed environments
-\usepackage[skipabove=8pt, skipbelow=8pt, ntheorem, framemethod=Tikz]{mdframed} % Customizable with various options such as skip distances and frame styles
+\RequirePackage[skipabove=8pt, skipbelow=8pt, ntheorem, framemethod=Tikz]{mdframed} % Customizable with various options such as skip distances and frame styles
 
 % Define a custom environment using the mdframed package, with specified TikZ settings.
 \newmdenv[tikzsetting={draw=black}, backgroundcolor=none]{tboxed}
 
 % Package for customizing lists
-\usepackage{enumitem} % Offers a wide range of options for adjusting the appearance and behaviour of list environments
+\RequirePackage{enumitem} % Offers a wide range of options for adjusting the appearance and behaviour of list environments
 \setlist{noitemsep} % Global setting to eliminate extra vertical spacing between items in all list environments
 \setlist[enumerate, 1]{label=(\arabic*)} % Customize enumerate labels for first level
 \setlist[enumerate, 2]{label=(\alph*)} % Customize enumerate labels for second level
@@ -154,43 +157,43 @@
 \renewcommand{\labelitemiii}{\ensuremath{\color{\accentcolor}\ast}} % Command: Redefine ast symbol for itemize environment
 
 % Package for creating professional-quality tables
-\usepackage{booktabs} % Provides commands for enhancing the appearance and readability of tables
+\RequirePackage{booktabs} % Provides commands for enhancing the appearance and readability of tables
 
 % Package for allowing tables to flow over page boundaries
-\usepackage{longtable} % Useful for tables that extend beyond a single page
+\RequirePackage{longtable} % Useful for tables that extend beyond a single page
 
 % Package for controlling float placement
-\usepackage{float} % Allows specifying exact positions for floating objects such as figures and tables
+\RequirePackage{float} % Allows specifying exact positions for floating objects such as figures and tables
 
 % Package for enhanced support for graphics
-\usepackage{graphicx} % Enables the inclusion of images in various formats
+\RequirePackage{graphicx} % Enables the inclusion of images in various formats
 
 % The subcaption package allows for the creation of subfigures within a single-figure environment, each with its caption.
-\usepackage{subcaption} % Package for subfigures and subcaptions
+\RequirePackage{subcaption} % Package for subfigures and subcaptions
 
 % The wrapfig package enables text to wrap around figures, allowing for more efficient use of space in documents.
-\usepackage{wrapfig} % Package that allows for wrapping text around figures
+\RequirePackage{wrapfig} % Package that allows for wrapping text around figures
 
 % Packages for managing captions and verbatim text
-\usepackage{caption} % Allows customization of caption formatting and appearance
+\RequirePackage{caption} % Allows customization of caption formatting and appearance
 \captionsetup{font={rm, sc}} % Sets caption font style to Roman and small caps for consistency
 
 % Package for typesetting URLs
-\usepackage{url} % Provides automatic hyperlinking and line-breaking for long URLs
+\RequirePackage{url} % Provides automatic hyperlinking and line-breaking for long URLs
 
 % Package for customization of footnote text
-\usepackage{footnote}  % Allows for footnotes to be used within the document
+\RequirePackage{footnote}  % Allows for footnotes to be used within the document
 
 % Package for conditional programming
-\usepackage{etoolbox}  % Provides advanced tools for conditional programming in LaTeX
+\RequirePackage{etoolbox}  % Provides advanced tools for conditional programming in LaTeX
 
 % Package for patching commands
-\usepackage{xpatch} % It extends the functionality of the etoolbox package, allowing for more flexible and powerful command patching.
+\RequirePackage{xpatch} % It extends the functionality of the etoolbox package, allowing for more flexible and powerful command patching.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Customizations for verbatim environments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage{verbatim} % Allows inclusion of unformatted text or code snippets
+\RequirePackage{verbatim} % Allows inclusion of unformatted text or code snippets
 \newcommand{\savedverbatim@processline}{}% Define a command to save the original verbatim process line
 \let\savedverbatim@processline=\verbatim@processline  % Save the original verbatim process line
 \renewcommand{\verbatim@processline}{% Redefine verbatim process line
@@ -204,7 +207,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Customization of table of contents
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage{titletoc} % Customization of table of contents
+\RequirePackage{titletoc} % Customization of table of contents
 % Define command for printing table of contents with customized formatting
 \newcommand\DoPToC{%
 	\startcontents[chapters]
@@ -227,7 +230,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Headers and footers
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage{fancyhdr} % Headers and footers
+\RequirePackage{fancyhdr} % Headers and footers
 
 % Clear header and footer
 \fancyhf{}
@@ -252,22 +255,22 @@
 % The TikZ package provides a powerful and flexible system for creating drawings and diagrams in LaTeX documents.
 % The pgfplots package builds upon TikZ to create high-quality plots and graphics.
 
-\usepackage{tikz} % Load TikZ package
-\usepackage{pgfplots} % Load pgfplots package and set common options
+\RequirePackage{tikz} % Load TikZ package
+\RequirePackage{pgfplots} % Load pgfplots package and set common options
 \pgfplotsset{compat=1.18} % Set compatibility level to version 1.18
 
 % Include all necessary TikZ libraries
 % \usetikzlibrary{}
 
 % Additional related packages for enhanced functionality
-% \usepackage{pgfplotstable} % For importing data tables and generating plots
-% \usepackage{tikzscale} % For scaling TikZ figures
-% \usepackage{circuitikz} % For drawing electronic circuits
+% \RequirePackage{pgfplotstable} % For importing data tables and generating plots
+% \RequirePackage{tikzscale} % For scaling TikZ figures
+% \RequirePackage{circuitikz} % For drawing electronic circuits
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % To-do notes in documents
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage{todonotes}
+\RequirePackage{todonotes}
 
 % Define a command for adding inline notes
 % Arguments:
@@ -283,7 +286,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Glossary and acronym support
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage[automake, nogroupskip, indexonlyfirst, acronym, symbols, style=super, nopostdot, toc]{glossaries-extra}
+\RequirePackage[automake, nogroupskip, indexonlyfirst, acronym, symbols, style=super, nopostdot, toc]{glossaries-extra}
 
 % Define new glossary style with \accentcolor color for the term
 \newglossarystyle{define}{%
@@ -327,7 +330,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Epigraphs and Dedications
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage{epigraph} % Package for epigraphs
+\RequirePackage{epigraph} % Package for epigraphs
 
 \setlength\epigraphrule{0pt} % Set length of epigraph rule
 \renewcommand\textflush{flushright} % Set text flush to flush right
@@ -361,7 +364,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Define custom chapter, section, subsection, and subsubsection formatting
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage[explicit]{titlesec}  % Package for customizing sectioning commands
+\RequirePackage[explicit]{titlesec}  % Package for customizing sectioning commands
 
 % Define formatting for parts
 \titleformat{\part}[display]
@@ -403,7 +406,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Load tcolorbox package for coloured boxes
-\usepackage[most]{tcolorbox}
+\RequirePackage[most]{tcolorbox}
 
 % Define the QED symbol
 \providecommand{\QEDsymbol}{\ensuremath{\blacksquare}}
@@ -411,36 +414,36 @@
 
 % Define new environments with tcolorbox using soothing colours
 \newcommand{\newcolorboxes}[6]{%
-	% Arguments:
-	%   #1: Environment name
-	%   #2: Display name of the environment
-	%   #3: Background color of the box
-	%   #4: Color of the title font
-	%   #5: Font style for the content
-	%   #6: Label prefix for hyperref
-	\newtcbtheorem[number within=chapter]{#1}{#2}{%
-		enhanced,
-		colback=#3!5,
-		colframe=#3!80!black,
-		arc=2pt,
-		boxrule=0.5pt,
-		fonttitle=\color{#4}\sffamily\scshape,
-		before upper={\parindent15pt},
-		before lower={\parindent15pt},
-		fontupper={\color{black}\normalfont #5},
-		fontlower={\color{black}\normalfont #5},
-		left=10pt,
-		right=10pt,
-		top=10pt,
-		bottom=10pt,
-		attach boxed title to top left={yshift=-2mm,xshift=4mm},
-		boxed title style={
-			colback=#3!20,
-			colframe=#3!80!black,
-			boxrule=0.5pt
-		},
-		label={#6:\thetcbcounter} % Hyperref label
-		}{#6}%
+    % Arguments:
+    %   #1: Environment name
+    %   #2: Display name of the environment
+    %   #3: Background color of the box
+    %   #4: Color of the title font
+    %   #5: Font style for the content
+    %   #6: Label prefix for hyperref
+    \newtcbtheorem[number within=chapter]{#1}{#2}{%
+        enhanced,
+        colback=#3!5,
+        colframe=#3!80!black,
+        arc=2pt,
+        boxrule=0.5pt,
+        fonttitle=\color{#4}\sffamily\scshape,
+        before upper={\parindent15pt},
+        before lower={\parindent15pt},
+        fontupper={\color{black}\normalfont #5},
+        fontlower={\color{black}\normalfont #5},
+        left=10pt,
+        right=10pt,
+        top=10pt,
+        bottom=10pt,
+        attach boxed title to top left={yshift=-2mm,xshift=4mm},
+        boxed title style={
+            colback=#3!20,
+            colframe=#3!80!black,
+            boxrule=0.5pt
+        },
+        label={#6:\thetcbcounter}, % Hyperref label
+    }{#6}%
 }
 
 % Define tcolorbox environments for various cases using soothing colours
@@ -508,27 +511,60 @@
 \BeforeBeginEnvironment{highlight}{\savenotes} \AfterEndEnvironment{highlight}{\spewnotes}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Import the cleveref package
+% The cleveref package
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage{cleveref}
 
-% Define custom cref formats for different levels of sections
-\crefformat{section}{\S~#2#1#3} % Format for sections
-\crefformat{subsection}{\S\S~#2#1#3} % Format for subsections
-\crefformat{subsubsection}{\S\S\S~#2#1#3} % Format for subsubsections
+\crefname{part}{part}{parts}
+\crefname{part}{Part}{Parts}
+\crefname{chapter}{chapter}{chapters}
+\Crefname{chapter}{Chapter}{Chapters}
+\crefname{section}{section}{sections}
+\Crefname{section}{Section}{Sections}
+\crefname{subsection}{subsection}{subsections}
+\Crefname{subsection}{Subsection}{Subsections}
+\crefname{subsubsection}{subsubsection}{subsubsections}
+\Crefname{subsubsection}{Subsubsection}{Subsubsections}
 
-% Define custom cref range format for sections
-\crefrangeformat{section}{\S~#3#1#4 to~#5#2#6}
-% Define custom cref multiformat for sections
-\crefmultiformat{section}{\S~#2#1#3}{ and~#2#1#3}{, #2#1#3}{ and~#2#1#3}
-% Define custom cref range format for subsection
-\crefrangeformat{subsection}{\S\S~#3#1#4 to~#5#2#6}
-% Define custom cref multiformat for subsection
-\crefmultiformat{subsection}{\S\S~#2#1#3}{ and~#2#1#3}{, #2#1#3}{ and~#2#1#3}
-% Define custom cref range format for subsection
-\crefrangeformat{subsubsection}{\S\S\S~#3#1#4 to~#5#2#6}
-% Define custom cref multiformat for subsubsection
-\crefmultiformat{subsubsection}{\S\S\S~#2#1#3}{ and~#2#1#3}{, #2#1#3}{ and~#2#1#3}
+\crefformat{tcb@cnt@theorem}{theorem~#2#1#3}
+\Crefformat{tcb@cnt@theorem}{Theorem~#2#1#3}
+\crefformat{tcb@cnt@lemma}{lemma~#2#1#3}
+\Crefformat{tcb@cnt@lemma}{Lemma~#2#1#3}
+\crefformat{tcb@cnt@corollary}{corollary~#2#1#3}
+\Crefformat{tcb@cnt@corollary}{Corollary~#2#1#3}
+\crefformat{tcb@cnt@proposition}{proposition~#2#1#3}
+\Crefformat{tcb@cnt@proposition}{Proposition~#2#1#3}
+\crefformat{tcb@cnt@claim}{claim~#2#1#3}
+\Crefformat{tcb@cnt@claim}{Claim~#2#1#3}
+\crefformat{tcb@cnt@conjecture}{conjecture~#2#1#3}
+\Crefformat{tcb@cnt@conjecture}{Conjecture~#2#1#3}
+\crefformat{tcb@cnt@definition}{definition~#2#1#3}
+\Crefformat{tcb@cnt@definition}{Definition~#2#1#3}
+\crefformat{tcb@cnt@example}{example~#2#1#3}
+\Crefformat{tcb@cnt@example}{Example~#2#1#3}
+\crefformat{tcb@cnt@remark}{remark~#2#1#3}
+\Crefformat{tcb@cnt@remark}{Remark~#2#1#3}
+\crefformat{tcb@cnt@fact}{fact~#2#1#3}
+\Crefformat{tcb@cnt@fact}{Fact~#2#1#3}
+\crefformat{tcb@cnt@note}{note~#2#1#3}
+\Crefformat{tcb@cnt@note}{Note~#2#1#3}
+\crefformat{tcb@cnt@question}{question~#2#1#3}
+\Crefformat{tcb@cnt@question}{Question~#2#1#3}
+\crefformat{tcb@cnt@case}{case~#2#1#3}
+\Crefformat{tcb@cnt@case}{Case~#2#1#3}
+\crefformat{tcb@cnt@exercise}{exercise~#2#1#3}
+\Crefformat{tcb@cnt@exercise}{Exercise~#2#1#3}
+\crefformat{tcb@cnt@problem}{problem~#2#1#3}
+\Crefformat{tcb@cnt@problem}{Problem~#2#1#3}
+\crefformat{tcb@cnt@property}{property~#2#1#3}
+\Crefformat{tcb@cnt@property}{Property~#2#1#3}
+\crefformat{tcb@cnt@solution}{solution~#2#1#3}
+\Crefformat{tcb@cnt@solution}{Solution~#2#1#3}
+\crefformat{tcb@cnt@important}{important~#2#1#3}
+\Crefformat{tcb@cnt@important}{Important~#2#1#3}
+\crefformat{tcb@cnt@keypoint}{keypoint~#2#1#3}
+\Crefformat{tcb@cnt@keypoint}{Keypoint~#2#1#3}
+\crefformat{tcb@cnt@highlight}{highlight~#2#1#3}
+\Crefformat{tcb@cnt@highlight}{Highlight~#2#1#3}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Citations and bibliography
@@ -548,7 +584,7 @@
 % - backend=biber: Use the biber backend for processing bibliography data.
 % Note: The bibliography file specified with \addbibresource should contain the bibliography entries in BibTeX or BibLaTeX format.
 
-\usepackage[hyperref=auto, style=oxalph, citestyle=oxalph, backref=true, sorting=anyt, autocite=superscript, maxnames=999, backend=biber]{biblatex} % Citations and bibliography with alphabetic style and maxcitenames=999
+\RequirePackage[hyperref=auto, style=oxalph, citestyle=oxalph, backref=true, sorting=anyt, autocite=superscript, maxnames=999, backend=biber]{biblatex} % Citations and bibliography with alphabetic style and maxcitenames=999
 \addbibresource{references.bib} % Bibliography file
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
