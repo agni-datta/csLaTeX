@@ -57,7 +57,23 @@
 \RequirePackage{amsthm} % Package for theorem environments
 \RequirePackage[vvarbb, amsthm, ebgaramond, smallerops]{newtx} % Package for Times-like fonts with enhanced math support
 \RequirePackage{fontspec} % Package for selecting fonts at the document level
-\setmainfont[Numbers=Lining, Kerning=On, RawFeature={+ss05, +lnum, +mark, +mkmk, +pnum, +hlig, +liga, +calt, +lnum, +kern}, Ligatures={TeX, Historic}]{EB Garamond} % Package for loading the EB Garamond font family
+% Set the main font with various OpenType features for the EB Garamond font family.
+\setmainfont[%
+	Numbers=Lining, % Use lining figures (numbers) instead of old-style figures.
+	RawFeature={%
+		+ss05, % Stylistic Set 05
+		+lnum, % Use lining figures.
+		+mark, % Mark positioning
+		+mkmk, % Mark to Mark positioning
+		+pnum, % Proportional figures
+		+hlig, % Historical Ligatures
+		+liga, % Standard Ligatures
+		+calt, % Contextual Alternates
+		+lnum, % Lining figures
+		+kern  % Enable kerning
+		+case  % Case-sensitive forms
+	}%
+]{EB Garamond} % Used for loading the EB Garamond font family
 \RequirePackage{biolinum} % Package for loading the Biolinum font family for sans-serif text
 \RequirePackage[scale=0.75]{AnonymousPro} % Package for loading the anonymous pro font for monospaced text
 \RequirePackage[bb=stixtwo, cal=cm]{mathalpha} % Package for providing additional math fonts for different styles
@@ -480,7 +496,7 @@
 \newenvironment{proofOf}[1]{\noindent\textit{Proof of ##1.}\hspace*{0.25em}}{\qed\bigskip}
 
 % Custom QED symbol
-\newcommand{\QEDsymbol}{\color{\accentcolor}\ensuremath{\blacksquare}}
+\renewcommand{\QEDsymbol}{\color{\accentcolor}\ensuremath{\blacksquare}}
 \renewcommand{\qedsymbol}{\QEDsymbol}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
