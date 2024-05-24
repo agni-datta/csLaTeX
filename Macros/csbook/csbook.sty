@@ -59,7 +59,6 @@
 \RequirePackage{fontspec} % Package for selecting fonts at the document level
 % Set the main font with various OpenType features for the EB Garamond font family.
 \setmainfont[%
-	Numbers=Lining, % Use lining figures (numbers) instead of old-style figures.
 	RawFeature={%
 		+ss05, % Stylistic Set 05
 		+lnum, % Use lining figures.
@@ -69,13 +68,12 @@
 		+hlig, % Historical Ligatures
 		+liga, % Standard Ligatures
 		+calt, % Contextual Alternates
-		+lnum, % Lining figures
 		+kern  % Enable kerning
 		+case  % Case-sensitive forms
 	}%
 ]{EB Garamond} % Used for loading the EB Garamond font family
+\setmonofont[RawFeature=+lnum]{Fira Mono}[Scale=0.85] % Package for loading the Fira Code font for monospaced text
 \RequirePackage{biolinum} % Package for loading the Biolinum font family for sans-serif text
-\RequirePackage[scale=0.75]{AnonymousPro} % Package for loading the anonymous pro font for monospaced text
 \RequirePackage[bb=stixtwo, cal=cm]{mathalpha} % Package for providing additional math fonts for different styles
 \RequirePackage{nicefrac} % Provides a visually appealing alternative to standard fractions
 
@@ -134,7 +132,7 @@
 % Page layout
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Package for setting page layout
-\RequirePackage[a4paper, margin=3cm, inner=2.75cm, outer=2.75cm, footskip=1cm]{geometry}
+\RequirePackage[a4paper, margin=3.25cm, inner=2.5cm, outer=2.5cm, footskip=1cm]{geometry}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Formatting and miscellaneous
@@ -160,12 +158,12 @@
 % Package for creating framed environments
 \RequirePackage[skipabove=8pt, skipbelow=8pt, ntheorem, framemethod=Tikz]{mdframed} % Customizable with various options such as skip distances and frame styles
 
-% Define a custom environment using the mdframed package, with specified TikZ settings.
+% Define a custom environment using the mdframed package with specified TikZ settings.
 \newmdenv[tikzsetting={draw=black}, backgroundcolor=none]{tboxed}
 
 % Package for customizing lists
 \RequirePackage{enumitem} % Offers a wide range of options for adjusting the appearance and behaviour of list environments
-\setlist{noitemsep} % Global setting to eliminate extra vertical spacing between items in all list environments
+\setlist{nosep, noitemsep} % Global setting to eliminate extra vertical spacing between items in all list environments
 \setlist[enumerate, 1]{label=(\arabic*)} % Customize enumerate labels for first level
 \setlist[enumerate, 2]{label=(\alph*)} % Customize enumerate labels for second level
 \renewcommand{\labelitemi}{\ensuremath{\color{\accentcolor}\bullet}} % Command: Redefine bullet symbol for itemize environment
@@ -203,6 +201,9 @@
 % Package for conditional programming
 \RequirePackage{etoolbox}  % Provides advanced tools for conditional programming in LaTeX
 
+% Package for appendix
+\RequirePackage[toc, page, title, header, titletoc]{appendix} % Provides advanced commands for handling appendices
+
 % Package for patching commands
 \RequirePackage{xpatch} % It extends the functionality of the etoolbox package, allowing for more flexible and powerful command patching.
 
@@ -223,13 +224,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Customization of table of contents
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{titletoc} % Customization of table of contents
-% Define command for printing table of contents with customized formatting
-\newcommand\DoPToC{%
-	\startcontents[chapters]
-	\printcontents[chapters]{}{1}{\scshape\sffamily\noindent{\color{\accentcolor}\rule{\textwidth}{1.5pt}}\par\medskip}%
-}
-
 % \toc
 % This command generates a customized Table of Contents (TOC).
 % It formats the TOC using a sans-serif style,
@@ -326,7 +320,7 @@
 		\normalsize % Set the font size to normal
 		\textcolor{\accentcolor}{\glossentryname{##1}~}% Set the color for the term name
 		\textcolor{black}{\dotfill~}%\hfill % Fill the space between the term name and description
-		\normalfont\scshape\sffamily\glossentrydesc{##1}% Set the style for the term description, in small caps
+		\normalfont\scshape\sffamily\glossentrydesc{##1}% Set the style for the term description in small caps
 		%\glspostdescription\space ##2% Uncomment this line if additional description text is desired
 	}%
 }
@@ -671,20 +665,20 @@
 }
 
 % Redefine the \maketitle command
-% This command is used to format the title, subtitle, author, and date of the document
+% This command is used to format the title, subtitle, authors, emails, ORCIDs, and date of the document
 \renewcommand{\maketitle}{%
-	\vspace*{\fill} % Vertically centre the title, subtitle, author, and date
+	\vspace*{\fill} % Vertically centre the title, subtitle, authors, and date
 	% Set the page style to 'empty'
 	\thispagestyle{empty}
 	% Title
 	{\RaggedLeft\scshape\huge\@title\par\vspace{1em}\hrule\bigskip} % Title
 	% Subtitle
 	{\RaggedLeft\normalsize\itshape\@subtitle\par\medskip} % Subtitle
-	% Author
+	% Authors
 	{\RaggedLeft\large\scshape\@author\par\medskip}
 	% Date
 	{\hfill\scshape\normalsize\@date}
-	\vspace*{\fill} % Vertically centre the title, subtitle, author, and date
+	\vspace*{\fill} % Vertically centre the title, subtitle, authors, emails, and ORCIDs
 }
 
 % Disable the use of '@' in command names
