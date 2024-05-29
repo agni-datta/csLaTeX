@@ -97,6 +97,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Language settings
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \RequirePackage[british]{babel} % Package for language settings
 \RequirePackage[autostyle=true, csdisplay=true]{csquotes} % Package for handling quotations
 % Package for micro typographic enhancements
@@ -120,6 +121,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Font Settings
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % This section configures the main, math, sans-serif, and monospaced fonts, 
 % incorporating various stylistic features and enhancements.
 \RequirePackage[T1]{fontenc} % Font encoding package
@@ -158,7 +160,7 @@
 		+liga, % Standard Ligatures
 		+calt, % Contextual Alternates
 		+kern, % Enable kerning
-		+case % Case-sensitive forms
+		+case, % Case-sensitive forms
 	}%
 ]{Garamond-Math}
 % Configure the sans-serif font
@@ -172,7 +174,7 @@
 		+liga, % Standard Ligatures
 		+calt, % Contextual Alternates
 		+kern, % Enable kerning
-		+case % Case-sensitive forms
+		+case, % Case-sensitive forms
 	}%
 ]{Linux Biolinum O}
 % Configure the monospaced font with scaling
@@ -187,12 +189,12 @@
 		+liga, % Standard Ligatures
 		+calt, % Contextual Alternates
 		+kern, % Enable kerning
-		+case % Case-sensitive forms
+		+case, % Case-sensitive forms
 	}%
 ]{Fira Mono} % Package for loading the Fira Code font for monospaced text
 \let\mathbfcal\relax % Prevent conflicts with existing math alphabets
-% Load additional math fonts for different styles
-\RequirePackage[bb=stixtwo, cal=cm]{mathalpha}
+\RequirePackage[bb=stixtwo, cal=cm]{mathalpha} % Load additional math fonts for different styles
+\RequirePackage{nicefrac} % Provides a visually appealing alternative to standard fractions
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Package and custom commands for adding todo notes
@@ -231,6 +233,18 @@
 }
 
 \RequirePackage{cleveref} % Use cleveref package for intelligent cross-references
+
+\crefname{part}{part}{parts}
+\crefname{part}{Part}{Parts}
+\crefname{chapter}{chapter}{chapters}
+\Crefname{chapter}{Chapter}{Chapters}
+\crefname{section}{section}{sections}
+\Crefname{section}{Section}{Sections}
+\crefname{subsection}{subsection}{subsections}
+\Crefname{subsection}{Subsection}{Subsections}
+\crefname{subsubsection}{subsubsection}{subsubsections}
+\Crefname{subsubsection}{Subsubsection}{Subsubsections}
+
 \RequirePackage{url} % Use url package for automatic hyperlinking and line-breaking for long URLs
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -264,7 +278,7 @@
 % Package for customizing lists
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage{enumitem} % Use enum item package for adjusting the appearance and behavior of list environments
+\RequirePackage{enumitem} % Use the enum item package for adjusting the appearance and behavior of list environments
 
 % Global setting to eliminate extra vertical spacing between items in all list environments
 \setlist{nosep, noitemsep}
@@ -416,21 +430,6 @@
 {\thesubsubsection} % Display subsubsection number
 {5pt} % Space between subsubsection number and title
 {#1} % Format for subsubsection title
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% The cleveref package
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\crefname{part}{part}{parts}
-\crefname{part}{Part}{Parts}
-\crefname{chapter}{chapter}{chapters}
-\Crefname{chapter}{Chapter}{Chapters}
-\crefname{section}{section}{sections}
-\Crefname{section}{Section}{Sections}
-\crefname{subsection}{subsection}{subsections}
-\Crefname{subsection}{Subsection}{Subsections}
-\crefname{subsubsection}{subsubsection}{subsubsections}
-\Crefname{subsubsection}{Subsubsection}{Subsubsections}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Definition of New Environments with colour box
