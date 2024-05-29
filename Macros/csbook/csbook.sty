@@ -538,7 +538,7 @@
 		%   #4: Color of the title font
 		%   #5: Font style for the content
 		%   #6: Label prefix for hyperref
-		\newtcbtheorem[number within=section]{#1}{#2}{%
+		\newtcbtheorem[number within=chapter]{#1}{#2}{%
 			enhanced,
 			colback=#3!5,
 			colframe=#3!80!black,
@@ -754,7 +754,7 @@
 
 % The Biblatex package is used for bibliography management in LaTeX documents.
 % It provides extensive customization options for citation and bibliography styles.
-\RequirePackage[hyperref=auto, defernumbers=true, style=oxalph, citestyle=oxalph, backref=true, sorting=anyt, autocite=superscript, maxnames=999, backend=biber]{biblatex} % Use biblatex for citations and bibliography with alphabetic style and maxcitenames=999
+\RequirePackage[hyperref=auto, defernumbers=true, style=numeric-comp, citestyle=numeric-comp, backref=true, sorting=anyt, autocite=superscript, maxnames=999, backend=biber]{biblatex} % Use biblatex for citations and bibliography with alphabetic style and maxcitenames=999
 \addbibresource{references.bib} % Specify bibliography file
 
 \DeclareBibliographyCategory{cited} % Define a category for cited references
