@@ -78,9 +78,10 @@
 % Package for micro typographic enhancements
 \ifluatex
     \RequirePackage[protrusion=true, expansion=true, babel=true]{microtype}
-    \else\ifxetex
-        \RequirePackage[protrusion=true, babel=true]{microtype}
-    \fi
+    \else
+        \ifxetex
+            \RequirePackage[protrusion=true, babel=true]{microtype}
+        \fi
 \fi
 \RequirePackage[onehalfspacing]{setspace} % Package for line spacing
 \RequirePackage{pdfpages} % Inclusion of external PDF pages
@@ -103,7 +104,7 @@
 \RequirePackage{amsfonts} % Package for additional mathematical symbols
 \RequirePackage{amssymb} % Package for additional mathematical symbols
 \RequirePackage{amsthm} % Package for theorem environments
-\RequirePackage[math-style=ISO, bold-style=ISO]{unicode-math}
+\RequirePackage{unicode-math}
 \setmainfont[%
 	RawFeature={%
 		+ss03, % Stylistic Set 03
