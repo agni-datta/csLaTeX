@@ -9,83 +9,365 @@
 %% License: MIT
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% This package provides custom LaTeX commands tailored for computer scientists. It includes various mathematical notation, number theory, set notation, calculus, vectors, combinatorics, trigonometric functions, probability and statistics, logic, document structure and formatting, language, complexity classes, polynomial hierarchy, basic complexity theory notations, and cryptographic notation.
+% This LaTeX package, `csmath`, provides a collection of custom commands tailored for computer scientists, aimed at simplifying the typesetting of mathematical notation commonly encountered in computer science and related fields.
 
-% Usage:
-% To use this package, include the following line in your LaTeX document preamble:
-% \usepackage{csmath}
+% It is often cumbersome to consistently format mathematical notation in LaTeX documents, especially in fields such as computer science where certain symbols and notations are frequently used. This package aims to alleviate this burden by providing intuitive and easy-to-use commands for typesetting mathematical expressions and symbols commonly encountered in computer science literature and research.
 
-% Contents:
-% 1. Mathematical Notation
-%    - \mathify{...}: Ensure math mode for the argument.
-%    - \set{...}: Format a set with curly braces.
-%    - \floor{...}: Format the floor function.
-%    - \abs{...}: Format the absolute value function.
-%    - \intersection: Format the intersection symbol.
-%    - \union: Format the union symbol.
-%    - \xor: Format the XOR symbol.
-%    - \Xor: Format the big XOR symbol.
-%    - \eqdef: Format the equality by definition symbol.
-%    - \eqq: Format the uncertain equality symbol.
-%    - \inq: Format the uncertain membership symbol.
-%    - \paren{...}: Format parentheses without automatic sizing.
-%    - \Paren{...}: Format parentheses with automatic sizing.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Mathematical Notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% 2. Number Theory
-%    - \gcd: Format the greatest common divisor command.
-%    - \lcm: Format the least common multiple command.
-%    - \lcmset{...}: Format the least common multiple set command.
-%    - \jacobi{...}{...}: Format the Jacobi symbol.
-%    - \legendre{...}{...}: Format the Legendre symbol.
+% To enhance readability and maintain consistency, the package includes commands for various mathematical notations commonly used in computer science:
 
-% 3. Set Notation
-%    - \N, \Z, \Q, \R, \C, \Zplus, \Znonneg, \Rplus, \Rnonneg, \Qplus, \Qnonneg, \F: Set notations for various number sets.
+% - \mathify{}: Ensures that the argument is typeset in math mode.
+% - \set{}: Formats a set with curly braces, automatically sizing the braces.
+% - \floor{}: Formats the floor function with proper brackets.
+% - \abs{}: Formats the absolute value with vertical bars and automatic sizing.
+% - \intersection: Formats the intersection symbol.
+% - \union: Formats the union symbol.
+% - \xor: Formats the XOR (exclusive or) symbol.
+% - \Xor: Formats the big XOR symbol for summation-like expressions.
+% - \eqdef: Formats the equality by definition symbol.
+% - \eqq: Formats the uncertain equality symbol (e.g., for conjectured equality).
+% - \inq: Formats the uncertain membership symbol (e.g., for conjectured set membership).
+% - \paren{}: Formats parentheses with automatic sizing.
+% - \convert{}: Converts a symbol to math mode.
+% - \argmin: Formats the arg min operator with correct spacing and font.
+% - \argmax: Formats the arg max operator with correct spacing and font.
 
-% 4. Calculus and Analysis
-%    - \dd: Differential operator.
-%    - \ddiff{...}{...}: Differential quotient.
-%    - \pdiff{...}{...}: Partial derivative.
-%    - \gradientd{...}: Gradient.
-%    - \Diff{...}: Differential of order n.
+% These commands help maintain consistency in formatting mathematical expressions and improve the readability of mathematical notation in LaTeX documents.
 
-% 5. Vectors
-%    - \i, \j, \k: Unit vectors.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Number Theory
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% 6. Combinatorics
-%    - \nPr{...}{...}: Permutations.
-%    - \nPrf{...}{...}: Permutations with factorials.
-%    - \nCr{...}{...}: Combinations.
-%    - \nCrf{...}{...}: Combinations with factorials.
+% The package also includes commands related to number theory:
 
-% 7. Trigonometric Functions
-%    - \arcsin, \arccos, \arctan, \arccot, \arcsec, \arccsc: Inverse trigonometric functions.
+% - \gcd: Formats the greatest common divisor command.
+% - \lcm: Formats the least common multiple command.
+% - \lcmset{}: Formats the least common multiple-set command.
+% - \jacobi{a}{b}: Formats the Jacobi symbol.
+% - \legendre{a}{b}: Formats the Legendre symbol.
+% - \phiEuler{}: Formats Euler's phi function.
+% - \totient{}: Formats Euler's totient function.
+% - \factorial{}: Formats the factorial function.
+% - \fallingfactorial{a}{b}: Formats the falling factorial.
+% - \risingfactorial{a}{b}: Formats the rising factorial.
+% - \binomial{a}{b}: Formats the binomial coefficient.
 
-% 8. Probability and Statistics
-%    - \Prob{...}, \Pr: Probability notation.
-%    - \Exp{...}: Expectation notation.
-%    - \half: Half as a fraction.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Set Theory
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% 9. Logic
-%    - \true, \false: True and false symbols.
-%    - \var{...}: Variable representation.
+% For set theory, the package provides commands to format various set operations and representations:
 
-% 10. Document Structure and Formatting
-%     - \figcaption{...}: Custom figure caption command.
-%     - \tabcaption{...}: Custom table caption command.
-%     - \head{...}: Custom chapter heading command.
+% - \powerset{}: Formats the power set.
+% - \cardinality{}: Formats the cardinality of a set.
+% - \complement{}: Formats the set complement.
+% - \setdifference: Formats the set difference.
+% - \symmetricdifference: Formats the symmetric difference.
+% - \cartesianproduct: Formats the Cartesian product.
+% - \disjointunion: Formats the disjoint union.
 
-% 11. Language
-%     - \Lang: Language notation.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Game Theory
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% 12. Complexity Classes
-%     - \Pclass, \NPclass, \coNPclass, \BPPclass, \RPclass, \coRPclass, \ZPPclass, \IPclass, \PHclass, \PSPACEclass, \EXPclass, \NEXPclass
-%     - \SigmaP{...}, \PiP{...}, \DeltaP{...}: Notations for polynomial hierarchy.
+% In addition, the package includes commands relevant to game theory:
 
-% 13. Basic Complexity Theory Notations
-%     - \bigO, \bigo{...}, \negl, \notice, \poly, \ppt, \PPT, \ind: Notations for basic complexity theory.
+% - \strategies{}: Formats the strategy set.
+% - \payoff{}: Formats the payoff function.
+% - \nash: Formats the Nash equilibrium.
+% - \dominant: Formats the dominant strategy.
+% - \dominated: Formats the dominated strategy.
+% - \mixed: Formats the mixed strategy.
+% - \bestresponse: Formats the best response.
+% - \maximin: Formats the maximin strategy.
+% - \minimax: Formats the minimax strategy.
 
-% 14. Cryptographic Notation
-%     - \cipher, \hash, \mac, \prf, \prp, \prg, \sig, \vrfy, \enc, \dec, \keygen, \keyexchange, \protocol, \attack, \advantage, \securityparam, \indcpa, \indcca, \authint, \nmac, \sufcma, \ufcma, \eav, \cca, \cpa, \sk, \pk
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Number Sets and Fields
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% This section provides commands for representing common number sets and fields in mathematics:
+
+% - \N: Set of natural numbers.
+% - \Z: Set of integers.
+% - \Q: Set of rational numbers.
+% - \R: Set of real numbers.
+% - \C: Set of complex numbers.
+% - \Zplus: Set of positive integers.
+% - \Zneg: Set of negative integers.
+% - \Znonneg: Set of non-negative integers.
+% - \Znonpos: Set of non-positive integers.
+% - \Rplus: Set of positive real numbers.
+% - \Rnonneg: Set of non-negative real numbers.
+% - \Qplus: Set of positive rational numbers.
+% - \Qneg: Set of negative rational numbers.
+% - \Qnonneg: Set of non-negative rational numbers.
+% - \Imag: Set of imaginary numbers.
+% - \Primes: Set of prime numbers.
+% - \F: Generic field.
+% - \FF{p}: Set of finite fields of order p.
+% - \GF{p}: Set of Galois fields of order p.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Calculus and Analysis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% The package includes commands related to calculus and analysis:
+
+% - \dd: Differential operator.
+% - \ddiff{a}{b}: Differential quotient.
+% - \pdiff{a}{b}: Partial derivative.
+% - \gradientd{}: Gradient.
+% - \Diff{n}: Differential of order n.
+% - \defintegral{a}{b}: Definite integral.
+% - \limit{a}{b}: Limits.
+% - \series{}: Infinite series.
+% - \taylor{}: Taylor series.
+% - \partialfrac{a}{b}: Partial fraction decomposition.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Vectors
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% This section provides commands for representing vectors and vector operations:
+
+% - \i: Unit vector in the x-direction.
+% - \j: Unit vector in the y-direction.
+% - \k: Unit vector in the z-direction.
+% - \mat{}: Formats matrices.
+% - \vect{}: Formats vectors.
+% - \magnitude{}: Computes the magnitude of a vector.
+% - \projection{}{}: Computes the vector projection of one vector onto another.
+% - \orthogonal{}{}: Computes the vector component orthogonal to another vector.
+% - \vectdiff{}: Computes the derivative of a vector.
+% - \vectintegral{}: Computes the integral of a vector.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Combinatorics
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% This section provides commands for combinatorial operations:
+
+% - \nPr{}{}: Permutations.
+% - \nPrf{}{}: Permutations with factorials.
+% - \nCr{}{}: Combinations.
+% - \nCrf{}{}: Combinations with factorials.
+% - \binomialcoeff{}{}: Binomial coefficient.
+% - \multinomialcoeff{}{}: Multinomial coefficient.
+% - \stirlingfirst{}{}: Stirling number of the first kind.
+% - \stirlingsecond{}{}: Stirling number of the second kind.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Trigonometric Functions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% This section provides commands for trigonometric functions:
+
+% - \arcsin: Inverse sine.
+% - \arccos: Inverse cosine.
+% - \arctan: Inverse tangent.
+% - \arccot: Inverse cotangent.
+% - \arcsec: Inverse secant.
+% - \arccsc: Inverse cosecant.
+% - \arsinh: Hyperbolic inverse sine.
+% - \arcosh: Hyperbolic inverse cosine.
+% - \artanh: Hyperbolic inverse tangent.
+% - \arcoth: Hyperbolic inverse cotangent.
+% - \arsech: Hyperbolic inverse secant.
+% - \arcsch: Hyperbolic inverse cosecant.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Probability and Statistics Commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% This section provides commands for probability and statistics:
+
+% - \Prob{}: Probability grouped notation.
+% - \Pr: Probability theory.
+% - \Exp{}: Expectation notation.
+% - \half: Half as a fraction.
+% - \Var{}: Variance notation.
+% - \SD{}: Standard deviation notation.
+% - \Cov{}: Covariance notation.
+% - \Corr{}: Correlation notation.
+% - \Dist{}: Probability distribution notation.
+% - \PDF{}: Probability density function notation.
+% - \CDF{}: Cumulative distribution function notation.
+% - \Joint{}: Joint probability notation.
+% - \Marginal{}: Marginal probability notation.
+% - \Conditional{}{}: Conditional probability notation.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Logic Commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% This section provides commands for logic:
+
+% - \true: True.
+% - \false: False.
+% - \var{}: Variable representation.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Turing Machine Notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% This section provides commands for representing Turing machines and related components:
+
+% - \TM: Represents a Turing machine.
+% - \Tape: Represents the tape of a Turing machine.
+% - \State: Represents the set of states of a Turing machine.
+% - \SigmaAlphabet: Represents the input alphabet of a Turing machine.
+% - \GammaAlphabet: Represents the tape alphabet of a Turing machine.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Complexity Classes and Notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% This section provides commands for representing complexity classes and related notation:
+
+% - \Lang: Represents a language.
+% - \Pclass: Represents the P complexity class.
+% - \NPclass: Represents the NP complexity class.
+% - \coNPclass: Represents the co-NP complexity class.
+% - \BPPclass: Represents the BPP complexity class.
+% - \RPclass: Represents the RP complexity class.
+% - \coRPclass: Represents the co-RP complexity class.
+% - \ZPPclass: Represents the ZPP complexity class.
+% - \IPclass: Represents the IP complexity class.
+% - \AMclass: Represents the AM complexity class.
+% - \PHclass: Represents the PH complexity class.
+% - \PSPACEclass: Represents the PSPACE complexity class.
+% - \EXPclass: Represents the EXP complexity class.
+% - \NEXPclass: Represents the NEXP complexity class.
+% - \SigmaP{}: Represents the SigmaP complexity class.
+% - \PiP{}: Represents the PiP complexity class.
+% - \DeltaP{}: Represents the DeltaP complexity class.
+% - \bigO{}: Represents big O notation.
+% - \polyred: Represents polynomial-time reducibility.
+% - \logred: Represents logarithmic-space reducibility.
+% - \tred: Represents Turing reducibility.
+% - \manyred: Represents many-one reducibility.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Provable Security Notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% This section provides commands for representing provable security notation:
+
+% - \cind: Represents computational indistinguishability.
+% - \sind: Represents statistical indistinguishability.
+% - \negl: Represents negligible function.
+% - \notice: Represents noticeable function.
+% - \poly: Represents polynomial-time algorithm.
+% - \ppt: Represents probabilistic polynomial-time algorithm (lowercase).
+% - \PPT: Represents probabilistic polynomial-time algorithm (uppercase).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Cryptographic Notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% This section provides commands for cryptographic notation:
+
+% - \Cipher: Represents a cipher.
+% - \Hash: Represents a hash function.
+% - \Mac: Represents a message authentication code.
+% - \Nmac: Represents a nonce-based message authentication code.
+% - \Prf: Represents a pseudo-random function.
+% - \Prp: Represents a pseudo-random permutation.
+% - \Prg: Represents a pseudo-random generator.
+% - \Protocol: Represents a cryptographic protocol.
+% - \Attack: Represents an attack.
+% - \Sig: Represents a signature.
+% - \Vrfy: Represents verification.
+% - \Enc: Represents encryption.
+% - \Dec: Represents decryption.
+% - \Keygen: Represents key generation.
+% - \Keyexchange: Represents key exchange.
+% - \Authint: Represents authenticated encryption.
+% - \Commit: Represents a commitment scheme.
+% - \Advantage: Represents advantage.
+% - \sk: Represents a secret key.
+% - \pk: Represents a public key.
+% - \secparam: Represents a security parameter.
+% - \EUCMA: Represents existential unforgeability under chosen message attack.
+% - \EufCMA: Represents EUF-CMA security.
+% - \UFCMA: Represents universal forgery under chosen message attack.
+% - \ECPA: Represents encryption under chosen plaintext attack.
+% - \CCA: Represents chosen ciphertext attack.
+% - \CPA: Represents chosen plaintext attack.
+% - \INDCPA: Represents indistinguishability under chosen plaintext attack.
+% - \INDCCA: Represents indistinguishability under chosen ciphertext attack.
+% - \SemSec: Represents semantic security.
+% - \AECPA: Represents authenticated encryption under chosen plaintext attack.
+% - \AECCA: Represents authenticated encryption under chosen ciphertext attack.
+% - \AdCCA: Represents adaptive chosen ciphertext attack.
+% - \AdCPA: Represents adaptive chosen-plaintext attack.
+% - \EFCPA: Represents existential forgery under chosen plaintext attack.
+% - \EFCCA: Represents existential forgery under chosen ciphertext attack.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Common Abbreviations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% This section provides commands for common abbreviations used in various contexts:
+
+% Latin Abbreviations
+% - \eg: For example
+% - \ie: That is
+% - \cf: Compare with
+% - \etal: And others
+% - \etc: Et cetera
+% - \viz: Namely
+% - \nb: Note well
+
+% English Abbreviations
+% - \mr: Mister
+% - \mrs: Missis
+% - \ms: Miss
+% - \dr: Doctor
+% - \jr: Junior
+% - \sr: Senior
+
+% Academic Abbreviations
+% - \prof: Professor
+% - \assocprof: Associate Professor
+% - \asstprof: Assistant Professor
+% - \lect: Lecturer
+
+% Titles and Honors
+% - \phd: Doctor of Philosophy
+% - \md: Doctor of Medicine
+% - \jd: Doctor of Law
+% - \mba: Master of Business Administration
+% - \ma: Master of Arts
+% - \msc: Master of Science
+% - \bsc: Bachelor of Science
+% - \ba: Bachelor of Arts
+% - \eng: Engineer
+
+% Time and Date
+% - \am: Ante Meridiem
+% - \pmtime: Post Meridiem
+% - \bc: Before Christ
+% - \ad: Anno Domini
+
+% Miscellaneous
+% - \ap: Attn: Address line in letters
+% - \etcet: Etcetera
+% - \rf: Reference
+% - \ph: Phone
+% - \fax: Fax
+% - \tel: Telephone
+% - \comp: Company
+% - \dept: Department
+% - \ed: Editor
+% - \eds: Editors
+% - \deptof: Department of
+
+% This package aims to streamline the typesetting of mathematical notation in LaTeX documents for computer scientists and related fields, ensuring consistency and readability. It is compatible with the `amsmath` and `xspace` packages, automatically loading them if not already loaded.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -104,144 +386,573 @@
 \@ifpackageloaded{amsmath}{}{\RequirePackage{amsmath}} % Enhance mathematics features
 \@ifpackageloaded{xspace}{}{\RequirePackage{xspace}} % Proper spacing using xspace
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Mathematical Notation
-\newcommand{\mathify}[1]{\ensuremath{#1}} % Ensure math mode for the argument
-\newcommand{\set}[1]{\mathify{\left\{ #1 \right\}}} % Format a set with curly braces
-\newcommand{\floor}[1]{\ensuremath{\left\lfloor #1 \right\rfloor}} % Format the floor function
-\newcommand{\abs}[1]{\mathify{\left| #1 \right|}} % Format the absolute value function
-\newcommand{\intersection}{\ensuremath{\cap}} % Format the intersection symbol
-\newcommand{\union}{\ensuremath{\cup}} % Format the union symbol
-\newcommand{\xor}{\ensuremath{\oplus}} % Format the XOR symbol
-\newcommand{\Xor}{\ensuremath{\bigoplus}} % Format the big XOR symbol
-\newcommand{\eqdef}{\stackrel{\textrm{def}}{=}} % Format the equality by definition symbol
-\newcommand{\eqq}{\stackrel{\textrm{?}}{=}} % Format the uncertain equality symbol
-\newcommand{\inq}{\stackrel{\textrm{?}}{\in}} % Format the uncertain membership symbol
-\newcommand{\paren}[1]{\ensuremath{(#1)}} % Define a command to format parentheses without automatic sizing
-\newcommand{\Paren}[1]{\ensuremath{\left(#1\right)}} % Define a command to format parentheses with automatic sizing
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Ensure that the argument is typeset in math mode
+\newcommand{\mathify}[1]{\ensuremath{#1}}
+% Format a set with curly braces, with automatic sizing of the braces
+\newcommand{\set}[1]{\mathify{\left\{ #1 \right\}}}
+% Format the floor function with proper brackets
+\newcommand{\floor}[1]{\ensuremath{\left\lfloor #1 \right\rfloor}}
+% Format the absolute value with vertical bars and automatic sizing
+\newcommand{\abs}[1]{\mathify{\left| #1 \right|}}
+% Format the intersection symbol
+\newcommand{\intersection}{\ensuremath{\cap}}
+% Format the union symbol
+\newcommand{\union}{\ensuremath{\cup}}
+% Format the XOR (exclusive or) symbol
+\newcommand{\xor}{\ensuremath{\oplus}}
+% Format the big XOR symbol for summation-like expressions
+\newcommand{\Xor}{\ensuremath{\bigoplus}}
+% Format the equality by definition symbol
+\newcommand{\eqdef}{\ensuremath{\stackrel{\textrm{def}}{=}}}
+% Format the uncertain equality symbol (e.g., for conjectured equality)
+\newcommand{\eqq}{\ensuremath{\stackrel{\textrm{?}}{=}}}
+% Format the uncertain membership symbol (e.g., for conjectured set membership)
+\newcommand{\inq}{\ensuremath{\stackrel{\textrm{?}}{\in}}}
+% Define a command to format parentheses with automatic sizing
+\newcommand{\paren}[1]{\ensuremath{\left(#1\right)}}
+% Define a command to convert a symbol to math mode
+\newcommand{\convert}[1]{\ensuremath{#1}}
+% Define operators for arg min with correct spacing and font
+\newcommand{\argmin}{\ensuremath{\mathsf{arg\,min}}}
+% Define operators for arg max with correct spacing and font
+\newcommand{\argmax}{\ensuremath{\mathsf{arg\,max}}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Number Theory
-\renewcommand*{\gcd}{\ensuremath{\mathsf{gcd}}} % Format the greatest common divisor command
-\newcommand{\lcm}{\ensuremath{\mathsf{lcm}}} % Format the least common multiple command
-\newcommand{\lcmset}[1]{\ensuremath{\mathsf{lcm}\left(#1\right)}} % Format the least common multiple set command
-\newcommand{\jacobi}[2]{\ensuremath{\left(\frac{#1}{#2}\right)}} % Format the Jacobi symbol
-\newcommand{\legendre}[2]{\ensuremath{\left(\frac{#1}{#2}\right)}} % Format the Legendre symbol
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Set notation commands
-\newcommand{\N}{\ensuremath{\mathbb{N}}} % Set of natural numbers
-\newcommand{\Z}{\ensuremath{\mathbb{Z}}} % Set of integers
-\newcommand{\Q}{\ensuremath{\mathbb{Q}}} % Set of rational numbers
-\newcommand{\R}{\ensuremath{\mathbb{R}}} % Set of real numbers
-\newcommand{\C}{\ensuremath{\mathbb{C}}} % Set of complex numbers
-\newcommand{\Zplus}{\ensuremath{\mathbb{Z}^+}} % Set of positive integers
-\newcommand{\Znonneg}{\ensuremath{\mathbb{Z}_0^+}} % Set of non-negative integers
-\newcommand{\Rplus}{\ensuremath{\mathbb{R}^+}} % Set of positive real numbers
-\newcommand{\Rnonneg}{\ensuremath{\mathbb{R}_0^+}} % Set of non-negative real numbers
-\newcommand{\Qplus}{\ensuremath{\mathbb{Q}^+}} % Set of positive rational numbers
-\newcommand{\Qnonneg}{\ensuremath{\mathbb{Q}_0^+}} % Set of non-negative rational numbers
-\newcommand{\F}{\ensuremath{\mathbb{F}}} % Fields
+% Format the greatest common divisor command
+\renewcommand*{\gcd}{\ensuremath{\mathsf{gcd}}}
+% Format the least common multiple command
+\newcommand{\lcm}{\ensuremath{\mathsf{lcm}}}
+% Format the least common multiple-set command
+\newcommand{\lcmset}[1]{\ensuremath{\mathsf{lcm}\left(#1\right)}}
+% Format the Jacobi symbol
+\newcommand{\jacobi}[2]{\ensuremath{\left(\frac{#1}{#2}\right)}}
+% Format the Legendre symbol
+\newcommand{\legendre}[2]{\ensuremath{\left(\frac{#1}{#2}\right)}}
+% Format the Euler's phi function
+\newcommand{\phiEuler}[1]{\ensuremath{\varphi(#1)}}
+% Format the Euler's totient function
+\newcommand{\totient}[1]{\ensuremath{\phi(#1)}}
+% Format the factorial function
+\newcommand{\factorial}[1]{\ensuremath{#1!}}
+% Format the falling factorial
+\newcommand{\fallingfactorial}[2]{\ensuremath{#1^{\underline{#2}}}}
+% Format the rising factorial
+\newcommand{\risingfactorial}[2]{\ensuremath{#1^{\overline{#2}}}}
+% Format the binomial coefficient
+\newcommand{\binomial}[2]{\ensuremath{\binom{#1}{#2}}}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Set Theory
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Format the power set
+\newcommand{\powerset}[1]{\ensuremath{\mathcal{P}(#1)}}
+% Format the cardinality of a set
+\newcommand{\cardinality}[1]{\ensuremath{|#1|}}
+% Format the set complement
+\newcommand{\complement}[1]{\ensuremath{\overline{#1}}}
+% Format the set difference
+\newcommand{\setdifference}{\ensuremath{\backslash}}
+% Format the symmetric difference
+\newcommand{\symmetricdifference}{\ensuremath{\triangle}}
+% Format the Cartesian product
+\newcommand{\cartesianproduct}{\ensuremath{\times}}
+% Format the disjoint union
+\newcommand{\disjointunion}{\ensuremath{\uplus}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Game Theory
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Format the strategy set
+\newcommand{\strategies}[1]{\ensuremath{S_{#1}}}
+% Format the payoff function
+\newcommand{\payoff}[1]{\ensuremath{u_{#1}}}
+% Format the Nash equilibrium
+\newcommand{\nash}{\ensuremath{\text{Nash}}}
+% Format the dominant strategy
+\newcommand{\dominant}{\ensuremath{\text{Dominant}}}
+% Format the dominant strategy
+\newcommand{\dominated}{\ensuremath{\text{Dominated}}}
+% Format the mixed strategy
+\newcommand{\mixed}{\ensuremath{\text{Mixed}}}
+% Format the best response
+\newcommand{\bestresponse}{\ensuremath{\text{BestResponse}}}
+% Format the maximin strategy
+\newcommand{\maximin}{\ensuremath{\text{Maximin}}}
+% Format the minimax strategy
+\newcommand{\minimax}{\ensuremath{\text{Minimax}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Number Sets and Fields
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Set of natural numbers
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
+% Set of integers
+\newcommand{\Z}{\ensuremath{\mathbb{Z}}}
+% Set of rational numbers
+\newcommand{\Q}{\ensuremath{\mathbb{Q}}}
+% Set of real numbers
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+% Set of complex numbers
+\newcommand{\C}{\ensuremath{\mathbb{C}}}
+% Set of positive integers
+\newcommand{\Zplus}{\ensuremath{\mathbb{Z}^+}}
+% Set of negative integers
+\newcommand{\Zneg}{\ensuremath{\mathbb{Z}^-}}
+% Set of non-negative integers
+\newcommand{\Znonneg}{\ensuremath{\mathbb{Z}_0^+}}
+% Set of non-positive integers
+\newcommand{\Znonpos}{\ensuremath{\mathbb{Z}_0^-}}
+% Set of positive real numbers
+\newcommand{\Rplus}{\ensuremath{\mathbb{R}^+}}
+% Set of non-negative real numbers
+\newcommand{\Rnonneg}{\ensuremath{\mathbb{R}_0^+}}
+% Set of positive rational numbers
+\newcommand{\Qplus}{\ensuremath{\mathbb{Q}^+}}
+% Set of negative rational numbers
+\newcommand{\Qneg}{\ensuremath{\mathbb{Q}^-}}
+% Set of non-negative rational numbers
+\newcommand{\Qnonneg}{\ensuremath{\mathbb{Q}_0^+}}
+% Set of imaginary numbers
+\newcommand{\Imag}{\ensuremath{\mathbb{I}}}
+% Set of prime numbers
+\newcommand{\Primes}{\ensuremath{\mathbb{P}}}
+% Generic field
+\newcommand{\F}{\ensuremath{\mathbb{F}}}
+% Set of finite fields
+\newcommand{\FF}[1]{\ensuremath{\mathbb{F}_{#1}}}
+% Set of Galois fields
+\newcommand{\GF}[1]{\ensuremath{\mathbb{GF}_{#1}}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Calculus and Analysis
-\newcommand*{\dd}{\mathrm{d}} % Differential operator
-\newcommand*{\ddiff}[2]{\frac{\diff{#1}}{\diff{#2}}} % Differential quotient
-\newcommand*{\pdiff}[2]{\frac{\partial{#1}}{\partial{#2}}} % Partial derivative
-\newcommand*{\gradientd}[1]{\overrightarrow{\triangledown #1}} % Gradient
-\newcommand*{\Diff}[1]{\mathrm{d^#1}} % Differential of order n
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Differential operator
+\newcommand*{\dd}{\mathrm{d}}
+% Differential quotient
+\newcommand*{\ddiff}[2]{\frac{\diff{#1}}{\diff{#2}}}
+% Partial derivative
+\newcommand*{\pdiff}[2]{\frac{\partial{#1}}{\partial{#2}}}
+% Gradient
+\newcommand*{\gradientd}[1]{\overrightarrow{\triangledown #1}}
+% Differential of order n
+\newcommand*{\Diff}[1]{\mathrm{d^#1}}
+% Definite integral
+\newcommand*{\defintegral}[2]{\int_{#1}^{#2}}
+% Limits
+\newcommand*{\limit}[2]{\lim_{{#1} \to {#2}}}
+% Infinite series
+\newcommand*{\series}[1]{\sum_{#1}^{\infty}}
+% Taylor series
+\newcommand*{\taylor}[1]{\sum_{n=0}^{\infty} \frac{{#1^{(n)}}}{n!}(x-a)^n}
+% Partial fraction decomposition
+\newcommand*{\partialfrac}[2]{\frac{#1}{#2}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Vectors
-\renewcommand*{\i}{\hat{i}} % Unit vector i
-\renewcommand*{\j}{\hat{j}} % Unit vector j
-\renewcommand*{\k}{\hat{k}} % Unit vector k
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Unit vector i
+\renewcommand*{\i}{\hat{i}}
+% Unit vector j
+\renewcommand*{\j}{\hat{j}}
+% Unit vector k
+\renewcommand*{\k}{\hat{k}}
+% Matrices
+\newcommand{\mat}[1]{\mathbf{#1}}
+% Vectors
+\newcommand{\vect}[1]{\mathbf{#1}}
+% Magnitude of a vector
+\newcommand{\magnitude}[1]{\left\lVert #1 \right\rVert}
+% Vector projection
+\newcommand{\projection}[2]{\text{proj}_{#1}#2}
+% Vector component orthogonal to another vector
+\newcommand{\orthogonal}[2]{\text{orth}_{#1}#2}
+% Vector derivative
+\newcommand{\vectdiff}[1]{\frac{d\vect{#1}}{dt}}
+% Vector integral
+\newcommand{\vectintegral}[1]{\int \vect{#1} \, dt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Combinatorics
-\newcommand*{\nPr}[2]{{#1}P{#2}} % Permutations
-\newcommand*{\nPrf}[2]{\frac{#1!}{(#1-#2)!}} % Permutations with factorials
-\newcommand*{\nCr}[2]{{#1}C{#2}} % Combinations
-\newcommand*{\nCrf}[2]{\frac{#1!}{(#1-#2)!#2!}} % Combinations with factorials
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Permutations
+\newcommand*{\nPr}[2]{{#1}P{#2}}
+% Permutations with factorials
+\newcommand*{\nPrf}[2]{\frac{#1!}{(#1-#2)!}}
+% Combinations
+\newcommand*{\nCr}[2]{{#1}C{#2}}
+% Combinations with factorials
+\newcommand*{\nCrf}[2]{\frac{#1!}{(#1-#2)!#2!}}
+% Binomial coefficient
+\newcommand{\binomialcoeff}[2]{\binom{#1}{#2}}
+% Multinomial coefficient
+\newcommand{\multinomialcoeff}[2]{\binom{#1}{#2_1, #2_2, \ldots, #2_k}}
+% Stirling number of the first kind
+\newcommand{\stirlingfirst}[2]{\genfrac{\{}{\}}{0pt}{}{#1}{#2}}
+% Stirling number of the second kind
+\newcommand{\stirlingsecond}[2]{\genfrac{\{}{\}}{0pt}{}{#1}{#2}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Trigonometric Functions
-\renewcommand*{\arcsin}{\sin^{-1}} % Inverse sine
-\renewcommand*{\arccos}{\cos^{-1}} % Inverse cosine
-\renewcommand*{\arctan}{\tan^{-1}} % Inverse tangent
-\newcommand*{\arccot}{\cot^{-1}} % Inverse cotangent
-\newcommand*{\arcsec}{\sec^{-1}} % Inverse secant
-\newcommand*{\arccsc}{\csc^{-1}} % Inverse cosecant
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Probability and statistics commands
-\newcommand{\Prob}[1]{\ensuremath{\mathsf{Prob}\left[#1\right]}} % Probability grouped notation
-\renewcommand*{\Pr}{\ensuremath{\mathsf{Prob}}} % Probability Theory
-\newcommand{\Exp}[1]{\ensuremath{\mathrm{Exp}\left[#1\right]}} % Expectation notation
-\newcommand{\half}{\ensuremath{\frac{1}{2}}} % Half as a fraction
+% Inverse sine
+\renewcommand*{\arcsin}{\sin^{-1}}
+% Inverse cosine
+\renewcommand*{\arccos}{\cos^{-1}}
+% Inverse tangent
+\renewcommand*{\arctan}{\tan^{-1}}
+% Inverse cotangent
+\newcommand*{\arccot}{\cot^{-1}}
+% Inverse secant
+\newcommand*{\arcsec}{\sec^{-1}}
+% Inverse cosecant
+\newcommand*{\arccsc}{\csc^{-1}}
+% Hyperbolic Inverse sine
+\newcommand*{\arsinh}{\sinh^{-1}}
+% Hyperbolic Inverse cosine
+\newcommand*{\arcosh}{\cosh^{-1}}
+% Hyperbolic Inverse tangent
+\newcommand*{\artanh}{\tanh^{-1}}
+% Hyperbolic Inverse cotangent
+\newcommand*{\arcoth}{\coth^{-1}}
+% Hyperbolic Inverse secant
+\newcommand*{\arsech}{\sech^{-1}}
+% Hyperbolic cosecant
+\newcommand*{\arcsch}{\csch^{-1}}
 
-% Logic commands
-\newcommand{\true}{\ensuremath{\mathtt{\mathbf{true}}}} % True
-\newcommand{\false}{\ensuremath{\mathtt{\mathbf{false}}}} % False
-\newcommand{\var}[1]{\operatorname{#1}} % Variable representation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Probability and Statistics Commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Custom commands for document structure and formatting
-\newcommand{\figcaption}[1]{\caption[]{#1}} % Defines a custom figure caption command
-\newcommand{\tabcaption}[1]{\caption[]{#1}} % Defines a custom table caption command
-\newcommand{\head}[1]{\chapter[Lecture \##1]{}} % Defines a custom chapter heading command
+% Probability grouped notation
+\newcommand{\Prob}[1]{\ensuremath{\mathsf{Prob}\left[#1\right]}}
+% Probability Theory
+\renewcommand*{\Pr}{\ensuremath{\mathsf{Prob}}}
+% Expectation notation
+\newcommand{\Exp}[1]{\ensuremath{\mathrm{Exp}\left[#1\right]}}
+% Half as a fraction
+\newcommand{\half}{\ensuremath{\frac{1}{2}}}
+% Variance notation
+\newcommand{\Var}[1]{\ensuremath{\mathrm{Var}\left[#1\right]}}
+% Standard deviation notation
+\newcommand{\SD}[1]{\ensuremath{\mathrm{SD}\left[#1\right]}}
+% Covariance notation
+\newcommand{\Cov}[1]{\ensuremath{\mathrm{Cov}\left[#1\right]}}
+% Correlation notation
+\newcommand{\Corr}[1]{\ensuremath{\mathrm{Corr}\left[#1\right]}}
+% Probability distribution notation
+\newcommand{\Dist}[1]{\ensuremath{\mathcal{D}\left(#1\right)}}
+% Probability density function notation
+\newcommand{\PDF}[1]{\ensuremath{f_{#1}}}
+% Cumulative distribution function notation
+\newcommand{\CDF}[1]{\ensuremath{F_{#1}}}
+% Joint probability notation
+\newcommand{\Joint}[1]{\ensuremath{\mathsf{Joint}\left(#1\right)}}
+% Marginal probability notation
+\newcommand{\Marginal}[1]{\ensuremath{\mathsf{Marginal}\left(#1\right)}}
+% Conditional probability notation
+\newcommand{\Conditional}[2]{\ensuremath{\mathsf{P}\left(#1 \mid #2\right)}}
 
-% Language
-\newcommand{\Lang}{\ensuremath{\mathcal{L}}} % Defines a command for language notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Logic Commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Complexity classes
-\newcommand{\Pclass}{\ensuremath{\mathsf{P}\xspace}} % Defines a command for P complexity class notation
-\newcommand{\NPclass}{\ensuremath{\mathsf{NP}\xspace}} % Defines a command for NP complexity class notation
-\newcommand{\coNPclass}{\ensuremath{\mathsf{co-NP}\xspace}} % Defines a command for co-NP complexity class notation
-\newcommand{\BPPclass}{\ensuremath{\mathsf{BPP}\xspace}} % Defines a command for BPP complexity class notation
-\newcommand{\RPclass}{\ensuremath{\mathsf{RP}\xspace}} % Defines a command for RP complexity class notation
-\newcommand{\coRPclass}{\ensuremath{\mathsf{co-RP}\xspace}} % Defines a command for co-RP complexity class notation
-\newcommand{\ZPPclass}{\ensuremath{\mathsf{ZPP}\xspace}} % Defines a command for ZPP complexity class notation
-\newcommand{\IPclass}{\ensuremath{\mathsf{IP}\xspace}} % Defines a command for IP complexity class notation
-\newcommand{\PHclass}{\ensuremath{\mathsf{PH}\xspace}} % Defines a command for PH complexity class notation
-\newcommand{\PSPACEclass}{\ensuremath{\mathsf{PSPACE}\xspace}} % Defines a command for PSPACE complexity class notation
-\newcommand{\EXPclass}{\ensuremath{\mathsf{EXP}\xspace}} % Defines a command for EXP complexity class notation
-\newcommand{\NEXPclass}{\ensuremath{\mathsf{NEXP}\xspace}} % Defines a command for NEXP complexity class notation
+% True
+\newcommand{\true}{\ensuremath{\mathtt{\mathbf{true}}}}
+% False
+\newcommand{\false}{\ensuremath{\mathtt{\mathbf{false}}}}
+% Variable representation
+\newcommand{\var}[1]{\operatorname{#1}}
 
-% Notation for polynomial hierarchy
-\newcommand{\SigmaP}[1]{\Sigma_{{#1}}} % Defines a command for SigmaP notation
-\newcommand{\PiP}[1]{\Pi_{{#1}}} % Defines a command for PiP notation
-\newcommand{\DeltaP}[1]{\Delta_{{#1}}} % Defines a command for DeltaP notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Turing Machine Notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Basic Complexity Theory Notations
-\newcommand{\bigO}{\ensuremath{\mathcal{O}}} % Defines a command for big O notation
-\newcommand{\bigo}[1]{\ensuremath{O\Paren{#1}}} % Defines a command for big O notation with argument
-\newcommand{\negl}{\ensuremath{\mathsf{negl}}} % Defines a command for negligible notation
-\newcommand{\notice}{\ensuremath{\mathsf{noticeable}}} % Defines a command for noticeable notation
-\newcommand{\poly}{\ensuremath{\mathsf{poly}}} % Defines a command for polynomial notation
-\newcommand{\ppt}{{\ensuremath{\textsc{ppt}}\xspace}} % Defines a command for probabilistic polynomial-time notation
-\newcommand{\PPT}{{\ensuremath{\textsc{ppt}}\xspace}} % Defines a command for probabilistic polynomial-time notation (uppercase)
-\newcommand{\ind}{\ensuremath{\approx}} % Defines a command for computational indistinguishability notation
+% Turing Machine
+\newcommand{\TM}{\ensuremath{\mathcal{M}}}
+% Tape
+\newcommand{\Tape}{\ensuremath{\mathcal{T}}}
+% State
+\newcommand{\State}{\ensuremath{\mathcal{Q}}}
+% Input alphabet
+\newcommand{\SigmaAlphabet}{\ensuremath{\Sigma}}
+% Tape alphabet
+\newcommand{\GammaAlphabet}{\ensuremath{\Gamma}}
 
-% Cryptographic notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Complexity Classes and Notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\cipher}{\textsc{Cipher}} % Defines a command for cipher notation
-\newcommand{\hash}{\textsc{Hash}} % Defines a command for hash function notation
-\newcommand{\mac}{\textsc{Mac}} % Defines a command for message authentication code notation
-\newcommand{\prf}{\textsc{Prf}} % Defines a command for pseudo-random function notation
-\newcommand{\prp}{\textsc{Prp}} % Defines a command for pseudo-random permutation notation
-\newcommand{\prg}{\textsc{Prg}} % Defines a command for pseudo-random generator notation
-\newcommand{\sig}{\textsc{Sig}} % Defines a command for digital signature notation
-\newcommand{\vrfy}{\textsc{Vrfy}} % Defines a command for verification notation
-\newcommand{\enc}{\textsc{Enc}} % Defines a command for encryption notation
-\newcommand{\dec}{\textsc{Dec}} % Defines a command for decryption notation
-\newcommand{\keygen}{\textsc{KeyGen}} % Defines a command for key generation notation
-\newcommand{\keyexchange}{\textsc{KeyExchange}} % Defines a command for key exchange notation
-\newcommand{\protocol}{\textsc{Protocol}} % Defines a command for cryptographic protocol notation
-\newcommand{\attack}{\textsc{Attack}} % Defines a command for attack notation
-\newcommand{\advantage}{\textsc{Adv}} % Defines a command for advantage notation
-\newcommand{\securityparam}{\ensuremath{\lambda}} % Defines a command for security parameter notation
-\newcommand{\indcpa}{\textsc{IndCpa}} % Defines a command for indistinguishability under chosen plaintext attack notation
-\newcommand{\indcca}{\textsc{IndCca}} % Defines a command for indistinguishability under chosen ciphertext attack notation
-\newcommand{\authint}{\textsc{AuthInt}} % Defines a command for authenticated encryption notation
-\newcommand{\nmac}{\textsc{NMac}} % Defines a command for nonce-based message authentication code notation
-\newcommand{\sufcma}{\textsc{SufCma}} % Defines a command for existential unforgeability under chosen message attack notation
-\newcommand{\ufcma}{\textsc{UfCma}} % Defines a command for universal forgery under chosen message attack notation
-\newcommand{\eav}{\textsc{Eav}} % Defines a command for encryption under chosen plaintext attack notation
-\newcommand{\cca}{\textsc{Cca}} % Defines a command for chosen ciphertext attack notation
-\newcommand{\cpa}{\textsc{Cpa}} % Defines a command for chosen plaintext attack notation
-\newcommand{\sk}{\ensuremath{s_k}} % Defines a command for secret key notation
-\newcommand{\pk}{\ensuremath{p_k}} % Defines a command for public key notation
+% Language notation
+\newcommand{\Lang}{\ensuremath{\mathcal{L}}}
+% P complexity class notation
+\newcommand{\Pclass}{\ensuremath{\mathsf{P}\xspace}}
+% NP complexity class notation
+\newcommand{\NPclass}{\ensuremath{\mathsf{NP}\xspace}}
+% co-NP complexity class notation
+\newcommand{\coNPclass}{\ensuremath{\mathsf{co-NP}\xspace}}
+% BPP complexity class notation
+\newcommand{\BPPclass}{\ensuremath{\mathsf{BPP}\xspace}}
+% RP complexity class notation
+\newcommand{\RPclass}{\ensuremath{\mathsf{RP}\xspace}}
+% co-RP complexity class notation
+\newcommand{\coRPclass}{\ensuremath{\mathsf{co-RP}\xspace}}
+% ZPP complexity class notation
+\newcommand{\ZPPclass}{\ensuremath{\mathsf{ZPP}\xspace}}
+% IP complexity class notation
+\newcommand{\IPclass}{\ensuremath{\mathsf{IP}\xspace}}
+% AM complexity class notation
+\newcommand{\AMclass}{\ensuremath{\mathsf{AM}\xspace}}
+% PH complexity class notation
+\newcommand{\PHclass}{\ensuremath{\mathsf{PH}\xspace}}
+% PSPACE complexity class notation
+\newcommand{\PSPACEclass}{\ensuremath{\mathsf{PSPACE}\xspace}}
+% EXP complexity class notation
+\newcommand{\EXPclass}{\ensuremath{\mathsf{EXP}\xspace}}
+% NEXP complexity class notation
+\newcommand{\NEXPclass}{\ensuremath{\mathsf{NEXP}\xspace}}
+% SigmaP notation
+\newcommand{\SigmaP}[1]{\Sigma_{{#1}}}
+% PiP notation
+\newcommand{\PiP}[1]{\Pi_{{#1}}}
+% DeltaP notation
+\newcommand{\DeltaP}[1]{\Delta_{{#1}}}
+% Big O notation
+\newcommand{\bigO}[1]{%
+    \ifx&#1&%
+        \ensuremath{\mathcal{O}}%
+    \else%
+        \ensuremath{\mathcal{O}\Paren{#1}}%
+    \fi%
+}
+% Polynomial-time reducibility notation
+\newcommand{\polyred}{\leq_{\text{p}}}
+% Logarithmic-space reducibility notation
+\newcommand{\logred}{\leq_{\text{log}}}
+% Turing reducibility notation
+\newcommand{\tred}{\leq_{\text{T}}}
+% Many-one reducibility notation
+\newcommand{\manyred}{\leq_{\text{m}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Provable Security Notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Computational indistinguishability
+\newcommand{\cind}{\ensuremath{\approx}_c}
+% Statistical indistinguishability
+\newcommand{\sind}{\ensuremath{\approx}_s}
+% Negligible function notation
+\newcommand{\negl}{\ensuremath{\mathsf{negl}}}
+% Noticeable function notation
+\newcommand{\notice}{\ensuremath{\mathsf{noticeable}}}
+% Polynomial-time algorithm notation
+\newcommand{\poly}{\ensuremath{\mathsf{poly}}}
+% Probabilistic polynomial-time algorithm (lowercase)
+\newcommand{\ppt}{\textsc{ppt}}
+% Probabilistic polynomial-time algorithm (uppercase)
+\newcommand{\PPT}{\textsc{ppt}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Cryptographic Notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Cipher
+\newcommand{\Cipher}{\textsc{Cipher}}
+\newcommand{\cipher}{\textsc{cipher}}
+
+% Hash function
+\newcommand{\Hash}{\textsc{Hash}}
+\newcommand{\hash}{\textsc{hash}}
+
+% Message authentication code
+\newcommand{\Mac}{\textsc{Mac}}
+\newcommand{\mac}{\textsc{mac}}
+
+% Nonce-based message authentication code
+\newcommand{\Nmac}{\textsc{NMac}}
+\newcommand{\nmac}{\textsc{nmac}}
+
+% Pseudo-random function
+\newcommand{\Prf}{\textsc{Prf}}
+\newcommand{\prf}{\textsc{prf}}
+
+% Pseudo-random permutation
+\newcommand{\Prp}{\textsc{Prp}}
+\newcommand{\prp}{\textsc{prp}}
+
+% Pseudo-random generator
+\newcommand{\Prg}{\textsc{Prg}}
+\newcommand{\prg}{\textsc{prg}}
+
+% Cryptographic protocol
+\newcommand{\Protocol}{\textsc{Protocol}}
+\newcommand{\protocol}{\textsc{protocol}}
+
+% Attack
+\newcommand{\Attack}{\textsc{Attack}}
+\newcommand{\attack}{\textsc{attack}}
+
+% Signature
+\newcommand{\Sig}{\textsc{Sig}}
+\newcommand{\sig}{\textsc{sig}}
+
+% Verification
+\newcommand{\Vrfy}{\textsc{Vrfy}}
+\newcommand{\vrfy}{\textsc{vrfy}}
+
+% Encryption
+\newcommand{\Enc}{\textsc{Enc}}
+\newcommand{\enc}{\textsc{enc}}
+
+% Decryption
+\newcommand{\Dec}{\textsc{Dec}}
+\newcommand{\dec}{\textsc{dec}}
+
+% Key generation
+\newcommand{\Keygen}{\textsc{KeyGen}}
+\newcommand{\keygen}{\textsc{keygen}}
+
+% Key exchange
+\newcommand{\Keyexchange}{\textsc{KeyExch}}
+\newcommand{\keyexchange}{\textsc{keyexch}}
+
+% Authenticated encryption
+\newcommand{\Authint}{\textsc{AuthInt}}
+\newcommand{\authint}{\textsc{authint}}
+
+% Commitment scheme
+\newcommand{\Commit}{\ensuremath{\mathsf{Commit}}}
+\newcommand{\commit}{\ensuremath{\mathsf{commit}}}
+
+% Advantage
+\newcommand{\Advantage}{\ensuremath{\mathsf{\textsc{Adv}}}
+\newcommand{\advantage}{\ensuremath{\mathsf{\textsc{adv}}}
+
+% Secret key
+\newcommand{\sk}{\ensuremath{s_k}}
+
+% Public key
+\newcommand{\pk}{\ensuremath{p_k}}
+
+% Security parameter
+\newcommand{\secparam}{\ensuremath{\lambda}}
+
+% Existential unforgeability under chosen message attack
+\newcommand{\EUCMA}{\ensuremath{\mathrm{EUCMA}}}
+
+% EUF-CMA Security
+\newcommand{\EufCMA}{\ensuremath{\mathsf{EUF-CMA}}}
+
+% Universal forgery under chosen message attack
+\newcommand{\UFCMA}{\ensuremath{\mathrm{UFCMA}}}
+
+% Encryption under chosen plaintext attack
+\newcommand{\ECPA}{\ensuremath{\mathrm{ECPA}}}
+
+% Chosen ciphertext attack
+\newcommand{\CCA}{\ensuremath{\mathrm{CCA}}}
+
+% Chosen plaintext attack
+\newcommand{\CPA}{\ensuremath{\mathrm{CPA}}}
+
+% Indistinguishability under chosen plaintext attack
+\newcommand{\INDCPA}{\ensuremath{\mathrm{INDCPA}}}
+
+% Indistinguishability under chosen ciphertext attack
+\newcommand{\INDCCA}{\ensuremath{\mathrm{INDCCA}}}
+
+% Semantic security
+\newcommand{\SemSec}{\ensuremath{\mathrm{SemSec}}}
+
+% Authenticated encryption under chosen plaintext attack
+\newcommand{\AECPA}{\ensuremath{\mathrm{AECPA}}}
+
+% Authenticated encryption under chosen ciphertext attack
+\newcommand{\AECCA}{\ensuremath{\mathrm{AECCA}}}
+
+% Adaptive chosen ciphertext attack
+\newcommand{\AdCCA}{\ensuremath{\mathrm{AdCCA}}}
+
+% Adaptive chosen-plaintext attack
+\newcommand{\AdCPA}{\ensuremath{\mathrm{AdCPA}}}
+
+% Existential forgery under chosen plaintext attack
+\newcommand{\EFCPA}{\ensuremath{\mathrm{EFCPA}}}
+
+% Existential forgery under chosen ciphertext attack
+\newcommand{\EFCCA}{\ensuremath{\mathrm{EFCCA}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Common Abbreviations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Latin Abbreviations
+\newcommand{\eg}{e.g.,\xspace} % For example
+\newcommand{\ie}{i.e.,\xspace} % That is
+\newcommand{\cf}{cf.\xspace} % Compare with
+\newcommand{\etal}{et al.\xspace} % And others
+\newcommand{\etc}{etc.\xspace} % Et cetera
+\newcommand{\viz}{viz.\xspace} % Namely
+\newcommand{\nb}{N.B.\xspace} % Note well
+
+% English Abbreviations
+\newcommand{\mr}{Mr.\xspace} % Mister
+\newcommand{\mrs}{Mrs.\xspace} % Missis
+\newcommand{\ms}{Ms.\xspace} % Miss
+\newcommand{\dr}{Dr.\xspace} % Doctor
+\newcommand{\jr}{Jr.\xspace} % Junior
+\newcommand{\sr}{Sr.\xspace} % Senior
+
+% Academic Abbreviations
+\newcommand{\prof}{Prof.\xspace} % Professor
+\newcommand{\assocprof}{Assoc.\ Prof.\xspace} % Associate Professor
+\newcommand{\asstprof}{Asst.\ Prof.\xspace} % Assistant Professor
+\newcommand{\lect}{Lect.\xspace} % Lecturer
+
+% Titles and Honors
+\newcommand{\phd}{Ph.D.\xspace} % Doctor of Philosophy
+\newcommand{\md}{M.D.\xspace} % Doctor of Medicine
+\newcommand{\jd}{J.D.\xspace} % Doctor of Law
+\newcommand{\mba}{M.B.A.\xspace} % Master of Business Administration
+\newcommand{\ma}{M.A.\xspace} % Master of Arts
+\newcommand{\msc}{M.Sc.\xspace} % Master of Science
+\newcommand{\bsc}{B.Sc.\xspace} % Bachelor of Science
+\newcommand{\ba}{B.A.\xspace} % Bachelor of Arts
+\newcommand{\eng}{Eng.\xspace} % Engineer
+
+% Time and Date
+\newcommand{\am}{a.m.\xspace} % Ante Meridiem
+\newcommand{\pmtime}{p.m.\xspace} % Post Meridiem
+\newcommand{\bc}{B.C.\xspace} % Before Christ
+\newcommand{\ad}{A.D.\xspace} % Anno Domini
+
+% Miscellaneous
+\newcommand{\ap}{A/p\xspace} % Attn: Address line in letters
+\newcommand{\etcet}{etc.\xspace} % Etcetera
+\newcommand{\rf}{R/F\xspace} % Reference
+\newcommand{\ph}{Ph\xspace} % Phone
+\newcommand{\fax}{Fax\xspace} % Fax
+\newcommand{\tel}{Tel\xspace} % Telephone
+\newcommand{\comp}{Co.\xspace} % Company
+\newcommand{\dept}{Dept.\xspace} % Department
+\newcommand{\ed}{Ed.\xspace} % Editor
+\newcommand{\eds}{Eds.\xspace} % Editors
+\newcommand{\deptof}{Dept.~of\xspace} % Department of
 
 \endinput
