@@ -77,11 +77,11 @@
 \RequirePackage[autostyle=true, csdisplay=true]{csquotes} % Package for handling quotations
 % Package for micro typographic enhancements
 \ifluatex
-    \RequirePackage[protrusion=true, expansion=true, babel=true]{microtype}
-    \else
-        \ifxetex
-            \RequirePackage[protrusion=true, babel=true]{microtype}
-        \fi
+	\RequirePackage[protrusion=true, expansion=true, babel=true]{microtype}
+	\else
+		\ifxetex
+			\RequirePackage[protrusion=true, babel=true]{microtype}
+		\fi
 \fi
 \RequirePackage[onehalfspacing]{setspace} % Package for line spacing
 \RequirePackage{pdfpages} % Inclusion of external PDF pages
@@ -118,7 +118,7 @@
 		+liga, % Standard Ligatures
 		+calt, % Contextual Alternates
 		+kern, % Enable kerning
-		+case % Case-sensitive forms
+		+case, % Case-sensitive forms
 	}%
 ]{EB Garamond} % You should have installed the font
 % Configure the math font with similar stylistic features
@@ -397,9 +397,9 @@
 	\quotation % Start the quotation environment for abstract content
 	\fi}
 {%
-\if@twocolumn
-\else\endquotation
-\fi
+	\if@twocolumn
+	\else\endquotation
+	\fi
 } % End quotation environment if not in two-column mode
 \RequirePackage[toc, page, title, header, titletoc]{appendix} % Provides advanced commands for handling appendices
 
@@ -551,7 +551,7 @@
 			label={#6:\thetcbcounter}, % Hyperref label
 			}{#6}%
 	}
-	    
+			
 	% Define coloured theorem environments
 	\newcolorboxes{theorem}{Theorem}{RoyalBlue4!80!white}{black}{\itshape}{thm}
 	\newcolorboxes{lemma}{Lemma}{RoyalBlue4!70!white}{black}{\itshape}{lem}
@@ -559,24 +559,24 @@
 	\newcolorboxes{proposition}{Proposition}{RoyalBlue4!50!white}{black}{\itshape}{prop}
 	\newcolorboxes{claim}{Claim}{RoyalBlue4!40!white}{black}{\itshape}{clm}
 	\newcolorboxes{conjecture}{Conjecture}{RoyalBlue4!30!white}{black}{\itshape}{conj}
-	    
+			
 	\newcolorboxes{definition}{Definition}{Blue4!80!white}{black}{\normalfont}{def}
 	\newcolorboxes{remark}{Remark}{Blue4!70!white}{black}{\normalfont}{rem}
 	\newcolorboxes{fact}{Fact}{Blue4!60!white}{black}{\normalfont}{fact}
 	\newcolorboxes{property}{Property}{Blue4!50!white}{black}{\normalfont}{prop}
 	\newcolorboxes{case}{Case}{Blue4!40!white}{black}{\normalfont}{case}
 	\newcolorboxes{example}{Example}{Blue4!30!white}{black}{\normalfont}{ex}
-	    
+			
 	\newcolorboxes{question}{Question}{SlateBlue4!80!white}{black}{\normalfont}{ques}
 	\newcolorboxes{exercise}{Exercise}{SlateBlue4!70!white}{black}{\normalfont}{exer}
 	\newcolorboxes{problem}{Problem}{SlateBlue4!60!white}{black}{\normalfont}{prob}
 	\newcolorboxes{solution}{Solution}{SlateBlue4!50!white}{black}{\normalfont}{sol}
-	    
+			
 	\newcolorboxes{note}{Note}{Firebrick4!80!white}{black}{\normalfont}{note}
 	\newcolorboxes{important}{Important}{Firebrick4!70!white}{black}{\normalfont}{imp}
 	\newcolorboxes{keypoint}{Keypoint}{Firebrick4!60!white}{black}{\normalfont}{key}
 	\newcolorboxes{highlight}{Highlight}{Firebrick4!50!white}{black}{\normalfont}{high}
-	    
+			
 	% Ensure that footnotes can be used within the specified environments (theorem, lemma, etc.)
 	\BeforeBeginEnvironment{theorem}{\savenotes}
 	\AfterEndEnvironment{theorem}{\spewnotes}
@@ -618,7 +618,7 @@
 	\AfterEndEnvironment{keypoint}{\spewnotes}
 	\BeforeBeginEnvironment{highlight}{\savenotes}
 	\AfterEndEnvironment{highlight}{\spewnotes}
-	            
+					
 	% Define cref formats for coloured theorem environments
 	\crefformat{tcb@cnt@theorem}{theorem~#2#1#3}
 	\Crefformat{tcb@cnt@theorem}{Theorem~#2#1#3}
@@ -662,7 +662,7 @@
 	\Crefformat{tcb@cnt@highlight}{Highlight~#2#1#3}
 \else
 	% Define theorem environments
-    \newtheorem{theorem}{Theorem}[section]
+	\newtheorem{theorem}{Theorem}[section]
 	\newtheorem{lemma}[theorem]{Lemma}
 	\newtheorem{corollary}[theorem]{Corollary}
 	\newtheorem{proposition}[theorem]{Proposition}
@@ -683,7 +683,7 @@
 	\newtheorem{important}[theorem]{Important}
 	\newtheorem{keypoint}[theorem]{Keypoint}
 	\newtheorem{highlight}[theorem]{Highlight}
-	        
+				
 	% Define cref formats for theorem environments
 	\crefformat{theorem}{#2Theorem~#1#3}
 	\Crefname{theorem}{Theorem}{Theorems}
