@@ -63,7 +63,6 @@
 
 % - \powerset{}: Formats the power set.
 % - \cardinality{}: Formats the cardinality of a set.
-% - \complement{}: Formats the set complement.
 % - \setdifference: Formats the set difference.
 % - \symmetricdifference: Formats the symmetric difference.
 % - \cartesianproduct: Formats the Cartesian product.
@@ -382,6 +381,8 @@
 \typeout{Package `\filename', \fileversion, <\filedate>}
 \ProvidesPackage{csmath}[2024/03/25 Custom LaTeX commands for computer scientists]
 
+\makeatletter
+
 % Check if amsmath package is loaded, and if not, load it
 \@ifpackageloaded{amsmath}{}{\RequirePackage{amsmath}} % Enhance mathematics features
 \@ifpackageloaded{xspace}{}{\RequirePackage{xspace}} % Proper spacing using xspace
@@ -457,8 +458,6 @@
 \newcommand{\powerset}[1]{\ensuremath{\mathcal{P}(#1)}}
 % Format the cardinality of a set
 \newcommand{\cardinality}[1]{\ensuremath{|#1|}}
-% Format the set complement
-\newcommand{\complement}[1]{\ensuremath{\overline{#1}}}
 % Format the set difference
 \newcommand{\setdifference}{\ensuremath{\backslash}}
 % Format the symmetric difference
@@ -841,8 +840,8 @@
 \newcommand{\commit}{\ensuremath{\mathsf{commit}}}
 
 % Advantage
-\newcommand{\Advantage}{\ensuremath{\mathsf{\textsc{Adv}}}
-\newcommand{\advantage}{\ensuremath{\mathsf{\textsc{adv}}}
+\newcommand{\Advantage}{\ensuremath{\mathsf{Adv}}}
+\newcommand{\advantage}{\ensuremath{\mathsf{adv}}}
 
 % Secret key
 \newcommand{\sk}{\ensuremath{s_k}}
@@ -954,5 +953,7 @@
 \newcommand{\ed}{Ed.\xspace} % Editor
 \newcommand{\eds}{Eds.\xspace} % Editors
 \newcommand{\deptof}{Dept.~of\xspace} % Department of
+
+\makeatother
 
 \endinput
