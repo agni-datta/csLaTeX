@@ -2,7 +2,7 @@
 title: LaTeX Commands for Computer Scientists (`csmath.sty`)
 linter-yaml-title-alias: LaTeX Commands for Computer Scientists (`csmath.sty`)
 date created: Monday, March 25th 2024, 13:49:48
-date modified: Monday, April 15th 2024, 10:48:06
+date modified: Monday, June 3rd 2024, 05:50:13
 aliases: [LaTeX Commands for Computer Scientists (`csmath.sty`)]
 ---
 
