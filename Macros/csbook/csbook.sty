@@ -63,7 +63,7 @@
 \RequirePackage[x11names, dvipsnames, svgnames]{xcolor} 
 
 % Command: Define accent colour for document elements
-\newcommand{\accentcolor}{SlateBlue2} % Define accent colour for document elements
+\newcommand{\accentcolor}{RoyalBlue3} % Define accent colour for document elements
 
 % Command: Define text emphasis style
 \newcommand{\textem}[1]{{\normalfont\scshape\color{\accentcolor}#1}} % Define a command for emphasized text with accent color
@@ -173,8 +173,8 @@
 \fancyhf{} % Clear all header and footer fields
 
 % Header format
-\fancyhead[LE,RO]{\normalfont\scshape\thepage} % Set page number on even and odd pages
-\fancyhead[LO,RE]{\normalfont\scshape\@title} % Set title on odd and even pages
+\fancyhead[LE,RO]{\normalfont\small\thepage} % Set page number on even and odd pages
+\fancyhead[LO,RE]{\normalfont\scshape\small\@title} % Set title on odd and even pages
 
 % Header rule width
 \renewcommand{\headrulewidth}{0.25pt} % Set thickness of header rule
