@@ -55,14 +55,18 @@
 \RequirePackage{xkeyval} % Load the xkeyval package for advanced key-value argument processing.
 \RequirePackage{kvoptions} % Load the kvoptions package for key-value options management in package and class files.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Package for support for colour
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[x11names, dvipsnames, svgnames]{xcolor} % Use xcolor package for support for colour, with options for additional colour schemes
+% Use xcolor package for support for colour, with options for additional colour schemes
+\RequirePackage[x11names, dvipsnames, svgnames]{xcolor} 
 
 % Command: Define accent colour for document elements
-\newcommand{\accentcolor}{RoyalBlue4!50!black} % Define accent colour for document elements
+\newcommand{\accentcolor}{SlateBlue2} % Define accent colour for document elements
+
+% Command: Define text emphasis style
+\newcommand{\textem}[1]{{\normalfont\scshape\color{\accentcolor}#1}} % Define a command for emphasized text with accent color
 
 % Packages for managing PDF version and compression
 \RequirePackage[2.0, compress]{bxpdfver} % Use bxpdfver package for managing PDF version and compression
@@ -75,11 +79,11 @@
 \RequirePackage[autostyle=true, csdisplay=true]{csquotes} % Package for handling quotations
 % Package for micro typographic enhancements
 \ifluatex
-	\RequirePackage[protrusion=true, expansion=true, babel=true]{microtype}
-	\else
-		\ifxetex
-			\RequirePackage[protrusion=true, babel=true]{microtype}
-		\fi
+    \RequirePackage[protrusion=true, expansion=true, babel=true]{microtype}
+    \else
+        \ifxetex
+            \RequirePackage[protrusion=true, babel=true]{microtype}
+        \fi
 \fi
 \RequirePackage[onehalfspacing]{setspace} % Package for line spacing
 \RequirePackage{pdfpages} % Inclusion of external PDF pages
@@ -116,7 +120,7 @@
 		+liga, % Standard Ligatures
 		+calt, % Contextual Alternates
 		+kern, % Enable kerning
-		+case, % Case-sensitive forms
+		+case % Case-sensitive forms
 	}%
 ]{EB Garamond} % You should have installed the font
 % Configure the math font with similar stylistic features
@@ -187,42 +191,43 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Define custom chapter, section, subsection, and subsubsection formatting
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage[explicit]{titlesec}  % Package for customizing sectioning commands
+
+\RequirePackage[explicit]{titlesec} % Package for customizing sectioning commands
 
 % Define formatting for parts
 \titleformat{\part}[display]
-{\normalfont\scshape\RaggedRight\color{\accentcolor}} % Align text to the left
-{\LARGE\partname~\thepart} % No label
-{0pt} % No separation between label and title
-{\hrule\bigskip\hfill\Huge#1\vfill} % Format for part title
+    {\normalfont\scshape\RaggedRight\color{\accentcolor}} % Align text to the left
+    {\LARGE\partname~\thepart} % No label
+    {0pt} % No separation between label and title
+    {\titlerule\bigskip\hfill\Huge#1\vfill} % Format for part title
 
 % Define custom formatting for chapters
 \titleformat{\chapter}[display]
-{\normalfont\centering\scshape\color{\accentcolor}} % Chapter title font formatting
-{\LARGE Chapter~{\sffamily\thechapter}} % Display chapter number
-{7.5pt} % No separation between chapter number and title
-{\hrule\bigskip\Huge#1\bigskip\hrule} % Chapter title format with \accentcolor colour and asterisks at the end
+    {\normalfont\centering\Huge\scshape\color{\accentcolor}} % Chapter title font formatting
+    {\LARGE Chapter~\thechapter\medskip} % Display chapter number
+    {0pt} % No separation between chapter number and title
+    {\hrule\medskip#1\medskip\hrule} % Chapter title format with \accentcolor color
 
 % Define formatting for sections
 \titleformat{\section}[block]
-{\normalfont\LARGE\centering\scshape\color{\accentcolor}} % Section title font formatting
-{\S~\thesection} % Display section number
-{7.5pt} % Space between section number and title
-{#1} % Format for section title
+    {\normalfont\LARGE\scshape\color{\accentcolor}} % Section title font formatting
+    {\Large Section~\thesection\vspace{1pt}} % Display section number
+    {0pt} % Space between section number and title
+    {\hrule\vspace{1pt}#1} % Format for section title
 
 % Define formatting for subsections
 \titleformat{\subsection}[block]
-{\normalfont\Large\scshape\color{\accentcolor}} % Subsection title font formatting
-{\S\S~\thesubsection} % Display subsection number
-{7.5pt} % Space between subsection number and title
-{#1} % Format for subsection title
+    {\normalfont\Large\scshape\color{\accentcolor}} % Subsection title font formatting
+    {\large\thesubsection} % Display subsection number
+    {7.5pt} % Space between subsection number and title
+    {#1} % Format for subsection title
 
 % Define formatting for subsubsections
-\titleformat{\subsubsection}[runin]
-{\normalfont\vspace{-1em}\large\scshape\color{\accentcolor}} % Subsubsection title font formatting
-{\S\S\S~\thesubsubsection} % Display subsubsection number
-{5pt} % Space between subsubsection number and title
-{#1.} % Format for subsubsection title
+\titleformat{\subsubsection}[block]
+    {\normalfont\vspace{-1em}\large\scshape\color{\accentcolor}} % Subsubsection title font formatting
+    {\normalsize\thesubsubsection} % Display subsubsection number
+    {5pt} % Space between subsubsection number and title
+    {#1} % Format for subsubsection title
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Table of Contents customization
@@ -261,6 +266,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Support for creating indexes
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \RequirePackage[makeindex]{imakeidx} % Package for index support
 \makeindex[intoc, title=Index, options=-s csindex]
 
@@ -305,7 +311,7 @@
 % Package for customizing lists
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage{enumitem} % Use enum item package for adjusting the appearance and behavior of list environments
+\RequirePackage{enumitem} % Use the enum item package for adjusting the appearance and behaviour of list environments
 
 % Global setting to eliminate extra vertical spacing between items in all list environments
 \setlist{nosep, noitemsep}
@@ -337,7 +343,7 @@
 % Package for creating framed environments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[skipabove=8pt, skipbelow=8pt, ntheorem, framemethod=Tikz]{mdframed} % Use mdframed package for creating framed environments, customizable with various options such as skip distances and frame styles
+\RequirePackage[skipabove=10pt, skipbelow=10pt, ntheorem, framemethod=Tikz]{mdframed} % Use mdframed package for creating framed environments, customizable with various options such as skip distances and frame styles
 \RequirePackage[most]{tcolorbox} % Load colour box package for coloured boxes
 % Define a custom environment using the mdframed package with specified TikZ settings.
 \newmdenv[tikzsetting={draw=black}, backgroundcolor=none]{tboxed}
@@ -395,9 +401,9 @@
 	\quotation % Start the quotation environment for abstract content
 	\fi}
 {%
-	\if@twocolumn
-	\else\endquotation
-	\fi
+\if@twocolumn
+\else\endquotation
+\fi
 } % End quotation environment if not in two-column mode
 \RequirePackage[toc, page, title, header, titletoc]{appendix} % Provides advanced commands for handling appendices
 
@@ -549,7 +555,7 @@
 			label={#6:\thetcbcounter}, % Hyperref label
 			}{#6}%
 	}
-			
+	    
 	% Define coloured theorem environments
 	\newcolorboxes{theorem}{Theorem}{RoyalBlue4!80!white}{black}{\itshape}{thm}
 	\newcolorboxes{lemma}{Lemma}{RoyalBlue4!70!white}{black}{\itshape}{lem}
@@ -557,24 +563,24 @@
 	\newcolorboxes{proposition}{Proposition}{RoyalBlue4!50!white}{black}{\itshape}{prop}
 	\newcolorboxes{claim}{Claim}{RoyalBlue4!40!white}{black}{\itshape}{clm}
 	\newcolorboxes{conjecture}{Conjecture}{RoyalBlue4!30!white}{black}{\itshape}{conj}
-			
-	\newcolorboxes{definition}{Definition}{Blue4!80!white}{black}{\normalfont}{def}
-	\newcolorboxes{remark}{Remark}{Blue4!70!white}{black}{\normalfont}{rem}
-	\newcolorboxes{fact}{Fact}{Blue4!60!white}{black}{\normalfont}{fact}
-	\newcolorboxes{property}{Property}{Blue4!50!white}{black}{\normalfont}{prop}
-	\newcolorboxes{case}{Case}{Blue4!40!white}{black}{\normalfont}{case}
-	\newcolorboxes{example}{Example}{Blue4!30!white}{black}{\normalfont}{ex}
-			
+	    
+	\newcolorboxes{definition}{Definition}{DodgerBlue4!80!white}{black}{\normalfont}{def}
+	\newcolorboxes{remark}{Remark}{DodgerBlue4!70!white}{black}{\normalfont}{rem}
+	\newcolorboxes{fact}{Fact}{DodgerBlue4!60!white}{black}{\normalfont}{fact}
+	\newcolorboxes{property}{Property}{DodgerBlue4!50!white}{black}{\normalfont}{prop}
+	\newcolorboxes{case}{Case}{DodgerBlue4!40!white}{black}{\normalfont}{case}
+	\newcolorboxes{example}{Example}{DodgerBlue4!30!white}{black}{\normalfont}{ex}
+	    
 	\newcolorboxes{question}{Question}{SlateBlue4!80!white}{black}{\normalfont}{ques}
 	\newcolorboxes{exercise}{Exercise}{SlateBlue4!70!white}{black}{\normalfont}{exer}
 	\newcolorboxes{problem}{Problem}{SlateBlue4!60!white}{black}{\normalfont}{prob}
 	\newcolorboxes{solution}{Solution}{SlateBlue4!50!white}{black}{\normalfont}{sol}
-			
+	    
 	\newcolorboxes{note}{Note}{Firebrick4!80!white}{black}{\normalfont}{note}
 	\newcolorboxes{important}{Important}{Firebrick4!70!white}{black}{\normalfont}{imp}
 	\newcolorboxes{keypoint}{Keypoint}{Firebrick4!60!white}{black}{\normalfont}{key}
 	\newcolorboxes{highlight}{Highlight}{Firebrick4!50!white}{black}{\normalfont}{high}
-			
+	    
 	% Ensure that footnotes can be used within the specified environments (theorem, lemma, etc.)
 	\BeforeBeginEnvironment{theorem}{\savenotes}
 	\AfterEndEnvironment{theorem}{\spewnotes}
@@ -616,7 +622,7 @@
 	\AfterEndEnvironment{keypoint}{\spewnotes}
 	\BeforeBeginEnvironment{highlight}{\savenotes}
 	\AfterEndEnvironment{highlight}{\spewnotes}
-					
+	            
 	% Define cref formats for coloured theorem environments
 	\crefformat{tcb@cnt@theorem}{theorem~#2#1#3}
 	\Crefformat{tcb@cnt@theorem}{Theorem~#2#1#3}
@@ -660,7 +666,7 @@
 	\Crefformat{tcb@cnt@highlight}{Highlight~#2#1#3}
 \else
 	% Define theorem environments
-	\newtheorem{theorem}{Theorem}[section]
+    \newtheorem{theorem}{Theorem}[section]
 	\newtheorem{lemma}[theorem]{Lemma}
 	\newtheorem{corollary}[theorem]{Corollary}
 	\newtheorem{proposition}[theorem]{Proposition}
@@ -681,7 +687,7 @@
 	\newtheorem{important}[theorem]{Important}
 	\newtheorem{keypoint}[theorem]{Keypoint}
 	\newtheorem{highlight}[theorem]{Highlight}
-				
+	        
 	% Define cref formats for theorem environments
 	\crefformat{theorem}{#2Theorem~#1#3}
 	\Crefname{theorem}{Theorem}{Theorems}
@@ -746,33 +752,6 @@
 
 \DeclareBibliographyCategory{cited} % Define a category for cited references
 \AtEveryCitekey{\addtocategory{cited}{\thefield{entrykey}}} % Add cited references to the category
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Adjust Spacing around Equations
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Set the length of vertical space above-displayed equations
-\setlength{\abovedisplayskip}{10pt}
-% Set the length of vertical space below the displayed equations
-\setlength{\belowdisplayskip}{10pt}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Avoid Widows and Orphans
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Penalty for avoiding widows (single lines at the beginning of a page)
-\widowpenalty=10000
-% Penalty for avoiding orphans (single lines at the end of a page)
-\clubpenalty=10000
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Adjust Penalties for Equations Breaking Across Lines
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Penalty for breaking equations across lines
-\relpenalty=9999
-% Penalty for breaking equations at binary operators
-\binoppenalty=9999
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Custom commands and packages for document formatting
