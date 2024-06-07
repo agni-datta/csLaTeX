@@ -47,8 +47,8 @@
 % Packages for detecting LuaLaTeX and XeTeX
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage{ifluatex} % Package to detect LuaLaTeX
 \RequirePackage{ifxetex} % Package to detect XeTeX
+\RequirePackage{ifluatex} % Package to detect LuaLaTeX
 
 \RequirePackage{etoolbox} % Load the etoolbox package for advanced conditional programming tools in LaTeX.
 \RequirePackage{xpatch} % Load the xpatch package to extend the functionality of etoolbox, allowing flexible command patching.
@@ -70,7 +70,7 @@
 % Command: Define text emphasis style
 \newcommand{\textem}[1]{{\normalfont\scshape\color{\accentcolor}#1}} % Define a command for emphasized text with accent color
 
-% Packages for managing PDF version and compression
+% Package for specifying PDF version and compression settings
 \RequirePackage[2.0, compress]{bxpdfver} % Use bxpdfver package for managing PDF version and compression
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -122,7 +122,7 @@
 		+liga, % Standard Ligatures
 		+calt, % Contextual Alternates
 		+kern, % Enable kerning
-		+case % Case-sensitive forms
+		+case  % Case-sensitive forms
 	}%
 ]{EB Garamond} % You should have installed the font
 % Configure the math font with similar stylistic features
@@ -139,9 +139,9 @@
 		+liga, % Standard Ligatures
 		+calt, % Contextual Alternates
 		+kern, % Enable kerning
-		+case, % Case-sensitive forms
+		+case  % Case-sensitive forms
 	}%
-]{Garamond-Math}
+]{Garamond-Math.otf}
 % Configure the sans-serif font
 \RequirePackage{biolinum}
 % Configure the monospaced font with scaling
@@ -156,7 +156,7 @@
 		+liga, % Standard Ligatures
 		+calt, % Contextual Alternates
 		+kern, % Enable kerning
-		+case, % Case-sensitive forms
+		+case  % Case-sensitive forms
 	}%
 ]{Fira Mono} % Package for loading the Fira Code font for monospaced text
 \let\mathbfcal\relax % Prevent conflicts with existing math alphabets
@@ -171,18 +171,18 @@
 
 \RequirePackage{fancyhdr} % Use fancyhdr package for headers and footers
 
-% Clear header and footer
-\fancyhf{} % Clear all header and footer fields
-
-% Header format
-\fancyhead[LE,RO]{\normalfont\small\thepage} % Set page number on even and odd pages
-\fancyhead[LO,RE]{\normalfont\scshape\small\@title} % Set title on odd and even pages
-
-% Header rule width
-\renewcommand{\headrulewidth}{0.25pt} % Set thickness of header rule
-
-% Page style
-\pagestyle{fancy} % Use fancy page style
+		% Clear header and footer
+		\fancyhf{} % Clear all header and footer fields
+		
+		% Header format
+		\fancyhead[LE,RO]{\normalfont\small\sffamily\thepage} % Set page number on even and odd pages
+		\fancyhead[LO,RE]{\normalfont\small\sffamily\scshape\@title} % Set title on odd and even pages
+		
+		% Header rule width
+		\renewcommand{\headrulewidth}{0.25pt} % Set thickness of header rule
+		
+		% Page style
+		\pagestyle{fancy} % Use fancy page style
 
 % Depth of section numbering
 \setcounter{secnumdepth}{4} % Set depth of section numbering to 4 levels
@@ -356,9 +356,9 @@
 
 \RequirePackage{ragged2e} % Use ragged2e package for enhanced support compared to standard LaTeX commands
 \RequirePackage{footnote}  % Use footnote package to allow footnotes within the document
+\RequirePackage[bottom, multiple, hang]{footmisc} % Use footmisc package to ensure footnotes are placed at the bottom of the page and customize footnote formatting
 \RequirePackage{multicol} % Use multicol package for multi-column formatting
 \RequirePackage{multirow} % Use multirow package for multi-row formatting
-\RequirePackage[bottom, multiple, hang]{footmisc} % Use footmisc package to ensure footnotes are placed at the bottom of the page and customize footnote formatting
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Tables, figures, subfigures, and floats
@@ -394,18 +394,20 @@
 % \end{abstract}
 \newenvironment{abstract}{%
 	\if@twocolumn
-	\section*{\abstractname}% Create an unnumbered section for abstract in two-column mode
+	   \section*{\abstractname}% Create an unnumbered section for abstract in two-column mode
 	\else
-	\small\vspace{-1em} % Adjust font size and vertical space in single-column mode
-	\begin{center}%
-		{\scshape\abstractname\vspace{-.5em}\vspace{\z@}}% Set abstract title in small caps with appropriate vertical spacing
-	\end{center}% Center the abstract title
-	\quotation % Start the quotation environment for abstract content
-	\fi}
+    	\small\vspace{-1em} % Adjust font size and vertical space in single-column mode
+    	\begin{center}%
+    		{\scshape\abstractname\vspace{-.5em}\vspace{\z@}}% Set abstract title in small caps with appropriate vertical spacing
+    	\end{center}% Center the abstract title
+    	\quotation % Start the quotation environment for abstract content
+	\fi
+}
 {%
-\if@twocolumn
-\else\endquotation
-\fi
+	\if@twocolumn
+	\else
+        \endquotation
+	\fi
 } % End quotation environment if not in two-column mode
 \RequirePackage[toc, page, title, header, titletoc]{appendix} % Provides advanced commands for handling appendices
 
@@ -542,8 +544,8 @@
 			fonttitle=\color{#4}\sffamily\scshape,
 			before upper={\parindent15pt},
 			before lower={\parindent15pt},
-			fontupper={\color{black}\normalfont #5},
-			fontlower={\color{black}\normalfont #5},
+			fontupper={\color{black}\normalfont#5},
+			fontlower={\color{black}\normalfont#5},
 			left=10pt,
 			right=10pt,
 			top=10pt,
@@ -730,7 +732,7 @@
 	\crefformat{highlight}{#2Highlight~#1#3}
 	\Crefname{highlight}{Highlight}{Highlights}
 \fi
-    
+
 % Define proof environments
 \renewenvironment{proof}{\noindent\textit{Proof.}\hspace*{0.25em}}{\qed\bigskip}
 \newenvironment{proofSketch}{\noindent\textit{Sketch of Proof.}\hspace*{0.25em}}{\qed\bigskip}
@@ -738,7 +740,7 @@
 \newenvironment{proofOfLemma}[1]{\noindent\textit{Proof of Lemma ##1.}\hspace*{0.25em}}{\qed\bigskip}
 \newenvironment{proofAttempt}{\noindent\textit{Proof Attempt.}\hspace*{0.25em}}{\qed\bigskip}
 \newenvironment{proofOf}[1]{\noindent\textit{Proof of ##1.}\hspace*{0.25em}}{\qed\bigskip}
-        
+		        
 % Custom QED symbol
 \providecommand{\QEDsymbol}{\color{\accentcolor}\ensuremath{\blacksquare}}
 \renewcommand{\qedsymbol}{\QEDsymbol}
@@ -749,7 +751,18 @@
 
 % The Biblatex package is used for bibliography management in LaTeX documents.
 % It provides extensive customization options for citation and bibliography styles.
-\RequirePackage[hyperref=auto, defernumbers=true, style=numeric-comp, citestyle=numeric-comp, backref=true, sorting=anyt, autocite=superscript, maxnames=999, backend=biber]{biblatex} % Use biblatex for citations and bibliography with alphabetic style and maxcitenames=999
+% Package configuration for biblatex
+\RequirePackage[%
+	hyperref=auto,         % Hyperlinks in citations and bibliography
+	defernumbers=true,     % Defer numbering of citations after sorting
+	bibstyle=ieee,         % Bibliography style
+	citestyle=ieee,        % Citation style
+	backref=true,          % Enable back references in the bibliography
+	sorting=anyt,          % Sorting method for the bibliography
+	autocite=superscript,  % Citation style for \autocite commands
+	maxnames=999,          % Maximum number of names displayed in the bibliography
+	backend=biber,         % Backend for processing bibliography
+]{biblatex}
 \addbibresource{references.bib} % Specify bibliography file
 
 \DeclareBibliographyCategory{cited} % Define a category for cited references
@@ -771,7 +784,7 @@
 \newcommand{\subtitle}[1]{%
 	\gdef\@subtitle{#1}%
 }
-
+		
 % Redefine the \maketitle command
 % This command is used to format the title, subtitle, authors, emails, ORCIDs, and date of the document
 \renewcommand{\maketitle}{%
