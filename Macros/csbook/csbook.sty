@@ -81,11 +81,10 @@
 \RequirePackage[autostyle=true, csdisplay=true]{csquotes} % Package for handling quotations
 % Package for micro typographic enhancements
 \ifluatex
-    \RequirePackage[protrusion=true, expansion=true, babel=true]{microtype}
-    \else
-        \ifxetex
-            \RequirePackage[protrusion=true, babel=true]{microtype}
-        \fi
+        \RequirePackage[protrusion=true, expansion=true, babel=true]{microtype}
+    \else\ifxetex
+        \RequirePackage[protrusion=true, babel=true]{microtype}
+    \fi
 \fi
 \RequirePackage[onehalfspacing]{setspace} % Package for line spacing
 \RequirePackage{pdfpages} % Inclusion of external PDF pages
@@ -103,7 +102,6 @@
 
 % This section configures the main, math, sans-serif, and monospaced fonts, 
 % incorporating various stylistic features and enhancements.
-\RequirePackage[T1]{fontenc} % Font encoding package
 \RequirePackage{amsmath} % Package for enhanced math capabilities
 \RequirePackage{amsfonts} % Package for additional mathematical symbols
 \RequirePackage{amssymb} % Package for additional mathematical symbols
@@ -167,22 +165,29 @@
 % Package for setting page layout
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[a4paper, margin=3.25cm, inner=2.5cm, outer=2.5cm, footskip=1cm]{geometry} % Use geometry package to set page layout
+% Set up page layout using the geometry package
+\RequirePackage[%
+    a4paper,        % Use A4 paper size
+    margin=3.25cm,  % Set the margin to 3.25cm on all sides
+    inner=2.5cm,    % Set inner margin to 2.5cm
+    outer=2.5cm,    % Set outer margin to 2.5cm
+    footskip=1cm    % Set distance between text and footer to 1cm
+]{geometry}         % Use the geometry package to set the page layout
 
 \RequirePackage{fancyhdr} % Use fancyhdr package for headers and footers
 
-		% Clear header and footer
-		\fancyhf{} % Clear all header and footer fields
+% Clear header and footer
+\fancyhf{} % Clear all header and footer fields
 		
-		% Header format
-		\fancyhead[LE,RO]{\normalfont\small\sffamily\thepage} % Set page number on even and odd pages
-		\fancyhead[LO,RE]{\normalfont\small\sffamily\scshape\@title} % Set title on odd and even pages
+% Header format
+\fancyhead[LE,RO]{\normalfont\small\sffamily\thepage} % Set page number on even and odd pages
+\fancyhead[LO,RE]{\normalfont\small\sffamily\scshape\@title} % Set title on odd and even pages
 		
-		% Header rule width
-		\renewcommand{\headrulewidth}{0.25pt} % Set thickness of header rule
+% Header rule width
+\renewcommand{\headrulewidth}{0.25pt} % Set thickness of header rule
 		
-		% Page style
-		\pagestyle{fancy} % Use fancy page style
+% Page style
+\pagestyle{fancy} % Use fancy page style
 
 % Depth of section numbering
 \setcounter{secnumdepth}{4} % Set depth of section numbering to 4 levels
@@ -261,9 +266,15 @@
 \setlength{\marginparwidth}{2cm}
 
 % Command: Define a custom note command with the todo-notes package
-\newcommand{\mynote}[1]{\smallskip\todo[inline, size=\small, bordercolor=Firebrick1!20, color=Firebrick1!20]{\sffamily#1}\smallskip}
+\newcommand{\mynote}[1]{%
+	\smallskip
+	\todo[inline, size=\small, bordercolor=Firebrick1!20, color=Firebrick1!20]{\sffamily#1}
+	\smallskip
+}
 % Command: Define a custom command to indicate the need for citation
-\newcommand{\needcite}{\todo[noline, size=\small, bordercolor=Firebrick1!20, color=Firebrick1!20]{\sffamily Requires citation.}}
+\newcommand{\needcite}{%
+	\todo[noline, size=\small, bordercolor=Firebrick1!20, color=Firebrick1!20]{\sffamily Requires citation.}
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Support for creating indexes
@@ -279,19 +290,19 @@
 \RequirePackage[pdfusetitle]{hyperref} % Use hyperref package to enable hyperlinks and set document metadata
 
 % Hyperref setup for metadata and appearance
-\hypersetup{
-	pdfsubject={computer science}, % Define subject metadata for the PDF
-	pdfkeywords={computer science}, % Define keywords metadata for the PDF
-	colorlinks=true, % Enable coloured links
-	citecolor=\accentcolor, % Set colour for citations
-	linkcolor=\accentcolor, % Set colour for internal links
-	urlcolor=\accentcolor, % Set colour for URLs
-	frenchlinks=true, % Enable French style links (links with small caps)
-	unicode=true, % Enable Unicode support
-	bookmarksnumbered=true, % Number bookmarks in the PDF
-	breaklinks=true, % Allow line breaks in links
-	pdfborder={0 0 0}, % Set border style for links (none)
-	pdfborderstyle={}, % Set border style for links (empty)
+\hypersetup{%
+	pdfsubject={computer science},     % Define subject metadata for the PDF
+	pdfkeywords={computer science},    % Define keywords metadata for the PDF
+	colorlinks=true,                   % Enable coloured links
+	citecolor=\accentcolor,            % Set colour for citations
+	linkcolor=\accentcolor,            % Set colour for internal links
+	urlcolor=\accentcolor,             % Set colour for URLs
+	frenchlinks=true,                  % Enable French style links (links with small caps)
+	unicode=true,                      % Enable Unicode support
+	bookmarksnumbered=true,            % Number bookmarks in the PDF
+	breaklinks=true,                   % Allow line breaks in links
+	pdfborder={0 0 0},                 % Set border style for links (none)
+	pdfborderstyle={},                 % Set border style for links (empty)
 }
 
 \RequirePackage{cleveref} % Use cleveref package for intelligent cross-references
@@ -345,7 +356,13 @@
 % Package for creating framed environments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[skipabove=10pt, skipbelow=10pt, ntheorem, framemethod=Tikz]{mdframed} % Use mdframed package for creating framed environments, customizable with various options such as skip distances and frame styles
+% Use the mdframed package for creating framed environments
+\RequirePackage[%
+    skipabove=10pt,     % Set the vertical skip distance above the framed environment to 10pt
+    skipbelow=10pt,     % Set the vertical skip distance below the framed environment to 10pt
+    ntheorem,           % Enable compatibility with the ntheorem package
+    framemethod=Tikz    % Use TikZ for drawing frames
+]{mdframed}             % Use mdframed package for creating framed environments, customizable with various options such as skip distances and frame styles
 \RequirePackage[most]{tcolorbox} % Load colour box package for coloured boxes
 % Define a custom environment using the mdframed package with specified TikZ settings.
 \newmdenv[tikzsetting={draw=black}, backgroundcolor=none]{tboxed}
@@ -406,7 +423,7 @@
 {%
 	\if@twocolumn
 	\else
-        \endquotation
+	\endquotation
 	\fi
 } % End quotation environment if not in two-column mode
 \RequirePackage[toc, page, title, header, titletoc]{appendix} % Provides advanced commands for handling appendices
@@ -448,7 +465,18 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Glossary and acronym support
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage[automake, nogroupskip, indexonlyfirst, acronym, symbols, style=super, nopostdot, toc]{glossaries-extra}
+
+% Package inclusion: Loading the glossaries-extra package with various options
+\RequirePackage[
+    automake,               % Automatically run make or make index when needed
+    nogroupskip,            % Suppresses additional vertical space between groups
+    indexonlyfirst,         % Only first use of glossary entry in the document will be indexed
+    acronym,                % Enable support for acronyms
+    symbols,                % Enable support for symbols
+    style=super,            % Use super style for the glossary
+    nopostdot,              % No period after glossary descriptions
+    toc                     % Include glossaries in the table of contents
+]{glossaries-extra}
 
 % Define new glossary style with \accentcolor color for the term
 \newglossarystyle{define}{%
@@ -526,211 +554,217 @@
 
 % Default behaviour
 \ifcsbook@fancy
-	% Define new environments with colour boxes using soothing colours
-	\newcommand{\newcolorboxes}[6]{%
-		% Arguments:
-		%   #1: Environment name
-		%   #2: Display name of the environment
-		%   #3: Background color of the box
-		%   #4: Color of the title font
-		%   #5: Font style for the content
-		%   #6: Label prefix for hyperref
-		\newtcbtheorem[number within=chapter]{#1}{#2}{%
-			enhanced,
-			colback=#3!5,
-			colframe=#3!80!black,
-			arc=2pt,
-			boxrule=0.5pt,
-			fonttitle=\color{#4}\sffamily\scshape,
-			before upper={\parindent15pt},
-			before lower={\parindent15pt},
-			fontupper={\color{black}\normalfont#5},
-			fontlower={\color{black}\normalfont#5},
-			left=10pt,
-			right=10pt,
-			top=10pt,
-			bottom=10pt,
-			attach boxed title to top left={yshift=-2mm,xshift=4mm},
-			boxed title style={
-				colback=#3!20,
-				colframe=#3!80!black,
-				boxrule=0.5pt
-			},
-			label={#6:\thetcbcounter}, % Hyperref label
-			}{#6}%
-	}
-	    
-	% Define coloured theorem environments
-	\newcolorboxes{theorem}{Theorem}{RoyalBlue4!80!white}{black}{\itshape}{thm}
-	\newcolorboxes{lemma}{Lemma}{RoyalBlue4!70!white}{black}{\itshape}{lem}
-	\newcolorboxes{corollary}{Corollary}{RoyalBlue4!60!white}{black}{\itshape}{cor}
-	\newcolorboxes{proposition}{Proposition}{RoyalBlue4!50!white}{black}{\itshape}{prop}
-	\newcolorboxes{claim}{Claim}{RoyalBlue4!40!white}{black}{\itshape}{clm}
-	\newcolorboxes{conjecture}{Conjecture}{RoyalBlue4!30!white}{black}{\itshape}{conj}
-	    
-	\newcolorboxes{definition}{Definition}{DodgerBlue4!80!white}{black}{\normalfont}{def}
-	\newcolorboxes{remark}{Remark}{DodgerBlue4!70!white}{black}{\normalfont}{rem}
-	\newcolorboxes{fact}{Fact}{DodgerBlue4!60!white}{black}{\normalfont}{fact}
-	\newcolorboxes{property}{Property}{DodgerBlue4!50!white}{black}{\normalfont}{prop}
-	\newcolorboxes{case}{Case}{DodgerBlue4!40!white}{black}{\normalfont}{case}
-	\newcolorboxes{example}{Example}{DodgerBlue4!30!white}{black}{\normalfont}{ex}
-	    
-	\newcolorboxes{question}{Question}{SlateBlue4!80!white}{black}{\normalfont}{ques}
-	\newcolorboxes{exercise}{Exercise}{SlateBlue4!70!white}{black}{\normalfont}{exer}
-	\newcolorboxes{problem}{Problem}{SlateBlue4!60!white}{black}{\normalfont}{prob}
-	\newcolorboxes{solution}{Solution}{SlateBlue4!50!white}{black}{\normalfont}{sol}
-	    
-	\newcolorboxes{note}{Note}{Firebrick4!80!white}{black}{\normalfont}{note}
-	\newcolorboxes{important}{Important}{Firebrick4!70!white}{black}{\normalfont}{imp}
-	\newcolorboxes{keypoint}{Keypoint}{Firebrick4!60!white}{black}{\normalfont}{key}
-	\newcolorboxes{highlight}{Highlight}{Firebrick4!50!white}{black}{\normalfont}{high}
-	    
-	% Ensure that footnotes can be used within the specified environments (theorem, lemma, etc.)
-	\BeforeBeginEnvironment{theorem}{\savenotes}
-	\AfterEndEnvironment{theorem}{\spewnotes}
-	\BeforeBeginEnvironment{lemma}{\savenotes}
-	\AfterEndEnvironment{lemma}{\spewnotes}
-	\BeforeBeginEnvironment{corollary}{\savenotes}
-	\AfterEndEnvironment{corollary}{\spewnotes}
-	\BeforeBeginEnvironment{proposition}{\savenotes}
-	\AfterEndEnvironment{proposition}{\spewnotes}
-	\BeforeBeginEnvironment{definition}{\savenotes}
-	\AfterEndEnvironment{definition}{\spewnotes}
-	\BeforeBeginEnvironment{remark}{\savenotes}
-	\AfterEndEnvironment{remark}{\spewnotes}
-	\BeforeBeginEnvironment{claim}{\savenotes}
-	\AfterEndEnvironment{claim}{\spewnotes}
-	\BeforeBeginEnvironment{fact}{\savenotes}
-	\AfterEndEnvironment{fact}{\spewnotes}
-	\BeforeBeginEnvironment{assumption}{\savenotes}
-	\AfterEndEnvironment{assumption}{\spewnotes}
-	\BeforeBeginEnvironment{conjecture}{\savenotes}
-	\AfterEndEnvironment{conjecture}{\spewnotes}
-	\BeforeBeginEnvironment{problem}{\savenotes}
-	\AfterEndEnvironment{problem}{\spewnotes}
-	\BeforeBeginEnvironment{solution}{\savenotes}
-	\AfterEndEnvironment{solution}{\spewnotes}
-	\BeforeBeginEnvironment{case}{\savenotes}
-	\AfterEndEnvironment{case}{\spewnotes}
-	\BeforeBeginEnvironment{example}{\savenotes}
-	\AfterEndEnvironment{example}{\spewnotes}
-	\BeforeBeginEnvironment{problem}{\savenotes}
-	\AfterEndEnvironment{problem}{\spewnotes}
-	\BeforeBeginEnvironment{property}{\savenotes}
-	\AfterEndEnvironment{property}{\spewnotes}
-	\BeforeBeginEnvironment{solution}{\savenotes}
-	\AfterEndEnvironment{solution}{\spewnotes}
-	\BeforeBeginEnvironment{important}{\savenotes}
-	\AfterEndEnvironment{important}{\spewnotes}
-	\BeforeBeginEnvironment{keypoint}{\savenotes}
-	\AfterEndEnvironment{keypoint}{\spewnotes}
-	\BeforeBeginEnvironment{highlight}{\savenotes}
-	\AfterEndEnvironment{highlight}{\spewnotes}
-	            
-	% Define cref formats for coloured theorem environments
-	\crefformat{tcb@cnt@theorem}{theorem~#2#1#3}
-	\Crefformat{tcb@cnt@theorem}{Theorem~#2#1#3}
-	\crefformat{tcb@cnt@lemma}{lemma~#2#1#3}
-	\Crefformat{tcb@cnt@lemma}{Lemma~#2#1#3}
-	\crefformat{tcb@cnt@corollary}{corollary~#2#1#3}
-	\Crefformat{tcb@cnt@corollary}{Corollary~#2#1#3}
-	\crefformat{tcb@cnt@proposition}{proposition~#2#1#3}
-	\Crefformat{tcb@cnt@proposition}{Proposition~#2#1#3}
-	\crefformat{tcb@cnt@claim}{claim~#2#1#3}
-	\Crefformat{tcb@cnt@claim}{Claim~#2#1#3}
-	\crefformat{tcb@cnt@conjecture}{conjecture~#2#1#3}
-	\Crefformat{tcb@cnt@conjecture}{Conjecture~#2#1#3}
-	\crefformat{tcb@cnt@definition}{definition~#2#1#3}
-	\Crefformat{tcb@cnt@definition}{Definition~#2#1#3}
-	\crefformat{tcb@cnt@example}{example~#2#1#3}
-	\Crefformat{tcb@cnt@example}{Example~#2#1#3}
-	\crefformat{tcb@cnt@remark}{remark~#2#1#3}
-	\Crefformat{tcb@cnt@remark}{Remark~#2#1#3}
-	\crefformat{tcb@cnt@fact}{fact~#2#1#3}
-	\Crefformat{tcb@cnt@fact}{Fact~#2#1#3}
-	\crefformat{tcb@cnt@note}{note~#2#1#3}
-	\Crefformat{tcb@cnt@note}{Note~#2#1#3}
-	\crefformat{tcb@cnt@question}{question~#2#1#3}
-	\Crefformat{tcb@cnt@question}{Question~#2#1#3}
-	\crefformat{tcb@cnt@case}{case~#2#1#3}
-	\Crefformat{tcb@cnt@case}{Case~#2#1#3}
-	\crefformat{tcb@cnt@exercise}{exercise~#2#1#3}
-	\Crefformat{tcb@cnt@exercise}{Exercise~#2#1#3}
-	\crefformat{tcb@cnt@problem}{problem~#2#1#3}
-	\Crefformat{tcb@cnt@problem}{Problem~#2#1#3}
-	\crefformat{tcb@cnt@property}{property~#2#1#3}
-	\Crefformat{tcb@cnt@property}{Property~#2#1#3}
-	\crefformat{tcb@cnt@solution}{solution~#2#1#3}
-	\Crefformat{tcb@cnt@solution}{Solution~#2#1#3}
-	\crefformat{tcb@cnt@important}{important~#2#1#3}
-	\Crefformat{tcb@cnt@important}{Important~#2#1#3}
-	\crefformat{tcb@cnt@keypoint}{keypoint~#2#1#3}
-	\Crefformat{tcb@cnt@keypoint}{Keypoint~#2#1#3}
-	\crefformat{tcb@cnt@highlight}{highlight~#2#1#3}
-	\Crefformat{tcb@cnt@highlight}{Highlight~#2#1#3}
+    % Define new environments with colour boxes using soothing colours
+    \newcommand{\newcolorboxes}[6]{%
+    	% Arguments:
+    	%   #1: Environment name
+    	%   #2: Display name of the environment
+    	%   #3: Background color of the box
+    	%   #4: Color of the title font
+    	%   #5: Font style for the content
+    	%   #6: Label prefix for hyperref
+    	\newtcbtheorem[number within=chapter]{#1}{#2}{%
+    		enhanced,
+    		colback=#3!5,
+    		colframe=#3!80!black,
+    		arc=2pt,
+    		boxrule=0.5pt,
+    		fonttitle=\color{#4}\sffamily\scshape,
+    		before upper={\parindent15pt},
+    		before lower={\parindent15pt},
+    		fontupper={\color{black}\normalfont#5},
+    		fontlower={\color{black}\normalfont#5},
+    		left=10pt,
+    		right=10pt,
+    		top=10pt,
+    		bottom=10pt,
+    		attach boxed title to top left={yshift=-2mm,xshift=4mm},
+    		boxed title style={
+    			colback=#3!20,
+    			colframe=#3!80!black,
+    			boxrule=0.5pt
+    		},
+    		label={#6:\thetcbcounter}, % Hyperref label
+    		}{#6}%
+    }
+    	    
+    % Define coloured theorem environments
+    \newcolorboxes{theorem}{Theorem}{RoyalBlue4!80!white}{black}{\itshape}{thm}
+    \newcolorboxes{lemma}{Lemma}{RoyalBlue4!70!white}{black}{\itshape}{lem}
+    \newcolorboxes{corollary}{Corollary}{RoyalBlue4!60!white}{black}{\itshape}{cor}
+    \newcolorboxes{proposition}{Proposition}{RoyalBlue4!50!white}{black}{\itshape}{prop}
+    \newcolorboxes{claim}{Claim}{RoyalBlue4!40!white}{black}{\itshape}{clm}
+    \newcolorboxes{conjecture}{Conjecture}{RoyalBlue4!30!white}{black}{\itshape}{conj}
+    	    
+    \newcolorboxes{definition}{Definition}{DodgerBlue4!80!white}{black}{\normalfont}{def}
+    \newcolorboxes{remark}{Remark}{DodgerBlue4!70!white}{black}{\normalfont}{rem}
+    \newcolorboxes{fact}{Fact}{DodgerBlue4!60!white}{black}{\normalfont}{fact}
+    \newcolorboxes{property}{Property}{DodgerBlue4!50!white}{black}{\normalfont}{prop}
+    \newcolorboxes{case}{Case}{DodgerBlue4!40!white}{black}{\normalfont}{case}
+    \newcolorboxes{example}{Example}{DodgerBlue4!30!white}{black}{\normalfont}{ex}
+    	    
+    \newcolorboxes{question}{Question}{SlateBlue4!80!white}{black}{\normalfont}{ques}
+    \newcolorboxes{exercise}{Exercise}{SlateBlue4!70!white}{black}{\normalfont}{exer}
+    \newcolorboxes{problem}{Problem}{SlateBlue4!60!white}{black}{\normalfont}{prob}
+    \newcolorboxes{solution}{Solution}{SlateBlue4!50!white}{black}{\normalfont}{sol}
+    	    
+    \newcolorboxes{note}{Note}{Firebrick4!80!white}{black}{\normalfont}{note}
+    \newcolorboxes{important}{Important}{Firebrick4!70!white}{black}{\normalfont}{imp}
+    \newcolorboxes{keypoint}{Keypoint}{Firebrick4!60!white}{black}{\normalfont}{key}
+    \newcolorboxes{highlight}{Highlight}{Firebrick4!50!white}{black}{\normalfont}{high}
+    	    
+    % Ensure that footnotes can be used within the specified environments (theorem, lemma, etc.)
+    \BeforeBeginEnvironment{theorem}{\savenotes}
+    \AfterEndEnvironment{theorem}{\spewnotes}
+    \BeforeBeginEnvironment{lemma}{\savenotes}
+    \AfterEndEnvironment{lemma}{\spewnotes}
+    \BeforeBeginEnvironment{corollary}{\savenotes}
+    \AfterEndEnvironment{corollary}{\spewnotes}
+    \BeforeBeginEnvironment{proposition}{\savenotes}
+    \AfterEndEnvironment{proposition}{\spewnotes}
+    
+    \BeforeBeginEnvironment{definition}{\savenotes}
+    \AfterEndEnvironment{definition}{\spewnotes}
+    \BeforeBeginEnvironment{remark}{\savenotes}
+    \AfterEndEnvironment{remark}{\spewnotes}
+    \BeforeBeginEnvironment{claim}{\savenotes}
+    \AfterEndEnvironment{claim}{\spewnotes}
+    \BeforeBeginEnvironment{fact}{\savenotes}
+    \AfterEndEnvironment{fact}{\spewnotes}
+    \BeforeBeginEnvironment{assumption}{\savenotes}
+    \AfterEndEnvironment{assumption}{\spewnotes}
+    \BeforeBeginEnvironment{conjecture}{\savenotes}
+    \AfterEndEnvironment{conjecture}{\spewnotes}
+    \BeforeBeginEnvironment{problem}{\savenotes}
+    \AfterEndEnvironment{problem}{\spewnotes}
+    \BeforeBeginEnvironment{solution}{\savenotes}
+    \AfterEndEnvironment{solution}{\spewnotes}
+    \BeforeBeginEnvironment{case}{\savenotes}
+    \AfterEndEnvironment{case}{\spewnotes}
+    \BeforeBeginEnvironment{example}{\savenotes}
+    \AfterEndEnvironment{example}{\spewnotes}
+    \BeforeBeginEnvironment{problem}{\savenotes}
+    \AfterEndEnvironment{problem}{\spewnotes}
+    \BeforeBeginEnvironment{property}{\savenotes}
+    \AfterEndEnvironment{property}{\spewnotes}
+    \BeforeBeginEnvironment{solution}{\savenotes}
+    \AfterEndEnvironment{solution}{\spewnotes}
+    
+    \BeforeBeginEnvironment{important}{\savenotes}
+    \AfterEndEnvironment{important}{\spewnotes}
+    \BeforeBeginEnvironment{keypoint}{\savenotes}
+    \AfterEndEnvironment{keypoint}{\spewnotes}
+    \BeforeBeginEnvironment{highlight}{\savenotes}
+    \AfterEndEnvironment{highlight}{\spewnotes}
+    	            
+    % Define cref formats for coloured theorem environments
+    \crefformat{tcb@cnt@theorem}{theorem~#2#1#3}
+    \Crefformat{tcb@cnt@theorem}{Theorem~#2#1#3}
+    \crefformat{tcb@cnt@lemma}{lemma~#2#1#3}
+    \Crefformat{tcb@cnt@lemma}{Lemma~#2#1#3}
+    \crefformat{tcb@cnt@corollary}{corollary~#2#1#3}
+    \Crefformat{tcb@cnt@corollary}{Corollary~#2#1#3}
+    \crefformat{tcb@cnt@proposition}{proposition~#2#1#3}
+    \Crefformat{tcb@cnt@proposition}{Proposition~#2#1#3}
+    \crefformat{tcb@cnt@claim}{claim~#2#1#3}
+    \Crefformat{tcb@cnt@claim}{Claim~#2#1#3}
+    \crefformat{tcb@cnt@conjecture}{conjecture~#2#1#3}
+    \Crefformat{tcb@cnt@conjecture}{Conjecture~#2#1#3}
+    
+    \crefformat{tcb@cnt@definition}{definition~#2#1#3}
+    \Crefformat{tcb@cnt@definition}{Definition~#2#1#3}
+    \crefformat{tcb@cnt@example}{example~#2#1#3}
+    \Crefformat{tcb@cnt@example}{Example~#2#1#3}
+    \crefformat{tcb@cnt@remark}{remark~#2#1#3}
+    \Crefformat{tcb@cnt@remark}{Remark~#2#1#3}
+    \crefformat{tcb@cnt@fact}{fact~#2#1#3}
+    \Crefformat{tcb@cnt@fact}{Fact~#2#1#3}
+    \crefformat{tcb@cnt@note}{note~#2#1#3}
+    \Crefformat{tcb@cnt@note}{Note~#2#1#3}
+    \crefformat{tcb@cnt@question}{question~#2#1#3}
+    \Crefformat{tcb@cnt@question}{Question~#2#1#3}
+    \crefformat{tcb@cnt@case}{case~#2#1#3}
+    \Crefformat{tcb@cnt@case}{Case~#2#1#3}
+    \crefformat{tcb@cnt@exercise}{exercise~#2#1#3}
+    \Crefformat{tcb@cnt@exercise}{Exercise~#2#1#3}
+    \crefformat{tcb@cnt@problem}{problem~#2#1#3}
+    \Crefformat{tcb@cnt@problem}{Problem~#2#1#3}
+    \crefformat{tcb@cnt@property}{property~#2#1#3}
+    \Crefformat{tcb@cnt@property}{Property~#2#1#3}
+    \crefformat{tcb@cnt@solution}{solution~#2#1#3}
+    \Crefformat{tcb@cnt@solution}{Solution~#2#1#3}
+    
+    \crefformat{tcb@cnt@important}{important~#2#1#3}
+    \Crefformat{tcb@cnt@important}{Important~#2#1#3}
+    \crefformat{tcb@cnt@keypoint}{keypoint~#2#1#3}
+    \Crefformat{tcb@cnt@keypoint}{Keypoint~#2#1#3}
+    \crefformat{tcb@cnt@highlight}{highlight~#2#1#3}
+    \Crefformat{tcb@cnt@highlight}{Highlight~#2#1#3}
 \else
-	% Define theorem environments
+    % Define theorem environments
     \newtheorem{theorem}{Theorem}[section]
-	\newtheorem{lemma}[theorem]{Lemma}
-	\newtheorem{corollary}[theorem]{Corollary}
-	\newtheorem{proposition}[theorem]{Proposition}
-	\newtheorem{claim}[theorem]{Claim}
-	\newtheorem{conjecture}[theorem]{Conjecture}
-	\theoremstyle{definition}
-	\newtheorem{definition}[theorem]{Definition}
-	\newtheorem{example}[theorem]{Example}
-	\newtheorem{remark}[theorem]{Remark}
-	\newtheorem{fact}[theorem]{Fact}
-	\newtheorem{note}[theorem]{Note}
-	\newtheorem{question}[theorem]{Question}
-	\newtheorem{case}[theorem]{Case}
-	\newtheorem{exercise}[theorem]{Exercise}
-	\newtheorem{problem}[theorem]{Problem}
-	\newtheorem{property}[theorem]{Property}
-	\theoremstyle{remark}
-	\newtheorem{important}[theorem]{Important}
-	\newtheorem{keypoint}[theorem]{Keypoint}
-	\newtheorem{highlight}[theorem]{Highlight}
-	        
-	% Define cref formats for theorem environments
-	\crefformat{theorem}{#2Theorem~#1#3}
-	\Crefname{theorem}{Theorem}{Theorems}
-	\crefformat{lemma}{#2Lemma~#1#3}
-	\Crefname{lemma}{Lemma}{Lemmas}
-	\crefformat{corollary}{#2Corollary~#1#3}
-	\Crefname{corollary}{Corollary}{Corollaries}
-	\crefformat{proposition}{#2Proposition~#1#3}
-	\Crefname{proposition}{Proposition}{Propositions}
-	\crefformat{claim}{#2Claim~#1#3}
-	\Crefname{claim}{Claim}{Claims}
-	\crefformat{conjecture}{#2Conjecture~#1#3}
-	\Crefname{conjecture}{Conjecture}{Conjectures}
-	\crefformat{definition}{#2Definition~#1#3}
-	\Crefname{definition}{Definition}{Definitions}
-	\crefformat{example}{#2Example~#1#3}
-	\Crefname{example}{Example}{Examples}
-	\crefformat{remark}{#2Remark~#1#3}
-	\Crefname{remark}{Remark}{Remarks}
-	\crefformat{fact}{#2Fact~#1#3}
-	\Crefname{fact}{Fact}{Facts}
-	\crefformat{note}{#2Note~#1#3}
-	\Crefname{note}{Note}{Notes}
-	\crefformat{question}{#2Question~#1#3}
-	\Crefname{question}{Question}{Questions}
-	\crefformat{case}{#2Case~#1#3}
-	\Crefname{case}{Case}{Cases}
-	\crefformat{exercise}{#2Exercise~#1#3}
-	\Crefname{exercise}{Exercise}{Exercises}
-	\crefformat{problem}{#2Problem~#1#3}
-	\Crefname{problem}{Problem}{Problems}
-	\crefformat{property}{#2Property~#1#3}
-	\Crefname{property}{Property}{Properties}
-	\crefformat{important}{#2Important~#1#3}
-	\Crefname{important}{Important}{Importants}
-	\crefformat{keypoint}{#2Keypoint~#1#3}
-	\Crefname{keypoint}{Keypoint}{Keypoints}
-	\crefformat{highlight}{#2Highlight~#1#3}
-	\Crefname{highlight}{Highlight}{Highlights}
+    \newtheorem{lemma}[theorem]{Lemma}
+    \newtheorem{corollary}[theorem]{Corollary}
+    \newtheorem{proposition}[theorem]{Proposition}
+    \newtheorem{claim}[theorem]{Claim}
+    \newtheorem{conjecture}[theorem]{Conjecture}
+    \theoremstyle{definition}
+    \newtheorem{definition}[theorem]{Definition}
+    \newtheorem{example}[theorem]{Example}
+    \newtheorem{remark}[theorem]{Remark}
+    \newtheorem{fact}[theorem]{Fact}
+    \newtheorem{note}[theorem]{Note}
+    \newtheorem{question}[theorem]{Question}
+    \newtheorem{case}[theorem]{Case}
+    \newtheorem{exercise}[theorem]{Exercise}
+    \newtheorem{problem}[theorem]{Problem}
+    \newtheorem{property}[theorem]{Property}
+    \theoremstyle{remark}
+    \newtheorem{important}[theorem]{Important}
+    \newtheorem{keypoint}[theorem]{Keypoint}
+    \newtheorem{highlight}[theorem]{Highlight}
+    	        
+    % Define cref formats for theorem environments
+    \crefformat{theorem}{#2Theorem~#1#3}
+    \Crefname{theorem}{Theorem}{Theorems}
+    \crefformat{lemma}{#2Lemma~#1#3}
+    \Crefname{lemma}{Lemma}{Lemmas}
+    \crefformat{corollary}{#2Corollary~#1#3}
+    \Crefname{corollary}{Corollary}{Corollaries}
+    \crefformat{proposition}{#2Proposition~#1#3}
+    \Crefname{proposition}{Proposition}{Propositions}
+    \crefformat{claim}{#2Claim~#1#3}
+    \Crefname{claim}{Claim}{Claims}
+    \crefformat{conjecture}{#2Conjecture~#1#3}
+    \Crefname{conjecture}{Conjecture}{Conjectures}
+    
+    \crefformat{definition}{#2Definition~#1#3}
+    \Crefname{definition}{Definition}{Definitions}
+    \crefformat{example}{#2Example~#1#3}
+    \Crefname{example}{Example}{Examples}
+    \crefformat{remark}{#2Remark~#1#3}
+    \Crefname{remark}{Remark}{Remarks}
+    \crefformat{fact}{#2Fact~#1#3}
+    \Crefname{fact}{Fact}{Facts}
+    \crefformat{note}{#2Note~#1#3}
+    \Crefname{note}{Note}{Notes}
+    \crefformat{question}{#2Question~#1#3}
+    \Crefname{question}{Question}{Questions}
+    \crefformat{case}{#2Case~#1#3}
+    \Crefname{case}{Case}{Cases}
+    \crefformat{exercise}{#2Exercise~#1#3}
+    \Crefname{exercise}{Exercise}{Exercises}
+    \crefformat{problem}{#2Problem~#1#3}
+    \Crefname{problem}{Problem}{Problems}
+    \crefformat{property}{#2Property~#1#3}
+    \Crefname{property}{Property}{Properties}
+    
+    \crefformat{important}{#2Important~#1#3}
+    \Crefname{important}{Important}{Importants}
+    \crefformat{keypoint}{#2Keypoint~#1#3}
+    \Crefname{keypoint}{Keypoint}{Keypoints}
+    \crefformat{highlight}{#2Highlight~#1#3}
+    \Crefname{highlight}{Highlight}{Highlights}
 \fi
 
 % Define proof environments
