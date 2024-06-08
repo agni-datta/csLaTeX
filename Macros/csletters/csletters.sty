@@ -1,0 +1,529 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% csletter Package Documentation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Overview
+%% The csletter package provides a comprehensive suite of settings and environments
+%% tailored specifically for formatting letters in the context of computer science.
+%% This package streamlines the process of creating professionally formatted documents,
+%% incorporating a variety of typographic and stylistic enhancements suitable for academic
+%% and professional correspondence.
+%%
+%% - Package Name: csletter
+%% - Version: 1.0
+%% - Date: 2024/04/22
+%% - Author: Agni Datta
+%% - Email: agnidatta.org@gmail.com
+%% - Maintainer: Agni Datta
+%% - License: MIT
+%%
+%% Installation
+%% To use the csletter package, include it in your LaTeX document's preamble with the following line:
+%% \usepackage{csletter}
+
+%% Package Options
+%% - review: If specified, this option enables line numbering for review purposes.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Language and Typography Settings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The package includes several key packages and configurations to enhance the document's typographic quality:
+%% - babel: Provides language support for English.
+%% - csquotes: Manages quotation marks and citation styles automatically.
+%% - microtype: Enhances microtypographic details such as spacing and line breaks.
+%% - setspace: Sets line spacing to one-and-a-half.
+%% - xcolor: Supports various color definitions, particularly useful for setting the document's accent color.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Page Layout
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The geometry package configures the page layout for A4 paper with specified margins.
+%% The fancyhdr package manages headers and footers:
+%% - Margins: Top (1cm), Bottom (2cm), Left (2cm), Right (2cm), Foot skip (1cm).
+%% - Footer: Displays the page number centered, the date on the right, and the author on the left.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Font Settings and Math Environment
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Font configurations ensure a coherent and aesthetically pleasing appearance:
+%% - Main Font: EB Garamond.
+%% - Math Font: Garamond-Math.
+%% - Sans-Serif Font: Biolinum.
+%% - Monospaced Font: Fira Mono (scaled to 0.85).
+%%
+%% Additional settings ensure compatibility and enhance the visual presentation of mathematical content.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Hyperlinks and Bookmarks
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The hyperref package is configured to support hyperlinks and bookmarks, enhancing the document's navigation:
+%% - Color Settings: Links are colored based on the defined accent color.
+%% - Metadata: Subject and keywords are set to "computer science".
+%% - Other Settings: Supports Unicode, numbered bookmarks, and line breaks in links.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% To-do Notes
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The todonotes package facilitates the inclusion of to-do notes within the document:
+%% - Inline Notes: \mynote{...} for adding notes with specific formatting.
+%% - Citation Notes: \needcite to mark places requiring citations.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Sectioning Commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Customized sectioning commands using the titlesec package ensure consistency and clarity in section headings:
+%% - Sections: Centered and formatted with the document's accent colour.
+%% - Subsections and Subsubsections: Styled for visual distinction.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Customization of Lists
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The enumitem package allows for detailed customization of list environments:
+%% - Enumerate: Arabic numerals for the first level, alphabetic labels for the second.
+%% - Itemize: Customized spacing to enhance readability.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Tables and Matrices
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The package includes settings for high-quality tables:
+%% - booktabs: For professional-looking tables.
+%% - longtable: Supports tables spanning multiple pages.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% PDF Version and Line Numbering
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The bxpdfver and luacode packages manage PDF version settings and font embedding:
+%% - PDF Version: Set to 2.0.
+%% - Font Embedding: Ensures full font embedding for consistent rendering.
+%%
+%% When the review option is enabled:
+%% - Line Numbering: Line numbers are displayed using the lineno package.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Bibliography Management
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The biblatex package provides extensive bibliography management:
+%% - Style: IEEE.
+%% - Backend: Biber.
+%% - Options: Includes hyperref compatibility, deferred numbering, and back-references.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Custom Commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% \program{...}: Sets the program name.
+%% \school{...}: Sets the school name.
+%% \maketitle: Redefined to format the title section appropriately, including the applicant's name, program, school, and date.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example Usage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Here is a minimal example illustrating the use of the csletter package:
+%%
+%% \documentclass{article}
+%% \usepackage{csletter}
+%%
+%% \author{John Doe}
+%% \title{Application for Graduate Program}
+%% \program{Computer Science}
+%% \school{University of Excellence}
+%% \date{\today}
+%%
+%% \begin{document}
+%% \maketitle
+%%
+%% Dear Admissions Committee,
+%%
+%% I am writing to apply for the graduate program in Computer Science at the University of Excellence.
+%%
+%% ...
+%%
+%% \end{document}
+%%
+%% This example sets up a document with a custom title section and formats the letter using the csletter package's features.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Declare that this is a LaTeX2e package
+\def\filename{csletter}
+\def\fileversion{v1}
+\def\filedate{2024/04/26}
+\def\fileauthor{Agni Datta}
+
+\NeedsTeXFormat{LaTeX2e}
+\AtEndOfPackage{\ProvidesPackage{\filename}[\filedate\space\fileversion\space(\fileauthor)]}
+\typeout{Package `\filename', \fileversion, <\filedate>}
+
+\ProvidesPackage{csletter}[2024/04/22 CS Letter package]
+
+% Define a default behaviour for the class option
+\newif\if@review % Define a boolean variable for the option
+
+% Declare the option "review"
+\DeclareOption{review}{\@reviewtrue} % If "review" is given, set @review to true
+
+% Process the options
+\ProcessOptions\relax
+
+% Enable the use of '@' in command names
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Check for LuaLaTeX
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Load the ifluatex package
+\RequirePackage{ifluatex}
+
+% Check if LuaTeX is being used
+\ifluatex
+    % LuaTeX-specific settings can go here
+    \typeout{Compiling with LuaTeX}
+\else
+    % Issue an error if not using LuaTeX
+    \PackageError{Error: This document must be compiled with LuaTeX}
+    \stop
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Language and Typography Settings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Package inclusion: Loading the babel package for language settings
+\RequirePackage[english]{babel} % Provides language support for English
+
+% Package inclusion: Loading the csquotes package for handling quotations
+\RequirePackage[autostyle=true, csdisplay=true]{csquotes} % Provides automatic quotation marks and citation styles
+
+% Package inclusion: Loading the microtype package for micro typographic enhancements
+\RequirePackage[protrusion=true, expansion=true, babel=true]{microtype} % Improves the appearance of the document by adjusting spacing and line breaks
+
+% Package inclusion: Loading the setspace package for line spacing
+\RequirePackage[onehalfspacing]{setspace} % Sets line spacing to one-and-a-half
+
+% Package inclusion: Loading the xcolor package for colour support
+\RequirePackage[x11names, dvipsnames, svgnames]{xcolor} % Provides support for various colors
+
+% Command: Define accent color
+\newcommand{\accentcolor}{Blue4} % Defines an accent color for the document
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Page layout
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Package inclusion: Loading the geometry package for setting page layout
+\RequirePackage[a4paper, % Paper size
+	rmargin=2cm, % Right margin
+	lmargin=2cm, % Left margin
+	bmargin=2cm, % Bottom margin
+	tmargin=1cm, % Top margin
+	footskip=1cm % Foot skip
+]{geometry}
+
+% Package inclusion: Loading the fancyhdr package for headers and footers
+\RequirePackage{fancyhdr}
+
+% Command: Clear header and footer
+\fancyhf{} % Clear the current header and footer settings
+
+% Command: Define header format
+\fancyfoot[C]{\normalfont\small\textsf{\thepage}} % Set center footer format for page number
+\fancyfoot[R]{\normalfont\scshape\small\textsf{\@date}} % Set right footer format with the date
+\fancyfoot[L]{\normalfont\scshape\small\textsf{\@author}} % Set left footer format with author
+
+% Command: Set header rule width
+\renewcommand{\headrulewidth}{0pt} % Set header rule width to 0pt to remove it
+
+% Command: Set page style
+\pagestyle{fancy} % Apply the fancy style to the page
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Font Settings and Enhanced Math Environment
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Package inclusion: Loading the unicode-math package for Unicode math fonts
+\RequirePackage{unicode-math}
+
+% Configure the main font with specific features
+\setmainfont[%
+	RawFeature={%
+		+ss03, % Stylistic Set 03
+		+ss05, % Stylistic Set 05
+		+ss09, % Stylistic Set 09
+		+lnum, % Use lining figures
+		+mark, % Mark positioning
+		+mkmk, % Mark to Mark positioning
+		+pnum, % Proportional figures
+		+hlig, % Historical Ligatures
+		+liga, % Standard Ligatures
+		+calt, % Contextual Alternates
+		+kern, % Enable kerning
+		+case  % Case-sensitive forms
+	}%
+]{EB Garamond} % Load EB Garamond font for the main text
+
+% Configure the math font with similar stylistic features
+\setmathfont[%
+	RawFeature={%
+		+ss03, % Stylistic Set 03
+		+ss05, % Stylistic Set 05
+		+ss09, % Stylistic Set 09
+		+lnum, % Use lining figures
+		+mark, % Mark positioning
+		+mkmk, % Mark to Mark positioning
+		+pnum, % Proportional figures
+		+hlig, % Historical Ligatures
+		+liga, % Standard Ligatures
+		+calt, % Contextual Alternates
+		+kern, % Enable kerning
+		+case  % Case-sensitive forms
+	}%
+]{Garamond-Math.otf} % Load Garamond math font
+
+% Configure the sans-serif font
+\RequirePackage{biolinum} % Load Biolinum font for sans-serif text
+
+% Configure the monospaced font with scaling and specific features
+\setmonofont[%
+	Scale=0.85, % Set scaling factor
+	RawFeature={%
+		+ss05, % Stylistic Set 05
+		+lnum, % Use lining figures
+		+mark, % Mark positioning
+		+mkmk, % Mark to Mark positioning
+		+pnum, % Proportional figures
+		+liga, % Standard Ligatures
+		+calt, % Contextual Alternates
+		+kern, % Enable kerning
+		+case  % Case-sensitive forms
+	}%
+]{Fira Mono} % Load Fira Mono font for monospaced text
+
+% Command: Prevent conflicts with existing math alphabets
+\let\mathbfcal\relax
+
+% Package inclusion: Loading the mathalpha package for additional math fonts
+\RequirePackage[bb=stixtwo, cal=cm]{mathalpha}
+
+% Package inclusion: Loading the nicefrac package for visually appealing fractions
+\RequirePackage{nicefrac}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Hyperlinks and Bookmarks
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Package inclusion: Loading the hyperref package for hyperlinks and bookmarks
+\RequirePackage[pdfusetitle]{hyperref}
+
+% Hyperref setup for metadata and appearance
+\hypersetup{
+	pdfsubject={computer science}, % Subject metadata
+	pdfkeywords={computer science}, % Keywords metadata
+	colorlinks=true, % Enable coloured links
+	citecolor=\accentcolor, % Color for citations
+	linkcolor=\accentcolor, % Color for links
+	urlcolor=\accentcolor, % Color for URLs
+	frenchlinks=true, % Enable French style links
+	unicode=true, % Unicode support
+	bookmarksnumbered=true, % Number bookmarks
+	breaklinks=true, % Allow line breaks in links
+	pdfborder={0 0 0}, % Border style for links
+	pdfborderstyle={}, % Border style for links
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% To-do notes in documents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Package inclusion: Loading the todonotes package
+\RequirePackage{todonotes} % Provides functionality for adding to-do notes
+
+% Command: Define a command for adding inline notes
+% Usage: \mynote{This is a note}
+% Arguments:
+%   #1: The note text
+\newcommand{\mynote}[1]{% % Define a command for inline notes
+	\smallskip
+	\todo[
+		inline, size=\small, % Specify the inline format and size
+		bordercolor=Firebrick1!20, % Set the border colour for the note
+		color=Firebrick1!20 % Set the background colour for the note
+	]{\sffamily#1}% % Add the note text
+	\smallskip
+}
+
+% Command: Set the width of the margin par
+\setlength{\marginparwidth}{2cm} % Adjust the width of the marginpar for notes
+
+% Command: Define a command for indicating the need to cite
+% Usage: \needcite
+\newcommand{\needcite}{% % Define a command to indicate the need for citation
+	\todo[
+		noline, size=\small, % Specify the format and size for the note
+		bordercolor=Firebrick1!20, % Set the border colour for the note
+		color=Firebrick1!20 % Set the background colour for the note
+	]{\sffamily Requires citation.}% % Add the note text
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Custom Sectioning Commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Package inclusion: Loading the titlesec package for customizing sectioning commands
+\RequirePackage[explicit]{titlesec}
+
+% Define formatting for sections
+\titleformat{\section}[runin]
+    {\vspace{-1em}\normalfont\normalsize\centering\scshape\color{\accentcolor}} % Section title font formatting
+    {\thesection} % Display section number
+    {5pt} % Space between section number and title
+    {#1.\hspace{-1em}} % Format for section title
+
+% Define formatting for subsections
+\titleformat{\subsection}[runin]
+    {\vspace{-1em}\normalfont\normalsize\bfseries\color{\accentcolor}} % Subsection title font formatting
+    {\thesubsection} % Display subsection number
+    {5pt} % Space between subsection number and title
+    {#1.\hspace{-1em}} % Format for subsection title
+
+% Define formatting for subsubsections
+\titleformat{\subsubsection}[runin]
+    {\vspace{-1em}\normalsize\itshape\color{\accentcolor}} % Subsubsection title font formatting
+    {\thesubsubsection} % Display subsubsection number
+    {5pt} % Space between subsubsection number and title
+    {#1.\hspace{-1em}} % Format for subsubsection title
+    
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Customization of Lists
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Package inclusion: Loading the enumitem package for customization of lists
+\RequirePackage{enumitem}
+
+% Global setting for no item separation
+\setlist{noitemsep, nosep}
+
+% Customize enumerate labels for the first level
+\setlist[enumerate, 1]{label=(\arabic*)}
+
+% Customize enumerate labels for the second level
+\setlist[enumerate, 2]{label=(\alph*)}
+
+% Customize itemize lists
+\setlist[itemize]{
+	topsep=0pt, % Space before the list
+	parsep=0pt, % Space between paragraphs within an item
+	partopsep=0pt, % Additional vertical space added above and below the list
+	labelsep=0.5em, % Horizontal space between label and text
+	itemsep=0.5\baselineskip % Vertical space between items
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Tables and Matrices
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Package inclusion: Loading the booktabs package for high-quality tables
+\RequirePackage{booktabs}
+
+% Package inclusion: Loading the longtable package for tables spanning multiple pages
+\RequirePackage{longtable}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PDF Version and Line Numbering
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Package inclusion: Loading the bxpdfver package for setting the PDF version
+\RequirePackage[2.0]{bxpdfver}
+
+% Package inclusion: Loading the luacode package for embedding fonts
+\RequirePackage{luacode}
+
+% Lua code to embed full fonts
+\begin{luacode}
+	local function embedfull(tfmdata)
+	tfmdata.embedding = "full"
+	end
+	
+	luatexbase.add_to_callback("luaotfload.patch_font", embedfull, "embedfull")
+\end{luacode}
+
+% If the "review" option is given, show line numbers
+\if@review
+    % Print message indicating the file is for review
+    \typeout{This file is meant for review, not for final publication.}
+    % Package inclusion: Loading the lineno package for line numbering
+    \RequirePackage[left, mathlines]{lineno}
+    % Redefine the font for line numbers
+    \renewcommand\linenumberfont{\normalfont\scriptsize\ttfamily}
+    % Enable line numbering
+    \linenumbers
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Bibliography management with Biblatex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% The Biblatex package is used for bibliography management in LaTeX documents.
+% It provides extensive customization options for citation and bibliography styles.
+\RequirePackage[%
+	hyperref=auto,          % Automatically detect hyperref package and configure compatibility
+	defernumbers=true,      % Defer label numbering until after sorting
+	style=ieee,             % Set bibliography style to IEEE style
+	backref=true,           % Enable back-references from bibliography to citation
+	sorting=anyt,           % Sort by order of appearance in text
+	autocite=superscript,   % Use superscript for in-text citations
+	maxnames=999,           % Set the maximum number of names displayed in citations to a high value
+	backend=biber           % Use the Biber backend for processing bibliography data
+]{biblatex} % Use biblatex for citations and bibliography with alphabetic style and maxcitenames=999
+
+% Define command for the bibliography file name
+\newcommand{\bibfilename}{references.bib} % Default bibliography file name
+
+% Check if the file references.bib exists
+\IfFileExists{references.bib}{%
+	% If references.bib exists, use it as the bibliography file
+	\addbibresource{references.bib} % Specify bibliography file
+	}{%
+	% If references.bib does not exist, check if bibliography.bib exists
+	\IfFileExists{bibliography.bib}{%
+		% If bibliography.bib exists, use it as the bibliography file
+		\addbibresource{bibliography.bib}
+		}{%
+		% If neither references.bib nor bibliography.bib exists, use the default file name
+		\addbibresource{\bibfilename}
+	}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Custom Commands and Redefined maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Command: Define the command to set the program name
+\newcommand{\program}[1]{%
+	\gdef\@program{#1}% Set the program name
+}
+
+% Command: Define the command to set the school name
+\newcommand{\school}[1]{%
+	\gdef\@school{#1}% Set the school name
+}
+
+% Redefine maketitle command
+\renewcommand{\maketitle}{%
+	% Print applicant name and title
+	{\noindent\smallskip\scshape\textbf{Applicant Name:}~\@author}
+	\hfill
+	{\scshape\@title}
+	\newline
+	% Print program and date
+	{\smallskip\scshape\textbf{Program:}~\@program~at~\@school}
+	\hfill
+	{\scshape\@date}
+	\par\medskip
+	% Draw a horizontal line
+	\hrule\par\bigskip
+}
+
+
+% Disable the use of '@' in command names
+\makeatother
+
+\endinput
