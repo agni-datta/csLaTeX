@@ -426,7 +426,13 @@
 	\endquotation
 	\fi
 } % End quotation environment if not in two-column mode
-\RequirePackage[toc, page, title, header, titletoc]{appendix} % Provides advanced commands for handling appendices
+\RequirePackage[
+    toc,        % Include appendices in table of contents
+    page,       % Separate each appendix on a new page
+    title,      % Add 'Appendix' word to the appendix title
+    header,     % Add 'Appendix' to the header of appendix pages
+    titletoc    % Add 'Appendix' to the table of contents entry for appendices
+]{appendix}     % Provides advanced commands for handling appendices
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Customizations for verbatim environments
@@ -785,19 +791,34 @@
 
 % The Biblatex package is used for bibliography management in LaTeX documents.
 % It provides extensive customization options for citation and bibliography styles.
-% Package configuration for biblatex
 \RequirePackage[%
-	hyperref=auto,         % Hyperlinks in citations and bibliography
-	defernumbers=true,     % Defer numbering of citations after sorting
-	bibstyle=ieee,         % Bibliography style
-	citestyle=ieee,        % Citation style
-	backref=true,          % Enable back references in the bibliography
-	sorting=anyt,          % Sorting method for the bibliography
-	autocite=superscript,  % Citation style for \autocite commands
-	maxnames=999,          % Maximum number of names displayed in the bibliography
-	backend=biber,         % Backend for processing bibliography
-]{biblatex}
-\addbibresource{references.bib} % Specify bibliography file
+    hyperref=auto,          % Automatically detect hyperref package and configure compatibility
+    defernumbers=true,      % Defer label numbering until after sorting
+    style=ieee,             % Set bibliography style to IEEE style
+    backref=true,           % Enable back-references from bibliography to citation
+    sorting=anyt,           % Sort by order of appearance in text
+    autocite=superscript,   % Use superscript for in-text citations
+    maxnames=999,           % Set the maximum number of names displayed in citations to a high value
+    backend=biber           % Use the Biber backend for processing bibliography data
+]{biblatex} % Use biblatex for citations and bibliography with alphabetic style and maxcitenames=999
+
+% Define command for the bibliography file name
+\newcommand{\bibfilename}{references.bib} % Default bibliography file name
+
+% Check if the file references.bib exists
+\IfFileExists{references.bib}{%
+	% If references.bib exists, use it as the bibliography file
+	\addbibresource{references.bib} % Specify bibliography file
+	}{%
+	% If references.bib does not exist, check if bibliography.bib exists
+	\IfFileExists{bibliography.bib}{%
+		% If bibliography.bib exists, use it as the bibliography file
+		\addbibresource{bibliography.bib}
+		}{%
+		% If neither references.bib nor bibliography.bib exists, use the default file name
+		\addbibresource{\bibfilename}
+	}
+}
 
 \DeclareBibliographyCategory{cited} % Define a category for cited references
 \AtEveryCitekey{\addtocategory{cited}{\thefield{entrykey}}} % Add cited references to the category

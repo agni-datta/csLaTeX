@@ -160,7 +160,7 @@
 		+kern, % Enable kerning
 		+case % Case-sensitive forms
 	}%
-]{Garamond-Math}
+]{Garamond-Math.otf}
 % Configure the sans-serif font
 \RequirePackage{biolinum}
 % Configure the monospaced font with scaling
@@ -192,9 +192,15 @@
 \setlength{\marginparwidth}{2cm}
 
 % Command: Define a custom note command with the todo-notes package
-\newcommand{\mynote}[1]{\smallskip\todo[inline, size=\small, bordercolor=Firebrick1!20, color=Firebrick1!20]{\sffamily#1}\smallskip}
+\newcommand{\mynote}[1]{%
+	\smallskip
+	\todo[inline, size=\small, bordercolor=Firebrick1!20, color=Firebrick1!20]{\sffamily#1}
+	\smallskip
+}
 % Command: Define a custom command to indicate the need for citation
-\newcommand{\needcite}{\todo[noline, size=\small, bordercolor=Firebrick1!20, color=Firebrick1!20]{\sffamily Requires citation.}}
+\newcommand{\needcite}{%
+	\todo[noline, size=\small, bordercolor=Firebrick1!20, color=Firebrick1!20]{\sffamily Requires citation.}
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Package for hyperlinks and metadata
@@ -203,47 +209,66 @@
 \RequirePackage[pdfusetitle]{hyperref} % Use hyperref package to enable hyperlinks and set document metadata
 
 % Hyperref setup for metadata and appearance
-\hypersetup{
-	pdfsubject={computer science}, % Define subject metadata for the PDF
-	pdfkeywords={computer science}, % Define keywords metadata for the PDF
-	colorlinks=true, % Enable coloured links
-	citecolor=\accentcolor, % Set colour for citations
-	linkcolor=\accentcolor, % Set colour for internal links
-	urlcolor=\accentcolor, % Set color for URLs
-	frenchlinks=true, % Enable French style links (links with small caps)
-	unicode=true, % Enable Unicode support
-	bookmarksnumbered=true, % Number bookmarks in the PDF
-	breaklinks=true, % Allow line breaks in links
-	pdfborder={0 0 0}, % Set border style for links (none)
-	pdfborderstyle={}, % Set border style for links (empty)
+\hypersetup{%
+	pdfsubject={computer science},     % Define subject metadata for the PDF
+	pdfkeywords={computer science},    % Define keywords metadata for the PDF
+	colorlinks=true,                   % Enable coloured links
+	citecolor=\accentcolor,            % Set colour for citations
+	linkcolor=\accentcolor,            % Set colour for internal links
+	urlcolor=\accentcolor,             % Set colour for URLs
+	frenchlinks=true,                  % Enable French style links (links with small caps)
+	unicode=true,                      % Enable Unicode support
+	bookmarksnumbered=true,            % Number bookmarks in the PDF
+	breaklinks=true,                   % Allow line breaks in links
+	pdfborder={0 0 0},                 % Set border style for links (none)
+	pdfborderstyle={},                 % Set border style for links (empty)
 }
 
 \RequirePackage{cleveref} % Use cleveref package for intelligent cross-references
+
+\crefname{part}{part}{parts}
+\crefname{part}{Part}{Parts}
+\crefname{chapter}{chapter}{chapters}
+\Crefname{chapter}{Chapter}{Chapters}
+\crefname{section}{section}{sections}
+\Crefname{section}{Section}{Sections}
+\crefname{subsection}{subsection}{subsections}
+\Crefname{subsection}{Subsection}{Subsections}
+\crefname{subsubsection}{subsubsection}{subsubsections}
+\Crefname{subsubsection}{Subsubsection}{Subsubsections}
+
 \RequirePackage{url} % Use url package for automatic hyperlinking and line-breaking for long URLs
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Package for setting page layout
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[a4paper, margin=3.25cm, inner=2.5cm, outer=2.5cm, footskip=1cm]{geometry} % Use geometry package to set page layout
+% Set up page layout using the geometry package
+\RequirePackage[%
+    a4paper,        % Use A4 paper size
+    margin=3.25cm,  % Set the margin to 3.25cm on all sides
+    inner=2.5cm,    % Set inner margin to 2.5cm
+    outer=2.5cm,    % Set outer margin to 2.5cm
+    footskip=1cm    % Set distance between text and footer to 1cm
+]{geometry}         % Use the geometry package to set the page layout
 
 \RequirePackage{fancyhdr} % Use fancyhdr package for headers and footers
 
 % Clear header and footer
 \fancyhf{} % Clear all header and footer fields
-
+		
 % Header format
-\fancyhead[LE,RO]{\normalfont\scshape\thepage} % Set page number on even and odd pages
-\fancyhead[LO,RE]{\normalfont\scshape\@title} % Set title on odd and even pages
-
+\fancyhead[LE,RO]{\normalfont\small\sffamily\thepage} % Set page number on even and odd pages
+\fancyhead[LO,RE]{\normalfont\small\sffamily\scshape\@title} % Set title on odd and even pages
+		
 % Header rule width
 \renewcommand{\headrulewidth}{0.25pt} % Set thickness of header rule
-
+		
 % Page style
 \pagestyle{fancy} % Use fancy page style
 
 % Depth of section numbering
-\setcounter{secnumdepth}{4} % Set depth of section numbering to 4 levels
+\setcounter{secnumdepth}{3} % Set depth of section numbering to 4 levels
 
 % Depth of table of contents numbering
 \setcounter{tocdepth}{3}  % Set depth of table of contents numbering to 3 levels
@@ -285,16 +310,22 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{ragged2e} % Use ragged2e package for enhanced support compared to standard LaTeX commands
-\RequirePackage{footnote}  % Use footnote package to allow footnotes within the document
 \RequirePackage{multicol} % Use multicol package for multi-column formatting
 \RequirePackage{multirow} % Use multirow package for multi-row formatting
+\RequirePackage{footnote}  % Use footnote package to allow footnotes within the document
 \RequirePackage[bottom, multiple, hang]{footmisc} % Use footmisc package to ensure footnotes are placed at the bottom of the page and customize footnote formatting
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Package for creating framed environments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[skipabove=8pt, skipbelow=8pt, ntheorem, framemethod=Tikz]{mdframed} % Use mdframed package for creating framed environments, customizable with various options such as skip distances and frame styles
+% Use the mdframed package for creating framed environments
+\RequirePackage[%
+    skipabove=10pt,     % Set the vertical skip distance above the framed environment to 10pt
+    skipbelow=10pt,     % Set the vertical skip distance below the framed environment to 10pt
+    ntheorem,           % Enable compatibility with the ntheorem package
+    framemethod=Tikz    % Use TikZ for drawing frames
+]{mdframed}             % Use mdframed package for creating framed environments, customizable with various options such as skip distances and frame styles
 \RequirePackage[most]{tcolorbox} % Load colour box package for coloured boxes
 % Define a custom environment using the mdframed package with specified TikZ settings.
 \newmdenv[tikzsetting={draw=black}, backgroundcolor=none]{tboxed}
@@ -317,8 +348,20 @@
 % Abstracts and appendices
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[runin, addtotoc]{abstract} % Provides advanced commands for handling abstract
-\RequirePackage[toc, page, title, header, titletoc]{appendix} % Provides advanced commands for handling appendices
+% Package inclusion: Loading the abstract package with options for advanced abstract handling
+\RequirePackage[
+    runin,      % Format abstract in a run-in style
+    addtotoc    % Add the abstract to the table of contents
+]{abstract}
+
+% Package inclusion: Loading the appendix package with various options for advanced appendix handling
+\RequirePackage[
+    toc,        % Include appendices in table of contents
+    page,       % Separate each appendix on a new page
+    title,      % Add 'Appendix' word to the appendix title
+    header,     % Add 'Appendix' to the header of appendix pages
+    titletoc    % Add 'Appendix' to the table of contents entry for appendices
+]{appendix}     % Provides advanced commands for handling appendices
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Customizations for verbatim environments
@@ -359,52 +402,28 @@
 
 % Define formatting for sections
 \titleformat{\section}[block]
-{\normalfont\LARGE\Centering\scshape\color{\accentcolor}} % Section title font formatting
-{\thesection} % Display section number
-{5pt} % Space between section number and title
-{#1} % Format for section title
+    {\normalfont\LARGE\Centering\scshape\color{\accentcolor}} % Section title font formatting
+    {\thesection} % Display section number
+    {5pt} % Space between section number and title
+    {#1} % Format for section title
 
 % Define formatting for subsections
 \titleformat{\subsection}[block]
-{\normalfont\Large\scshape\color{\accentcolor}} % Subsection title font formatting
-{\thesubsection} % Display subsection number
-{5pt} % Space between subsection number and title
-{#1} % Format for subsection title
+    {\normalfont\Large\scshape\color{\accentcolor}} % Subsection title font formatting
+    {\thesubsection} % Display subsection number
+    {5pt} % Space between subsection number and title
+    {#1} % Format for subsection title
 
 % Define formatting for subsubsections
 \titleformat{\subsubsection}[block]
-{\normalfont\vspace{-1em}\large\scshape\color{\accentcolor}} % Subsubsection title font formatting
-{\thesubsubsection} % Display subsubsection number
-{5pt} % Space between subsubsection number and title
-{#1} % Format for subsubsection title
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% The cleveref package
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\crefname{part}{part}{parts}
-\crefname{part}{Part}{Parts}
-\crefname{chapter}{chapter}{chapters}
-\Crefname{chapter}{Chapter}{Chapters}
-\crefname{section}{section}{sections}
-\Crefname{section}{Section}{Sections}
-\crefname{subsection}{subsection}{subsections}
-\Crefname{subsection}{Subsection}{Subsections}
-\crefname{subsubsection}{subsubsection}{subsubsections}
-\Crefname{subsubsection}{Subsubsection}{Subsubsections}
+    {\normalfont\vspace{-1em}\large\scshape\color{\accentcolor}} % Subsubsection title font formatting
+    {\thesubsubsection} % Display subsubsection number
+    {5pt} % Space between subsubsection number and title
+    {#1} % Format for subsubsection title
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Definition of New Environments with colour box
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Define options
-\newif\ifcslecture@fancy
-\DeclareOption{normalthm}{\cslecture@fancyfalse}
-\DeclareOption{fancythm}{\cslecture@fancytrue}
-\DeclareOption*{\PackageWarning{cslecture}{Unknown option '\CurrentOption'}} % Handle unknown options
-
-% Process options
-\ProcessOptions\relax
 
 % Default behaviour
 \ifcslecture@fancy
@@ -628,6 +647,44 @@
 \renewcommand{\qedsymbol}{\QEDsymbol}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Bibliography management with Biblatex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% The Biblatex package is used for bibliography management in LaTeX documents.
+% It provides extensive customization options for citation and bibliography styles.
+\RequirePackage[%
+    hyperref=auto,          % Automatically detect hyperref package and configure compatibility
+    defernumbers=true,      % Defer label numbering until after sorting
+    style=ieee,             % Set bibliography style to IEEE style
+    backref=true,           % Enable back-references from bibliography to citation
+    sorting=anyt,           % Sort by order of appearance in text
+    autocite=superscript,   % Use superscript for in-text citations
+    maxnames=999,           % Set the maximum number of names displayed in citations to a high value
+    backend=biber           % Use the Biber backend for processing bibliography data
+]{biblatex} % Use biblatex for citations and bibliography with alphabetic style and maxcitenames=999
+
+% Define command for the bibliography file name
+\newcommand{\bibfilename}{references.bib} % Default bibliography file name
+
+% Check if the file references.bib exists
+\IfFileExists{references.bib}{%
+	% If references.bib exists, use it as the bibliography file
+	\addbibresource{references.bib} % Specify bibliography file
+	}{%
+	% If references.bib does not exist, check if bibliography.bib exists
+	\IfFileExists{bibliography.bib}{%
+		% If bibliography.bib exists, use it as the bibliography file
+		\addbibresource{bibliography.bib}
+		}{%
+		% If neither references.bib nor bibliography.bib exists, use the default file name
+		\addbibresource{\bibfilename}
+	}
+}
+
+\DeclareBibliographyCategory{cited} % Define a category for cited references
+\AtEveryCitekey{\addtocategory{cited}{\thefield{entrykey}}} % Add cited references to the category
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Custom commands and packages for document formatting
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -641,17 +698,16 @@
 % Redefine the \maketitle command
 % This command formats the title, author, and date of the document
 % It sets the page style to 'plain' and encloses the title, author, and date within the rules
+% Command: Redefine the \maketitle command
 \renewcommand{\maketitle}{%
-	\thispagestyle{plain}% Set page style to plain
-	\begingroup
-	\RaggedLeft\normalfont\Large\scshape % Set text alignment and font size
-	\hrule\bigskip % Add horizontal rule and vertical space
-	\@title\par % Print title
-	\normalsize % Set font size to normal
-	\@author\par % Print the author
-	\@date\par % Print date
-	\bigskip\hrule\bigskip % Add vertical space and horizontal rule
-	\endgroup
+    \thispagestyle{plain} % Set page style to plain
+    \RaggedLeft\normalfont\Large\scshape % Set text alignment and font size
+    \hrule\bigskip % Add horizontal rule and vertical space
+    \@title\par % Print title
+    \normalsize % Set font size to normal
+    \@author\par % Print the author
+    \@date\par % Print date
+    \bigskip\hrule\bigskip % Add vertical space and horizontal rule
 }
 
 % Disable the use of '@' in command names
