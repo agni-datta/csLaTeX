@@ -65,7 +65,10 @@
 \RequirePackage[x11names, dvipsnames, svgnames]{xcolor} 
 
 % Command: Define accent colour for document elements
-\newcommand{\accentcolor}{RoyalBlue3} % Define accent colour for document elements
+\newcommand{\accentcolor}{DodgerBlue4} % Define accent colour for document elements
+
+% Define the new color using the colorlet command
+\colorlet{accentcolor}{\accentcolor}
 
 % Command: Define text emphasis style
 \newcommand{\textem}[1]{{\normalfont\scshape\color{\accentcolor}#1}} % Define a command for emphasized text with accent color
@@ -218,20 +221,23 @@
 % Define formatting for sections
 \titleformat{\section}[block]
     {\normalfont\LARGE\scshape\color{\accentcolor}} % Section title font formatting
-    {\Large Section~\thesection\vspace{1pt}} % Display section number
-    {0pt} % Space between section number and title
-    {\hrule\vspace{1pt}#1} % Format for section title
+    {\Large Section~\thesection} % Display section number
+    {7.5pt} % Space between section number and title
+    {#1\hrule} % Format for section title
+
+% Adjust spacing around section titles
+\titlespacing*{\section}{0pt}{*0}{-15pt}
 
 % Define formatting for subsections
 \titleformat{\subsection}[block]
     {\normalfont\Large\scshape\color{\accentcolor}} % Subsection title font formatting
     {\large\thesubsection} % Display subsection number
-    {7.5pt} % Space between subsection number and title
+    {5pt} % Space between subsection number and title
     {#1} % Format for subsection title
 
 % Define formatting for subsubsections
 \titleformat{\subsubsection}[block]
-    {\normalfont\vspace{-1em}\large\scshape\color{\accentcolor}} % Subsubsection title font formatting
+    {\normalfont\large\scshape\color{\accentcolor}} % Subsubsection title font formatting
     {\normalsize\thesubsubsection} % Display subsubsection number
     {5pt} % Space between subsubsection number and title
     {#1} % Format for subsubsection title
