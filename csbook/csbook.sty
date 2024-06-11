@@ -84,10 +84,10 @@
 \RequirePackage[autostyle=true, csdisplay=true]{csquotes} % Package for handling quotations
 % Package for micro typographic enhancements
 \ifluatex
-        \RequirePackage[protrusion=true, expansion=true, babel=true]{microtype}
+    \RequirePackage[protrusion=true, expansion=true, babel=true]{microtype}
 \else
-     \ifxetex
-        \RequirePackage[protrusion=true, babel=true]{microtype}
+    \ifxetex
+		\RequirePackage[protrusion=true, babel=true]{microtype}
     \fi
 \fi
 \RequirePackage[onehalfspacing]{setspace} % Package for line spacing
@@ -450,7 +450,8 @@
 \let\savedverbatim@processline=\verbatim@processline  % Save the original verbatim process line
 \renewcommand{\verbatim@processline}{% Redefine verbatim process line
 	\let\verbatim@processline=\savedverbatim@processline  % Restore the original verbatim process line
-	\if\relax\the\verbatim@line\relax  % Check if the line is empty
+	\if
+		\relax\the\verbatim@line\relax  % Check if the line is empty
 	\else
 		\the\verbatim@line\par  % Print verbatim line
 	\fi
