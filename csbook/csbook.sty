@@ -85,7 +85,8 @@
 % Package for micro typographic enhancements
 \ifluatex
         \RequirePackage[protrusion=true, expansion=true, babel=true]{microtype}
-    \else\ifxetex
+\else
+     \ifxetex
         \RequirePackage[protrusion=true, babel=true]{microtype}
     \fi
 \fi
