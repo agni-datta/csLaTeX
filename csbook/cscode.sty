@@ -26,7 +26,7 @@
 % Define Rust language for the listings package
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\lstdefinelanguage{Rust}{
+\lstdefinelanguage{Rust}{%
 	sensitive=true,
 	morecomment=[l]{//},
 	morecomment=[s]{/*}{*/},
@@ -67,7 +67,7 @@
 % Define a style for C code
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\lstdefinestyle{CStyle}{
+\lstdefinestyle{CStyle}{%
 	language=C,                          % Set the language to C
 	basicstyle=\ttfamily\small,          % Use a small monospaced font
 	keywordstyle=\color{RoyalBlue3},     % Color keywords in Royal Blue
@@ -94,7 +94,7 @@
 % Define a style for C++ code
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\lstdefinestyle{CPlusPlusStyle}{
+\lstdefinestyle{CPlusPlusStyle}{%
 	language=C++,                        % Set the language to C++
 	basicstyle=\ttfamily\small,          % Use a small monospaced font
 	keywordstyle=\color{RoyalBlue3},     % Color keywords in Royal Blue
@@ -121,7 +121,7 @@
 % Define a style for Java code
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\lstdefinestyle{JavaStyle}{
+\lstdefinestyle{JavaStyle}{%
 	language=Java,                       % Set the language to Java
 	basicstyle=\ttfamily\small,          % Use a small monospaced font
 	keywordstyle=\color{RoyalBlue3},     % Color keywords in Royal Blue
@@ -148,7 +148,7 @@
 % Define a style for Python code
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\lstdefinestyle{PythonStyle}{
+\lstdefinestyle{PythonStyle}{%
 	language=Python,                     % Set the language to Python
 	basicstyle=\ttfamily\small,          % Use a small monospaced font
 	keywordstyle=\color{RoyalBlue3},     % Color keywords in Royal Blue
@@ -175,7 +175,7 @@
 % Define a style for Rust code
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\lstdefinestyle{RustStyle}{
+\lstdefinestyle{RustStyle}{%
 	language=Rust,                     % Set the language to Rust
 	basicstyle=\ttfamily\small,        % Use a small monospaced font
 	keywordstyle=\color{RoyalBlue3},   % Color keywords in Royal Blue
@@ -208,7 +208,7 @@
 \newenvironment{codebox}[1][Code Box]
 {
 	\stepcounter{codeboxcounter}
-	\newmdenv[
+	\newmdenv[%
 		frametitlebackgroundcolor=none, % Transparent background for frame title
 		frametitlefont=\scshape\sffamily, % Bold frame title
 		frametitleaboveskip=5pt, % Adjust the space above the frame title
