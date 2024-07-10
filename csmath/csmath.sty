@@ -300,8 +300,8 @@
 % - \INDCPA: Represents indistinguishability under chosen plaintext attack.
 % - \INDCCA: Represents indistinguishability under chosen ciphertext attack.
 % - \SemSec: Represents semantic security.
-% - \AECPA: Represents authenticated encryption under chosen plaintext attack.
-% - \AECCA: Represents authenticated encryption under chosen ciphertext attack.
+% - \AECPA: Represents authenticated encryption under a chosen plaintext attack.
+% - \AECCA: Represents authenticated encryption under a chosen ciphertext attack.
 % - \AdCCA: Represents adaptive chosen ciphertext attack.
 % - \AdCPA: Represents adaptive chosen-plaintext attack.
 % - \EFCPA: Represents existential forgery under chosen plaintext attack.
@@ -386,6 +386,7 @@
 % Check if amsmath package is loaded, and if not, load it
 \@ifpackageloaded{amsmath}{}{\RequirePackage{amsmath}} % Enhance mathematics features
 \@ifpackageloaded{xspace}{}{\RequirePackage{xspace}} % Proper spacing using xspace
+\@ifpackageloaded{relsize}{}{\RequirePackage{relsize}} % Proper font size using relsize
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Mathematical Notation
@@ -421,7 +422,6 @@
 \newcommand{\argmin}{\ensuremath{\mathsf{arg\,min}}}
 % Define operators for arg max with correct spacing and font
 \newcommand{\argmax}{\ensuremath{\mathsf{arg\,max}}}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Number Theory
@@ -697,34 +697,36 @@
 % Complexity Classes and Notation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% This command defines a custom font style for complexity classes
+\newcommand{\complexityfont}[1]{\mathsf{\textstyle#1}}
 % Language notation
 \newcommand{\Lang}{\ensuremath{\mathcal{L}}}
 % P complexity class notation
-\newcommand{\Pclass}{\ensuremath{\mathsf{P}\xspace}}
+\newcommand{\Pclass}{\ensuremath{\complexityfont{P}}\xspace}
 % NP complexity class notation
-\newcommand{\NPclass}{\ensuremath{\mathsf{NP}\xspace}}
+\newcommand{\NPclass}{\ensuremath{\complexityfont{NP}}\xspace}
 % co-NP complexity class notation
-\newcommand{\coNPclass}{\ensuremath{\mathsf{co-NP}\xspace}}
+\newcommand{\coNPclass}{\ensuremath{\complexityfont{co\textsf{-}NP}}\xspace}
 % BPP complexity class notation
-\newcommand{\BPPclass}{\ensuremath{\mathsf{BPP}\xspace}}
+\newcommand{\BPPclass}{\ensuremath{\complexityfont{BPP}}\xspace}
 % RP complexity class notation
-\newcommand{\RPclass}{\ensuremath{\mathsf{RP}\xspace}}
+\newcommand{\RPclass}{\ensuremath{\complexityfont{RP}}\xspace}
 % co-RP complexity class notation
-\newcommand{\coRPclass}{\ensuremath{\mathsf{co-RP}\xspace}}
+\newcommand{\coRPclass}{\ensuremath{\complexityfont{co\textsf{-}RP}}\xspace}
 % ZPP complexity class notation
-\newcommand{\ZPPclass}{\ensuremath{\mathsf{ZPP}\xspace}}
+\newcommand{\ZPPclass}{\ensuremath{\complexityfont{ZPP}}\xspace}
 % IP complexity class notation
-\newcommand{\IPclass}{\ensuremath{\mathsf{IP}\xspace}}
+\newcommand{\IPclass}{\ensuremath{\complexityfont{IP}}\xspace}
 % AM complexity class notation
-\newcommand{\AMclass}{\ensuremath{\mathsf{AM}\xspace}}
+\newcommand{\AMclass}{\ensuremath{\complexityfont{AM}}\xspace}
 % PH complexity class notation
-\newcommand{\PHclass}{\ensuremath{\mathsf{PH}\xspace}}
+\newcommand{\PHclass}{\ensuremath{\complexityfont{PH}}\xspace}
 % PSPACE complexity class notation
-\newcommand{\PSPACEclass}{\ensuremath{\mathsf{PSPACE}\xspace}}
+\newcommand{\PSPACEclass}{\ensuremath{\complexityfont{PSPACE}}\xspace}
 % EXP complexity class notation
-\newcommand{\EXPclass}{\ensuremath{\mathsf{EXP}\xspace}}
+\newcommand{\EXPclass}{\ensuremath{\complexityfont{EXP}}\xspace}
 % NEXP complexity class notation
-\newcommand{\NEXPclass}{\ensuremath{\mathsf{NEXP}\xspace}}
+\newcommand{\NEXPclass}{\ensuremath{\complexityfont{NEXP}}\xspace}
 % SigmaP notation
 \newcommand{\SigmaP}[1]{\Sigma_{{#1}}}
 % PiP notation
