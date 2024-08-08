@@ -1,0 +1,645 @@
+\def\fileversion{ver. 1}
+\def\filedate{2024-08-07}
+\def\fileauthor{Agni Datta}
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tcscrypto}[2024/08/07 v1.0 A package for typesetting theoretical CS and cryptography]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Inquire for missing packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Required for conditional checks
+\RequirePackage{ifthen}
+
+% Check for amsmath package
+\@ifpackageloaded{amsmath}{}{
+	\PackageWarning{tcscrypto}{The amsmath package is required but not loaded}
+}
+
+% Check for amssymb package
+\@ifpackageloaded{amssymb}{}{
+	\PackageWarning{tcscrypto}{The amssymb package is required but not loaded}
+}
+
+% Check for amsthm package
+\@ifpackageloaded{amsthm}{}{
+	\PackageWarning{tcscrypto}{The amsthm package is required but not loaded}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Packages for cryptographic and complexity notations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage[sanserif, full]{complexity} % Computational complexity theory macros
+\RequirePackage[%
+	n,             % Disable notations
+	operators,     % Enable operators
+	advantage,     % Enable advantage 
+	sets,          % Enable sets
+	adversary,     % Enable adversary
+	landau,        % Enable Landau notation
+	probability,   % Enable probability
+	notions,       % Enable notions
+	logic,         % Enable logic
+	ff,            % Enable finite fields
+	mm,            % Enable modular arithmetic
+	primitives,    % Enable primitives
+	events,        % Enable events
+	complexity,    % Enable complexity classes
+	asymptotics,   % Enable asymptotics
+	keys           % Enable keys
+]{cryptocode} % Macros for cryptography
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Font Styles
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\asvector}[1]{\vec{#1}\xspace} % Vector notation with arrow
+\providecommand{\complexityfont}[1]{\ComplexityFont{#1}\xspace} % Style for complexity classes
+\providecommand{\inmathbb}[1]{\mathbb{#1}\xspace} % Blackboard Bold for sets and special objects
+\providecommand{\inmathbf}[1]{\mathbf{#1}\xspace} % Bold style for vectors and matrices
+\providecommand{\inmathcal}[1]{\mathcal{#1}\xspace} % Calligraphic style for script letters
+\providecommand{\inmathfrak}[1]{\mathfrak{#1}\xspace} % Fraktur style for algebras and structures
+\providecommand{\inmathrm}[1]{\mathrm{#1}\xspace} % Roman style for constants and functions
+\providecommand{\inmathsf}[1]{\mathsf{#1}\xspace} % Sans-serif style for math symbols
+\providecommand{\mathfontstyle}[1]{\pcalgostyle{#1}\xspace} % Custom style for math expressions
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Cryptographic and Mathematical Notations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Note: Load the \usepackage[...]{cryptocode} package for the following commands.
+% The package includes commands for cryptographic notation, set notation, probability, and more.
+
+% Elements, abbreviations, and definitions related to cryptography
+\providecommand{\accept}{\inmathsf{accept}} % Denotes acceptance
+\providecommand{\accum}{\inmathsf{Accum}} % Accumulation function
+\providecommand{\acc}{\inmathsf{acc}} % Accumulator
+\providecommand{\add}{\inmathsf{Add}} % Addition operation
+\providecommand{\Adv}{\inmathsf{Adv}} % Adversary
+\providecommand{\aux}{\inmathsf{aux}} % Auxiliary information
+\providecommand{\batch}{\inmathsf{Batch}} % Batch processing
+\providecommand{\commit}{\inmathsf{Com}} % Commitment scheme
+\providecommand{\crs}{\inmathsf{crs}} % Common reference string
+\providecommand{\delete}{\inmathsf{Delete}} % Delete operation
+\providecommand{\ep}{\hat{e}} % Pairing function
+\providecommand{\extractor}{\inmathsf{Ext}} % Extractor function
+\providecommand{\flag}{\inmathsf{flag}} % Flag
+\providecommand{\FS}{\inmathsf{FS}} % Fiat-Shamir transformation
+\renewcommand{\Game}{\ensuremath{\reflectbox{\textsf{G}}}} % Game
+\providecommand{\gen}{\inmathsf{Gen}} % Key generation function
+\providecommand{\groupgen}{\inmathsf{GG}} % Group generator
+\providecommand{\group}{\inmathbb{G}} % Cryptographic group
+\providecommand{\hardequivocate}{\inmathsf{HardEquivocate}} % Hard Equivocation
+\providecommand{\hashfunc}{\inmathcal{H}} % Hash function
+\providecommand{\hidgrp}{\group_{?}} % Hidden group
+\providecommand{\ideal}{\inmathsf{Ideal}} % Ideal
+\providecommand{\open}{\inmathsf{Open}} % Opening of a commitment
+\providecommand{\prove}{\inmathsf{Prove}} % Proof generation
+\providecommand{\real}{\inmathsf{Real}} % Real
+\providecommand{\reject}{\inmathsf{reject}} % Denotes rejection
+\providecommand{\RO}{\inmathsf{RO}} % Random oracle
+\providecommand{\query}{\inmathsf{Query}} % Query
+\providecommand{\setup}{\inmathsf{Setup}} % Setup algorithm
+\providecommand{\softcommit}{\inmathsf{SoftCommit}} % Soft Commitment
+\providecommand{\softopen}{\inmathsf{SoftOpen}} % Soft Opening
+\providecommand{\state}{\inmathsf{state}} % State
+\providecommand{\td}{\inmathsf{td}} % Trapdoor information
+\providecommand{\updateproof}{\inmathsf{UpdateProof}} % Update Proof
+\providecommand{\update}{\inmathsf{Update}} % Update Operation
+\providecommand{\view}{\inmathsf{View}} % View or state
+\providecommand{\witgen}{\inmathsf{WitGen}} % Witness generation
+\providecommand{\witupdate}{\inmathsf{WitUpdate}} % Witness update
+\renewcommand{\pp}{\inmathsf{pp}} % Public parameters
+\providecommand{\verify}{\inmathsf{Verify}} % Verification function
+
+% Number Theoretic Operations
+\providecommand{\CDH}{\inmathsf{CDH}} % Computational Diffie-Hellman
+\providecommand{\DDH}{\inmathsf{DDH}} % Decisional Diffie-Hellman
+\providecommand{\DLP}{\inmathsf{DLP}} % Discrete Logarithm Problem
+\providecommand{\ECDLP}{\inmathsf{ECDLP}} % Elliptic Curve Discrete Logarithm Problem
+\providecommand{\isPrime}{\inmathsf{isPrime}} % Prime checking function
+\providecommand{\kSDH}{k\mathhyphen\SDH} % k-Strong Diffie-Hellman
+\providecommand{\LWE}{\inmathsf{LWE}} % Learning With Errors
+\providecommand{\primes}{\inmathsf{PRIMES}} % Set of prime numbers
+\providecommand{\QNR}{\inmathsf{QNR}} % Quadratic Non-Residue
+\providecommand{\QR}{\inmathsf{QR}} % Quadratic Residue
+\providecommand{\qSDH}{q\mathhyphen\SDH} % q-Strong Diffie-Hellman
+\providecommand{\RLWE}{\inmathsf{RLWE}} % Random Learning With Errors
+\providecommand{\SDH}{\inmathsf{SDH}} % Strong Diffie-Hellman
+
+% Additional cryptographic definitions and protocols
+\providecommand{\AAE}{\inmathsf{AAE}} % Attribute-Based Encryption
+\providecommand{\AE}{\inmathsf{AE}} % Authenticated Encryption
+\providecommand{\FHEA}{\inmathsf{FHEA}} % Fully Homomorphic Encryption with Applications
+\providecommand{\FHE}{\inmathsf{FHE}} % Fully Homomorphic Encryption
+\providecommand{\HEA}{\inmathsf{HEA}} % Homomorphic Encryption Applications
+\providecommand{\HE}{\inmathsf{HE}} % Homomorphic Encryption
+\providecommand{\HIBE}{\inmathsf{HIBE}} % Hierarchical Identity-Based Encryption
+\providecommand{\HRA}{\inmathsf{HRA}} % Homomorphic Random Access
+\providecommand{\IBE}{\inmathsf{IBE}} % Identity-Based Encryption
+\providecommand{\LPN}{\inmathsf{LPN}} % Learning Parity with Noise
+\providecommand{\MPC}{\inmathsf{MPC}} % Multiparty Computation
+\providecommand{\NIZKs}{\inmathsf{NIZKs}} % Non-Interactive Zero-Knowledge (plural)
+\providecommand{\NIZK}{\inmathsf{NIZK}} % Non-Interactive Zero-Knowledge
+\providecommand{\ORAM}{\inmathsf{ORAM}} % Oblivious RAM
+\providecommand{\OT}{\inmathsf{OT}} % Oblivious Transfer
+\providecommand{\PKC}{\inmathsf{PKC}} % Public Key Cryptography
+\providecommand{\PKE}{\inmathsf{PKE}} % Public Key Encryption
+\providecommand{\PPT}{\inmathsf{PPT}} % Probabilistic Polynomial Time
+\providecommand{\PRF}{\inmathsf{PRF}} % Pseudorandom Function
+\providecommand{\PRGs}{\inmathsf{PRGs}} % Pseudorandom Generators
+\providecommand{\PRPfs}{\inmathsf{PRPfs}} % Pseudorandom Permutation (full security)
+\providecommand{\PRP}{\inmathsf{PRP}} % Pseudorandom Permutation
+\providecommand{\RKA}{\inmathsf{RKA}} % Redactable Key Agreement
+\providecommand{\RNG}{\inmathsf{RNG}} % Random Number Generator
+\providecommand{\RPG}{\inmathsf{RPG}} % Randomized Polynomial Games
+\providecommand{\RTP}{\inmathsf{RTP}} % Randomized Test Protocols
+\providecommand{\SFE}{\inmathsf{SFE}} % Secure Function Evaluation
+\providecommand{\SMPC}{\inmathsf{SMPC}} % Secure Multiparty Computation
+\providecommand{\VCs}{\inmathsf{VCs}} % Vector Commitments (plural)
+\providecommand{\VC}{\inmathsf{VC}} % Vector Commitments
+\providecommand{\ZKPs}{\inmathsf{ZKPs}} % Zero-Knowledge Proofs (plural)
+\providecommand{\zkps}{\ZKPs} % Zero-Knowledge Proofs (plural)
+\providecommand{\ZKP}{\inmathsf{ZKP}} % Zero-Knowledge Proofs
+\providecommand{\zkp}{\ZKP} % Zero-Knowledge Proof
+\providecommand{\ZK}{\inmathsf{ZK}} % Zero-Knowledge
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Logical Operations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand{\AND}{\inmathsf{AND}} % Logical AND
+\renewcommand{\NOT}{\inmathsf{NOT}} % Logical NOT
+\renewcommand{\OR}{\inmathsf{OR}} % Logical OR
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Complexity Classes
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Note: The \usepackage[full]{complexity} package defines most commands for complexity classes. 
+% The following commands extend these definitions.
+
+% Complexity Class Definitions
+\providecommand{\coRPP}{\ComplexityFont{coRPP}} % coRPP: Complement decidable by probabilistic polynomial-time
+\providecommand{\DRMA}{\ComplexityFont{DRMA}} % Decision Rational Merlin-Arthur class
+\providecommand{\EXPpoly}{\EXP/\poly} % EXP/poly: EXP with polynomial advice
+\providecommand{\EXPTIME}{\ComplexityFont{EXPTIME}} % EXPTIME: Exponential time
+\providecommand{\FRMA}{\ComplexityFont{FRMA}} % Function Rational Merlin-Arthur class
+\providecommand{\IPP}{\ComplexityFont{IPP}} % Proofs of Proximity
+\providecommand{\MRIP}{\ComplexityFont{MRIP}} % Multi-Rational Interactive Proofs
+\providecommand{\MRNIP}{\ComplexityFont{MRNIP}} % Multi-Rational Non-Interactive Proofs
+\providecommand{\NEXPTIME}{\ComplexityFont{NEXPTIME}} % NEXPTIME: Non-deterministic exponential time
+\providecommand{\NIPP}{\ComplexityFont{NIPP}} % Non-Interactive Proofs of Proximity
+\providecommand{\NPpoly}{\NP/\poly} % NP/poly: NP with polynomial advice
+\providecommand{\PRIMES}{\ComplexityFont{PRIMES}} % PRIMES: Primality testing
+\providecommand{\PSPACEpoly}{\PSPACE/\poly} % PSPACE/poly: PSPACE with polynomial advice
+\providecommand{\RIP}{\ComplexityFont{RIP}} % Rational Interactive Proofs
+\providecommand{\RNIP}{\ComplexityFont{RNIP}} % Rational Non-Interactive Proofs
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Turing Machines and Languages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\Lang}{\ensuremath{L}} % Formal language
+\providecommand{\CIRSAT}{\ComplexityFont{CIRCUIT\mathhyphen\SAT}} % Circuit satisfiability
+\providecommand{\NTM}{\inmathsf{N}} % Non-deterministic Turing machine
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Mathematical Functions and Constants
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\half}{\ensuremath{\frac{1}{2}}\xspace} % One half
+\providecommand{\funcDomain}{\inmathcal{F}} % Function domain
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Probability
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand{\Pr}{\inmathsf{Prob}} % Probability
+\renewcommand{\E}{\inmathbb{E}} % Expectation
+\providecommand{\expec}[1]{\ensuremath{\E\left[{#1}\right]}} % Expectation with entry
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Mathematical Operations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand{\argmin}{\inmathsf{arg\:min}} % Argument of minimum
+\renewcommand{\argmax}{\inmathsf{arg\:max}} % Argument of maximum
+\renewcommand{\gcd}{\inmathsf{gcd}} % Greatest common divisor
+\providecommand{\lcm}{\inmathsf{lcm}} % Least common multiple
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Set Theory and Interval Notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand{\set}[1]{\ensuremath{\left\{#1\right\}}} % Set notation
+\renewcommand{\floor}[1]{\ensuremath{\left\lfloor #1 \right\rfloor}} % Floor function
+\renewcommand{\ceil}[1]{\ensuremath{\left\lceil #1 \right\rceil}} % Ceiling function
+\renewcommand{\abs}[1]{\ensuremath{\left|#1\right|}} % Absolute value
+\providecommand{\paren}[1]{\ensuremath{\left(#1\right)}} % Parentheses
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Number Sets and Fields
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand{\R}{\inmathbb{R}} % Real numbers
+\renewcommand{\C}{\inmathbb{C}} % Complex numbers
+\providecommand{\N}{\inmathbb{N}} % Natural numbers
+\providecommand{\Z}{\inmathbb{Z}} % Integers
+\providecommand{\Q}{\inmathbb{Q}} % Rational numbers
+\providecommand{\Imag}{\inmathbb{I}} % Imaginary numbers
+\providecommand{\F}{\inmathbb{F}} % Generic field
+\providecommand{\GF}[1]{\inmathbb{GF}_{#1}} % Galois field
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Combinatorics
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\nPr}[2]{{#1}P{#2}} % Permutations
+\providecommand{\nPrf}[2]{\frac{#1!}{(#1-#2)!}} % Permutations (factorials)
+\providecommand{\nCr}[2]{{#1}C{#2}} % Combinations
+\providecommand{\nCrf}[2]{\frac{#1!}{(#1-#2)!#2!}} % Combinations (factorials)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Calculus and Analysis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\dd}{\inmathrm{d}} % Differential operator
+\providecommand{\ddiff}[2]{\frac{\diff{#1}}{\diff{#2}}} % Differential quotient
+\providecommand{\pdiff}[2]{\frac{\partial{#1}}{\partial{#2}}} % Partial derivative
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Miscellaneous
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand*{\code}[1]{{\ttfamily #1}} % Code formatting
+\mathchardef\mathhyphen="2D % Hyphen in math
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Trigonometric Functions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand{\arcsin}{\sin^{-1}} % Inverse sine
+\renewcommand{\arccos}{\cos^{-1}} % Inverse cosine
+\renewcommand{\arctan}{\tan^{-1}} % Inverse tangent
+\providecommand{\arccot}{\cot^{-1}} % Inverse cotangent
+\providecommand{\arcsec}{\sec^{-1}} % Inverse secant
+\providecommand{\arccsc}{\csc^{-1}} % Inverse cosecant
+\providecommand{\arsinh}{\sinh^{-1}} % Hyperbolic inverse sine
+\providecommand{\arcosh}{\cosh^{-1}} % Hyperbolic inverse cosine
+\providecommand{\artanh}{\tanh^{-1}} % Hyperbolic inverse tangent
+\providecommand{\arcoth}{\coth^{-1}} % Hyperbolic inverse cotangent
+\providecommand{\arsech}{\sech^{-1}} % Hyperbolic inverse secant
+\providecommand{\arcsch}{\csch^{-1}} % Hyperbolic inverse cosecant
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Vector Notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand{\i}{\hat{i}} % Unit vector \( \hat{i} \)
+\renewcommand{\j}{\hat{j}} % Unit vector \( \hat{j} \)
+\renewcommand{\k}{\hat{k}} % Unit vector \( \hat{k} \)
+
+\providecommand{\avec}{\asvector{a}} % Vector a
+\providecommand{\bvec}{\asvector{b}} % Vector b
+\providecommand{\cvec}{\asvector{c}} % Vector c
+\providecommand{\dvec}{\asvector{d}} % Vector d
+\providecommand{\evec}{\asvector{e}} % Vector e
+\providecommand{\fvec}{\asvector{f}} % Vector f
+\providecommand{\gvec}{\asvector{g}} % Vector g
+\providecommand{\hvec}{\asvector{h}} % Vector h
+\providecommand{\ivec}{\asvector{i}} % Vector i
+\providecommand{\jvec}{\asvector{j}} % Vector j
+\providecommand{\kvec}{\asvector{k}} % Vector k
+\providecommand{\lvec}{\asvector{l}} % Vector l
+\providecommand{\mvec}{\asvector{m}} % Vector m
+\providecommand{\nvec}{\asvector{n}} % Vector n
+\providecommand{\ovec}{\asvector{o}} % Vector o
+\providecommand{\pvec}{\asvector{p}} % Vector p
+\providecommand{\qvec}{\asvector{q}} % Vector q
+\providecommand{\rvec}{\asvector{r}} % Vector r
+\providecommand{\svec}{\asvector{s}} % Vector s
+\providecommand{\tvec}{\asvector{t}} % Vector t
+\providecommand{\uvec}{\asvector{u}} % Vector u
+\providecommand{\vvec}{\asvector{v}} % Vector v
+\providecommand{\wvec}{\asvector{w}} % Vector w
+\providecommand{\xvec}{\asvector{x}} % Vector x
+\providecommand{\yvec}{\asvector{y}} % Vector y
+\providecommand{\zvec}{\asvector{z}} % Vector z
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Boldface Letters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\bfa}{\inmathbf{a}} % Boldface letter 'a'
+\providecommand{\bfb}{\inmathbf{b}} % Boldface letter 'b'
+\providecommand{\bfc}{\inmathbf{c}} % Boldface letter 'c'
+\providecommand{\bfd}{\inmathbf{d}} % Boldface letter 'd'
+\providecommand{\bfe}{\inmathbf{e}} % Boldface letter 'e'
+\providecommand{\bff}{\inmathbf{f}} % Boldface letter 'f'
+\providecommand{\bfg}{\inmathbf{g}} % Boldface letter 'g'
+\providecommand{\bfh}{\inmathbf{h}} % Boldface letter 'h'
+\providecommand{\bfi}{\inmathbf{i}} % Boldface letter 'i'
+\providecommand{\bfj}{\inmathbf{j}} % Boldface letter 'j'
+\providecommand{\bfk}{\inmathbf{k}} % Boldface letter 'k'
+\providecommand{\bfl}{\inmathbf{l}} % Boldface letter 'l'
+\providecommand{\bfm}{\inmathbf{m}} % Boldface letter 'm'
+\providecommand{\bfn}{\inmathbf{n}} % Boldface letter 'n'
+\providecommand{\bfo}{\inmathbf{o}} % Boldface letter 'o'
+\providecommand{\bfp}{\inmathbf{p}} % Boldface letter 'p'
+\providecommand{\bfq}{\inmathbf{q}} % Boldface letter 'q'
+\providecommand{\bfr}{\inmathbf{r}} % Boldface letter 'r'
+\providecommand{\bfs}{\inmathbf{s}} % Boldface letter 's'
+\providecommand{\bft}{\inmathbf{t}} % Boldface letter 't'
+\providecommand{\bfu}{\inmathbf{u}} % Boldface letter 'u'
+\providecommand{\bfv}{\inmathbf{v}} % Boldface letter 'v'
+\providecommand{\bfw}{\inmathbf{w}} % Boldface letter 'w'
+\providecommand{\bfx}{\inmathbf{x}} % Boldface letter 'x'
+\providecommand{\bfy}{\inmathbf{y}} % Boldface letter 'y'
+\providecommand{\bfz}{\inmathbf{z}} % Boldface letter 'z'
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Upright Letters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\rma}{\inmathrm{a}} % Upright letter 'a'
+\providecommand{\rmb}{\inmathrm{b}} % Upright letter 'b'
+\providecommand{\rmc}{\inmathrm{c}} % Upright letter 'c'
+\providecommand{\rmd}{\inmathrm{d}} % Upright letter 'd'
+\providecommand{\rme}{\inmathrm{e}} % Upright letter 'e'
+\providecommand{\rmf}{\inmathrm{f}} % Upright letter 'f'
+\providecommand{\rmg}{\inmathrm{g}} % Upright letter 'g'
+\providecommand{\rmh}{\inmathrm{h}} % Upright letter 'h'
+\providecommand{\rmi}{\inmathrm{i}} % Upright letter 'i'
+\providecommand{\rmj}{\inmathrm{j}} % Upright letter 'j'
+\providecommand{\rmk}{\inmathrm{k}} % Upright letter 'k'
+\providecommand{\rml}{\inmathrm{l}} % Upright letter 'l'
+\providecommand{\rmm}{\inmathrm{m}} % Upright letter 'm'
+\providecommand{\rmn}{\inmathrm{n}} % Upright letter 'n'
+\providecommand{\rmo}{\inmathrm{o}} % Upright letter 'o'
+\providecommand{\rmp}{\inmathrm{p}} % Upright letter 'p'
+\providecommand{\rmq}{\inmathrm{q}} % Upright letter 'q'
+\providecommand{\rmr}{\inmathrm{r}} % Upright letter 'r'
+\providecommand{\rms}{\inmathrm{s}} % Upright letter 's'
+\providecommand{\rmt}{\inmathrm{t}} % Upright letter 't'
+\providecommand{\rmu}{\inmathrm{u}} % Upright letter 'u'
+\providecommand{\rmv}{\inmathrm{v}} % Upright letter 'v'
+\providecommand{\rmw}{\inmathrm{w}} % Upright letter 'w'
+\providecommand{\rmx}{\inmathrm{x}} % Upright letter 'x'
+\providecommand{\rmy}{\inmathrm{y}} % Upright letter 'y'
+\providecommand{\rmz}{\inmathrm{z}} % Upright letter 'z'
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Upright Letters in Math Mode
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\rmA}{\inmathrm{A}} % Upright letter 'A'
+\providecommand{\rmB}{\inmathrm{B}} % Upright letter 'B'
+\providecommand{\rmC}{\inmathrm{C}} % Upright letter 'C'
+\providecommand{\rmD}{\inmathrm{D}} % Upright letter 'D'
+\providecommand{\rmE}{\inmathrm{E}} % Upright letter 'E'
+\providecommand{\rmF}{\inmathrm{F}} % Upright letter 'F'
+\providecommand{\rmG}{\inmathrm{G}} % Upright letter 'G'
+\providecommand{\rmH}{\inmathrm{H}} % Upright letter 'H'
+\providecommand{\rmI}{\inmathrm{I}} % Upright letter 'I'
+\providecommand{\rmJ}{\inmathrm{J}} % Upright letter 'J'
+\providecommand{\rmK}{\inmathrm{K}} % Upright letter 'K'
+\providecommand{\rmL}{\inmathrm{L}} % Upright letter 'L'
+\providecommand{\rmM}{\inmathrm{M}} % Upright letter 'M'
+\providecommand{\rmN}{\inmathrm{N}} % Upright letter 'N'
+\providecommand{\rmO}{\inmathrm{O}} % Upright letter 'O'
+\providecommand{\rmP}{\inmathrm{P}} % Upright letter 'P'
+\providecommand{\rmQ}{\inmathrm{Q}} % Upright letter 'Q'
+\providecommand{\rmR}{\inmathrm{R}} % Upright letter 'R'
+\providecommand{\rmS}{\inmathrm{S}} % Upright letter 'S'
+\providecommand{\rmT}{\inmathrm{T}} % Upright letter 'T'
+\providecommand{\rmU}{\inmathrm{U}} % Upright letter 'U'
+\providecommand{\rmV}{\inmathrm{V}} % Upright letter 'V'
+\providecommand{\rmW}{\inmathrm{W}} % Upright letter 'W'
+\providecommand{\rmX}{\inmathrm{X}} % Upright letter 'X'
+\providecommand{\rmY}{\inmathrm{Y}} % Upright letter 'Y'
+\providecommand{\rmZ}{\inmathrm{Z}} % Upright letter 'Z'
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Boldface Letters in Math Mode
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\bfA}{\inmathbf{A}} % Boldface letter 'A'
+\providecommand{\bfB}{\inmathbf{B}} % Boldface letter 'B'
+\providecommand{\bfC}{\inmathbf{C}} % Boldface letter 'C'
+\providecommand{\bfD}{\inmathbf{D}} % Boldface letter 'D'
+\providecommand{\bfE}{\inmathbf{E}} % Boldface letter 'E'
+\providecommand{\bfF}{\inmathbf{F}} % Boldface letter 'F'
+\providecommand{\bfG}{\inmathbf{G}} % Boldface letter 'G'
+\providecommand{\bfH}{\inmathbf{H}} % Boldface letter 'H'
+\providecommand{\bfI}{\inmathbf{I}} % Boldface letter 'I'
+\providecommand{\bfJ}{\inmathbf{J}} % Boldface letter 'J'
+\providecommand{\bfK}{\inmathbf{K}} % Boldface letter 'K'
+\providecommand{\bfL}{\inmathbf{L}} % Boldface letter 'L'
+\providecommand{\bfM}{\inmathbf{M}} % Boldface letter 'M'
+\providecommand{\bfN}{\inmathbf{N}} % Boldface letter 'N'
+\providecommand{\bfO}{\inmathbf{O}} % Boldface letter 'O'
+\providecommand{\bfP}{\inmathbf{P}} % Boldface letter 'P'
+\providecommand{\bfQ}{\inmathbf{Q}} % Boldface letter 'Q'
+\providecommand{\bfR}{\inmathbf{R}} % Boldface letter 'R'
+\providecommand{\bfS}{\inmathbf{S}} % Boldface letter 'S'
+\providecommand{\bfT}{\inmathbf{T}} % Boldface letter 'T'
+\providecommand{\bfU}{\inmathbf{U}} % Boldface letter 'U'
+\providecommand{\bfV}{\inmathbf{V}} % Boldface letter 'V'
+\providecommand{\bfW}{\inmathbf{W}} % Boldface letter 'W'
+\providecommand{\bfX}{\inmathbf{X}} % Boldface letter 'X'
+\providecommand{\bfY}{\inmathbf{Y}} % Boldface letter 'Y'
+\providecommand{\bfZ}{\inmathbf{Z}} % Boldface letter 'Z'
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Blackboard Bold Letters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\bbA}{\inmathbb{A}} % Blackboard bold letter 'A'
+\providecommand{\bbB}{\inmathbb{B}} % Blackboard bold letter 'B'
+\providecommand{\bbC}{\inmathbb{C}} % Blackboard bold letter 'C'
+\providecommand{\bbD}{\inmathbb{D}} % Blackboard bold letter 'D'
+\providecommand{\bbE}{\inmathbb{E}} % Blackboard bold letter 'E'
+\providecommand{\bbF}{\inmathbb{F}} % Blackboard bold letter 'F'
+\providecommand{\bbG}{\inmathbb{G}} % Blackboard bold letter 'G'
+\providecommand{\bbH}{\inmathbb{H}} % Blackboard bold letter 'H'
+\providecommand{\bbI}{\inmathbb{I}} % Blackboard bold letter 'I'
+\providecommand{\bbJ}{\inmathbb{J}} % Blackboard bold letter 'J'
+\providecommand{\bbK}{\inmathbb{K}} % Blackboard bold letter 'K'
+\providecommand{\bbL}{\inmathbb{L}} % Blackboard bold letter 'L'
+\providecommand{\bbM}{\inmathbb{M}} % Blackboard bold letter 'M'
+\providecommand{\bbN}{\inmathbb{N}} % Blackboard bold letter 'N'
+\providecommand{\bbO}{\inmathbb{O}} % Blackboard bold letter 'O'
+\providecommand{\bbP}{\inmathbb{P}} % Blackboard bold letter 'P'
+\providecommand{\bbQ}{\inmathbb{Q}} % Blackboard bold letter 'Q'
+\providecommand{\bbR}{\inmathbb{R}} % Blackboard bold letter 'R'
+\providecommand{\bbS}{\inmathbb{S}} % Blackboard bold letter 'S'
+\providecommand{\bbT}{\inmathbb{T}} % Blackboard bold letter 'T'
+\providecommand{\bbU}{\inmathbb{U}} % Blackboard bold letter 'U'
+\providecommand{\bbV}{\inmathbb{V}} % Blackboard bold letter 'V'
+\providecommand{\bbW}{\inmathbb{W}} % Blackboard bold letter 'W'
+\providecommand{\bbX}{\inmathbb{X}} % Blackboard bold letter 'X'
+\providecommand{\bbY}{\inmathbb{Y}} % Blackboard bold letter 'Y'
+\providecommand{\bbZ}{\inmathbb{Z}} % Blackboard bold letter 'Z'
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Calligraphic Letters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\calA}{\inmathcal{A}} % Calligraphic letter 'A'
+\providecommand{\calB}{\inmathcal{B}} % Calligraphic letter 'B'
+\providecommand{\calC}{\inmathcal{C}} % Calligraphic letter 'C'
+\providecommand{\calD}{\inmathcal{D}} % Calligraphic letter 'D'
+\providecommand{\calE}{\inmathcal{E}} % Calligraphic letter 'E'
+\providecommand{\calF}{\inmathcal{F}} % Calligraphic letter 'F'
+\providecommand{\calG}{\inmathcal{G}} % Calligraphic letter 'G'
+\providecommand{\calH}{\inmathcal{H}} % Calligraphic letter 'H'
+\providecommand{\calI}{\inmathcal{I}} % Calligraphic letter 'I'
+\providecommand{\calJ}{\inmathcal{J}} % Calligraphic letter 'J'
+\providecommand{\calK}{\inmathcal{K}} % Calligraphic letter 'K'
+\providecommand{\calL}{\inmathcal{L}} % Calligraphic letter 'L'
+\providecommand{\calM}{\inmathcal{M}} % Calligraphic letter 'M'
+\providecommand{\calN}{\inmathcal{N}} % Calligraphic letter 'N'
+\providecommand{\calO}{\inmathcal{O}} % Calligraphic letter 'O'
+\providecommand{\calP}{\inmathcal{P}} % Calligraphic letter 'P'
+\providecommand{\calQ}{\inmathcal{Q}} % Calligraphic letter 'Q'
+\providecommand{\calR}{\inmathcal{R}} % Calligraphic letter 'R'
+\providecommand{\calS}{\inmathcal{S}} % Calligraphic letter 'S'
+\providecommand{\calT}{\inmathcal{T}} % Calligraphic letter 'T'
+\providecommand{\calU}{\inmathcal{U}} % Calligraphic letter 'U'
+\providecommand{\calV}{\inmathcal{V}} % Calligraphic letter 'V'
+\providecommand{\calW}{\inmathcal{W}} % Calligraphic letter 'W'
+\providecommand{\calX}{\inmathcal{X}} % Calligraphic letter 'X'
+\providecommand{\calY}{\inmathcal{Y}} % Calligraphic letter 'Y'
+\providecommand{\calZ}{\inmathcal{Z}} % Calligraphic letter 'Z'
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Fraktur Letters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\frakA}{\inmathfrak{A}} % Fraktur letter 'A'
+\providecommand{\frakB}{\inmathfrak{B}} % Fraktur letter 'B'
+\providecommand{\frakC}{\inmathfrak{C}} % Fraktur letter 'C'
+\providecommand{\frakD}{\inmathfrak{D}} % Fraktur letter 'D'
+\providecommand{\frakE}{\inmathfrak{E}} % Fraktur letter 'E'
+\providecommand{\frakF}{\inmathfrak{F}} % Fraktur letter 'F'
+\providecommand{\frakG}{\inmathfrak{G}} % Fraktur letter 'G'
+\providecommand{\frakH}{\inmathfrak{H}} % Fraktur letter 'H'
+\providecommand{\frakI}{\inmathfrak{I}} % Fraktur letter 'I'
+\providecommand{\frakJ}{\inmathfrak{J}} % Fraktur letter 'J'
+\providecommand{\frakK}{\inmathfrak{K}} % Fraktur letter 'K'
+\providecommand{\frakL}{\inmathfrak{L}} % Fraktur letter 'L'
+\providecommand{\frakM}{\inmathfrak{M}} % Fraktur letter 'M'
+\providecommand{\frakN}{\inmathfrak{N}} % Fraktur letter 'N'
+\providecommand{\frakO}{\inmathfrak{O}} % Fraktur letter 'O'
+\providecommand{\frakP}{\inmathfrak{P}} % Fraktur letter 'P'
+\providecommand{\frakQ}{\inmathfrak{Q}} % Fraktur letter 'Q'
+\providecommand{\frakR}{\inmathfrak{R}} % Fraktur letter 'R'
+\providecommand{\frakS}{\inmathfrak{S}} % Fraktur letter 'S'
+\providecommand{\frakT}{\inmathfrak{T}} % Fraktur letter 'T'
+\providecommand{\frakU}{\inmathfrak{U}} % Fraktur letter 'U'
+\providecommand{\frakV}{\inmathfrak{V}} % Fraktur letter 'V'
+\providecommand{\frakW}{\inmathfrak{W}} % Fraktur letter 'W'
+\providecommand{\frakX}{\inmathfrak{X}} % Fraktur letter 'X'
+\providecommand{\frakY}{\inmathfrak{Y}} % Fraktur letter 'Y'
+\providecommand{\frakZ}{\inmathfrak{Z}} % Fraktur letter 'Z'
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Latin Abbreviations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\aew}{a.e.\xspace} % Almost everywhere
+\providecommand{\aka}{a.k.a.\xspace} % Also known as
+\providecommand{\cf}{cf.\xspace} % Compare
+\providecommand{\eg}{e.g.,\xspace} % For example
+\providecommand{\etal}{et al.\xspace} % And others
+\providecommand{\etc}{etc.\xspace} % Et cetera
+\providecommand{\ie}{i.e.,\xspace} % That is
+\providecommand{\nb}{N.B.\xspace} % Note well
+\providecommand{\qed}{\ensuremath{\mathsf{QED}}\xspace} % Quod Erat Demonstrandum
+\providecommand{\st}{s.t.\xspace} % Such that
+\providecommand{\viz}{viz.\xspace} % Namely
+\providecommand{\vs}{vs.\xspace} % Versus
+\providecommand{\wlog}{w.l.o.g.\xspace} % Without loss of generality
+\providecommand{\wrt}{w.r.t.\xspace} % With respect to
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% English Abbreviations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\dr}{Dr.\xspace} % Doctor
+\providecommand{\jr}{Jr.\xspace} % Junior
+\providecommand{\mrs}{Mrs.\xspace} % Missis
+\providecommand{\mr}{Mr.\xspace} % Mister
+\providecommand{\ms}{Ms.\xspace} % Miss
+\providecommand{\sr}{Sr.\xspace} % Senior
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Academic Abbreviations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\assocprof}{Assoc.\ Prof.\xspace} % Associate Professor
+\providecommand{\asstprof}{Asst.\ Prof.\xspace} % Assistant Professor
+\providecommand{\lect}{Lect.\xspace} % Lecturer
+\providecommand{\prof}{Prof.\xspace} % Professor
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Titles and Honors
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\ba}{B.A.\xspace} % Bachelor of Arts
+\providecommand{\bsc}{B.Sc.\xspace} % Bachelor of Science
+\providecommand{\eng}{Eng.\xspace} % Engineer
+\providecommand{\jd}{J.D.\xspace} % Doctor of Law
+\providecommand{\ma}{M.A.\xspace} % Master of Arts
+\providecommand{\mba}{M.B.A.\xspace} % Master of Business Administration
+\providecommand{\md}{M.D.\xspace} % Doctor of Medicine
+\providecommand{\msc}{M.Sc.\xspace} % Master of Science
+\providecommand{\phd}{Ph.D.\xspace} % Doctor of Philosophy
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Time and Date
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\ad}{A.D.\xspace} % Anno Domini
+\providecommand{\am}{a.m.\xspace} % Ante Meridiem
+\providecommand{\bc}{B.C.\xspace} % Before Christ
+\providecommand{\pmtime}{p.m.\xspace} % Post Meridiem
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Miscellaneous
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\ap}{A/p\xspace} % Attention
+\providecommand{\comp}{Co.\xspace} % Company
+\providecommand{\deptof}{Dept.~of\xspace} % Department of
+\providecommand{\dept}{Dept.\xspace} % Department
+\providecommand{\eds}{Eds.\xspace} % Editors
+\providecommand{\ed}{Ed.\xspace} % Editor
+\providecommand{\etcet}{etc.\xspace} % Etcetera
+\providecommand{\fax}{Fax\xspace} % Fax
+\providecommand{\ph}{Ph\xspace} % Phone
+\providecommand{\rf}{R/F\xspace} % Reference
+\providecommand{\tel}{Tel\xspace} % Telephone
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Commands for Text Formatting
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\strike}{\bgroup\ULdepth=-.55ex\ULset} % Strike-through text
+\providecommand{\cat}[1]{\ensuremath{\mathsf{#1}}} % Format for category names
+% Define the \term command to index terms only in the 'book' class
+\providecommand{\term}[1]{%
+	\textit{#1}%
+	\ifx\documentclass\book\index{#1}\fi
+} % Italicize and index terms
+\providecommand{\keyword}[1]{\textsf{#1}} % Format for keywords
+\providecommand{\missing}[1]{{\color{red}#1}} % Highlight missing or problematic text
+\@ifpackageloaded{hyperref}{}{
+	\providecommand{\urlref}[1]{\href{#1}{#1}} % Hyperlinked URLs
+}
+\providecommand{\missingcitation}{\code{\small\color{red}<Citation Missing>}} % Format for missing citations
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\endinput
