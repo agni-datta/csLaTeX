@@ -1,166 +1,202 @@
 ---
-title: Package Typesetting Book for Computer Science (`csbook.sty`)
-linter-yaml-title-alias: Package Typesetting Book for Computer Science (`csbook.sty`)
+title: A Group of LaTeX Packages
+linter-yaml-title-alias: A Group of LaTeX Packages
 date created: Sunday, May 19th 2024, 08:13:05
-date modified: Sunday, May 19th 2024, 08:26:23
-aliases: [Package Typesetting Book for Computer Science (`csbook.sty`)]
+date modified: Thursday, August 8th 2024, 15:43:32
+aliases: [A Group of LaTeX Packages]
 ---
 
-# Package Typesetting Book for Computer Science (`csbook.sty`)
+# A Group of LaTeX Packages
 
-**Author:** Agni Datta  
-**Version:** 1.0  
-**Date:** 2024/03/25
+## Overview (`csbook.sty`) for Typesetting Computer Science Books
 
-## Overview
+The `csbook` package provides a comprehensive set of tools and environments for creating academic books and documents in the field of computer science. It aims to streamline the creation process while maintaining a professional and visually appealing output.
 
-The `csbook` LaTeX package is designed for typesetting computer science books. It provides a comprehensive set of tools and functionalities tailored to the needs of authors and publishers in the field of computer science.
+## Key Features
 
-- **Language Settings:** Support for British English language settings.
-- **Quotations:** Enhanced handling of quotations with the `csquotes` package.
-- **Micro Typographic Enhancements:** Fine-tuning of typographic details using `microtype`.
-- **Line Spacing:** Consistent one-and-a-half line spacing throughout the document.
-- **Colour Support:** Extensive colour support with predefined colour palettes.
-- **Font Encoding and Math:** Enhanced math capabilities and additional mathematical symbols.
-- **Font Selection:** Flexible font selection with support for Times-like fonts.
-- **Index Support:** Seamless integration with index creation using `imakeidx`.
-- **Hyperlinks and Metadata:** Customizable hyperlinks and metadata for PDF output.
-- **Page Layout:** Adjustable page layout settings with `geometry`.
-- **Text Justification:** Advanced support for text justification using `ragged2e`.
-- **Footnote Management:** Fine-grained control over footnote placement and formatting.
-- **Page Break Management:** Control over page breaks using `needspace`.
-- **Framed Environments:** Creation of customizable framed environments with `mdframed`.
-- **List Customization:** Enhanced customization options for lists with `enumitem`.
-- **Table Formatting:** Professional-quality table formatting with `booktabs`.
-- **Graphics Support:** Extensive support for graphics and image inclusion.
-- **Float Placement:** Control over the placement of floating objects using `float`.
-- **Algorithms Typesetting:** Stylish typesetting of algorithms with `algorithm2e`.
-- **Drawing and Diagrams:** Powerful drawing and diagram creation with `tikz` and `pgfplots`.
-- **To-Do Notes:** Integration of to-do notes with `todonotes` and custom `\mynotes` command.
-- **Glossary and Acronym Support:** Comprehensive support for glossaries and acronyms.
-- **Epigraphs and Dedications:** Easy inclusion of epigraphs and dedications.
-- **Custom Chapter Formatting:** Flexible customization options for chapter formatting.
-- **Theorem Environments:** Creation of theorem environments with `tcolorbox`.
-- **Citations and Bibliography:** Management of citations and bibliography with `biblatex`.
-- **Abstract Environment:** Definition of an abstract environment with appropriate formatting.
-- **Spacing Adjustment:** Fine-tuning of spacing around equations and between lines.
-- **Widows and Orphans Control:** Prevention of widows and orphans in the document.
-- **Penalty Adjustment:** Control over penalties for equation breaking and line wrapping.
-- **Custom Title Formatting:** Redefinition of the title formatting command.
+- Customizable chapter, section, and subsection formatting with accent colours
+- Robust support for theorem, definition, and other specialized environments with coloured boxes
+- Flexible handling of tables, figures, and subfigures with enhanced captions
+- Extensive bibliography management with BibLaTeX, including back-references and citation styling
+- Convenient commands for creating abstracts, appendices, dedications, and epigraphs
+- Seamless integration with common LaTeX packages and libraries for additional functionality
+- Support for various font styles and sizes, including monospace for code snippets
+- Micro-typographic enhancements for improved typography and aesthetics
+- Automatic indexing and glossary support for terms and acronyms
+- Versatile drawing and diagram capabilities using TikZ and pgfplots
 
 ## Usage
 
-To use the `csbook` package, simply include it in your LaTeX document preamble as follows:
+1. Load the package in the preamble using `\RequirePackage{csbook}`.
+2. Utilize the provided environments and commands to structure and format your document.
+
+## Available Environments
+
+The package defines a wide range of environments for various content types:
+
+- Theorem-like environments: `theorem`, `lemma`, `corollary`, `proposition`, `claim`, `conjecture`
+- Definition-like environments: `definition`, `example`, `remark`, `fact`, `note`, `question`
+- Miscellaneous environments: `case`, `exercise`, `problem`, `property`, `solution`
+- Emphasis environments: `important`, `keypoint`, `highlight`
+
+Each environment can be customized with a specific background colour, title font colour, and content font style.
+
+## Commands
+
+The package provides several custom commands, including:
+
+- `\code{…}`: Formats code snippets with a monospace font.
+- `\igls{…}`: Indexes a given label and expands the associated acronym.
+- `\dedication{…}{…}`: Formats individual dedication entries.
+- `\generateDedications{…}`: Generates the complete set of dedications.
+- `\subtitle{…}`: Defines the subtitle of the document.
+
+## Options
+
+The package supports the following options:
+
+- `normalthm`: Use the default LaTeX theorem environments.
+- `fancythm`: Use the custom colored theorem environments.
+
+## Dependencies
+
+The `csbook` package requires a comprehensive set of LaTeX packages, including:
+
+- Engine detection: `ifxetex`, `ifluatex`
+- Advanced programming: `etoolbox`, `xpatch`, `xkeyval`, `kvoptions`
+- Color support: `xcolor`
+- PDF management: `bxpdfver`
+- Language and typography: `babel`, `csquotes`, `microtype`
+- Formatting and spacing: `indentfirst`, `needspace`
+- Math support: `amsmath`, `amsfonts`, `amssymb`, `amsthm`, `unicode-math`
+- Font selection: `biolinum`, `Fira Mono`, `mathalpha`, `nicefrac`
+- Page layout: `geometry`, `fancyhdr`
+- Sectioning customization: `titlesec`
+- Table of contents: `tocloft`
+- Todo notes: `todonotes`
+- Index support: `imakeidx`
+- Hyperlinks and cross-references: `hyperref`, `cleveref`, `url`
+- List customization: `enumitem`
+- Algorithms: `algorithm2e`
+- Framed environments: `mdframed`, `tcolorbox`
+- Text justification and footnotes: `ragged2e`, `footnote`, `footmisc`, `multicol`, `multirow`
+- Tables, figures, and captions: `array`, `booktabs`, `longtable`, `float`, `graphicx`, `caption`, `subcaption`, `tabularx`, `wrapfig`
+- Appendices: `appendix`
+- Unformatted text and code: `verbatim`
+- Drawings and diagrams: `tikz`, `pgfplots`
+- Glossary and acronym support: `glossaries-extra`
+- Bibliography management: `biblatex`
+
+## Examples
+
+Here’s an example of how to use the `csbook` package:
 
 ```latex
-% Example Usage of the csbook LaTeX Package
-%
-% This document serves as a generic template demonstrating the usage of the csbook package
-% for typesetting books, particularly useful for academic publications, research papers, or textbooks.
-% The csbook package provides various environments, commands, and styles tailored for such purposes.
-%
-% Usage:
-% 1. Ensure you have the csbook package installed in your LaTeX distribution.
-% 2. Include the csbook package in your LaTeX document preamble.
-% 3. Utilize the provided environments and commands to structure your document.
-% 4. Customize the document metadata such as title, author, date, etc., according to your requirements.
-% 5. Populate your document with content, including front matter, main matter, and back matter.
-% 6. Compile the LaTeX document using your preferred LaTeX compiler.
-%
-% Note: This template includes commented-out sections for various parts of a typical book structure,
-%       such as front matter, main matter, appendices, and back matter. Uncomment and customize these
-%       sections as needed for your specific document.
-%
-% Author: [Your Name]
-% Date: [Date]
+\documentclass{book}
+\RequirePackage{csbook}
 
-\documentclass[twoside]{book}
-
-% Load the csbook package
-\usepackage{csbook}
-
-% Input custom acronyms and glossaries
-\input{BackMatter/acronyms}
-\input{BackMatter/glossaries}
-
-% Document metadata
-\title{[Your Book Title]}
-\subtitle{[Subtitle, if any]}
-\author{[Author Names]}
-\date{{\textcopyright} Drafted on \today}
+\title{Introduction to Computer Science}
+\subtitle{A Comprehensive Guide}
+\author{John Doe}
+\date{\today}
 
 \begin{document}
 \maketitle
-\pagestyle{empty}
 
-% Front Matter
-\frontmatter
-\include{FrontMatter/dedication}    % Dedication page
-\include{FrontMatter/epigraph}       % Epigraph page
-\pagestyle{plain}
-\include{FrontMatter/foreword}       % Foreword
-\include{FrontMatter/preface}        % Preface
-\include{FrontMatter/acknowledgement}% Acknowledgement
-{\textsf{\tableofcontents}}          % Table of contents
+\begin{abstract}
+This book provides a comprehensive introduction to the field of computer science, covering fundamental concepts, algorithms, and programming techniques.
+\end{abstract}
 
-% Main Matter
-\pagestyle{fancy}
-\mainmatter
-\part{Preliminaries}
-\include{MainMatter/Chapter1}        % Chapter 1
-% Uncomment and add more chapters as needed
+\chapter{Algorithms and Data Structures}
+\begin{theorem}
+The time complexity of the sorting algorithm is $O(n \log n)$.
+\end{theorem}
 
-% \part{Operating Systems Forensics}
-% \include{MainMatter/Chapter4}
-% \include{MainMatter/Chapter5}
-% \include{MainMatter/Chapter6}
+\begin{definition}
+A binary search tree is a data structure that allows for efficient searching, insertion, and deletion of elements.
+\end{definition}
 
-% \part{Special Fields Forensics}
-% \include{MainMatter/Chapter7}
-% \include{MainMatter/Chapter8}
-% \include{MainMatter/Chapter9}
-% \include{MainMatter/Chapter10}
-% \include{MainMatter/Chapter11}
-% \include{MainMatter/Chapter21}
-% \include{MainMatter/Chapter12}
-% \include{MainMatter/Chapter13}
-% \include{MainMatter/Chapter14}
+% Add more content here…
 
-% \part{Tools and Frameworks}
-% \include{MainMatter/Chapter15}
-% \include{MainMatter/Chapter16}
-% \include{MainMatter/Chapter17}
-
-% \part{Case Studies}
-% \include{MainMatter/Chapter18}
-% \include{MainMatter/Chapter19}
-
-% \part{Prospective Convergences}
-% \include{MainMatter/Chapter20}
-
-% Appendices
 \appendix
-\include{BackMatter/appendix}        % Appendix
-\include{BackMatter/about}           % About the authors
-\backmatter
+\chapter{Additional Resources}
+% Include appendix content here…
 
-% Back Matter
-\listoffigures                        % List of figures
-\listoftables                         % List of tables
-\glsaddall                            % Add all acronyms to glossary
-\printglossary[type=\acronymtype, title={Acronyms}, style = acro] % Print glossary of acronyms
-\printglossary % Print leftover glossary
-\printbibliography[title={References}]% Print bibliography
-\printindex                           % Print index
-\include{BackMatter/colophon}         % Colophon
-
+\printbibliography
 \end{document}
 ```
 
+## Overview for `cscode.sty` for Typesetting Code Listings
+
+The `cscode.sty` package is a powerful tool for incorporating code snippets and listings into your LaTeX documents. It provides a comprehensive set of features that make it easy to format and display code in a consistent and visually appealing manner.
+
+## Key Features
+
+1. **Predefined Styles for Popular Languages**: The package includes predefined styles for several popular programming languages, including C, C++, Java, Python, and Rust. These styles ensure consistent syntax highlighting and formatting for your code listings.
+2. **Customizable Environments**: The package defines a `codebox` environment that allows you to easily display code listings with a numbered caption and optional label. You can also use the shorthand `\addcode` command for a more concise way of adding code.
+3. **Syntax Highlighting**: The package leverages the power of the `listings` package to provide syntax highlighting for your code. The predefined styles use a carefully chosen color palette to make the code more readable and visually appealing.
+4. **Line Numbering**: Code listings are automatically numbered, making it easy to reference specific lines of code in your text.
+5. **Cross-Reference Support**: The package integrates with the `cleveref` package to provide customized cross-reference formatting for your code listings.
+6. **Compatibility with csbook Class**: The package checks for the presence of the `csbook` class and ensures compatibility, providing a warning if the class is not loaded.
+7. **Extensibility**: You can easily create new custom styles or modify the existing ones to suit your specific needs. The package’s modular design makes it easy to extend and customize.
+
+## Usage
+
+To use the `cscode.sty` package in your LaTeX document, simply add the following line to your preamble:
+
+```latex
+\usepackage{cscode}
+```
+
+### Displaying Code Listings
+
+You can use the `codebox` environment to display code listings. The environment takes an optional argument for the caption title, which defaults to “Code Box”:
+
+```latex
+\begin{codebox}[My Code Example]
+  \lstinputlisting[style=CStyle]{path/to/code.c}
+\end{codebox}
+```
+
+Alternatively, you can use the shorthand `\addcode` command, which takes four arguments:
+
+1. The caption title
+2. A label for the code listing
+3. The style to use (e.g., `CStyle`, `CPlusPlusStyle`, `JavaStyle`, `PythonStyle`, `RustStyle`)
+4. The path to the code file
+
+```latex
+\addcode{My Code Example}{my-code-example}{CStyle}{path/to/code.c}
+```
+
+## Customization
+
+The package provides a set of predefined styles for various programming languages, but you can also create your own custom styles or modify the existing ones to suit your specific needs. The package uses the `listings` package for code formatting, so you can refer to the `listings` package documentation for more information on customization options.
+
+## Compatibility and Dependencies
+
+The `cscode.sty` package is designed to be compatible with the `csbook` class. If the `csbook` package is not loaded, the package will issue a warning and proceed to load the necessary packages (`xcolor`, `mdframed`, `hyperref`, and `cleveref`).
+
 ## License
 
-This package is released under the [MIT License](https://opensource.org/licenses/MIT).
+The `cscode` package is released under the MIT License.
 
-## Support and Feedback
+## Acknowledgments
 
-For any questions, bug reports, or feature requests, please contact the author, Agni Datta, at [agni.datta@email.com](mailto:agni.datta@email.com).
+The author would like to thank the LaTeX community for their contributions and the development of the various packages used in this work.
+
+## Contact
+
+For any questions, issues, or suggestions, please contact the package maintainer, Agni Datta, at `agnidatta.org@gmail.com`.
+
+## License
+
+The `csbook` package is released under the MIT License.
+
+## Acknowledgments
+
+The author would like to thank the LaTeX community for their contributions and the development of the various packages used in this work.
+
+## Contact
+
+For any questions, issues, or suggestions, please contact the package maintainer, Agni Datta, at `agnidatta.org@gmail.com`.
