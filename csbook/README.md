@@ -2,7 +2,7 @@
 title: A Group of LaTeX Packages
 linter-yaml-title-alias: A Group of LaTeX Packages
 date created: Sunday, May 19th 2024, 08:13:05
-date modified: Thursday, August 8th 2024, 15:43:32
+date modified: Sunday, August 11th 2024, 18:09:44
 aliases: [A Group of LaTeX Packages]
 ---
 
@@ -179,19 +179,7 @@ The `cscode.sty` package is designed to be compatible with the `csbook` class. I
 
 ## License
 
-The `cscode` package is released under the MIT License.
-
-## Acknowledgments
-
-The author would like to thank the LaTeX community for their contributions and the development of the various packages used in this work.
-
-## Contact
-
-For any questions, issues, or suggestions, please contact the package maintainer, Agni Datta, at `agnidatta.org@gmail.com`.
-
-## License
-
-The `csbook` package is released under the MIT License.
+The `csbook` and`cscode` package is released under the MIT License.
 
 ## Acknowledgments
 
