@@ -30,7 +30,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Packages for cryptographic and complexity notations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage[sanserif, full]{complexity} % Computational complexity theory macros
+\RequirePackage[sanserif, small]{complexity} % Computational complexity theory macros
 \RequirePackage[%
 	n,             % Disable notations
 	operators,     % Enable operators
@@ -68,64 +68,67 @@
 % Cryptographic and Mathematical Notations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Note: Load the \usepackage[...]{cryptocode} package for the following commands.
-% The package includes commands for cryptographic notation, set notation, probability, and more.
+% Note: Load the \usepackage[...]{cryptocode} package for these commands.
+% The package provides commands for cryptographic notation, set notation, probability, etc.
 
-% Elements, abbreviations, and definitions related to cryptography
-\providecommand{\accept}{\inmathsf{accept}} % Denotes acceptance
+% Cryptographic elements, abbreviations, and definitions
+\providecommand{\Adv}{\inmathsf{Adv}} % Adversary notation
+\providecommand{\FS}{\inmathsf{FS}} % Fiat-Shamir transformation
+\providecommand{\RO}{\inmathsf{RO}} % Random oracle
+\providecommand{\accept}{\inmathsf{accept}} % Acceptance indicator
 \providecommand{\accum}{\inmathsf{Accum}} % Accumulation function
 \providecommand{\acc}{\inmathsf{acc}} % Accumulator
 \providecommand{\add}{\inmathsf{Add}} % Addition operation
-\providecommand{\Adv}{\inmathsf{Adv}} % Adversary
-\providecommand{\aux}{\inmathsf{aux}} % Auxiliary information
-\providecommand{\batch}{\inmathsf{Batch}} % Batch processing
-\providecommand{\commit}{\inmathsf{Com}} % Commitment scheme
+\providecommand{\aux}{\inmathsf{aux}} % Auxiliary data
+\providecommand{\batch}{\inmathsf{Batch}} % Batch processing notation
+\providecommand{\commit}{\inmathsf{Com}} % Commitment scheme notation
 \providecommand{\crs}{\inmathsf{crs}} % Common reference string
-\providecommand{\delete}{\inmathsf{Delete}} % Delete operation
-\providecommand{\ep}{\hat{e}} % Pairing function
-\providecommand{\extractor}{\inmathsf{Ext}} % Extractor function
-\providecommand{\flag}{\inmathsf{flag}} % Flag
-\providecommand{\FS}{\inmathsf{FS}} % Fiat-Shamir transformation
-\renewcommand{\Game}{\ensuremath{\reflectbox{\textsf{G}}}} % Game
+\providecommand{\delete}{\inmathsf{Delete}} % Deletion operation
+\providecommand{\ep}{\hat{e}} % Pairing function symbol
+\providecommand{\flag}{\inmathsf{flag}} % Flag indicator
 \providecommand{\gen}{\inmathsf{Gen}} % Key generation function
-\providecommand{\groupgen}{\inmathsf{GG}} % Group generator
-\providecommand{\group}{\inmathbb{G}} % Cryptographic group
-\providecommand{\hardequivocate}{\inmathsf{HardEquivocate}} % Hard Equivocation
-\providecommand{\hashfunc}{\inmathcal{H}} % Hash function
-\providecommand{\hidgrp}{\group_{?}} % Hidden group
-\providecommand{\ideal}{\inmathsf{Ideal}} % Ideal
-\providecommand{\open}{\inmathsf{Open}} % Opening of a commitment
-\providecommand{\prove}{\inmathsf{Prove}} % Proof generation
-\providecommand{\real}{\inmathsf{Real}} % Real
-\providecommand{\reject}{\inmathsf{reject}} % Denotes rejection
-\providecommand{\RO}{\inmathsf{RO}} % Random oracle
-\providecommand{\query}{\inmathsf{Query}} % Query
+\providecommand{\groupgen}{\inmathsf{GG}} % Group generator notation
+\providecommand{\group}{\inmathbb{G}} % Cryptographic group symbol
+\providecommand{\hardequivocate}{\inmathsf{HardEquivocate}} % Hard equivocation
+\providecommand{\hashfunc}{\inmathcal{H}} % Hash function symbol
+\providecommand{\hidgrp}{\group_{?}} % Hidden group notation
+\providecommand{\ideal}{\inmathsf{Ideal}} % Ideal function or process
+\providecommand{\open}{\inmathsf{Open}} % Commitment opening function
+\providecommand{\out}{\inmathsf{output}} % Output function
+\providecommand{\prove}{\inmathsf{Prove}} % Proof generation function
+\providecommand{\query}{\inmathsf{Query}} % Query operation
+\providecommand{\real}{\inmathsf{Real}} % Real function or process
+\providecommand{\reject}{\inmathsf{reject}} % Rejection indicator
+\providecommand{\reward}{\inmathsf{reward}} % Reward function
 \providecommand{\setup}{\inmathsf{Setup}} % Setup algorithm
-\providecommand{\softcommit}{\inmathsf{SoftCommit}} % Soft Commitment
-\providecommand{\softopen}{\inmathsf{SoftOpen}} % Soft Opening
-\providecommand{\state}{\inmathsf{state}} % State
+\providecommand{\softcommit}{\inmathsf{SoftCommit}} % Soft commitment
+\providecommand{\softopen}{\inmathsf{SoftOpen}} % Soft opening function
+\providecommand{\state}{\inmathsf{state}} % State indicator
 \providecommand{\td}{\inmathsf{td}} % Trapdoor information
-\providecommand{\updateproof}{\inmathsf{UpdateProof}} % Update Proof
-\providecommand{\update}{\inmathsf{Update}} % Update Operation
-\providecommand{\view}{\inmathsf{View}} % View or state
+\providecommand{\updateproof}{\inmathsf{UpdateProof}} % Update proof
+\providecommand{\update}{\inmathsf{Update}} % Update operation
+\providecommand{\view}{\inmathsf{View}} % View or state representation
 \providecommand{\witgen}{\inmathsf{WitGen}} % Witness generation
-\providecommand{\witupdate}{\inmathsf{WitUpdate}} % Witness update
-\renewcommand{\pp}{\inmathsf{pp}} % Public parameters
-\providecommand{\verify}{\inmathsf{Verify}} % Verification function
+\providecommand{\witupdate}{\inmathsf{WitUpdate}} % Witness update function
+\renewcommand{\Game}{\ensuremath{\reflectbox{\textsf{G}}}} % Game notation
+\renewcommand{\pp}{\inmathsf{pp}} % Public parameters notation
+\renewcommand{\prover}{\inmathcal{P}} % Prover notation
+\renewcommand{\verifier}{\inmathcal{V}} % Verifier notation
+\renewcommand{\verify}{\inmathsf{Verify}} % Verification function
 
-% Number Theoretic Operations
+% Number-theoretic operations
 \providecommand{\CDH}{\inmathsf{CDH}} % Computational Diffie-Hellman
 \providecommand{\DDH}{\inmathsf{DDH}} % Decisional Diffie-Hellman
 \providecommand{\DLP}{\inmathsf{DLP}} % Discrete Logarithm Problem
 \providecommand{\ECDLP}{\inmathsf{ECDLP}} % Elliptic Curve Discrete Logarithm Problem
-\providecommand{\isPrime}{\inmathsf{isPrime}} % Prime checking function
+\providecommand{\isPrime}{\inmathsf{isPrime}} % Prime-checking function
 \providecommand{\kSDH}{k\mathhyphen\SDH} % k-Strong Diffie-Hellman
-\providecommand{\LWE}{\inmathsf{LWE}} % Learning With Errors
+\providecommand{\LWE}{\inmathsf{LWE}} % Learning with Errors
 \providecommand{\primes}{\inmathsf{PRIMES}} % Set of prime numbers
-\providecommand{\QNR}{\inmathsf{QNR}} % Quadratic Non-Residue
-\providecommand{\QR}{\inmathsf{QR}} % Quadratic Residue
+\providecommand{\QNR}{\inmathsf{QNR}} % Quadratic non-residue
+\providecommand{\QR}{\inmathsf{QR}} % Quadratic residue
 \providecommand{\qSDH}{q\mathhyphen\SDH} % q-Strong Diffie-Hellman
-\providecommand{\RLWE}{\inmathsf{RLWE}} % Random Learning With Errors
+\providecommand{\RLWE}{\inmathsf{RLWE}} % Ring Learning with Errors
 \providecommand{\SDH}{\inmathsf{SDH}} % Strong Diffie-Hellman
 
 % Additional cryptographic definitions and protocols
@@ -140,18 +143,18 @@
 \providecommand{\IBE}{\inmathsf{IBE}} % Identity-Based Encryption
 \providecommand{\LPN}{\inmathsf{LPN}} % Learning Parity with Noise
 \providecommand{\MPC}{\inmathsf{MPC}} % Multiparty Computation
-\providecommand{\NIZKs}{\inmathsf{NIZKs}} % Non-Interactive Zero-Knowledge (plural)
-\providecommand{\NIZK}{\inmathsf{NIZK}} % Non-Interactive Zero-Knowledge
+\providecommand{\NIZKs}{\inmathsf{NIZKs}} % Non-Interactive Zero-Knowledge proofs (plural)
+\providecommand{\NIZK}{\inmathsf{NIZK}} % Non-Interactive Zero-Knowledge proof
 \providecommand{\ORAM}{\inmathsf{ORAM}} % Oblivious RAM
 \providecommand{\OT}{\inmathsf{OT}} % Oblivious Transfer
 \providecommand{\PKC}{\inmathsf{PKC}} % Public Key Cryptography
 \providecommand{\PKE}{\inmathsf{PKE}} % Public Key Encryption
 \providecommand{\PPT}{\inmathsf{PPT}} % Probabilistic Polynomial Time
 \providecommand{\PRF}{\inmathsf{PRF}} % Pseudorandom Function
-\providecommand{\PRGs}{\inmathsf{PRGs}} % Pseudorandom Generators
-\providecommand{\PRPfs}{\inmathsf{PRPfs}} % Pseudorandom Permutation (full security)
+\providecommand{\PRGs}{\inmathsf{PRGs}} % Pseudorandom Generators (plural)
+\providecommand{\PRPfs}{\inmathsf{PRPfs}} % Pseudorandom Permutation (full security, plural)
 \providecommand{\PRP}{\inmathsf{PRP}} % Pseudorandom Permutation
-\providecommand{\RKA}{\inmathsf{RKA}} % Redactable Key Agreement
+\providecommand{\RKA}{\inmathsf{RKA}} % Related-Key Attack
 \providecommand{\RNG}{\inmathsf{RNG}} % Random Number Generator
 \providecommand{\RPG}{\inmathsf{RPG}} % Randomized Polynomial Games
 \providecommand{\RTP}{\inmathsf{RTP}} % Randomized Test Protocols
@@ -161,7 +164,7 @@
 \providecommand{\VC}{\inmathsf{VC}} % Vector Commitments
 \providecommand{\ZKPs}{\inmathsf{ZKPs}} % Zero-Knowledge Proofs (plural)
 \providecommand{\zkps}{\ZKPs} % Zero-Knowledge Proofs (plural)
-\providecommand{\ZKP}{\inmathsf{ZKP}} % Zero-Knowledge Proofs
+\providecommand{\ZKP}{\inmathsf{ZKP}} % Zero-Knowledge Proof
 \providecommand{\zkp}{\ZKP} % Zero-Knowledge Proof
 \providecommand{\ZK}{\inmathsf{ZK}} % Zero-Knowledge
 
