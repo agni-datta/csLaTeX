@@ -113,6 +113,7 @@
 \renewcommand{\Game}{\ensuremath{\reflectbox{\textsf{G}}}} % Game notation
 \renewcommand{\pp}{\inmathsf{pp}} % Public parameters notation
 \renewcommand{\prover}{\inmathcal{P}} % Prover notation
+\renewcommand{\simulator}{\inmathcal{S}} % Simulator notation
 \renewcommand{\verifier}{\inmathcal{V}} % Verifier notation
 \renewcommand{\verify}{\inmathsf{Verify}} % Verification function
 
@@ -634,7 +635,7 @@
 \providecommand{\cat}[1]{\ensuremath{\mathsf{#1}}} % Format for category names
 % Define the \term command to index terms only in the 'book' class
 \providecommand{\term}[1]{%
-	\textit{#1}%
+	\text{#1}%
 	\ifx\documentclass\book\index{#1}\fi
 } % Italicize and index terms
 \providecommand{\keyword}[1]{\textsf{#1}} % Format for keywords
