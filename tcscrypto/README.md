@@ -2,7 +2,7 @@
 title: A LaTeX Package for Typesetting Theoretical CS and Cryptography (`tcscrypto.sty`)
 linter-yaml-title-alias: A LaTeX Package for Typesetting Theoretical CS and Cryptography (`tcscrypto.sty`)
 date created: Thursday, August 8th 2024, 15:30:01
-date modified: Thursday, August 15th 2024, 18:55:31
+date modified: Saturday, August 17th 2024, 23:26:49
 aliases: [A LaTeX Package for Typesetting Theoretical CS and Cryptography (`tcscrypto.sty`)]
 ---
 
@@ -110,178 +110,84 @@ The package is compatible with standard LaTeX distributions, such as TeX Live an
 
 ## Commands (re)Defined
 
-| Command                         | Description                                         |
-| ------------------------------- | --------------------------------------------------- |
-| `\aew`                          | “Almost everywhere” abbreviation                    |
-| `\aka`                          | “Also known as” abbreviation                        |
-| `\Adv`                          | Adversary                                           |
-| `\add`                          | Addition operation                                  |
-| `\ap`                           | “Attention” abbreviation                            |
-| `\arcsin`                       | Inverse sine                                        |
-| `\arccos`                       | Inverse cosine                                      |
-| `\arctan`                       | Inverse tangent                                     |
-| `\arccot`                       | Inverse cotangent                                   |
-| `\arcsec`                       | Inverse secant                                      |
-| `\arccsc`                       | Inverse cosecant                                    |
-| `\arsinh`                       | Hyperbolic inverse sine                             |
-| `\arcosh`                       | Hyperbolic inverse cosine                           |
-| `\artanh`                       | Hyperbolic inverse tangent                          |
-| `\arcoth`                       | Hyperbolic inverse cotangent                        |
-| `\arsech`                       | Hyperbolic inverse secant                           |
-| `\arcsch`                       | Hyperbolic inverse cosecant                         |
-| `\assocprof`                    | “Associate Professor” abbreviation                  |
-| `\asstprof`                     | “Assistant Professor” abbreviation                  |
-| `\bfa`, `\bfb`, …, `\bfz`       | Boldface letters                                    |
-| `\bfA`, `\bfB`, …, `\bfZ`       | Boldface letters in math mode                       |
-| `\Ba`, `\Bb`, …, `\Bz`          | Blackboard bold letters                             |
-| `\ba`                           | Bachelor of Arts                                    |
-| `\bbA`, `\bbB`, …, `\bbZ`       | Blackboard bold letters in math mode                |
-| `\bsc`                          | Bachelor of Science                                 |
-| `\batch`                        | Batch processing                                    |
-| `\calA`, `\calB`, …, `\calZ`    | Calligraphic letters                                |
-| `\cat`                          | Format for category names                           |
-| `\CDH`                          | Computational Diffie-Hellman                        |
-| `\ceil`                         | Ceiling function                                    |
-| `\cf`                           | “Compare” abbreviation                              |
-| `\commit`                       | Commitment scheme                                   |
-| `\comp`                         | Company abbreviation                                |
-| `\crs`                          | Common reference string                             |
-| `\DDH`                          | Decisional Diffie-Hellman                           |
-| `\delete`                       | Delete operation                                    |
-| `\DLP`                          | Discrete Logarithm Problem                          |
-| `\deptof`                       | “Department of” abbreviation                        |
-| `\dept`                         | Department abbreviation                             |
-| `\dr`                           | Doctor abbreviation                                 |
-| `\eds`                          | Editors abbreviation                                |
-| `\ed`                           | Editor abbreviation                                 |
-| `\ECDLP`                        | Elliptic Curve Discrete Logarithm Problem           |
-| `\eg`                           | “For example” abbreviation                          |
-| `\eng`                          | Engineer abbreviation                               |
-| `\etal`                         | “Et al.” abbreviation                               |
-| `\etc`                          | “Et cetera” abbreviation                            |
-| `\EXPTIME`                      | Exponential time complexity class                   |
-| `\EXPpoly`                      | EXP with polynomial advice                          |
-| `\extractor`                    | Extractor function                                  |
-| `\fax`                          | Fax abbreviation                                    |
-| `\FHEA`                         | Fully Homomorphic Encryption with Applications      |
-| `\FHE`                          | Fully Homomorphic Encryption                        |
-| `\frakA`, `\frakB`, …, `\frakZ` | Fraktur letters                                     |
-| `\flag`                         | Flag                                                |
-| `\floor`                        | Floor function                                      |
-| `\FS`                           | Fiat-Shamir transformation                          |
-| `\Game`                         | Game                                                |
-| `\gcd`                          | Greatest common divisor                             |
-| `\gen`                          | Key generation function                             |
-| `\groupgen`                     | Group generator                                     |
-| `\group`                        | Cryptographic group                                 |
-| `\hardequivocate`               | Hard Equivocation                                   |
-| `\hashfunc`                     | Hash function                                       |
-| `\HEA`                          | Homomorphic Encryption Applications                 |
-| `\HE`                           | Homomorphic Encryption                              |
-| `\HIBE`                         | Hierarchical Identity-Based Encryption              |
-| `\hidgrp`                       | Hidden group                                        |
-| `\HRA`                          | Homomorphic Random Access                           |
-| `\i`, `\j`, `\k`                | Unit vectors                                        |
-| `\IBE`                          | Identity-Based Encryption                           |
-| `\ie`                           | “That is” abbreviation                              |
-| `\ideal`                        | Ideal                                               |
-| `\inmathbb`                     | Blackboard Bold style                               |
-| `\inmathbf`                     | Boldface style                                      |
-| `\inmathcal`                    | Calligraphic style                                  |
-| `\inmathfrak`                   | Fraktur style                                       |
-| `\inmathrm`                     | Upright style                                       |
-| `\inmathsf`                     | Sans-serif style                                    |
-| `\IPP`                          | Proofs of Proximity                                 |
-| `\isPrime`                      | Prime checking function                             |
-| `\jd`                           | Juris Doctor abbreviation                           |
-| `\jr`                           | Junior abbreviation                                 |
-| `\kSDH`                         | k-Strong Diffie-Hellman                             |
-| `\keyword`                      | Format a keyword                                    |
-| `\LPN`                          | Learning Parity with Noise                          |
-| `\lcm`                          | Least common multiple                               |
-| `\lect`                         | Lecturer abbreviation                               |
-| `\LWE`                          | Learning With Errors                                |
-| `\ma`                           | Master of Arts                                      |
-| `\mba`                          | Master of Business Administration                   |
-| `\md`                           | Doctor of Medicine                                  |
-| `\missingcitation`              | Indicate a missing citation                         |
-| `\missing`                      | Highlight missing or problematic text               |
-| `\mPCR`                         | Multiparty Computation                              |
-| `\msc`                          | Master of Science                                   |
-| `\mrs`                          | Missis abbreviation                                 |
-| `\mr`                           | Mister abbreviation                                 |
-| `\ms`                           | Miss abbreviation                                   |
-| `\NEXPTIME`                     | Non-deterministic exponential time complexity class |
-| `\NIPP`                         | Non-Interactive Proofs of Proximity                 |
-| `\NPpoly`                       | NP with polynomial advice                           |
-| `\nb`                           | “Note well” abbreviation                            |
-| `\NIZKs`                        | Non-Interactive Zero-Knowledge (plural)             |
-| `\NIZK`                         | Non-Interactive Zero-Knowledge                      |
-| `\ORAM`                         | Oblivious RAM                                       |
-| `\OT`                           | Oblivious Transfer                                  |
-| `\open`                         | Opening of a commitment                             |
-| `\paren`                        | Parentheses                                         |
-| `\PKC`                          | Public Key Cryptography                             |
-| `\PCE`                          | Public Key Encryption                               |
-| `\PDH`                          | Probabilistic Decision Diffie-Hellman               |
-| `\pdiff`                        | Partial derivative                                  |
-| `\Pr`                           | Probability                                         |
-| `\PRIMES`                       | Primality testing complexity class                  |
-| `\PRF`                          | Pseudorandom Function                               |
-| `\PRGs`                         | Pseudorandom Generators                             |
-| `\PRPfs`                        | Pseudorandom Permutation function(s)                |
-| `\PRP`                          | Pseudorandom Permutation                            |
-| `\ph`                           | Phone abbreviation                                  |
-| `\phd`                          | Doctor of Philosophy                                |
-| `\prof`                         | Professor abbreviation                              |
-| `\prove`                        | Proof generation                                    |
-| `\PSPACE`                       | PSPACE complexity class                             |
-| `\PSPACEpoly`                   | PSPACE with polynomial advice                       |
-| `\qed`                          | Quod Erat Demonstrandum symbol                      |
-| `\QNR`                          | Quadratic Non-Residue                               |
-| `\QR`                           | Quadratic Residue                                   |
-| `\qSDH`                         | q-Strong Diffie-Hellman                             |
-| `\query`                        | Query                                               |
-| `\RLWE`                         | Random Learning With Errors                         |
-| `\RKA`                          | Redactable Key Agreement                            |
-| `\RNG`                          | Random Number Generator                             |
-| `\RPG`                          | Randomized Polynomial Games                         |
-| `\RTP`                          | Randomized Test Protocols                           |
-| `\rf`                           | Reference abbreviation                              |
-| `\rma`, `\rmb`, …, `\rmz`       | Upright letters                                     |
-| `\rmA`, `\rmB`, …, `\rmZ`       | Upright letters in math mode                        |
-| `\reject`                       | Denotes rejection                                   |
-| `\RO`                           | Random oracle                                       |
-| `\sr`                           | Senior abbreviation                                 |
-| `\SDH`                          | Strong Diffie-Hellman                               |
-| `\SFE`                          | Secure Function Evaluation                          |
-| `\SMPC`                         | Secure Multiparty Computation                       |
-| `\setup`                        | Setup algorithm                                     |
-| `\softcommit`                   | Soft Commitment                                     |
-| `\softopen`                     | Soft Opening                                        |
-| `\state`                        | State                                               |
-| `\strike`                       | Strike-through text                                 |
-| `\td`                           | Trapdoor information                                |
-| `\tel`                          | Telephone abbreviation                              |
-| `\term`                         | Italicize and index a term                          |
-| `\updateproof`                  | Update Proof                                        |
-| `\update`                       | Update Operation                                    |
-| `\urlref`                       | Hyperlinked URLs                                    |
-| `\VCs`                          | Vector Commitments (plural)                         |
-| `\VC`                           | Vector Commitments                                  |
-| `\verify`                       | Verification function                               |
-| `\view`                         | View or state                                       |
-| `\vs`                           | “Versus” abbreviation                               |
-| `\wlog`                         | “Without loss of generality” abbreviation           |
-| `\witgen`                       | Witness generation                                  |
-| `\witupdate`                    | Witness update                                      |
-| `\wrt`                          | “With respect to” abbreviation                      |
-| `\with`                         | “With” abbreviation                                 |
-| `\ZKPs`                         | Zero-Knowledge Proofs (plural)                      |
-| `\zkps`                         | Zero-Knowledge Proofs (plural)                      |
-| `\ZKP`                          | Zero-Knowledge Proof                                |
-| `\zkp`                          | Zero-Knowledge Proof                                |
-| `\ZK`                           | Zero-Knowledge                                      |
+### Cryptographic Elements and Functions
+
+- `\Adv`: Adversary notation
+- `\CRSGen`: Common Reference String Generation
+- `\FS`: Fiat-Shamir transformation
+- `\RO`: Random oracle
+- `\accept`, `\reject`: Acceptance/rejection indicators
+- `\accum`, `\acc`: Accumulation function/accumulator
+- `\add`, `\delete`: Addition/deletion operations
+- `\aux`: Auxiliary data
+- `\batch`: Batch processing notation
+- `\commit`, `\open`: Commitment scheme notations
+- `\crs`: Common reference string
+- `\environment`: Environment notation
+- `\ep`: Pairing function symbol
+- `\flag`: Flag indicator
+- `\gen`: Key generation function
+- `\groupgen`, `\group`: Group generator/symbol
+- `\hashfunc`: Hash function symbol
+- `\hidgrp`: Hidden group notation
+- `\ideal`, `\real`: Ideal/real function or process
+- `\len`: Length notation
+- `\out`: Output function
+- `\prove`, `\verify`: Proof generation/verification functions
+- `\query`: Query operation
+- `\reward`: Reward function
+- `\sample`: Sampling function
+- `\setup`: Setup algorithm
+- `\state`: State indicator
+- `\td`: Trapdoor information
+- `\update`, `\updateproof`: Update operation/proof function
+- `\view`: View or state representation
+- `\witgen`, `\witupdate`: Witness generation/update functions
+
+### Cryptographic Concepts and Problems
+
+- `\AAE`, `\AE`, `\IBE`, etc.: Various encryption schemes
+- `\CDH`, `\DDH`, `\SDH`: Diffie-Hellman problems
+- `\DLP`, `\ECDLP`: Discrete Logarithm Problems
+- `\FHE`, `\HE`: Homomorphic Encryption
+- `\LPN`, `\LWE`: Learning problems
+- `\MPC`, `\SMPC`: Multiparty Computation
+- `\NIZK`, `\ZKP`: Zero-Knowledge Proofs
+- `\OT`, `\ORAM`: Oblivious Transfer/RAM
+- `\PKC`, `\PKE`: Public Key Cryptography/Encryption
+- `\PRF`, `\PRP`: Pseudorandom Function/Permutation
+- `\QNR`, `\QR`: Quadratic (non-)residue
+- `\RSA`: RSA cryptosystem
+- `\VC`: Vector Commitments
+
+### Complexity Classes and Theory
+
+- `\EXPTIME`, `\NEXPTIME`, `\NPpoly`, etc.: Various complexity classes
+- `\IPP`, `\NIPP`, `\RIP`, etc.: Various proof systems
+- `\CIRSAT`: Circuit satisfiability problem
+- `\Lang`: Formal language notation
+- `\NTM`: Non-deterministic Turing machine
+
+### Mathematical Notation
+
+- `\F`, `\GF`, `\N`, `\Q`, `\Z`, `\C`, `\R`: Number sets
+- `\abs`, `\lcm`, `\gcd`: Basic operations
+- `\floor`, `\ceil`: Floor/ceiling functions
+- `\E`, `\Pr`, `\variance`: Probability and expectation
+- `\grad`, `\div`, `\curl`, `\lap`: Vector calculus operators
+- `\laplace`, `\fourier`, `\ztransform`, etc.: Transform notations
+- `\arcsin`, `\arccos`, `\arctan`, etc.: Trigonometric functions
+- Vector notations: `\avec`, `\bvec`, `\cvec`, etc.
+- Font styles: `\bfa`-`\bfz`, `\rma`-`\rmz`, `\rmA`-`\rmZ`, `\bfA`-`\bfZ`, `\bbA`-`\bbZ`, `\calA`-`\calZ`, `\frakA`-`\frakZ`
+
+### Abbreviations and Formatting
+
+- Latin abbreviations: `\eg`, `\ie`, `\etc`, `\viz`, etc.
+- English abbreviations: `\dr`, `\mr`, `\mrs`, etc.
+- Academic titles: `\prof`, `\assocprof`, `\asstprof`, etc.
+- Degrees: `\ba`, `\bsc`, `\ma`, `\phd`, etc.
+- Time and date: `\ad`, `\bc`, `\am`, `\pmtime`
+- Text formatting: `\code`, `\urlref`, `\strike`, `\keyword`, `\missing`, `\term`
 
 ## Reporting Issues and Contributing
 
