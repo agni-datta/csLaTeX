@@ -49,6 +49,7 @@
 	asymptotics,   % Enable asymptotics
 	keys           % Enable keys
 ]{cryptocode} % Macros for cryptography
+\RequirePackage{xspace} % Intelligent handling of spacing
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Font Styles
@@ -342,6 +343,7 @@
 \providecommand{\arccot}{\cot^{-1}} % Inverse cotangent
 \providecommand{\arcsec}{\sec^{-1}} % Inverse secant
 \providecommand{\arccsc}{\csc^{-1}} % Inverse cosecant
+
 \providecommand{\arsinh}{\sinh^{-1}} % Hyperbolic inverse sine
 \providecommand{\arcosh}{\cosh^{-1}} % Hyperbolic inverse cosine
 \providecommand{\artanh}{\tanh^{-1}} % Hyperbolic inverse tangent
@@ -353,9 +355,9 @@
 % Vector Notation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\renewcommand{\i}{\hat{i}} % Unit vector \( \hat{i} \)
-\renewcommand{\j}{\hat{j}} % Unit vector \( \hat{j} \)
-\renewcommand{\k}{\hat{k}} % Unit vector \( \hat{k} \)
+\renewcommand{\i}{\hat{i}} % Unit vector i
+\renewcommand{\j}{\hat{j}} % Unit vector j
+\renewcommand{\k}{\hat{k}} % Unit vector k
 
 \providecommand{\avec}{\asvector{a}} % Vector a
 \providecommand{\bvec}{\asvector{b}} % Vector b
@@ -613,7 +615,7 @@
 \providecommand{\etc}{etc.\xspace} % Et cetera
 \providecommand{\ie}{i.e.,\xspace} % That is
 \providecommand{\nb}{N.B.\xspace} % Note well
-\providecommand{\qed}{\inmath{\mathsf{QED}}\xspace} % Quod Erat Demonstrandum
+\providecommand{\qed}{\inmathsf{QED}\xspace} % Quod Erat Demonstrandum
 \providecommand{\st}{s.t.\xspace} % Such that
 \providecommand{\viz}{viz.\xspace} % Namely
 \providecommand{\vs}{vs.\xspace} % Versus
