@@ -106,7 +106,6 @@
 \providecommand{\real}{\inmathsf{Real}} % Real function or process
 \providecommand{\reject}{\inmathsf{reject}} % Rejection indicator
 \providecommand{\reward}{\inmathsf{reward}} % Reward function
-\providecommand{\sample}{\inmathsf{Samp}} % Sampling function
 \providecommand{\setup}{\inmathsf{Setup}} % Setup algorithm
 \providecommand{\succ}{\inmathsf{Succ}} % Successor function
 \providecommand{\softcommit}{\inmathsf{SoftCommit}} % Soft commitment function
@@ -125,6 +124,7 @@
 \renewcommand{\pp}{\inmathsf{pp}} % Public parameters notation
 \renewcommand{\prover}{\inmathcal{P}} % Prover notation
 \renewcommand{\qq}{\inmathsf{qq}} % Parameter notation (e.g., for queries)
+\renewcommand{\sample}{\inmath{\overset{\$}{\leftarrow}}} % Sampling arrow
 \renewcommand{\simulator}{\inmathsf{Sim}} % Simulator notation
 \renewcommand{\verifier}{\inmathcal{V}} % Verifier notation
 
@@ -297,8 +297,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \renewcommand{\E}{\inmathbb{E}} % Expectation operator
-\renewcommand{\Pr}{\inmathsf{Prob}} % Probability operator
-
+\let\Pr\relax % Undefine any previous \Pr definition
+\providecommand{\Pr}{\inmathsf{Prob}} % Probability operator
 \providecommand{\variance}{\inmathsf{Var}} % Variance operator
 \providecommand{\Expect}[1]{\inmath{\E\left[#1\right]}} % Expectation with argument
 
@@ -343,7 +343,6 @@
 \providecommand{\arccot}{\cot^{-1}} % Inverse cotangent
 \providecommand{\arcsec}{\sec^{-1}} % Inverse secant
 \providecommand{\arccsc}{\csc^{-1}} % Inverse cosecant
-
 \providecommand{\arsinh}{\sinh^{-1}} % Hyperbolic inverse sine
 \providecommand{\arcosh}{\cosh^{-1}} % Hyperbolic inverse cosine
 \providecommand{\artanh}{\tanh^{-1}} % Hyperbolic inverse tangent
@@ -355,9 +354,9 @@
 % Vector Notation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\renewcommand{\i}{\hat{i}} % Unit vector i
-\renewcommand{\j}{\hat{j}} % Unit vector j
-\renewcommand{\k}{\hat{k}} % Unit vector k
+\renewcommand{\i}{\hat{i}} % Unit vector \( \hat{i} \)
+\renewcommand{\j}{\hat{j}} % Unit vector \( \hat{j} \)
+\renewcommand{\k}{\hat{k}} % Unit vector \( \hat{k} \)
 
 \providecommand{\avec}{\asvector{a}} % Vector a
 \providecommand{\bvec}{\asvector{b}} % Vector b
@@ -615,7 +614,7 @@
 \providecommand{\etc}{etc.\xspace} % Et cetera
 \providecommand{\ie}{i.e.,\xspace} % That is
 \providecommand{\nb}{N.B.\xspace} % Note well
-\providecommand{\qed}{\inmathsf{QED}\xspace} % Quod Erat Demonstrandum
+\providecommand{\qed}{Q.E.D.\xspace} % Quod Erat Demonstrandum
 \providecommand{\st}{s.t.\xspace} % Such that
 \providecommand{\viz}{viz.\xspace} % Namely
 \providecommand{\vs}{vs.\xspace} % Versus
@@ -626,60 +625,60 @@
 % English Abbreviations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand{\dr}{Dr.\xspace} % Doctor
-\providecommand{\jr}{Jr.\xspace} % Junior
-\providecommand{\mrs}{Mrs.\xspace} % Missis
-\providecommand{\mr}{Mr.\xspace} % Mister
-\providecommand{\ms}{Ms.\xspace} % Miss
-\providecommand{\sr}{Sr.\xspace} % Senior
+\providecommand{\dr}{Dr.\ } % Doctor
+\providecommand{\jr}{Jr.\ } % Junior
+\providecommand{\mrs}{Mrs.\ } % Missis
+\providecommand{\mr}{Mr.\ } % Mister
+\providecommand{\ms}{Ms.\ } % Miss
+\providecommand{\sr}{Sr.\ } % Senior
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Academic Abbreviations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand{\assocprof}{Assoc.\ Prof.\xspace} % Associate Professor
-\providecommand{\asstprof}{Asst.\ Prof.\xspace} % Assistant Professor
-\providecommand{\lect}{Lect.\xspace} % Lecturer
-\providecommand{\prof}{Prof.\xspace} % Professor
+\providecommand{\assocprof}{Assoc.\ Prof.\ } % Associate Professor
+\providecommand{\asstprof}{Asst.\ Prof.\ } % Assistant Professor
+\providecommand{\lect}{Lect.\ } % Lecturer
+\providecommand{\prof}{Prof.\ } % Professor
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Titles and Honors
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand{\ba}{B.A.\xspace} % Bachelor of Arts
-\providecommand{\bsc}{B.Sc.\xspace} % Bachelor of Science
-\providecommand{\eng}{Eng.\xspace} % Engineer
-\providecommand{\jd}{J.D.\xspace} % Doctor of Law
-\providecommand{\ma}{M.A.\xspace} % Master of Arts
-\providecommand{\mba}{M.B.A.\xspace} % Master of Business Administration
-\providecommand{\md}{M.D.\xspace} % Doctor of Medicine
-\providecommand{\msc}{M.Sc.\xspace} % Master of Science
-\providecommand{\phd}{Ph.D.\xspace} % Doctor of Philosophy
+\providecommand{\ba}{B.A.\ } % Bachelor of Arts
+\providecommand{\bsc}{B.Sc.\ } % Bachelor of Science
+\providecommand{\eng}{Eng.\ } % Engineer
+\providecommand{\jd}{J.D.\ } % Doctor of Law
+\providecommand{\ma}{M.A.\ } % Master of Arts
+\providecommand{\mba}{M.B.A.\ } % Master of Business Administration
+\providecommand{\md}{M.D.\ } % Doctor of Medicine
+\providecommand{\msc}{M.Sc.\ } % Master of Science
+\providecommand{\phd}{Ph.D.\ } % Doctor of Philosophy
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Time and Date
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand{\ad}{A.D.\xspace} % Anno Domini
-\providecommand{\am}{a.m.\xspace} % Ante Meridiem
-\providecommand{\bc}{B.C.\xspace} % Before Christ
-\providecommand{\pmtime}{p.m.\xspace} % Post Meridiem
+\providecommand{\ad}{A.D.\ } % Anno Domini
+\providecommand{\am}{a.m.\ } % Ante Meridiem
+\providecommand{\bc}{B.C.\ } % Before Christ
+\providecommand{\pmtime}{p.m.\ } % Post Meridiem
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Miscellaneous
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand{\ap}{A/p\xspace} % Attention
-\providecommand{\comp}{Co.\xspace} % Company
-\providecommand{\deptof}{Dept.~of\xspace} % Department of
-\providecommand{\dept}{Dept.\xspace} % Department
-\providecommand{\eds}{Eds.\xspace} % Editors
-\providecommand{\ed}{Ed.\xspace} % Editor
-\providecommand{\etcet}{etc.\xspace} % Etcetera
-\providecommand{\fax}{Fax\xspace} % Fax
-\providecommand{\ph}{Ph\xspace} % Phone
-\providecommand{\rf}{R/F\xspace} % Reference
-\providecommand{\tel}{Tel\xspace} % Telephone
+\providecommand{\ap}{A/p\ } % Attention
+\providecommand{\comp}{Co.\ } % Company
+\providecommand{\deptof}{Dept.~of\ } % Department of
+\providecommand{\dept}{Dept.\ } % Department
+\providecommand{\eds}{Eds.\ } % Editors
+\providecommand{\ed}{Ed.\ } % Editor
+\providecommand{\etcet}{etc.\ } % Etcetera
+\providecommand{\fax}{Fax\ } % Fax
+\providecommand{\ph}{Ph\ } % Phone
+\providecommand{\rf}{R/F\ } % Reference
+\providecommand{\tel}{Tel\ } % Telephone
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Commands for Text Formatting
