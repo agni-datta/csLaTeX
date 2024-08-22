@@ -1,8 +1,10 @@
-\providecommand{\fileversion}{ver. 1}
-\providecommand{\filedate}{2024-08-07}
-\providecommand{\fileauthor}{Agni Datta}
+\providecommand{\fileversion}{ver. 1}      % Defines the version of the file
+\providecommand{\filedate}{2024-08-07}     % Specifies the date of the file
+\providecommand{\fileauthor}{Agni Datta}   % Indicates the author of the file
 
-\NeedsTeXFormat{LaTeX2e}
+\NeedsTeXFormat{LaTeX2e}                   % Specifies the required LaTeX format
+
+% Package for typesetting theoretical CS and cryptography
 \ProvidesPackage{tcscrypto}[2024/08/07 v1.0 A package for typesetting theoretical CS and cryptography]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -704,4 +706,7 @@
 \providecommand{\term}[1]{{#1\index{#1}}} % Italicize and index terms
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\typeout{Package "tcscrypto" version\space\fileversion, updated on\space\filedate, loaded successfully. Packaged by\space\fileauthor.}
+
 \endinput
