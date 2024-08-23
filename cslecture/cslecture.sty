@@ -83,14 +83,6 @@
 \RequirePackage{kvoptions} % Handle key-value options for packages and classes
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Packages for PDF Management
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage[2.0, compress, objcompress]{bxpdfver} % Manage PDF version and compression
-\RequirePackage{pdfpages} % Include pages from external PDFs
-\RequirePackage{pdflscape} % Support landscape pages in PDF
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Package for Colour Support
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -99,6 +91,14 @@
 % Define and set the accent color for document elements
 \providecommand{\accentcolor}{black} % Default accent color
 \colorlet{accentcolor}{\accentcolor} % Apply the accent color
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Packages for PDF Management
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage[2.0, compress, objcompress]{bxpdfver} % Manage PDF version and compression
+\RequirePackage{pdfpages} % Include pages from external PDFs
+\RequirePackage{pdflscape} % Support landscape pages in PDF
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Page Layout Configuration
@@ -446,7 +446,7 @@
 \renewcommand{\cftsubsubsecafterpnum}{\vskip1pt}  % Vertical space after subsubsection numbers
 
 % Customize font for sectional titles in the Table of Contents
-\renewcommand{\cftsecfont}{\large\scshape}      % Font style for sections
+\renewcommand{\cftsecfont}{\scshape}            % Font style for sections
 \renewcommand{\cftsubsecfont}{\normalsize}      % Font style for subsections
 \renewcommand{\cftsubsubsecfont}{\normalsize}   % Font style for subsubsections
 
@@ -459,8 +459,8 @@
 % Formatting for sections
 \titleformat{\section}[block]
     {\normalfont\LARGE\bfseries\color{\accentcolor}} % Font style: normal, large, bold, coloured
-    {\thesection} % Section number
-    {5pt} % Space between number and title
+    {\huge\thesection} % Section number
+    {7.5pt} % Space between number and title
     {#1\medskip\hrule\vspace{-25pt}} % Title format with rule below
 
 % Formatting for subsections
@@ -698,13 +698,13 @@
 				        
 		% Lecturer and Date
 		\normalfont\normalsize\noindent
-		\textsc{Lecturer:} \ifx\@lecturer\undefined\else\@lecturer\fi\hfill
-		\textsc{Date:} \ifx\@date\undefined\else\@date\fi
+		\textbf{Lecturer:} \ifx\@lecturer\undefined\else\@lecturer\fi\hfill
+		\textbf{Date:} \ifx\@date\undefined\else\@date\fi
 				        
 		% Scriber and Course
 		\normalfont\normalsize\noindent
-		\textsc{Scriber:} \ifx\@author\undefined\else\@author\fi\hfill
-		\textsc{Course:} \ifx\@course\undefined\else\@course\fi
+		\textbf{Scriber:} \ifx\@author\undefined\else\@author\fi\hfill
+		\textbf{Course:} \ifx\@course\undefined\else\@course\fi
 		\medskip
 	\end{tboxed}
 }
