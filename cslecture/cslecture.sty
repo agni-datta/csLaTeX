@@ -106,9 +106,7 @@
 
 \RequirePackage[%
 	a4paper,        % Set paper size to A4
-	margin=3.50cm,  % Set uniform margin
-	inner=3.0cm,    % Set inner margin
-	outer=3.0cm,    % Set outer margin
+	margin=3.0cm,  % Set uniform margin
 	footskip=1cm    % Set space between text and footer
 ]{geometry}         % Configure page layout
 
@@ -142,7 +140,6 @@
 
 % Configure header format
 \fancyhead[LE, RO]{\normalfont\small\thepage}  % Page number on left (even) and right (odd) sides
-\fancyhead[C]{\normalfont\small\scshape\ifx\@course\undefined\else\@course\fi}  % Optional course info in center
 \fancyhead[LO, RE]{\normalfont\small\scshape\ifx\@title\undefined\else\@title\fi}  % Title on left (odd) and right (even) sides
 
 % Set header rule thickness
@@ -458,23 +455,23 @@
 
 % Formatting for sections
 \titleformat{\section}[block]
-    {\normalfont\LARGE\bfseries\color{\accentcolor}} % Font style: normal, large, bold, coloured
-    {\huge\thesection} % Section number
-    {7.5pt} % Space between number and title
+    {\normalfont\Large\bfseries\color{\accentcolor}} % Font style: normal, large, bold, coloured
+    {\LARGE\thesection} % Section number
+    {10pt} % Space between number and title
     {#1\medskip\hrule\vspace{-25pt}} % Title format with rule below
 
 % Formatting for subsections
 \titleformat{\subsection}[block]
-    {\normalfont\Large\bfseries\color{\accentcolor}} % Font style: normal, large, bold, coloured
+    {\normalfont\large\bfseries\color{\accentcolor}} % Font style: normal, large, bold, coloured
     {\thesubsection} % Subsection number
-    {5pt} % Space between number and title
+    {7.5pt} % Space between number and title
     {#1} % Title format
 
 % Formatting for subsubsections
 \titleformat{\subsubsection}[block]
-    {\normalfont\large\bfseries\color{\accentcolor}} % Font style: normal, large, bold, coloured
+    {\normalfont\normalsize\bfseries\color{\accentcolor}} % Font style: normal, large, bold, coloured
     {\thesubsubsection} % Subsubsection number
-    {5pt} % Space between number and title
+    {7.5pt} % Space between number and title
     {#1} % Title format
 
 % Formatting for paragraphs
@@ -494,8 +491,8 @@
 \declaretheoremstyle[%
 	spaceabove=\topsep, 
 	spacebelow=\topsep,
-	headfont=\scshape\color{\accentcolor},
-	notefont=\scshape\color{\accentcolor},
+	headfont=\bfseries\boldmath\color{\accentcolor},
+	notefont=\bfseries\boldmath\color{\accentcolor},
 	bodyfont=\normalfont,
 	postheadspace=0.5em,
 	numberwithin=section,
@@ -506,8 +503,8 @@
 \declaretheoremstyle[%
 	spaceabove=\topsep, 
 	spacebelow=\topsep,
-	headfont=\scshape\color{\accentcolor},
-	notefont=\scshape\color{\accentcolor},
+	headfont=\bfseries\boldmath\color{\accentcolor},
+	notefont=\bfseries\boldmath\color{\accentcolor},
 	bodyfont=\normalfont,
 	postheadspace=0.5em,
 	numberwithin=section,
@@ -568,7 +565,7 @@
 \declaretheorem[style=thmstyle,sibling=theorem]{conjecture}
 
 % Definitions
-\declaretheorem[style=coloredstyle,sibling=theorem]{definition}
+\declaretheorem[style=defstyle,sibling=theorem]{definition}
 \declaretheorem[style=defstyle,sibling=theorem]{example}
 \declaretheorem[style=defstyle,sibling=theorem]{fact}
 \declaretheorem[style=defstyle,sibling=theorem]{note}
@@ -692,9 +689,9 @@
 		    
 	\begin{tboxed}
 		% Title Section
-		\scshape\Large\medskip
-		\hfill Lecture Notes on \ifx\@title\undefined\else\@title\fi
-		\medskip
+    	\bfseries\LARGE\medskip
+    	Lecture Notes on \ifx\@title\undefined\else\@title\fi
+		\bigskip
 				        
 		% Lecturer and Date
 		\normalfont\normalsize\noindent
