@@ -230,9 +230,9 @@
 \hypersetup{%
 	pdfsubject={\ifx\@course\undefined\else\@course\fi},   % Set the subject of the PDF; fallback to \@course if not defined
 	pdfkeywords={\ifx\@course\undefined\else\@course\fi},  % Define keywords for the PDF; fallback to \@course if not defined
-	colorlinks=true,                  % Enable colored hyperlinks
-	citecolor=\accentcolor,           % Set color for citation links
-	linkcolor=\accentcolor,           % Set color for internal document links
+	colorlinks=true,                  % Enable coloured hyperlinks
+	citecolor=\accentcolor,           % Set colour for citation links
+	linkcolor=\accentcolor,           % Set colour for internal document links
 	urlcolor=\accentcolor,            % Set color for URLs
 	frenchlinks=true,                 % Use French-style links with small caps
 	unicode=true,                     % Enable Unicode characters in links
@@ -326,13 +326,13 @@
 	framemethod=Tikz              % Use TikZ for frame styling
 ]{mdframed} % Configure vertical skip distances and use TikZ for frame styling
 
-% Load the tcolorbox package for additional color box options
+% Load the tcolorbox package for additional colour box options
 \RequirePackage[most]{tcolorbox} % Include comprehensive features for colored boxes
 
-% Define a custom framed environment with TikZ settings
+% Define a custom-framed environment with TikZ settings
 \newmdenv[%
-	tikzsetting={draw=black},     % Set the color of the frame border
-	backgroundcolor=none,         % Use transparent background
+	tikzsetting={draw=black},     % Set the colour of the frame border
+	backgroundcolor=none,         % Use a transparent background
 	skipabove=10pt,               % Vertical space above the frame
 	skipbelow=10pt,               % Vertical space below the frame
 	innerleftmargin=7.5pt,        % Left margin inside the frame
@@ -402,7 +402,7 @@
 % Load the abstract package with advanced options
 \RequirePackage[%
 	runin,      % Format abstract as a run-in
-	addtotoc    % Include abstract in the table of contents
+	addtotoc    % Include the abstract in the table of contents
 ]{abstract}
 
 % Load the appendix package with advanced options
@@ -441,7 +441,7 @@
 
 \RequirePackage[titles]{tocloft}  % Load tocloft for customizing the table of contents
 
-% Adjust vertical spacing after section, subsection, and subsubsection numbers
+% Adjust the vertical spacing after section, subsection, and subsubsection numbers
 \renewcommand{\cftsecafterpnum}{\vskip1pt}        % Vertical space after section numbers
 \renewcommand{\cftsubsecafterpnum}{\vskip1pt}     % Vertical space after subsection numbers
 \renewcommand{\cftsubsubsecafterpnum}{\vskip1pt}  % Vertical space after subsubsection numbers
@@ -596,7 +596,7 @@
 % Custom Proof Environments and QED Symbol
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Define custom proof environments with specific formatting
+% Define custom-proof environments with specific formatting
 \renewenvironment{proof}{%
 	\noindent\textit{Proof.}\hspace*{0.25em} % Start with "Proof." in italics, followed by a small space
 	}{%
