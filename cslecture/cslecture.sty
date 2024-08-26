@@ -158,10 +158,10 @@
 
 \RequirePackage[english]{babel}  % Configure language settings for English
 \RequirePackage[autostyle=true, csdisplay=true]{csquotes}  % Advanced quotation handling with automatic style adjustments
-\RequirePackage[normalem]{ulem}  % Provides features for underlining, strikethrough, and other text emphases
 \RequirePackage[protrusion=true, babel=true]{microtype}  % Enhances text appearance with micro-typographic adjustments
 \RequirePackage[onehalfspacing]{setspace}  % Sets line spacing to one and a half
-\RequirePackage{textcomp}  % Adds additional text symbols for improved typography
+\RequirePackage[full]{textcomp}  % Adds additional text symbols for improved typography
+\RequirePackage[normalem]{ulem}  % Provides features for underlining, strikethrough, and other text emphases
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Mathematical Typesetting
@@ -210,10 +210,10 @@
 	lf,          % Use lining figures for consistent numeral alignment
 ]{FiraMono}  % Configures the Fira Mono monospaced font for code and fixed-width text
 
-\let\mathcal\relax\let\mathbfcal\relax % Prevent conflicts with existing definitions of math alphabets
+% Prevent conflicts with existing definitions of math alphabets
+\let\mathbfcal\relax
 
 \RequirePackage[%
-        frak=esstix,   % Use esstix for an extended set of fraktur letters
 	bb=bboldx,     % Use extended Blackboard bold font options for mathematical notation
 	cal=cm         % Apply classic calligraphic font style for mathematical symbols
 ]{mathalpha}       % Provides additional mathematical font styles for diverse notation
@@ -303,16 +303,20 @@
 % Packages for Typesetting Algorithms
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Load the algorithm2e package with specific options for formatting algorithms
 \RequirePackage[%
-	algoruled, % Load algorithm2e package with ruled style
-	linesnumbered, % Include line numbering
-	longend % Handle long end lines
-]{algorithm2e} % Configure package options
+	algoruled,     % Display algorithms within a ruled environment for clear delineation
+	linesnumbered, % Enable line numbering for easier reference to individual steps
+	longend        % Properly handle long end statements for cleaner formatting
+]{algorithm2e}
 
-% Algorithm Styling
-\SetAlgoCaptionSeparator{.} % Set the separator between the algorithm caption and content
-\SetAlgoNlRelativeSize{-2} % Set the size of line numbers to the default size
-\SetNlSty{texttt}{[}{]} % Style line numbers with texttt font and parentheses
+% Customize the appearance and styling of algorithms
+\SetAlFnt{\small}               % Set the font size for algorithm text for small for compactness
+\SetAlCapFnt{\normalsize}       % Set the font size for algorithm captions to normal for emphasis
+\SetAlCapNameFnt{\normalsize}   % Set the font size for algorithm names to normal for visibility
+\SetAlgoCaptionSeparator{.}     % Use a period as the separator between the caption and the algorithm content
+\SetAlgoNlRelativeSize{-2}      % Reduce the font size of line numbers to avoid distraction from the main text
+\SetNlSty{texttt}{[}{]}         % Style line numbers in a typewriter font and enclose them in square brackets
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Package for Creating Framed Environments
@@ -342,7 +346,7 @@
 	roundcorner=1pt               % Rounded corners with a radius of 1pt
 ]{tboxed} % Custom framed environment named "tboxed"
 
-% Define a custom framed environment with specific formatting
+% Define a custom-framed environment with specific formatting
 \newmdenv[%
 	hidealllines=true,            % Hide all frame lines
 	backgroundcolor={\accentcolor!50!white}, % Set background color with accent color
