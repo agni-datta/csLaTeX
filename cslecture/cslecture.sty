@@ -88,7 +88,7 @@
 
 \RequirePackage[dvipsnames, svgnames, x11names]{xcolor} % Advanced color support with multiple color schemes
 
-% Define and set the accent color for document elements
+% Define and set the accent colour for document elements
 \providecommand{\accentcolor}{black} % Default accent color
 \colorlet{accentcolor}{\accentcolor} % Apply the accent color
 
@@ -105,10 +105,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage[%
-	a4paper,        % Set paper size to A4
-	margin=3.0cm,  % Set uniform margin
-	footskip=1cm    % Set space between text and footer
-]{geometry}         % Configure page layout
+	a4paper,        % Set paper size to A4 (210 x 297 mm) for standard document formatting
+	margin=3.0cm,   % Set uniform margin of 3.0 cm on all sides for a balanced layout
+	footskip=1cm,   % Set space between the bottom of the text block and the footer to 1 cm
+	verbose         % Enable verbose mode to print additional configuration details in the log
+]{geometry}         % Configure the page layout with the specified options
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Customizing Lists
@@ -162,56 +163,60 @@
 \RequirePackage[onehalfspacing]{setspace}  % Sets line spacing to one and a half
 \RequirePackage{textcomp}  % Adds additional text symbols for improved typography
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Mathematical Typesetting
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[T1]{fontenc}         % Specifies font encoding to handle special characters effectively
-\RequirePackage{amsfonts}            % Provides essential mathematical fonts
-\RequirePackage{amssymb}             % Supplies additional mathematical symbols
-\RequirePackage{amsmath}             % Enables advanced mathematical formatting
-\RequirePackage{amsthm}              % Facilitates the creation of theorem-like environments
-\RequirePackage{lmodern}             % Utilizes Latin Modern fonts for enhanced readability
-\RequirePackage{nicefrac}            % Improves the appearance of fractions
-
-\RequirePackage{fontspec}            % Enables custom font selection in XeLaTeX and LuaLaTeX
+\RequirePackage[T1]{fontenc}         % Specifies font encoding for proper handling of special characters
+\RequirePackage{amsfonts}            % Provides essential mathematical fonts for advanced typesetting
+\RequirePackage{amssymb}             % Supplies additional mathematical symbols and operators
+\RequirePackage{amsmath}             % Enables advanced mathematical formatting, including environments such as align, gather, etc.
+\RequirePackage{amsthm}              % Facilitates the creation of theorem-like environments (theorems, lemmas, corollaries, etc.)
+\RequirePackage{thmtools}            % Provides tools and enhancements for theorem environments and customization
+\RequirePackage{lmodern}             % Uses Latin Modern fonts to improve readability and support extended character sets
+\RequirePackage{nicefrac}            % Enhances the appearance of fractions with a slanted style for improved clarity
+\RequirePackage{fontspec}            % Allows custom font selection in XeLaTeX and LuaLaTeX for advanced typography
+\RequirePackage{siunitx}             % Ensures consistent formatting and presentation of SI units and scientific notation
+\RequirePackage{unicode-math}        % Enables the use of Unicode-based mathematical symbols and fonts
 
 % Define the primary font with specific styles and features
 \setmainfont[
-	ItalicFont = lmroman10-italic.otf,          % Italic font variant
-	SmallCapsFont = lmromancaps10-regular.otf,  % Small caps font variant
-	BoldFont = lmroman10-bold.otf,              % Bold font variant
-	BoldItalicFont = lmroman10-bolditalic.otf,  % Bold italic font variant
+	ItalicFont = lmroman10-italic.otf,          % Italic font variant for emphasis and stylistic purposes
+	SmallCapsFont = lmromancaps10-regular.otf,  % Small caps font variant for stylistic and emphasis elements
+	BoldFont = lmroman10-bold.otf,              % Bold font variant for headings and important text
+	BoldItalicFont = lmroman10-bolditalic.otf,  % Bold italic font variant for additional emphasis and highlights
 	RawFeature = {%
-		+calt,           % Contextual alternates
-		+case,           % Case-sensitive forms
-		+dlig,           % Discretionary ligatures
-		+hlig,           % Historical ligatures
-		+kern,           % Kerning
-		+liga,           % Standard ligatures
-		+lnum,           % Lining figures for numerals
-		+mark,           % Mark positioning
-		+mkmk,           % Mark-to-mark positioning
-		+pnum,           % Proportional figures
-		+smcp            % Small caps feature
+		+calt,           % Enable contextual alternates for improved text flow and appearance
+		+case,           % Include case-sensitive forms for accurate representation of text
+		+dlig,           % Allow discretionary ligatures for a refined typographic presentation
+		+hlig,           % Include historical ligatures for accurate historical text representation
+		+kern,           % Enable kerning for improved spacing between characters
+		+liga,           % Use standard ligatures to enhance text aesthetics
+		+lnum,           % Use lining figures for numerals to ensure alignment in text
+		+mark,           % Apply mark positioning to correctly render complex scripts
+		+mkmk,           % Enable mark-to-mark positioning for accurate text rendering
+		+pnum,           % Use proportional figures for a more natural text appearance
 	}%
-]{lmroman10-regular.otf}    % Sets the primary text font
+]{lmroman10-regular.otf}    % Sets the primary text font to Latin Modern Roman with specified features
 
 \RequirePackage[%
-	scale=0.86,  % Scale font size to 86% of the normal size
-	lf,          % Apply Latin Modern font features
-	book         % Configure the font for book-style documents
-]{FiraSans}      % Configures the FiraSans sans-serif font
+	scale=0.92,  % Scale font size to 92% for a slightly smaller yet readable appearance
+	lining,      % Use lining figures for consistent numeral alignment
+	otf          % Use OpenType features for enhanced typographic quality
+]{sourcesanspro}  % Configures the Source Sans Pro sans-serif font for body text and headings
 
-\RequirePackage{AnonymousPro}  % Provides a monospaced font for code and fixed-width text
-
-\let\mathbfcal\relax   % Prevent conflicts with existing definitions of math alphabets
 \RequirePackage[%
-	bb=bboldx,     % Use extended Blackboard bold font options
-	cal=cm         % Apply classic calligraphic font style
-]{mathalpha}       % Provides additional mathematical font styles
+	scale=0.86,  % Scale font size to 86% for a slightly smaller but still readable appearance
+	lf,          % Use lining figures for consistent numeral alignment
+]{FiraMono}  % Configures the Fira Mono monospaced font for code and fixed-width text
 
-\RequirePackage{siunitx}  % Ensures consistent formatting for SI units
+\let\mathcal\relax\let\mathbfcal\relax % Prevent conflicts with existing definitions of math alphabets
+
+\RequirePackage[%
+        frak=esstix,   % Use esstix for an extended set of fraktur letters
+	bb=bboldx,     % Use extended Blackboard bold font options for mathematical notation
+	cal=cm         % Apply classic calligraphic font style for mathematical symbols
+]{mathalpha}       % Provides additional mathematical font styles for diverse notation
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Hyperlinks and Metadata Configuration
@@ -306,8 +311,8 @@
 
 % Algorithm Styling
 \SetAlgoCaptionSeparator{.} % Set the separator between the algorithm caption and content
-\SetAlgoNlRelativeSize{0} % Set the size of line numbers to the default size
-\SetNlSty{texttt}{(}{)} % Style line numbers with texttt font and parentheses
+\SetAlgoNlRelativeSize{-2} % Set the size of line numbers to the default size
+\SetNlSty{texttt}{[}{]} % Style line numbers with texttt font and parentheses
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Package for Creating Framed Environments
@@ -484,8 +489,6 @@
 % Definition of New Environments with Colour Box
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage{thmtools} % Theorems and tools
-
 % Theorem Styles
 \declaretheoremstyle[%
 	spaceabove=\topsep, 
@@ -640,35 +643,35 @@
 
 % Conditionally load and configure BibLaTeX if the biblatex option is specified
 \ifbiblatex
-\RequirePackage[%
-	hyperref=auto,          % Automatically configure compatibility with hyperref
-	defernumbers=true,      % Defer citation numbering until after sorting
-	style=alphabetic,       % Use alphabetic style for references
-	backref=true,           % Enable back-references from bibliography to citations
-	sorting=anyt,           % Sort entries by order of appearance
-	autocite=superscript,   % Use superscript for in-text citations
-	maxalphanames=99,       % Limit alphabetic labels to 99 names
-	maxnames=999,           % Display up to 999 names in citations
-	backend=biber           % Use Biber for bibliography processing
-]{biblatex} % Load BibLaTeX with the specified options
-        
-% Define a command to add .bib files to the bibliography resources
-% Usage: \referencedata{filename.bib}
-\providecommand{\referencedata}[1]{%
-	\addbibresource{#1} % Add the specified .bib file
-}
-        
-% Set font size for bibliography entries
-\renewcommand*{\bibfont}{\small} % Use small font size for entries
-        
-% Customize back-reference strings in the bibliography
-\DefineBibliographyStrings{english}{%
-	backrefpage={\unskip Cited on page},%
-	backrefpages={\unskip Cited on pages}%
-}
+    \RequirePackage[%
+    	hyperref=auto,          % Automatically configure compatibility with hyperref
+    	defernumbers=true,      % Defer citation numbering until after sorting
+    	style=alphabetic,       % Use alphabetic style for references
+    	backref=true,           % Enable back-references from bibliography to citations
+    	sorting=anyt,           % Sort entries by order of appearance
+    	autocite=superscript,   % Use superscript for in-text citations
+    	maxalphanames=99,       % Limit alphabetic labels to 99 names
+    	maxnames=999,           % Display up to 999 names in citations
+    	backend=biber           % Use Biber for bibliography processing
+    ]{biblatex} % Load BibLaTeX with the specified options
+            
+    % Define a command to add .bib files to the bibliography resources
+    % Usage: \referencedata{filename.bib}
+    \providecommand{\referencedata}[1]{%
+    	\addbibresource{#1} % Add the specified .bib file
+    }
+            
+    % Set font size for bibliography entries
+    \renewcommand*{\bibfont}{\small} % Use small font size for entries
+            
+    % Customize back-reference strings in the bibliography
+    \DefineBibliographyStrings{english}{%
+    	backrefpage={\unskip Cited on page},%
+    	backrefpages={\unskip Cited on pages}%
+    }
 \else
-% Use a default bibliography style if BibLaTeX is not loaded
-\bibliographystyle{aomalpha}
+    % Use a default bibliography style if BibLaTeX is not loaded
+    \bibliographystyle{aomalpha}
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
