@@ -89,7 +89,7 @@
 \RequirePackage[dvipsnames, svgnames, x11names]{xcolor} % Advanced color support with multiple color schemes
 
 % Define and set the accent colour for document elements
-\providecommand{\accentcolor}{black} % Default accent color
+\providecommand{\accentcolor}{black!75!white} % Default accent color
 \colorlet{accentcolor}{\accentcolor} % Apply the accent color
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -497,24 +497,24 @@
 \declaretheoremstyle[%
 	spaceabove=\topsep, 
 	spacebelow=\topsep,
-	headfont=\bfseries\boldmath\color{\accentcolor},
-	notefont=\bfseries\boldmath\color{\accentcolor},
+	headfont=\scshape\color{\accentcolor},
+	notefont=\scshape\color{\accentcolor},
 	bodyfont=\normalfont,
-	postheadspace=0.5em,
+	postheadspace=5pt,
 	numberwithin=section,
-	qed=\color{\accentcolor}$\ddag$,
+	qed=\color{\accentcolor}$\scriptstyle\star$,
 	headpunct={:}
 ]{thmstyle}
 
 \declaretheoremstyle[%
 	spaceabove=\topsep, 
 	spacebelow=\topsep,
-	headfont=\bfseries\boldmath\color{\accentcolor},
-	notefont=\bfseries\boldmath\color{\accentcolor},
+	headfont=\scshape\color{\accentcolor},
+	notefont=\scshape\color{\accentcolor},
 	bodyfont=\normalfont,
-	postheadspace=0.5em,
+	postheadspace=5pt,
 	numberwithin=section,
-	qed=\color{\accentcolor}$\ddag$,
+	qed=\color{\accentcolor}$\scriptstyle\maltese$,
 	headpunct={:}
 ]{defstyle}
 
@@ -524,9 +524,9 @@
 	headfont=\scshape\color{\accentcolor},
 	notefont=\scshape\color{\accentcolor},
 	bodyfont=\normalfont,
-	postheadspace=0.5em,
+	postheadspace=5pt,
 	numberwithin=section,
-	qed=\color{\accentcolor}$\ddag$,
+	qed=\color{\accentcolor}$\scriptstyle\maltese$,
 	headpunct={:}
 ]{remarkstyle}
 
