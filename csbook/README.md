@@ -46,7 +46,7 @@ Each environment can be customized with a specific background colour, title font
 The package provides several custom commands, including:
 
 - `\code{…}`: Formats code snippets with a monospace font.
-- `\igls{…}`: Indexes a given label and expands the associated acronym.
+- `\newterm{…}`: Indexes a given label and expands the associated acronym.
 - `\dedication{…}{…}`: Formats individual dedication entries.
 - `\generateDedications{…}`: Generates the complete set of dedications.
 - `\subtitle{…}`: Defines the subtitle of the document.
