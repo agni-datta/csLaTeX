@@ -1,4 +1,4 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% csbook Package
 %% Version: 1.0
 %% Date: 2024/05/19
@@ -8,7 +8,7 @@
 %% Maintainer: Agni Datta
 %% License: MIT
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % The csbook package offers a suite of features tailored for crafting academic books and documents within the domain of computer science.
 % It aims to streamline the creation process while maintaining a professional and visually appealing output.
@@ -16,581 +16,659 @@
 % Usage:
 % 1. Load the package in the preamble using \RequirePackage{csbook}.
 % 2. After loading, utilize the provided environments and tools to structure and format your document efficiently.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Enable the use of '@' in command names
 \makeatletter
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Package Declaration
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Declare that this is a LaTeX2e package
 \def\filename{csbook} % Package filename
 \def\fileversion{v1} % Package version
 \def\filedate{2024/04/17} % Package release date
 \def\fileauthor{Agni Datta} % Package author
-
-% Define the package name and version
 \def\csbook@version{1.0} % Internal version number
 
 \NeedsTeXFormat{LaTeX2e} % Specifies that this package requires LaTeX2e
 \AtEndOfPackage{\ProvidesPackage{\filename}[\filedate\space\fileversion\space(\fileauthor)]}
 \typeout{Package `\filename', \fileversion, <\filedate>} % Output package information
-
 \ProvidesPackage{csbook}[\csbook@version\space A LaTeX package for typesetting computer science books]
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Package Options
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Programming Tools
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Define boolean flags for package options
-\newif\ifcsbook@fancy
+\RequirePackage{ifxetex} % Detects XeTeX compilation
+\RequirePackage{ifluatex} % Detects LuaLaTeX compilation
+\RequirePackage{calc} % Enables various LaTeX calculations
+\RequirePackage{etoolbox} % Offers advanced conditional programming features
+\RequirePackage{xpatch} % Enhances etoolbox with flexible command patching capabilities
 
-% Declare package options
-\DeclareOption{normalthm}{\csbook@fancyfalse} % Option for normal theorem formatting
-\DeclareOption{fancythm}{\csbook@fancytrue} % Option for fancy theorem formatting
-\DeclareOption*{\PackageWarning{csbook}{Unknown option '\CurrentOption'}} % Handle unknown options
-
-% Process declared options
-\ProcessOptions\relax
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Package Management and Conditional Compilation
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage{ifxetex} % Detects if the document is compiled with XeTeX
-\RequirePackage{ifluatex} % Detects if the document is compiled with LuaLaTeX
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Advanced Programming Tools
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage{calc} % Supports various calculations in LaTeX
-\RequirePackage{etoolbox} % Provides advanced conditional programming tools
-\RequirePackage{xpatch} % Extends functionality of etoolbox for flexible command patching
-\RequirePackage{xparse} % Provides an interface for defining complex macros
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Key-Value Processing and Options Management
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Macro Definition Tools
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{xparse} % Facilitates the definition of complex macros
 \RequirePackage{xkeyval} % Enables advanced key-value argument processing
 \RequirePackage{kvoptions} % Manages key-value options in package and class files
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Conditional Comments and PDF Management
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Class Option Declarations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage{comment} % Customizes list environments with conditional comments
-\RequirePackage[2.0, compress]{bxpdfver} % Manages PDF version and compression
+% Boolean Variables
+\newbool{usesrtbiblatex}   % Indicates whether to use sorted BibLaTeX
+\newbool{usebiblatex}      % Indicates whether to use BibLaTeX
+\newbool{useebgaramond}    % Indicates whether to use EB Garamond font
+\newbool{uselmodern}       % Indicates whether to use Latin Modern font
+\newbool{usefancythm}         % Indicates whether to use fancy theorem formatting
+\newbool{usenormalthm}        % Indicates whether to use normal theorem formatting
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Boolean Initialization
+\setbool{usesrtbiblatex}{false}  % Initialize sorted BibLaTeX usage to false
+\setbool{usebiblatex}{false}     % Initialize BibLaTeX usage to false
+\setbool{useebgaramond}{false}   % Initialize EB Garamond font usage to false
+\setbool{uselmodern}{false}      % Initialize Latin Modern font usage to false
+\setbool{usefancythm}{false}        % Initialize fancy theorem formatting to false
+\setbool{usenormalthm}{false}       % Initialize normal theorem formatting to false
+
+% Options Declaration
+\DeclareOption{usebiblatex}{\setbool{usebiblatex}{true}}         % Set BibLaTeX usage
+\DeclareOption{usesrtbiblatex}{\setbool{usesrtbiblatex}{true}}   % Set Sorted BibLaTeX usage
+\DeclareOption{useebgaramond}{\setbool{useebgaramond}{true}}     % Set EB Garamond font usage
+\DeclareOption{uselmodern}{\setbool{uselmodern}{true}}           % Set Latin Modern font usage
+\DeclareOption{usefancythm}{\setbool{usefancythm}{true}}               % Set fancy theorem formatting
+\DeclareOption{usenormalthm}{\setbool{usenormalthm}{true}}             % Set normal theorem formatting
+
+% Handle Unknown Options
+\DeclareOption*{\PackageWarning{csbook}{Unknown option '\CurrentOption'}}  % Warn for unknown options
+
+% Process Options
+\ProcessOptions\relax  % Apply declared options
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PDF Management and External File Handling
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage[2.0, objcompress, compress]{bxpdfver} % Manage PDF version and compression settings
+\RequirePackage{comment} % Customize list environments with conditional comments
+\RequirePackage{pdfpages} % Include external PDF pages in the document
+\RequirePackage{pdflscape} % Enable landscape pages in PDFs
+\RequirePackage{ragged2e} % Provides enhanced justification options compared to standard LaTeX commands
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Package for Support for Colour
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage[x11names, dvipsnames, svgnames]{xcolor} % Provides color support with extended color schemes
+
 % Color Definitions
 \providecommand{\accentcolor}{Blue4} % Define the accent color
 \colorlet{accentcolor}{\accentcolor} % Apply the defined accent color
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Language Settings
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Language and Typographic Settings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Language and Quotation Management
-\RequirePackage[british]{babel} % Language settings for British English
-\RequirePackage[autostyle=true, csdisplay=true]{csquotes} % Handles quotations with automatic style
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Micro-Typographic Enhancements
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\RequirePackage[english]{babel}  % Configure language settings for English
+\RequirePackage[autostyle=true, csdisplay=true]{csquotes}  % Advanced quotation handling with automatic style adjustments
 % Micro-typography settings based on the LaTeX engine used
 \ifluatex
-\RequirePackage[protrusion=true, expansion=true, babel=true]{microtype} % Micro-typography for LuaLaTeX
-\else
-\ifxetex
-\RequirePackage[protrusion=true, babel=true]{microtype} % Micro-typography for XeTeX
+    \RequirePackage[protrusion=true, expansion=true, babel=true]{microtype} % Micro-typography for LuaLaTeX
+    \else
+        \ifxetex
+        \RequirePackage[protrusion=true, babel=true]{microtype} % Micro-typography for XeTeX
+    \fi
 \fi
-\fi
+\RequirePackage[onehalfspacing]{setspace}  % Sets line spacing to one and a half
+\RequirePackage[full]{textcomp}  % Adds additional text symbols for improved typography
+\RequirePackage[normalem]{ulem}  % Provides features for underlining, strikethrough, and other text emphases
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Spacing and PDF Inclusion
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage[onehalfspacing]{setspace} % Sets line spacing to one-and-a-half
-\RequirePackage{pdfpages} % Allows inclusion of external PDF pages
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Font Encoding
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage[T1]{fontenc} % Enable T1 font encoding for improved font output in PDF
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Mathematical Typesetting Packages
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage{amsmath} % Provides advanced mathematical typesetting capabilities
-\RequirePackage{amsfonts} % Adds additional mathematical symbols
-\RequirePackage{amssymb} % Provides more mathematical symbols
-\RequirePackage{amsthm} % Supports theorem-like environments (e.g., Theorems, Lemmas)
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Font Selection for XeLaTeX and LuaLaTeX
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage{fontspec} % Allows font selection and customization for XeLaTeX and LuaLaTeX
-\RequirePackage{unicode-math} % Provides Unicode math font support
-
-% Main Font Configuration
-\setmainfont[%
-	RawFeature={%
-		+lnum, % Lining figures for better alignment
-		+mark, % Enable mark positioning (diacritics)
-		+mkmk, % Enable mark-to-mark positioning
-		+pnum, % Use proportional figures for numbers
-		+hlig, % Include historical ligatures
-		+liga, % Enable standard ligatures
-		+calt, % Use contextual alternates
-		+kern, % Enable kerning for better spacing
-		+case  % Use case-sensitive forms
-	}%
-]{EB Garamond} % Main font: EB Garamond (ensure it is installed)
-
-% Math Font Configuration
-\setmathfont[%
-	RawFeature={%
-		+lnum, % Lining figures for numbers
-		+mark, % Enable mark positioning
-		+mkmk, % Enable mark-to-mark positioning
-		+pnum, % Use proportional figures
-		+hlig, % Include historical ligatures
-		+liga, % Enable standard ligatures
-		+calt, % Use contextual alternates
-		+kern, % Enable kerning
-		+case  % Use case-sensitive forms
-	}%
-]{Garamond-Math.otf} % Math font: Garamond-Math (ensure the font file is available)
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Sans-Serif and Monospaced Font Configuration
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage{biolinum} % Provides a sans-serif font: Biolinum
-
-% Monospaced Font Configuration
-\setmonofont[%
-	Scale=0.85, % Adjust the scale of the monospaced font
-	RawFeature={%
-		+ss05, % Apply Stylistic Set 05
-		+lnum, % Use lining figures for numbers
-		+mark, % Enable mark positioning
-		+mkmk, % Enable mark-to-mark positioning
-		+pnum, % Use proportional figures
-		+liga, % Enable standard ligatures
-		+calt, % Use contextual alternates
-		+kern, % Enable kerning
-		+case  % Use case-sensitive forms
-	}%
-]{Fira Mono} % Monospaced font: Fira Mono (Fira Code) for code and other monospaced text
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Additional Math Fonts and Symbols
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Prevent Conflicts with Math Alphabets
-\let\mathbfcal\relax % Prevent conflicts with existing math alphabets
-
-\RequirePackage[bb=stixtwo, cal=cm]{mathalpha} % Additional math fonts for different styles
-\RequirePackage{nicefrac} % Provides visually appealing fractions
-\RequirePackage{physics} % Provides physics-related commands and notation
-\RequirePackage{siunitx} % Provides correct spacing for units
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Page Layout Configuration
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Set up page layout using the geometry package
 \RequirePackage[%
-	a4paper,        % Use A4 paper size
-	margin=3.25cm,  % Set the margin to 3.25cm on all sides
-	inner=2.5cm,    % Set inner margin to 2.5cm
-	outer=2.5cm,    % Set outer margin to 2.5cm
-	footskip=1cm    % Set distance between text and footer to 1cm
-]{geometry}         % Use the geometry package to set the page layout
+	a4paper,             % Define A4 paper size
+	tmargin=2.50cm,      % Set top margin
+	bmargin=2.00cm,      % Set bottom margin
+	lmargin=3.00cm,      % Set left margin
+	rmargin=3.00cm,      % Set right margin
+	footskip=1.00cm      % Set distance from text to footer to 1.00 cm
+]{geometry}              % Load geometry package for page layout management
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Header and Footer Configuration
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Customization of Headers and Footers
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage{fancyhdr} % Use fancyhdr package for headers and footers
+\RequirePackage{fancyhdr} % Load the fancyhdr package for custom headers and footers
 
-% Clear header and footer fields
-\fancyhf{} % Clear all header and footer fields
+% Clear all header and footer fields
+\fancyhf{} % Remove existing header and footer content
 
-% Configure header format
-\fancyhead[LE,RO]{\normalfont\small\sffamily\thepage} % Page number on even and odd pages
-\fancyhead[LO,RE]{\normalfont\small\sffamily\scshape\@title} % Title on odd and even pages
+% Configure header layout
+\fancyhead[LE, RO]{\normalfont\small\sffamily\thepage} % Page number on the left side of even pages and right side of odd pages
+\fancyhead[LO, RE]{\normalfont\small\sffamily\scshape\@title} % Title on right side of even pages and left side of odd pages
 
-% Set thickness of header rule
-\renewcommand{\headrulewidth}{0.25pt} % Thickness of header rule
+% Define the thickness of the header rule
+\renewcommand{\headrulewidth}{0.25pt} % Set header rule thickness
 
-% Set page style
-\pagestyle{fancy} % Use fancy page style
+% Apply the custom page style
+\pagestyle{fancy} % Use the fancy page style
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Section and TOC Numbering Depth
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Font and Mathematics Packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Set depth of section numbering
-\setcounter{secnumdepth}{4} % Number sections up to 4 levels deep
+\RequirePackage[T1]{fontenc}            % Enable T1 font encoding for improved PDF font output
+\RequirePackage{amsfonts}               % Provides essential fonts for mathematical notation
+\RequirePackage{amssymb}                % Supplies additional mathematical symbols
+\RequirePackage{amsmath}                % Enables advanced mathematical formatting
+\RequirePackage{amsthm}                 % Facilitates theorem-like environments
+\RequirePackage{thmtools}               % Enhances theorem-related functionalities
+\RequirePackage{nicefrac}               % Enhances the visual appearance of fractions
+\RequirePackage{siunitx}                % Ensures consistent formatting of SI units
+\RequirePackage{fontspec}               % Allows custom font selection with XeLaTeX and LuaLaTeX
+\RequirePackage{unicode-math}           % Provides Unicode math font support
+\RequirePackage{AnonymousPro}           % Monospaced font for code and fixed-width text
 
-% Set depth of table of contents numbering
-\setcounter{tocdepth}{3}  % Include sections up to 3 levels deep in TOC
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Document Structure Customization
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Front matter
-\let\oldfrontmatter\frontmatter % Save the original \frontmatter command
-\renewcommand{\frontmatter}{%
-	\oldfrontmatter % Call the original \frontmatter
-	\pagestyle{empty} % Set page style to empty for the front matter
+\providecommand{\uselmodern}{%
+	\setmainfont[%
+		ItalicFont = lmroman10-italic.otf,          % Set italic font variant
+		SmallCapsFont = lmromancaps10-regular.otf,  % Set small caps font variant
+		BoldFont = lmroman10-bold.otf,              % Set bold font variant
+		BoldItalicFont = lmroman10-bolditalic.otf,  % Set bold italic font variant
+		RawFeature = {%
+			+calt,           % Enable contextual alternates
+			+case,           % Enable case-sensitive forms
+			+dlig,           % Enable discretionary ligatures
+			+hlig,           % Enable historical ligatures
+			+kern,           % Enable kerning
+			+liga,           % Enable standard ligatures
+			+lnum,           % Use lining figures for numerals
+			+mark,           % Enable mark positioning
+			+mkmk,           % Enable mark-to-mark positioning
+			+pnum,           % Use proportional figures
+			+smcp            % Enable small caps feature
+		}
+	]{lmroman10-regular.otf} % Set primary font as Latin Modern Roman Regular
+	\setmathfont{latinmodern-math.otf}
+	\setmathfont[version=bold]{NewCMMath-Book.otf}
 }
+\ifbool{uselmodern}{\uselmodern}{\typeout{Not using Latin Modern fonts.}}
 
-% Main matter
-\let\oldmainmatter\mainmatter % Save the original \mainmatter command
-\renewcommand{\mainmatter}{%
-	\oldmainmatter % Call the original \mainmatter
-	\@openrighttrue % Ensure chapters start on right-hand pages
-	\pagestyle{fancy} % Use the fancy page style for the main matter
+\providecommand{\useebgaramond}{%
+	% Main Font Configuration
+	\setmainfont[%
+		RawFeature={%
+			+calt,                   % Enable contextual alternates
+			+case,                   % Enable case-sensitive forms
+			+hlig,                   % Enable historical ligatures
+			+kern,                   % Enable kerning
+			+liga,                   % Enable standard ligatures
+			+lnum,                   % Use lining figures for numerals
+			+mark,                   % Enable mark positioning
+			+mkmk,                   % Enable mark-to-mark positioning
+			+pnum                    % Use proportional figures
+		},
+		StylisticSet={3,5}           % Apply specific stylistic sets for enhanced typography
+	]{EB Garamond}                   % Set main font as EB Garamond (ensure installation)
+	
+	% Math Font Configuration
+	\setmathfont[%
+		RawFeature={%
+			+calt,                   % Enable contextual alternates
+			+case,                   % Enable case-sensitive forms
+			+hlig,                   % Enable historical ligatures
+			+kern,                   % Enable kerning
+			+liga,                   % Enable standard ligatures
+			+lnum,                   % Use lining figures for numerals
+			+mark,                   % Enable mark positioning
+			+mkmk,                   % Enable mark-to-mark positioning
+			+pnum                    % Use proportional figures
+		},
+		StylisticSet={2,6,7,9}       % Apply specific stylistic sets for math symbols
+	]{Garamond-Math.otf}             % Set math font as Garamond-Math (ensure font availability)
 }
+\ifbool{useebgaramond}{\useebgaramond}{\typeout{Not using EB Garamond fonts.}}
 
-% Appendices
-\let\oldappendix\appendix % Save the original \appendix command
-\renewcommand{\appendix}{%
-	\oldappendix % Call the original \appendix
-	\@openrighttrue % Ensure appendices start on right-hand pages
-	\renewcommand\chaptername{Appendices} % Change the chapter name to 'Appendices'
-}
+\setsansfont[%
+	UprightFont = LibertinusSans-Regular,     % Regular weight for upright text
+	BoldFont = LibertinusSans-Bold,           % Bold weight
+	ItalicFont = LibertinusSans-Italic,       % Italic style
+	SmallCapsFont = LibertinusSans-Regular,   % Small caps font
+	SmallCapsFeatures = {RawFeature=+smcp},   % Enable small caps feature
+	RawFeature={%
+		+calt,                           % Enable contextual alternates
+		+case,                           % Enable case-sensitive forms
+		+dlig,                           % Enable discretionary ligatures
+		+kern,                           % Enable kerning
+		+liga,                           % Enable standard ligatures
+		+lnum,                           % Use lining figures for numerals
+		+mark,                           % Enable mark positioning
+		+mkmk,                           % Enable mark-to-mark positioning
+		+pnum                            % Use proportional figures
+	},
+	StylisticSet={1,3}                   % Apply specific stylistic sets for enhanced typography
+]{LibertinusSans-Regular.otf}            % Main font: Libertinus Sans
 
-% Back matter
-\let\oldbackmatter\backmatter % Save the original \backmatter command
-\renewcommand{\backmatter}{%
-	\oldbackmatter % Call the original \backmatter
-	\@openrighttrue % Ensure sections start on right-hand pages
-	\bookmarksetup{startatroot} % Set bookmarks to start at the root level
-	\pagestyle{plain} % Use the plain page style for the back matter
-}
+% Additional Math Font Customization
+\let\mathbfcal\relax                     % Prevent conflicts with existing math alphabet definitions
+\let\mathcal\relax                       % Prevent conflicts with existing math alphabet definitions
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Define custom chapter, section, subsection, and subsubsection formatting
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage[%
+	bb=bboldx,                     % Use extended Blackboard bold font options
+	cal=cm                         % Apply classic calligraphic font style
+]{mathalpha}                           % Provides additional math font styles
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Custom Sectioning Commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage[explicit]{titlesec} % Package for customizing sectioning commands
 
 % Define formatting for parts
 \titleformat{\part}[display]
-{\normalfont\scshape\RaggedRight\color{\accentcolor}} % Align text to the left
-{\LARGE\partname~\thepart} % No label
-{0pt} % No separation between label and title
+{\normalfont\scshape\RaggedRight\color{\accentcolor}} % Formatting for part title
+{\LARGE\partname~\thepart} % Format for part label
+{0pt} % No space between label and title
 {\titlerule\bigskip\hfill\Huge#1\vfill} % Format for part title
 
-% Define custom formatting for chapters
-\titleformat{\chapter}[display]
-{\normalfont\Huge\sffamily\scshape\color{\accentcolor}} % Chapter title font formatting
-{\LARGE Chapter~\thechapter\medskip} % Display chapter number
-{0pt} % No separation between chapter number and title
-{\hrule\medskip#1\medskip\hrule} % Chapter title format with \accentcolor color
-
-% Define formatting for sections
-\titleformat{\section}[block]
-{\normalfont\LARGE\scshape\sffamily\color{\accentcolor}} % Section title font formatting
-{\Large Section~\thesection} % Display section number
-{7.5pt} % Space between section number and title
-{#1\hrule} % Format for section title
-
-% Adjust spacing around section titles
-\titlespacing*{\section}{0pt}{*0}{-15pt}
-
-% Define formatting for subsections
-\titleformat{\subsection}[block]
-{\normalfont\Large\scshape\sffamily\color{\accentcolor}} % Subsection title font formatting
-{\large\thesubsection} % Display subsection number
-{5pt} % Space between subsection number and title
-{#1} % Format for subsection title
-
-% Define formatting for subsubsections
-\titleformat{\subsubsection}[block]
-{\normalfont\large\scshape\sffamily\color{\accentcolor}} % Subsubsection title font formatting
-{\normalsize\thesubsubsection} % Display subsubsection number
-{5pt} % Space between subsubsection number and title
-{#1} % Format for subsubsection title
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Table of Contents customization
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage[titles]{tocloft} % Use tocloft package for customizing the table of contents
-
-% Adjust the vertical spacing after section, subsection, and subsubsection numbers
-\renewcommand{\cftpartafterpnum}{\vskip1pt}
-\renewcommand{\cftchapafterpnum}{\vskip1pt}
-\renewcommand{\cftsecafterpnum}{\vskip1pt}
-\renewcommand{\cftsubsecafterpnum}{\vskip1pt}
-\renewcommand{\cftsubsubsecafterpnum}{\vskip1pt}
-
-% Adjust sectional unit title fonts in the Table of Contents
-\renewcommand{\cftpartfont}{\Large\scshape} % Set font for sections
-\renewcommand{\cftchapfont}{\large\scshape} % Set font for sections
-\renewcommand{\cftsecfont}{\normalsize\scshape} % Set font for sections
-\renewcommand{\cftsubsecfont}{\normalsize} % Set font for subsections
-\renewcommand{\cftsubsubsecfont}{\normalsize} % Set font for subsubsections
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Package and custom commands for adding todo notes
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage{todonotes} % Use the todo-notes package for adding todo notes in the document
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Support for creating indexes
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage[makeindex]{imakeidx} % Package for index support
-\makeindex[intoc, title=Index, options=-s csindex]
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Package for hyperlinks and metadata
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage[pdfusetitle]{hyperref} % Use hyperref package to enable hyperlinks and set document metadata
-
-% Hyperref setup for metadata and appearance
-\hypersetup{%
-	pdfsubject={computer science},     % Define subject metadata for the PDF
-	pdfkeywords={computer science},    % Define keywords metadata for the PDF
-	colorlinks=true,                   % Enable coloured links
-	citecolor=\accentcolor,            % Set colour for citations
-	linkcolor=\accentcolor,            % Set colour for internal links
-	urlcolor=\accentcolor,             % Set colour for URLs
-	frenchlinks=true,                  % Enable French style links (links with small caps)
-	unicode=true,                      % Enable Unicode support
-	bookmarksnumbered=true,            % Number bookmarks in the PDF
-	breaklinks=true,                   % Allow line breaks in links
-	pdfborder={0 0 0},                 % Set border style for links (none)
-	pdfborderstyle={},                 % Set border style for links (empty)
+% Command for margin section numbering
+\providecommand{\marginsecnumber}[1]{%
+	\makebox[0pt][r]{#1\hspace{7.5pt}}%
 }
 
-\RequirePackage{bookmark} % Load the bookmark package for handling PDF bookmarks
+% Command for margin subsection numbering
+\providecommand{\marginsubsecnumber}[1]{%
+	\makebox[0pt][r]{#1\hspace{7.5pt}}%
+}
 
-\RequirePackage[capitalise]{cleveref} % Use cleveref package for intelligent cross-references
+% Command for margin subsubsection numbering
+\providecommand{\marginsubsubsecnumber}[1]{%
+	\makebox[0pt][r]{#1\hspace{7.5pt}}%
+}
 
-\crefname{part}{part}{parts}
-\crefname{part}{Part}{Parts}
-\crefname{chapter}{chapter}{chapters}
+% Chapter formatting
+\titleformat{\chapter}[frame]
+    {\huge\sffamily\scshape\color{\accentcolor}} % Font and color for chapter title
+    {\filright{\large Chapter~\thechapter}} % Chapter number format
+    {15pt} % Space between number and title
+    {\filcenter#1} % Title formatting
+
+\titlespacing*{\chapter}{0pt}{50pt}{75pt} % Spacing before and after chapter title
+
+% Section formatting
+\titleformat{\section}[block]%
+    {\Large\sffamily\scshape\color{\accentcolor}} % Font and color for section title
+    {\LARGE\marginsecnumber\thesection} % Section number format
+    {0pt} % Space between number and title
+    {#1\smallskip\hrule\vspace{-20pt}} % Title formatting
+    
+% Subsection formatting
+\titleformat{\subsection}[block]%
+    {\large\sffamily\scshape\color{\accentcolor}} % Font and color for subsection title
+    {\Large\marginsubsecnumber\thesubsection} % Subsection number format
+    {0pt} % Space between number and title
+    {#1} % Title formatting
+
+% Subsubsection formatting
+\titleformat{\subsubsection}[runin]%
+    {\normalsize\sffamily\scshape\color{\accentcolor}} % Font and color for subsubsection title
+    {\large\marginsubsubsecnumber\thesubsubsection} % Subsubsection number format
+    {0pt} % Space between number and title
+    {#1.} % Title formatting
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Local Table of Contents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{etoc} % Load etoc package for local tables of contents
+
+\etockeeporiginaltableofcontents % Preserve the original table of contents settings
+
+% Command: \localtoc
+% Description: Generates a local table of contents with distinct fonts for sections and subsections, and enhanced formatting.
+\providecommand{\localtoc}{%
+	\begingroup
+    	\etocsettocstyle{}{} % Clear default headings
+    	\etocsetnexttocdepth{section} % Display entries up to section level
+    	\etocsetstyle{section}
+    	{}{}{ % Formatting for each entry in the TOC
+    		\sffamily\scshape\etocnumber\hspace*{10pt}\etocname\nobreak
+    		\hskip5pt\dotfill\hskip5pt\nobreak
+    		\etocpage\par
+    		}{}
+            {\color{\accentcolor}\rule{\textwidth}{0.5pt}\medskip}
+            \localtableofcontents % Generate the local table of contents
+            {\medskip\noindent\color{\accentcolor}\rule{\textwidth}{0.5pt}}
+	\endgroup
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Customization of Table of Contents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage[titles]{tocloft} % Employ the tocloft package for Table of Contents customization
+
+% Adjust vertical spacing after section, subsection, and subsubsection numbers
+\renewcommand{\cftpartafterpnum}{\vskip1pt} % Space after part numbers
+\renewcommand{\cftchapafterpnum}{\vskip1pt} % Space after chapter numbers
+\renewcommand{\cftsecafterpnum}{\vskip1pt}  % Space after section numbers
+\renewcommand{\cftsubsecafterpnum}{\vskip1pt} % Space after subsection numbers
+\renewcommand{\cftsubsubsecafterpnum}{\vskip1pt} % Space after subsubsection numbers
+
+% Define font styles for Table of Contents entries
+\renewcommand{\cftpartfont}{\large\scshape} % Font for parts
+\renewcommand{\cftchapfont}{\sffamily\large\scshape} % Font for chapters
+\renewcommand{\cftsecfont}{\normalsize\scshape} % Font for sections
+\renewcommand{\cftsubsecfont}{\normalsize} % Font for subsections
+\renewcommand{\cftsubsubsecfont}{\normalsize} % Font for subsubsections
+
+% Configure depth of section numbering and Table of Contents
+\setcounter{secnumdepth}{4} % Numbering depth for sections
+\setcounter{tocdepth}{3}  % Depth of Table of Contents entries
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Support for Creating Indexes
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage[makeindex]{imakeidx} % Package for index creation and management
+
+\begin{filecontents}{csindex.ist}
+quote '+'
+columns 2
+letter_group
+symhead_positive "Symbols"
+numhead_positive "Numbers"
+headings_flag 1
+heading_prefix "\\textbf{"heading_suffix "}\n"
+delim_0 "\\dotfill"
+delim_1 "\\dotfill"
+delim_2 "\\dotfill"
+delim_r "\\dotfill"
+preamble "\\begin{theindex}\n\\rmfamily\n"
+postamble "\n\\end{theindex}\n"
+\end{filecontents}
+
+\makeindex[intoc, title=Index, options=-s csindex] % Configure and create the index with custom style
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Hyperlinks and Metadata Configuration
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage[pdfusetitle]{hyperref} % Provides hyperlink capabilities and document metadata management
+\RequirePackage{bookmark}              % Manages PDF bookmarks for easier navigation
+\RequirePackage{xurl}                  % Automatically breaks long URLs to fit within the document
+
+% Configure hyperref settings to enhance document appearance and metadata
+\hypersetup{%
+	pdfsubject={\ifx\@course\undefined\else\@course\fi},   % Set the subject of the PDF; fallback to \@course if not defined
+	pdfkeywords={\ifx\@course\undefined\else\@course\fi},  % Define keywords for the PDF; fallback to \@course if not defined
+	colorlinks=true,                  % Enable coloured hyperlinks
+	citecolor=\accentcolor,           % Set colour for citation links
+	linkcolor=\accentcolor,           % Set colour for internal document links
+	urlcolor=\accentcolor,            % Set color for URLs
+	frenchlinks=true,                 % Use French-style links with small caps
+	unicode=true,                     % Enable Unicode characters in links
+	bookmarksnumbered=true,           % Number bookmarks in the PDF for better navigation
+	breaklinks=true,                  % Allow line breaks in long URLs
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Page Style Customizations for Document Structure
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Front matter
+\let\oldfrontmatter\frontmatter % Preserve the original \frontmatter command
+\renewcommand{\frontmatter}{%
+	\oldfrontmatter % Execute the original \frontmatter command
+	\pagestyle{empty} % Set page style to empty for front matter
+}
+
+% Main matter
+\let\oldmainmatter\mainmatter % Preserve the original \mainmatter command
+\renewcommand{\mainmatter}{%
+	\oldmainmatter % Execute the original \mainmatter command
+	\@openrighttrue % Ensure chapters begin on right-hand pages
+	\pagestyle{fancy} % Apply the fancy page style to the main matter
+}
+
+% Appendices
+\let\oldappendix\appendix % Preserve the original \appendix command
+\renewcommand{\appendix}{%
+	\oldappendix % Execute the original \appendix command
+	\@openrighttrue % Ensure appendices begin on right-hand pages
+	\renewcommand\partname{Appendices} % Modify chapter name to 'Appendices'
+}
+
+% Back matter
+\let\oldbackmatter\backmatter % Preserve the original \backmatter command
+\renewcommand{\backmatter}{%
+	\oldbackmatter % Execute the original \backmatter command
+	\@openrighttrue % Ensure sections begin on right-hand pages
+	\bookmarksetup{startatroot} % Configure bookmarks to start at the root level
+	\pagestyle{plain} % Apply the plain page style to the back matter
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Redefine the \maketitle Command
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Define the \subtitle command with an optional argument
+% This command sets the subtitle for the document
+\providecommand{\subtitle}[1]{%
+	\providecommand{\@subtitle}{#1} % Define or redefine the global subtitle command
+}
+
+% Redefine the \maketitle command
+% This command formats the title, subtitle, authors, and date of the document
+\renewcommand{\maketitle}{%
+	\vspace*{\fill} % Vertically center the content on the page
+	\thispagestyle{empty} % Set the page style to 'empty' (no page numbers)
+	
+	\begingroup
+	\raggedleft % Right-align the content
+	% Title
+	{\scshape\huge
+		\ifx\@title\undefined
+		\else\@title
+		\fi\par
+		\vspace{1em}\hrule\bigskip} % Title with horizontal rule
+	
+	% Subtitle
+	{\normalsize\itshape
+		\ifx\@subtitle\undefined
+		\else\@subtitle
+		\fi\par
+		\medskip} % Subtitle with italic style
+	
+	% Authors
+	{\large\scshape
+		\ifx\@author\undefined
+		\else\@author
+		\fi\par
+		\medskip} % Authors in small caps
+	
+	% Date
+	{\hfill\scshape\normalsize
+		\ifx\@date\undefined
+		\else\@date
+		\fi} % Date with small caps
+	\endgroup
+	
+	\vspace*{\fill} % Vertically center the content on the page
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Command for Generating the Copyright Page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\makecopyrightpage}{%
+	\thispagestyle{empty} % Remove headers and footers for this page
+	{\huge\hfill\textsc{Copyright Page}\bigskip\hrule\bigskip}
+        \begingroup % Begin a local group to confine the scope of changes
+	\null\vfill % Center the content vertically on the page
+	\small % Set the font size as small for the copyright page
+	\centering % Center the text horizontally
+	
+	% Title and Edition Information
+	\textsc{\Large\@title}\par % Title of the work in small caps and large size
+	
+	% Copyright Information
+	\textcopyright~\@date~by~\@author\par % Copyright symbol, date, and author information
+	All rights reserved.\par % Standard copyright notice
+	
+	% License Information
+	\justify % Justify the license text for better alignment
+        This work is distributed under the terms of the Creative Commons
+        Attribution-NonCommercial-NoDerivatives 4.0 International License
+        (``CC BY-NC-ND 4.0"). The principal conditions of this license
+        stipulate that attribution must be duly provided, including proper
+        credit to the original author(s), a direct hyperlink to the license,
+        and a clear statement of any modifications made to the original work;
+        however, such attribution must not imply endorsement by the licensor.
+        The material may not be utilised for any commercial purposes.
+        The material may not be remixed, transformed, or built upon in any
+        manner that results in a modified work, and any redistributed material
+        must remain in its original form. Further, the material must not
+        be used for any purposes involving artificial intelligence or machine
+        learning applications. Full details and the complete legal text of this
+        license can be accessed at the following URL:
+        \texttt{\url{https://creativecommons.org/licenses/by-nc-nd/4.0/}}.
+	\par
+	
+	% Additional Details
+	\vspace{15pt} % Add vertical space before the additional details
+	\begin{center}
+		First edition published on \@date\par % Information about the edition and publication date
+	\end{center}
+	\vspace*{15pt} % Add vertical space after the additional details
+	
+	\endgroup % End the local group
+	\cleardoublepage % Ensure the following content starts on a new page
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Cleveref Settings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{cleveref} % Load the cleveref package for intelligent cross-referencing
+
+% Define plural and singular names for various types of references
+\Crefname{algorithm}{Algorithm}{Algorithms}
 \Crefname{chapter}{Chapter}{Chapters}
-\crefname{section}{section}{sections}
+\crefname{code}{Program}{Programs}
+\Crefname{part}{Part}{Parts}
 \Crefname{section}{Section}{Sections}
-\crefname{subsection}{subsection}{subsections}
 \Crefname{subsection}{Subsection}{Subsections}
-\crefname{subsubsection}{subsubsection}{subsubsections}
 \Crefname{subsubsection}{Subsubsection}{Subsubsections}
 
-\RequirePackage{xurl} % Use url package for automatic hyperlinking and line-breaking for long URLs
+% Define lowercase names for various types of references
+\crefname{algorithm}{algorithm}{algorithms}
+\crefname{chapter}{chapter}{chapters}
+\crefname{code}{program}{programs}
+\crefname{part}{part}{parts}
+\crefname{section}{section}{sections}
+\crefname{subsection}{subsection}{subsections}
+\crefname{subsubsection}{subsubsection}{subsubsections}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Package for customizing lists
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage{enumitem} % Use the enum item package for adjusting the appearance and behaviour of list environments
+\RequirePackage{enumitem} % Use the enumitem package for adjusting the appearance and behaviour of list environments
 
-% Global setting to eliminate extra vertical spacing between items in all list environments
-\setlist{nosep, noitemsep}
+% Global settings for lists
+\setlist{nosep, noitemsep} % Remove extra vertical spacing between items in all list environments
 
-% Customize enumerate labels for the first level
-\setlist[enumerate, 1]{label=(\arabic*)}
-% Customize enumerate labels for the second level
-\setlist[enumerate, 2]{label=(\alph*)}
+% Customize enumerate labels
+\setlist[enumerate, 1]{label=(\arabic*)} % Label format for the first level of enumeration
+\setlist[enumerate, 2]{label=(\alph*)}  % Label format for the second level of enumeration
 
-% Command: Redefine bullet symbol for itemize environment
-\renewcommand{\labelitemi}{\ensuremath{\color{\accentcolor}\bullet}}
-% Command: Redefine circ symbol for itemize environment
-\renewcommand{\labelitemii}{\ensuremath{\color{\accentcolor}\circ}}
-% Command: Redefine ast symbol for itemize environment
-\renewcommand{\labelitemiii}{\ensuremath{\color{\accentcolor}\ast}}
+% Redefine bullet symbols for itemize environment
+\renewcommand{\labelitemi}{\ensuremath{\color{\accentcolor}\bullet}} % Bullet symbol for first level
+\renewcommand{\labelitemii}{\ensuremath{\color{\accentcolor}\circ}}   % Circle symbol for second level
+\renewcommand{\labelitemiii}{\ensuremath{\color{\accentcolor}\ast}}    % Asterisk symbol for third level
+\renewcommand{\labelitemiv}{\ensuremath{\color{\accentcolor}\textasteriskcentered}} % Asterisk symbol for fourth level
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Packages for typesetting algorithms
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Packages for Typesetting Algorithms
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[algoruled, linesnumbered, longend]{algorithm2e} % Use algorithm2e package for typesetting algorithms with ruled style, line numbering, and long end lines
+% Load the algorithm2e package with specific options for formatting algorithms
+\RequirePackage[%
+	algoruled,     % Display algorithms within a ruled environment for clear delineation
+	linesnumbered, % Enable line numbering for easier reference to individual steps
+	longend        % Properly handle long end statements for cleaner formatting
+]{algorithm2e}
 
-% Algorithm Styling
-\SetAlgoCaptionSeparator{.} % Set the separator between the algorithm caption and the algorithm content
-\SetAlgoNlRelativeSize{0} % Set the relative size of line numbers
-\SetNlSty{texttt}{(}{)} % Set the style for line numbers to bold
+% Customize the appearance and styling of algorithms
+\SetAlFnt{\small}               % Set the font size for algorithm text for small for compactness
+\SetAlCapFnt{\normalsize}       % Set the font size for algorithm captions to normal for emphasis
+\SetAlCapNameFnt{\normalsize}   % Set the font size for algorithm names to normal for visibility
+\SetAlgoCaptionSeparator{.}     % Use a period as the separator between the caption and the algorithm content
+\SetAlgoNlRelativeSize{-2}      % Reduce the font size of line numbers to avoid distraction from the main text
+\SetNlSty{texttt}{[}{]}         % Style line numbers in a typewriter font and enclose them in square brackets
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Package for Creating Framed Environments
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Load the mdframed package for creating customizable framed environments
-\RequirePackage[skipabove=10pt, skipbelow=10pt, ntheorem, framemethod=Tikz]{mdframed} % Configure vertical skip distances and use TikZ for frame styling
+\RequirePackage[%
+	skipabove=10pt,               % Set vertical space above the frame
+	skipbelow=10pt,               % Set vertical space below the frame
+	ntheorem,                     % Use with the ntheorem package for theorem-like environments
+	framemethod=Tikz              % Use TikZ for frame styling
+]{mdframed} % Configure vertical skip distances and use TikZ for frame styling
 
-% Load the tcolorbox package for additional color box options
+% Load the tcolorbox package for additional colour box options
 \RequirePackage[most]{tcolorbox} % Include comprehensive features for colored boxes
 
-% Define a custom framed environment with TikZ settings
+% Define a custom-framed environment with TikZ settings
 \newmdenv[%
-	tikzsetting={draw=black},   % Set the color of the frame border
-	backgroundcolor=none        % Use transparent background
+	tikzsetting={draw=black},     % Set the colour of the frame border
+	backgroundcolor=none,         % Use a transparent background
+	skipabove=10pt,               % Vertical space above the frame
+	skipbelow=10pt,               % Vertical space below the frame
+	innerleftmargin=7.5pt,        % Left margin inside the frame
+	innerrightmargin=7.5pt,       % Right margin inside the frame
+	innertopmargin=10pt,          % Top margin inside the frame
+	innerbottommargin=10pt,       % Bottom margin inside the frame
+	roundcorner=1pt               % Rounded corners with a radius of 1pt
 ]{tboxed} % Custom framed environment named "tboxed"
 
-% Define a custom framed environment with specific formatting
+% Define a custom-framed environment with specific formatting
 \newmdenv[%
-	hidealllines=true,               % Hide all frame lines
-	backgroundcolor=\accentcolor!50!white, % Set background color with accent color
-	skipabove=10pt,                  % Vertical space above the frame
-	skipbelow=10pt,                  % Vertical space below the frame
-	innerleftmargin=7.5pt,           % Left margin inside the frame
-	innerrightmargin=7.5pt,          % Right margin inside the frame
-	innertopmargin=10pt,             % Top margin inside the frame
-	innerbottommargin=10pt,          % Bottom margin inside the frame
-	roundcorner=2pt                  % Rounded corners with a radius of 2pt
+	hidealllines=true,            % Hide all frame lines
+	backgroundcolor={\accentcolor!50!white}, % Set background color with accent color
+	skipabove=10pt,               % Vertical space above the frame
+	skipbelow=10pt,               % Vertical space below the frame
+	innerleftmargin=7.5pt,        % Left margin inside the frame
+	innerrightmargin=7.5pt,       % Right margin inside the frame
+	innertopmargin=10pt,          % Top margin inside the frame
+	innerbottommargin=10pt,       % Bottom margin inside the frame
+	roundcorner=2pt               % Rounded corners with a radius of 2pt
 ]{colbox} % Custom framed environment named "colbox"
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Packages for Text Justification and Footnote Formatting
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage{ragged2e} % Provides enhanced justification options compared to standard LaTeX commands
-\RequirePackage{footnote}  % Allows footnotes within the document
-\RequirePackage[bottom, multiple, hang]{footmisc} % Customizes footnote formatting: positioning, multiple footnotes per page, and hanging indentation
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Packages for Multi-Column Formatting
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage{multicol} % Supports multi-column formatting
-\RequirePackage{multirow} % Allows cells to span multiple rows in tables
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Packages for Tables
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage{array} % Enhancements for array and tabular environments
-\RequirePackage{booktabs} % Professional-quality lines and rules in tables
-\RequirePackage{longtable} % Support for tables that span multiple pages
-\RequirePackage{tabularx} % Flexible tables with adjustable width
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Packages for Figures and Floats
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage{graphicx} % Inclusion of images in various formats
-\RequirePackage{graphics} % Standard package for graphics inclusion
-\RequirePackage{float} % Precise control over the placement of figures and tables
-\RequirePackage{wrapfig} % Text wrapping around figures
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Packages for Subfigures and Captions
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage[font={rm, sc}]{caption} % Customizes caption formatting with font options
-\RequirePackage{subcaption} % Subfigures and subcaptions within figures
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Abstracts and Appendices
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Define the "abstract" environment
-\newenvironment{abstract}{%
-	\if@twocolumn
-	\section*{\abstractname}% Unnumbered section for abstract in two-column mode
-	\else
-	\small\vspace{-1em}% Adjust font size and vertical space in single-column mode
-	\begin{center}%
-		{\scshape\abstractname\vspace{-.5em}\vspace{\z@}}% Title in small caps with vertical spacing
-	\end{center}% Center the abstract title
-	\quotation\sffamily % Start the quotation environment for abstract content
-	\fi
-	}{%
-	\if@twocolumn
-	\else
-	\endquotation
-	\fi
-} % End quotation environment in single-column mode
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Appendix Handling
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Load the appendix package with specific options
-\RequirePackage[%
-	toc,        % Include appendices in the table of contents
-	page,       % Start each appendix on a new page
-	title,      % Prefix 'Appendix' to appendix titles
-	header,     % Prefix 'Appendix' to headers on appendix pages
-	titletoc    % Prefix 'Appendix' in the table of contents entries
-]{appendix} % Provides advanced appendix handling commands
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Customizations for Verbatim Environments
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage{verbatim} % Provides basic support for verbatim text and code snippets
-\RequirePackage{fancyvrb} % Enhances the capabilities of verbatim text handling
-
-% Custom command to save the original verbatim process line command
-\newcommand{\savedverbatim@processline}{} % Define a placeholder command for saving the original verbatim process line
-\let\savedverbatim@processline=\verbatim@processline  % Save the current definition of \verbatim@processline
-
-% Redefine the verbatim process line to include additional customization
-\renewcommand{\verbatim@processline}{%
-	\let\verbatim@processline=\savedverbatim@processline  % Restore the original \verbatim@processline command
-	\if\relax\the\verbatim@line\relax  % Check if the current line of verbatim text is empty
-	\else
-		\the\verbatim@line\par  % Print the current line of verbatim text followed by a paragraph break
-	\fi
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Drawings and diagrams
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% The TikZ package provides a powerful and flexible system for creating drawings and diagrams in LaTeX documents.
-% The pgfplots package builds upon TikZ to create high-quality plots and graphics.
-
-\RequirePackage{tikz} % Load TikZ package
-\RequirePackage{pgfplots} % Load pgfplots package and set common options
-\pgfplotsset{compat=1.18} % Set compatibility level to version 1.18
-
-% Include all necessary TikZ libraries
-% \usetikzlibrary{}
-
-% Additional related packages for enhanced functionality
-% \RequirePackage{pgfplotstable} % For importing data tables and generating plots
-% \RequirePackage{tikzscale} % For scaling TikZ figures
-% \RequirePackage{circuitikz} % For drawing electronic circuits
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Glossary and Acronym Support
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Glossaries and Acronyms
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Load the glossaries-extra package with various options
 \RequirePackage[%
-	automake,             % Automatically runs makeindex when needed for glossaries
-	nogroupskip,          % Suppresses additional vertical space between glossary groups
-	indexonlyfirst,       % Indexes only the first use of each glossary entry
-	acronym,              % Enables support for acronyms
-	symbols,              % Enables support for symbols
-	stylemods=longextra,  % Uses extended styles for glossaries
-	nopostdot,            % Disables the period after glossary descriptions
-	toc                   % Includes glossaries in the table of contents
+	automake,             % Automatically triggers makeindex to update glossaries when changes are detected
+	nogroupskip,          % Avoids extra vertical space between different glossary groups
+	indexonlyfirst,       % Indexes only the first occurrence of each glossary entry
+	acronym,              % Provides support for acronyms in the glossary
+	symbols,              % Allows the inclusion of symbols in the glossary
+	nonumberlist,         % Prevents numbering of glossary entries
+	stylemods=longextra,  % Applies extended formatting styles to glossary entries
+	nopostdot,            % Omits the period at the end of glossary descriptions
+	toc                   % Includes the glossary in the table of contents for easy navigation
 ]{glossaries-extra}
 
 % Define the abbreviation style for acronyms
@@ -606,25 +684,121 @@
 \renewcommand{\glossarypreamble}{\begin{sffamily}\small} % Set font for glossary preamble
 \renewcommand{\glossarypostamble}{\end{sffamily}} % End font customization for glossary
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Epigraphs and Dedications
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Abstract Environment Definition
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Load the epigraph package for handling epigraphs
-\RequirePackage{epigraph}
+\newenvironment{abstract}{%
+	\if@twocolumn
+	    \section*{\abstractname} % Unnumbered section for abstract in two-column mode
+	\else
+    	\small\vspace{-1em} % Adjust font size and vertical space in single-column mode
+    	\begin{center}
+    		{\scshape\abstractname\vspace{-.5em}\vspace{\z@}} % Title in small caps with vertical spacing
+    	\end{center} % Center the abstract title
+    	\quotation\sffamily % Start the quotation environment for abstract content
+	\fi
+	}{%
+	\if@twocolumn
+	% No action needed for two-column mode
+	\else
+	   \endquotation % End the quotation environment in single-column mode
+	\fi
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Appendix Handling
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Load the appendix package with specific options
+\RequirePackage[%
+	toc,        % Include appendices in the table of contents
+	page,       % Start each appendix on a new page
+	title,      % Prefix 'Appendix' to appendix titles
+	header,     % Prefix 'Appendix' to headers on appendix pages
+	titletoc    % Prefix 'Appendix' in the table of contents entries
+]{appendix} % Provides advanced appendix handling commands
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Customizations for verbatim environments
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{verbatim}  % Allows inclusion of unformatted text or code snippets
+\RequirePackage{fancyvrb}  % Provides enhanced verbatim environments and features
+
+% Save the original verbatim process line command
+\providecommand{\savedverbatim@processline}{}
+\let\savedverbatim@processline=\verbatim@processline
+
+% Redefine the verbatim process line command
+\renewcommand{\verbatim@processline}{%
+	\let\verbatim@processline=\savedverbatim@processline  % Restore the original command
+	
+	\if\relax\the\verbatim@line\relax  % Check if the line is empty
+	\else
+		\the\verbatim@line\par  % Print the verbatim line
+	\fi
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Packages for Footnotes and Multi-Column Formatting
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage[bottom, multiple, hang]{footmisc} % Customizes footnote formatting: positioning, multiple footnotes per page, and hanging indentation
+\RequirePackage{footnote}               % Allows footnotes within the document
+\RequirePackage{multicol}               % Supports multi-column formatting
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Packages for Tables and Figures
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{adjustbox}           % Advanced adjustment and manipulation of content
+\RequirePackage{array}               % Enhancements for array and tabular environments
+\RequirePackage{booktabs}            % Professional-quality lines and rules in tables
+\RequirePackage{longtable}           % Support for tables that span multiple pages
+\RequirePackage{multirow}            % Allows cells to span multiple rows in tables
+\RequirePackage{tabularx}            % Flexible tables with adjustable width
+\RequirePackage{wrapfig}             % Text wrapping around figures
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Packages for Captions and Graphics
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage[font={rm, sc}]{caption} % Customizes caption formatting with font options
+\RequirePackage{float} % Precise control over the placement of figures and tables
+\RequirePackage{graphics} % Standard package for graphics inclusion
+\RequirePackage{graphicx} % Inclusion of images in various formats
+\RequirePackage{subcaption} % Subfigures and subcaptions within figures
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Drawings and Diagrams
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{tikz} % Load the TikZ package for creating graphics and diagrams
+\RequirePackage{pgfplots} % Load the pgfplots package for advanced plotting capabilities
+\pgfplotsset{compat=1.18} % Specify compatibility level with version 1.18
+
+% Optionally include additional TikZ libraries for extended functionality
+% \usetikzlibrary{...} % Uncomment and specify libraries as needed
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Epigraphs and Dedications
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{epigraph} % Load the epigraph package for handling epigraphs
 
 % Set up epigraph formatting
-\setlength\epigraphrule{1pt} % Sets the thickness of the rule under the epigraph
+\setlength\epigraphrule{0.65pt} % Sets the thickness of the rule under the epigraph
 \renewcommand\textflush{flushright} % Aligns the epigraph text to the right
 \renewcommand\epigraphsize{\small} % Sets the font size of the epigraph
-\setlength\epigraphwidth{.6\textwidth} % Defines the width of the epigraph text block
+\setlength\epigraphwidth{0.65\textwidth} % Defines the width of the epigraph text block
 
 % Command to format individual dedication entries
 % Arguments:
 %   #1: The dedication text
 %   #2: The author's name
 \providecommand{\dedication}[2]{%
-	\epigraph{#1}{\normalfont\scshape\par #2} % Formats the dedication with the text and author
+	\epigraph{#1}{\medskip\normalfont\scshape\par#2} % Formats the dedication with the text and author
 	\bigskip % Adds vertical space after the dedication
 }
 
@@ -640,378 +814,565 @@
 	\end{center}
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Definition of New Environments with colour box
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Definition of New Environments
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Default behaviour
-\ifcsbook@fancy
-        % Define new environments with colour boxes using soothing colours
-        \newcommand{\newcolorboxes}[6]{%
-        	% Arguments:
-        	%   #1: Environment name
-        	%   #2: Display name of the environment
-        	%   #3: Background color of the box
-        	%   #4: Color of the title font
-        	%   #5: Font style for the content
-        	%   #6: Label prefix for hyperref
-        	\newtcbtheorem[number within=chapter]{#1}{#2}{%
-        		enhanced,
-        		colback=#3!5,
-        		colframe=#3!80!black,
-        		arc=2pt,
-        		boxrule=0.5pt,
-        		fonttitle=\color{#4}\sffamily\scshape,
-        		before upper={\parindent15pt},
-        		before lower={\parindent15pt},
-        		fontupper={\color{black}\normalfont#5},
-        		fontlower={\color{black}\normalfont#5},
-        		left=10pt,
-        		right=10pt,
-        		top=10pt,
-        		bottom=10pt,
-        		attach boxed title to top left={yshift=-2mm,xshift=4mm},
-        		boxed title style={
-        			colback=#3!20,
-        			colframe=#3!80!black,
-        			boxrule=0.5pt
-        		},
-        		label={#6:\thetcbcounter}, % Hyperref label
-        		}{#6}%
-        }
-            	    
-        % Define coloured theorem environments
-        \newcolorboxes{theorem}{Theorem}{RoyalBlue4!80!white}{black}{\itshape}{thm}
-        \newcolorboxes{lemma}{Lemma}{RoyalBlue4!70!white}{black}{\itshape}{lem}
-        \newcolorboxes{corollary}{Corollary}{RoyalBlue4!60!white}{black}{\itshape}{cor}
-        \newcolorboxes{proposition}{Proposition}{RoyalBlue4!50!white}{black}{\itshape}{prop}
-        \newcolorboxes{claim}{Claim}{RoyalBlue4!40!white}{black}{\itshape}{clm}
-        \newcolorboxes{conjecture}{Conjecture}{RoyalBlue4!30!white}{black}{\itshape}{conj}
-            	    
-        \newcolorboxes{definition}{Definition}{DodgerBlue4!80!white}{black}{\normalfont}{def}
-        \newcolorboxes{remark}{Remark}{DodgerBlue4!70!white}{black}{\normalfont}{rem}
-        \newcolorboxes{fact}{Fact}{DodgerBlue4!60!white}{black}{\normalfont}{fact}
-        \newcolorboxes{property}{Property}{DodgerBlue4!50!white}{black}{\normalfont}{prop}
-        \newcolorboxes{case}{Case}{DodgerBlue4!40!white}{black}{\normalfont}{case}
-        \newcolorboxes{example}{Example}{DodgerBlue4!30!white}{black}{\normalfont}{ex}
-            	    
-        \newcolorboxes{question}{Question}{SlateBlue4!80!white}{black}{\normalfont}{ques}
-        \newcolorboxes{exercise}{Exercise}{SlateBlue4!70!white}{black}{\normalfont}{exer}
-        \newcolorboxes{problem}{Problem}{SlateBlue4!60!white}{black}{\normalfont}{prob}
-        \newcolorboxes{solution}{Solution}{SlateBlue4!50!white}{black}{\normalfont}{sol}
-            	    
-        \newcolorboxes{note}{Note}{Firebrick4!80!white}{black}{\normalfont}{note}
-        \newcolorboxes{important}{Important}{Firebrick4!70!white}{black}{\normalfont}{imp}
-        \newcolorboxes{keypoint}{Keypoint}{Firebrick4!60!white}{black}{\normalfont}{key}
-        \newcolorboxes{highlight}{Highlight}{Firebrick4!50!white}{black}{\normalfont}{high}
-            	    
-        % Ensure that footnotes can be used within the specified environments (theorem, lemma, etc.)
-        \BeforeBeginEnvironment{theorem}{\savenotes}
-        \AfterEndEnvironment{theorem}{\spewnotes}
-        \BeforeBeginEnvironment{lemma}{\savenotes}
-        \AfterEndEnvironment{lemma}{\spewnotes}
-        \BeforeBeginEnvironment{corollary}{\savenotes}
-        \AfterEndEnvironment{corollary}{\spewnotes}
-        \BeforeBeginEnvironment{proposition}{\savenotes}
-        \AfterEndEnvironment{proposition}{\spewnotes}
-            
-        \BeforeBeginEnvironment{definition}{\savenotes}
-        \AfterEndEnvironment{definition}{\spewnotes}
-        \BeforeBeginEnvironment{remark}{\savenotes}
-        \AfterEndEnvironment{remark}{\spewnotes}
-        \BeforeBeginEnvironment{claim}{\savenotes}
-        \AfterEndEnvironment{claim}{\spewnotes}
-        \BeforeBeginEnvironment{fact}{\savenotes}
-        \AfterEndEnvironment{fact}{\spewnotes}
-        \BeforeBeginEnvironment{assumption}{\savenotes}
-        \AfterEndEnvironment{assumption}{\spewnotes}
-        \BeforeBeginEnvironment{conjecture}{\savenotes}
-        \AfterEndEnvironment{conjecture}{\spewnotes}
-        \BeforeBeginEnvironment{problem}{\savenotes}
-        \AfterEndEnvironment{problem}{\spewnotes}
-        \BeforeBeginEnvironment{solution}{\savenotes}
-        \AfterEndEnvironment{solution}{\spewnotes}
-        \BeforeBeginEnvironment{case}{\savenotes}
-        \AfterEndEnvironment{case}{\spewnotes}
-        \BeforeBeginEnvironment{example}{\savenotes}
-        \AfterEndEnvironment{example}{\spewnotes}
-        \BeforeBeginEnvironment{problem}{\savenotes}
-        \AfterEndEnvironment{problem}{\spewnotes}
-        \BeforeBeginEnvironment{property}{\savenotes}
-        \AfterEndEnvironment{property}{\spewnotes}
-        \BeforeBeginEnvironment{solution}{\savenotes}
-        \AfterEndEnvironment{solution}{\spewnotes}
-            
-        \BeforeBeginEnvironment{important}{\savenotes}
-        \AfterEndEnvironment{important}{\spewnotes}
-        \BeforeBeginEnvironment{keypoint}{\savenotes}
-        \AfterEndEnvironment{keypoint}{\spewnotes}
-        \BeforeBeginEnvironment{highlight}{\savenotes}
-        \AfterEndEnvironment{highlight}{\spewnotes}
-            	            
-        % Define cref formats for coloured theorem environments
-        \crefformat{tcb@cnt@theorem}{theorem~#2#1#3}
-        \Crefformat{tcb@cnt@theorem}{Theorem~#2#1#3}
-        \crefformat{tcb@cnt@lemma}{lemma~#2#1#3}
-        \Crefformat{tcb@cnt@lemma}{Lemma~#2#1#3}
-        \crefformat{tcb@cnt@corollary}{corollary~#2#1#3}
-        \Crefformat{tcb@cnt@corollary}{Corollary~#2#1#3}
-        \crefformat{tcb@cnt@proposition}{proposition~#2#1#3}
-        \Crefformat{tcb@cnt@proposition}{Proposition~#2#1#3}
-        \crefformat{tcb@cnt@claim}{claim~#2#1#3}
-        \Crefformat{tcb@cnt@claim}{Claim~#2#1#3}
-        \crefformat{tcb@cnt@conjecture}{conjecture~#2#1#3}
-        \Crefformat{tcb@cnt@conjecture}{Conjecture~#2#1#3}
-            
-        \crefformat{tcb@cnt@definition}{definition~#2#1#3}
-        \Crefformat{tcb@cnt@definition}{Definition~#2#1#3}
-        \crefformat{tcb@cnt@example}{example~#2#1#3}
-        \Crefformat{tcb@cnt@example}{Example~#2#1#3}
-        \crefformat{tcb@cnt@remark}{remark~#2#1#3}
-        \Crefformat{tcb@cnt@remark}{Remark~#2#1#3}
-        \crefformat{tcb@cnt@fact}{fact~#2#1#3}
-        \Crefformat{tcb@cnt@fact}{Fact~#2#1#3}
-        \crefformat{tcb@cnt@note}{note~#2#1#3}
-        \Crefformat{tcb@cnt@note}{Note~#2#1#3}
-        \crefformat{tcb@cnt@question}{question~#2#1#3}
-        \Crefformat{tcb@cnt@question}{Question~#2#1#3}
-        \crefformat{tcb@cnt@case}{case~#2#1#3}
-        \Crefformat{tcb@cnt@case}{Case~#2#1#3}
-        \crefformat{tcb@cnt@exercise}{exercise~#2#1#3}
-        \Crefformat{tcb@cnt@exercise}{Exercise~#2#1#3}
-        \crefformat{tcb@cnt@problem}{problem~#2#1#3}
-        \Crefformat{tcb@cnt@problem}{Problem~#2#1#3}
-        \crefformat{tcb@cnt@property}{property~#2#1#3}
-        \Crefformat{tcb@cnt@property}{Property~#2#1#3}
-        \crefformat{tcb@cnt@solution}{solution~#2#1#3}
-        \Crefformat{tcb@cnt@solution}{Solution~#2#1#3}
-            
-        \crefformat{tcb@cnt@important}{important~#2#1#3}
-        \Crefformat{tcb@cnt@important}{Important~#2#1#3}
-        \crefformat{tcb@cnt@keypoint}{keypoint~#2#1#3}
-        \Crefformat{tcb@cnt@keypoint}{Keypoint~#2#1#3}
-        \crefformat{tcb@cnt@highlight}{highlight~#2#1#3}
-        \Crefformat{tcb@cnt@highlight}{Highlight~#2#1#3}
-\else
-        % Define theorem environments
-        \newtheorem{theorem}{Theorem}[section]
-        \newtheorem{lemma}[theorem]{Lemma}
-        \newtheorem{corollary}[theorem]{Corollary}
-        \newtheorem{proposition}[theorem]{Proposition}
-        \newtheorem{claim}[theorem]{Claim}
-        \newtheorem{conjecture}[theorem]{Conjecture}
-        \theoremstyle{definition}
-        \newtheorem{definition}[theorem]{Definition}
-        \newtheorem{example}[theorem]{Example}
-        \newtheorem{remark}[theorem]{Remark}
-        \newtheorem{fact}[theorem]{Fact}
-        \newtheorem{note}[theorem]{Note}
-        \newtheorem{question}[theorem]{Question}
-        \newtheorem{case}[theorem]{Case}
-        \newtheorem{exercise}[theorem]{Exercise}
-        \newtheorem{problem}[theorem]{Problem}
-        \newtheorem{property}[theorem]{Property}
-        \theoremstyle{remark}
-        \newtheorem{important}[theorem]{Important}
-        \newtheorem{keypoint}[theorem]{Keypoint}
-        \newtheorem{highlight}[theorem]{Highlight}
-            	        
-        % Define cref formats for theorem environments
-        \crefformat{theorem}{#2Theorem~#1#3}
-        \Crefname{theorem}{Theorem}{Theorems}
-        \crefformat{lemma}{#2Lemma~#1#3}
-        \Crefname{lemma}{Lemma}{Lemmas}
-        \crefformat{corollary}{#2Corollary~#1#3}
-        \Crefname{corollary}{Corollary}{Corollaries}
-        \crefformat{proposition}{#2Proposition~#1#3}
-        \Crefname{proposition}{Proposition}{Propositions}
-        \crefformat{claim}{#2Claim~#1#3}
-        \Crefname{claim}{Claim}{Claims}
-        \crefformat{conjecture}{#2Conjecture~#1#3}
-        \Crefname{conjecture}{Conjecture}{Conjectures}
-            
-        \crefformat{definition}{#2Definition~#1#3}
-        \Crefname{definition}{Definition}{Definitions}
-        \crefformat{example}{#2Example~#1#3}
-        \Crefname{example}{Example}{Examples}
-        \crefformat{remark}{#2Remark~#1#3}
-        \Crefname{remark}{Remark}{Remarks}
-        \crefformat{fact}{#2Fact~#1#3}
-        \Crefname{fact}{Fact}{Facts}
-        \crefformat{note}{#2Note~#1#3}
-        \Crefname{note}{Note}{Notes}
-        \crefformat{question}{#2Question~#1#3}
-        \Crefname{question}{Question}{Questions}
-        \crefformat{case}{#2Case~#1#3}
-        \Crefname{case}{Case}{Cases}
-        \crefformat{exercise}{#2Exercise~#1#3}
-        \Crefname{exercise}{Exercise}{Exercises}
-        \crefformat{problem}{#2Problem~#1#3}
-        \Crefname{problem}{Problem}{Problems}
-        \crefformat{property}{#2Property~#1#3}
-        \Crefname{property}{Property}{Properties}
-            
-        \crefformat{important}{#2Important~#1#3}
-        \Crefname{important}{Important}{Importants}
-        \crefformat{keypoint}{#2Keypoint~#1#3}
-        \Crefname{keypoint}{Keypoint}{Keypoints}
-        \crefformat{highlight}{#2Highlight~#1#3}
-        \Crefname{highlight}{Highlight}{Highlights}
-\fi
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Proof Environments and QED Symbol Customization
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Define standard proof environment
-\renewenvironment{proof}{%
-	\noindent\textit{Proof.}\hspace*{0.25em} % Start with "Proof." and add space
-	}{%
-	\qed\bigskip % End with QED symbol and add vertical space
+% Command to define new environments with colored boxes
+\providecommand{\newcolorboxes}[6]{%
+	% Arguments:
+	%   #1: Environment name
+	%   #2: Display title
+	%   #3: Background color
+	%   #4: Title font color
+	%   #5: Content font style
+	%   #6: Label prefix for references
+	\newtcbtheorem[number within=chapter]{#1}{#2}{%
+		enhanced,
+		colback=#3!5,                     % Background color with transparency
+		colframe=#3!80!black,             % Frame color
+		arc=1pt,                          % Corner radius
+		boxrule=0.5pt,                    % Frame thickness
+		fonttitle=\color{#4}\sffamily\scshape, % Title font style
+		before upper={\parindent15pt},    % Indentation before content
+		before lower={\parindent15pt},    % Indentation after content
+		fontupper={\color{black}\normalfont#5}, % Main content font style
+		fontlower={\color{black}\normalfont#5}, % Lower content font style
+		right=10pt, top=10pt, bottom=10pt, % Box padding
+		attach boxed title to top left={yshift=-5pt,xshift=10pt}, % Title position
+		boxed title style={               % Title box style
+			colback=#3!20,
+			colframe=#3!80!black,
+			boxrule=0.5pt
+		},
+		label={#6:\thetcbcounter},        % Reference label prefix
+		}{#6}%
 }
 
-% Define proof sketch environment
-\newenvironment{proofSketch}{%
-	\noindent\textit{Sketch of Proof.}\hspace*{0.25em} % Start with "Sketch of Proof." and add space
-	}{%
-	\qed\bigskip % End with QED symbol and add vertical space
+% Command to define fancy theorem environments
+\providecommand{\usefancythm}{
+	% Define colored environments for theorems and related content
+	\newcolorboxes{theorem}{Theorem}{RoyalBlue4!80!white}{black}{\itshape}{thm}
+	\newcolorboxes{lemma}{Lemma}{RoyalBlue4!70!white}{black}{\itshape}{lem}
+	\newcolorboxes{corollary}{Corollary}{RoyalBlue4!60!white}{black}{\itshape}{cor}
+	\newcolorboxes{proposition}{Proposition}{RoyalBlue4!50!white}{black}{\itshape}{prop}
+	\newcolorboxes{claim}{Claim}{RoyalBlue4!40!white}{black}{\itshape}{clm}
+	\newcolorboxes{conjecture}{Conjecture}{RoyalBlue4!30!white}{black}{\itshape}{conj}
+	
+	\newcolorboxes{definition}{Definition}{DodgerBlue4!80!white}{black}{\normalfont}{def}
+	\newcolorboxes{remark}{Remark}{DodgerBlue4!70!white}{black}{\normalfont}{rem}
+	\newcolorboxes{fact}{Fact}{DodgerBlue4!60!white}{black}{\normalfont}{fact}
+	\newcolorboxes{property}{Property}{DodgerBlue4!50!white}{black}{\normalfont}{prop}
+	\newcolorboxes{case}{Case}{DodgerBlue4!40!white}{black}{\normalfont}{case}
+	\newcolorboxes{example}{Example}{DodgerBlue4!30!white}{black}{\normalfont}{ex}
+	
+	\newcolorboxes{question}{Question}{SlateBlue4!80!white}{black}{\normalfont}{ques}
+	\newcolorboxes{exercise}{Exercise}{SlateBlue4!70!white}{black}{\normalfont}{exer}
+	\newcolorboxes{problem}{Problem}{SlateBlue4!60!white}{black}{\normalfont}{prob}
+	\newcolorboxes{solution}{Solution}{SlateBlue4!50!white}{black}{\normalfont}{sol}
+	
+	\newcolorboxes{note}{Note}{Firebrick4!80!white}{black}{\sffamily}{note}
+	\newcolorboxes{important}{Important}{Firebrick4!70!white}{black}{\sffamily}{imp}
+	\newcolorboxes{keypoint}{Keypoint}{Firebrick4!60!white}{black}{\sffamily}{key}
+	\newcolorboxes{highlight}{Highlight}{Firebrick4!50!white}{black}{\sffamily}{high}
+	
+	% Enable footnotes in the defined environments
+	\BeforeBeginEnvironment{theorem}{\savenotes}
+	\AfterEndEnvironment{theorem}{\spewnotes}
+	\BeforeBeginEnvironment{lemma}{\savenotes}
+	\AfterEndEnvironment{lemma}{\spewnotes}
+	\BeforeBeginEnvironment{corollary}{\savenotes}
+	\AfterEndEnvironment{corollary}{\spewnotes}
+	\BeforeBeginEnvironment{proposition}{\savenotes}
+	\AfterEndEnvironment{proposition}{\spewnotes}
+	\BeforeBeginEnvironment{definition}{\savenotes}
+	\AfterEndEnvironment{definition}{\spewnotes}
+	\BeforeBeginEnvironment{remark}{\savenotes}
+	\AfterEndEnvironment{remark}{\spewnotes}
+	\BeforeBeginEnvironment{claim}{\savenotes}
+	\AfterEndEnvironment{claim}{\spewnotes}
+	\BeforeBeginEnvironment{fact}{\savenotes}
+	\AfterEndEnvironment{fact}{\spewnotes}
+	\BeforeBeginEnvironment{assumption}{\savenotes}
+	\AfterEndEnvironment{assumption}{\spewnotes}
+	\BeforeBeginEnvironment{conjecture}{\savenotes}
+	\AfterEndEnvironment{conjecture}{\spewnotes}
+	\BeforeBeginEnvironment{problem}{\savenotes}
+	\AfterEndEnvironment{problem}{\spewnotes}
+	\BeforeBeginEnvironment{solution}{\savenotes}
+	\AfterEndEnvironment{solution}{\spewnotes}
+	\BeforeBeginEnvironment{case}{\savenotes}
+	\AfterEndEnvironment{case}{\spewnotes}
+	\BeforeBeginEnvironment{example}{\savenotes}
+	\AfterEndEnvironment{example}{\spewnotes}
+	\BeforeBeginEnvironment{property}{\savenotes}
+	\AfterEndEnvironment{property}{\spewnotes}
+	\BeforeBeginEnvironment{important}{\savenotes}
+	\AfterEndEnvironment{important}{\spewnotes}
+	\BeforeBeginEnvironment{keypoint}{\savenotes}
+	\AfterEndEnvironment{keypoint}{\spewnotes}
+	\BeforeBeginEnvironment{highlight}{\savenotes}
+	\AfterEndEnvironment{highlight}{\spewnotes}
+	
+	% Define cref formats for cross-references
+	\crefname{tcb@cnt@theorem}{theorem}{theorems}
+	\Crefname{tcb@cnt@theorem}{Theorem}{Theorems}
+	\crefname{tcb@cnt@lemma}{lemma}{lemmas}
+	\Crefname{tcb@cnt@lemma}{Lemma}{Lemmas}
+	\crefname{tcb@cnt@corollary}{corollary}{corollaries}
+	\Crefname{tcb@cnt@corollary}{Corollary}{Corollaries}
+	\crefname{tcb@cnt@proposition}{proposition}{propositions}
+	\Crefname{tcb@cnt@proposition}{Proposition}{Propositions}
+	\crefname{tcb@cnt@claim}{claim}{claims}
+	\Crefname{tcb@cnt@claim}{Claim}{Claims}
+	\crefname{tcb@cnt@conjecture}{conjecture}{conjectures}
+	\Crefname{tcb@cnt@conjecture}{Conjecture}{Conjectures}
+	\crefname{tcb@cnt@definition}{definition}{definitions}
+	\Crefname{tcb@cnt@definition}{Definition}{Definitions}
+	\crefname{tcb@cnt@example}{example}{examples}
+	\Crefname{tcb@cnt@example}{Example}{Examples}
+	\crefname{tcb@cnt@remark}{remark}{remarks}
+	\Crefname{tcb@cnt@remark}{Remark}{Remarks}
+	\crefname{tcb@cnt@fact}{fact}{facts}
+	\Crefname{tcb@cnt@fact}{Fact}{Facts}
+	\crefname{tcb@cnt@note}{note}{notes}
+	\Crefname{tcb@cnt@note}{Note}{Notes}
+	\crefname{tcb@cnt@question}{question}{questions}
+	\Crefname{tcb@cnt@question}{Question}{Questions}
+	\crefname{tcb@cnt@case}{case}{cases}
+	\Crefname{tcb@cnt@case}{Case}{Cases}
+	\crefname{tcb@cnt@exercise}{exercise}{exercises}
+	\Crefname{tcb@cnt@exercise}{Exercise}{Exercises}
+	\crefname{tcb@cnt@problem}{problem}{problems}
+	\Crefname{tcb@cnt@problem}{Problem}{Problems}
+	\crefname{tcb@cnt@solution}{solution}{solutions}
+	\Crefname{tcb@cnt@solution}{Solution}{Solutions}
 }
 
-% Define proof idea environment
-\newenvironment{proofIdea}{%
-	\noindent\textit{Proof Idea.}\hspace*{0.25em} % Start with "Proof Idea." and add space
-	}{%
-	\qed\bigskip % End with QED symbol and add vertical space
+\ifbool{usefancythm}{\usefancythm}{}
+
+% Command to define standard theorem environments
+\providecommand{\usenormalthm}{%
+	% Define theorem styles
+	\declaretheoremstyle[%
+		spaceabove=\topsep,
+		spacebelow=\topsep,
+		headfont=\scshape\color{\accentcolor},
+		notefont=\scshape\color{\accentcolor},
+		bodyfont=\normalfont,
+		postheadspace=5pt,
+		numberwithin=section,
+		qed=\color{\accentcolor}$\scriptstyle\star$,
+		headpunct={:}
+	]{thmstyle}
+	
+	\declaretheoremstyle[%
+		spaceabove=\topsep,
+		spacebelow=\topsep,
+		headfont=\scshape\color{\accentcolor},
+		notefont=\scshape\color{\accentcolor},
+		bodyfont=\normalfont,
+		postheadspace=5pt,
+		numberwithin=section,
+		qed=\color{\accentcolor}$\scriptstyle\maltese$,
+		headpunct={:}
+	]{defstyle}
+	
+	\declaretheoremstyle[%
+		spaceabove=\topsep,
+		spacebelow=\topsep,
+		headfont=\scshape\color{\accentcolor},
+		notefont=\scshape\color{\accentcolor},
+		bodyfont=\normalfont,
+		postheadspace=5pt,
+		numberwithin=section,
+		qed=\color{\accentcolor}$\scriptstyle\maltese$,
+		headpunct={:}
+	]{remarkstyle}
+	
+	% Define 'leftbar' environment
+	\newenvironment{leftbar}{%
+		\mdfsetup{%
+			leftline=true,            % Enable left border
+			topline=false,            % Disable top border
+			bottomline=false,         % Disable bottom border
+			rightline=false,          % Disable right border
+			linewidth=1pt,            % Border thickness
+			linecolor=\accentcolor,   % Border color
+			innermargin=1pt,          % Inner margin
+			innerleftmargin=10pt      % Inner left margin
+		}%
+		\begin{mdframed}%
+			}{%
+		\end{mdframed}%
+	}
+	
+	% Define 'coloredstyle' theorem style
+	\declaretheoremstyle[%
+		spaceabove=\topsep,                                                        % Space above theorem
+		spacebelow=\topsep,                                                        % Space below theorem
+		headfont=\scshape\color{\accentcolor}\small,                               % Theorem head font
+		notefont=\scshape\color{\accentcolor}\small,                               % Theorem note font
+		headpunct=,                                                                % No punctuation after head
+		bodyfont=\normalfont,                                                      % Body font
+		headformat=\NAME~\NUMBER~\NOTE.\hfill\smallskip\linebreak,                 % Head format
+		preheadhook=\begin{leftbar}\vspace{-12.5pt},                               % Start left bar
+		postfoothook=\end{leftbar}\vspace{-5pt},                                   % End left bar
+		postheadspace=1em,                                                         % Space after head
+		numberwithin=section                                                       % Numbering within sections
+	]{coloredstyle}
+	
+	% Define theorem environments
+	\declaretheorem[style=thmstyle,name=Theorem]{theorem}
+	\declaretheorem[style=thmstyle,sibling=theorem]{lemma}
+	\declaretheorem[style=thmstyle,sibling=theorem]{corollary}
+	\declaretheorem[style=thmstyle,sibling=theorem]{proposition}
+	\declaretheorem[style=thmstyle,sibling=theorem]{claim}
+	\declaretheorem[style=thmstyle,sibling=theorem]{conjecture}
+	
+	% Define definition environments
+	\declaretheorem[style=defstyle,sibling=theorem]{definition}
+	\declaretheorem[style=defstyle,sibling=theorem]{example}
+	\declaretheorem[style=defstyle,sibling=theorem]{fact}
+	\declaretheorem[style=defstyle,sibling=theorem]{note}
+	\declaretheorem[style=defstyle,sibling=theorem]{question}
+	\declaretheorem[style=defstyle,sibling=theorem]{case}
+	\declaretheorem[style=defstyle,sibling=theorem]{exercise}
+	\declaretheorem[style=defstyle,sibling=theorem]{problem}
+	\declaretheorem[style=defstyle,sibling=theorem]{property}
+	\declaretheorem[style=defstyle,sibling=theorem]{solution}
+	
+	% Define remark environments
+	\declaretheorem[style=remarkstyle,sibling=theorem]{remark}
+	\declaretheorem[style=remarkstyle,name=Important]{important}
+	\declaretheorem[style=remarkstyle]{keypoint}
+	\declaretheorem[style=remarkstyle]{highlight}
+	
+	% Define specialized list for cases
+	\newlist{casenv}{enumerate}{4}
+	\setlist[casenv]{leftmargin=*,align=left,widest={iiii}}
+	\setlist[casenv,1]{label={{\itshape\casename} \arabic*.},ref=\arabic*}
+	\setlist[casenv,2]{label={{\itshape\casename} \roman*.},ref=\roman*}
+	\setlist[casenv,3]{label={{\itshape\casename\ \alph*.}},ref=\alph*}
+	\setlist[casenv,4]{label={{\itshape\casename} \arabic*.},ref=\arabic*}
 }
 
-% Define proof of lemma environment with parameter
-\newenvironment{proofOfLemma}[1]{%
-	\noindent\textit{Proof of Lemma #1.}\hspace*{0.25em} % Start with "Proof of Lemma" and the argument, then add space
-	}{%
-	\qed\bigskip % End with QED symbol and add vertical space
-}
+\ifbool{usenormalthm}{\usenormalthm}{}
 
-% Define proof attempt environment
-\newenvironment{proofAttempt}{%
-	\noindent\textit{Proof Attempt.}\hspace*{0.25em} % Start with "Proof Attempt." and add space
-	}{%
-	\qed\bigskip % End with QED symbol and add vertical space
-}
-
-% Define proof of statement environment with parameter
-\newenvironment{proofOf}[1]{%
-	\noindent\textit{Proof of #1.}\hspace*{0.25em} % Start with "Proof of" and the argument, then add space
-	}{%
-	\qed\bigskip % End with QED symbol and add vertical space
-}
-
-% Define custom QED symbol
-\providecommand{\QEDsymbol}{\color{\accentcolor}\ensuremath{\blacksquare}} % Custom QED symbol in accent color
-% Override default QED symbol with the custom symbol
+% Define a custom QED symbol
+\providecommand{\QEDsymbol}{\color{\accentcolor}\ensuremath{\blacksquare}} % Custom QED symbol rendered in the accent color
+% Replace the default QED symbol with the custom symbol
 \renewcommand{\qedsymbol}{\QEDsymbol}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bibliography Management with BibLaTeX
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% The BibLaTeX package is used for managing bibliographies in LaTeX documents.
-% It provides extensive customization for citation and bibliography styles.
-\RequirePackage[%
-	hyperref=auto,          % Automatically configure compatibility with hyperref
-	defernumbers=true,      % Defer label numbering until after sorting
-	style=alphabetic,       % Set bibliography style to alphabetic
-	backref=true,           % Enable back-references from the bibliography to citations
-	sorting=anyt,           % Sort entries by order of appearance in the text
-	autocite=superscript,   % Use superscript for in-text citations
-	maxalphanames=99,       % Allow up to 99 names in the alphabetic label
-	maxnames=999,           % Display a maximum of 999 names in citations
-	backend=biber           % Use Biber as the backend for bibliography processing
-]{biblatex} % Load biblatex with specified options
-
-% Define a new command \referencedata to add a .bib file as a bibliography resource.
-% This command simplifies the process of adding multiple bibliography files by using a single command.
-% Usage: \referencedata{filename.bib}
-\providecommand{\referencedata}[1]{%
-	\addbibresource{#1} % Add the specified .bib file as a bibliography resource
+% Command to configure the BibLaTeX package with specific settings
+\providecommand{\usebiblatex}{%
+	% Load the BibLaTeX package with advanced configuration options
+	\RequirePackage[%
+		hyperref=auto,         % Ensure compatibility with the hyperref package
+		defernumbers=true,     % Delay reference number assignment until after sorting
+		style=alphabetic,      % Use alphabetic style for citations
+		backref=true,          % Enable back-references from bibliography to citations
+		sorting=anyt,          % Sort entries by their appearance in the text
+		autocite=superscript,  % Format in-text citations as superscripts
+		maxalphanames=99,      % Allow up to 99 names in the alphabetic label
+		maxnames=999,          % Display up to 999 names in citations
+		backend=biber          % Use Biber as the backend processor
+	]{biblatex} % End of package options
+		
+	% Set the font size for bibliography entries
+	\renewcommand*{\bibfont}{\small} % Define bibliography font size as 'small'
+		
+	% Customize back-reference strings in the bibliography
+	\DefineBibliographyStrings{english}{
+		backrefpage={\unskip Cited on page},  % Singular form for back-reference page
+		backrefpages={\unskip Cited on pages} % Plural form for back-reference pages
+	}
 }
 
-% Redefine the font size for bibliography entries
-\renewcommand*{\bibfont}{\small} % Set the font size for the bibliography to small
-
-% Define custom strings for back-references in the bibliography
-\DefineBibliographyStrings{english}{%
-	backrefpage={\unskip{}Cited on page},%
-	backrefpages={\unskip{}Cited on pages}%
+% Command to apply sorted entries with BibLaTeX
+\providecommand{\usesrtbiblatex}{
+	\usebiblatex % Apply the primary BibLaTeX setup
+	\DeclareBibliographyCategory{cited} % Redefine the category for cited entries
+	\AtEveryCitekey{\addtocategory{cited}{\thefield{entrykey}}} % Add entries to the 'cited' category
 }
 
-% Create a custom bibliography category for cited references
-\DeclareBibliographyCategory{cited} % Define a category for cited references
+% Convert the conditions to if-else if-else format
+\ifthenelse{\boolean{usebiblatex}}{%
+	% If BibLaTeX is enabled
+	\usebiblatex
+	}{%
+	\ifthenelse{\boolean{usesrtbiblatex}}{%
+		% Else if sorted BibLaTeX is enabled
+		\usesrtbiblatex
+		}{%
+		% Else fallback to default bibliography style
+		\typeout{Default bibliography style will be used as BibLaTeX is not enabled.}
+		\bibliographystyle{aomalpha}
+	}%
+}
+	 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Load necessary package for code listings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Automatically add cited references to the 'cited' category
-\AtEveryCitekey{\addtocategory{cited}{\thefield{entrykey}}}
+\RequirePackage{listings}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Custom Commands and Packages for Document Formatting
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Define Rust language for the listings package
+\lstdefinelanguage{Rust}{%
+	sensitive=true,
+	morecomment=[l]{//},
+	morecomment=[s]{/*}{*/},
+	moredelim=[s][{\itshape\color{Snow1}}]{\#[}{]},
+	morestring=[b]{"},
+	alsodigit={},
+	alsoother={},
+	alsoletter={!},
+	% Control flow keywords
+	morekeywords={break, continue, else, for, if, in, loop, match, return, while},
+	% Variable-related keywords
+	morekeywords={as, const, let, move, mut, ref, static},
+	% Declaration-related keywords
+	morekeywords={dyn, enum, fn, impl, Self, self, struct, trait, type, union, use, where},
+	% Modularisation-related keywords
+	morekeywords={crate, extern, mod, pub, super},
+	% Marker keywords
+	morekeywords={unsafe},
+	% Reserved identifiers
+	morekeywords={abstract, alignof, become, box, do, final, macro, offsetof, override, priv, proc, pure, sizeof, typeof, unsized, virtual, yield},
+	% Traits
+	morekeywords=[2]{Add, AddAssign, Any, AsciiExt, AsInner, AsInnerMut, AsMut, AsRawFd, AsRawHandle, AsRawSocket, AsRef, Binary, BitAnd, BitAndAssign, Bitor, BitOr, BitOrAssign, BitXor, BitXorAssign, Borrow, BorrowMut, Boxed, BoxPlace, BufRead, BuildHasher, CastInto, CharExt, Clone, CoerceUnsized, CommandExt, Copy, Debug, DecodableFloat, Default, Deref, DerefMut, DirBuilderExt, DirEntryExt, Display, Div, DivAssign, DoubleEndedIterator, DoubleEndedSearcher, Drop, EnvKey, Eq, Error, ExactSizeIterator, ExitStatusExt, Extend, FileExt, FileTypeExt, Float, Fn, FnBox, FnMut, FnOnce, Freeze, From, FromInner, FromIterator, FromRawFd, FromRawHandle, FromRawSocket, FromStr, FullOps, FusedIterator, Generator, Hash, Hasher, Index, IndexMut, InPlace, Int, Into, IntoCow, IntoInner, IntoIterator, IntoRawFd, IntoRawHandle, IntoRawSocket, IsMinusOne, IsZero, Iterator, JoinHandleExt, LargeInt, LowerExp, LowerHex, MetadataExt, Mul, MulAssign, Neg, Not, Octal, OpenOptionsExt, Ord, OsStrExt, OsStringExt, Packet, PartialEq, PartialOrd, Pattern, PermissionsExt, Place, Placer, Pointer, Product, Put, RangeArgument, RawFloat, Read, Rem, RemAssign, Seek, Shl, ShlAssign, Shr, ShrAssign, Sized, SliceConcatExt, SliceExt, SliceIndex, Stats, Step, StrExt, Sub, SubAssign, Sum, Sync, TDynBenchFn, Terminal, Termination, ToOwned, ToSocketAddrs, ToString, Try, TryFrom, TryInto, UnicodeStr, Unsize, UpperExp, UpperHex, WideInt, Write, Send},
+	% Primitive types
+	morekeywords=[3]{bool, char, f32, f64, i8, i16, i32, i64, isize, str, u8, u16, u32, u64, unit, usize, i128, u128},
+	% Prelude value constructors
+	morekeywords=[4]{Err, false, None, Ok, Some, true},
+	% Additional types
+	morekeywords=[3]{AccessError, Adddf3, AddI128, AddoI128, AddoU128, ADDRESS, ADDRESS64, addrinfo, ADDRINFOA, AddrParseError, Addsf3, AddU128, advice, aiocb, Alignment, AllocErr, AnonPipe, Answer, Arc, Args, ArgsInnerDebug, ArgsOs, Argument, Arguments, ArgumentV1, Ashldi3, Ashlti3, Ashrdi3, Ashrti3, AssertParamIsClone, AssertParamIsCopy, AssertParamIsEq, AssertUnwindSafe, AtomicBool, AtomicPtr, Attr, auxtype, auxv, BackPlace, BacktraceContext, Barrier, BarrierWaitResult, Bencher, BenchMode, BenchSamples, BinaryHeap, BinaryHeapPlace, blkcnt, blkcnt64, blksize, BOOL, boolean, BOOLEAN, BoolTrie, BorrowError, BorrowMutError, Bound, Box, bpf, BTreeMap, BTreeSet, Bucket, BucketState, Buf, BufReader, BufWriter, Builder, BuildHasherDefault, BY, BYTE, Bytes, CannotReallocInPlace, cc, Cell, Chain, CHAR, CharIndices, CharPredicateSearcher, Chars, CharSearcher, CharsError, CharSliceSearcher, CharTryFromError, Child, ChildPipes, ChildStderr, ChildStdin, ChildStdio, ChildStdout, Chunks, ChunksMut, ciovec, clock, clockid, Cloned, cmsgcred, cmsghdr, CodePoint, Color, ColorConfig, Command, CommandEnv, Component, Components, CONDITION, condvar, Condvar, CONSOLE, CONTEXT, Count, Cow, cpu, CRITICAL, CStr, CString, CStringArray, Cursor, Cycle, CycleIter, daddr, DebugList, DebugMap, DebugSet, DebugStruct, DebugTuple, Decimal, Decoded, DecodeUtf16, DecodeUtf16Error, DecodeUtf8, DefaultEnvKey, DefaultHasher, dev, device, Difference, Digit32, DIR, DirBuilder, dircookie, dirent, dirent64, DirEntry, Discriminant, DISPATCHER, Display, Divdf3, Divdi3, Divmoddi4, Divmodsi4, Divsf3, Divsi3, Divti3, dl, Dl, Dlmalloc, Dns, DnsAnswer, DnsQuery, dqblk, Drain, DrainFilter, Dtor, Duration, DwarfReader, DWORD, DWORDLONG, DynamicLibrary, Edge, EHAction, EHContext, Elf32, Elf64, Empty, EmptyBucket, EncodeUtf16, EncodeWide, Entry, EntryPlace, Enumerate, Env, epoll, errno, Error, ErrorKind, EscapeDebug, EscapeDefault, EscapeUnicode, event, Event, eventrwflags, eventtype, ExactChunks, ExactChunksMut, EXCEPTION, Excess, ExchangeHeapSingleton, exit, exitcode, ExitStatus, Failure, fd, fdflags, fdsflags, fdstat, ff, fflags, File, FILE, FileAttr, filedelta, FileDesc, FilePermissions, filesize, filestat, FILETIME, filetype, FileType, Filter, FilterMap, Fixdfdi, Fixdfsi, Fixdfti, Fixsfdi, Fixsfsi, Fixsfti, Fixunsdfdi, Fixunsdfsi, Fixunsdfti, Fixunssfdi, Fixunssfsi, Fixunssfti, Flag, FlatMap, Floatdidf, FLOATING, Floatsidf, Floatsisf, Floattidf, Floattisf, Floatundidf, Floatunsidf, Floatunsisf, Floatuntidf, Floatuntisf, flock, ForceResult, FormatSpec, Formatted, Formatter, Fp, FpCategory, fpos, fpos64, fpreg, fpregset, FPUControlWord, Frame, FromBytesWithNulError, FromUtf16Error, FromUtf8Error, FrontPlace, fsblkcnt, fsfilcnt, fsflags, fsid, fstore, fsword, FullBucket, FullBucketMut, FullDecoded, Fuse, GapThenFull, GeneratorState, gid, glob, glob64, GlobalDlmalloc, greg, group, GROUP, Guard, GUID, Handle, HANDLE, Handler, HashMap, HashSet, Heap, HINSTANCE, HMODULE, hostent, HRESULT, id, idtype, if, ifaddrs, IMAGEHLP, Immut, in, in6, Incoming, Infallible, Initializer, ino, ino64, inode, input, InsertResult, Inspect, Instant, int16, int32, int64, int8, integer, IntermediateBox, Internal, Intersection, intmax, IntoInnerError, IntoIter, IntoStringError, intptr, InvalidSequence, iovec, ip, IpAddr, ipc, Ipv4Addr, ipv6, Ipv6Addr, Ipv6MulticastScope, Iter, IterMut, itimerspec, itimerval, jail, JoinHandle, JoinPathsError, KDHELP64, kevent, kevent64, key, Key, Keys, KV, l4, LARGE, lastlog, launchpad, Layout, Lazy, lconv, Leaf, LeafOrInternal, Lines, LinesAny, LineWriter, linger, linkcount, LinkedList, load, locale, LocalKey, LocalKeyState, Location, lock, LockResult, loff, LONG, lookup, lookupflags, LookupHost, LPBOOL, LPBY, LPBYTE, LPCSTR, LPCVOID, LPCWSTR, LPDWORD, LPFILETIME, LPHANDLE, LPOVERLAPPED, LPPROCESS, LPPROGRESS, LPSECURITY, LPSTARTUPINFO, LPSTR, LPVOID, LPWCH, LPWIN32, LPWSADATA, LPWSAPROTOCOL, LPWSAPROTOCOLCHAIN, lseek, LUID, Machine, madvise, MajorFlags, MakeCaller, malloc, mcontext, mcontext64, memory, MemoryBlock, MemoryMap, Metadata, Metric, mflags, minor, MinorFlags, mnt, ModEntry, Mode, mode, Module, modflags, ModResults, Monitor, motd, Mount, mpack, mq, msg, msghdr, msginfo, msglen, msgqnum, msgseg, msgtql, msqid, Mutex, MutexGuard, MyBox, MyHeap, NativeLibBoilerplate, Netc, netent, nid, nl, nlitem, Node, NoneError, Nsec, OccupiedEntry, off, OffsetBucket, offmask, oflags, Once, OnceState, OpenOptions, Option, OptRes, os, OsStr, OsString, Output, OVERLAPPED, Owned, Pack, packet, PacketPart, page, Param, ParamIdx, ParseBoolError, ParseCharError, ParseError, ParseFloatError, ParseIntError, ParseResult, PartialBucket, Password, Path, path, PathBuf, PathComponent, PathComponents, PathIter, PathSegments, PCONDITION, PeekMut, Peekable, PeerCreds, Pending, Permissions, PhantomData, Phrase, pid, PID, PipeBuf, Place, Plan, PlanAlloc, Pluralize, poison, PoisonError, poll, port, Position, Post, ppoll, process, Process, ProcessOutput, protoent, ptrdiff, pthread, pthreadattr, pthreadbarrier, pthreadbarrierattr, pthreadcond, pthreadcondattr, pthreadkey, pthreadmutex, pthreadmutexattr, pthreadonce, pthreadrwlock, pthreadrwlockattr, pthreadt, ptrace, pw, pwent, Qd, queue, QueueInitializer, quote, radvisory, Range, RangeFrom, RangeFull, RangeInclusive, RangeMut, RangeTo, RangeToInclusive, RawBucket, RawPthread, RawTable, RawWaker, RawWakerVTable, Rc, RecvDgram, RecvMsg, record, RecvState, RecvTimeout, ReentrantMutex, reent, REF, ref, Ref, reference, referencecount, RefCell, RefMut, RegClass, RegGroup, register, REGISTRATION, RegKind, RemapRegs, RemoveResult, Repeat, ReplaceWith, Result, rlimit, rlimit64, rlim, rlim64, rlimt, roff, Root, RootedRc, RootedVec, RootedVecDeque, RootedWeak, RootRef, rseq, RseqSig, rusage, RustcDecodable, RustcEncodable, Same, scan, sched, Scope, ScopedCell, ScopedCellMut, Score, SearchResult, SearchStep, security, seek, Segment, segments, Select, SelectionResult, self, send, SendDgram, SendMsg, Sender, sendsize, SendTimeout, SeqCst, se, SearchStep, Option, HashMap},
+	% Additional prelude value constructors
+	morekeywords=[4]{acancel, accept, addressof, alloc, alloc_handle, bswap16, bswap32, bswap64, catch_unwind, ceil, ceilf32, ceilf64, core_panic, cos, cosf32, cosf64, discriminant_value, drop_in_place, fabsf32, fabsf64, floor, floorf32, floorf64, fmaf32, fmaf64, fmodf32, fmodf64, forget, likely, maxnumf32, maxnumf64, min_align_of, min_align_of_val, minnumf32, minnumf64, move_val_init, mul_with_overflow, nearmaxf32, nearmaxf64, nearminf32, nearminf64, needs_drop, likely, unlikely},
+	% Other keywords
+	morekeywords={async, await, dyn, abstract, priv, final, super, Yield, ref, self, where, try},
+	% Optional addition
+	otherkeywords={::, :, <>, .., ..=, ..<, ==, !=, <=>, ===, <==, >==, <=, >=, &&, ||, ??, :=, ==>, >>=, <<=, <:=, ?==, @, =>, =>>},
+}
 
-% Formatting Commands
-\providecommand{\textem}[1]{{\normalfont\scshape\color{\accentcolor}#1}} % Format emphasized text with accent color
-\providecommand{\strike}{\bgroup\ULdepth=-.55ex\ULset} % Command for strike-through text
-\providecommand{\cat}[1]{\ensuremath{\mathsf{#1}}} % Formatting for category names in math mode
-\providecommand{\missing}[1]{{\color{red}#1}} % Highlight missing or problematic text in red
-\providecommand*{\code}[1]{\texttt{#1}} % Formatting for code snippets
+% Define a style for C code
+\lstdefinestyle{CStyle}{%
+	language=C,                          % Set the language to C
+	basicstyle=\ttfamily\small,          % Use a small monospaced font
+	keywordstyle=\color{RoyalBlue3},     % Color keywords in Royal Blue
+	keywordstyle=[2]\color{HotPink4}, % Color specific keywords in Medium Purple
+	keywordstyle=[3]\color{SpringGreen4},   % Color specific keywords in Chartreuse
+	keywordstyle=[4]\color{SlateBlue2},    % Color specific keywords in Slate Blue
+	commentstyle=\color{LightSteelBlue4},% Color comments in Light Steel Blue
+	stringstyle=\color{Firebrick2},      % Color strings in Firebrick
+	numberstyle=\tiny\ttfamily\color{SlateGray4}, % Set the style for line numbers
+	numbers=left,                        % Position line numbers on the left
+	stepnumber=1,                        % Number every line
+	numbersep=10pt,                      % Space between line numbers and code
+	backgroundcolor=\color{white},       % Set background color to white
+	breaklines=true,                     % Automatically break lines
+	captionpos=b,                        % Position captions at the bottom
+	showspaces=false,                    % Don't show spaces
+	showstringspaces=false,              % Don't show spaces within strings
+	showtabs=false,                      % Don't show tabs
+	tabsize=4,                           % Set tab size to 4 spaces
+	escapeinside={\%*}{*)}               % Define escape characters for LaTeX code within C code
+}
 
-% Notes and Citations
+% Define a style for C++ code
+\lstdefinestyle{CPlusPlusStyle}{%
+	language=C++,                        % Set the language to C++
+	basicstyle=\ttfamily\small,          % Use a small monospaced font
+	keywordstyle=\color{RoyalBlue3},     % Color keywords in Royal Blue
+	keywordstyle=[2]\color{HotPink4}, % Color specific keywords in Medium Purple
+	keywordstyle=[3]\color{SpringGreen4},   % Color specific keywords in Chartreuse
+	keywordstyle=[4]\color{SlateBlue2},    % Color specific keywords in Slate Blue
+	commentstyle=\color{LightSteelBlue4},% Color comments in Light Steel Blue
+	stringstyle=\color{Firebrick2},      % Color strings in Firebrick
+	numberstyle=\tiny\ttfamily\color{SlateGray4}, % Set the style for line numbers
+	numbers=left,                        % Position line numbers on the left
+	stepnumber=1,                        % Number every line
+	numbersep=10pt,                      % Space between line numbers and code
+	backgroundcolor=\color{white},       % Set background color to white
+	breaklines=true,                     % Automatically break lines
+	captionpos=b,                        % Position captions at the bottom
+	showspaces=false,                    % Don't show spaces
+	showstringspaces=false,              % Don't show spaces within strings
+	showtabs=false,                      % Don't show tabs
+	tabsize=4,                           % Set tab size to 4 spaces
+	escapeinside={\%*}{*)}               % Define escape characters for LaTeX code within C++ code
+}
+
+% Define a style for Java code
+\lstdefinestyle{JavaStyle}{%
+	language=Java,                       % Set the language to Java
+	basicstyle=\ttfamily\small,          % Use a small monospaced font
+	keywordstyle=\color{RoyalBlue3},     % Color keywords in Royal Blue
+	keywordstyle=[2]\color{HotPink4}, % Color specific keywords in Medium Purple
+	keywordstyle=[3]\color{SpringGreen4},   % Color specific keywords in Chartreuse
+	keywordstyle=[4]\color{SlateBlue2},    % Color specific keywords in Slate Blue
+	commentstyle=\color{LightSteelBlue4},% Color comments in Light Steel Blue
+	stringstyle=\color{Firebrick2},      % Color strings in Firebrick
+	numberstyle=\tiny\ttfamily\color{SlateGray4}, % Set the style for line numbers
+	numbers=left,                        % Position line numbers on the left
+	stepnumber=1,                        % Number every line
+	numbersep=10pt,                      % Space between line numbers and code
+	backgroundcolor=\color{white},       % Set background color to white
+	breaklines=true,                     % Automatically break lines
+	captionpos=b,                        % Position captions at the bottom
+	showspaces=false,                    % Don't show spaces
+	showstringspaces=false,              % Don't show spaces within strings
+	showtabs=false,                      % Don't show tabs
+	tabsize=4,                           % Set tab size to 4 spaces
+	escapeinside={\%*}{*)}               % Define escape characters for LaTeX code within Java code
+}
+
+% Define a style for Python code
+\lstdefinestyle{PythonStyle}{%
+	language=Python,                     % Set the language to Python
+	basicstyle=\ttfamily\small,          % Use a small monospaced font
+	keywordstyle=\color{RoyalBlue3},     % Color keywords in Royal Blue
+	keywordstyle=[2]\color{HotPink4}, % Color specific keywords in Medium Purple
+	keywordstyle=[3]\color{SpringGreen4},   % Color specific keywords in Chartreuse
+	keywordstyle=[4]\color{SlateBlue2},    % Color specific keywords in Slate Blue
+	commentstyle=\color{LightSteelBlue4},% Color comments in Light Steel Blue
+	stringstyle=\color{Firebrick2},      % Color strings in Firebrick
+	numberstyle=\tiny\ttfamily\color{SlateGray4}, % Set the style for line numbers
+	numbers=left,                        % Position line numbers on the left
+	stepnumber=1,                        % Number every line
+	numbersep=10pt,                      % Space between line numbers and code
+	backgroundcolor=\color{white},       % Set background color to white
+	breaklines=true,                     % Automatically break lines
+	captionpos=b,                        % Position captions at the bottom
+	showspaces=false,                    % Don't show spaces
+	showstringspaces=false,              % Don't show spaces within strings
+	showtabs=false,                      % Don't show tabs
+	tabsize=4,                           % Set tab size to 4 spaces
+	escapeinside={\%*}{*)}               % Define escape characters for LaTeX code within Python code
+}
+
+% Define a style for Rust code
+\lstdefinestyle{RustStyle}{%
+	language=Rust,                     % Set the language to Rust
+	basicstyle=\ttfamily\small,        % Use a small monospaced font
+	keywordstyle=\color{RoyalBlue3},   % Color keywords in Royal Blue
+	keywordstyle=[2]\color{HotPink4}, % Color specific keywords in Medium Purple
+	keywordstyle=[3]\color{SpringGreen4},   % Color specific keywords in Chartreuse
+	keywordstyle=[4]\color{SlateBlue2},    % Color specific keywords in Slate Blue
+	commentstyle=\color{LightSteelBlue4},  % Color comments in Light Steel Blue
+	stringstyle=\color{Firebrick2},    % Color strings in Firebrick
+	numberstyle=\tiny\ttfamily\color{SlateGray4}, % Style for line numbers
+	numbers=left,                      % Position line numbers on the left
+	stepnumber=1,                      % Number every line
+	numbersep=10pt,                    % Space between line numbers and code
+	backgroundcolor=\color{white},     % Set background color to white
+	breaklines=true,                   % Automatically break lines
+	captionpos=b,                      % Position captions at the bottom
+	showspaces=false,                  % Don't show spaces
+	showstringspaces=false,            % Don't show spaces within strings
+	showtabs=false,                    % Don't show tabs
+	tabsize=4,                         % Set tab size to 4 spaces
+	escapeinside={\%*}{*)}             % Define escape characters for LaTeX code within Rust code
+}
+
+% Reset the code box counter at the start of each chapter
+\preto\chapter{\setcounter{codeboxcounter}{0}}
+
+% Define a new counter for code boxes, reset at each chapter
+\newcounter{codeboxcounter}[chapter]
+
+% Define the "codebox" environment using mdframed
+\newenvironment{codebox}[1][Code Box]
+{
+	\stepcounter{codeboxcounter} % Increment the code box counter
+	\newmdenv[%
+		frametitlebackgroundcolor=none, % No background color for the frame title
+		frametitlefont=\scshape\sffamily, % Use small caps and sans serif for the frame title
+		frametitleaboveskip=5pt, % Space above the frame title
+		frametitlerule=true, % Add a horizontal rule under the frame title
+		frametitlerulecolor=black, % Set the rule color to black
+		frametitlerulewidth=1pt, % Set the rule thickness
+		frametitlealignment=\raggedright, % Align the frame title to the left
+		frametitle={\thechapter.\arabic{codeboxcounter}:~#1}, % Format for the frame title with chapter and code box numbers
+		linewidth=1pt, % Set the frame line width
+		linecolor=black, % Set the frame line color
+		innertopmargin=10pt, % Set inner margin at the top of the frame
+		innerbottommargin=10pt, % Set inner margin at the bottom of the frame
+		leftline=false, % Remove the left vertical line of the frame
+		rightline=false, % Remove the right vertical line of the frame
+	]{codeboxinner}\begin{codeboxinner}
+	}{%
+	\end{codeboxinner}
+}
+
+% Define a custom command for adding code snippets in a code box
+% Arguments:
+%   #1: Title of the code box
+%   #2: Label for the code box
+%   #3: Listing style for code formatting
+%   #4: File path to the code file
+\providecommand{\addcode}[4]{%
+	\begin{codebox}[#1]\label{code:#2} % Start the code box environment with a title and label
+		\lstinputlisting[style=#3]{#4} % Include the code from the specified file with the chosen style
+	\end{codebox} % End the code box environment
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Environment for Problems and Exercises
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newenvironment{problems}[1][Problem Set]{
+	\section*{#1} % Define the section heading with the given title
+        \setlist[enumerate, 1]{label=(\thechapter.\arabic*)} % Set enumeration label format for first level
+	\setlist[enumerate, 2]{label=(\alph*)} % Set enumeration label format for second level
+	\begin{multicols}{2} % Begin a two-column layout for problems
+            \footnotesize
+		\begin{enumerate} % Start enumerated list
+			}{%
+		\end{enumerate} % End enumerated list
+	\end{multicols} % End two-column layout
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Custom Commands for Document Formatting
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand*{\code}[1]{\texttt{#1}} % Display text in a monospaced font to represent code
+\providecommand{\cat}[1]{\ensuremath{\mathsf{#1}}} % Format category names in mathematical mode
+\providecommand{\missingcitation}{\code{\small\color{Firebrick1}<Citation Missing>}} % Indicate missing citations with a specific format and red text
+\providecommand{\missing}[1]{{\color{Firebrick1}#1}} % Highlight text in red to denote missing or problematic content
+\providecommand{\strike}{\bgroup\ULdepth=-.55ex\ULset} % Apply a strike-through effect to text for deletion or emphasis
+\providecommand{\term}[1]{#1\index{#1}} % Define and index terms for glossary inclusion
+\providecommand{\toc}{%
+	\tableofcontents
+	\addcontentsline{toc}{chapter}{Contents}
+	\vfill
+	\pagebreak
+} % Generate a table of contents and include a "Contents" entry in it
+\providecommand{\urlref}[1]{\href{#1}{#1}} % Create hyperlinked URL
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TODO Notes and Annotations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Enable TODO notes functionality within the document
+\RequirePackage{todonotes} % Enable adding TODO notes
+
+% Insert inline TODO notes with a red border and background for annotation purposes
 \providecommand{\mynote}[1]{%
 	\smallskip
 	\todo[inline, size=\small, bordercolor=Firebrick1!20, color=Firebrick1!20]{\sffamily#1}
 	\smallskip
-} % Inline notes using the todo package for annotations
+} % Create inline TODO notes with red border and background
+
+% Mark sections requiring a citation with a TODO note
 \providecommand{\needcite}{%
-	\todo[noline, size=\small, bordercolor=Firebrick1!20, color=Firebrick1!20]{\sffamily Requires citation.}
-} % Mark missing citations with a note
-
-% Glossary and Index
-\providecommand{\newterm}[1]{\gls{#1}\index{#1}} % New terms with glossary and index entries
-\providecommand{\term}[1]{\textit{#1}\index{#1}} % Terms formatted in italics and indexed
-\providecommand{\keyword}[1]{\gls{#1}} % Keywords with glossary entries
-
-% URL Formatting
-\providecommand{\urlref}[1]{\href{#1}{#1}} % Hyperlinked URLs (use if hyperref is not loaded)
-
-% Citation Formatting
-\providecommand{\missingcitation}{\code{\small\color{red}<Citation Missing>}} % Format for indicating missing citations
-
-% Table of Contents
-\providecommand{\toc}{\tableofcontents\addcontentsline{toc}{chapter}{Contents}} % Custom table of contents formatting
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Redefine the \maketitle command
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Define the \subtitle command with an optional argument
-% This command sets the subtitle for the document
-\providecommand{\subtitle}[1]{%
-	\providecommand{\@subtitle}{#1} % Define a global subtitle command
-}
-
-% Redefine the \maketitle command
-% This command formats the title, subtitle, authors, and date of the document
-\renewcommand{\maketitle}{%
-	\vspace*{\fill} % Vertically center the content on the page
-	\thispagestyle{empty} % Set the page style to 'empty' (no page numbers)
-	\begingroup
-    	% Title
-    	{\RaggedLeft\scshape\huge\@title\par\vspace{1em}\hrule\bigskip} % Title
-    	% Subtitle
-    	{\RaggedLeft\normalsize\itshape\@subtitle\par\medskip} % Subtitle
-    	% Authors
-    	{\RaggedLeft\large\scshape\@author\par\medskip} % Authors
-    	% Date
-    	{\hfill\scshape\normalsize\@date} % Date
-	\endgroup
-	\vspace*{\fill} % Vertically center the content on the page
-}
+	\todo[noline, size=\small, bordercolor=Firebrick1!20, color=Firebrick1!20]{\sffamily~Requires citation.}
+} % Mark locations where a citation is required
 
 % Disable the use of '@' in command names
 \makeatother
