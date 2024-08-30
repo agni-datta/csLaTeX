@@ -11,9 +11,6 @@
 % Inquire for missing packages
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Required for conditional checks
-\RequirePackage{ifthen}
-
 % Check for amsmath package
 \@ifpackageloaded{amsmath}{}{
 	\PackageWarning{tcscrypto}{The amsmath package is required but not loaded}
@@ -22,11 +19,6 @@
 % Check for amssymb package
 \@ifpackageloaded{amssymb}{}{
 	\PackageWarning{tcscrypto}{The amssymb package is required but not loaded}
-}
-
-% Check for amsthm package
-\@ifpackageloaded{amsthm}{}{
-	\PackageWarning{tcscrypto}{The amsthm package is required but not loaded}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
