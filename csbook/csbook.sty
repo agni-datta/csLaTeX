@@ -271,25 +271,10 @@
 
 % Define formatting for parts
 \titleformat{\part}[display]
-{\normalfont\scshape\RaggedRight\color{\accentcolor}} % Formatting for part title
-{\LARGE\partname~\thepart} % Format for part label
-{0pt} % No space between label and title
-{\titlerule\bigskip\hfill\Huge#1\vfill} % Format for part title
-
-% Command for margin section numbering
-\providecommand{\marginsecnumber}[1]{%
-	\makebox[0pt][r]{#1\hspace{7.5pt}}%
-}
-
-% Command for margin subsection numbering
-\providecommand{\marginsubsecnumber}[1]{%
-	\makebox[0pt][r]{#1\hspace{7.5pt}}%
-}
-
-% Command for margin subsubsection numbering
-\providecommand{\marginsubsubsecnumber}[1]{%
-	\makebox[0pt][r]{#1\hspace{7.5pt}}%
-}
+    {\normalfont\scshape\RaggedRight\color{\accentcolor}} % Formatting for part title
+    {\LARGE\partname~\thepart} % Format for part label
+    {0pt} % No space between label and title
+    {\titlerule\bigskip\hfill\Huge#1\vfill} % Format for part title
 
 % Chapter formatting
 \titleformat{\chapter}[frame]
@@ -300,19 +285,34 @@
 
 \titlespacing*{\chapter}{0pt}{50pt}{75pt} % Spacing before and after chapter title
 
+% Command for margin section numbering
+\providecommand{\marginsecnumber}[1]{%
+	\makebox[0pt][r]{#1\hspace{7.5pt}}%
+}
+
 % Section formatting
 \titleformat{\section}[block]%
     {\Large\sffamily\scshape\color{\accentcolor}} % Font and color for section title
     {\LARGE\marginsecnumber\thesection} % Section number format
     {0pt} % Space between number and title
     {#1\smallskip\hrule\vspace{-20pt}} % Title formatting
-    
+
+% Command for margin subsection numbering
+\providecommand{\marginsubsecnumber}[1]{%
+	\makebox[0pt][r]{#1\hspace{7.5pt}}%
+}
+
 % Subsection formatting
 \titleformat{\subsection}[block]%
     {\large\sffamily\scshape\color{\accentcolor}} % Font and color for subsection title
     {\Large\marginsubsecnumber\thesubsection} % Subsection number format
     {0pt} % Space between number and title
     {#1} % Title formatting
+
+% Command for margin subsubsection numbering
+\providecommand{\marginsubsubsecnumber}[1]{%
+	\makebox[0pt][r]{#1\hspace{7.5pt}}%
+}
 
 % Subsubsection formatting
 \titleformat{\subsubsection}[runin]%
@@ -405,8 +405,8 @@ postamble "\n\\end{theindex}\n"
 
 % Configure hyperref settings to enhance document appearance and metadata
 \hypersetup{%
-	pdfsubject={\ifx\@course\undefined\else\@course\fi},   % Set the subject of the PDF; fallback to \@course if not defined
-	pdfkeywords={\ifx\@course\undefined\else\@course\fi},  % Define keywords for the PDF; fallback to \@course if not defined
+	pdfsubject={computer science},    % Set the subject of the PDF; fallback to \@course if not defined
+	pdfkeywords={computer science},   % Define keywords for the PDF; fallback to \@course if not defined
 	colorlinks=true,                  % Enable coloured hyperlinks
 	citecolor=\accentcolor,           % Set colour for citation links
 	linkcolor=\accentcolor,           % Set colour for internal document links
