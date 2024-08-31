@@ -2,7 +2,7 @@
 %% csbook Package
 %% Version: 1.0
 %% Date: 2024/05/19
-%% Description: This package provides a comprehensive set of tools and environments for creating academic books and documents in the field of computer science.
+%% Description: This package provides a comprehensive set of tools and environments for creating academic books and documents in computer science.
 %% Author: Agni Datta
 %% Email: agnidatta.org@gmail.com
 %% Maintainer: Agni Datta
@@ -50,6 +50,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Macro Definition Tools
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \RequirePackage{xparse} % Facilitates the definition of complex macros
 \RequirePackage{xkeyval} % Enables advanced key-value argument processing
 \RequirePackage{kvoptions} % Manages key-value options in package and class files
@@ -59,34 +60,40 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Boolean Variables
-\newbool{usesrtbiblatex}   % Indicates whether to use sorted BibLaTeX
-\newbool{usebiblatex}      % Indicates whether to use BibLaTeX
-\newbool{useebgaramond}    % Indicates whether to use EB Garamond font
-\newbool{uselmodern}       % Indicates whether to use Latin Modern font
-\newbool{usefancythm}         % Indicates whether to use fancy theorem formatting
-\newbool{usenormalthm}        % Indicates whether to use normal theorem formatting
+\newbool{usesrtbiblatex}   % Boolean to control the use of sorted BibLaTeX
+\newbool{usebiblatex}      % Boolean to control the use of BibLaTeX
+\newbool{useebgaramond}    % Boolean to control the use of EB Garamond font
+\newbool{uselmodern}       % Boolean to control the use of Latin Modern font
+\newbool{uselibsans}       % Boolean to control the use of Lib Sans font
+\newbool{usesourcesans}    % Boolean to control the use of Source Sans font
+\newbool{usefancythm}      % Boolean to control the use of fancy theorem formatting
+\newbool{usenormalthm}     % Boolean to control the use of normal theorem formatting
 
 % Boolean Initialization
-\setbool{usesrtbiblatex}{false}  % Initialize sorted BibLaTeX usage to false
-\setbool{usebiblatex}{false}     % Initialize BibLaTeX usage to false
-\setbool{useebgaramond}{false}   % Initialize EB Garamond font usage to false
-\setbool{uselmodern}{false}      % Initialize Latin Modern font usage to false
-\setbool{usefancythm}{false}        % Initialize fancy theorem formatting to false
-\setbool{usenormalthm}{false}       % Initialize normal theorem formatting to false
+\setbool{usesrtbiblatex}{false}  % Initialize sorted BibLaTeX to false
+\setbool{usebiblatex}{false}     % Initialize BibLaTeX to false
+\setbool{useebgaramond}{false}   % Initialize EB Garamond font to false
+\setbool{uselmodern}{false}      % Initialize Latin Modern font to false
+\setbool{uselibsans}{false}      % Initialize Lib Sans font to false
+\setbool{usesourcesans}{false}   % Initialize Source Sans font to false
+\setbool{usefancythm}{false}     % Initialize fancy theorem formatting to false
+\setbool{usenormalthm}{false}    % Initialize normal theorem formatting to false
 
 % Options Declaration
-\DeclareOption{usebiblatex}{\setbool{usebiblatex}{true}}         % Set BibLaTeX usage
-\DeclareOption{usesrtbiblatex}{\setbool{usesrtbiblatex}{true}}   % Set Sorted BibLaTeX usage
-\DeclareOption{useebgaramond}{\setbool{useebgaramond}{true}}     % Set EB Garamond font usage
-\DeclareOption{uselmodern}{\setbool{uselmodern}{true}}           % Set Latin Modern font usage
-\DeclareOption{usefancythm}{\setbool{usefancythm}{true}}               % Set fancy theorem formatting
-\DeclareOption{usenormalthm}{\setbool{usenormalthm}{true}}             % Set normal theorem formatting
+\DeclareOption{usebiblatex}{\setbool{usebiblatex}{true}}         % Enable BibLaTeX if option is specified
+\DeclareOption{usesrtbiblatex}{\setbool{usesrtbiblatex}{true}}   % Enable sorted BibLaTeX if option is specified
+\DeclareOption{useebgaramond}{\setbool{useebgaramond}{true}}     % Enable EB Garamond font if option is specified
+\DeclareOption{uselmodern}{\setbool{uselmodern}{true}}           % Enable Latin Modern font if option is specified
+\DeclareOption{uselibsans}{\setbool{uselibsans}{true}}           % Enable Lib Sans font if option is specified
+\DeclareOption{usesourcesans}{\setbool{usesourcesans}{true}}     % Enable Source Sans font if option is specified
+\DeclareOption{usefancythm}{\setbool{usefancythm}{true}}         % Enable fancy theorem formatting if option is specified
+\DeclareOption{usenormalthm}{\setbool{usenormalthm}{true}}       % Enable normal theorem formatting if option is specified
 
 % Handle Unknown Options
-\DeclareOption*{\PackageWarning{csbook}{Unknown option '\CurrentOption'}}  % Warn for unknown options
+\DeclareOption*{\PackageWarning{csbook}{Unknown option '\CurrentOption'}}  % Issue a warning for any unrecognized options
 
 % Process Options
-\ProcessOptions\relax  % Apply declared options
+\ProcessOptions\relax  % Apply the declared options and continue processing
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PDF Management and External File Handling
@@ -104,21 +111,38 @@
 
 \RequirePackage[x11names, dvipsnames, svgnames]{xcolor} % Provides color support with extended color schemes
 
-% Color Definitions
-\providecommand{\accentcolor}{Blue4} % Define the accent color
-\colorlet{accentcolor}{\accentcolor} % Apply the defined accent color
+% Declare the variable \accentcolor with a default value
+\def\declvar#1#2{\def#1{#2}}
+
+% Initialize \accentcolor to the default color 'blue'
+\declvar{\accentcolor}{blue}
+
+% Example usage:
+% \setaccentcolor{RoyalBlue4} % Sets accent color to RoyalBlue4
+% \setaccentcolor{} % Resets to the default blue
+
+% Define the \setaccentcolor command to update \accentcolor based on user input or fallback to blue
+\def\setaccentcolor#1{%
+	\ifx\relax#1\relax % Check if the input is empty
+		\declvar{\accentcolor}{blue} % Set to default blue if no input
+		\colorlet{accentcolor}{\accentcolor}
+	\else
+		\declvar{\accentcolor}{#1} % Set to user-specified color
+		\colorlet{accentcolor}{\accentcolor}
+	\fi
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Language and Typographic Settings
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage[english]{babel}  % Configure language settings for English
-\RequirePackage[autostyle=true, csdisplay=true]{csquotes}  % Advanced quotation handling with automatic style adjustments
+\RequirePackage[autostyle=true, csdisplay=true]{csquotes} % Advanced quotation handling with automatic style adjustments
 % Micro-typography settings based on the LaTeX engine used
 \ifluatex
     \RequirePackage[protrusion=true, expansion=true, babel=true]{microtype} % Micro-typography for LuaLaTeX
-    \else
-        \ifxetex
+\else
+    \ifxetex
         \RequirePackage[protrusion=true, babel=true]{microtype} % Micro-typography for XeTeX
     \fi
 \fi
@@ -162,105 +186,143 @@
 % Font and Mathematics Packages
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[T1]{fontenc}            % Enable T1 font encoding for improved PDF font output
-\RequirePackage{amsfonts}               % Provides essential fonts for mathematical notation
-\RequirePackage{amssymb}                % Supplies additional mathematical symbols
-\RequirePackage{amsmath}                % Enables advanced mathematical formatting
-\RequirePackage{amsthm}                 % Facilitates theorem-like environments
-\RequirePackage{thmtools}               % Enhances theorem-related functionalities
-\RequirePackage{nicefrac}               % Enhances the visual appearance of fractions
-\RequirePackage{siunitx}                % Ensures consistent formatting of SI units
-\RequirePackage{fontspec}               % Allows custom font selection with XeLaTeX and LuaLaTeX
-\RequirePackage{unicode-math}           % Provides Unicode math font support
-\RequirePackage{AnonymousPro}           % Monospaced font for code and fixed-width text
+\RequirePackage[T1]{fontenc}            % Enable T1 font encoding for improved font output in PDF
+\RequirePackage{amsfonts}               % Provides essential mathematical fonts (e.g., \mathbb)
+\RequirePackage{amssymb}                % Supplies additional mathematical symbols (e.g., \mathfrak)
+\RequirePackage{amsmath}                % Enables advanced mathematical formatting and environments
+\RequirePackage{amsthm}                 % Facilitates the creation of theorem-like environments
+\RequirePackage{thmtools}               % Enhances theorem-related functionalities, such as custom theorem styles
+\RequirePackage{nicefrac}               % Improves the visual appearance of fractions with diagonal slashes
+\RequirePackage{siunitx}                % Ensures consistent formatting of SI units (e.g., \SI, \unit)
+\RequirePackage{fontspec}               % Allows the use of custom fonts with XeLaTeX and LuaLaTeX
+\RequirePackage{unicode-math}           % Provides support for Unicode math fonts, enabling better math typography
+\RequirePackage{AnonymousPro}           % Monospaced font for code and fixed-width text (ensure font availability)
 
+% Command to configure Latin Modern fonts for text and math
 \providecommand{\uselmodern}{%
+	% Configure the main text font with various typographic features
 	\setmainfont[%
-		ItalicFont = lmroman10-italic.otf,          % Set italic font variant
-		SmallCapsFont = lmromancaps10-regular.otf,  % Set small caps font variant
-		BoldFont = lmroman10-bold.otf,              % Set bold font variant
-		BoldItalicFont = lmroman10-bolditalic.otf,  % Set bold italic font variant
+		ItalicFont = NewCM10-BookItalic.otf,      % Specify the font file for italic text
+		SmallCapsFont = NewCM10-Book.otf,         % Specify the font file for small caps text
+            SmallCapsFeatures = {RawFeature=+smcp},   % Enable small caps feature
+		BoldFont = NewCM10-Bold.otf,              % Specify the font file for bold text
+		BoldItalicFont = NewCM10-BoldItalic.otf,  % Specify the font file for bold italic text
 		RawFeature = {%
-			+calt,           % Enable contextual alternates
-			+case,           % Enable case-sensitive forms
-			+dlig,           % Enable discretionary ligatures
-			+hlig,           % Enable historical ligatures
-			+kern,           % Enable kerning
-			+liga,           % Enable standard ligatures
-			+lnum,           % Use lining figures for numerals
-			+mark,           % Enable mark positioning
-			+mkmk,           % Enable mark-to-mark positioning
-			+pnum,           % Use proportional figures
-			+smcp            % Enable small caps feature
+			+calt,           % Enable contextual alternates for improved letter combinations
+			+case,           % Enable case-sensitive forms for correct capitalization
+			+hlig,           % Enable historical ligatures for traditional text appearance
+			+kern,           % Enable kerning for optimal spacing between characters
+			+liga,           % Enable standard ligatures for common letter pairs
+			+lnum,           % Use lining numerals for consistent height and alignment in text
+			+mark,           % Enable mark positioning to place diacritics correctly
+			+mkmk,           % Enable mark-to-mark positioning for correct alignment of multiple diacritics
+			+pnum,           % Use proportional numerals for varied widths and natural text flow
+                +smcp            % Enable small caps for stylistic text variations
 		}
-	]{lmroman10-regular.otf} % Set primary font as Latin Modern Roman Regular
-	\setmathfont{latinmodern-math.otf}
-	\setmathfont[version=bold]{NewCMMath-Book.otf}
+	]{NewCM10-Book.otf} % Set the primary font for text to Latin Modern Roman Regular
+		    
+	% Configure the font for mathematical typesetting
+	\setmathfont{NewCMMath-Book.otf} % Define the font for mathematics
+	\setmathfont[version=bold]{NewCMMath-Book.otf} % Define the font for bold mathematics
 }
-\ifbool{uselmodern}{\uselmodern}{\typeout{Not using Latin Modern fonts.}}
 
+% Command to configure EB Garamond fonts for text and math
 \providecommand{\useebgaramond}{%
-	% Main Font Configuration
+	% Configure the main text font with typographic features and stylistic sets
 	\setmainfont[%
 		RawFeature={%
-			+calt,                   % Enable contextual alternates
-			+case,                   % Enable case-sensitive forms
-			+hlig,                   % Enable historical ligatures
-			+kern,                   % Enable kerning
-			+liga,                   % Enable standard ligatures
-			+lnum,                   % Use lining figures for numerals
-			+mark,                   % Enable mark positioning
-			+mkmk,                   % Enable mark-to-mark positioning
-			+pnum                    % Use proportional figures
+			+calt,                   % Enable contextual alternates for improved letter combinations
+			+case,                   % Enable case-sensitive forms for correct capitalization
+			+hlig,                   % Enable historical ligatures for traditional text appearance
+			+kern,                   % Enable kerning for optimal spacing between characters
+			+liga,                   % Enable standard ligatures for common letter pairs
+			+lnum,                   % Use lining numerals for consistent height and alignment
+			+mark,                   % Enable mark positioning for accurate diacritical placement
+			+mkmk,                   % Enable mark-to-mark positioning for proper alignment of multiple diacritics
+			+pnum                    % Use proportional figures for varied numeral widths
 		},
-		StylisticSet={3,5}           % Apply specific stylistic sets for enhanced typography
-	]{EB Garamond}                   % Set main font as EB Garamond (ensure installation)
-	
-	% Math Font Configuration
+		StylisticSet={3,5}           % Apply stylistic sets 3 and 5 for enhanced text typography
+	]{EB Garamond}                   % Set the primary font for text to EB Garamond (ensure font installation)
+	% Configure the math font with typographic features and stylistic sets
 	\setmathfont[%
 		RawFeature={%
-			+calt,                   % Enable contextual alternates
-			+case,                   % Enable case-sensitive forms
-			+hlig,                   % Enable historical ligatures
-			+kern,                   % Enable kerning
-			+liga,                   % Enable standard ligatures
-			+lnum,                   % Use lining figures for numerals
-			+mark,                   % Enable mark positioning
-			+mkmk,                   % Enable mark-to-mark positioning
-			+pnum                    % Use proportional figures
+			+calt,                   % Enable contextual alternates for improved mathematical symbols
+			+case,                   % Enable case-sensitive forms for correct symbol usage
+			+hlig,                   % Enable historical ligatures for traditional math symbol appearance
+			+kern,                   % Enable kerning for optimal spacing in math symbols
+			+liga,                   % Enable standard ligatures for common math symbol combinations
+			+lnum,                   % Use lining numerals for consistent height in math formulas
+			+mark,                   % Enable mark positioning for accurate placement of math symbols
+			+mkmk,                   % Enable mark-to-mark positioning for correct alignment of multiple marks
+			+pnum                    % Use proportional figures for varied numeral widths in math formulas
 		},
-		StylisticSet={2,6,7,9}       % Apply specific stylistic sets for math symbols
-	]{Garamond-Math.otf}             % Set math font as Garamond-Math (ensure font availability)
+		StylisticSet={2,6,7,9}       % Apply stylistic sets 2, 6, 7, and 9 for enhanced math typography
+	]{Garamond-Math.otf}             % Set the font for mathematics to Garamond-Math (ensure font availability)
 }
-\ifbool{useebgaramond}{\useebgaramond}{\typeout{Not using EB Garamond fonts.}}
 
-\setsansfont[%
-	UprightFont = LibertinusSans-Regular,     % Regular weight for upright text
-	BoldFont = LibertinusSans-Bold,           % Bold weight
-	ItalicFont = LibertinusSans-Italic,       % Italic style
-	SmallCapsFont = LibertinusSans-Regular,   % Small caps font
-	SmallCapsFeatures = {RawFeature=+smcp},   % Enable small caps feature
-	RawFeature={%
-		+calt,                           % Enable contextual alternates
-		+case,                           % Enable case-sensitive forms
-		+dlig,                           % Enable discretionary ligatures
-		+kern,                           % Enable kerning
-		+liga,                           % Enable standard ligatures
-		+lnum,                           % Use lining figures for numerals
-		+mark,                           % Enable mark positioning
-		+mkmk,                           % Enable mark-to-mark positioning
-		+pnum                            % Use proportional figures
-	},
-	StylisticSet={1,3}                   % Apply specific stylistic sets for enhanced typography
-]{LibertinusSans-Regular.otf}            % Main font: Libertinus Sans
+% Command to configure Libertinus Sans font
+\providecommand{\uselibsans}{%
+	\setsansfont[%
+		UprightFont = LibertinusSans-Regular,     % Regular weight for upright text
+		BoldFont = LibertinusSans-Bold,           % Bold weight
+		ItalicFont = LibertinusSans-Italic,       % Italic style
+		SmallCapsFont = LibertinusSans-Regular,   % Small caps font
+		SmallCapsFeatures = {RawFeature=+smcp},   % Enable small caps feature
+		RawFeature={%
+			+calt,                           % Enable contextual alternates
+			+case,                           % Enable case-sensitive forms
+			+dlig,                           % Enable discretionary ligatures
+			+kern,                           % Enable kerning
+			+liga,                           % Enable standard ligatures
+			+lnum,                           % Use lining figures for numerals
+			+mark,                           % Enable mark positioning
+			+mkmk,                           % Enable mark-to-mark positioning
+			+pnum                            % Use proportional figures
+		},
+		StylisticSet={1,3}                   % Apply specific stylistic sets for enhanced typography
+	]{LibertinusSans-Regular.otf}            % Set the main sans-serif font to Libertinus Sans
+}
+
+% Command to configure Source Sans Pro font
+\providecommand{\usesourcesans}{%
+	\RequirePackage[otf, lining, proportional, scale=0.86]{sourcesanspro} % Configure Source Sans Pro with specific features
+}
+
+% Apply the Latin Modern font settings if the \uselmodern boolean is true
+\ifbool{uselmodern}{%
+	\uselmodern % Activate Latin Modern font settings
+	}{%
+	\typeout{Latin Modern fonts are not applied.} % Notify that Latin Modern fonts are not used
+}
+
+% Apply EB Garamond font settings if the \useebgaramond boolean is true
+\ifbool{useebgaramond}{%
+	\useebgaramond % Activate EB Garamond font settings
+	}{%
+	\typeout{EB Garamond fonts are not applied.} % Notify that EB Garamond fonts are not used
+}
+
+% Apply Libertinus Sans font settings if the \uselibsans boolean is true
+\ifbool{uselibsans}{%
+	\uselibsans % Activate Libertinus Sans font settings
+	}{%
+	\typeout{Libertinus Sans fonts are not applied.} % Notify that Libertinus Sans fonts are not used
+}
+
+% Apply Source Sans Pro font settings if the \usesourcesans boolean is true
+\ifbool{usesourcesans}{%
+	\usesourcesans % Activate Source Sans Pro font settings
+	}{%
+	\typeout{Source Sans fonts are not applied.} % Notify that Source Sans fonts are not used
+}
 
 % Additional Math Font Customization
-\let\mathbfcal\relax                     % Prevent conflicts with existing math alphabet definitions
-\let\mathcal\relax                       % Prevent conflicts with existing math alphabet definitions
+\let\mathbfcal\relax                     % Prevent conflicts with existing definitions of \mathbfcal
+\let\mathcal\relax                       % Prevent conflicts with existing definitions of \mathcal
 
 \RequirePackage[%
-	bb=bboldx,                     % Use extended Blackboard bold font options
-	cal=cm                         % Apply classic calligraphic font style
+	bb=bboldx,                     % Use extended Blackboard bold font options (e.g., \mathbb)
+	cal=cm                         % Apply classic calligraphic font style for \mathcal
 ]{mathalpha}                           % Provides additional math font styles
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -271,15 +333,15 @@
 
 % Define formatting for parts
 \titleformat{\part}[display]
-    {\normalfont\scshape\RaggedRight\color{\accentcolor}} % Formatting for part title
+    {\normalfont\scshape\RaggedRight\color{accentcolor}} % Formatting for part title
     {\LARGE\partname~\thepart} % Format for part label
     {0pt} % No space between label and title
     {\titlerule\bigskip\hfill\Huge#1\vfill} % Format for part title
 
 % Chapter formatting
 \titleformat{\chapter}[frame]
-    {\huge\sffamily\scshape\color{\accentcolor}} % Font and color for chapter title
-    {\filright{\large Chapter~\thechapter}} % Chapter number format
+    {\huge\sffamily\scshape\color{accentcolor}} % Font and color for chapter title
+    {~\filright{\large Chapter~\thechapter}~} % Chapter number format
     {15pt} % Space between number and title
     {\filcenter#1} % Title formatting
 
@@ -292,7 +354,7 @@
 
 % Section formatting
 \titleformat{\section}[block]%
-    {\Large\sffamily\scshape\color{\accentcolor}} % Font and color for section title
+    {\Large\sffamily\scshape\color{accentcolor}} % Font and color for section title
     {\LARGE\marginsecnumber\thesection} % Section number format
     {0pt} % Space between number and title
     {#1\smallskip\hrule\vspace{-20pt}} % Title formatting
@@ -304,7 +366,7 @@
 
 % Subsection formatting
 \titleformat{\subsection}[block]%
-    {\large\sffamily\scshape\color{\accentcolor}} % Font and color for subsection title
+    {\large\sffamily\scshape\color{accentcolor}} % Font and color for subsection title
     {\Large\marginsubsecnumber\thesubsection} % Subsection number format
     {0pt} % Space between number and title
     {#1} % Title formatting
@@ -316,7 +378,7 @@
 
 % Subsubsection formatting
 \titleformat{\subsubsection}[runin]%
-    {\normalsize\sffamily\scshape\color{\accentcolor}} % Font and color for subsubsection title
+    {\normalsize\sffamily\scshape\color{accentcolor}} % Font and color for subsubsection title
     {\large\marginsubsubsecnumber\thesubsubsection} % Subsubsection number format
     {0pt} % Space between number and title
     {#1.} % Title formatting
@@ -333,17 +395,17 @@
 % Description: Generates a local table of contents with distinct fonts for sections and subsections, and enhanced formatting.
 \providecommand{\localtoc}{%
 	\begingroup
-    	\etocsettocstyle{}{} % Clear default headings
-    	\etocsetnexttocdepth{section} % Display entries up to section level
-    	\etocsetstyle{section}
-    	{}{}{ % Formatting for each entry in the TOC
-    		\sffamily\scshape\etocnumber\hspace*{10pt}\etocname\nobreak
-    		\hskip5pt\dotfill\hskip5pt\nobreak
-    		\etocpage\par
-    		}{}
-            {\color{\accentcolor}\rule{\textwidth}{0.5pt}\medskip}
-            \localtableofcontents % Generate the local table of contents
-            {\medskip\noindent\color{\accentcolor}\rule{\textwidth}{0.5pt}}
+	\etocsettocstyle{}{} % Clear default headings
+	\etocsetnexttocdepth{section} % Display entries up to section level
+	\etocsetstyle{section}
+	{}{}{ % Formatting for each entry in the TOC
+		\sffamily\scshape\etocnumber\hspace*{10pt}\etocname\nobreak
+		\hskip5pt\dotfill\hskip5pt\nobreak
+		\etocpage\par
+		}{}
+	{\color{accentcolor}\rule{\textwidth}{0.5pt}\medskip}
+	\localtableofcontents % Generate the local table of contents
+	{\medskip\noindent\color{accentcolor}\rule{\textwidth}{0.5pt}}
 	\endgroup
 }
 
@@ -408,9 +470,9 @@ postamble "\n\\end{theindex}\n"
 	pdfsubject={computer science},    % Set the subject of the PDF; fallback to \@course if not defined
 	pdfkeywords={computer science},   % Define keywords for the PDF; fallback to \@course if not defined
 	colorlinks=true,                  % Enable coloured hyperlinks
-	citecolor=\accentcolor,           % Set colour for citation links
-	linkcolor=\accentcolor,           % Set colour for internal document links
-	urlcolor=\accentcolor,            % Set color for URLs
+	citecolor=accentcolor,            % Set colour for citation links
+	linkcolor=accentcolor,            % Set colour for internal document links
+	urlcolor=accentcolor,             % Set color for URLs
 	frenchlinks=true,                 % Use French-style links with small caps
 	unicode=true,                     % Enable Unicode characters in links
 	bookmarksnumbered=true,           % Number bookmarks in the PDF for better navigation
@@ -468,7 +530,7 @@ postamble "\n\\end{theindex}\n"
 \renewcommand{\maketitle}{%
 	\vspace*{\fill} % Vertically center the content on the page
 	\thispagestyle{empty} % Set the page style to 'empty' (no page numbers)
-	
+			
 	\begingroup
 	\raggedleft % Right-align the content
 	% Title
@@ -477,28 +539,28 @@ postamble "\n\\end{theindex}\n"
 		\else\@title
 		\fi\par
 		\vspace{1em}\hrule\bigskip} % Title with horizontal rule
-	
+			
 	% Subtitle
 	{\normalsize\itshape
 		\ifx\@subtitle\undefined
 		\else\@subtitle
 		\fi\par
 		\medskip} % Subtitle with italic style
-	
+			
 	% Authors
 	{\large\scshape
 		\ifx\@author\undefined
 		\else\@author
 		\fi\par
 		\medskip} % Authors in small caps
-	
+			
 	% Date
 	{\hfill\scshape\normalsize
 		\ifx\@date\undefined
 		\else\@date
 		\fi} % Date with small caps
 	\endgroup
-	
+			
 	\vspace*{\fill} % Vertically center the content on the page
 }
 
@@ -509,44 +571,44 @@ postamble "\n\\end{theindex}\n"
 \providecommand{\makecopyrightpage}{%
 	\thispagestyle{empty} % Remove headers and footers for this page
 	{\cleardoublepage\huge\hfill\textsc{Copyright Page}\bigskip\hrule\bigskip}
-        \begingroup % Begin a local group to confine the scope of changes
+	\begingroup % Begin a local group to confine the scope of changes
 	\null\vfill % Center the content vertically on the page
 	\small % Set the font size as small for the copyright page
 	\centering % Center the text horizontally
-	
+			
 	% Title and Edition Information
 	\textsc{\Large\@title}\par % Title of the work in small caps and large size
-	
+			
 	% Copyright Information
 	\textcopyright~\@date~by~\@author\par % Copyright symbol, date, and author information
 	All rights reserved.\par % Standard copyright notice
-	
+			
 	% License Information
 	\justify % Justify the license text for better alignment
-        This work is distributed under the terms of the Creative Commons
-        Attribution-NonCommercial-NoDerivatives 4.0 International License
-        (``CC BY-NC-ND 4.0"). The principal conditions of this license
-        stipulate that attribution must be duly provided, including proper
-        credit to the original author(s), a direct hyperlink to the license,
-        and a clear statement of any modifications made to the original work;
-        however, such attribution must not imply endorsement by the licensor.
-        The material may not be utilised for any commercial purposes.
-        The material may not be remixed, transformed, or built upon in any
-        manner that results in a modified work, and any redistributed material
-        must remain in its original form. Further, the material must not
-        be used for any purposes involving artificial intelligence or machine
-        learning applications. Full details and the complete legal text of this
-        license can be accessed at the following URL:
-        \texttt{\url{https://creativecommons.org/licenses/by-nc-nd/4.0/}}.
+	This work is distributed under the terms of the Creative Commons
+	Attribution-NonCommercial-NoDerivatives 4.0 International License
+	(``CC BY-NC-ND 4.0"). The principal conditions of this license
+	stipulate that attribution must be duly provided, including proper
+	credit to the original author(s), a direct hyperlink to the license,
+	and a clear statement of any modifications made to the original work;
+	however, such attribution must not imply endorsement by the licensor.
+	The material may not be utilised for any commercial purposes.
+	The material may not be remixed, transformed, or built upon in any
+	manner that results in a modified work, and any redistributed material
+	must remain in its original form. Further, the material must not
+	be used for any purposes involving artificial intelligence or machine
+	learning applications. Full details and the complete legal text of this
+	license can be accessed at the following URL:
+	\texttt{\url{https://creativecommons.org/licenses/by-nc-nd/4.0/}}.
 	\par
-	
+			
 	% Additional Details
 	\vspace{15pt} % Add vertical space before the additional details
 	\begin{center}
 		First edition published on \@date\par % Information about the edition and publication date
 	\end{center}
 	\vspace*{15pt} % Add vertical space after the additional details
-	
+			
 	\endgroup % End the local group
 	\cleardoublepage % Ensure the following content starts on a new page
 }
@@ -589,10 +651,10 @@ postamble "\n\\end{theindex}\n"
 \setlist[enumerate, 2]{label=(\alph*)}  % Label format for the second level of enumeration
 
 % Redefine bullet symbols for itemize environment
-\renewcommand{\labelitemi}{\ensuremath{\color{\accentcolor}\bullet}} % Bullet symbol for first level
-\renewcommand{\labelitemii}{\ensuremath{\color{\accentcolor}\circ}}   % Circle symbol for second level
-\renewcommand{\labelitemiii}{\ensuremath{\color{\accentcolor}\ast}}    % Asterisk symbol for third level
-\renewcommand{\labelitemiv}{\ensuremath{\color{\accentcolor}\textasteriskcentered}} % Asterisk symbol for fourth level
+\renewcommand{\labelitemi}{\ensuremath{\color{accentcolor}\bullet}} % Bullet symbol for first level
+\renewcommand{\labelitemii}{\ensuremath{\color{accentcolor}\circ}}   % Circle symbol for second level
+\renewcommand{\labelitemiii}{\ensuremath{\color{accentcolor}\ast}}    % Asterisk symbol for third level
+\renewcommand{\labelitemiv}{\ensuremath{\color{accentcolor}\textasteriskcentered}} % Asterisk symbol for fourth level
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Packages for Typesetting Algorithms
@@ -690,19 +752,19 @@ postamble "\n\\end{theindex}\n"
 
 \newenvironment{abstract}{%
 	\if@twocolumn
-	    \section*{\abstractname} % Unnumbered section for abstract in two-column mode
+	\section*{\abstractname} % Unnumbered section for abstract in two-column mode
 	\else
-    	\small\vspace{-1em} % Adjust font size and vertical space in single-column mode
-    	\begin{center}
-    		{\scshape\abstractname\vspace{-.5em}\vspace{\z@}} % Title in small caps with vertical spacing
-    	\end{center} % Center the abstract title
-    	\quotation\sffamily % Start the quotation environment for abstract content
+	\small\vspace{-1em} % Adjust font size and vertical space in single-column mode
+	\begin{center}
+		{\scshape\abstractname\vspace{-.5em}\vspace{\z@}} % Title in small caps with vertical spacing
+	\end{center} % Center the abstract title
+	\quotation\sffamily % Start the quotation environment for abstract content
 	\fi
 	}{%
 	\if@twocolumn
 	% No action needed for two-column mode
 	\else
-	   \endquotation % End the quotation environment in single-column mode
+	\endquotation % End the quotation environment in single-column mode
 	\fi
 }
 
@@ -733,7 +795,7 @@ postamble "\n\\end{theindex}\n"
 % Redefine the verbatim process line command
 \renewcommand{\verbatim@processline}{%
 	\let\verbatim@processline=\savedverbatim@processline  % Restore the original command
-	
+			
 	\if\relax\the\verbatim@line\relax  % Check if the line is empty
 	\else
 		\the\verbatim@line\par  % Print the verbatim line
@@ -851,216 +913,199 @@ postamble "\n\\end{theindex}\n"
 
 % Command to define fancy theorem environments
 \providecommand{\usefancythm}{
-	% Define colored environments for theorems and related content
+			
+	% Define coloured environments for theorems and related content
+	\newcolorboxes{corollary}{Corollary}{RoyalBlue4!50!white}{black}{\itshape}{cor}
+	\newcolorboxes{lemma}{Lemma}{RoyalBlue4!60!white}{black}{\itshape}{lem}
+	\newcolorboxes{proposition}{Proposition}{RoyalBlue4!70!white}{black}{\itshape}{prop}
 	\newcolorboxes{theorem}{Theorem}{RoyalBlue4!80!white}{black}{\itshape}{thm}
-	\newcolorboxes{lemma}{Lemma}{RoyalBlue4!70!white}{black}{\itshape}{lem}
-	\newcolorboxes{corollary}{Corollary}{RoyalBlue4!60!white}{black}{\itshape}{cor}
-	\newcolorboxes{proposition}{Proposition}{RoyalBlue4!50!white}{black}{\itshape}{prop}
-	\newcolorboxes{claim}{Claim}{RoyalBlue4!40!white}{black}{\itshape}{clm}
-	\newcolorboxes{conjecture}{Conjecture}{RoyalBlue4!30!white}{black}{\itshape}{conj}
-	
-	\newcolorboxes{definition}{Definition}{DodgerBlue4!80!white}{black}{\normalfont}{def}
-	\newcolorboxes{remark}{Remark}{DodgerBlue4!70!white}{black}{\normalfont}{rem}
-	\newcolorboxes{fact}{Fact}{DodgerBlue4!60!white}{black}{\normalfont}{fact}
-	\newcolorboxes{property}{Property}{DodgerBlue4!50!white}{black}{\normalfont}{prop}
-	\newcolorboxes{case}{Case}{DodgerBlue4!40!white}{black}{\normalfont}{case}
-	\newcolorboxes{example}{Example}{DodgerBlue4!30!white}{black}{\normalfont}{ex}
-	
-	\newcolorboxes{question}{Question}{SlateBlue4!80!white}{black}{\normalfont}{ques}
-	\newcolorboxes{exercise}{Exercise}{SlateBlue4!70!white}{black}{\normalfont}{exer}
-	\newcolorboxes{problem}{Problem}{SlateBlue4!60!white}{black}{\normalfont}{prob}
-	\newcolorboxes{solution}{Solution}{SlateBlue4!50!white}{black}{\normalfont}{sol}
-	
-	\newcolorboxes{note}{Note}{Firebrick4!80!white}{black}{\sffamily}{note}
-	\newcolorboxes{important}{Important}{Firebrick4!70!white}{black}{\sffamily}{imp}
-	\newcolorboxes{keypoint}{Keypoint}{Firebrick4!60!white}{black}{\sffamily}{key}
-	\newcolorboxes{highlight}{Highlight}{Firebrick4!50!white}{black}{\sffamily}{high}
-	
-	% Enable footnotes in the defined environments
-	\BeforeBeginEnvironment{theorem}{\savenotes}
-	\AfterEndEnvironment{theorem}{\spewnotes}
-	\BeforeBeginEnvironment{lemma}{\savenotes}
-	\AfterEndEnvironment{lemma}{\spewnotes}
-	\BeforeBeginEnvironment{corollary}{\savenotes}
-	\AfterEndEnvironment{corollary}{\spewnotes}
-	\BeforeBeginEnvironment{proposition}{\savenotes}
-	\AfterEndEnvironment{proposition}{\spewnotes}
-	\BeforeBeginEnvironment{definition}{\savenotes}
-	\AfterEndEnvironment{definition}{\spewnotes}
-	\BeforeBeginEnvironment{remark}{\savenotes}
-	\AfterEndEnvironment{remark}{\spewnotes}
-	\BeforeBeginEnvironment{claim}{\savenotes}
-	\AfterEndEnvironment{claim}{\spewnotes}
-	\BeforeBeginEnvironment{fact}{\savenotes}
-	\AfterEndEnvironment{fact}{\spewnotes}
-	\BeforeBeginEnvironment{assumption}{\savenotes}
-	\AfterEndEnvironment{assumption}{\spewnotes}
-	\BeforeBeginEnvironment{conjecture}{\savenotes}
-	\AfterEndEnvironment{conjecture}{\spewnotes}
-	\BeforeBeginEnvironment{problem}{\savenotes}
-	\AfterEndEnvironment{problem}{\spewnotes}
-	\BeforeBeginEnvironment{solution}{\savenotes}
-	\AfterEndEnvironment{solution}{\spewnotes}
-	\BeforeBeginEnvironment{case}{\savenotes}
-	\AfterEndEnvironment{case}{\spewnotes}
-	\BeforeBeginEnvironment{example}{\savenotes}
-	\AfterEndEnvironment{example}{\spewnotes}
-	\BeforeBeginEnvironment{property}{\savenotes}
-	\AfterEndEnvironment{property}{\spewnotes}
-	\BeforeBeginEnvironment{important}{\savenotes}
-	\AfterEndEnvironment{important}{\spewnotes}
-	\BeforeBeginEnvironment{keypoint}{\savenotes}
-	\AfterEndEnvironment{keypoint}{\spewnotes}
-	\BeforeBeginEnvironment{highlight}{\savenotes}
-	\AfterEndEnvironment{highlight}{\spewnotes}
-	
-	% Define cref formats for cross-references
-	\crefname{tcb@cnt@theorem}{theorem}{theorems}
-	\Crefname{tcb@cnt@theorem}{Theorem}{Theorems}
-	\crefname{tcb@cnt@lemma}{lemma}{lemmas}
-	\Crefname{tcb@cnt@lemma}{Lemma}{Lemmas}
-	\crefname{tcb@cnt@corollary}{corollary}{corollaries}
-	\Crefname{tcb@cnt@corollary}{Corollary}{Corollaries}
-	\crefname{tcb@cnt@proposition}{proposition}{propositions}
-	\Crefname{tcb@cnt@proposition}{Proposition}{Propositions}
-	\crefname{tcb@cnt@claim}{claim}{claims}
-	\Crefname{tcb@cnt@claim}{Claim}{Claims}
-	\crefname{tcb@cnt@conjecture}{conjecture}{conjectures}
-	\Crefname{tcb@cnt@conjecture}{Conjecture}{Conjectures}
-	\crefname{tcb@cnt@definition}{definition}{definitions}
-	\Crefname{tcb@cnt@definition}{Definition}{Definitions}
-	\crefname{tcb@cnt@example}{example}{examples}
-	\Crefname{tcb@cnt@example}{Example}{Examples}
-	\crefname{tcb@cnt@remark}{remark}{remarks}
-	\Crefname{tcb@cnt@remark}{Remark}{Remarks}
-	\crefname{tcb@cnt@fact}{fact}{facts}
-	\Crefname{tcb@cnt@fact}{Fact}{Facts}
-	\crefname{tcb@cnt@note}{note}{notes}
-	\Crefname{tcb@cnt@note}{Note}{Notes}
-	\crefname{tcb@cnt@question}{question}{questions}
-	\Crefname{tcb@cnt@question}{Question}{Questions}
-	\crefname{tcb@cnt@case}{case}{cases}
-	\Crefname{tcb@cnt@case}{Case}{Cases}
-	\crefname{tcb@cnt@exercise}{exercise}{exercises}
-	\Crefname{tcb@cnt@exercise}{Exercise}{Exercises}
-	\crefname{tcb@cnt@problem}{problem}{problems}
-	\Crefname{tcb@cnt@problem}{Problem}{Problems}
-	\crefname{tcb@cnt@solution}{solution}{solutions}
-	\Crefname{tcb@cnt@solution}{Solution}{Solutions}
+			
+	\newcolorboxes{assumption}{Assumption}{DeepSkyBlue3!80!white}{black}{\itshape}{assm}
+	\newcolorboxes{claim}{Claim}{DeepSkyBlue3!70!white}{black}{\itshape}{clm}
+	\newcolorboxes{conjecture}{Conjecture}{DeepSkyBlue3!60!white}{black}{\itshape}{conj}
+	\newcolorboxes{fact}{Fact}{DeepSkyBlue3!50!white}{black}{\itshape}{fact}
+	\newcolorboxes{property}{Property}{DeepSkyBlue3!40!white}{black}{\itshape}{prop}
+			
+	\newcolorboxes{definition}{Definition}{DodgerBlue1!90!white}{black}{\normalfont}{def}
+	\newcolorboxes{example}{Example}{SpringGreen4!80!white}{black}{\normalfont}{ex}
+	\newcolorboxes{exercise}{Exercise}{SpringGreen4!60!white}{black}{\normalfont}{exer}
+	\newcolorboxes{problem}{Problem}{SpringGreen4!50!white}{black}{\normalfont}{prob}
+	\newcolorboxes{question}{Question}{SpringGreen4!40!white}{black}{\normalfont}{ques}
+			
+	\newcolorboxes{note}{Note}{Cyan4!70!white}{black}{\normalfont}{note}
+	\newcolorboxes{remark}{Remark}{Cyan4!60!white}{black}{\normalfont}{rem}
+	\newcolorboxes{solution}{Solution}{Cyan4!50!white}{black}{\normalfont}{sol}
+			
+	\newcolorboxes{important}{Important}{DeepPink4!70!white}{black}{\sffamily}{imp}
+	\newcolorboxes{keypoint}{Keypoint}{DeepPink4!60!white}{black}{\sffamily}{key}
+	\newcolorboxes{highlight}{Highlight}{DeepPink4!50!white}{black}{\sffamily}{high}
+			
+	% Command to enable footnotes in specified environments
+	\providecommand{\enablefootnotes}[1]{%
+		\BeforeBeginEnvironment{##1}{\savenotes}%
+		\AfterEndEnvironment{##1}{\spewnotes}%
+	}
+			
+	% Enable footnotes for each environment directly
+	\enablefootnotes{assumption}
+	\enablefootnotes{claim}
+	\enablefootnotes{conjecture}
+	\enablefootnotes{corollary}
+	\enablefootnotes{definition}
+	\enablefootnotes{example}
+	\enablefootnotes{exercise}
+	\enablefootnotes{fact}
+	\enablefootnotes{highlight}
+	\enablefootnotes{important}
+	\enablefootnotes{keypoint}
+	\enablefootnotes{lemma}
+	\enablefootnotes{note}
+	\enablefootnotes{problem}
+	\enablefootnotes{property}
+	\enablefootnotes{proposition}
+	\enablefootnotes{question}
+	\enablefootnotes{theorem}
+	\enablefootnotes{remark}
+	\enablefootnotes{solution}
+			
+	% Command to define cross-reference formats
+	\providecommand{\definecrefformat}[3]{%
+		\crefname{tcb@cnt@##1}{\MakeLowercase{##2}}{\MakeLowercase{##3}} % Define cref format for lowercase references
+		\Crefname{tcb@cnt@##1}{##2}{##3} % Define cref format for capitalized references
+	}
+			
+	% Define cross-reference formats directly
+	\definecrefformat{theorem}{Theorem}{Theorems}
+	\definecrefformat{lemma}{Lemma}{Lemmas}
+	\definecrefformat{corollary}{Corollary}{Corollaries}
+	\definecrefformat{proposition}{Proposition}{Propositions}
+	\definecrefformat{claim}{Claim}{Claims}
+	\definecrefformat{conjecture}{Conjecture}{Conjectures}
+	\definecrefformat{fact}{Fact}{Facts}
+	\definecrefformat{property}{Property}{Properties}
+	\definecrefformat{definition}{Definition}{Definitions}
+	\definecrefformat{example}{Example}{Examples}
+	\definecrefformat{exercise}{Exercise}{Exercises}
+	\definecrefformat{problem}{Problem}{Problems}
+	\definecrefformat{question}{Question}{Questions}
+	\definecrefformat{note}{Note}{Notes}
+	\definecrefformat{remark}{Remark}{Remarks}
+	\definecrefformat{solution}{Solution}{Solutions}
+	\definecrefformat{important}{Important}{Importants}
+	\definecrefformat{keypoint}{Keypoint}{Keypoints}
+	\definecrefformat{highlight}{Highlight}{Highlights}
+	\definecrefformat{assumption}{Assumption}{Assumptions}
 }
 
 \ifbool{usefancythm}{\usefancythm}{}
 
 % Command to define standard theorem environments
 \providecommand{\usenormalthm}{%
-	% Define theorem styles
 	\declaretheoremstyle[%
 		spaceabove=\topsep,
 		spacebelow=\topsep,
-		headfont=\scshape\color{\accentcolor},
-		notefont=\scshape\color{\accentcolor},
+		headfont=\scshape,
+		notefont=\scshape,
 		bodyfont=\normalfont,
 		postheadspace=5pt,
 		numberwithin=section,
-		qed=\color{\accentcolor}$\scriptstyle\star$,
-		headpunct={:}
+		qed=$\scriptstyle\star$,
+		headpunct={.}
 	]{thmstyle}
-	
+			
 	\declaretheoremstyle[%
 		spaceabove=\topsep,
 		spacebelow=\topsep,
-		headfont=\scshape\color{\accentcolor},
-		notefont=\scshape\color{\accentcolor},
+		headfont=\bfseries,
+		notefont=\bfseries,
 		bodyfont=\normalfont,
 		postheadspace=5pt,
 		numberwithin=section,
-		qed=\color{\accentcolor}$\scriptstyle\maltese$,
-		headpunct={:}
+		qed=$\scriptstyle\maltese$,
+		headpunct={.}
 	]{defstyle}
-	
+			
 	\declaretheoremstyle[%
 		spaceabove=\topsep,
 		spacebelow=\topsep,
-		headfont=\scshape\color{\accentcolor},
-		notefont=\scshape\color{\accentcolor},
+		headfont=\scshape,
+		notefont=\scshape,
 		bodyfont=\normalfont,
 		postheadspace=5pt,
 		numberwithin=section,
-		qed=\color{\accentcolor}$\scriptstyle\maltese$,
-		headpunct={:}
+		qed=$\scriptstyle\maltese$,
+		headpunct={.}
 	]{remarkstyle}
-	
-	% Define 'leftbar' environment
-	\newenvironment{leftbar}{%
-		\mdfsetup{%
-			leftline=true,            % Enable left border
-			topline=false,            % Disable top border
-			bottomline=false,         % Disable bottom border
-			rightline=false,          % Disable right border
-			linewidth=1pt,            % Border thickness
-			linecolor=\accentcolor,   % Border color
-			innermargin=1pt,          % Inner margin
-			innerleftmargin=10pt      % Inner left margin
-		}%
-		\begin{mdframed}%
-			}{%
-		\end{mdframed}%
-	}
-	
-	% Define 'coloredstyle' theorem style
+			
 	\declaretheoremstyle[%
-		spaceabove=\topsep,                                                        % Space above theorem
-		spacebelow=\topsep,                                                        % Space below theorem
-		headfont=\scshape\color{\accentcolor}\small,                               % Theorem head font
-		notefont=\scshape\color{\accentcolor}\small,                               % Theorem note font
-		headpunct=,                                                                % No punctuation after head
-		bodyfont=\normalfont,                                                      % Body font
-		headformat=\NAME~\NUMBER~\NOTE.\hfill\smallskip\linebreak,                 % Head format
-		preheadhook=\begin{leftbar}\vspace{-12.5pt},                               % Start left bar
-		postfoothook=\end{leftbar}\vspace{-5pt},                                   % End left bar
-		postheadspace=1em,                                                         % Space after head
-		numberwithin=section                                                       % Numbering within sections
-	]{coloredstyle}
-	
-	% Define theorem environments
+		spaceabove=\topsep,
+		spacebelow=\topsep,
+		headfont=\scshape,
+		notefont=\scshape,
+		bodyfont=\normalfont\sffamily,
+		postheadspace=5pt,
+		numberwithin=section,
+		qed=$\scriptstyle\maltese$,
+		headpunct={.}
+	]{hltstyle}
+			
 	\declaretheorem[style=thmstyle,name=Theorem]{theorem}
-	\declaretheorem[style=thmstyle,sibling=theorem]{lemma}
-	\declaretheorem[style=thmstyle,sibling=theorem]{corollary}
-	\declaretheorem[style=thmstyle,sibling=theorem]{proposition}
+	\declaretheorem[style=thmstyle,sibling=theorem]{assumption}
 	\declaretheorem[style=thmstyle,sibling=theorem]{claim}
 	\declaretheorem[style=thmstyle,sibling=theorem]{conjecture}
-	
-	% Define definition environments
+	\declaretheorem[style=thmstyle,sibling=theorem]{corollary}
+	\declaretheorem[style=defstyle,sibling=theorem]{fact}
+	\declaretheorem[style=thmstyle,sibling=theorem]{lemma}
+	\declaretheorem[style=thmstyle,sibling=theorem]{property}
+	\declaretheorem[style=thmstyle,sibling=theorem]{proposition}
+			
 	\declaretheorem[style=defstyle,sibling=theorem]{definition}
 	\declaretheorem[style=defstyle,sibling=theorem]{example}
-	\declaretheorem[style=defstyle,sibling=theorem]{fact}
-	\declaretheorem[style=defstyle,sibling=theorem]{note}
-	\declaretheorem[style=defstyle,sibling=theorem]{question}
-	\declaretheorem[style=defstyle,sibling=theorem]{case}
 	\declaretheorem[style=defstyle,sibling=theorem]{exercise}
 	\declaretheorem[style=defstyle,sibling=theorem]{problem}
-	\declaretheorem[style=defstyle,sibling=theorem]{property}
-	\declaretheorem[style=defstyle,sibling=theorem]{solution}
-	
-	% Define remark environments
+	\declaretheorem[style=defstyle,sibling=theorem]{question}
+			
+	\declaretheorem[style=remarkstyle,sibling=theorem]{note}
 	\declaretheorem[style=remarkstyle,sibling=theorem]{remark}
-	\declaretheorem[style=remarkstyle,name=Important]{important}
-	\declaretheorem[style=remarkstyle]{keypoint}
-	\declaretheorem[style=remarkstyle]{highlight}
-	
-	% Define specialized list for cases
-	\newlist{casenv}{enumerate}{4}
-	\setlist[casenv]{leftmargin=*,align=left,widest={iiii}}
-	\setlist[casenv,1]{label={{\itshape\casename} \arabic*.},ref=\arabic*}
-	\setlist[casenv,2]{label={{\itshape\casename} \roman*.},ref=\roman*}
-	\setlist[casenv,3]{label={{\itshape\casename\ \alph*.}},ref=\alph*}
-	\setlist[casenv,4]{label={{\itshape\casename} \arabic*.},ref=\arabic*}
+	\declaretheorem[style=remarkstyle,sibling=theorem]{solution}
+			
+	\declaretheorem[style=hltstyle,name=Important]{important}
+	\declaretheorem[style=hltstyle]{highlight}
+	\declaretheorem[style=hltstyle]{keypoint}
+			
+	% Command to define cross-reference formats
+	\providecommand{\definecrefformat}[3]{%
+		\crefname{##1}{\MakeLowercase{##2}}{\MakeLowercase{##3}} % Define cref format for lowercase references
+		\Crefname{##1}{##2}{##3} % Define cref format for capitalized references
+	}
+			
+	% Define cross-reference formats directly
+	\definecrefformat{theorem}{Theorem}{Theorems}
+	\definecrefformat{lemma}{Lemma}{Lemmas}
+	\definecrefformat{corollary}{Corollary}{Corollaries}
+	\definecrefformat{proposition}{Proposition}{Propositions}
+	\definecrefformat{claim}{Claim}{Claims}
+	\definecrefformat{conjecture}{Conjecture}{Conjectures}
+	\definecrefformat{fact}{Fact}{Facts}
+	\definecrefformat{property}{Property}{Properties}
+	\definecrefformat{definition}{Definition}{Definitions}
+	\definecrefformat{example}{Example}{Examples}
+	\definecrefformat{exercise}{Exercise}{Exercises}
+	\definecrefformat{problem}{Problem}{Problems}
+	\definecrefformat{question}{Question}{Questions}
+	\definecrefformat{note}{Note}{Notes}
+	\definecrefformat{remark}{Remark}{Remarks}
+	\definecrefformat{solution}{Solution}{Solutions}
+	\definecrefformat{important}{Important}{Importants}
+	\definecrefformat{keypoint}{Keypoint}{Keypoints}
+	\definecrefformat{highlight}{Highlight}{Highlights}
+	\definecrefformat{assumption}{Assumption}{Assumptions}
 }
 
 \ifbool{usenormalthm}{\usenormalthm}{}
 
-% Define a custom QED symbol
-\providecommand{\QEDsymbol}{\color{\accentcolor}\ensuremath{\blacksquare}} % Custom QED symbol rendered in the accent color
+% Custom QED symbol rendered in the accent color
+\providecommand{\QEDsymbol}{\color{accentcolor}\ensuremath{\blacksquare}}
 % Replace the default QED symbol with the custom symbol
 \renewcommand{\qedsymbol}{\QEDsymbol}
 
@@ -1077,15 +1122,14 @@ postamble "\n\\end{theindex}\n"
 		style=alphabetic,      % Use alphabetic style for citations
 		backref=true,          % Enable back-references from bibliography to citations
 		sorting=anyt,          % Sort entries by their appearance in the text
-		autocite=superscript,  % Format in-text citations as superscripts
 		maxalphanames=99,      % Allow up to 99 names in the alphabetic label
 		maxnames=999,          % Display up to 999 names in citations
 		backend=biber          % Use Biber as the backend processor
 	]{biblatex} % End of package options
-		
+			
 	% Set the font size for bibliography entries
 	\renewcommand*{\bibfont}{\small} % Define bibliography font size as 'small'
-		
+			
 	% Customize back-reference strings in the bibliography
 	\DefineBibliographyStrings{english}{
 		backrefpage={\unskip Cited on page},  % Singular form for back-reference page
@@ -1111,16 +1155,16 @@ postamble "\n\\end{theindex}\n"
 		}{%
 		% Else fallback to default bibliography style
 		\typeout{Default bibliography style will be used as BibLaTeX is not enabled.}
-		\bibliographystyle{aomalpha}
+		\bibliographystyle{alpha}
 	}%
 }
-	 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Load necessary package for code listings
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		
 \RequirePackage{listings}
-
+		
 % Define Rust language for the listings package
 \lstdefinelanguage{Rust}{%
 	sensitive=true,
@@ -1158,7 +1202,7 @@ postamble "\n\\end{theindex}\n"
 	% Optional addition
 	otherkeywords={::, :, <>, .., ..=, ..<, ==, !=, <=>, ===, <==, >==, <=, >=, &&, ||, ??, :=, ==>, >>=, <<=, <:=, ?==, @, =>, =>>},
 }
-
+		
 % Define a style for C code
 \lstdefinestyle{CStyle}{%
 	language=C,                          % Set the language to C
@@ -1182,7 +1226,7 @@ postamble "\n\\end{theindex}\n"
 	tabsize=4,                           % Set tab size to 4 spaces
 	escapeinside={\%*}{*)}               % Define escape characters for LaTeX code within C code
 }
-
+		
 % Define a style for C++ code
 \lstdefinestyle{CPlusPlusStyle}{%
 	language=C++,                        % Set the language to C++
@@ -1206,7 +1250,7 @@ postamble "\n\\end{theindex}\n"
 	tabsize=4,                           % Set tab size to 4 spaces
 	escapeinside={\%*}{*)}               % Define escape characters for LaTeX code within C++ code
 }
-
+		
 % Define a style for Java code
 \lstdefinestyle{JavaStyle}{%
 	language=Java,                       % Set the language to Java
@@ -1230,7 +1274,7 @@ postamble "\n\\end{theindex}\n"
 	tabsize=4,                           % Set tab size to 4 spaces
 	escapeinside={\%*}{*)}               % Define escape characters for LaTeX code within Java code
 }
-
+		
 % Define a style for Python code
 \lstdefinestyle{PythonStyle}{%
 	language=Python,                     % Set the language to Python
@@ -1254,7 +1298,7 @@ postamble "\n\\end{theindex}\n"
 	tabsize=4,                           % Set tab size to 4 spaces
 	escapeinside={\%*}{*)}               % Define escape characters for LaTeX code within Python code
 }
-
+		
 % Define a style for Rust code
 \lstdefinestyle{RustStyle}{%
 	language=Rust,                     % Set the language to Rust
@@ -1278,13 +1322,13 @@ postamble "\n\\end{theindex}\n"
 	tabsize=4,                         % Set tab size to 4 spaces
 	escapeinside={\%*}{*)}             % Define escape characters for LaTeX code within Rust code
 }
-
+		
 % Reset the code box counter at the start of each chapter
 \preto\chapter{\setcounter{codeboxcounter}{0}}
-
+		
 % Define a new counter for code boxes, reset at each chapter
 \newcounter{codeboxcounter}[chapter]
-
+		
 % Define the "codebox" environment using mdframed
 \newenvironment{codebox}[1][Code Box]
 {
@@ -1308,7 +1352,7 @@ postamble "\n\\end{theindex}\n"
 	}{%
 	\end{codeboxinner}
 }
-
+		
 % Define a custom command for adding code snippets in a code box
 % Arguments:
 %   #1: Title of the code box
@@ -1320,62 +1364,99 @@ postamble "\n\\end{theindex}\n"
 		\lstinputlisting[style=#3]{#4} % Include the code from the specified file with the chosen style
 	\end{codebox} % End the code box environment
 }
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Environment for Problems and Exercises
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		
+% Define a new environment called 'problems' with an optional title argument (default: 'Problem Set')
 \newenvironment{problems}[1][Problem Set]{
-	\section*{#1} % Define the section heading with the given title
-        \setlist[enumerate, 1]{label=(\thechapter.\arabic*)} % Set enumeration label format for first level
-	\setlist[enumerate, 2]{label=(\alph*)} % Set enumeration label format for second level
-	\begin{multicols}{2} % Begin a two-column layout for problems
-            \footnotesize
-		\begin{enumerate} % Start enumerated list
+	% Set the section heading to the provided title
+	\section*{#1}
+	% Configure enumeration style:
+	% For the first level, set labels as (ChapterNumber.ItemNumber)
+	\setlist[enumerate, 1]{label=(\thechapter.\arabic*)}
+	% For the second level, set labels as (a), (b), etc.
+	\setlist[enumerate, 2]{label=(\alph*)}
+	% Start a two-column layout for the problems
+	\begin{multicols}{2}
+		\footnotesize % Set font size to footnotesize for the content
+		% Begin an enumerated list for the problems
+		\begin{enumerate}
 			}{%
-		\end{enumerate} % End enumerated list
-	\end{multicols} % End two-column layout
+			% End the enumerated list
+		\end{enumerate}
+		% End the two-column layout
+	\end{multicols}
 }
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		
+% Define a new enumeration list style called 'caseList' with a single level
+\newlist{caseList}{enumerate}{1}
+% Configure 'caseList' labels: bold text 'Case n:' where n is the item number, with no left margin
+\setlist[caseList]{label=\textbf{Case~\arabic*:},leftmargin=*}
+		
+% Define a new environment called 'case' with an optional argument (default: empty)
+\NewDocumentEnvironment{case}{O{}}{%
+	% Start the 'caseList' enumeration with the optional title
+	\begin{caseList}[#1]%
+		}{%
+		% End the 'caseList' enumeration
+	\end{caseList}%
+}
+		
+% Define a new enumeration list style called 'axiomList' with a single level
+\newlist{axiomList}{enumerate}{1}
+% Configure 'axiomList' labels: bold text 'Axiom A:' where A is the letter index, with no left margin
+\setlist[axiomList]{label=\textbf{Axiom~\Alph*:}, leftmargin=*}
+		
+% Define a new environment called 'axiom' with an optional argument (default: empty)
+\NewDocumentEnvironment{axiom}{O{}}{%
+	% Start the 'axiomList' enumeration with the optional title
+	\begin{axiomList}[#1]%
+		}{%
+		% End the 'axiomList' enumeration
+	\end{axiomList}%
+}
+		
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Custom Commands for Document Formatting
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\providecommand*{\code}[1]{\texttt{#1}} % Display text in a monospaced font to represent code
-\providecommand{\cat}[1]{\ensuremath{\mathsf{#1}}} % Format category names in mathematical mode
-\providecommand{\missingcitation}{\code{\small\color{Firebrick1}<Citation Missing>}} % Indicate missing citations with a specific format and red text
-\providecommand{\missing}[1]{{\color{Firebrick1}#1}} % Highlight text in red to denote missing or problematic content
-\providecommand{\strike}{\bgroup\ULdepth=-.55ex\ULset} % Apply a strike-through effect to text for deletion or emphasis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		
+\providecommand*{\code}[1]{\texttt{#1}} % Format text in monospaced font to denote code
+\providecommand{\cat}[1]{\ensuremath{\mathsf{#1}}} % Render category names in mathematical mode
+\providecommand{\missingcitation}{\code{\small\color{Firebrick1}<Citation Missing>}} % Format missing citations with red text
+\providecommand{\missing}[1]{{\color{Firebrick1}#1}} % Highlight text in red to indicate missing or problematic content
+\providecommand{\strike}{\bgroup\ULdepth=-.55ex\ULset} % Apply strike-through effect to text for deletion or emphasis
 \providecommand{\term}[1]{#1\index{#1}} % Define and index terms for glossary inclusion
 \providecommand{\toc}{%
 	\tableofcontents
 	\addcontentsline{toc}{chapter}{Contents}
 	\vfill
 	\pagebreak
-} % Generate a table of contents and include a "Contents" entry in it
-\providecommand{\urlref}[1]{\href{#1}{#1}} % Create hyperlinked URL
-
+} % Generate a table of contents and add a "Contents" entry
+\providecommand{\urlref}[1]{\href{#1}{#1}} % Create a hyperlink to a URL
+		
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % TODO Notes and Annotations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+		
 % Enable TODO notes functionality within the document
 \RequirePackage{todonotes} % Enable adding TODO notes
-
+		
 % Insert inline TODO notes with a red border and background for annotation purposes
 \providecommand{\mynote}[1]{%
 	\smallskip
 	\todo[inline, size=\small, bordercolor=Firebrick1!20, color=Firebrick1!20]{\sffamily#1}
 	\smallskip
 } % Create inline TODO notes with red border and background
-
+		
 % Mark sections requiring a citation with a TODO note
 \providecommand{\needcite}{%
 	\todo[noline, size=\small, bordercolor=Firebrick1!20, color=Firebrick1!20]{\sffamily~Requires citation.}
 } % Mark locations where a citation is required
-
+		
 % Disable the use of '@' in command names
 \makeatother
-
+		
 % End of package
 \endinput
