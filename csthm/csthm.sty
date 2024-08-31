@@ -1,30 +1,38 @@
-% csthm.sty
-% Computer Science Theorem Environments
-% Version: 1.2
-% Date: 2024/08/31
-% Author: Agni Datta
-% Maintainer: Agni Datta
-% Email: agnidatta.org@gmail.com
-% License: MIT License
-% Description: A LaTeX package providing customized theorem-like environments
-%              specifically designed for computer science documents.
-
-\NeedsTeXFormat{LaTeX2e}[1994/06/01]
-\ProvidesPackage{csthm}[2024/08/31 v1.2 Theorem Environments for Computer Science]
-
-% Package options
+%%
+%% This is file `csthm.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% csthm.dtx  (with options: `package')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright (C) 2024 by Agni Datta <agnidatta.org@gmail.com>
+%% 
+%% This file may be distributed and/or modified under the conditions of
+%% the LaTeX Project Public License, either version 1.3c of this license
+%% or (at your option) any later version. The latest version of this
+%% license is in:
+%% 
+%%    http://www.latex-project.org/lppl.txt
+%% 
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2008/05/04 or later.
+%% 
+\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+\ProvidesPackage{csthm}
+[2024/08/31 v1.2 Theorem Environments for Computer Science]
 \newif\if@csthm@loadcleveref
 \DeclareOption{cleveref}{\@csthm@loadclevereftrue}
 \ProcessOptions\relax
 
-% Required packages
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
 \RequirePackage{amsthm}
 \RequirePackage{enumitem}
 \RequirePackage{thmtools}
 
-% Conditionally load cleveref if the option is set and hyperref is loaded
 \if@csthm@loadcleveref
 \AtBeginDocument{%
 	\@ifpackageloaded{hyperref}{%
@@ -35,7 +43,6 @@
 }
 \fi
 
-% Define theorem styles
 \declaretheoremstyle[
 	spaceabove=\topsep,
 	spacebelow=\topsep,
@@ -84,7 +91,6 @@
 	headpunct={.}
 ]{hltstyle}
 
-% Define theorem environments
 \declaretheorem[style=thmstyle,name=Theorem]{theorem}
 \declaretheorem[style=defstyle,sibling=theorem]{fact}
 \declaretheorem[style=thmstyle,sibling=theorem]{assumption}
@@ -95,24 +101,20 @@
 \declaretheorem[style=thmstyle,sibling=theorem]{property}
 \declaretheorem[style=thmstyle,sibling=theorem]{proposition}
 
-% Define definition environments
 \declaretheorem[style=defstyle,sibling=theorem]{definition}
 \declaretheorem[style=defstyle,sibling=theorem]{example}
 \declaretheorem[style=defstyle,sibling=theorem]{exercise}
 \declaretheorem[style=defstyle,sibling=theorem]{problem}
 \declaretheorem[style=defstyle,sibling=theorem]{question}
 
-% Define remark environments
 \declaretheorem[style=remarkstyle,sibling=theorem]{note}
 \declaretheorem[style=remarkstyle,sibling=theorem]{remark}
 \declaretheorem[style=remarkstyle,sibling=theorem]{solution}
 
-% Define highlight environments
 \declaretheorem[style=hltstyle,name=Important]{important}
 \declaretheorem[style=hltstyle]{highlight}
 \declaretheorem[style=hltstyle]{keypoint}
 
-% Define case environment
 \newlist{caseList}{enumerate}{1}
 \setlist[caseList]{label=\textbf{Case~\arabic*:},leftmargin=*}
 
@@ -122,7 +124,6 @@
 	\end{caseList}%
 }
 
-% Define axiom environment
 \newlist{axiomList}{enumerate}{1}
 \setlist[axiomList]{label=\textbf{Axiom~\Alph*:}, leftmargin=*}
 
@@ -132,18 +133,14 @@
 	\end{axiomList}%
 }
 
-% Custom QED symbol
 \renewcommand\qedsymbol{$\scriptstyle\blacksquare$}
 
-% Define accent color (customizable by the user)
 \providecommand{\accentcolor}{black}
 
-% Package documentation commands
 \providecommand{\csthmpkg}{\textsf{csthm}}
 \providecommand{\email}[1]{\href{mailto:#1}{\texttt{#1}}}
 
-% User-level commands for customization
-\providecommand{\setaccentcolor}[1]{\renewcommand{\accentcolor}{#1}}
-
+\newcommand{\setaccentcolor}[1]{\renewcommand{\accentcolor}{#1}}
 \endinput
-% End of file `csthm.sty`
+%%
+%% End of file `csthm.sty'.
