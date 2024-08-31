@@ -1,17 +1,101 @@
-% csthm.sty
-% Computer Science Theorem Environments
-% Version: 1.2
-% Date: 2024/08/31
-% Author: Agni Datta
-% Maintainer: Agni Datta
-% Email: agnidatta.org@gmail.com
-% License: MIT License
-% Description: A LaTeX package providing customized theorem-like environments
-%              specifically designed for computer science documents.
-
-\NeedsTeXFormat{LaTeX2e}[1994/06/01]
-\ProvidesPackage{csthm}[2024/08/31 v1.2 Theorem Environments for Computer Science]
-
+% \iffalse meta-comment
+%
+% Copyright (C) 2024 by Agni Datta <agnidatta.org@gmail.com>
+% ---------------------------------------------------------------------------
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainer of this work is Agni Datta.
+%
+% This work consists of the files csthm.dtx and csthm.ins
+% and the derived file csthm.sty.
+%
+% \fi
+%
+% \iffalse
+%<*driver>
+\ProvidesFile{csthm.dtx}
+%</driver>
+%<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+%<package>\ProvidesPackage{csthm}
+%<*package>
+    [2024/08/31 v1.2 Theorem Environments for Computer Science]
+%</package>
+%
+%<*driver>
+\documentclass{ltxdoc}
+\usepackage{csthm}
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+\begin{document}
+\DocInput{csthm.dtx}
+\PrintChanges
+\PrintIndex
+\end{document}
+%</driver>
+% \fi
+%
+% \CheckSum{0}
+%
+% \CharacterTable
+%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%   Digits        \0\1\2\3\4\5\6\7\8\9
+%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%   Dollar        \$     Percent       \%     Ampersand     \&
+%   Acute accent  \'     Left paren    \(     Right paren   \)
+%   Asterisk      \*     Plus          \+     Comma         \,
+%   Minus         \-     Point         \.     Solidus       \/
+%   Colon         \:     Semicolon     \;     Less than     \<
+%   Equals        \=     Greater than  \>     Question mark \?
+%   Commercial at \@     Left bracket  \[     Backslash     \\
+%   Right bracket \]     Circumflex    \^     Underscore    \_
+%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%   Right brace   \}     Tilde         \~}
+%
+%
+% \changes{v1.0}{2024/08/31}{Initial version}
+% \changes{v1.1}{2024/08/31}{Added cleveref support}
+% \changes{v1.2}{2024/08/31}{Improved documentation and code structure}
+%
+% \DoNotIndex{\newcommand,\newenvironment}
+%
+% \providecommand*{\url}{\texttt}
+% \GetFileInfo{csthm.dtx}
+% \title{The \textsf{csthm} package}
+% \author{Agni Datta \\ \url{agnidatta.org@gmail.com}}
+% \date{\filedate}
+%
+% \maketitle
+%
+% \section{Introduction}
+%
+% This package provides customized theorem-like environments specifically designed for computer science documents. It offers a set of pre-defined theorem styles and environments to streamline the creation of theorems, definitions, remarks, and other common structures in computer science papers and documents.
+%
+% \section{Usage}
+%
+% Load the package with:
+% \begin{verbatim}
+% \usepackage{csthm}
+% \end{verbatim}
+%
+% To use the package with cleveref support:
+% \begin{verbatim}
+% \usepackage[cleveref]{csthm}
+% \end{verbatim}
+%
+% \section{Implementation}
+%
+%    \begin{macrocode}
+%<*package>
 % Package options
 \newif\if@csthm@loadcleveref
 \DeclareOption{cleveref}{\@csthm@loadclevereftrue}
@@ -143,7 +227,9 @@
 \providecommand{\email}[1]{\href{mailto:#1}{\texttt{#1}}}
 
 % User-level commands for customization
-\providecommand{\setaccentcolor}[1]{\renewcommand{\accentcolor}{#1}}
-
+\newcommand{\setaccentcolor}[1]{\renewcommand{\accentcolor}{#1}}
+%</package>
+%    \end{macrocode}
+%
+% \Finale
 \endinput
-% End of file `csthm.sty`
