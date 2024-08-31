@@ -106,7 +106,7 @@
 
 \RequirePackage[%
 	a4paper,        % Set paper size to A4 (210 x 297 mm) for standard document formatting
-	margin=3.0cm,   % Set uniform margin of 3.0 cm on all sides for a balanced layout
+	margin=1.5in,   % Set uniform margin on all sides for a balanced layout
 	footskip=1cm,   % Set space between the bottom of the text block and the footer to 1 cm
 	verbose         % Enable verbose mode to print additional configuration details in the log
 ]{geometry}         % Configure the page layout with the specified options
@@ -339,11 +339,11 @@
 	backgroundcolor=none,         % Use a transparent background
 	skipabove=10pt,               % Vertical space above the frame
 	skipbelow=10pt,               % Vertical space below the frame
-	innerleftmargin=7.5pt,        % Left margin inside the frame
-	innerrightmargin=7.5pt,       % Right margin inside the frame
-	innertopmargin=10pt,          % Top margin inside the frame
-	innerbottommargin=10pt,       % Bottom margin inside the frame
-	roundcorner=1pt               % Rounded corners with a radius of 1pt
+	innerleftmargin=15pt,         % Left margin inside the frame
+	innerrightmargin=15pt,        % Right margin inside the frame
+	innertopmargin=15pt,          % Top margin inside the frame
+	innerbottommargin=15pt,       % Bottom margin inside the frame
+	roundcorner=1pt               % Rounded corners with a radius
 ]{tboxed} % Custom framed environment named "tboxed"
 
 % Define a custom-framed environment with specific formatting
@@ -352,11 +352,11 @@
 	backgroundcolor={\accentcolor!50!white}, % Set background color with accent color
 	skipabove=10pt,               % Vertical space above the frame
 	skipbelow=10pt,               % Vertical space below the frame
-	innerleftmargin=7.5pt,        % Left margin inside the frame
-	innerrightmargin=7.5pt,       % Right margin inside the frame
-	innertopmargin=10pt,          % Top margin inside the frame
-	innerbottommargin=10pt,       % Bottom margin inside the frame
-	roundcorner=2pt               % Rounded corners with a radius of 2pt
+	innerleftmargin=15pt,         % Left margin inside the frame
+	innerrightmargin=15pt,        % Right margin inside the frame
+	innertopmargin=15pt,          % Top margin inside the frame
+	innerbottommargin=15pt,       % Bottom margin inside the frame
+	roundcorner=1pt               % Rounded corners with a radius
 ]{colbox} % Custom framed environment named "colbox"
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -464,9 +464,9 @@
 % Formatting for sections
 \titleformat{\section}[block]
     {\normalfont\Large\bfseries\color{\accentcolor}} % Font style: normal, large, bold, coloured
-    {\LARGE\thesection} % Section number
-    {10pt} % Space between number and title
-    {#1\medskip\hrule\vspace{-25pt}} % Title format with rule below
+    {\thesection} % Section number
+    {7.5pt} % Space between number and title
+    {#1\smallskip\hrule\vspace{-20pt}} % Title format with rule below
 
 % Formatting for subsections
 \titleformat{\subsection}[block]
@@ -596,47 +596,6 @@
 \setlist[casenv,3]{label={{\itshape\casename\ \alph*.}},ref=\alph*}
 \setlist[casenv,4]{label={{\itshape\casename} \arabic*.},ref=\arabic*}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Custom Proof Environments and QED Symbol
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Define custom-proof environments with specific formatting
-\renewenvironment{proof}{%
-	\noindent\textit{Proof.}\hspace*{0.25em} % Start with "Proof." in italics, followed by a small space
-	}{%
-	\qed\bigskip % End with QED symbol and add vertical space
-}
-
-\newenvironment{proofSketch}{%
-	\noindent\textit{Sketch of Proof.}\hspace*{0.25em} % Start with "Sketch of Proof." in italics, followed by a small space
-	}{%
-	\qed\bigskip % End with QED symbol and add vertical space
-}
-
-\newenvironment{proofIdea}{%
-	\noindent\textit{Proof Idea.}\hspace*{0.25em} % Start with "Proof Idea." in italics, followed by a small space
-	}{%
-	\qed\bigskip % End with QED symbol and add vertical space
-}
-
-\newenvironment{proofOfLemma}[1]{%
-	\noindent\textit{Proof of Lemma #1.}\hspace*{0.25em} % Start with "Proof of Lemma #1." in italics, followed by a small space
-	}{%
-	\qed\bigskip % End with QED symbol and add vertical space
-}
-
-\newenvironment{proofAttempt}{%
-	\noindent\textit{Proof Attempt.}\hspace*{0.25em} % Start with "Proof Attempt." in italics, followed by a small space
-	}{%
-	\qed\bigskip % End with QED symbol and add vertical space
-}
-
-\newenvironment{proofOf}[1]{%
-	\noindent\textit{Proof of #1.}\hspace*{0.25em} % Start with "Proof of #1." in italics, followed by a small space
-	}{%
-	\qed\bigskip % End with QED symbol and add vertical space
-}
-
 % Define a custom QED symbol with accent color
 \providecommand{\QEDsymbol}{\color{\accentcolor}\ensuremath{\blacksquare}} % Define QED symbol with accent color
 \renewcommand{\qedsymbol}{\QEDsymbol} % Use custom QED symbol for proof environments
@@ -675,7 +634,7 @@
     }
 \else
     % Use a default bibliography style if BibLaTeX is not loaded
-    \bibliographystyle{aomalpha}
+    \bibliographystyle{alpha}
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -692,23 +651,31 @@
 
 \renewcommand{\maketitle}{%
 	\thispagestyle{plain}  % Use plain page style for the title page
-		    
+			    
 	\begin{tboxed}
-		% Title Section
-    	\bfseries\Large\medskip
-    	Lecture Notes on \ifx\@title\undefined\else\@title\fi
-		\bigskip
-				        
-		% Lecturer and Date
-		\normalfont\normalsize\noindent
-		\textbf{Lecturer:} \ifx\@lecturer\undefined\else\@lecturer\fi\hfill
-		\textbf{Date:} \ifx\@date\undefined\else\@date\fi
-				        
-		% Scriber and Course
-		\normalfont\normalsize\noindent
-		\textbf{Scriber:} \ifx\@author\undefined\else\@author\fi\hfill
-		\textbf{Course:} \ifx\@course\undefined\else\@course\fi
-		\medskip
+		\bfseries\Large\bigskip % Title Section
+		\ifx\@title\undefined
+		\else
+			\@title\par\bigskip
+		\fi
+		\normalfont\normalsize\noindent % Author and Date
+		\ifx\@author\undefined
+		\else
+			\textbf{Author:} \@author
+		\fi\hfill
+		\ifx\@date\undefined
+		\else
+			\textbf{Date:} \@date\par
+		\fi
+		\normalfont\normalsize\noindent % Lecturer and Course
+		\ifx\@lecturer\undefined
+		\else
+			\textbf{Lecturer:} \@lecturer
+		\fi\hfill
+		\ifx\@course\undefined
+		\else
+			\textbf{Course:} \@course\medskip
+		\fi
 	\end{tboxed}
 }
 
@@ -716,7 +683,7 @@
 % Custom Commands for Document Formatting
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand*{\code}[1]{\ttfamily#1} % Display text in a monospaced font to represent code
+\providecommand*{\code}[1]{{\ttfamily#1}} % Display text in a monospaced font to represent code
 \providecommand{\cat}[1]{\ensuremath{\mathsf{#1}}} % Format category names in mathematical mode
 \providecommand{\missingcitation}{\code{\small\color{Firebrick1}<Citation Missing>}} % Indicate missing citations with a specific format and red text
 \providecommand{\missing}[1]{{\color{Firebrick1}#1}} % Highlight text in red to denote missing or problematic content
