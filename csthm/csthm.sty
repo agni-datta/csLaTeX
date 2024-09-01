@@ -22,7 +22,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesPackage{csthm}
-    [2024/08/31 v1.2 Theorem Environments for Computer Science]
+[2024/08/31 v1.2 Theorem Environments for Computer Science]
 \newif\if@csthm@loadcleveref
 \DeclareOption{cleveref}{\@csthm@loadclevereftrue}
 \ProcessOptions\relax
@@ -35,60 +35,60 @@
 
 \if@csthm@loadcleveref
 \AtBeginDocument{%
-\@ifpackageloaded{hyperref}{%
-\RequirePackage{cleveref}
-}{%
-\PackageWarning{csthm}{The 'cleveref' option was set, but 'hyperref' is not loaded. Skipping 'cleveref' loading.}
-}%
+	\@ifpackageloaded{hyperref}{%
+		\RequirePackage{cleveref}
+		}{%
+		\PackageWarning{csthm}{The 'cleveref' option was set, but 'hyperref' is not loaded. Skipping 'cleveref' loading.}
+	}%
 }
 \fi
 
 \declaretheoremstyle[
-spaceabove=\topsep,
-spacebelow=\topsep,
-headfont=\scshape,
-notefont=\scshape,
-bodyfont=\normalfont,
-postheadspace=5pt,
-numberwithin=section,
-qed=$\scriptstyle\star$,
-headpunct={.}
+	spaceabove=\topsep,
+	spacebelow=\topsep,
+	headfont=\scshape,
+	notefont=\scshape,
+	bodyfont=\normalfont,
+	postheadspace=5pt,
+	numberwithin=section,
+	qed=$\scriptstyle\star$,
+	headpunct={.}
 ]{thmstyle}
 
 \declaretheoremstyle[
-spaceabove=\topsep,
-spacebelow=\topsep,
-headfont=\bfseries,
-notefont=\bfseries,
-bodyfont=\normalfont,
-postheadspace=5pt,
-numberwithin=section,
-qed=$\scriptstyle\maltese$,
-headpunct={.}
+	spaceabove=\topsep,
+	spacebelow=\topsep,
+	headfont=\bfseries,
+	notefont=\bfseries,
+	bodyfont=\normalfont,
+	postheadspace=5pt,
+	numberwithin=section,
+	qed=$\scriptstyle\maltese$,
+	headpunct={.}
 ]{defstyle}
 
 \declaretheoremstyle[
-spaceabove=\topsep,
-spacebelow=\topsep,
-headfont=\itshape,
-notefont=\itshape,
-bodyfont=\normalfont,
-postheadspace=5pt,
-numberwithin=section,
-qed=$\scriptstyle\maltese$,
-headpunct={.}
+	spaceabove=\topsep,
+	spacebelow=\topsep,
+	headfont=\itshape,
+	notefont=\itshape,
+	bodyfont=\normalfont,
+	postheadspace=5pt,
+	numberwithin=section,
+	qed=$\scriptstyle\maltese$,
+	headpunct={.}
 ]{remarkstyle}
 
 \declaretheoremstyle[
-spaceabove=\topsep,
-spacebelow=\topsep,
-headfont=\sffamily\scshape,
-notefont=\sffamily\scshape,
-bodyfont=\normalfont\sffamily,
-postheadspace=5pt,
-numberwithin=section,
-qed=$\scriptstyle\maltese$,
-headpunct={.}
+	spaceabove=\topsep,
+	spacebelow=\topsep,
+	headfont=\sffamily\scshape,
+	notefont=\sffamily\scshape,
+	bodyfont=\normalfont\sffamily,
+	postheadspace=5pt,
+	numberwithin=section,
+	qed=$\scriptstyle\maltese$,
+	headpunct={.}
 ]{hltstyle}
 
 \declaretheorem[style=thmstyle,name=Theorem]{theorem}
@@ -119,18 +119,18 @@ headpunct={.}
 \setlist[caseList]{label=\textbf{Case~\arabic*:},leftmargin=*}
 
 \NewDocumentEnvironment{case}{O{}}{%
-\begin{caseList}[#1]%
-}{%
-\end{caseList}%
+	\begin{caseList}[#1]%
+		}{%
+	\end{caseList}%
 }
 
 \newlist{axiomList}{enumerate}{1}
 \setlist[axiomList]{label=\textbf{Axiom~\Alph*:}, leftmargin=*}
 
 \NewDocumentEnvironment{axiom}{O{}}{%
-\begin{axiomList}[#1]%
-}{%
-\end{axiomList}%
+	\begin{axiomList}[#1]%
+		}{%
+	\end{axiomList}%
 }
 
 \renewcommand\qedsymbol{$\scriptstyle\blacksquare$}
