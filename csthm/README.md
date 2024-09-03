@@ -2,7 +2,7 @@
 title: Theorem Environments for Computer Science (`csthm.sty`)
 linter-yaml-title-alias: Theorem Environments for Computer Science (`csthm.sty`)
 date created: Monday, March 25th 2024, 14:13:16
-date modified: Saturday, August 31st 2024, 11:32:48
+date modified: Tuesday, September 3rd 2024, 11:52:22
 aliases: [Theorem Environments for Computer Science (`csthm.sty`)]
 ---
 
@@ -78,7 +78,7 @@ To change the accent colour:
 
 ## License
 
-This file may be distributed and/or modified under the conditions of the LaTeX Project Public License, either version 1.3c of this license or (at your option) any later version. The latest version of this license is in http://www.latex-project.org/lppl.txt and version 1.3c or later is part of all distributions of LaTeX version 2008/05/04 or later.
+This file may be distributed and/or modified under the conditions of the LaTeX Project Public License, either version 1.3c of this license or (at your option) any later version. The latest version of this license is in <http://www.latex-project.org/lppl.txt> and version 1.3c or later is part of all distributions of LaTeX version 2008/05/04 or later.
 
 ## Author
 
