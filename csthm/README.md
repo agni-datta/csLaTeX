@@ -10,7 +10,7 @@ aliases: [Theorem Environments for Computer Science (`csthm.sty`)]
 
 ## Overview
 
-The `csthm` package provides customized theorem-like environments specifically designed for computer science documents. It offers a set of pre-defined theorem styles and environments to streamline the creation of theorems, definitions, remarks, and other common structures in computer science papers and documents.
+The `csthm` package provides customized theorem-like environments specifically designed for computer science documents. It offers a set of predefined theorem styles and environments to streamline the creation of theorems, definitions, remarks, and other common structures in computer science papers and documents.
 
 ## Features
 
