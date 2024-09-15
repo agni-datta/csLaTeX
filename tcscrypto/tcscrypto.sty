@@ -312,6 +312,17 @@
 \providecommand{\nPr}[2]{\inmath{{#1}\mathrm{P}{#2}}} % Permutations
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Dirac Notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\ket}[1]{\inmath{|#1\rangle}} % Ket notation
+\providecommand{\bra}[1]{\inmath{\langle #1|}} % Bra notation
+\providecommand{\braket}[2]{\inmath{\langle #1 | #2 \rangle}} % Braket notation
+\providecommand{\braKet}[2]{\inmath{\langle #1 | #2 \rangle}} % Bra-Ket notation
+\providecommand{\ketbra}[2]{\inmath{|#1\rangle \langle #2|}} % Ket-Bra notation
+\providecommand{\proj}[1]{\inmath{|#1\rangle \langle #1|}} % Projection operator
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Set Theory and Operations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -331,7 +342,7 @@
 
 \DeclareMathOperator*{\E}{\inmathbb{E}} % Expectation operator (expected value)
 \DeclareMathOperator*{\Pr}{\inmathsf{Pr}} % Probability operator (probability)
-\DeclareMathOperator*{\variance}{\inmathrm{Var}} % Variance operator
+\DeclareMathOperator*{\Var}{\inmathrm{Var}} % Variance operator
 \providecommand{\Expect}[1]{\E\paren{#1}} % Expectation with argument, formatted for clarity
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
