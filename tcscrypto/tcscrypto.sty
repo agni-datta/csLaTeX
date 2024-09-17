@@ -69,45 +69,52 @@
 % and notations in the document, ensuring consistency and clarity in their representation.
 
 % Removing previous definitions to avoid conflicts
-\let\Game\relax
-\let\extractor\relax
-\let\pp\relax
-\let\prover\relax
-\let\qq\relax
-\let\sample\relax
-\let\simulator\relax
-\let\verifier\relax
+\let\Game\relax       % Relax previously defined \Game command
+\let\extractor\relax  % Relax previously defined \extractor command
+\let\pp\relax         % Relax previously defined \pp command
+\let\prover\relax     % Relax previously defined \prover command
+\let\qq\relax         % Relax previously defined \qq command
+\let\sample\relax     % Relax previously defined \sample command
+\let\simulator\relax  % Relax previously defined \simulator command
+\let\verifier\relax   % Relax previously defined \verifier command
+\let\verify\relax     % Relax previously defined \verify command
 
 % Cryptographic Notations and Functions
-\providecommand{\Adv}{\inmathsf{Adv}} % Adversary
+\providecommand{\Adv}{\inmathsf{Adv}} % Adversary function
+\providecommand{\DB}{\inmathsf{DB}} % Database notation
 \providecommand{\FS}{\inmathsf{FS}} % Fiat-Shamir transformation
-\providecommand{\Game}{\inmathsf{G}} % Cryptographic game
-\providecommand{\Hash}{\inmathsf{Hash}} % Hash function
+\providecommand{\Game}{\inmathsf{G}} % Cryptographic game notation
 \providecommand{\Group}{\inmathsf{Group}} % Cryptographic group
+\providecommand{\Hash}{\inmathsf{Hash}} % Hash function notation
 \providecommand{\RO}{\inmathsf{RO}} % Random Oracle
 
 \providecommand{\accept}{\inmathsf{accept}} % Acceptance indicator
 \providecommand{\accum}{\inmathsf{Accum}} % Accumulation function
-\providecommand{\acc}{\inmathsf{acc}} % Accumulator
+\providecommand{\acc}{\inmathsf{acc}} % Accumulator notation
 \providecommand{\add}{\inmathsf{Add}} % Addition operation
 \providecommand{\aux}{\inmathsf{aux}} % Auxiliary data
 \providecommand{\batch}{\inmathsf{Batch}} % Batch processing notation
 \providecommand{\commit}{\inmathsf{Com}} % Commitment scheme
+\providecommand{\com}{\inmathsf{com}} % Commitment value
+\providecommand{\cred}{\inmathsf{cred}} % Credential notation
 \providecommand{\crsgen}{\inmathsf{CRSGen}} % Common Reference String Generation
 \providecommand{\crs}{\inmathsf{crs}} % Common Reference String
 \providecommand{\delete}{\inmathsf{Delete}} % Deletion operation
-\providecommand{\environment}{\inmathsf{Env}} % Environment
+\providecommand{\environment}{\inmathsf{Env}} % Cryptographic environment
 \providecommand{\ep}{\inmath{\hat{e}}} % Pairing function symbol
 \providecommand{\extractor}{\inmathsf{Ext}} % Extractor function
 \providecommand{\flag}{\inmathsf{flag}} % Flag indicator
 \providecommand{\gen}{\inmathsf{Gen}} % Key generation function
 \providecommand{\groupgen}{\inmathsf{GG}} % Group generator
 \providecommand{\group}{\inmathbb{G}} % Cryptographic group
-\providecommand{\hardequivocate}{\inmathsf{HardEquivocate}} % Hard equivocation
+\providecommand{\hardequivocate}{\inmathsf{HardEquivocate}} % Hard equivocation function
 \providecommand{\hashfunc}{\inmathcal{H}} % Hash function
 \providecommand{\hidgrp}{\group_{?}} % Hidden group notation
 \providecommand{\ideal}{\inmathsf{Ideal}} % Ideal function or process
+\providecommand{\id}{\inmathsf{id}} % Identifier
+\providecommand{\issue}{\inmathsf{Issue}} % Issue operation
 \providecommand{\len}{\inmath{\ell}} % Length notation
+\providecommand{\msk}{\inmathsf{msk}} % Master secret key
 \providecommand{\open}{\inmathsf{Open}} % Commitment opening function
 \providecommand{\out}{\inmathsf{output}} % Output function
 \providecommand{\pp}{\inmathsf{pp}} % Public parameters
@@ -117,13 +124,14 @@
 \providecommand{\query}{\inmathsf{Query}} % Query operation
 \providecommand{\real}{\inmathsf{Real}} % Real function or process
 \providecommand{\reject}{\inmathsf{reject}} % Rejection indicator
+\providecommand{\revoke}{\inmathsf{Revoke}} % Revoke operation
 \providecommand{\reward}{\inmathsf{reward}} % Reward function
 \providecommand{\sample}{\inmath{\overset{\$}{\leftarrow}}} % Random sampling
 \providecommand{\setup}{\inmathsf{Setup}} % Setup algorithm
 \providecommand{\simulator}{\inmathsf{Sim}} % Simulator in cryptographic arguments
 \providecommand{\softcommit}{\inmathsf{SoftCommit}} % Soft commitment function
 \providecommand{\softopen}{\inmathsf{SoftOpen}} % Soft opening function
-\providecommand{\state}{\inmathsf{state}} % State indicator
+\providecommand{\state}{\inmathsf{state}} % State representation
 \providecommand{\succ}{\inmathsf{Succ}} % Successor function
 \providecommand{\td}{\inmathsf{td}} % Trapdoor information
 \providecommand{\updateproof}{\inmathsf{UpdateProof}} % Update proof function
