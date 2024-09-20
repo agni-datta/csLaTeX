@@ -158,8 +158,8 @@
 	a4paper,             % Define A4 paper size
 	tmargin=2.50cm,      % Set top margin
 	bmargin=2.00cm,      % Set bottom margin
-	lmargin=3.00cm,      % Set left margin
-	rmargin=3.00cm,      % Set right margin
+	lmargin=3.75cm,      % Set left margin
+	rmargin=3.75cm,      % Set right margin
 	footskip=1.00cm      % Set distance from text to footer to 1.00 cm
 ]{geometry}              % Load geometry package for page layout management
 
@@ -880,7 +880,12 @@ postamble "\n\\end{theindex}\n"
 % Definition of New Environments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Command to define new environments with colored boxes
+% Custom QED symbol rendered in the accent color
+\providecommand{\QEDsymbol}{\color{accentcolor}\ensuremath{\blacksquare}}
+% Replace the default QED symbol with the custom symbol
+\renewcommand{\qedsymbol}{\QEDsymbol}
+
+% Command to define new environments with coloured boxes
 \providecommand{\newcolorboxes}[6]{%
 	% Arguments:
 	%   #1: Environment name
@@ -1001,84 +1006,112 @@ postamble "\n\\end{theindex}\n"
 
 % Command to define standard theorem environments
 \providecommand{\usenormalthm}{%
+	
+	% Theorem Style
 	\declaretheoremstyle[%
 		spaceabove=\topsep,
 		spacebelow=\topsep,
-		headfont=\scshape,
-		notefont=\scshape,
+		postheadspace=2.5pt,
+		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
+		headfont=\bfseries\color{accentcolor},
+		notefont=\bfseries\color{accentcolor},
 		bodyfont=\normalfont,
-		postheadspace=5pt,
 		numberwithin=section,
-		qed=$\scriptstyle\star$,
+		qed=$\color{accentcolor}\scriptstyle\star$,
 		headpunct={.}
 	]{thmstyle}
-			
+	
+	% Definition Style
 	\declaretheoremstyle[%
 		spaceabove=\topsep,
 		spacebelow=\topsep,
-		headfont=\bfseries,
-		notefont=\bfseries,
+		postheadspace=2.5pt,
+		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
+		headfont=\bfseries\color{accentcolor},
+		notefont=\bfseries\color{accentcolor},
 		bodyfont=\normalfont,
-		postheadspace=5pt,
 		numberwithin=section,
-		qed=$\scriptstyle\maltese$,
+		qed=$\color{accentcolor}\scriptstyle\maltese$,
 		headpunct={.}
 	]{defstyle}
-			
+	
+	% Remark Style
 	\declaretheoremstyle[%
 		spaceabove=\topsep,
 		spacebelow=\topsep,
-		headfont=\scshape,
-		notefont=\scshape,
+		postheadspace=2.5pt,
+		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
+		headfont=\bfseries\color{accentcolor},
+		notefont=\bfseries\color{accentcolor},
 		bodyfont=\normalfont,
-		postheadspace=5pt,
 		numberwithin=section,
-		qed=$\scriptstyle\maltese$,
+		qed=$\color{accentcolor}\scriptstyle\maltese$,
 		headpunct={.}
 	]{remarkstyle}
-			
+	
+	% Highlight Style
 	\declaretheoremstyle[%
 		spaceabove=\topsep,
 		spacebelow=\topsep,
-		headfont=\scshape,
-		notefont=\scshape,
+		postheadspace=2.5pt,
+		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
+		headfont=\scshape\sffamily\color{accentcolor},
+		notefont=\scshape\sffamily\color{accentcolor},
 		bodyfont=\normalfont\sffamily,
-		postheadspace=5pt,
 		numberwithin=section,
-		qed=$\scriptstyle\maltese$,
+		qed=$\color{accentcolor}\scriptstyle\maltese$,
 		headpunct={.}
 	]{hltstyle}
-			
+	
+	% Proof Style
+	\declaretheoremstyle[
+		headfont=\scshape\bfseries\color{accentcolor},
+		notefont=\scshape\bfseries\color{accentcolor},
+		bodyfont=\normalfont,
+		headpunct={},
+		postheadspace={0pt},
+		headformat={\makebox[0pt][r]{\NAME.\space}\NOTE},
+		qed=\qedsymbol
+	]{proofstyle}
+	
+	% Theorem and related environments
 	\declaretheorem[style=thmstyle,name=Theorem]{theorem}
 	\declaretheorem[style=thmstyle,sibling=theorem]{assumption}
 	\declaretheorem[style=thmstyle,sibling=theorem]{claim}
 	\declaretheorem[style=thmstyle,sibling=theorem]{conjecture}
 	\declaretheorem[style=thmstyle,sibling=theorem]{corollary}
-	\declaretheorem[style=defstyle,sibling=theorem]{fact}
 	\declaretheorem[style=thmstyle,sibling=theorem]{lemma}
 	\declaretheorem[style=thmstyle,sibling=theorem]{property}
 	\declaretheorem[style=thmstyle,sibling=theorem]{proposition}
-			
+	
+	% Definition and related environments
 	\declaretheorem[style=defstyle,sibling=theorem]{definition}
 	\declaretheorem[style=defstyle,sibling=theorem]{example}
 	\declaretheorem[style=defstyle,sibling=theorem]{exercise}
 	\declaretheorem[style=defstyle,sibling=theorem]{problem}
 	\declaretheorem[style=defstyle,sibling=theorem]{question}
-			
+	
+	% Remark and related environments
 	\declaretheorem[style=remarkstyle,sibling=theorem]{note}
 	\declaretheorem[style=remarkstyle,sibling=theorem]{remark}
 	\declaretheorem[style=remarkstyle,sibling=theorem]{solution}
-			
+	
+	% Highlight styles
 	\declaretheorem[style=hltstyle,name=Important]{important}
 	\declaretheorem[style=hltstyle]{highlight}
 	\declaretheorem[style=hltstyle]{keypoint}
-			
+	
+	% Redefine proof environment
+	\let\proof\relax
+	\let\endproof\relax
+	\declaretheorem[style=proofstyle]{proof}
+	
 	% Command to define cross-reference formats
 	\providecommand{\definecrefformat}[3]{%
 		\crefname{##1}{\MakeLowercase{##2}}{\MakeLowercase{##3}} % Define cref format for lowercase references
 		\Crefname{##1}{##2}{##3} % Define cref format for capitalized references
 	}
-			
+	
 	% Define cross-reference formats directly
 	\definecrefformat{theorem}{Theorem}{Theorems}
 	\definecrefformat{lemma}{Lemma}{Lemmas}
@@ -1103,11 +1136,6 @@ postamble "\n\\end{theindex}\n"
 }
 
 \ifbool{usenormalthm}{\usenormalthm}{}
-
-% Custom QED symbol rendered in the accent color
-\providecommand{\QEDsymbol}{\color{accentcolor}\ensuremath{\blacksquare}}
-% Replace the default QED symbol with the custom symbol
-\renewcommand{\qedsymbol}{\QEDsymbol}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bibliography Management with BibLaTeX
