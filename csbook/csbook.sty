@@ -114,7 +114,7 @@
 % Declare the variable \accentcolor with a default value
 \def\declvar#1#2{\def#1{#2}}
 
-% Initialize \accentcolor to the default colour 'blue'
+% Initialize \accentcolor to the default color 'blue'
 \declvar{\accentcolor}{blue}
 
 % Example usage:
@@ -141,10 +141,10 @@
 % Micro-typography settings based on the LaTeX engine used
 \ifluatex
     \RequirePackage[protrusion=true, expansion=true, babel=true]{microtype} % Micro-typography for LuaLaTeX
-    \else
-        \ifxetex
-            \RequirePackage[protrusion=true, babel=true]{microtype} % Micro-typography for XeTeX
-        \fi
+\else
+    \ifxetex
+        \RequirePackage[protrusion=true, babel=true]{microtype} % Micro-typography for XeTeX
+    \fi
 \fi
 \RequirePackage[onehalfspacing]{setspace}  % Sets line spacing to one and a half
 \RequirePackage[full]{textcomp}  % Adds additional text symbols for improved typography
@@ -204,7 +204,7 @@
 	\setmainfont[%
 		ItalicFont = NewCM10-BookItalic.otf,      % Specify the font file for italic text
 		SmallCapsFont = NewCM10-Book.otf,         % Specify the font file for small caps text
-		SmallCapsFeatures = {RawFeature=+smcp},   % Enable small caps feature
+            SmallCapsFeatures = {RawFeature=+smcp},   % Enable small caps feature
 		BoldFont = NewCM10-Bold.otf,              % Specify the font file for bold text
 		BoldItalicFont = NewCM10-BoldItalic.otf,  % Specify the font file for bold italic text
 		RawFeature = {%
@@ -217,10 +217,10 @@
 			+mark,           % Enable mark positioning to place diacritics correctly
 			+mkmk,           % Enable mark-to-mark positioning for correct alignment of multiple diacritics
 			+pnum,           % Use proportional numerals for varied widths and natural text flow
-			+smcp            % Enable small caps for stylistic text variations
+                +smcp            % Enable small caps for stylistic text variations
 		}
 	]{NewCM10-Book.otf} % Set the primary font for text to Latin Modern Roman Regular
-			    
+		    
 	% Configure the font for mathematical typesetting
 	\setmathfont{NewCMMath-Book.otf} % Define the font for mathematics
 	\setmathfont[version=bold]{NewCMMath-Book.otf} % Define the font for bold mathematics
@@ -333,17 +333,17 @@
 
 % Define formatting for parts
 \titleformat{\part}[display]
-        {\normalfont\scshape\RaggedRight\color{accentcolor}} % Formatting for part title
-        {\LARGE\partname~\thepart} % Format for part label
-        {0pt} % No space between label and title
-        {\titlerule\bigskip\hfill\Huge#1\vfill} % Format for part title
+    {\normalfont\scshape\RaggedRight\color{accentcolor}} % Formatting for part title
+    {\LARGE\partname~\thepart} % Format for part label
+    {0pt} % No space between label and title
+    {\titlerule\bigskip\hfill\Huge#1\vfill} % Format for part title
 
 % Chapter formatting
 \titleformat{\chapter}[frame]
-        {\huge\sffamily\scshape\color{accentcolor}} % Font and color for chapter title
-        {~\filright{\large Chapter~\thechapter}~} % Chapter number format
-        {15pt} % Space between number and title
-        {\filcenter#1} % Title formatting
+    {\huge\sffamily\scshape\color{accentcolor}} % Font and color for chapter title
+    {~\filright{\large Chapter~\thechapter}~} % Chapter number format
+    {15pt} % Space between number and title
+    {\filcenter#1} % Title formatting
 
 \titlespacing*{\chapter}{0pt}{50pt}{75pt} % Spacing before and after chapter title
 
@@ -354,10 +354,10 @@
 
 % Section formatting
 \titleformat{\section}[block]%
-        {\Large\sffamily\scshape\color{accentcolor}} % Font and color for section title
-        {\LARGE\marginsecnumber\thesection} % Section number format
-        {0pt} % Space between number and title
-        {#1\smallskip\hrule\vspace{-20pt}} % Title formatting
+    {\Large\sffamily\scshape\color{accentcolor}} % Font and color for section title
+    {\LARGE\marginsecnumber\thesection} % Section number format
+    {0pt} % Space between number and title
+    {#1\smallskip\hrule\vspace{-20pt}} % Title formatting
 
 % Command for margin subsection numbering
 \providecommand{\marginsubsecnumber}[1]{%
@@ -366,10 +366,10 @@
 
 % Subsection formatting
 \titleformat{\subsection}[block]%
-        {\large\sffamily\scshape\color{accentcolor}} % Font and color for subsection title
-        {\Large\marginsubsecnumber\thesubsection} % Subsection number format
-        {0pt} % Space between number and title
-        {#1} % Title formatting
+    {\large\sffamily\scshape\color{accentcolor}} % Font and color for subsection title
+    {\Large\marginsubsecnumber\thesubsection} % Subsection number format
+    {0pt} % Space between number and title
+    {#1} % Title formatting
 
 % Command for margin subsubsection numbering
 \providecommand{\marginsubsubsecnumber}[1]{%
@@ -378,10 +378,10 @@
 
 % Subsubsection formatting
 \titleformat{\subsubsection}[runin]%
-        {\normalsize\sffamily\scshape\color{accentcolor}} % Font and color for subsubsection title
-        {\large\marginsubsubsecnumber\thesubsubsection} % Subsubsection number format
-        {0pt} % Space between number and title
-        {#1.} % Title formatting
+    {\normalsize\sffamily\scshape\color{accentcolor}} % Font and color for subsubsection title
+    {\large\marginsubsubsecnumber\thesubsubsection} % Subsubsection number format
+    {0pt} % Space between number and title
+    {#1.} % Title formatting
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Local Table of Contents
@@ -440,19 +440,19 @@
 \RequirePackage[makeindex]{imakeidx} % Package for index creation and management
 
 \begin{filecontents}{csindex.ist}
-	quote '+'
-	columns 2
-	letter_group
-	symhead_positive "Symbols"
-	numhead_positive "Numbers"
-	headings_flag 1
-	heading_prefix "\\textbf{"heading_suffix "}\n"
-	delim_0 "\\dotfill"
-	delim_1 "\\dotfill"
-	delim_2 "\\dotfill"
-	delim_r "\\dotfill"
-	preamble "\\begin{theindex}\n\\rmfamily\n"
-	postamble "\n\\end{theindex}\n"
+quote '+'
+columns 2
+letter_group
+symhead_positive "Symbols"
+numhead_positive "Numbers"
+headings_flag 1
+heading_prefix "\\textbf{"heading_suffix "}\n"
+delim_0 "\\dotfill"
+delim_1 "\\dotfill"
+delim_2 "\\dotfill"
+delim_r "\\dotfill"
+preamble "\\begin{theindex}\n\\rmfamily\n"
+postamble "\n\\end{theindex}\n"
 \end{filecontents}
 
 \makeindex[intoc, title=Index, options=-s csindex] % Configure and create the index with custom style
@@ -530,7 +530,7 @@
 \renewcommand{\maketitle}{%
 	\vspace*{\fill} % Vertically center the content on the page
 	\thispagestyle{empty} % Set the page style to 'empty' (no page numbers)
-				
+			
 	\begingroup
 	\raggedleft % Right-align the content
 	% Title
@@ -539,28 +539,28 @@
 		\else\@title
 		\fi\par
 		\vspace{1em}\hrule\bigskip} % Title with horizontal rule
-				
+			
 	% Subtitle
 	{\normalsize\itshape
 		\ifx\@subtitle\undefined
 		\else\@subtitle
 		\fi\par
 		\medskip} % Subtitle with italic style
-				
+			
 	% Authors
 	{\large\scshape
 		\ifx\@author\undefined
 		\else\@author
 		\fi\par
 		\medskip} % Authors in small caps
-				
+			
 	% Date
 	{\hfill\scshape\normalsize
 		\ifx\@date\undefined
 		\else\@date
 		\fi} % Date with small caps
 	\endgroup
-				
+			
 	\vspace*{\fill} % Vertically center the content on the page
 }
 
@@ -575,14 +575,14 @@
 	\null\vfill % Center the content vertically on the page
 	\small % Set the font size as small for the copyright page
 	\centering % Center the text horizontally
-				
+			
 	% Title and Edition Information
 	\textsc{\Large\@title}\par % Title of the work in small caps and large size
-				
+			
 	% Copyright Information
 	\textcopyright~\@date~by~\@author\par % Copyright symbol, date, and author information
 	All rights reserved.\par % Standard copyright notice
-				
+			
 	% License Information
 	\justify % Justify the license text for better alignment
 	This work is distributed under the terms of the Creative Commons
@@ -601,14 +601,14 @@
 	license can be accessed at the following URL:
 	\texttt{\url{https://creativecommons.org/licenses/by-nc-nd/4.0/}}.
 	\par
-				
+			
 	% Additional Details
 	\vspace{15pt} % Add vertical space before the additional details
 	\begin{center}
 		First edition published on \@date\par % Information about the edition and publication date
 	\end{center}
 	\vspace*{15pt} % Add vertical space after the additional details
-				
+			
 	\endgroup % End the local group
 	\cleardoublepage % Ensure the following content starts on a new page
 }
@@ -617,7 +617,7 @@
 % Cleveref Settings
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[capitalise]{cleveref} % Load the cleveref package for intelligent cross-referencing
+\RequirePackage{cleveref} % Load the cleveref package for intelligent cross-referencing
 
 % Define plural and singular names for various types of references
 \Crefname{algorithm}{Algorithm}{Algorithms}
@@ -781,6 +781,9 @@
 	titletoc    % Prefix 'Appendix' in the table of contents entries
 ]{appendix} % Provides advanced appendix handling commands
 
+% Format appendix page name
+\xpretocmd{\appendixpagename}{\normalfont\Huge\scshape}{}{} % Format appendix page name in small caps
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Customizations for verbatim environments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -795,7 +798,7 @@
 % Redefine the verbatim process line command
 \renewcommand{\verbatim@processline}{%
 	\let\verbatim@processline=\savedverbatim@processline  % Restore the original command
-				
+			
 	\if\relax\the\verbatim@line\relax  % Check if the line is empty
 	\else
 		\the\verbatim@line\par  % Print the verbatim line
@@ -918,39 +921,39 @@
 
 % Command to define fancy theorem environments
 \providecommand{\usefancythm}{
-				
+			
 	% Define coloured environments for theorems and related content
 	\newcolorboxes{corollary}{Corollary}{RoyalBlue4!50!white}{black}{\itshape}{cor}
 	\newcolorboxes{lemma}{Lemma}{RoyalBlue4!60!white}{black}{\itshape}{lem}
 	\newcolorboxes{proposition}{Proposition}{RoyalBlue4!70!white}{black}{\itshape}{prop}
 	\newcolorboxes{theorem}{Theorem}{RoyalBlue4!80!white}{black}{\itshape}{thm}
-				
+			
 	\newcolorboxes{assumption}{Assumption}{DeepSkyBlue3!80!white}{black}{\itshape}{assm}
 	\newcolorboxes{claim}{Claim}{DeepSkyBlue3!70!white}{black}{\itshape}{clm}
 	\newcolorboxes{conjecture}{Conjecture}{DeepSkyBlue3!60!white}{black}{\itshape}{conj}
 	\newcolorboxes{fact}{Fact}{DeepSkyBlue3!50!white}{black}{\itshape}{fact}
 	\newcolorboxes{property}{Property}{DeepSkyBlue3!40!white}{black}{\itshape}{prop}
-				
+			
 	\newcolorboxes{definition}{Definition}{DodgerBlue1!90!white}{black}{\normalfont}{def}
 	\newcolorboxes{example}{Example}{SpringGreen4!80!white}{black}{\normalfont}{ex}
 	\newcolorboxes{exercise}{Exercise}{SpringGreen4!60!white}{black}{\normalfont}{exer}
 	\newcolorboxes{problem}{Problem}{SpringGreen4!50!white}{black}{\normalfont}{prob}
 	\newcolorboxes{question}{Question}{SpringGreen4!40!white}{black}{\normalfont}{ques}
-				
+			
 	\newcolorboxes{note}{Note}{Cyan4!70!white}{black}{\normalfont}{note}
 	\newcolorboxes{remark}{Remark}{Cyan4!60!white}{black}{\normalfont}{rem}
 	\newcolorboxes{solution}{Solution}{Cyan4!50!white}{black}{\normalfont}{sol}
-				
+			
 	\newcolorboxes{important}{Important}{DeepPink4!70!white}{black}{\sffamily}{imp}
 	\newcolorboxes{keypoint}{Keypoint}{DeepPink4!60!white}{black}{\sffamily}{key}
 	\newcolorboxes{highlight}{Highlight}{DeepPink4!50!white}{black}{\sffamily}{high}
-				
+			
 	% Command to enable footnotes in specified environments
 	\providecommand{\enablefootnotes}[1]{%
 		\BeforeBeginEnvironment{##1}{\savenotes}%
 		\AfterEndEnvironment{##1}{\spewnotes}%
 	}
-				
+			
 	% Enable footnotes for each environment directly
 	\enablefootnotes{assumption}
 	\enablefootnotes{claim}
@@ -972,13 +975,13 @@
 	\enablefootnotes{theorem}
 	\enablefootnotes{remark}
 	\enablefootnotes{solution}
-				
+			
 	% Command to define cross-reference formats
 	\providecommand{\definecrefformat}[3]{%
 		\crefname{tcb@cnt@##1}{\MakeLowercase{##2}}{\MakeLowercase{##3}} % Define cref format for lowercase references
 		\Crefname{tcb@cnt@##1}{##2}{##3} % Define cref format for capitalized references
 	}
-				
+			
 	% Define cross-reference formats directly
 	\definecrefformat{theorem}{Theorem}{Theorems}
 	\definecrefformat{lemma}{Lemma}{Lemmas}
@@ -1011,10 +1014,10 @@
 	\declaretheoremstyle[%
 		spaceabove=\topsep,
 		spacebelow=\topsep,
-		postheadspace=2.5pt,
-		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
-		headfont=\bfseries\color{accentcolor},
-		notefont=\bfseries\color{accentcolor},
+		postheadspace=5pt,
+		headformat={\makebox[0pt][r]{\large\NUMBER\hspace{7.5pt}}\NAME \NOTE},
+		headfont=\scshape\sffamily\color{accentcolor},
+		notefont=\scshape\sffamily\color{accentcolor},
 		bodyfont=\normalfont,
 		numberwithin=section,
 		qed=$\color{accentcolor}\scriptstyle\star$,
@@ -1025,10 +1028,10 @@
 	\declaretheoremstyle[%
 		spaceabove=\topsep,
 		spacebelow=\topsep,
-		postheadspace=2.5pt,
-		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
-		headfont=\bfseries\color{accentcolor},
-		notefont=\bfseries\color{accentcolor},
+		postheadspace=5pt,
+		headformat={\makebox[0pt][r]{\large\NUMBER\hspace{7.5pt}}\NAME \NOTE},
+		headfont=\scshape\sffamily\color{accentcolor},
+		notefont=\scshape\sffamily\color{accentcolor},
 		bodyfont=\normalfont,
 		numberwithin=section,
 		qed=$\color{accentcolor}\scriptstyle\maltese$,
@@ -1039,10 +1042,10 @@
 	\declaretheoremstyle[%
 		spaceabove=\topsep,
 		spacebelow=\topsep,
-		postheadspace=2.5pt,
-		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
-		headfont=\bfseries\color{accentcolor},
-		notefont=\bfseries\color{accentcolor},
+		postheadspace=5pt,
+		headformat={\makebox[0pt][r]{\large\NUMBER\hspace{7.5pt}}\NAME \NOTE},
+		headfont=\scshape\sffamily\color{accentcolor},
+		notefont=\scshape\sffamily\color{accentcolor},
 		bodyfont=\normalfont,
 		numberwithin=section,
 		qed=$\color{accentcolor}\scriptstyle\maltese$,
@@ -1053,8 +1056,8 @@
 	\declaretheoremstyle[%
 		spaceabove=\topsep,
 		spacebelow=\topsep,
-		postheadspace=2.5pt,
-		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
+		postheadspace=5pt,
+		headformat={\makebox[0pt][r]{\large\NUMBER\hspace{7.5pt}}\NAME \NOTE},
 		headfont=\scshape\sffamily\color{accentcolor},
 		notefont=\scshape\sffamily\color{accentcolor},
 		bodyfont=\normalfont\sffamily,
@@ -1069,8 +1072,8 @@
 		notefont=\itshape\color{accentcolor},
 		bodyfont=\normalfont,
 		postheadspace=2.5pt,
-		numbered=no,
-		headpunct={.},
+            numbered=no,
+            headpunct={.},
 		qed=\qedsymbol
 	]{proofstyle}
 		
@@ -1154,10 +1157,10 @@
 		maxnames=999,          % Display up to 999 names in citations
 		backend=biber          % Use Biber as the backend processor
 	]{biblatex} % End of package options
-				
+			
 	% Set the font size for bibliography entries
 	\renewcommand*{\bibfont}{\small} % Define bibliography font size as 'small'
-				
+			
 	% Customize back-reference strings in the bibliography
 	\DefineBibliographyStrings{english}{
 		backrefpage={\unskip Cited on page},  % Singular form for back-reference page
@@ -1186,13 +1189,13 @@
 		\bibliographystyle{alpha}
 	}%
 }
-			
+		
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Load necessary package for code listings
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-			
+		
 \RequirePackage{listings}
-			
+		
 % Define Rust language for the listings package
 \lstdefinelanguage{Rust}{%
 	sensitive=true,
@@ -1230,7 +1233,7 @@
 	% Optional addition
 	otherkeywords={::, :, <>, .., ..=, ..<, ==, !=, <=>, ===, <==, >==, <=, >=, &&, ||, ??, :=, ==>, >>=, <<=, <:=, ?==, @, =>, =>>},
 }
-			
+		
 % Define a style for C code
 \lstdefinestyle{CStyle}{%
 	language=C,                          % Set the language to C
@@ -1254,7 +1257,7 @@
 	tabsize=4,                           % Set tab size to 4 spaces
 	escapeinside={\%*}{*)}               % Define escape characters for LaTeX code within C code
 }
-			
+		
 % Define a style for C++ code
 \lstdefinestyle{CPlusPlusStyle}{%
 	language=C++,                        % Set the language to C++
@@ -1278,7 +1281,7 @@
 	tabsize=4,                           % Set tab size to 4 spaces
 	escapeinside={\%*}{*)}               % Define escape characters for LaTeX code within C++ code
 }
-			
+		
 % Define a style for Java code
 \lstdefinestyle{JavaStyle}{%
 	language=Java,                       % Set the language to Java
@@ -1302,7 +1305,7 @@
 	tabsize=4,                           % Set tab size to 4 spaces
 	escapeinside={\%*}{*)}               % Define escape characters for LaTeX code within Java code
 }
-			
+		
 % Define a style for Python code
 \lstdefinestyle{PythonStyle}{%
 	language=Python,                     % Set the language to Python
@@ -1326,7 +1329,7 @@
 	tabsize=4,                           % Set tab size to 4 spaces
 	escapeinside={\%*}{*)}               % Define escape characters for LaTeX code within Python code
 }
-			
+		
 % Define a style for Rust code
 \lstdefinestyle{RustStyle}{%
 	language=Rust,                     % Set the language to Rust
@@ -1350,13 +1353,13 @@
 	tabsize=4,                         % Set tab size to 4 spaces
 	escapeinside={\%*}{*)}             % Define escape characters for LaTeX code within Rust code
 }
-			
+		
 % Reset the code box counter at the start of each chapter
 \preto\chapter{\setcounter{codeboxcounter}{0}}
-			
+		
 % Define a new counter for code boxes, reset at each chapter
 \newcounter{codeboxcounter}[chapter]
-			
+		
 % Define the "codebox" environment using mdframed
 \newenvironment{codebox}[1][Code Box]
 {
@@ -1380,7 +1383,7 @@
 	}{%
 	\end{codeboxinner}
 }
-			
+		
 % Define a custom command for adding code snippets in a code box
 % Arguments:
 %   #1: Title of the code box
@@ -1392,11 +1395,11 @@
 		\lstinputlisting[style=#3]{#4} % Include the code from the specified file with the chosen style
 	\end{codebox} % End the code box environment
 }
-			
+		
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Environment for Problems and Exercises
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-			
+		
 % Define a new environment called 'problems' with an optional title argument (default: 'Problem Set')
 \newenvironment{problems}[1][Problem Set]{
 	% Set the section heading to the provided title
@@ -1417,12 +1420,12 @@
 		% End the two-column layout
 	\end{multicols}
 }
-			
+		
 % Define a new enumeration list style called 'caseList' with a single level
 \newlist{caseList}{enumerate}{1}
 % Configure 'caseList' labels: bold text 'Case n:' where n is the item number, with no left margin
 \setlist[caseList]{label=\textbf{Case~\arabic*:},leftmargin=*}
-			
+		
 % Define a new environment called 'case' with an optional argument (default: empty)
 \NewDocumentEnvironment{case}{O{}}{%
 	% Start the 'caseList' enumeration with the optional title
@@ -1431,12 +1434,12 @@
 		% End the 'caseList' enumeration
 	\end{caseList}%
 }
-			
+		
 % Define a new enumeration list style called 'axiomList' with a single level
 \newlist{axiomList}{enumerate}{1}
 % Configure 'axiomList' labels: bold text 'Axiom A:' where A is the letter index, with no left margin
 \setlist[axiomList]{label=\textbf{Axiom~\Alph*:}, leftmargin=*}
-			
+		
 % Define a new environment called 'axiom' with an optional argument (default: empty)
 \NewDocumentEnvironment{axiom}{O{}}{%
 	% Start the 'axiomList' enumeration with the optional title
@@ -1445,11 +1448,11 @@
 		% End the 'axiomList' enumeration
 	\end{axiomList}%
 }
-			
+		
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Custom Commands for Document Formatting
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-			
+		
 \providecommand*{\code}[1]{\texttt{#1}} % Format text in monospaced font to denote code
 \providecommand{\cat}[1]{\ensuremath{\mathsf{#1}}} % Render category names in mathematical mode
 \providecommand{\missingcitation}{\code{\small\color{Firebrick1}<Citation Missing>}} % Format missing citations with red text
@@ -1463,28 +1466,28 @@
 	\pagebreak
 } % Generate a table of contents and add a "Contents" entry
 \providecommand{\urlref}[1]{\href{#1}{#1}} % Create a hyperlink to a URL
-			
+		
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % TODO Notes and Annotations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-			
+		
 % Enable TODO notes functionality within the document
 \RequirePackage{todonotes} % Enable adding TODO notes
-			
+		
 % Insert inline TODO notes with a red border and background for annotation purposes
 \providecommand{\mynote}[1]{%
 	\smallskip
 	\todo[inline, size=\small, bordercolor=Firebrick1!20, color=Firebrick1!20]{\sffamily#1}
 	\smallskip
 } % Create inline TODO notes with red border and background
-			
+		
 % Mark sections requiring a citation with a TODO note
 \providecommand{\needcite}{%
 	\todo[noline, size=\small, bordercolor=Firebrick1!20, color=Firebrick1!20]{\sffamily~Requires citation.}
 } % Mark locations where a citation is required
-			
+		
 % Disable the use of '@' in command names
 \makeatother
-			
+		
 % End of package
 \endinput
