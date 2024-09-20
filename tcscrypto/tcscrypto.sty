@@ -8,20 +8,6 @@
 \ProvidesPackage{tcscrypto}[2024/08/07 v1.0 A package for typesetting theoretical CS and cryptography]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Inquire for missing packages
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Check for amsmath package
-\@ifpackageloaded{amsmath}{}{
-	\PackageWarning{tcscrypto}{The amsmath package is required but not loaded}
-}
-
-% Check for amssymb package
-\@ifpackageloaded{amssymb}{}{
-	\PackageWarning{tcscrypto}{The amssymb package is required but not loaded}
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Packages for cryptographic and complexity notations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage[full]{complexity} % Computational complexity theory macros
@@ -168,6 +154,7 @@
 \providecommand{\NIZK}{\inmathsf{NIZK}} % Non-Interactive Zero-Knowledge proof
 \providecommand{\ORAM}{\inmathsf{ORAM}} % Oblivious RAM
 \providecommand{\OT}{\inmathsf{OT}} % Oblivious Transfer
+\providecommand{\PC}{\inmathsf{PC}} % Polynomial Commitments
 \providecommand{\PKC}{\inmathsf{PKC}} % Public Key Cryptography
 \providecommand{\PKE}{\inmathsf{PKE}} % Public Key Encryption
 \providecommand{\PPT}{\inmathsf{PPT}} % Probabilistic Polynomial Time
@@ -296,9 +283,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \providecommand{\abs}[1]{\inmath{\left|#1\right|}} % Absolute value notation
-\providecommand{\eqdef}{\inmath{\stackrel{\Delta}{=}}} % Definition notation (defined as)
-\providecommand{\eqq}{\inmath{\stackrel{\textrm{?}}{=}}} % Question mark equality
-\providecommand{\inq}{\inmath{\stackrel{\textrm{?}}{\in}}} % Question mark membership
+\providecommand{\eqdef}{\inmath{\overset{\Delta}{=}}} % Definition notation (defined as)
+\providecommand{\eqq}{\inmath{\overset{\textrm{?}}{=}}} % Question mark equality
+\providecommand{\inq}{\inmath{\overset{\textrm{?}}{\in}}} % Question mark membership
 \providecommand{\inv}{^{-1}} % Inverse notation
 
 \let\argmax\relax   % Ensure no conflict with existing definitions of arg max
@@ -334,12 +321,13 @@
 % Set Theory and Operations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\DeclareMathOperator{\intersection}{\inmath{\cap}} % Intersection operator
+\DeclareMathOperator{\union}{\ensuremath{\cup}} % Union operator
+
 \providecommand{\set}[1]{\inmath{\left\{#1\right\}}} % Set notation
 \providecommand{\paren}[1]{\inmath{\left[#1\right]}} % Parentheses notation
 \providecommand{\floor}[1]{\inmath{\left\lfloor#1\right\rfloor}} % Floor function
 \providecommand{\ceil}[1]{\inmath{\left\lceil#1\right\rceil}} % Ceiling function
-\providecommand{\intersection}{\inmath{\cap}} % Intersection operator
-\providecommand{\union}{\ensuremath{\cup}} % Union operator
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Probability and Expectation
@@ -357,7 +345,7 @@
 % Differential and Partial Derivatives
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand{\dd}{\mathrm{d}} % Differential operator (d for differentiation)
+\DeclareMathOperator{\dd}{\hspace{0.2em}\mathrm{d}} % Differential operator (d for differentiation)
 \providecommand{\ddiff}[2]{\frac{\dd{#1}}{\dd{#2}}} % Differential quotient (total derivative) \frac{d#1}{d#2}
 \providecommand{\pdiff}[2]{\frac{\partial{#1}}{\partial{#2}}} % Partial derivative \frac{\partial #1}{\partial #2}
 
@@ -365,10 +353,10 @@
 % Vector Calculus
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\DeclareMathOperator{\grad}{\nabla} % Gradient operator
-\DeclareMathOperator{\divg}{\nabla\cdot} % Divergence operator
-\DeclareMathOperator{\curl}{\nabla\times} % Curl operator
-\DeclareMathOperator{\lap}{\nabla^2} % Laplacian operator
+\DeclareMathOperator*{\grad}{\nabla} % Gradient operator
+\DeclareMathOperator*{\divg}{\nabla\cdot} % Divergence operator
+\DeclareMathOperator*{\curl}{\nabla\times} % Curl operator
+\DeclareMathOperator*{\lap}{\nabla^2} % Laplacian operator
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Transform Notations
@@ -389,19 +377,26 @@
 % Trigonometric Functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\renewcommand{\arcsin}{\sin^{-1}} % Inverse sine
-\renewcommand{\arccos}{\cos^{-1}} % Inverse cosine
-\renewcommand{\arctan}{\tan^{-1}} % Inverse tangent
+% Clear existing definitions for inverse trigonometric functions
+\let\arcsin\relax
+\let\arccos\relax
+\let\arctan\relax
 
-\providecommand{\arccot}{\cot^{-1}} % Inverse cotangent
-\providecommand{\arcsec}{\sec^{-1}} % Inverse secant
-\providecommand{\arccsc}{\csc^{-1}} % Inverse cosecant
-\providecommand{\arsinh}{\sinh^{-1}} % Hyperbolic inverse sine
-\providecommand{\arcosh}{\cosh^{-1}} % Hyperbolic inverse cosine
-\providecommand{\artanh}{\tanh^{-1}} % Hyperbolic inverse tangent
-\providecommand{\arcoth}{\coth^{-1}} % Hyperbolic inverse cotangent
-\providecommand{\arsech}{\sech^{-1}} % Hyperbolic inverse secant
-\providecommand{\arcsch}{\csch^{-1}} % Hyperbolic inverse cosecant
+% Define inverse trigonometric functions
+\DeclareMathOperator{\arcsin}{\sin^{-1}} % Inverse sine
+\DeclareMathOperator{\arccos}{\cos^{-1}} % Inverse cosine
+\DeclareMathOperator{\arctan}{\tan^{-1}} % Inverse tangent
+\DeclareMathOperator{\arccot}{\cot^{-1}} % Inverse cotangent
+\DeclareMathOperator{\arcsec}{\sec^{-1}} % Inverse secant
+\DeclareMathOperator{\arccsc}{\csc^{-1}} % Inverse cosecant
+
+% Define hyperbolic inverse functions
+\DeclareMathOperator{\arsinh}{\sinh^{-1}} % Hyperbolic inverse sine
+\DeclareMathOperator{\arcosh}{\cosh^{-1}} % Hyperbolic inverse cosine
+\DeclareMathOperator{\artanh}{\tanh^{-1}} % Hyperbolic inverse tangent
+\DeclareMathOperator{\arcoth}{\coth^{-1}} % Hyperbolic inverse cotangent
+\DeclareMathOperator{\arsech}{\sech^{-1}} % Hyperbolic inverse secant
+\DeclareMathOperator{\arcsch}{\csch^{-1}} % Hyperbolic inverse cosecant
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Vector Notation
