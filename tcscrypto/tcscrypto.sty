@@ -347,7 +347,7 @@
 % Differential and Partial Derivatives
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\DeclareMathOperator{\dd}{\hspace{0.2em}\mathrm{d}} % Differential operator (d for differentiation)
+\providecommand{\dd}{\hspace{0.2em}\mathrm{d}} % Differential operator (d for differentiation)
 \providecommand{\ddiff}[2]{\frac{\dd{#1}}{\dd{#2}}} % Differential quotient (total derivative) \frac{d#1}{d#2}
 \providecommand{\pdiff}[2]{\frac{\partial{#1}}{\partial{#2}}} % Partial derivative \frac{\partial #1}{\partial #2}
 
@@ -355,10 +355,10 @@
 % Vector Calculus
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\DeclareMathOperator*{\grad}{\nabla} % Gradient operator
-\DeclareMathOperator*{\divg}{\nabla\cdot} % Divergence operator
-\DeclareMathOperator*{\curl}{\nabla\times} % Curl operator
-\DeclareMathOperator*{\lap}{\nabla^2} % Laplacian operator
+\providecommand{\grad}{\nabla} % Gradient operator
+\providecommand{\divg}{\nabla\cdot} % Divergence operator
+\providecommand{\curl}{\nabla\times} % Curl operator
+\providecommand{\lap}{\nabla^2} % Laplacian operator
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Transform Notations
@@ -385,20 +385,20 @@
 \let\arctan\relax
 
 % Define inverse trigonometric functions
-\DeclareMathOperator{\arcsin}{\sin^{-1}} % Inverse sine
-\DeclareMathOperator{\arccos}{\cos^{-1}} % Inverse cosine
-\DeclareMathOperator{\arctan}{\tan^{-1}} % Inverse tangent
-\DeclareMathOperator{\arccot}{\cot^{-1}} % Inverse cotangent
-\DeclareMathOperator{\arcsec}{\sec^{-1}} % Inverse secant
-\DeclareMathOperator{\arccsc}{\csc^{-1}} % Inverse cosecant
+\providecommand{\arcsin}{\sin^{-1}} % Inverse sine
+\providecommand{\arccos}{\cos^{-1}} % Inverse cosine
+\providecommand{\arctan}{\tan^{-1}} % Inverse tangent
+\providecommand{\arccot}{\cot^{-1}} % Inverse cotangent
+\providecommand{\arcsec}{\sec^{-1}} % Inverse secant
+\providecommand{\arccsc}{\csc^{-1}} % Inverse cosecant
 
 % Define hyperbolic inverse functions
-\DeclareMathOperator{\arsinh}{\sinh^{-1}} % Hyperbolic inverse sine
-\DeclareMathOperator{\arcosh}{\cosh^{-1}} % Hyperbolic inverse cosine
-\DeclareMathOperator{\artanh}{\tanh^{-1}} % Hyperbolic inverse tangent
-\DeclareMathOperator{\arcoth}{\coth^{-1}} % Hyperbolic inverse cotangent
-\DeclareMathOperator{\arsech}{\sech^{-1}} % Hyperbolic inverse secant
-\DeclareMathOperator{\arcsch}{\csch^{-1}} % Hyperbolic inverse cosecant
+\providecommand{\arsinh}{\sinh^{-1}} % Hyperbolic inverse sine
+\providecommand{\arcosh}{\cosh^{-1}} % Hyperbolic inverse cosine
+\providecommand{\artanh}{\tanh^{-1}} % Hyperbolic inverse tangent
+\providecommand{\arcoth}{\coth^{-1}} % Hyperbolic inverse cotangent
+\providecommand{\arsech}{\sech^{-1}} % Hyperbolic inverse secant
+\providecommand{\arcsch}{\csch^{-1}} % Hyperbolic inverse cosecant
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Vector Notation
@@ -675,21 +675,21 @@
 % English Abbreviations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand{\dr}{Dr.\xspace} % Doctor
-\providecommand{\jr}{Jr.\xspace} % Junior
-\providecommand{\mrs}{Mrs.\xspace} % Missis
-\providecommand{\mr}{Mr.\xspace} % Mister
-\providecommand{\ms}{Ms.\xspace} % Miss
-\providecommand{\sr}{Sr.\xspace} % Senior
+\providecommand{\dr}{Dr.\ } % Doctor
+\providecommand{\jr}{Jr.\ } % Junior
+\providecommand{\mrs}{Mrs.\ } % Missis
+\providecommand{\mr}{Mr.\ } % Mister
+\providecommand{\ms}{Ms.\ } % Miss
+\providecommand{\sr}{Sr.\ } % Senior
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Academic Abbreviations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand{\assocprof}{Assoc.\xspaceProf.\xspace} % Associate Professor
-\providecommand{\asstprof}{Asst.\xspaceProf.\xspace} % Assistant Professor
-\providecommand{\lect}{Lect.\xspace} % Lecturer
-\providecommand{\prof}{Prof.\xspace} % Professor
+\providecommand{\assocprof}{Assoc.\ \prof} % Associate Professor
+\providecommand{\asstprof}{Asst.\ \prof} % Assistant Professor
+\providecommand{\lect}{Lect.\ } % Lecturer
+\providecommand{\prof}{Prof.\ } % Professor
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Titles and Honors
