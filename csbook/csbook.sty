@@ -55,45 +55,60 @@
 \RequirePackage{xkeyval} % Enables advanced key-value argument processing
 \RequirePackage{kvoptions} % Manages key-value options in package and class files
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Class Option Declarations
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Class Option Definitions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Boolean Variables
-\newbool{usesrtbiblatex}   % Boolean to control the use of sorted BibLaTeX
-\newbool{usebiblatex}      % Boolean to control the use of BibLaTeX
-\newbool{useebgaramond}    % Boolean to control the use of EB Garamond font
-\newbool{uselmodern}       % Boolean to control the use of Latin Modern font
-\newbool{uselibsans}       % Boolean to control the use of Lib Sans font
-\newbool{usesourcesans}    % Boolean to control the use of Source Sans font
-\newbool{usefancythm}      % Boolean to control the use of fancy theorem formatting
-\newbool{usenormalthm}     % Boolean to control the use of normal theorem formatting
+% Boolean Flags
+\newbool{useanonymouspro}   % Flag to manage the use of Anonymous Pro font
+\newbool{usebiblatex}       % Flag to manage the use of BibLaTeX
+\newbool{useebgaramond}     % Flag to manage the use of EB Garamond font
+\newbool{usefancythm}       % Flag to manage the use of fancy theorem formatting
+\newbool{usefiramono}       % Flag to manage the use of Fira Mono font
+\newbool{usefirasans}       % Flag to manage the use of Fira Sans font
+\newbool{usesourcesans}     % Flag to manage the use of Source Sans font
+\newbool{usesourcecode}     % Flag to manage the use of Source Code Pro font
+\newbool{uselibsans}        % Flag to manage the use of Libertinus Sans font
+\newbool{uselmodern}        % Flag to manage the use of Latin Modern font
+\newbool{usekepler}         % Flag to manage the use of KP font
+\newbool{usesrtbiblatex}    % Flag to manage the use of sorted BibLaTeX
+\newbool{usenormalthm}      % Flag to manage the use of standard theorem formatting
 
 % Boolean Initialization
-\setbool{usesrtbiblatex}{false}  % Initialize sorted BibLaTeX to false
-\setbool{usebiblatex}{false}     % Initialize BibLaTeX to false
-\setbool{useebgaramond}{false}   % Initialize EB Garamond font to false
-\setbool{uselmodern}{false}      % Initialize Latin Modern font to false
-\setbool{uselibsans}{false}      % Initialize Lib Sans font to false
-\setbool{usesourcesans}{false}   % Initialize Source Sans font to false
-\setbool{usefancythm}{false}     % Initialize fancy theorem formatting to false
-\setbool{usenormalthm}{false}    % Initialize normal theorem formatting to false
+\setbool{useanonymouspro}{false}   % Set Anonymous Pro font to false by default
+\setbool{usebiblatex}{false}       % Set BibLaTeX to false by default
+\setbool{useebgaramond}{false}     % Set EB Garamond font to false by default
+\setbool{usefancythm}{false}       % Set fancy theorem formatting to false by default
+\setbool{usefiramono}{false}       % Set Fira Mono font to false by default
+\setbool{usefirasans}{false}       % Set Fira Sans font to false by default
+\setbool{usesourcesans}{false}     % Set Source Sans font to false by default
+\setbool{usesourcecode}{false}     % Set Source Code Pro font to false by default
+\setbool{uselibsans}{false}        % Set Libertinus Sans font to false by default
+\setbool{uselmodern}{false}        % Set Latin Modern font to false by default
+\setbool{usekepler}{false}         % Set KP font to false by default
+\setbool{usesrtbiblatex}{false}    % Set sorted BibLaTeX to false by default
+\setbool{usenormalthm}{false}      % Set standard theorem formatting to false by default
 
-% Options Declaration
-\DeclareOption{usebiblatex}{\setbool{usebiblatex}{true}}         % Enable BibLaTeX if option is specified
-\DeclareOption{usesrtbiblatex}{\setbool{usesrtbiblatex}{true}}   % Enable sorted BibLaTeX if option is specified
-\DeclareOption{useebgaramond}{\setbool{useebgaramond}{true}}     % Enable EB Garamond font if option is specified
-\DeclareOption{uselmodern}{\setbool{uselmodern}{true}}           % Enable Latin Modern font if option is specified
-\DeclareOption{uselibsans}{\setbool{uselibsans}{true}}           % Enable Lib Sans font if option is specified
-\DeclareOption{usesourcesans}{\setbool{usesourcesans}{true}}     % Enable Source Sans font if option is specified
-\DeclareOption{usefancythm}{\setbool{usefancythm}{true}}         % Enable fancy theorem formatting if option is specified
-\DeclareOption{usenormalthm}{\setbool{usenormalthm}{true}}       % Enable normal theorem formatting if option is specified
+% Option Definitions
+\DeclareOption{useanonymouspro}{\setbool{useanonymouspro}{true}}   % Activate Anonymous Pro font if specified
+\DeclareOption{usebiblatex}{\setbool{usebiblatex}{true}}           % Activate BibLaTeX if specified
+\DeclareOption{useebgaramond}{\setbool{useebgaramond}{true}}       % Activate EB Garamond font if specified
+\DeclareOption{usefancythm}{\setbool{usefancythm}{true}}           % Activate fancy theorem formatting if specified
+\DeclareOption{usefiramono}{\setbool{usefiramono}{true}}           % Activate Fira Mono font if specified
+\DeclareOption{usefirasans}{\setbool{usefirasans}{true}}           % Activate Fira Sans font if specified
+\DeclareOption{usesourcesans}{\setbool{usesourcesans}{true}}       % Activate Source Sans font if specified
+\DeclareOption{usesourcecode}{\setbool{usesourcecode}{true}}       % Activate Source Code Pro font if specified
+\DeclareOption{uselibsans}{\setbool{uselibsans}{true}}             % Activate Libertinus Sans font if specified
+\DeclareOption{uselmodern}{\setbool{uselmodern}{true}}             % Activate Latin Modern font if specified
+\DeclareOption{usekepler}{\setbool{usekepler}{true}}               % Activate KP font if specified
+\DeclareOption{usesrtbiblatex}{\setbool{usesrtbiblatex}{true}}     % Activate sorted BibLaTeX if specified
+\DeclareOption{usenormalthm}{\setbool{usenormalthm}{true}}         % Activate standard theorem formatting if specified
 
-% Handle Unknown Options
-\DeclareOption*{\PackageWarning{csbook}{Unknown option '\CurrentOption'}}  % Issue a warning for any unrecognized options
+% Handle Unrecognised Options
+\DeclareOption*{\PackageWarning{csbook}{Unrecognised option '\CurrentOption'}}  % Warn for any unknown options
 
-% Process Options
-\ProcessOptions\relax  % Apply the declared options and continue processing
+% Process the Options
+\ProcessOptions\relax  % Implement the specified options and proceed
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PDF Management and External File Handling
@@ -141,9 +156,9 @@
 % Micro-typography settings based on the LaTeX engine used
 \ifluatex
     \RequirePackage[protrusion=true, expansion=true, babel=true]{microtype} % Micro-typography for LuaLaTeX
-\else
-    \ifxetex
-        \RequirePackage[protrusion=true, babel=true]{microtype} % Micro-typography for XeTeX
+    \else
+        \ifxetex
+            \RequirePackage[protrusion=true, babel=true]{microtype} % Micro-typography for XeTeX
     \fi
 \fi
 \RequirePackage[onehalfspacing]{setspace}  % Sets line spacing to one and a half
@@ -196,134 +211,101 @@
 \RequirePackage{siunitx}                % Ensures consistent formatting of SI units (e.g., \SI, \unit)
 \RequirePackage{fontspec}               % Allows the use of custom fonts with XeLaTeX and LuaLaTeX
 \RequirePackage{unicode-math}           % Provides support for Unicode math fonts, enabling better math typography
-\RequirePackage{AnonymousPro}           % Monospaced font for code and fixed-width text (ensure font availability)
 
-% Command to configure Latin Modern fonts for text and math
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Command Definitions for Font Setup
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Command to set up Latin Modern fonts for both text and math
 \providecommand{\uselmodern}{%
-	% Configure the main text font with various typographic features
 	\setmainfont[%
-		ItalicFont = NewCM10-BookItalic.otf,      % Specify the font file for italic text
-		SmallCapsFont = NewCM10-Book.otf,         % Specify the font file for small caps text
-            SmallCapsFeatures = {RawFeature=+smcp},   % Enable small caps feature
-		BoldFont = NewCM10-Bold.otf,              % Specify the font file for bold text
-		BoldItalicFont = NewCM10-BoldItalic.otf,  % Specify the font file for bold italic text
+		ItalicFont = NewCM10-BookItalic.otf,
+		SmallCapsFont = NewCM10-Book.otf,
+		SmallCapsFeatures = {RawFeature=+smcp},
+		BoldFont = NewCM10-Bold.otf,
+		BoldItalicFont = NewCM10-BoldItalic.otf,
 		RawFeature = {%
-			+calt,           % Enable contextual alternates for improved letter combinations
-			+case,           % Enable case-sensitive forms for correct capitalization
-			+hlig,           % Enable historical ligatures for traditional text appearance
-			+kern,           % Enable kerning for optimal spacing between characters
-			+liga,           % Enable standard ligatures for common letter pairs
-			+lnum,           % Use lining numerals for consistent height and alignment in text
-			+mark,           % Enable mark positioning to place diacritics correctly
-			+mkmk,           % Enable mark-to-mark positioning for correct alignment of multiple diacritics
-			+pnum,           % Use proportional numerals for varied widths and natural text flow
-                +smcp            % Enable small caps for stylistic text variations
+			+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum, +smcp
 		}
-	]{NewCM10-Book.otf} % Set the primary font for text to Latin Modern Roman Regular
-		    
-	% Configure the font for mathematical typesetting
-	\setmathfont{NewCMMath-Book.otf} % Define the font for mathematics
-	\setmathfont[version=bold]{NewCMMath-Book.otf} % Define the font for bold mathematics
+	]{NewCM10-Book.otf}
+	\setmathfont{NewCMMath-Book.otf}
 }
 
-% Command to configure EB Garamond fonts for text and math
+% Command to set up EB Garamond fonts for text and math
 \providecommand{\useebgaramond}{%
-	% Configure the main text font with typographic features and stylistic sets
 	\setmainfont[%
-		RawFeature={%
-			+calt,                   % Enable contextual alternates for improved letter combinations
-			+case,                   % Enable case-sensitive forms for correct capitalization
-			+hlig,                   % Enable historical ligatures for traditional text appearance
-			+kern,                   % Enable kerning for optimal spacing between characters
-			+liga,                   % Enable standard ligatures for common letter pairs
-			+lnum,                   % Use lining numerals for consistent height and alignment
-			+mark,                   % Enable mark positioning for accurate diacritical placement
-			+mkmk,                   % Enable mark-to-mark positioning for proper alignment of multiple diacritics
-			+pnum                    % Use proportional figures for varied numeral widths
-		},
-		StylisticSet={3,5}           % Apply stylistic sets 3 and 5 for enhanced text typography
-	]{EB Garamond}                   % Set the primary font for text to EB Garamond (ensure font installation)
-	% Configure the math font with typographic features and stylistic sets
+		RawFeature={+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum},
+		StylisticSet={3,5}
+	]{EB Garamond}
 	\setmathfont[%
-		RawFeature={%
-			+calt,                   % Enable contextual alternates for improved mathematical symbols
-			+case,                   % Enable case-sensitive forms for correct symbol usage
-			+hlig,                   % Enable historical ligatures for traditional math symbol appearance
-			+kern,                   % Enable kerning for optimal spacing in math symbols
-			+liga,                   % Enable standard ligatures for common math symbol combinations
-			+lnum,                   % Use lining numerals for consistent height in math formulas
-			+mark,                   % Enable mark positioning for accurate placement of math symbols
-			+mkmk,                   % Enable mark-to-mark positioning for correct alignment of multiple marks
-			+pnum                    % Use proportional figures for varied numeral widths in math formulas
-		},
-		StylisticSet={2,6,7,9}       % Apply stylistic sets 2, 6, 7, and 9 for enhanced math typography
-	]{Garamond-Math.otf}             % Set the font for mathematics to Garamond-Math (ensure font availability)
+		RawFeature={+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum},
+		StylisticSet={2,6,7,9}
+	]{Garamond-Math.otf}
 }
 
-% Command to configure Libertinus Sans font
+% Command to set up Kepler fonts
+\providecommand{\usekepler}{%
+	\RequirePackage{kpfonts-otf}
+	\let\D\relax
+}
+
+% Command to set up Libertinus Sans font
 \providecommand{\uselibsans}{%
 	\setsansfont[%
-		UprightFont = LibertinusSans-Regular,     % Regular weight for upright text
-		BoldFont = LibertinusSans-Bold,           % Bold weight
-		ItalicFont = LibertinusSans-Italic,       % Italic style
-		SmallCapsFont = LibertinusSans-Regular,   % Small caps font
-		SmallCapsFeatures = {RawFeature=+smcp},   % Enable small caps feature
-		RawFeature={%
-			+calt,                           % Enable contextual alternates
-			+case,                           % Enable case-sensitive forms
-			+dlig,                           % Enable discretionary ligatures
-			+kern,                           % Enable kerning
-			+liga,                           % Enable standard ligatures
-			+lnum,                           % Use lining figures for numerals
-			+mark,                           % Enable mark positioning
-			+mkmk,                           % Enable mark-to-mark positioning
-			+pnum                            % Use proportional figures
-		},
-		StylisticSet={1,3}                   % Apply specific stylistic sets for enhanced typography
-	]{LibertinusSans-Regular.otf}            % Set the main sans-serif font to Libertinus Sans
+		UprightFont = LibertinusSans-Regular,
+		BoldFont = LibertinusSans-Bold.otf,
+		ItalicFont = LibertinusSans-Italic.otf,
+		SmallCapsFont = LibertinusSans-Regular,
+		SmallCapsFeatures = {RawFeature=+smcp},
+		RawFeature={+calt, +case, +dlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum},
+		StylisticSet={1,3}
+	]{LibertinusSans-Regular.otf}
 }
 
-% Command to configure Source Sans Pro font
+% Command to set up Source Sans Pro font
 \providecommand{\usesourcesans}{%
-	\RequirePackage[otf, lining, proportional, scale=0.96]{sourcesanspro} % Configure Source Sans Pro with specific features
+	\RequirePackage[otf, lining, proportional, scale=0.96]{sourcesanspro}
 }
 
-% Apply the Latin Modern font settings if the \uselmodern boolean is true
-\ifbool{uselmodern}{%
-	\uselmodern % Activate Latin Modern font settings
-	}{%
-	\typeout{Latin Modern fonts are not applied.} % Notify that Latin Modern fonts are not used
+% Command to set up Source Code Pro font
+\providecommand{\usesourcecode}{%
+	\RequirePackage[otf, lining, proportional, scale=0.86]{sourcecodepro}
 }
 
-% Apply EB Garamond font settings if the \useebgaramond boolean is true
-\ifbool{useebgaramond}{%
-	\useebgaramond % Activate EB Garamond font settings
-	}{%
-	\typeout{EB Garamond fonts are not applied.} % Notify that EB Garamond fonts are not used
+% Command for Fira fonts
+\providecommand{\usefirasans}{%
+	\RequirePackage[lf, scale=0.86]{FiraSans}
 }
 
-% Apply Libertinus Sans font settings if the \uselibsans boolean is true
-\ifbool{uselibsans}{%
-	\uselibsans % Activate Libertinus Sans font settings
-	}{%
-	\typeout{Libertinus Sans fonts are not applied.} % Notify that Libertinus Sans fonts are not used
+\providecommand{\usefiramono}{%
+	\RequirePackage[lf, scale=0.86]{FiraMono}
 }
 
-% Apply Source Sans Pro font settings if the \usesourcesans boolean is true
-\ifbool{usesourcesans}{%
-	\usesourcesans % Activate Source Sans Pro font settings
-	}{%
-	\typeout{Source Sans fonts are not applied.} % Notify that Source Sans fonts are not used
+% Command for Anonymous Pro font
+\providecommand{\useanonymouspro}{%
+	\RequirePackage{AnonymousPro}
 }
+
+% Activate font settings based on flags
+\ifbool{uselmodern}{\uselmodern}{\typeout{Latin Modern fonts are not applied.}}
+\ifbool{useebgaramond}{\useebgaramond}{\typeout{EB Garamond fonts are not applied.}}
+\ifbool{usekepler}{\usekepler}{\typeout{KP fonts are not applied.}}
+\ifbool{uselibsans}{\uselibsans}{\typeout{Libertinus Sans fonts are not applied.}}
+\ifbool{usesourcesans}{\usesourcesans}{\typeout{Source Sans fonts are not applied.}}
+\ifbool{usesourcecode}{\usesourcecode}{\typeout{Source Code fonts are not applied.}}
+\ifbool{usefirasans}{\usefirasans}{\typeout{Fira Sans fonts are not applied.}}
+\ifbool{usefiramono}{\usefiramono}{\typeout{Fira Code fonts are not applied.}}
+\ifbool{useanonymouspro}{\useanonymouspro}{\typeout{Anonymous Pro fonts are not applied.}}
 
 % Additional Math Font Customization
-\let\mathbfcal\relax                     % Prevent conflicts with existing definitions of \mathbfcal
-\let\mathcal\relax                       % Prevent conflicts with existing definitions of \mathcal
-
-\RequirePackage[%
-	bb=bboldx,                     % Use extended Blackboard bold font options (e.g., \mathbb)
-	cal=cm                         % Apply classic calligraphic font style for \mathcal
-]{mathalpha}                           % Provides additional math font styles
+\AtEndPreamble{
+	\let\mathbfcal\relax  % Clear existing definition for \mathbfcal
+	\let\mathcal\relax    % Clear existing definition for \mathcal
+	\RequirePackage[%
+		bb=bboldx,   % Use extended Blackboard bold font options
+		cal=cm       % Use classic calligraphic font style for \mathcal
+	]{mathalpha}        % Load the mathalpha package for additional styles
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Custom Sectioning Commands
@@ -570,14 +552,13 @@ postamble "\n\\end{theindex}\n"
 
 \providecommand{\makecopyrightpage}{%
 	\thispagestyle{empty} % Remove headers and footers for this page
-	{\cleardoublepage\huge\hfill\textsc{Copyright Page}\bigskip\hrule\bigskip}
 	\begingroup % Begin a local group to confine the scope of changes
-	\null\vfill % Center the content vertically on the page
+	\cleardoublepage\null\vfill % Center the content vertically on the page
 	\small % Set the font size as small for the copyright page
 	\centering % Center the text horizontally
 			
 	% Title and Edition Information
-	\textsc{\Large\@title}\par % Title of the work in small caps and large size
+	\textsc{\Large\@title}\par\medskip % Title of the work in small caps and large size
 			
 	% Copyright Information
 	\textcopyright~\@date~by~\@author\par % Copyright symbol, date, and author information
@@ -605,7 +586,7 @@ postamble "\n\\end{theindex}\n"
 	% Additional Details
 	\vspace{15pt} % Add vertical space before the additional details
 	\begin{center}
-		First edition published on \@date\par % Information about the edition and publication date
+		This edition was published on \@date\par % Information about the edition and publication date
 	\end{center}
 	\vspace*{15pt} % Add vertical space after the additional details
 			
@@ -1005,8 +986,6 @@ postamble "\n\\end{theindex}\n"
 	\definecrefformat{assumption}{Assumption}{Assumptions}
 }
 
-\ifbool{usefancythm}{\usefancythm}{}
-
 % Command to define standard theorem environments
 \providecommand{\usenormalthm}{%
 		
@@ -1015,12 +994,11 @@ postamble "\n\\end{theindex}\n"
 		spaceabove=\topsep,
 		spacebelow=\topsep,
 		postheadspace=5pt,
-		headformat={\makebox[0pt][r]{\large\NUMBER\hspace{7.5pt}}\NAME \NOTE},
+		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
 		headfont=\scshape\sffamily\color{accentcolor},
 		notefont=\scshape\sffamily\color{accentcolor},
 		bodyfont=\normalfont,
 		numberwithin=section,
-		qed=$\color{accentcolor}\scriptstyle\star$,
 		headpunct={.}
 	]{thmstyle}
 		
@@ -1029,7 +1007,7 @@ postamble "\n\\end{theindex}\n"
 		spaceabove=\topsep,
 		spacebelow=\topsep,
 		postheadspace=5pt,
-		headformat={\makebox[0pt][r]{\large\NUMBER\hspace{7.5pt}}\NAME \NOTE},
+		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
 		headfont=\scshape\sffamily\color{accentcolor},
 		notefont=\scshape\sffamily\color{accentcolor},
 		bodyfont=\normalfont,
@@ -1043,12 +1021,11 @@ postamble "\n\\end{theindex}\n"
 		spaceabove=\topsep,
 		spacebelow=\topsep,
 		postheadspace=5pt,
-		headformat={\makebox[0pt][r]{\large\NUMBER\hspace{7.5pt}}\NAME \NOTE},
+		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
 		headfont=\scshape\sffamily\color{accentcolor},
 		notefont=\scshape\sffamily\color{accentcolor},
 		bodyfont=\normalfont,
 		numberwithin=section,
-		qed=$\color{accentcolor}\scriptstyle\maltese$,
 		headpunct={.}
 	]{remarkstyle}
 		
@@ -1057,12 +1034,12 @@ postamble "\n\\end{theindex}\n"
 		spaceabove=\topsep,
 		spacebelow=\topsep,
 		postheadspace=5pt,
-		headformat={\makebox[0pt][r]{\large\NUMBER\hspace{7.5pt}}\NAME \NOTE},
+		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
 		headfont=\scshape\sffamily\color{accentcolor},
 		notefont=\scshape\sffamily\color{accentcolor},
 		bodyfont=\normalfont\sffamily,
 		numberwithin=section,
-		qed=$\color{accentcolor}\scriptstyle\maltese$,
+		qed=$\color{accentcolor}\scriptstyle\diamond$,
 		headpunct={.}
 	]{hltstyle}
 		
@@ -1138,6 +1115,7 @@ postamble "\n\\end{theindex}\n"
 	\definecrefformat{assumption}{Assumption}{Assumptions}
 }
 
+\ifbool{usefancythm}{\usefancythm}{}
 \ifbool{usenormalthm}{\usenormalthm}{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
