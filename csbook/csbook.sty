@@ -336,7 +336,7 @@
 
 % Define formatting for parts
 \titleformat{\part}[display]
-        {\normalfont\RaggedLeft\scshape\color{accentcolor}} % Formatting for part title
+        {\normalfont\scshape\color{accentcolor}\RaggedLeft} % Formatting for part title
         {\Huge\partname~\thepart} % Format for part label
         {0pt} % No space between label and title
         {\titlerule\bigskip\LARGE #1} % Format for part title
@@ -346,7 +346,7 @@
 
 % Chapter formatting
 \titleformat{\chapter}[frame]
-        {\huge\sffamily\scshape\color{accentcolor}} % Font and color for chapter title
+        {\huge\scshape\sffamily\color{accentcolor}} % Font and color for chapter title
         {~\filright{\large Chapter~\thechapter}~} % Chapter number format
         {15pt} % Space between number and title
         {\filcenter #1} % Title formatting
