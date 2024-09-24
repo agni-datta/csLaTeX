@@ -335,13 +335,16 @@
 % Probability and Expectation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\let\Pr\relax   % Undefine any previous \Pr definition to avoid conflicts
-\let\E\relax    % Undefine any previous \E definition to avoid conflicts
+% Clear any previous definitions for \Pr and \E to prevent naming conflicts
+\let\Pr\relax   
+\let\E\relax    
 
-\DeclareMathOperator*{\E}{\inmathbb{E}} % Expectation operator (expected value)
-\DeclareMathOperator*{\Pr}{\inmathsf{Pr}} % Probability operator (probability)
+% Define the expectation operator, denoted by \E
+\DeclareMathOperator*{\E}{\inmathbb{E}} % Expected value operator
+\DeclareMathOperator*{\Pr}{\inmathsf{Pr}} % Probability operator
 \DeclareMathOperator*{\Var}{\inmathrm{Var}} % Variance operator
-\providecommand{\Expect}[1]{\E\paren{#1}} % Expectation with argument, formatted for clarity
+\DeclareMathOperator*{\Cov}{\inmathrm{Cov}} % Covariance operator
+\providecommand{\Expect}[1]{\E\paren{#1}} % Expectation of a given argument, formatted for clarity
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Differential and Partial Derivatives
