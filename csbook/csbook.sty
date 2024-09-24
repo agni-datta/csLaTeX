@@ -229,7 +229,7 @@
 		BoldFont = NewCM10-Bold.otf,
 		BoldItalicFont = NewCM10-BoldItalic.otf,
 		RawFeature = {%
-			+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum, +smcp
+			+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum
 		}
 	]{NewCM10-Book.otf}
 	\setmathfont{NewCMMath-Book.otf}
@@ -625,30 +625,6 @@ postamble "\n\\end{theindex}\n"
 	\cleardoublepage % Ensure the following content starts on a new page
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Cleveref Settings
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage{cleveref} % Load the cleveref package for intelligent cross-referencing
-
-% Define plural and singular names for various types of references
-\Crefname{algorithm}{Algorithm}{Algorithms}
-\Crefname{chapter}{Chapter}{Chapters}
-\crefname{code}{Program}{Programs}
-\Crefname{part}{Part}{Parts}
-\Crefname{section}{Section}{Sections}
-\Crefname{subsection}{Subsection}{Subsections}
-\Crefname{subsubsection}{Subsubsection}{Subsubsections}
-
-% Define lowercase names for various types of references
-\crefname{algorithm}{algorithm}{algorithms}
-\crefname{chapter}{chapter}{chapters}
-\crefname{code}{program}{programs}
-\crefname{part}{part}{parts}
-\crefname{section}{section}{sections}
-\crefname{subsection}{subsection}{subsections}
-\crefname{subsubsection}{subsubsection}{subsubsections}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Package for customizing lists
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -686,6 +662,30 @@ postamble "\n\\end{theindex}\n"
 \SetAlgoCaptionSeparator{.}     % Use a period as the separator between the caption and the algorithm content
 \SetAlgoNlRelativeSize{-3}      % Reduce the font size of line numbers to avoid distraction from the main text
 \SetNlSty{texttt}{[}{]}         % Style line numbers in a typewriter font and enclose them in square brackets
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Cleveref Settings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{cleveref} % Load the cleveref package for intelligent cross-referencing
+
+% Define plural and singular names for various types of references
+\Crefname{algorithm}{Algorithm}{Algorithms}
+\Crefname{chapter}{Chapter}{Chapters}
+\crefname{code}{Program}{Programs}
+\Crefname{part}{Part}{Parts}
+\Crefname{section}{Section}{Sections}
+\Crefname{subsection}{Subsection}{Subsections}
+\Crefname{subsubsection}{Subsubsection}{Subsubsections}
+
+% Define lowercase names for various types of references
+\crefname{algorithm}{algorithm}{algorithms}
+\crefname{chapter}{chapter}{chapters}
+\crefname{code}{program}{programs}
+\crefname{part}{part}{parts}
+\crefname{section}{section}{sections}
+\crefname{subsection}{subsection}{subsections}
+\crefname{subsubsection}{subsubsection}{subsubsections}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Package for Creating Framed Environments
