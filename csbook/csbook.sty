@@ -955,24 +955,24 @@ postamble "\n\\end{theindex}\n"
 	%   #5: Content font style
 	%   #6: Label prefix for references
 	\newtcbtheorem[number within=chapter]{#1}{#2}{%
-		enhanced,
-		colback=#3!5,                     % Background color with transparency
-		colframe=#3!80!black,             % Frame color
-		arc=1pt,                          % Corner radius
-		boxrule=0.5pt,                    % Frame thickness
-		fonttitle=\color{#4}\sffamily\scshape, % Title font style
-		before upper={\parindent15pt},    % Indentation before content
-		before lower={\parindent15pt},    % Indentation after content
-		fontupper={\color{black}\normalfont#5}, % Main content font style
-		fontlower={\color{black}\normalfont#5}, % Lower content font style
-		right=10pt, top=10pt, bottom=10pt, % Box padding
-		attach boxed title to top left={yshift=-5pt,xshift=10pt}, % Title position
-		boxed title style={               % Title box style
-			colback=#3!20,
-			colframe=#3!80!black,
-			boxrule=0.5pt
-		},
-		label={#6:\thetcbcounter},        % Reference label prefix
+    		enhanced,
+    		colback=#3!5,                     % Background color with transparency
+    		colframe=#3!80!black,             % Frame color
+    		arc=1pt,                          % Corner radius
+    		boxrule=0.5pt,                    % Frame thickness
+    		fonttitle=\color{#4}\sffamily\scshape, % Title font style
+    		before upper={\parindent15pt},    % Indentation before content
+    		before lower={\parindent15pt},    % Indentation after content
+    		fontupper={\color{black}\normalfont#5}, % Main content font style
+    		fontlower={\color{black}\normalfont#5}, % Lower content font style
+    		right=10pt, top=10pt, bottom=10pt, % Box padding
+    		attach boxed title to top left={yshift=-5pt,xshift=10pt}, % Title position
+    		boxed title style={               % Title box style
+    			colback=#3!20,
+    			colframe=#3!80!black,
+    			boxrule=0.5pt
+    		},
+    		label={#6:\thetcbcounter},        % Reference label prefix
 		}{#6}%
 }
 
@@ -1007,8 +1007,8 @@ postamble "\n\\end{theindex}\n"
 		
 	% Command to enable footnotes in specified environments
 	\providecommand{\enablefootnotes}[1]{%
-		\BeforeBeginEnvironment{##1}{\savenotes}%
-		\AfterEndEnvironment{##1}{\spewnotes}%
+    		\BeforeBeginEnvironment{##1}{\savenotes}%
+    		\AfterEndEnvironment{##1}{\spewnotes}%
 	}
 		
 	% Enable footnotes for each environment directly
@@ -1035,8 +1035,8 @@ postamble "\n\\end{theindex}\n"
 		
 	% Command to define cross-reference formats
 	\providecommand{\definecrefformat}[3]{%
-		\crefname{tcb@cnt@##1}{\MakeLowercase{##2}}{\MakeLowercase{##3}} % Define cref format for lowercase references
-		\Crefname{tcb@cnt@##1}{##2}{##3} % Define cref format for capitalized references
+    		\crefname{tcb@cnt@##1}{\MakeLowercase{##2}}{\MakeLowercase{##3}} % Define cref format for lowercase references
+    		\Crefname{tcb@cnt@##1}{##2}{##3} % Define cref format for capitalized references
 	}
 		
 	% Define cross-reference formats directly
@@ -1064,72 +1064,72 @@ postamble "\n\\end{theindex}\n"
 
 % Command to define standard theorem environments
 \providecommand{\usenormalthm}{%
-		
+			
 	% Theorem Style
 	\declaretheoremstyle[%
-		spaceabove=\topsep,
-		spacebelow=\topsep,
-		postheadspace=5pt,
-		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
-		headfont=\scshape\sffamily\color{accentcolor},
-		notefont=\scshape\sffamily\color{accentcolor},
-		bodyfont=\normalfont\itshape,
-		numberwithin=section,
-		headpunct={.}
+        		spaceabove=\topsep,
+        		spacebelow=\topsep,
+        		postheadspace=5pt,
+        		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
+        		headfont=\scshape\sffamily\color{accentcolor},
+        		notefont=\scshape\sffamily\color{accentcolor},
+        		bodyfont=\normalfont\itshape,
+        		numberwithin=chapter,
+        		headpunct={.}
 	]{thmstyle}
-		
+			
 	% Definition Style
 	\declaretheoremstyle[%
-		spaceabove=\topsep,
-		spacebelow=\topsep,
-		postheadspace=5pt,
-		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
-		headfont=\scshape\sffamily\color{accentcolor},
-		notefont=\scshape\sffamily\color{accentcolor},
-		bodyfont=\normalfont,
-		numberwithin=section,
-		qed=$\color{accentcolor}\scriptstyle\maltese$,
-		headpunct={.}
+    		spaceabove=\topsep,
+    		spacebelow=\topsep,
+    		postheadspace=5pt,
+    		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
+    		headfont=\scshape\sffamily\color{accentcolor},
+    		notefont=\scshape\sffamily\color{accentcolor},
+    		bodyfont=\normalfont,
+    		numberwithin=chapter,
+    		qed=$\color{accentcolor}\scriptstyle\maltese$,
+    		headpunct={.}
 	]{defstyle}
-		
+			
 	% Remark Style
 	\declaretheoremstyle[%
-		spaceabove=\topsep,
-		spacebelow=\topsep,
-		postheadspace=5pt,
-		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
-		headfont=\scshape\sffamily\color{accentcolor},
-		notefont=\scshape\sffamily\color{accentcolor},
-		bodyfont=\normalfont,
-		numberwithin=section,
-		headpunct={.}
+    		spaceabove=\topsep,
+    		spacebelow=\topsep,
+    		postheadspace=5pt,
+    		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
+    		headfont=\scshape\sffamily\color{accentcolor},
+    		notefont=\scshape\sffamily\color{accentcolor},
+    		bodyfont=\normalfont,
+    		numberwithin=chapter,
+    		headpunct={.}
 	]{remarkstyle}
-		
+			
 	% Highlight Style
 	\declaretheoremstyle[%
-		spaceabove=\topsep,
-		spacebelow=\topsep,
-		postheadspace=5pt,
-		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
-		headfont=\scshape\sffamily\color{accentcolor},
-		notefont=\scshape\sffamily\color{accentcolor},
-		bodyfont=\normalfont\sffamily,
-		numberwithin=section,
-		qed=$\color{accentcolor}\scriptstyle\diamond$,
-		headpunct={.}
+    		spaceabove=\topsep,
+    		spacebelow=\topsep,
+    		postheadspace=5pt,
+    		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
+    		headfont=\scshape\sffamily\color{accentcolor},
+    		notefont=\scshape\sffamily\color{accentcolor},
+    		bodyfont=\normalfont\sffamily,
+    		numberwithin=chapter,
+    		qed=$\color{accentcolor}\scriptstyle\diamond$,
+    		headpunct={.}
 	]{hltstyle}
-		
+			
 	% Proof Style
 	\declaretheoremstyle[%
-		headfont=\itshape\color{accentcolor},
-		notefont=\itshape\color{accentcolor},
-		bodyfont=\normalfont,
-		postheadspace=7.5pt,
-		numbered=no,
-		headpunct={.},
-		qed=\qedsymbol
+    		headfont=\scshape\color{accentcolor},
+    		notefont=\scshape\color{accentcolor},
+    		bodyfont=\normalfont,
+    		postheadspace=7.5pt,
+    		numbered=no,
+    		headpunct={.},
+    		qed=\qedsymbol
 	]{proofstyle}
-		
+			
 	% Theorem and related environments
 	\declaretheorem[style=thmstyle,name=Theorem]{theorem}
 	\declaretheorem[style=thmstyle,sibling=theorem]{assumption}
@@ -1139,35 +1139,35 @@ postamble "\n\\end{theindex}\n"
 	\declaretheorem[style=thmstyle,sibling=theorem]{lemma}
 	\declaretheorem[style=thmstyle,sibling=theorem]{property}
 	\declaretheorem[style=thmstyle,sibling=theorem]{proposition}
-		
+			
 	% Definition and related environments
 	\declaretheorem[style=defstyle,sibling=theorem]{definition}
 	\declaretheorem[style=defstyle,sibling=theorem]{example}
 	\declaretheorem[style=defstyle,sibling=theorem]{exercise}
 	\declaretheorem[style=defstyle,sibling=theorem]{problem}
 	\declaretheorem[style=defstyle,sibling=theorem]{question}
-		
+			
 	% Remark and related environments
 	\declaretheorem[style=remarkstyle,sibling=theorem]{note}
 	\declaretheorem[style=remarkstyle,sibling=theorem]{remark}
 	\declaretheorem[style=remarkstyle,sibling=theorem]{solution}
-		
+			
 	% Highlight styles
 	\declaretheorem[style=hltstyle,name=Important]{important}
 	\declaretheorem[style=hltstyle]{highlight}
 	\declaretheorem[style=hltstyle]{keypoint}
-		
+			
 	% Redefine proof environment
 	\let\proof\relax
 	\let\endproof\relax
 	\declaretheorem[style=proofstyle]{proof}
-		
+			
 	% Command to define cross-reference formats
 	\providecommand{\definecrefformat}[3]{%
-		\crefname{##1}{\MakeLowercase{##2}}{\MakeLowercase{##3}} % Define cref format for lowercase references
-		\Crefname{##1}{##2}{##3} % Define cref format for capitalized references
+    		\crefname{##1}{\MakeLowercase{##2}}{\MakeLowercase{##3}} % Define cref format for lowercase references
+    		\Crefname{##1}{##2}{##3} % Define cref format for capitalized references
 	}
-		
+			
 	% Define cross-reference formats directly
 	\definecrefformat{theorem}{Theorem}{Theorems}
 	\definecrefformat{lemma}{Lemma}{Lemmas}
@@ -1469,7 +1469,7 @@ postamble "\n\\end{theindex}\n"
 	\small % Set font size to small for the content
 	% Configure enumeration style:
 	% For the first level, set labels as (Problem ChapterNumber.ItemNumber)
-	\setlist[enumerate, 1]{label={\color{accentcolor}(\thechapter.\arabic*)}, left=0pt, labelsep=1em, itemsep=0.5em}
+	\setlist[enumerate, 1]{label={\color{accentcolor}$\mathsf{P}$~(\thechapter.\arabic*)}, left=0pt, labelsep=1em, itemsep=0.5em}
 	% For the second level, set labels as (a), (b), etc.
 	\setlist[enumerate, 2]{label=(\arabic*), left=1em, labelsep=1em, itemsep=0.5em}
 	% Begin an enumerated list for the problems
