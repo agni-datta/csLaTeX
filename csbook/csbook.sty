@@ -135,7 +135,7 @@
 \RequirePackage[x11names, dvipsnames, svgnames]{xcolor} % Provides color support with extended color schemes
 
 % Declare and initialize the variable \accentcolor
-\providecommand{\declvar}[2]{\def#1{#2}} % Command to declare variables
+\providecommand{\declvar}[2]{\providecommand{#1}{#2}} % Command to declare variables
 \declvar{\accentcolor}{RoyalBlue4} % Default accent color
 
 % Define the \setaccentcolor command to update \accentcolor based on user input
@@ -511,7 +511,7 @@ postamble "\n\\end{theindex}\n"
 \let\oldfrontmatter\frontmatter % Preserve the original \frontmatter command
 \renewcommand{\frontmatter}{%
 	\oldfrontmatter % Execute the original \frontmatter command
-	\pagestyle{empty} % Set page style to empty for front matter
+	\pagestyle{plain} % Set page style to plain for front matter
 }
 
 % Main matter
@@ -553,7 +553,7 @@ postamble "\n\\end{theindex}\n"
 % This command formats the title, subtitle, authors, and date of the document
 \renewcommand{\maketitle}{%
 	\vspace*{\fill} % Vertically center the content on the page
-	\thispagestyle{empty} % Set the page style to 'empty' (no page numbers)
+	\pagestyle{empty} % Set the page style to 'empty' (no page numbers)
 		
 	\begingroup
 	\raggedleft % Right-align the content
@@ -659,20 +659,21 @@ postamble "\n\\end{theindex}\n"
 % Packages for Typesetting Algorithms
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Load the algorithm2e package with specific options for formatting algorithms
+% Load the algorithm2e package with specific options for algorithm formatting
 \RequirePackage[%
-	algoruled,     % Display algorithms within a ruled environment for clear delineation
-	linesnumbered, % Enable line numbering for easier reference to individual steps
-	longend        % Properly handle long end statements for cleaner formatting
+    algoruled,     % Encloses algorithms in a ruled style for improved readability
+    linesnumbered, % Enables line numbering for easier reference to individual steps
+    longend,       % Manages long end statements for a cleaner layout
+    vlined         % Adds vertical lines to enhance the structure
 ]{algorithm2e}
 
-% Customize the appearance and styling of algorithms
-\SetAlFnt{\small}               % Set the font size for algorithm text for small for compactness
-\SetAlCapFnt{\normalsize}       % Set the font size for algorithm captions to normal for emphasis
-\SetAlCapNameFnt{\normalsize}   % Set the font size for algorithm names to normal for visibility
-\SetAlgoCaptionSeparator{.}     % Use a period as the separator between the caption and the algorithm content
-\SetAlgoNlRelativeSize{-2}      % Reduce the font size of line numbers to avoid distraction from the main text
-\SetNlSty{texttt}{[}{]}         % Style line numbers in a typewriter font and enclose them in square brackets
+% Customize the appearance and style of the algorithms
+\SetAlFnt{\small}               % Set the algorithm text to a small font size for a more compact presentation
+\SetAlCapFnt{\normalsize}       % Use a normal font size for captions to provide emphasis
+\SetAlCapNameFnt{\normalsize}   % Set the font size of algorithm names to normal for better visibility
+\SetAlgoCaptionSeparator{.}     % Use a period as a separator between the caption and the algorithm content
+\SetAlgoNlRelativeSize{-2}      % Reduce the size of line numbers to lessen distraction from the main text
+\SetNlSty{texttt}{[}{]}         % Style line numbers in a typewriter font, enclosed in square brackets
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Package for Creating Framed Environments
