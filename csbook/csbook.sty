@@ -183,8 +183,8 @@
 	a4paper,             % Define A4 paper size
 	tmargin=2.50cm,      % Set top margin
 	bmargin=2.50cm,      % Set bottom margin
-	lmargin=3.50cm,      % Set left margin
-	rmargin=3.50cm,      % Set right margin
+	lmargin=3.75cm,      % Set left margin
+	rmargin=3.75cm,      % Set right margin
 	footskip=1.00cm      % Set distance from text to footer
 ]{geometry}              % Load geometry package for page layout management
 
@@ -1469,7 +1469,7 @@ postamble "\n\\end{theindex}\n"
 	\small % Set font size to small for the content
 	% Configure enumeration style:
 	% For the first level, set labels as (Problem ChapterNumber.ItemNumber)
-	\setlist[enumerate, 1]{label={\color{accentcolor}$\mathsf{P}$~(\thechapter.\arabic*)}, left=0pt, labelsep=1em, itemsep=0.5em}
+	\setlist[enumerate, 1]{label={\color{accentcolor}($\mathsf{P~\thechapter.\arabic*}$)}, left=0pt, labelsep=1em, itemsep=0.5em}
 	% For the second level, set labels as (a), (b), etc.
 	\setlist[enumerate, 2]{label=(\arabic*), left=1em, labelsep=1em, itemsep=0.5em}
 	% Begin an enumerated list for the problems
