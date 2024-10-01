@@ -687,12 +687,12 @@ postamble "\n\\end{theindex}\n"
 	framemethod=Tikz              % Use TikZ for frame styling
 ]{mdframed} % Configure vertical skip distances and enable TikZ for styling
 
-% Load the tcolorbox package for advanced color box options
+% Load the tcolorbox package for advanced colour box options
 \RequirePackage[most]{tcolorbox} % Include extensive features for colored boxes
 
-% Define a custom framed environment with TikZ settings
+% Define a custom-framed environment with TikZ settings
 \newmdenv[%
-	tikzsetting={draw=black},     % Set the border color of the frame to black
+	tikzsetting={draw=black},     % Set the border colour of the frame to black
 	backgroundcolor=none,         % Set background to transparent
 	skipabove=10pt,               % Vertical space above the frame
 	skipbelow=10pt,               % Vertical space below the frame
@@ -716,7 +716,7 @@ postamble "\n\\end{theindex}\n"
 	roundcorner=2pt               % Set rounded corners with a radius of 2pt
 ]{colbox} % Custom framed environment named "colbox"
 
-% Create a new counter for constructions
+% Create a new counter for construction
 \newcounter{constructioncounter}[section]
 
 % Define the "construction" environment using mdframed
