@@ -135,7 +135,7 @@
 \RequirePackage[x11names, dvipsnames, svgnames]{xcolor} % Provides color support with extended color schemes
 
 % Declare and initialize the variable \accentcolor
-\providecommand{\declvar}[2]{\providecommand{#1}{#2}} % Command to declare variables
+\providecommand{\declvar}[2]{\def#1{#2}} % Command to declare variables
 \declvar{\accentcolor}{RoyalBlue4} % Default accent color
 
 % Define the \setaccentcolor command to update \accentcolor based on user input
