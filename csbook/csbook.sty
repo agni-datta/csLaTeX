@@ -34,8 +34,8 @@
 
 \NeedsTeXFormat{LaTeX2e} % Specifies that this package requires LaTeX2e
 \AtEndOfPackage{%
-    \ProvidesPackage{\filename}[\filedate\space\fileversion\space(\fileauthor)]%
-    \typeout{Package `\filename', \fileversion, <\filedate>} % Output package information
+	\ProvidesPackage{\filename}[\filedate\space\fileversion\space(\fileauthor)]%
+	\typeout{Package `\filename', \fileversion, <\filedate>} % Output package information
 }
 \ProvidesPackage{\filename}[\csbook@version\space A LaTeX package for typesetting computer science books]
 
@@ -140,12 +140,12 @@
 
 % Define the \setaccentcolor command to update \accentcolor based on user input
 \providecommand{\setaccentcolor}[1]{%
-    \ifx\relax#1\relax % Check if the input is empty
-        \declvar{\accentcolor}{RoyalBlue4} % Reset to default blue if no input
-    \else
-        \declvar{\accentcolor}{#1} % Set to user-specified color
-    \fi
-    \colorlet{accentcolor}{\accentcolor} % Update the color definition
+	\ifx\relax#1\relax % Check if the input is empty
+		\declvar{\accentcolor}{RoyalBlue4} % Reset to default blue if no input
+	\else
+		\declvar{\accentcolor}{#1} % Set to user-specified color
+	\fi
+	\colorlet{accentcolor}{\accentcolor} % Update the color definition
 }
 
 % Example usage:
@@ -164,10 +164,10 @@
 \RequirePackage[babel=true]{microtype} % For both XeTeX and LuaLaTeX
 % Conditional options based on engine
 \ifxetex
-    \PassOptionsToPackage{protrusion=true}{microtype} % Additional options for XeTeX
+	\PassOptionsToPackage{protrusion=true}{microtype} % Additional options for XeTeX
 \fi
 \ifluatex
-    \PassOptionsToPackage{protrusion=true, expansion=true}{microtype}   % Additional options for LuaLaTeX
+	\PassOptionsToPackage{protrusion=true, expansion=true}{microtype}   % Additional options for LuaLaTeX
 \fi
 
 % Configure line spacing and text symbols
@@ -229,12 +229,12 @@
 % Command to configure Latin Modern fonts for both text and math
 \providecommand{\uselmodern}{%
 	\setmainfont[%
-    		ItalicFont = NewCM10-BookItalic.otf, % Specify the italic font
-    		SmallCapsFont = NewCM10-Book.otf, % Specify the small caps font
-    		SmallCapsFeatures = {RawFeature=+smcp}, % Enable small caps feature
-    		BoldFont = NewCM10-Bold.otf, % Specify the bold font
-    		BoldItalicFont = NewCM10-BoldItalic.otf, % Specify the bold italic font
-    		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Apply advanced typographic features
+		ItalicFont = NewCM10-BookItalic.otf, % Specify the italic font
+		SmallCapsFont = NewCM10-Book.otf, % Specify the small caps font
+		SmallCapsFeatures = {RawFeature=+smcp}, % Enable small caps feature
+		BoldFont = NewCM10-Bold.otf, % Specify the bold font
+		BoldItalicFont = NewCM10-BoldItalic.otf, % Specify the bold italic font
+		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Apply advanced typographic features
 	]{NewCM10-Book.otf} % Set the main font
 	\setmathfont{NewCMMath-Book.otf} % Set the math font
 }
@@ -242,12 +242,12 @@
 % Command to configure EB Garamond fonts for text and math
 \providecommand{\useebgaramond}{%
 	\setmainfont[%
-    		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum}, % Apply advanced typographic features
-    		StylisticSet = {3,5} % Apply specific stylistic sets
+		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum}, % Apply advanced typographic features
+		StylisticSet = {3,5} % Apply specific stylistic sets
 	]{EB Garamond} % Set the main font
 	\setmathfont[%
-    		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum}, % Apply advanced typographic features
-    		StylisticSet = {2,6,7,9} % Apply specific stylistic sets
+		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum}, % Apply advanced typographic features
+		StylisticSet = {2,6,7,9} % Apply specific stylistic sets
 	]{Garamond-Math.otf} % Set the math font
 }
 
@@ -260,13 +260,13 @@
 % Command to configure Libertinus Sans font
 \providecommand{\uselibsans}{%
 	\setsansfont[%
-    		UprightFont = LibertinusSans-Regular, % Specify the upright font
-    		BoldFont = LibertinusSans-Bold.otf, % Specify the bold font
-    		ItalicFont = LibertinusSans-Italic.otf, % Specify the italic font
-    		SmallCapsFont = LibertinusSans-Regular, % Specify the small caps font
-    		SmallCapsFeatures = {RawFeature=+smcp}, % Enable small caps feature
-    		RawFeature = {+calt, +case, +dlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum}, % Apply advanced typographic features
-    		StylisticSet = {1,3} % Apply specific stylistic sets
+		UprightFont = LibertinusSans-Regular, % Specify the upright font
+		BoldFont = LibertinusSans-Bold.otf, % Specify the bold font
+		ItalicFont = LibertinusSans-Italic.otf, % Specify the italic font
+		SmallCapsFont = LibertinusSans-Regular, % Specify the small caps font
+		SmallCapsFeatures = {RawFeature=+smcp}, % Enable small caps feature
+		RawFeature = {+calt, +case, +dlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum}, % Apply advanced typographic features
+		StylisticSet = {1,3} % Apply specific stylistic sets
 	]{LibertinusSans-Regular.otf} % Define the sans font
 }
 
@@ -274,9 +274,9 @@
 \providecommand{\usesourcesans}{%
 	\RequirePackage[otf, lining, proportional, scale=0.975]{sourcesanspro} % Load the Source Sans Pro package with specified options
 	\setsansfont[%
-    		Scale = 0.975, % Set font scale
-    		SmallCapsFeatures = {RawFeature=+smcp}, % Enable small caps feature
-    		RawFeature = {+calt, +case, +dlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Apply advanced typographic features
+		Scale = 0.975, % Set font scale
+		SmallCapsFeatures = {RawFeature=+smcp}, % Enable small caps feature
+		RawFeature = {+calt, +case, +dlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Apply advanced typographic features
 	]{Source Sans Pro} % Define the sans font
 }
 
@@ -284,35 +284,35 @@
 \providecommand{\usesourcecode}{%
 	\RequirePackage[otf, lining, scale=0.865]{sourcecodepro} % Load the Source Code Pro package with specified options
 	\setmonofont[%
-    		Scale = 0.865, % Set font scale for monospaced font
-    		SmallCapsFeatures = {RawFeature=+smcp}, % Enable small caps feature
-    		RawFeature = {+calt, +case, +dlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Apply advanced typographic features
+		Scale = 0.865, % Set font scale for monospaced font
+		SmallCapsFeatures = {RawFeature=+smcp}, % Enable small caps feature
+		RawFeature = {+calt, +case, +dlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Apply advanced typographic features
 	]{Source Code Pro} % Define the monospaced font
 }
 
 % Command to configure Fira Sans font
 \providecommand{\usefirasans}{%
 	\setsansfont[%
-    		Scale = 0.95, % Set font scale
-    		BoldFont = {FiraSans-Bold.otf}, % Specify the bold font
-    		ItalicFont = {FiraSans-BookItalic.otf}, % Specify the italic font
-    		BoldItalicFont = {FiraSans-BoldItalic.otf}, % Specify the bold italic font
-    		SmallCapsFont = {FiraSans-Book.otf}, % Specify the small caps font
-    		SmallCapsFeatures = {RawFeature=+smcp}, % Enable small caps feature
-    		RawFeature = {+calt, +case, +dlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Apply advanced typographic features
+		Scale = 0.95, % Set font scale
+		BoldFont = {FiraSans-Bold.otf}, % Specify the bold font
+		ItalicFont = {FiraSans-BookItalic.otf}, % Specify the italic font
+		BoldItalicFont = {FiraSans-BoldItalic.otf}, % Specify the bold italic font
+		SmallCapsFont = {FiraSans-Book.otf}, % Specify the small caps font
+		SmallCapsFeatures = {RawFeature=+smcp}, % Enable small caps feature
+		RawFeature = {+calt, +case, +dlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Apply advanced typographic features
 	]{FiraSans-Book.otf} % Define the Fira Sans font
 }
 
 % Command to configure Fira Mono font
 \providecommand{\usefiramono}{%
 	\setmonofont[%
-    		Scale = 0.865, % Set font scale for monospaced font
-    		BoldFont = {FiraMono-Bold.otf}, % Specify the bold font
-    		ItalicFont = {FiraMono-Oblique.otf}, % Specify the italic font
-    		BoldItalicFont = {FiraMono-BoldOblique.otf}, % Specify the bold italic font
-    		SmallCapsFont = {FiraMono-Regular.otf}, % Specify the small caps font
-    		SmallCapsFeatures = {RawFeature=+smcp}, % Enable small caps feature
-    		RawFeature = {+calt, +case, +dlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Apply advanced typographic features
+		Scale = 0.865, % Set font scale for monospaced font
+		BoldFont = {FiraMono-Bold.otf}, % Specify the bold font
+		ItalicFont = {FiraMono-Oblique.otf}, % Specify the italic font
+		BoldItalicFont = {FiraMono-BoldOblique.otf}, % Specify the bold italic font
+		SmallCapsFont = {FiraMono-Regular.otf}, % Specify the small caps font
+		SmallCapsFeatures = {RawFeature=+smcp}, % Enable small caps feature
+		RawFeature = {+calt, +case, +dlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Apply advanced typographic features
 	]{FiraMono-Regular.otf} % Define the Fira Mono font
 }
 
@@ -320,8 +320,8 @@
 \providecommand{\useanonymouspro}{%
 	\RequirePackage{AnonymousPro} % Load the Anonymous Pro package
 	\setmonofont[%
-    		SmallCapsFeatures = {RawFeature=+smcp}, % Enable small caps feature
-    		RawFeature = {+calt, +case, +dlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Apply advanced typographic features
+		SmallCapsFeatures = {RawFeature=+smcp}, % Enable small caps feature
+		RawFeature = {+calt, +case, +dlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Apply advanced typographic features
 	]{Anonymous Pro} % Define the monospaced font
 }
 
@@ -341,8 +341,8 @@
 	\let\mathbfcal\relax  % Clear existing definition for \mathbfcal
 	\let\mathcal\relax    % Clear existing definition for \mathcal
 	\RequirePackage[%
-    		bb=bboldx,   % Use extended Blackboard bold font options
-    		cal=cm       % Use classic calligraphic font style for \mathcal
+		bb=bboldx,   % Use extended Blackboard bold font options
+		cal=cm       % Use classic calligraphic font style for \mathcal
 	]{mathalpha}     % Load the mathalpha package for additional styles
 }
 
@@ -354,20 +354,20 @@
 
 % Define formatting for parts
 \titleformat{\part}[display]
-        {\normalfont\scshape\color{accentcolor}\RaggedLeft} % Formatting for part title
-        {\Huge\partname~\thepart} % Format for part label
-        {0pt} % No space between label and title
-        {\titlerule\bigskip\LARGE #1} % Format for part title
+    {\normalfont\scshape\color{accentcolor}\RaggedLeft} % Formatting for part title
+    {\Huge\partname~\thepart} % Format for part label
+    {0pt} % No space between label and title
+    {\titlerule\bigskip\LARGE #1} % Format for part title
 
 % Use vertical fill for centring
 \titlespacing*{\part}{0pt}{\fill}{\fill} % Vertically centers the part title
 
 % Chapter formatting
 \titleformat{\chapter}[frame]
-        {\huge\scshape\sffamily\color{accentcolor}} % Font and color for chapter title
-        {~\filright{\large Chapter~\thechapter}~} % Chapter number format
-        {15pt} % Space between number and title
-        {\filcenter #1} % Title formatting
+    {\huge\scshape\sffamily\color{accentcolor}} % Font and color for chapter title
+    {~\filright{\large Chapter~\thechapter}~} % Chapter number format
+    {15pt} % Space between number and title
+    {\filcenter #1} % Title formatting
 
 \titlespacing*{\chapter}{0pt}{50pt}{100pt} % Spacing before and after chapter title
 
@@ -378,10 +378,10 @@
 
 % Section formatting
 \titleformat{\section}[block]%
-        {\Large\sffamily\scshape\color{accentcolor}} % Font and color for section title
-        {\LARGE\marginsecnumber\thesection} % Section number format
-        {0pt} % Space between number and title
-        {#1\smallskip\hrule} % Title formatting
+    {\Large\sffamily\scshape\color{accentcolor}} % Font and color for section title
+    {\LARGE\marginsecnumber\thesection} % Section number format
+    {0pt} % Space between number and title
+    {#1\smallskip\hrule} % Title formatting
 
 \titlespacing*{\section}{0pt}{10pt}{-10pt} % Spacing before and after section title
 
@@ -392,10 +392,10 @@
 
 % Subsection formatting
 \titleformat{\subsection}[block]%
-        {\large\sffamily\scshape\color{accentcolor}} % Font and color for subsection title
-        {\Large\marginsubsecnumber\thesubsection} % Subsection number format
-        {0pt} % Space between number and title
-        {#1} % Title formatting
+    {\large\sffamily\scshape\color{accentcolor}} % Font and color for subsection title
+    {\Large\marginsubsecnumber\thesubsection} % Subsection number format
+    {0pt} % Space between number and title
+    {#1} % Title formatting
 
 % Command for margin subsubsection numbering
 \providecommand{\marginsubsubsecnumber}[1]{%
@@ -404,10 +404,10 @@
 
 % Subsubsection formatting
 \titleformat{\subsubsection}[runin]%
-        {\normalsize\sffamily\scshape\color{accentcolor}} % Font and color for subsubsection title
-        {\large\marginsubsubsecnumber\thesubsubsection} % Subsubsection number format
-        {0pt} % Space between number and title
-        {#1.} % Title formatting
+    {\normalsize\sffamily\scshape\color{accentcolor}} % Font and color for subsubsection title
+    {\large\marginsubsubsecnumber\thesubsubsection} % Subsubsection number format
+    {0pt} % Space between number and title
+    {#1.} % Title formatting
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Local Table of Contents
@@ -428,7 +428,7 @@
 		\sffamily\scshape\etocnumber\hspace*{10pt}\etocname\nobreak
 		\hskip5pt\dotfill\hskip5pt\nobreak
 		\etocpage\par
-		}{}
+	}{}
 	{\color{accentcolor}\rule{\textwidth}{0.5pt}\medskip}
 	\localtableofcontents % Generate the local table of contents
 	{\medskip\noindent\color{accentcolor}\rule{\textwidth}{0.5pt}}
@@ -563,45 +563,45 @@ postamble "\n\\end{theindex}\n"
 \renewcommand{\maketitle}{%
 	\vspace*{\fill} % Vertically center the content on the page
 	\pagestyle{empty} % Set the page style to 'empty' (no page numbers)
-		
+
 	\begingroup
-    	\raggedleft % Right-align the content
-    	% Title
-    	{%
-                    \scshape\huge
-            		\ifx\@title\undefined
-            		\else\@title
-            		\fi\par
-            		\vspace{1em}\hrule\bigskip
-            } % Title with horizontal rule
-    		
-    	% Subtitle
-    	{%
-                    \normalsize\itshape
-        		\ifx\@subtitle\undefined
-        		\else\@subtitle
-        		\fi\par
-        		\medskip
-            } % Subtitle with italic style
-    		
-    	% Authors
-    	{%
-                    \large\scshape
-        	      \ifx\@author\undefined
-        	      \else\@author
-        	    \fi\par
-        	    \medskip
-            } % Authors in small caps
-    		
-    	% Date
-    	{%
-                    \hfill\scshape\normalsize
-        	      \ifx\@date\undefined
-        	    \else\@date
-        	    \fi
-            } % Date with small caps
+	\raggedleft % Right-align the content
+	% Title
+	{%
+		\scshape\huge
+		\ifx\@title\undefined
+		\else\@title
+		\fi\par
+		\vspace{1em}\hrule\bigskip
+	} % Title with horizontal rule
+
+	% Subtitle
+	{%
+		\normalsize\itshape
+		\ifx\@subtitle\undefined
+		\else\@subtitle
+		\fi\par
+		\medskip
+	} % Subtitle with italic style
+
+	% Authors
+	{%
+		\large\scshape
+		\ifx\@author\undefined
+		\else\@author
+		\fi\par
+		\medskip
+	} % Authors in small caps
+
+	% Date
+	{%
+		\hfill\scshape\normalsize
+		\ifx\@date\undefined
+		\else\@date
+		\fi
+	} % Date with small caps
 	\endgroup
-		
+
 	\vspace*{\fill} % Vertically center the content on the page
 }
 
@@ -615,14 +615,14 @@ postamble "\n\\end{theindex}\n"
 	\cleardoublepage\null\vfill % Center the content vertically on the page
 	\small % Set the font size as small for the copyright page
 	\centering % Center the text horizontally
-		
+
 	% Title and Edition Information
 	\textsc{\large\@title}\par\medskip % Title of the work in small caps and large size
-		
+
 	% Copyright Information
 	\textcopyright~\@date~by~\@author\par % Copyright symbol, date, and author information
 	All rights reserved.\par % Standard copyright notice
-		
+
 	% License Information
 	\justify % Justify the license text for better alignment
 	This work is distributed under the terms of the Creative Commons
@@ -641,14 +641,14 @@ postamble "\n\\end{theindex}\n"
 	license can be accessed at the following URL:
 	\texttt{\url{https://creativecommons.org/licenses/by-nc-nd/4.0/}}.
 	\par
-		
+
 	% Additional Details
 	\vspace{15pt} % Add vertical space before the additional details
 	\begin{center}
 		This edition was published on \@date\par % Information about the edition and publication date
 	\end{center}
 	\vspace*{15pt} % Add vertical space after the additional details
-		
+
 	\endgroup % End the local group
 	\cleardoublepage % Ensure the following content starts on a new page
 }
@@ -678,10 +678,10 @@ postamble "\n\\end{theindex}\n"
 
 % Load the algorithm2e package with specific options for algorithm formatting
 \RequirePackage[%
-    algoruled,     % Encloses algorithms in a ruled style for improved readability
-    linesnumbered, % Enables line numbering for easier reference to individual steps
-    longend,       % Manages long end statements for a cleaner layout
-    vlined         % Adds vertical lines to enhance the structure
+	algoruled,     % Encloses algorithms in a ruled style for improved readability
+	linesnumbered, % Enables line numbering for easier reference to individual steps
+	longend,       % Manages long end statements for a cleaner layout
+	vlined         % Adds vertical lines to enhance the structure
 ]{algorithm2e}
 
 % Customize the appearance and style of the algorithms
@@ -744,7 +744,7 @@ postamble "\n\\end{theindex}\n"
 		frametitlebackgroundcolor=none, % No background colour for the title
 		frametitlefont=\scshape\sffamily\color{accentcolor}, % Title font style
 		frametitle={Construction~\thesection.\theconstructioncounter~(#1).}, % Title format
-            frametitlerulewidth=0.75pt, % Set the rule thickness
+		frametitlerulewidth=0.75pt, % Set the rule thickness
 		linewidth=0.75pt, % Frame line width
 		linecolor=black, % Frame line colour
 		innertopmargin=7.5pt, % Top inner margin
@@ -766,15 +766,15 @@ postamble "\n\\end{theindex}\n"
 
 % Load the glossaries-extra package with various options
 \RequirePackage[%
-    automake,             % Automatically updates glossaries when changes are detected
-    acronym,              % Support for acronyms in the glossary
-    symbols,              % Inclusion of symbols in the glossary
-    nonumberlist,         % Prevents numbering of glossary entries
-    nogroupskip,          % Avoids extra vertical space between different glossary groups
-    indexonlyfirst,       % Indexes only the first occurrence of each glossary entry
-    stylemods=longextra,  % Applies extended formatting styles to glossary entries
-    nopostdot,            % Omits the period at the end of glossary descriptions
-    toc                   % Includes the glossary in the table of contents
+	automake,             % Automatically updates glossaries when changes are detected
+	acronym,              % Support for acronyms in the glossary
+	symbols,              % Inclusion of symbols in the glossary
+	nonumberlist,         % Prevents numbering of glossary entries
+	nogroupskip,          % Avoids extra vertical space between different glossary groups
+	indexonlyfirst,       % Indexes only the first occurrence of each glossary entry
+	stylemods=longextra,  % Applies extended formatting styles to glossary entries
+	nopostdot,            % Omits the period at the end of glossary descriptions
+	toc                   % Includes the glossary in the table of contents
 ]{glossaries-extra}
 
 % Initialize glossaries
@@ -788,7 +788,7 @@ postamble "\n\\end{theindex}\n"
 
 % Customize the preamble and postamble for glossaries
 \renewcommand{\glossarypreamble}{\begin{sffamily}\small} % Set font for glossary preamble
-\renewcommand{\glossarypostamble}{\end{sffamily}} % End font customization for glossary
+		\renewcommand{\glossarypostamble}{\end{sffamily}} % End font customization for glossary
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Abstract Environment Definition
@@ -796,18 +796,18 @@ postamble "\n\\end{theindex}\n"
 
 \newenvironment{abstract}{%
 	\if@twocolumn
-	\section*{\abstractname} % Unnumbered section for abstract in two-column mode
+		\section*{\abstractname} % Unnumbered section for abstract in two-column mode
 	\else\small\vspace{-1em} % Adjust font size and vertical space in single-column mode
-	\begin{center}
-	       {\scshape\abstractname\vspace{-.5em}\vspace{\z@}} % Title in small caps with vertical spacing
-	\end{center} % Center the abstract title
-	\quotation\sffamily % Start the quotation environment for abstract content
+		\begin{center}
+			{\scshape\abstractname\vspace{-.5em}\vspace{\z@}} % Title in small caps with vertical spacing
+		\end{center} % Center the abstract title
+		\quotation\sffamily % Start the quotation environment for abstract content
 	\fi
-	}{%
+}{%
 	\if@twocolumn
-	% No action is needed for the two-column mode
+		% No action is needed for the two-column mode
 	\else
-	       \endquotation % End the quotation environment in single-column mode
+		\endquotation % End the quotation environment in single-column mode
 	\fi
 }
 
@@ -968,62 +968,62 @@ postamble "\n\\end{theindex}\n"
 	%   #5: Content font style
 	%   #6: Label prefix for references
 	\newtcbtheorem[number within=chapter]{#1}{#2}{%
-    		enhanced,
-    		colback=#3!5,                     % Background color with transparency
-    		colframe=#3!80!black,             % Frame color
-    		arc=1pt,                          % Corner radius
-    		boxrule=0.5pt,                    % Frame thickness
-    		fonttitle=\color{#4}\sffamily\scshape, % Title font style
-    		before upper={\parindent15pt},    % Indentation before content
-    		before lower={\parindent15pt},    % Indentation after content
-    		fontupper={\color{black}\normalfont#5}, % Main content font style
-    		fontlower={\color{black}\normalfont#5}, % Lower content font style
-    		right=10pt, top=10pt, bottom=10pt, % Box padding
-    		attach boxed title to top left={yshift=-5pt,xshift=10pt}, % Title position
-    		boxed title style={               % Title box style
-    			colback=#3!20,
-    			colframe=#3!80!black,
-    			boxrule=0.5pt
-    		},
-    		label={#6:\thetcbcounter},        % Reference label prefix
-		}{#6}%
+		enhanced,
+		colback=#3!5,                     % Background color with transparency
+		colframe=#3!80!black,             % Frame color
+		arc=1pt,                          % Corner radius
+		boxrule=0.5pt,                    % Frame thickness
+		fonttitle=\color{#4}\sffamily\scshape, % Title font style
+		before upper={\parindent15pt},    % Indentation before content
+		before lower={\parindent15pt},    % Indentation after content
+		fontupper={\color{black}\normalfont#5}, % Main content font style
+		fontlower={\color{black}\normalfont#5}, % Lower content font style
+		right=10pt, top=10pt, bottom=10pt, % Box padding
+		attach boxed title to top left={yshift=-5pt,xshift=10pt}, % Title position
+		boxed title style={               % Title box style
+				colback=#3!20,
+				colframe=#3!80!black,
+				boxrule=0.5pt
+			},
+		label={#6:\thetcbcounter},        % Reference label prefix
+	}{#6}%
 }
 
 % Command to define fancy theorem environments
 \providecommand{\usefancythm}{
-		
+
 	% Define coloured environments for theorems and related content
 	\newcolorboxes{corollary}{Corollary}{RoyalBlue4!50!white}{black}{\itshape}{cor}
 	\newcolorboxes{lemma}{Lemma}{RoyalBlue4!60!white}{black}{\itshape}{lem}
 	\newcolorboxes{proposition}{Proposition}{RoyalBlue4!70!white}{black}{\itshape}{prop}
 	\newcolorboxes{theorem}{Theorem}{RoyalBlue4!80!white}{black}{\itshape}{thm}
-		
+
 	\newcolorboxes{assumption}{Assumption}{DeepSkyBlue3!80!white}{black}{\itshape}{assm}
 	\newcolorboxes{claim}{Claim}{DeepSkyBlue3!70!white}{black}{\itshape}{clm}
 	\newcolorboxes{conjecture}{Conjecture}{DeepSkyBlue3!60!white}{black}{\itshape}{conj}
 	\newcolorboxes{fact}{Fact}{DeepSkyBlue3!50!white}{black}{\itshape}{fact}
 	\newcolorboxes{property}{Property}{DeepSkyBlue3!40!white}{black}{\itshape}{prop}
-		
+
 	\newcolorboxes{definition}{Definition}{DodgerBlue1!90!white}{black}{\normalfont}{def}
 	\newcolorboxes{example}{Example}{SpringGreen4!80!white}{black}{\normalfont}{ex}
 	\newcolorboxes{exercise}{Exercise}{SpringGreen4!60!white}{black}{\normalfont}{exer}
 	\newcolorboxes{problem}{Problem}{SpringGreen4!50!white}{black}{\normalfont}{prob}
 	\newcolorboxes{question}{Question}{SpringGreen4!40!white}{black}{\normalfont}{ques}
-		
+
 	\newcolorboxes{note}{Note}{Cyan4!70!white}{black}{\normalfont}{note}
 	\newcolorboxes{remark}{Remark}{Cyan4!60!white}{black}{\normalfont}{rem}
 	\newcolorboxes{solution}{Solution}{Cyan4!50!white}{black}{\normalfont}{sol}
-		
+
 	\newcolorboxes{important}{Important}{DeepPink4!70!white}{black}{\sffamily}{imp}
 	\newcolorboxes{keypoint}{Keypoint}{DeepPink4!60!white}{black}{\sffamily}{key}
 	\newcolorboxes{highlight}{Highlight}{DeepPink4!50!white}{black}{\sffamily}{high}
-		
+
 	% Command to enable footnotes in specified environments
 	\providecommand{\enablefootnotes}[1]{%
-    		\BeforeBeginEnvironment{##1}{\savenotes}%
-    		\AfterEndEnvironment{##1}{\spewnotes}%
+		\BeforeBeginEnvironment{##1}{\savenotes}%
+		\AfterEndEnvironment{##1}{\spewnotes}%
 	}
-		
+
 	% Enable footnotes for each environment directly
 	\enablefootnotes{assumption}
 	\enablefootnotes{claim}
@@ -1045,13 +1045,13 @@ postamble "\n\\end{theindex}\n"
 	\enablefootnotes{theorem}
 	\enablefootnotes{remark}
 	\enablefootnotes{solution}
-		
+
 	% Command to define cross-reference formats
 	\providecommand{\definecrefformat}[3]{%
-    		\crefname{tcb@cnt@##1}{\MakeLowercase{##2}}{\MakeLowercase{##3}} % Define cref format for lowercase references
-    		\Crefname{tcb@cnt@##1}{##2}{##3} % Define cref format for capitalized references
+		\crefname{tcb@cnt@##1}{\MakeLowercase{##2}}{\MakeLowercase{##3}} % Define cref format for lowercase references
+		\Crefname{tcb@cnt@##1}{##2}{##3} % Define cref format for capitalized references
 	}
-		
+
 	% Define cross-reference formats directly
 	\definecrefformat{theorem}{Theorem}{Theorems}
 	\definecrefformat{lemma}{Lemma}{Lemmas}
@@ -1077,72 +1077,72 @@ postamble "\n\\end{theindex}\n"
 
 % Command to define standard theorem environments
 \providecommand{\usenormalthm}{%
-			
+
 	% Theorem Style
 	\declaretheoremstyle[%
-        		spaceabove=\topsep,
-        		spacebelow=\topsep,
-        		postheadspace=5pt,
-        		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
-        		headfont=\scshape\sffamily\color{accentcolor},
-        		notefont=\scshape\sffamily\color{accentcolor},
-        		bodyfont=\normalfont\itshape,
-        		numberwithin=chapter,
-        		headpunct={.}
+		spaceabove=\topsep,
+		spacebelow=\topsep,
+		postheadspace=5pt,
+		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
+		headfont=\scshape\sffamily\color{accentcolor},
+		notefont=\scshape\sffamily\color{accentcolor},
+		bodyfont=\normalfont\itshape,
+		numberwithin=chapter,
+		headpunct={.}
 	]{thmstyle}
-			
+
 	% Definition Style
 	\declaretheoremstyle[%
-    		spaceabove=\topsep,
-    		spacebelow=\topsep,
-    		postheadspace=5pt,
-    		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
-    		headfont=\scshape\sffamily\color{accentcolor},
-    		notefont=\scshape\sffamily\color{accentcolor},
-    		bodyfont=\normalfont,
-    		numberwithin=chapter,
-    		qed=$\color{accentcolor}\scriptstyle\maltese$,
-    		headpunct={.}
+		spaceabove=\topsep,
+		spacebelow=\topsep,
+		postheadspace=5pt,
+		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
+		headfont=\scshape\sffamily\color{accentcolor},
+		notefont=\scshape\sffamily\color{accentcolor},
+		bodyfont=\normalfont,
+		numberwithin=chapter,
+		qed=$\color{accentcolor}\scriptstyle\maltese$,
+		headpunct={.}
 	]{defstyle}
-			
+
 	% Remark Style
 	\declaretheoremstyle[%
-    		spaceabove=\topsep,
-    		spacebelow=\topsep,
-    		postheadspace=5pt,
-    		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
-    		headfont=\scshape\sffamily\color{accentcolor},
-    		notefont=\scshape\sffamily\color{accentcolor},
-    		bodyfont=\normalfont,
-    		numberwithin=chapter,
-    		headpunct={.}
+		spaceabove=\topsep,
+		spacebelow=\topsep,
+		postheadspace=5pt,
+		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
+		headfont=\scshape\sffamily\color{accentcolor},
+		notefont=\scshape\sffamily\color{accentcolor},
+		bodyfont=\normalfont,
+		numberwithin=chapter,
+		headpunct={.}
 	]{remarkstyle}
-			
+
 	% Highlight Style
 	\declaretheoremstyle[%
-    		spaceabove=\topsep,
-    		spacebelow=\topsep,
-    		postheadspace=5pt,
-    		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
-    		headfont=\scshape\sffamily\color{accentcolor},
-    		notefont=\scshape\sffamily\color{accentcolor},
-    		bodyfont=\normalfont\sffamily,
-    		numberwithin=chapter,
-    		qed=$\color{accentcolor}\scriptstyle\diamond$,
-    		headpunct={.}
+		spaceabove=\topsep,
+		spacebelow=\topsep,
+		postheadspace=5pt,
+		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
+		headfont=\scshape\sffamily\color{accentcolor},
+		notefont=\scshape\sffamily\color{accentcolor},
+		bodyfont=\normalfont\sffamily,
+		numberwithin=chapter,
+		qed=$\color{accentcolor}\scriptstyle\diamond$,
+		headpunct={.}
 	]{hltstyle}
-			
+
 	% Proof Style
 	\declaretheoremstyle[%
-    		headfont=\sffamily\scshape\color{accentcolor},
-    		notefont=\sffamily\scshape\color{accentcolor},
-    		bodyfont=\normalfont,
-    		postheadspace=5pt,
-    		numbered=no,
-    		headpunct={.},
-    		qed=\qedsymbol
+		headfont=\sffamily\scshape\color{accentcolor},
+		notefont=\sffamily\scshape\color{accentcolor},
+		bodyfont=\normalfont,
+		postheadspace=5pt,
+		numbered=no,
+		headpunct={.},
+		qed=\qedsymbol
 	]{proofstyle}
-			
+
 	% Theorem and related environments
 	\declaretheorem[style=thmstyle,name=Theorem]{theorem}
 	\declaretheorem[style=thmstyle,sibling=theorem]{assumption}
@@ -1152,35 +1152,35 @@ postamble "\n\\end{theindex}\n"
 	\declaretheorem[style=thmstyle,sibling=theorem]{lemma}
 	\declaretheorem[style=thmstyle,sibling=theorem]{property}
 	\declaretheorem[style=thmstyle,sibling=theorem]{proposition}
-			
+
 	% Definition and related environments
 	\declaretheorem[style=defstyle,sibling=theorem]{definition}
 	\declaretheorem[style=defstyle,sibling=theorem]{example}
 	\declaretheorem[style=defstyle,sibling=theorem]{exercise}
 	\declaretheorem[style=defstyle,sibling=theorem]{problem}
 	\declaretheorem[style=defstyle,sibling=theorem]{question}
-			
+
 	% Remark and related environments
 	\declaretheorem[style=remarkstyle,sibling=theorem]{note}
 	\declaretheorem[style=remarkstyle,sibling=theorem]{remark}
 	\declaretheorem[style=remarkstyle,sibling=theorem]{solution}
-			
+
 	% Highlight styles
 	\declaretheorem[style=hltstyle,name=Important]{important}
 	\declaretheorem[style=hltstyle]{highlight}
 	\declaretheorem[style=hltstyle]{keypoint}
-			
+
 	% Redefine proof environment
 	\let\proof\relax
 	\let\endproof\relax
 	\declaretheorem[style=proofstyle]{proof}
-			
+
 	% Command to define cross-reference formats
 	\providecommand{\definecrefformat}[3]{%
-    		\crefname{##1}{\MakeLowercase{##2}}{\MakeLowercase{##3}} % Define cref format for lowercase references
-    		\Crefname{##1}{##2}{##3} % Define cref format for capitalized references
+		\crefname{##1}{\MakeLowercase{##2}}{\MakeLowercase{##3}} % Define cref format for lowercase references
+		\Crefname{##1}{##2}{##3} % Define cref format for capitalized references
 	}
-			
+
 	% Define cross-reference formats directly
 	\definecrefformat{theorem}{Theorem}{Theorems}
 	\definecrefformat{lemma}{Lemma}{Lemmas}
@@ -1224,10 +1224,10 @@ postamble "\n\\end{theindex}\n"
 		maxnames=999,          % Display up to 999 names in citations
 		backend=biber          % Use Biber as the backend processor
 	]{biblatex} % End of package options
-		
+
 	% Set the font size for bibliography entries
 	\renewcommand*{\bibfont}{\small} % Define bibliography font size as 'small'
-		
+
 	% Customize back-reference strings in the bibliography
 	\DefineBibliographyStrings{english}{
 		backrefpage={\unskip Cited on page},  % Singular form for back-reference page
@@ -1247,234 +1247,234 @@ postamble "\n\\end{theindex}\n"
 	\ifthenelse{\boolean{usebiblatex}}{%
 		% If BibLaTeX is enabled
 		\usebiblatex
-		}{%
+	}{%
 		\ifthenelse{\boolean{usesrtbiblatex}}{%
 			% If sorted BibLaTeX is enabled
 			\usesrtbiblatex
-			}{%
+		}{%
 			% Fallback to default bibliography style
 			\typeout{Default bibliography style will be used as BibLaTeX is not enabled.}
 			\bibliographystyle{alpha}
 		}}}
 % Usage
 \setupbibliography
-	
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Load necessary package for code listings
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Code for listings package and styles
-\providecommand{\usecodelists}{%	
-		
-	\RequirePackage{listings}
-			
-	% Define Rust language for the listings package
-	\lstdefinelanguage{Rust}{%
-    		sensitive=true,
-    		morecomment=[l]{//},
-    		morecomment=[s]{/*}{*/},
-    		moredelim=[s][{\itshape\color{Snow1}}]{\#[}{]},
-    		morestring=[b]{"},
-    		alsodigit={},
-    		alsoother={},
-    		alsoletter={!},
-    		% Control flow keywords
-    		morekeywords={break, continue, else, for, if, in, loop, match, return, while},
-    		% Variable-related keywords
-    		morekeywords={as, const, let, move, mut, ref, static},
-    		% Declaration-related keywords
-    		morekeywords={dyn, enum, fn, impl, Self, self, struct, trait, type, union, use, where},
-    		% Modularisation-related keywords
-    		morekeywords={crate, extern, mod, pub, super},
-    		% Marker keywords
-    		morekeywords={unsafe},
-    		% Reserved identifiers
-    		morekeywords={abstract, alignof, become, box, do, final, macro, offsetof, override, priv, proc, pure, sizeof, typeof, unsized, virtual, yield},
-    		% Traits
-    		morekeywords=[2]{Add, AddAssign, Any, AsciiExt, AsInner, AsInnerMut, AsMut, AsRawFd, AsRawHandle, AsRawSocket, AsRef, Binary, BitAnd, BitAndAssign, Bitor, BitOr, BitOrAssign, BitXor, BitXorAssign, Borrow, BorrowMut, Boxed, BoxPlace, BufRead, BuildHasher, CastInto, CharExt, Clone, CoerceUnsized, CommandExt, Copy, Debug, DecodableFloat, Default, Deref, DerefMut, DirBuilderExt, DirEntryExt, Display, Div, DivAssign, DoubleEndedIterator, DoubleEndedSearcher, Drop, EnvKey, Eq, Error, ExactSizeIterator, ExitStatusExt, Extend, FileExt, FileTypeExt, Float, Fn, FnBox, FnMut, FnOnce, Freeze, From, FromInner, FromIterator, FromRawFd, FromRawHandle, FromRawSocket, FromStr, FullOps, FusedIterator, Generator, Hash, Hasher, Index, IndexMut, InPlace, Int, Into, IntoCow, IntoInner, IntoIterator, IntoRawFd, IntoRawHandle, IntoRawSocket, IsMinusOne, IsZero, Iterator, JoinHandleExt, LargeInt, LowerExp, LowerHex, MetadataExt, Mul, MulAssign, Neg, Not, Octal, OpenOptionsExt, Ord, OsStrExt, OsStringExt, Packet, PartialEq, PartialOrd, Pattern, PermissionsExt, Place, Placer, Pointer, Product, Put, RangeArgument, RawFloat, Read, Rem, RemAssign, Seek, Shl, ShlAssign, Shr, ShrAssign, Sized, SliceConcatExt, SliceExt, SliceIndex, Stats, Step, StrExt, Sub, SubAssign, Sum, Sync, TDynBenchFn, Terminal, Termination, ToOwned, ToSocketAddrs, ToString, Try, TryFrom, TryInto, UnicodeStr, Unsize, UpperExp, UpperHex, WideInt, Write, Send},
-    		% Primitive types
-    		morekeywords=[3]{bool, char, f32, f64, i8, i16, i32, i64, isize, str, u8, u16, u32, u64, unit, usize, i128, u128},
-    		% Prelude value constructors
-    		morekeywords=[4]{Err, false, None, Ok, Some, true},
-    		% Additional types
-    		morekeywords=[3]{AccessError, Adddf3, AddI128, AddoI128, AddoU128, ADDRESS, ADDRESS64, addrinfo, ADDRINFOA, AddrParseError, Addsf3, AddU128, advice, aiocb, Alignment, AllocErr, AnonPipe, Answer, Arc, Args, ArgsInnerDebug, ArgsOs, Argument, Arguments, ArgumentV1, Ashldi3, Ashlti3, Ashrdi3, Ashrti3, AssertParamIsClone, AssertParamIsCopy, AssertParamIsEq, AssertUnwindSafe, AtomicBool, AtomicPtr, Attr, auxtype, auxv, BackPlace, BacktraceContext, Barrier, BarrierWaitResult, Bencher, BenchMode, BenchSamples, BinaryHeap, BinaryHeapPlace, blkcnt, blkcnt64, blksize, BOOL, boolean, BOOLEAN, BoolTrie, BorrowError, BorrowMutError, Bound, Box, bpf, BTreeMap, BTreeSet, Bucket, BucketState, Buf, BufReader, BufWriter, Builder, BuildHasherDefault, BY, BYTE, Bytes, CannotReallocInPlace, cc, Cell, Chain, CHAR, CharIndices, CharPredicateSearcher, Chars, CharSearcher, CharsError, CharSliceSearcher, CharTryFromError, Child, ChildPipes, ChildStderr, ChildStdin, ChildStdio, ChildStdout, Chunks, ChunksMut, ciovec, clock, clockid, Cloned, cmsgcred, cmsghdr, CodePoint, Color, ColorConfig, Command, CommandEnv, Component, Components, CONDITION, condvar, Condvar, CONSOLE, CONTEXT, Count, Cow, cpu, CRITICAL, CStr, CString, CStringArray, Cursor, Cycle, CycleIter, daddr, DebugList, DebugMap, DebugSet, DebugStruct, DebugTuple, Decimal, Decoded, DecodeUtf16, DecodeUtf16Error, DecodeUtf8, DefaultEnvKey, DefaultHasher, dev, device, Difference, Digit32, DIR, DirBuilder, dircookie, dirent, dirent64, DirEntry, Discriminant, DISPATCHER, Display, Divdf3, Divdi3, Divmoddi4, Divmodsi4, Divsf3, Divsi3, Divti3, dl, Dl, Dlmalloc, Dns, DnsAnswer, DnsQuery, dqblk, Drain, DrainFilter, Dtor, Duration, DwarfReader, DWORD, DWORDLONG, DynamicLibrary, Edge, EHAction, EHContext, Elf32, Elf64, Empty, EmptyBucket, EncodeUtf16, EncodeWide, Entry, EntryPlace, Enumerate, Env, epoll, errno, Error, ErrorKind, EscapeDebug, EscapeDefault, EscapeUnicode, event, Event, eventrwflags, eventtype, ExactChunks, ExactChunksMut, EXCEPTION, Excess, ExchangeHeapSingleton, exit, exitcode, ExitStatus, Failure, fd, fdflags, fdsflags, fdstat, ff, fflags, File, FILE, FileAttr, filedelta, FileDesc, FilePermissions, filesize, filestat, FILETIME, filetype, FileType, Filter, FilterMap, Fixdfdi, Fixdfsi, Fixdfti, Fixsfdi, Fixsfsi, Fixsfti, Fixunsdfdi, Fixunsdfsi, Fixunsdfti, Fixunssfdi, Fixunssfsi, Fixunssfti, Flag, FlatMap, Floatdidf, FLOATING, Floatsidf, Floatsisf, Floattidf, Floattisf, Floatundidf, Floatunsidf, Floatunsisf, Floatuntidf, Floatuntisf, flock, ForceResult, FormatSpec, Formatted, Formatter, Fp, FpCategory, fpos, fpos64, fpreg, fpregset, FPUControlWord, Frame, FromBytesWithNulError, FromUtf16Error, FromUtf8Error, FrontPlace, fsblkcnt, fsfilcnt, fsflags, fsid, fstore, fsword, FullBucket, FullBucketMut, FullDecoded, Fuse, GapThenFull, GeneratorState, gid, glob, glob64, GlobalDlmalloc, greg, group, GROUP, Guard, GUID, Handle, HANDLE, Handler, HashMap, HashSet, Heap, HINSTANCE, HMODULE, hostent, HRESULT, id, idtype, if, ifaddrs, IMAGEHLP, Immut, in, in6, Incoming, Infallible, Initializer, ino, ino64, inode, input, InsertResult, Inspect, Instant, int16, int32, int64, int8, integer, IntermediateBox, Internal, Intersection, intmax, IntoInnerError, IntoIter, IntoStringError, intptr, InvalidSequence, iovec, ip, IpAddr, ipc, Ipv4Addr, ipv6, Ipv6Addr, Ipv6MulticastScope, Iter, IterMut, itimerspec, itimerval, jail, JoinHandle, JoinPathsError, KDHELP64, kevent, kevent64, key, Key, Keys, KV, l4, LARGE, lastlog, launchpad, Layout, Lazy, lconv, Leaf, LeafOrInternal, Lines, LinesAny, LineWriter, linger, linkcount, LinkedList, load, locale, LocalKey, LocalKeyState, Location, lock, LockResult, loff, LONG, lookup, lookupflags, LookupHost, LPBOOL, LPBY, LPBYTE, LPCSTR, LPCVOID, LPCWSTR, LPDWORD, LPFILETIME, LPHANDLE, LPOVERLAPPED, LPPROCESS, LPPROGRESS, LPSECURITY, LPSTARTUPINFO, LPSTR, LPVOID, LPWCH, LPWIN32, LPWSADATA, LPWSAPROTOCOL, LPWSAPROTOCOLCHAIN, lseek, LUID, Machine, madvise, MajorFlags, MakeCaller, malloc, mcontext, mcontext64, memory, MemoryBlock, MemoryMap, Metadata, Metric, mflags, minor, MinorFlags, mnt, ModEntry, Mode, mode, Module, modflags, ModResults, Monitor, motd, Mount, mpack, mq, msg, msghdr, msginfo, msglen, msgqnum, msgseg, msgtql, msqid, Mutex, MutexGuard, MyBox, MyHeap, NativeLibBoilerplate, Netc, netent, nid, nl, nlitem, Node, NoneError, Nsec, OccupiedEntry, off, OffsetBucket, offmask, oflags, Once, OnceState, OpenOptions, Option, OptRes, os, OsStr, OsString, Output, OVERLAPPED, Owned, Pack, packet, PacketPart, page, Param, ParamIdx, ParseBoolError, ParseCharError, ParseError, ParseFloatError, ParseIntError, ParseResult, PartialBucket, Password, Path, path, PathBuf, PathComponent, PathComponents, PathIter, PathSegments, PCONDITION, PeekMut, Peekable, PeerCreds, Pending, Permissions, PhantomData, Phrase, pid, PID, PipeBuf, Place, Plan, PlanAlloc, Pluralize, poison, PoisonError, poll, port, Position, Post, ppoll, process, Process, ProcessOutput, protoent, ptrdiff, pthread, pthreadattr, pthreadbarrier, pthreadbarrierattr, pthreadcond, pthreadcondattr, pthreadkey, pthreadmutex, pthreadmutexattr, pthreadonce, pthreadrwlock, pthreadrwlockattr, pthreadt, ptrace, pw, pwent, Qd, queue, QueueInitializer, quote, radvisory, Range, RangeFrom, RangeFull, RangeInclusive, RangeMut, RangeTo, RangeToInclusive, RawBucket, RawPthread, RawTable, RawWaker, RawWakerVTable, Rc, RecvDgram, RecvMsg, record, RecvState, RecvTimeout, ReentrantMutex, reent, REF, ref, Ref, reference, referencecount, RefCell, RefMut, RegClass, RegGroup, register, REGISTRATION, RegKind, RemapRegs, RemoveResult, Repeat, ReplaceWith, Result, rlimit, rlimit64, rlim, rlim64, rlimt, roff, Root, RootedRc, RootedVec, RootedVecDeque, RootedWeak, RootRef, rseq, RseqSig, rusage, RustcDecodable, RustcEncodable, Same, scan, sched, Scope, ScopedCell, ScopedCellMut, Score, SearchResult, SearchStep, security, seek, Segment, segments, Select, SelectionResult, self, send, SendDgram, SendMsg, Sender, sendsize, SendTimeout, SeqCst, se, SearchStep, Option, HashMap},
-    		% Additional prelude value constructors
-    		morekeywords=[4]{acancel, accept, addressof, alloc, alloc_handle, bswap16, bswap32, bswap64, catch_unwind, ceil, ceilf32, ceilf64, core_panic, cos, cosf32, cosf64, discriminant_value, drop_in_place, fabsf32, fabsf64, floor, floorf32, floorf64, fmaf32, fmaf64, fmodf32, fmodf64, forget, likely, maxnumf32, maxnumf64, min_align_of, min_align_of_val, minnumf32, minnumf64, move_val_init, mul_with_overflow, nearmaxf32, nearmaxf64, nearminf32, nearminf64, needs_drop, likely, unlikely},
-    		% Other keywords
-    		morekeywords={async, await, dyn, abstract, priv, final, super, Yield, ref, self, where, try},
-    		% Optional addition
-    		otherkeywords={::, :, <>, .., ..=, ..<, ==, !=, <=>, ===, <==, >==, <=, >=, &&, ||, ??, :=, ==>, >>=, <<=, <:=, ?==, @, =>, =>>},
-	}
-			
-	% Define a style for C code
-	\lstdefinestyle{CStyle}{%
-    		language=C,                          % Set the language to C
-    		basicstyle=\ttfamily\small,          % Use a small monospaced font
-    		keywordstyle=\color{RoyalBlue3},     % Color keywords in Royal Blue
-    		keywordstyle=[2]\color{HotPink4}, % Color specific keywords in Medium Purple
-    		keywordstyle=[3]\color{SpringGreen4},   % Color specific keywords in Chartreuse
-    		keywordstyle=[4]\color{SlateBlue2},    % Color specific keywords in Slate Blue
-    		commentstyle=\color{LightSteelBlue4},% Color comments in Light Steel Blue
-    		stringstyle=\color{Firebrick2},      % Color strings in Firebrick
-    		numberstyle=\tiny\ttfamily\color{SlateGray4}, % Set the style for line numbers
-    		numbers=left,                        % Position line numbers on the left
-    		stepnumber=1,                        % Number every line
-    		numbersep=10pt,                      % Space between line numbers and code
-    		backgroundcolor=\color{white},       % Set background color to white
-    		breaklines=true,                     % Automatically break lines
-    		captionpos=b,                        % Position captions at the bottom
-    		showspaces=false,                    % Don't show spaces
-    		showstringspaces=false,              % Don't show spaces within strings
-    		showtabs=false,                      % Don't show tabs
-    		tabsize=4,                           % Set tab size to 4 spaces
-    		escapeinside={\%*}{*)}               % Define escape characters for LaTeX code within C code
-    	}
-    			
-    	% Define a style for C++ code
-    	\lstdefinestyle{CPlusPlusStyle}{%
-    		language=C++,                        % Set the language to C++
-    		basicstyle=\ttfamily\small,          % Use a small monospaced font
-    		keywordstyle=\color{RoyalBlue3},     % Color keywords in Royal Blue
-    		keywordstyle=[2]\color{HotPink4}, % Color specific keywords in Medium Purple
-    		keywordstyle=[3]\color{SpringGreen4},   % Color specific keywords in Chartreuse
-    		keywordstyle=[4]\color{SlateBlue2},    % Color specific keywords in Slate Blue
-    		commentstyle=\color{LightSteelBlue4},% Color comments in Light Steel Blue
-    		stringstyle=\color{Firebrick2},      % Color strings in Firebrick
-    		numberstyle=\tiny\ttfamily\color{SlateGray4}, % Set the style for line numbers
-    		numbers=left,                        % Position line numbers on the left
-    		stepnumber=1,                        % Number every line
-    		numbersep=10pt,                      % Space between line numbers and code
-    		backgroundcolor=\color{white},       % Set background color to white
-    		breaklines=true,                     % Automatically break lines
-    		captionpos=b,                        % Position captions at the bottom
-    		showspaces=false,                    % Don't show spaces
-    		showstringspaces=false,              % Don't show spaces within strings
-    		showtabs=false,                      % Don't show tabs
-    		tabsize=4,                           % Set tab size to 4 spaces
-    		escapeinside={\%*}{*)}               % Define escape characters for LaTeX code within C++ code
-	}
-			
-	% Define a style for Java code
-	\lstdefinestyle{JavaStyle}{%
-    		language=Java,                       % Set the language to Java
-    		basicstyle=\ttfamily\small,          % Use a small monospaced font
-    		keywordstyle=\color{RoyalBlue3},     % Color keywords in Royal Blue
-    		keywordstyle=[2]\color{HotPink4}, % Color specific keywords in Medium Purple
-    		keywordstyle=[3]\color{SpringGreen4},   % Color specific keywords in Chartreuse
-    		keywordstyle=[4]\color{SlateBlue2},    % Color specific keywords in Slate Blue
-    		commentstyle=\color{LightSteelBlue4},% Color comments in Light Steel Blue
-    		stringstyle=\color{Firebrick2},      % Color strings in Firebrick
-    		numberstyle=\tiny\ttfamily\color{SlateGray4}, % Set the style for line numbers
-    		numbers=left,                        % Position line numbers on the left
-    		stepnumber=1,                        % Number every line
-    		numbersep=10pt,                      % Space between line numbers and code
-    		backgroundcolor=\color{white},       % Set background color to white
-    		breaklines=true,                     % Automatically break lines
-    		captionpos=b,                        % Position captions at the bottom
-    		showspaces=false,                    % Don't show spaces
-    		showstringspaces=false,              % Don't show spaces within strings
-    		showtabs=false,                      % Don't show tabs
-    		tabsize=4,                           % Set tab size to 4 spaces
-    		escapeinside={\%*}{*)}               % Define escape characters for LaTeX code within Java code
-	}
-			
-	% Define a style for Python code
-	\lstdefinestyle{PythonStyle}{%
-    		language=Python,                     % Set the language to Python
-    		basicstyle=\ttfamily\small,          % Use a small monospaced font
-    		keywordstyle=\color{RoyalBlue3},     % Color keywords in Royal Blue
-    		keywordstyle=[2]\color{HotPink4}, % Color specific keywords in Medium Purple
-    		keywordstyle=[3]\color{SpringGreen4},   % Color specific keywords in Chartreuse
-    		keywordstyle=[4]\color{SlateBlue2},    % Color specific keywords in Slate Blue
-    		commentstyle=\color{LightSteelBlue4},% Color comments in Light Steel Blue
-    		stringstyle=\color{Firebrick2},      % Color strings in Firebrick
-    		numberstyle=\tiny\ttfamily\color{SlateGray4}, % Set the style for line numbers
-    		numbers=left,                        % Position line numbers on the left
-    		stepnumber=1,                        % Number every line
-    		numbersep=10pt,                      % Space between line numbers and code
-    		backgroundcolor=\color{white},       % Set background color to white
-    		breaklines=true,                     % Automatically break lines
-    		captionpos=b,                        % Position captions at the bottom
-    		showspaces=false,                    % Don't show spaces
-    		showstringspaces=false,              % Don't show spaces within strings
-    		showtabs=false,                      % Don't show tabs
-    		tabsize=4,                           % Set tab size to 4 spaces
-    		escapeinside={\%*}{*)}               % Define escape characters for LaTeX code within Python code
-	}
-			
-	% Define a style for Rust code
-	\lstdefinestyle{RustStyle}{%
-    		language=Rust,                     % Set the language to Rust
-    		basicstyle=\ttfamily\small,        % Use a small monospaced font
-    		keywordstyle=\color{RoyalBlue3},   % Color keywords in Royal Blue
-    		keywordstyle=[2]\color{HotPink4}, % Color specific keywords in Medium Purple
-    		keywordstyle=[3]\color{SpringGreen4},   % Color specific keywords in Chartreuse
-    		keywordstyle=[4]\color{SlateBlue2},    % Color specific keywords in Slate Blue
-    		commentstyle=\color{LightSteelBlue4},  % Color comments in Light Steel Blue
-    		stringstyle=\color{Firebrick2},    % Color strings in Firebrick
-    		numberstyle=\tiny\ttfamily\color{SlateGray4}, % Style for line numbers
-    		numbers=left,                      % Position line numbers on the left
-    		stepnumber=1,                      % Number every line
-    		numbersep=10pt,                    % Space between line numbers and code
-    		backgroundcolor=\color{white},     % Set background color to white
-    		breaklines=true,                   % Automatically break lines
-    		captionpos=b,                      % Position captions at the bottom
-    		showspaces=false,                  % Don't show spaces
-    		showstringspaces=false,            % Don't show spaces within strings
-    		showtabs=false,                    % Don't show tabs
-    		tabsize=4,                         % Set tab size to 4 spaces
-    		escapeinside={\%*}{*)}             % Define escape characters for LaTeX code within Rust code
-	}
-			
-	% Reset the code box counter at the start of each chapter
-	\preto\chapter{\setcounter{codeboxcounter}{0}}
-			
-	% Define a new counter for code boxes, reset at each chapter
-	\newcounter{codeboxcounter}[chapter]
-			
-	% Define the "codebox" environment using mdframed
-	\newenvironment{codebox}[1][Code Box]
-	{
-    		\stepcounter{codeboxcounter} % Increment the code box counter
-    		\newmdenv[%
-    			frametitlebackgroundcolor=none, % No background colour for the frame title
-    			frametitlefont=\scshape\sffamily, % Use small caps and sans serif for the frame title
-    			frametitleaboveskip=5pt, % Space above the frame title
-    			frametitlerule=true, % Add a horizontal rule under the frame title
-    			frametitlerulecolor=black, % Set the rule colour to black
-    			frametitlerulewidth=1pt, % Set the rule thickness
-    			frametitlealignment=\raggedright, % Align the frame title to the left
-    			frametitle={\thechapter.\arabic{codeboxcounter}:~##1}, % Format for the frame title with chapter and code box numbers
-    			linewidth=1pt, % Set the frame line width
-    			linecolor=black, % Set the frame line color
-    			innertopmargin=10pt, % Set inner margin at the top of the frame
-    			innerbottommargin=10pt, % Set inner margin at the bottom of the frame
-    			leftline=false, % Remove the left vertical line of the frame
-    			rightline=false, % Remove the right vertical line of the frame
-    		]{codeboxinner}\begin{codeboxinner}
+\providecommand{\usecodelists}{%
+
+\RequirePackage{listings}
+
+% Define Rust language for the listings package
+\lstdefinelanguage{Rust}{%
+sensitive=true,
+morecomment=[l]{//},
+morecomment=[s]{/*}{*/},
+moredelim=[s][{\itshape\color{Snow1}}]{\#[}{]},
+morestring=[b]{"},
+alsodigit={},
+alsoother={},
+alsoletter={!},
+% Control flow keywords
+morekeywords={break, continue, else, for, if, in, loop, match, return, while},
+% Variable-related keywords
+morekeywords={as, const, let, move, mut, ref, static},
+% Declaration-related keywords
+morekeywords={dyn, enum, fn, impl, Self, self, struct, trait, type, union, use, where},
+% Modularisation-related keywords
+morekeywords={crate, extern, mod, pub, super},
+% Marker keywords
+morekeywords={unsafe},
+% Reserved identifiers
+morekeywords={abstract, alignof, become, box, do, final, macro, offsetof, override, priv, proc, pure, sizeof, typeof, unsized, virtual, yield},
+% Traits
+morekeywords=[2]{Add, AddAssign, Any, AsciiExt, AsInner, AsInnerMut, AsMut, AsRawFd, AsRawHandle, AsRawSocket, AsRef, Binary, BitAnd, BitAndAssign, Bitor, BitOr, BitOrAssign, BitXor, BitXorAssign, Borrow, BorrowMut, Boxed, BoxPlace, BufRead, BuildHasher, CastInto, CharExt, Clone, CoerceUnsized, CommandExt, Copy, Debug, DecodableFloat, Default, Deref, DerefMut, DirBuilderExt, DirEntryExt, Display, Div, DivAssign, DoubleEndedIterator, DoubleEndedSearcher, Drop, EnvKey, Eq, Error, ExactSizeIterator, ExitStatusExt, Extend, FileExt, FileTypeExt, Float, Fn, FnBox, FnMut, FnOnce, Freeze, From, FromInner, FromIterator, FromRawFd, FromRawHandle, FromRawSocket, FromStr, FullOps, FusedIterator, Generator, Hash, Hasher, Index, IndexMut, InPlace, Int, Into, IntoCow, IntoInner, IntoIterator, IntoRawFd, IntoRawHandle, IntoRawSocket, IsMinusOne, IsZero, Iterator, JoinHandleExt, LargeInt, LowerExp, LowerHex, MetadataExt, Mul, MulAssign, Neg, Not, Octal, OpenOptionsExt, Ord, OsStrExt, OsStringExt, Packet, PartialEq, PartialOrd, Pattern, PermissionsExt, Place, Placer, Pointer, Product, Put, RangeArgument, RawFloat, Read, Rem, RemAssign, Seek, Shl, ShlAssign, Shr, ShrAssign, Sized, SliceConcatExt, SliceExt, SliceIndex, Stats, Step, StrExt, Sub, SubAssign, Sum, Sync, TDynBenchFn, Terminal, Termination, ToOwned, ToSocketAddrs, ToString, Try, TryFrom, TryInto, UnicodeStr, Unsize, UpperExp, UpperHex, WideInt, Write, Send},
+% Primitive types
+morekeywords=[3]{bool, char, f32, f64, i8, i16, i32, i64, isize, str, u8, u16, u32, u64, unit, usize, i128, u128},
+% Prelude value constructors
+morekeywords=[4]{Err, false, None, Ok, Some, true},
+% Additional types
+morekeywords=[3]{AccessError, Adddf3, AddI128, AddoI128, AddoU128, ADDRESS, ADDRESS64, addrinfo, ADDRINFOA, AddrParseError, Addsf3, AddU128, advice, aiocb, Alignment, AllocErr, AnonPipe, Answer, Arc, Args, ArgsInnerDebug, ArgsOs, Argument, Arguments, ArgumentV1, Ashldi3, Ashlti3, Ashrdi3, Ashrti3, AssertParamIsClone, AssertParamIsCopy, AssertParamIsEq, AssertUnwindSafe, AtomicBool, AtomicPtr, Attr, auxtype, auxv, BackPlace, BacktraceContext, Barrier, BarrierWaitResult, Bencher, BenchMode, BenchSamples, BinaryHeap, BinaryHeapPlace, blkcnt, blkcnt64, blksize, BOOL, boolean, BOOLEAN, BoolTrie, BorrowError, BorrowMutError, Bound, Box, bpf, BTreeMap, BTreeSet, Bucket, BucketState, Buf, BufReader, BufWriter, Builder, BuildHasherDefault, BY, BYTE, Bytes, CannotReallocInPlace, cc, Cell, Chain, CHAR, CharIndices, CharPredicateSearcher, Chars, CharSearcher, CharsError, CharSliceSearcher, CharTryFromError, Child, ChildPipes, ChildStderr, ChildStdin, ChildStdio, ChildStdout, Chunks, ChunksMut, ciovec, clock, clockid, Cloned, cmsgcred, cmsghdr, CodePoint, Color, ColorConfig, Command, CommandEnv, Component, Components, CONDITION, condvar, Condvar, CONSOLE, CONTEXT, Count, Cow, cpu, CRITICAL, CStr, CString, CStringArray, Cursor, Cycle, CycleIter, daddr, DebugList, DebugMap, DebugSet, DebugStruct, DebugTuple, Decimal, Decoded, DecodeUtf16, DecodeUtf16Error, DecodeUtf8, DefaultEnvKey, DefaultHasher, dev, device, Difference, Digit32, DIR, DirBuilder, dircookie, dirent, dirent64, DirEntry, Discriminant, DISPATCHER, Display, Divdf3, Divdi3, Divmoddi4, Divmodsi4, Divsf3, Divsi3, Divti3, dl, Dl, Dlmalloc, Dns, DnsAnswer, DnsQuery, dqblk, Drain, DrainFilter, Dtor, Duration, DwarfReader, DWORD, DWORDLONG, DynamicLibrary, Edge, EHAction, EHContext, Elf32, Elf64, Empty, EmptyBucket, EncodeUtf16, EncodeWide, Entry, EntryPlace, Enumerate, Env, epoll, errno, Error, ErrorKind, EscapeDebug, EscapeDefault, EscapeUnicode, event, Event, eventrwflags, eventtype, ExactChunks, ExactChunksMut, EXCEPTION, Excess, ExchangeHeapSingleton, exit, exitcode, ExitStatus, Failure, fd, fdflags, fdsflags, fdstat, ff, fflags, File, FILE, FileAttr, filedelta, FileDesc, FilePermissions, filesize, filestat, FILETIME, filetype, FileType, Filter, FilterMap, Fixdfdi, Fixdfsi, Fixdfti, Fixsfdi, Fixsfsi, Fixsfti, Fixunsdfdi, Fixunsdfsi, Fixunsdfti, Fixunssfdi, Fixunssfsi, Fixunssfti, Flag, FlatMap, Floatdidf, FLOATING, Floatsidf, Floatsisf, Floattidf, Floattisf, Floatundidf, Floatunsidf, Floatunsisf, Floatuntidf, Floatuntisf, flock, ForceResult, FormatSpec, Formatted, Formatter, Fp, FpCategory, fpos, fpos64, fpreg, fpregset, FPUControlWord, Frame, FromBytesWithNulError, FromUtf16Error, FromUtf8Error, FrontPlace, fsblkcnt, fsfilcnt, fsflags, fsid, fstore, fsword, FullBucket, FullBucketMut, FullDecoded, Fuse, GapThenFull, GeneratorState, gid, glob, glob64, GlobalDlmalloc, greg, group, GROUP, Guard, GUID, Handle, HANDLE, Handler, HashMap, HashSet, Heap, HINSTANCE, HMODULE, hostent, HRESULT, id, idtype, if, ifaddrs, IMAGEHLP, Immut, in, in6, Incoming, Infallible, Initializer, ino, ino64, inode, input, InsertResult, Inspect, Instant, int16, int32, int64, int8, integer, IntermediateBox, Internal, Intersection, intmax, IntoInnerError, IntoIter, IntoStringError, intptr, InvalidSequence, iovec, ip, IpAddr, ipc, Ipv4Addr, ipv6, Ipv6Addr, Ipv6MulticastScope, Iter, IterMut, itimerspec, itimerval, jail, JoinHandle, JoinPathsError, KDHELP64, kevent, kevent64, key, Key, Keys, KV, l4, LARGE, lastlog, launchpad, Layout, Lazy, lconv, Leaf, LeafOrInternal, Lines, LinesAny, LineWriter, linger, linkcount, LinkedList, load, locale, LocalKey, LocalKeyState, Location, lock, LockResult, loff, LONG, lookup, lookupflags, LookupHost, LPBOOL, LPBY, LPBYTE, LPCSTR, LPCVOID, LPCWSTR, LPDWORD, LPFILETIME, LPHANDLE, LPOVERLAPPED, LPPROCESS, LPPROGRESS, LPSECURITY, LPSTARTUPINFO, LPSTR, LPVOID, LPWCH, LPWIN32, LPWSADATA, LPWSAPROTOCOL, LPWSAPROTOCOLCHAIN, lseek, LUID, Machine, madvise, MajorFlags, MakeCaller, malloc, mcontext, mcontext64, memory, MemoryBlock, MemoryMap, Metadata, Metric, mflags, minor, MinorFlags, mnt, ModEntry, Mode, mode, Module, modflags, ModResults, Monitor, motd, Mount, mpack, mq, msg, msghdr, msginfo, msglen, msgqnum, msgseg, msgtql, msqid, Mutex, MutexGuard, MyBox, MyHeap, NativeLibBoilerplate, Netc, netent, nid, nl, nlitem, Node, NoneError, Nsec, OccupiedEntry, off, OffsetBucket, offmask, oflags, Once, OnceState, OpenOptions, Option, OptRes, os, OsStr, OsString, Output, OVERLAPPED, Owned, Pack, packet, PacketPart, page, Param, ParamIdx, ParseBoolError, ParseCharError, ParseError, ParseFloatError, ParseIntError, ParseResult, PartialBucket, Password, Path, path, PathBuf, PathComponent, PathComponents, PathIter, PathSegments, PCONDITION, PeekMut, Peekable, PeerCreds, Pending, Permissions, PhantomData, Phrase, pid, PID, PipeBuf, Place, Plan, PlanAlloc, Pluralize, poison, PoisonError, poll, port, Position, Post, ppoll, process, Process, ProcessOutput, protoent, ptrdiff, pthread, pthreadattr, pthreadbarrier, pthreadbarrierattr, pthreadcond, pthreadcondattr, pthreadkey, pthreadmutex, pthreadmutexattr, pthreadonce, pthreadrwlock, pthreadrwlockattr, pthreadt, ptrace, pw, pwent, Qd, queue, QueueInitializer, quote, radvisory, Range, RangeFrom, RangeFull, RangeInclusive, RangeMut, RangeTo, RangeToInclusive, RawBucket, RawPthread, RawTable, RawWaker, RawWakerVTable, Rc, RecvDgram, RecvMsg, record, RecvState, RecvTimeout, ReentrantMutex, reent, REF, ref, Ref, reference, referencecount, RefCell, RefMut, RegClass, RegGroup, register, REGISTRATION, RegKind, RemapRegs, RemoveResult, Repeat, ReplaceWith, Result, rlimit, rlimit64, rlim, rlim64, rlimt, roff, Root, RootedRc, RootedVec, RootedVecDeque, RootedWeak, RootRef, rseq, RseqSig, rusage, RustcDecodable, RustcEncodable, Same, scan, sched, Scope, ScopedCell, ScopedCellMut, Score, SearchResult, SearchStep, security, seek, Segment, segments, Select, SelectionResult, self, send, SendDgram, SendMsg, Sender, sendsize, SendTimeout, SeqCst, se, SearchStep, Option, HashMap},
+% Additional prelude value constructors
+morekeywords=[4]{acancel, accept, addressof, alloc, alloc_handle, bswap16, bswap32, bswap64, catch_unwind, ceil, ceilf32, ceilf64, core_panic, cos, cosf32, cosf64, discriminant_value, drop_in_place, fabsf32, fabsf64, floor, floorf32, floorf64, fmaf32, fmaf64, fmodf32, fmodf64, forget, likely, maxnumf32, maxnumf64, min_align_of, min_align_of_val, minnumf32, minnumf64, move_val_init, mul_with_overflow, nearmaxf32, nearmaxf64, nearminf32, nearminf64, needs_drop, likely, unlikely},
+% Other keywords
+morekeywords={async, await, dyn, abstract, priv, final, super, Yield, ref, self, where, try},
+% Optional addition
+otherkeywords={::, :, <>, .., ..=, ..<, ==, !=, <=>, ===, <==, >==, <=, >=, &&, ||, ??, :=, ==>, >>=, <<=, <:=, ?==, @, =>, =>>},
+}
+
+% Define a style for C code
+\lstdefinestyle{CStyle}{%
+	language=C,                          % Set the language to C
+	basicstyle=\ttfamily\small,          % Use a small monospaced font
+	keywordstyle=\color{RoyalBlue3},     % Color keywords in Royal Blue
+	keywordstyle=[2]\color{HotPink4}, % Color specific keywords in Medium Purple
+	keywordstyle=[3]\color{SpringGreen4},   % Color specific keywords in Chartreuse
+	keywordstyle=[4]\color{SlateBlue2},    % Color specific keywords in Slate Blue
+	commentstyle=\color{LightSteelBlue4},% Color comments in Light Steel Blue
+	stringstyle=\color{Firebrick2},      % Color strings in Firebrick
+	numberstyle=\tiny\ttfamily\color{SlateGray4}, % Set the style for line numbers
+	numbers=left,                        % Position line numbers on the left
+	stepnumber=1,                        % Number every line
+	numbersep=10pt,                      % Space between line numbers and code
+	backgroundcolor=\color{white},       % Set background color to white
+	breaklines=true,                     % Automatically break lines
+	captionpos=b,                        % Position captions at the bottom
+	showspaces=false,                    % Don't show spaces
+	showstringspaces=false,              % Don't show spaces within strings
+	showtabs=false,                      % Don't show tabs
+	tabsize=4,                           % Set tab size to 4 spaces
+	escapeinside={\%*}{*)}               % Define escape characters for LaTeX code within C code
+}
+
+% Define a style for C++ code
+\lstdefinestyle{CPlusPlusStyle}{%
+	language=C++,                        % Set the language to C++
+	basicstyle=\ttfamily\small,          % Use a small monospaced font
+	keywordstyle=\color{RoyalBlue3},     % Color keywords in Royal Blue
+	keywordstyle=[2]\color{HotPink4}, % Color specific keywords in Medium Purple
+	keywordstyle=[3]\color{SpringGreen4},   % Color specific keywords in Chartreuse
+	keywordstyle=[4]\color{SlateBlue2},    % Color specific keywords in Slate Blue
+	commentstyle=\color{LightSteelBlue4},% Color comments in Light Steel Blue
+	stringstyle=\color{Firebrick2},      % Color strings in Firebrick
+	numberstyle=\tiny\ttfamily\color{SlateGray4}, % Set the style for line numbers
+	numbers=left,                        % Position line numbers on the left
+	stepnumber=1,                        % Number every line
+	numbersep=10pt,                      % Space between line numbers and code
+	backgroundcolor=\color{white},       % Set background color to white
+	breaklines=true,                     % Automatically break lines
+	captionpos=b,                        % Position captions at the bottom
+	showspaces=false,                    % Don't show spaces
+	showstringspaces=false,              % Don't show spaces within strings
+	showtabs=false,                      % Don't show tabs
+	tabsize=4,                           % Set tab size to 4 spaces
+	escapeinside={\%*}{*)}               % Define escape characters for LaTeX code within C++ code
+}
+
+% Define a style for Java code
+\lstdefinestyle{JavaStyle}{%
+	language=Java,                       % Set the language to Java
+	basicstyle=\ttfamily\small,          % Use a small monospaced font
+	keywordstyle=\color{RoyalBlue3},     % Color keywords in Royal Blue
+	keywordstyle=[2]\color{HotPink4}, % Color specific keywords in Medium Purple
+	keywordstyle=[3]\color{SpringGreen4},   % Color specific keywords in Chartreuse
+	keywordstyle=[4]\color{SlateBlue2},    % Color specific keywords in Slate Blue
+	commentstyle=\color{LightSteelBlue4},% Color comments in Light Steel Blue
+	stringstyle=\color{Firebrick2},      % Color strings in Firebrick
+	numberstyle=\tiny\ttfamily\color{SlateGray4}, % Set the style for line numbers
+	numbers=left,                        % Position line numbers on the left
+	stepnumber=1,                        % Number every line
+	numbersep=10pt,                      % Space between line numbers and code
+	backgroundcolor=\color{white},       % Set background color to white
+	breaklines=true,                     % Automatically break lines
+	captionpos=b,                        % Position captions at the bottom
+	showspaces=false,                    % Don't show spaces
+	showstringspaces=false,              % Don't show spaces within strings
+	showtabs=false,                      % Don't show tabs
+	tabsize=4,                           % Set tab size to 4 spaces
+	escapeinside={\%*}{*)}               % Define escape characters for LaTeX code within Java code
+}
+
+% Define a style for Python code
+\lstdefinestyle{PythonStyle}{%
+	language=Python,                     % Set the language to Python
+	basicstyle=\ttfamily\small,          % Use a small monospaced font
+	keywordstyle=\color{RoyalBlue3},     % Color keywords in Royal Blue
+	keywordstyle=[2]\color{HotPink4}, % Color specific keywords in Medium Purple
+	keywordstyle=[3]\color{SpringGreen4},   % Color specific keywords in Chartreuse
+	keywordstyle=[4]\color{SlateBlue2},    % Color specific keywords in Slate Blue
+	commentstyle=\color{LightSteelBlue4},% Color comments in Light Steel Blue
+	stringstyle=\color{Firebrick2},      % Color strings in Firebrick
+	numberstyle=\tiny\ttfamily\color{SlateGray4}, % Set the style for line numbers
+	numbers=left,                        % Position line numbers on the left
+	stepnumber=1,                        % Number every line
+	numbersep=10pt,                      % Space between line numbers and code
+	backgroundcolor=\color{white},       % Set background color to white
+	breaklines=true,                     % Automatically break lines
+	captionpos=b,                        % Position captions at the bottom
+	showspaces=false,                    % Don't show spaces
+	showstringspaces=false,              % Don't show spaces within strings
+	showtabs=false,                      % Don't show tabs
+	tabsize=4,                           % Set tab size to 4 spaces
+	escapeinside={\%*}{*)}               % Define escape characters for LaTeX code within Python code
+}
+
+% Define a style for Rust code
+\lstdefinestyle{RustStyle}{%
+	language=Rust,                     % Set the language to Rust
+	basicstyle=\ttfamily\small,        % Use a small monospaced font
+	keywordstyle=\color{RoyalBlue3},   % Color keywords in Royal Blue
+	keywordstyle=[2]\color{HotPink4}, % Color specific keywords in Medium Purple
+	keywordstyle=[3]\color{SpringGreen4},   % Color specific keywords in Chartreuse
+	keywordstyle=[4]\color{SlateBlue2},    % Color specific keywords in Slate Blue
+	commentstyle=\color{LightSteelBlue4},  % Color comments in Light Steel Blue
+	stringstyle=\color{Firebrick2},    % Color strings in Firebrick
+	numberstyle=\tiny\ttfamily\color{SlateGray4}, % Style for line numbers
+	numbers=left,                      % Position line numbers on the left
+	stepnumber=1,                      % Number every line
+	numbersep=10pt,                    % Space between line numbers and code
+	backgroundcolor=\color{white},     % Set background color to white
+	breaklines=true,                   % Automatically break lines
+	captionpos=b,                      % Position captions at the bottom
+	showspaces=false,                  % Don't show spaces
+	showstringspaces=false,            % Don't show spaces within strings
+	showtabs=false,                    % Don't show tabs
+	tabsize=4,                         % Set tab size to 4 spaces
+	escapeinside={\%*}{*)}             % Define escape characters for LaTeX code within Rust code
+}
+
+% Reset the code box counter at the start of each chapter
+\preto\chapter{\setcounter{codeboxcounter}{0}}
+
+% Define a new counter for code boxes, reset at each chapter
+\newcounter{codeboxcounter}[chapter]
+
+% Define the "codebox" environment using mdframed
+\newenvironment{codebox}[1][Code Box]
+{
+	\stepcounter{codeboxcounter} % Increment the code box counter
+	\newmdenv[%
+		frametitlebackgroundcolor=none, % No background colour for the frame title
+		frametitlefont=\scshape\sffamily, % Use small caps and sans serif for the frame title
+		frametitleaboveskip=5pt, % Space above the frame title
+		frametitlerule=true, % Add a horizontal rule under the frame title
+		frametitlerulecolor=black, % Set the rule colour to black
+		frametitlerulewidth=1pt, % Set the rule thickness
+		frametitlealignment=\raggedright, % Align the frame title to the left
+		frametitle={\thechapter.\arabic{codeboxcounter}:~##1}, % Format for the frame title with chapter and code box numbers
+		linewidth=1pt, % Set the frame line width
+		linecolor=black, % Set the frame line color
+		innertopmargin=10pt, % Set inner margin at the top of the frame
+		innerbottommargin=10pt, % Set inner margin at the bottom of the frame
+		leftline=false, % Remove the left vertical line of the frame
+		rightline=false, % Remove the right vertical line of the frame
+	]{codeboxinner}\begin{codeboxinner}
 		}{%
-		      \end{codeboxinner}
-	}
-			
-	% Define a custom command for adding code snippets in a code box
-	% Arguments:
-	%   #1: Title of the code box
-	%   #2: Label for the code box
-	%   #3: Listing style for code formatting
-	%   #4: File path to the code file
-	\providecommand{\addcode}[4]{%
-    		\begin{codebox}[##1]\label{code:##2} % Start the code box environment with a title and label
-    			\lstinputlisting[style=##3]{##4} % Include the code from the specified file with the chosen style
-    		\end{codebox} % End the code box environment
-	}
+	\end{codeboxinner}
+}
+
+% Define a custom command for adding code snippets in a code box
+% Arguments:
+%   #1: Title of the code box
+%   #2: Label for the code box
+%   #3: Listing style for code formatting
+%   #4: File path to the code file
+\providecommand{\addcode}[4]{%
+	\begin{codebox}[##1]\label{code:##2} % Start the code box environment with a title and label
+		\lstinputlisting[style=##3]{##4} % Include the code from the specified file with the chosen style
+	\end{codebox} % End the code box environment
+}
 }
 
 \ifbool{usecodelists}{\usecodelists}{\typeout{Code and program listings are not used.}}
-	
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Environment for Problems and Exercises
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	
+
 % Define a new environment called 'problems' with an optional title argument (default: 'Problem Set')
 \newenvironment{problems}[1][Problem Set]{
 	% Set the section heading to the provided title
@@ -1492,12 +1492,12 @@ postamble "\n\\end{theindex}\n"
 	\end{enumerate}
 	% Adjust the layout or formatting as needed at the end
 }
-	
+
 % Define a new enumeration list style called 'caseList' with a single level
 \newlist{caseList}{enumerate}{1}
 % Configure 'caseList' labels: bold text 'Case n:' where n is the item number, with no left margin
 \setlist[caseList]{label=\textbf{Case~\arabic*:},leftmargin=*}
-	
+
 % Define a new environment called 'case' with an optional argument (default: empty)
 \NewDocumentEnvironment{case}{O{}}{%
 	% Start the 'caseList' enumeration with the optional title
@@ -1506,12 +1506,12 @@ postamble "\n\\end{theindex}\n"
 		% End the 'caseList' enumeration
 	\end{caseList}%
 }
-	
+
 % Define a new enumeration list style called 'axiomList' with a single level
 \newlist{axiomList}{enumerate}{1}
 % Configure 'axiomList' labels: bold text 'Axiom A:' where A is the letter index, with no left margin
 \setlist[axiomList]{label=\textbf{Axiom~\Alph*:}, leftmargin=*}
-	
+
 % Define a new environment called 'axiom' with an optional argument (default: empty)
 \NewDocumentEnvironment{axiom}{O{}}{%
 	% Start the 'axiomList' enumeration with the optional title
@@ -1520,7 +1520,7 @@ postamble "\n\\end{theindex}\n"
 		% End the 'axiomList' enumeration
 	\end{axiomList}%
 }
-	
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Custom Commands for Document Formatting
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1537,30 +1537,30 @@ postamble "\n\\end{theindex}\n"
 	\addcontentsline{toc}{chapter}{Contents} % Adds a "Contents" entry to the table of contents
 	\vfill % Fills vertical space to push content to the next page
 	\pagebreak % Forces a page break after the table of contents
-} 
+}
 \providecommand{\urlref}[1]{\href{#1}{#1}} % Creates a hyperlink for a given URL
-	
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % TODO Notes and Annotations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	
+
 % Enable TODO notes functionality within the document
 \RequirePackage{todonotes} % Enable adding TODO notes
-	
+
 % Insert inline TODO notes with a red border and background for annotation purposes
 \providecommand{\mynote}[1]{%
 	\smallskip
 	\todo[inline, size=\small, bordercolor=Firebrick1!20, color=Firebrick1!20]{\sffamily#1}
 	\smallskip
 } % Create inline TODO notes with red border and background
-	
+
 % Mark sections requiring a citation with a TODO note
 \providecommand{\needcite}{%
 	\todo[noline, size=\small, bordercolor=Firebrick1!20, color=Firebrick1!20]{\sffamily~Requires citation.}
 } % Mark locations where a citation is required
-	
+
 % Disable the use of '@' in command names
 \makeatother
-	
+
 % End of package
 \endinput
