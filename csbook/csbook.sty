@@ -77,6 +77,7 @@
 \newbool{usenormalthm}      % Flag to manage the use of standard theorem formatting
 \newbool{usetikz}           % Flag to manage the use of TikZ
 \newbool{usecodelists}      % Flag to manage the use of code lists
+\newbool{forprint}          % Flag to manage the use of print-specific settings
 
 % Boolean Initialization
 \setbool{useanonymouspro}{false}   % Default: Anonymous Pro font off
@@ -94,6 +95,7 @@
 \setbool{usenormalthm}{false}      % Default: Standard theorem formatting off
 \setbool{usetikz}{false}           % Default: TikZ off
 \setbool{usecodelists}{false}      % Default: Code lists off
+\setbool{forprint}{false}          % Default: Printing-specific options off
 
 % Option Definitions
 \DeclareOption{useanonymouspro}{\setbool{useanonymouspro}{true}}   % Enable Anonymous Pro font if specified
@@ -111,9 +113,10 @@
 \DeclareOption{usenormalthm}{\setbool{usenormalthm}{true}}         % Enable standard theorem formatting if specified
 \DeclareOption{usetikz}{\setbool{usetikz}{true}}                   % Enable TikZ if specified
 \DeclareOption{usecodelists}{\setbool{usecodelists}{true}}         % Enable code lists if specified
+\DeclareOption{forprint}{\setbool{forprint}{true}}                 % Enable print-specific settings if specified
 
-% Handle Unrecognized Options
-\DeclareOption*{\PackageWarning{csbook}{Unrecognized option '\CurrentOption'}}  % Warn for any unknown options
+% Handle Unrecognised Options
+\DeclareOption*{\PackageWarning{csbook}{Unrecognised option '\CurrentOption'}}  % Warn for any unknown options
 
 % Process the Options
 \ProcessOptions\relax  % Implement the specified options and continue
@@ -179,14 +182,35 @@
 % Page Layout Configuration
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[%
-	a4paper,             % Define A4 paper size
-	tmargin=2.50cm,      % Set top margin
-	bmargin=2.50cm,      % Set bottom margin
-	lmargin=3.75cm,      % Set left margin
-	rmargin=3.75cm,      % Set right margin
-	footskip=1.00cm      % Set distance from text to footer
-]{geometry}              % Load geometry package for page layout management
+\providecommand{\forprint}{%
+	% Geometry settings for an A4-sized textbook layout
+        \RequirePackage[%
+		a4paper,                % Paper size: A4
+		left=1.5in,             % Left margin (wider for binding)
+		right=1in,              % Right margin (standard)
+		top=1in,                % Top margin
+		bottom=1in,             % Bottom margin
+		bindingoffset=0.5in,    % Binding offset: extra space for the inner margin
+		headheight=15pt,        % Height of the header (room for chapter titles)
+		headsep=20pt,           % Space between the header and text block
+		footskip=25pt,          % Space for footers (e.g., page numbers)
+		textheight=670pt,       % Height of the text block (for readability)
+		textwidth=440pt,        % Width of the text block (balanced for readability)
+		centering,              % Center the text block on the page
+		includeheadfoot         % Include headers and footers in the layout
+	]{geometry}                 % Load geometry package for page layout management
+}
+
+\ifbool{forprint}{\forprint}{%
+	\RequirePackage[%
+		a4paper,               % Define A4 paper size
+		tmargin=2.50cm,        % Set top margin
+		bmargin=2.50cm,        % Set bottom margin
+		lmargin=3.75cm,        % Set left margin
+		rmargin=3.75cm,        % Set right margin
+		footskip=1.00cm        % Set distance from text to footer
+	]{geometry}                % Load geometry package for page layout management
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Customization of Headers and Footers
@@ -788,7 +812,7 @@ postamble "\n\\end{theindex}\n"
 
 % Customize the preamble and postamble for glossaries
 \renewcommand{\glossarypreamble}{\begin{sffamily}\small} % Set font for glossary preamble
-		\renewcommand{\glossarypostamble}{\end{sffamily}} % End font customization for glossary
+\renewcommand{\glossarypostamble}{\end{sffamily}} % End font customization for glossary
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Abstract Environment Definition
