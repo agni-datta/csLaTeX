@@ -105,11 +105,13 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage[%
-	a4paper,        % Set paper size to A4 (210 x 297 mm) for standard document formatting
-	margin=1.5in,   % Set uniform margin on all sides for a balanced layout
-	footskip=1cm,   % Set space between the bottom of the text block and the footer to 1 cm
-	verbose         % Enable verbose mode to print additional configuration details in the log
-]{geometry}         % Configure the page layout with the specified options
+		a4paper,               % Define a4paper size
+		tmargin=3.00cm,        % Set top margin
+		bmargin=3.00cm,        % Set bottom margin
+		lmargin=3.75cm,        % Set left margin
+		rmargin=3.75cm,        % Set right margin
+		footskip=1.00cm        % Set distance from text to footer
+]{geometry}                % Load geometry package for page layout management
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Customizing Lists
@@ -164,59 +166,60 @@
 \RequirePackage[normalem]{ulem}  % Provides features for underlining, strikethrough, and other text emphases
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Mathematical Typesetting
+% Mathematical Typesetting Configuration
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[T1]{fontenc}         % Specifies font encoding for proper handling of special characters
 \RequirePackage{amsfonts}            % Provides essential mathematical fonts for advanced typesetting
 \RequirePackage{amssymb}             % Supplies additional mathematical symbols and operators
-\RequirePackage{amsmath}             % Enables advanced mathematical formatting, including environments such as align, gather, etc.
-\RequirePackage{amsthm}              % Facilitates the creation of theorem-like environments (theorems, lemmas, corollaries, etc.)
-\RequirePackage{thmtools}            % Provides tools and enhancements for theorem environments and customization
-\RequirePackage{lmodern}             % Uses Latin Modern fonts to improve readability and support extended character sets
-\RequirePackage{nicefrac}            % Enhances the appearance of fractions with a slanted style for improved clarity
-\RequirePackage{fontspec}            % Allows custom font selection in XeLaTeX and LuaLaTeX for advanced typography
-\RequirePackage{siunitx}             % Ensures consistent formatting and presentation of SI units and scientific notation
-\RequirePackage{unicode-math}        % Enables the use of Unicode-based mathematical symbols and fonts
+\RequirePackage{amsmath}             % Enables advanced mathematical formatting (e.g., align, gather, etc.)
+\RequirePackage{amsthm}              % Facilitates creation of theorem-like environments (theorems, lemmas, corollaries)
+\RequirePackage{thmtools}            % Tools and enhancements for theorem environments and customization
+\RequirePackage{nicefrac}            % Enhances fractions with a slanted style for improved clarity
+\RequirePackage{fontspec}            % Custom font selection in XeLaTeX/LuaLaTeX for advanced typography
+\RequirePackage{siunitx}             % Consistent formatting of SI units and scientific notation
+\RequirePackage{unicode-math}        % Enables Unicode-based mathematical symbols and fonts
 
-% Define the primary font with specific styles and features
-\setmainfont[
+% Main Font Configuration
+\setmainfont[%
 	ItalicFont = lmroman10-italic.otf,          % Italic font variant for emphasis and stylistic purposes
 	SmallCapsFont = lmromancaps10-regular.otf,  % Small caps font variant for stylistic and emphasis elements
 	BoldFont = lmroman10-bold.otf,              % Bold font variant for headings and important text
 	BoldItalicFont = lmroman10-bolditalic.otf,  % Bold italic font variant for additional emphasis and highlights
-	RawFeature = {%
-		+calt,           % Enable contextual alternates for improved text flow and appearance
-		+case,           % Include case-sensitive forms for accurate representation of text
-		+dlig,           % Allow discretionary ligatures for a refined typographic presentation
-		+hlig,           % Include historical ligatures for accurate historical text representation
-		+kern,           % Enable kerning for improved spacing between characters
-		+liga,           % Use standard ligatures to enhance text aesthetics
-		+lnum,           % Use lining figures for numerals to ensure alignment in text
-		+mark,           % Apply mark positioning to correctly render complex scripts
-		+mkmk,           % Enable mark-to-mark positioning for accurate text rendering
-		+pnum,           % Use proportional figures for a more natural text appearance
-	}%
-]{lmroman10-regular.otf}    % Sets the primary text font to Latin Modern Roman with specified features
+	RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Apply advanced typographic features
+]{lmroman10-regular.otf} % Set the main font
 
-\RequirePackage[%
-	scale=0.92,  % Scale font size to 92% for a slightly smaller yet readable appearance
-	lining,      % Use lining figures for consistent numeral alignment
-	otf          % Use OpenType features for enhanced typographic quality
-]{sourcesanspro}  % Configures the Source Sans Pro sans-serif font for body text and headings
+\RequirePackage[otf, lining, proportional, scale=0.985]{sourcesanspro} % Load the Source Sans Pro package with specified options
+\setsansfont[%
+	Scale = 0.985, % Set font scale
+	SmallCapsFeatures = {RawFeature=+smcp}, % Enable small caps feature
+	RawFeature = {+calt, +case, +dlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Apply advanced typographic features
+]{Source Sans Pro} % Define the sans font
 
-\RequirePackage[%
-	scale=0.86,  % Scale font size to 86% for a slightly smaller but still readable appearance
-	lf,          % Use lining figures for consistent numeral alignment
-]{FiraMono}  % Configures the Fira Mono monospaced font for code and fixed-width text
+\RequirePackage{AnonymousPro} % Load the Anonymous Pro package
+\setmonofont[%
+	SmallCapsFeatures = {RawFeature=+smcp}, % Enable small caps feature
+	RawFeature = {+calt, +case, +dlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Apply advanced typographic features
+]{Anonymous Pro} % Define the monospaced font
 
-% Prevent conflicts with existing definitions of math alphabets
-\let\mathbfcal\relax
+% Provide a command to set the default font size
+\providecommand{\setglobalfontsize}[1]{\def\deffontsize{#1}} % Define a command to set the font size
 
-\RequirePackage[%
-	bb=bboldx,     % Use extended Blackboard bold font options for mathematical notation
-	cal=cm         % Apply classic calligraphic font style for mathematical symbols
-]{mathalpha}       % Provides additional mathematical font styles for diverse notation
+\AtEndPreamble{%
+	% Resolve conflicts with existing math alphabet definitions
+	\let\mathbfcal\relax
+	
+	\RequirePackage[%
+		bb=bboldx,  % Extended Blackboard bold options for math notation
+		cal=cm      % Classic calligraphic font style for math symbols
+	]{mathalpha}  % Additional math font styles for diverse notation
+	
+	% Set a default font size if \deffontsize is undefined
+	\ifx\deffontsize\undefined
+		\setglobalfontsize{10pt} % Default to 10pt if not defined
+	\fi
+	% Load the fontsize package
+	\RequirePackage[fontsize=\deffontsize]{fontsize} % Load the fontsize package
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Hyperlinks and Metadata Configuration
@@ -239,65 +242,6 @@
 	bookmarksnumbered=true,           % Number bookmarks in the PDF for better navigation
 	breaklinks=true,                  % Allow line breaks in long URLs
 }
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Cleveref Settings
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage{cleveref} % Load the cleveref package for intelligent cross-referencing
-
-% Define plural and singular names for various types of references
-\Crefname{case}{Case}{Cases}
-\Crefname{chapter}{Chapter}{Chapters}
-\Crefname{claim}{Claim}{Claims}
-\Crefname{conjecture}{Conjecture}{Conjectures}
-\Crefname{corollary}{Corollary}{Corollaries}
-\Crefname{definition}{Definition}{Definitions}
-\Crefname{example}{Example}{Examples}
-\Crefname{exercise}{Exercise}{Exercises}
-\Crefname{fact}{Fact}{Facts}
-\Crefname{highlight}{Highlight}{Highlights}
-\Crefname{important}{Important}{Important Points}
-\Crefname{keypoint}{Keypoint}{Keypoints}
-\Crefname{lemma}{Lemma}{Lemmas}
-\Crefname{note}{Note}{Notes}
-\Crefname{problem}{Problem}{Problems}
-\Crefname{property}{Property}{Properties}
-\Crefname{proposition}{Proposition}{Propositions}
-\Crefname{question}{Question}{Questions}
-\Crefname{remark}{Remark}{Remarks}
-\Crefname{section}{Section}{Sections}
-\Crefname{solution}{Solution}{Solutions}
-\Crefname{subsection}{Subsection}{Subsections}
-\Crefname{subsubsection}{Subsubsection}{Subsubsections}
-\Crefname{theorem}{Theorem}{Theorems}
-
-% Define lowercase names for various types of references
-\crefname{case}{case}{cases}
-\crefname{chapter}{chapter}{chapters}
-\crefname{claim}{claim}{claims}
-\crefname{conjecture}{conjecture}{conjectures}
-\crefname{corollary}{corollary}{corollaries}
-\crefname{definition}{definition}{definitions}
-\crefname{example}{example}{examples}
-\crefname{exercise}{exercise}{exercises}
-\crefname{fact}{fact}{facts}
-\crefname{highlight}{highlight}{highlights}
-\crefname{important}{important}{important points}
-\crefname{keypoint}{keypoint}{keypoints}
-\crefname{lemma}{lemma}{lemmas}
-\crefname{note}{note}{notes}
-\crefname{part}{part}{parts}
-\crefname{problem}{problem}{problems}
-\crefname{property}{property}{properties}
-\crefname{proposition}{proposition}{propositions}
-\crefname{question}{question}{questions}
-\crefname{remark}{remark}{remarks}
-\crefname{section}{section}{sections}
-\crefname{solution}{solution}{solutions}
-\crefname{subsection}{subsection}{subsections}
-\crefname{subsubsection}{subsubsection}{subsubsections}
-\crefname{theorem}{theorem}{theorems}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Packages for Typesetting Algorithms
@@ -455,150 +399,194 @@
 \renewcommand{\cftsubsecfont}{\normalsize}      % Font style for subsections
 \renewcommand{\cftsubsubsecfont}{\normalsize}   % Font style for subsubsections
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Custom Sectioning Formatting
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[explicit]{titlesec}  % Customizes section headings
+\providecommand{\formatsections}{%
+    \RequirePackage[explicit]{titlesec}  % Customizes section headings
+    % Formatting for sections
+    \titleformat{\section}[block]
+        {\normalfont\centering\Large\bfseries\color{\accentcolor}} % Font style
+        {\thesection.} % Section number
+        {7.5pt} % Space between number and title
+        {##1} % Title format
 
-% Formatting for sections
-\titleformat{\section}[block]
-    {\normalfont\Large\bfseries\color{\accentcolor}} % Font style: normal, large, bold, coloured
-    {\thesection} % Section number
-    {7.5pt} % Space between number and title
-    {#1\smallskip\hrule\vspace{-20pt}} % Title format with rule below
+    \titlespacing*{\section}{0pt}{10pt}{10pt} % Spacing before and after section title
 
-% Formatting for subsections
-\titleformat{\subsection}[block]
-    {\normalfont\large\bfseries\color{\accentcolor}} % Font style: normal, large, bold, coloured
-    {\thesubsection} % Subsection number
-    {7.5pt} % Space between number and title
-    {#1} % Title format
+    % Formatting for subsections
+    \titleformat{\subsection}[block]
+        {\normalfont\large\centering\bfseries\color{\accentcolor}} % Font style
+        {\thesubsection.} % Subsection number
+        {7.5pt} % Space between number and title
+        {##1} % Title format
 
-% Formatting for subsubsections
-\titleformat{\subsubsection}[block]
-    {\normalfont\normalsize\bfseries\color{\accentcolor}} % Font style: normal, large, bold, coloured
-    {\thesubsubsection} % Subsubsection number
-    {7.5pt} % Space between number and title
-    {#1} % Title format
+    \titlespacing*{\subsection}{0pt}{5pt}{5pt} % Spacing before and after subsection title
 
-% Formatting for paragraphs
-\titleformat{\paragraph}[runin]
-    {\normalfont\normalsize\scshape\color{\accentcolor}} % Font style: normal, small caps, coloured
-    {\theparagraph} % Paragraph number
-    {5pt} % Space between number and title
-    {#1} % Title format
-    
+    % Formatting for subsubsections
+    \titleformat{\subsubsection}[runin]
+        {\normalfont\normalsize\bfseries\color{\accentcolor}} % Font style
+        {\thesubsubsection.} % Subsubsection number
+        {7.5pt} % Space between number and title
+        {##1} % Title format
+
+    % Formatting for paragraphs
+    \titleformat{\paragraph}[runin]
+        {\normalfont\normalsize\bfseries\color{\accentcolor}} % Font style
+        {\theparagraph.} % Paragraph number
+        {5pt} % Space between number and title
+        {##1.} % Title format
+
+    \titlespacing*{\paragraph}{1pt}{2.5pt}{2.5pt} % Spacing before and after paragraph title
+}
+
+\formatsections
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Definition of New Environments with Colour Box
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Theorem Styles
+% Theorem Style
 \declaretheoremstyle[%
-	spaceabove=\topsep, 
+	spaceabove=\topsep,
 	spacebelow=\topsep,
-	headfont=\scshape\color{\accentcolor},
-	notefont=\scshape\color{\accentcolor},
-	bodyfont=\normalfont,
 	postheadspace=5pt,
+	headfont=\bfseries\boldmath\color{accentcolor},
+	notefont=\bfseries\boldmath\color{accentcolor},
+	bodyfont=\normalfont,
 	numberwithin=section,
-	qed=\color{\accentcolor}$\scriptstyle\star$,
-	headpunct={:}
+	qed=$\color{accentcolor}\scriptscriptstyle\clubsuit$,
+	headpunct={.}
 ]{thmstyle}
 
+% Definition Style
 \declaretheoremstyle[%
-	spaceabove=\topsep, 
+	spaceabove=\topsep,
 	spacebelow=\topsep,
-	headfont=\scshape\color{\accentcolor},
-	notefont=\scshape\color{\accentcolor},
-	bodyfont=\normalfont,
 	postheadspace=5pt,
+	headfont=\bfseries\color{accentcolor},
+	notefont=\bfseries\color{accentcolor},
+	bodyfont=\normalfont,
 	numberwithin=section,
-	qed=\color{\accentcolor}$\scriptstyle\maltese$,
-	headpunct={:}
+	qed=$\color{accentcolor}\scriptscriptstyle\clubsuit$,
+	headpunct={.}
 ]{defstyle}
 
+% Remark Style
 \declaretheoremstyle[%
-	spaceabove=\topsep, 
+	spaceabove=\topsep,
 	spacebelow=\topsep,
-	headfont=\scshape\color{\accentcolor},
-	notefont=\scshape\color{\accentcolor},
-	bodyfont=\normalfont,
 	postheadspace=5pt,
+	headfont=\bfseries\boldmath\color{accentcolor},
+	notefont=\bfseries\color{accentcolor},
+	bodyfont=\normalfont,
 	numberwithin=section,
-	qed=\color{\accentcolor}$\scriptstyle\maltese$,
-	headpunct={:}
+	qed=$\color{accentcolor}\scriptscriptstyle\blacktriangleright$,
+	headpunct={.}
 ]{remarkstyle}
 
-% Environment 'leftbar' Definition
-\newenvironment{leftbar}{%
-	\mdfsetup{%
-		leftline=true,            % Enable left line
-		topline=false,            % Disable top line
-		bottomline=false,         % Disable bottom line
-		rightline=false,          % Disable right line
-		linewidth=1pt,            % Set line width to 1pt
-		linecolor=\accentcolor,   % Set line color to accent color
-		innermargin=1pt,          % Set inner margin to 1pt
-		innerleftmargin=10pt      % Set inner left margin to 10pt
-	}%
-	\begin{mdframed}%
-		}{%
-	\end{mdframed}%
-}
-
-% Theorem Style 'coloredstyle' Definition
+% Highlight Style
 \declaretheoremstyle[%
-	spaceabove=\topsep,                                                        % Space above the theorem
-	spacebelow=\topsep,                                                        % Space below the theorem
-	headfont=\scshape\color{\accentcolor}\small,                               % Font for theorem head
-	notefont=\scshape\color{\accentcolor}\small,                               % Font for theorem note
-	headpunct=,                                                                % Punctuation after the head
-	bodyfont=\normalfont,                                                      % Font for theorem body: normal
-	headformat=\NAME~\NUMBER~\NOTE.\hfill\smallskip\linebreak,                 % Format for the theorem head
-	preheadhook=\begin{leftbar}\vspace{-12.5pt},                               % Hook to start left bar
-	postfoothook=\end{leftbar}\vspace{-5pt},                                   % Hook to end left bar
-	postheadspace=1em,                                                         % Space after the head
-	numberwithin=section                                                       % Number theorems within sections
-]{coloredstyle}
+	spaceabove=\topsep,
+	spacebelow=\topsep,
+	postheadspace=5pt,
+	headfont=\bfseries\color{accentcolor},
+	notefont=\bfseries\color{accentcolor},
+	bodyfont=\normalfont\sffamily,
+	numberwithin=section,
+	qed=$\color{accentcolor}\scriptscriptstyle\blacklozenge$,
+	headpunct={.}
+]{hltstyle}
 
-% Theorems Definitions
+% Theorem and related environments
 \declaretheorem[style=thmstyle,name=Theorem]{theorem}
-\declaretheorem[style=thmstyle,sibling=theorem]{lemma}
-\declaretheorem[style=thmstyle,sibling=theorem]{corollary}
-\declaretheorem[style=thmstyle,sibling=theorem]{proposition}
+\declaretheorem[style=thmstyle,sibling=theorem]{assumption}
 \declaretheorem[style=thmstyle,sibling=theorem]{claim}
 \declaretheorem[style=thmstyle,sibling=theorem]{conjecture}
+\declaretheorem[style=thmstyle,sibling=theorem]{corollary}
+\declaretheorem[style=thmstyle,sibling=theorem]{lemma}
+\declaretheorem[style=thmstyle,sibling=theorem]{property}
+\declaretheorem[style=thmstyle,sibling=theorem]{proposition}
 
-% Definitions
+% Definition and related environments
 \declaretheorem[style=defstyle,sibling=theorem]{definition}
 \declaretheorem[style=defstyle,sibling=theorem]{example}
-\declaretheorem[style=defstyle,sibling=theorem]{fact}
-\declaretheorem[style=defstyle,sibling=theorem]{note}
-\declaretheorem[style=defstyle,sibling=theorem]{question}
-\declaretheorem[style=defstyle,sibling=theorem]{case}
 \declaretheorem[style=defstyle,sibling=theorem]{exercise}
 \declaretheorem[style=defstyle,sibling=theorem]{problem}
-\declaretheorem[style=defstyle,sibling=theorem]{property}
-\declaretheorem[style=defstyle,sibling=theorem]{solution}
+\declaretheorem[style=defstyle,sibling=theorem]{question}
 
-% Remarks
+% Remark and related environments
+\declaretheorem[style=remarkstyle,sibling=theorem]{note}
 \declaretheorem[style=remarkstyle,sibling=theorem]{remark}
-\declaretheorem[style=remarkstyle,name=Important]{important}
-\declaretheorem[style=remarkstyle]{keypoint}
-\declaretheorem[style=remarkstyle]{highlight}
+\declaretheorem[style=remarkstyle,sibling=theorem]{solution}
 
-% Case Environment Specialized List
-\newlist{casenv}{enumerate}{4}
-\setlist[casenv]{leftmargin=*,align=left,widest={iiii}}
-\setlist[casenv,1]{label={{\itshape\casename} \arabic*.},ref=\arabic*}
-\setlist[casenv,2]{label={{\itshape\casename} \roman*.},ref=\roman*}
-\setlist[casenv,3]{label={{\itshape\casename\ \alph*.}},ref=\alph*}
-\setlist[casenv,4]{label={{\itshape\casename} \arabic*.},ref=\arabic*}
+% Highlight styles
+\declaretheorem[style=hltstyle,name=Important]{important}
+\declaretheorem[style=hltstyle]{highlight}
+\declaretheorem[style=hltstyle]{keypoint}
 
 % Define a custom QED symbol with accent color
 \providecommand{\QEDsymbol}{\color{\accentcolor}\ensuremath{\blacksquare}} % Define QED symbol with accent color
 \renewcommand{\qedsymbol}{\QEDsymbol} % Use custom QED symbol for proof environments
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Cleveref Settings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{cleveref} % Load the cleveref package for intelligent cross-referencing
+
+% Define plural and singular names for various types of references
+\Crefname{case}{Case}{Cases}
+\Crefname{chapter}{Chapter}{Chapters}
+\Crefname{claim}{Claim}{Claims}
+\Crefname{conjecture}{Conjecture}{Conjectures}
+\Crefname{corollary}{Corollary}{Corollaries}
+\Crefname{definition}{Definition}{Definitions}
+\Crefname{example}{Example}{Examples}
+\Crefname{exercise}{Exercise}{Exercises}
+\Crefname{fact}{Fact}{Facts}
+\Crefname{highlight}{Highlight}{Highlights}
+\Crefname{important}{Important}{Important Points}
+\Crefname{keypoint}{Keypoint}{Keypoints}
+\Crefname{lemma}{Lemma}{Lemmas}
+\Crefname{note}{Note}{Notes}
+\Crefname{problem}{Problem}{Problems}
+\Crefname{property}{Property}{Properties}
+\Crefname{proposition}{Proposition}{Propositions}
+\Crefname{question}{Question}{Questions}
+\Crefname{remark}{Remark}{Remarks}
+\Crefname{section}{Section}{Sections}
+\Crefname{solution}{Solution}{Solutions}
+\Crefname{subsection}{Subsection}{Subsections}
+\Crefname{subsubsection}{Subsubsection}{Subsubsections}
+\Crefname{theorem}{Theorem}{Theorems}
+
+% Define lowercase names for various types of references
+\crefname{case}{case}{cases}
+\crefname{chapter}{chapter}{chapters}
+\crefname{claim}{claim}{claims}
+\crefname{conjecture}{conjecture}{conjectures}
+\crefname{corollary}{corollary}{corollaries}
+\crefname{definition}{definition}{definitions}
+\crefname{example}{example}{examples}
+\crefname{exercise}{exercise}{exercises}
+\crefname{fact}{fact}{facts}
+\crefname{highlight}{highlight}{highlights}
+\crefname{important}{important}{important points}
+\crefname{keypoint}{keypoint}{keypoints}
+\crefname{lemma}{lemma}{lemmas}
+\crefname{note}{note}{notes}
+\crefname{part}{part}{parts}
+\crefname{problem}{problem}{problems}
+\crefname{property}{property}{properties}
+\crefname{proposition}{proposition}{propositions}
+\crefname{question}{question}{questions}
+\crefname{remark}{remark}{remarks}
+\crefname{section}{section}{sections}
+\crefname{solution}{solution}{solutions}
+\crefname{subsection}{subsection}{subsections}
+\crefname{subsubsection}{subsubsection}{subsubsections}
+\crefname{theorem}{theorem}{theorems}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bibliography Management with BibLaTeX
