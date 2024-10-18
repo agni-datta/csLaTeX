@@ -10,7 +10,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Packages for cryptographic and complexity notations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage[full]{complexity} % Computational complexity theory macros
+\RequirePackage[full, small]{complexity} % Computational complexity theory macros
 \RequirePackage[%
 	n,             % Disable notations
 	operators,     % Enable operators
@@ -233,30 +233,41 @@
 % Note: The \usepackage[full]{complexity} package defines most commands for complexity classes. 
 % The following commands extend these definitions.
 
-% Complexity Classes
+
+% Basic Complexity Classes
+\renewcommand{\coNP}{\ComplexityFont{co}\textsf{-}\NP} % coNP: Complement of NP
 \providecommand{\EXPTIME}{\ComplexityFont{EXPTIME}} % EXPTIME: Exponential time
 \providecommand{\NEXPTIME}{\ComplexityFont{NEXPTIME}} % NEXPTIME: Non-deterministic exponential time
+
+% Classes with Advice
 \providecommand{\NPpoly}{\NP/\poly} % NP/poly: NP with polynomial advice
 \providecommand{\PSPACEpoly}{\PSPACE/\poly} % PSPACE/poly: PSPACE with polynomial advice
 \providecommand{\EXPpoly}{\EXP/\poly} % EXP/poly: EXP with polynomial advice
-\providecommand{\PRIMES}{\ComplexityFont{PRIMES}} % PRIMES: Primality testing
 
-% Proof Systems
-\providecommand{\IPP}{\ComplexityFont{IPP}} % Proofs of Proximity
+% Proof Classes
+\providecommand{\IPP}{\ComplexityFont{IPP}} % Interactive Proofs of Proximity
 \providecommand{\NIPP}{\ComplexityFont{NIPP}} % Non-Interactive Proofs of Proximity
 \providecommand{\RIP}{\ComplexityFont{RIP}} % Rational Interactive Proofs
 \providecommand{\RNIP}{\ComplexityFont{RNIP}} % Rational Non-Interactive Proofs
 \providecommand{\MRIP}{\ComplexityFont{MRIP}} % Multi-Rational Interactive Proofs
 \providecommand{\MRNIP}{\ComplexityFont{MRNIP}} % Multi-Rational Non-Interactive Proofs
 
-% Complexity Classes and Problems
-\providecommand{\CIRSAT}{\ComplexityFont{CIRCUIT\mathhyphen\SAT}} % Circuit satisfiability problem
-\providecommand{\DRMA}{\ComplexityFont{DRMA}} % Decision Rational Merlin-Arthur class
-\providecommand{\FRMA}{\ComplexityFont{FRMA}} % Function Rational Merlin-Arthur class
-\providecommand{\coRP}{\ComplexityFont{coRP}} % coRP: Complement decidable by probabilistic polynomial-time
+% Satisfiability Problems
+\providecommand{\CIRSAT}{\ComplexityFont{CIRC\textsf{-}\SAT}} % Circuit satisfiability problem
+\providecommand{\TSAT}{\ComplexityFont{3}\textsf{-}\SAT} % 3-SAT problem
 
-% Formal Languages and Machines
-\providecommand{\Lang}{\inmathcal{L}} % Formal language notation
+% Other Notable Classes
+\providecommand{\PRIMES}{\ComplexityFont{PRIMES}} % PRIMES: Primality testing
+\providecommand{\coRP}{\ComplexityFont{co\textsf{-}RP}} % coRP: Complement decidable by probabilistic polynomial-time
+\providecommand{\GI}{\ComplexityFont{GI}} % Graph Isomorphism
+\providecommand{\GNI}{\ComplexityFont{GNI}} % Generalized Non-Isomorphism
+\providecommand{\HALT}{\ComplexityFont{HALT}} % HALT: Halting problem
+\providecommand{\DLE}{\ComplexityFont{DLE}} % Decision Language of Exponential time
+\providecommand{\DLD}{\ComplexityFont{DLD}} % Decision Language of Deterministic time
+\providecommand{\TSP}{\ComplexityFont{TSP}} % Traveling Salesman Problem
+
+% Formal Language Notation
+\providecommand{\Lang}{\inmathsf{L}} % Formal language notation
 \providecommand{\NTM}{\inmathsf{N}} % Non-deterministic Turing machine
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -351,7 +362,7 @@
 % Differential and Partial Derivatives
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand{\dd}{\hspace{0.2em}\mathrm{d}} % Differential operator (d for differentiation)
+\providecommand{\dd}{\mathrm{d}} % Differential operator (d for differentiation)
 \providecommand{\ddiff}[2]{\frac{\dd{#1}}{\dd{#2}}} % Differential quotient (total derivative) \frac{d#1}{d#2}
 \providecommand{\pdiff}[2]{\frac{\partial{#1}}{\partial{#2}}} % Partial derivative \frac{\partial #1}{\partial #2}
 
@@ -500,6 +511,37 @@
 \providecommand{\rmx}{\inmathrm{x}} % Upright letter 'x'
 \providecommand{\rmy}{\inmathrm{y}} % Upright letter 'y'
 \providecommand{\rmz}{\inmathrm{z}} % Upright letter 'z'
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Sans Serif Letters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\sfa}{\inmathsf{a}} % Sans Serif letter 'a'
+\providecommand{\sfb}{\inmathsf{b}} % Sans Serif letter 'b'
+\providecommand{\sfc}{\inmathsf{c}} % Sans Serif letter 'c'
+\providecommand{\sfd}{\inmathsf{d}} % Sans Serif letter 'd'
+\providecommand{\sfe}{\inmathsf{e}} % Sans Serif letter 'e'
+\providecommand{\sff}{\inmathsf{f}} % Sans Serif letter 'f'
+\providecommand{\sfg}{\inmathsf{g}} % Sans Serif letter 'g'
+\providecommand{\sfh}{\inmathsf{h}} % Sans Serif letter 'h'
+\providecommand{\sfi}{\inmathsf{i}} % Sans Serif letter 'i'
+\providecommand{\sfj}{\inmathsf{j}} % Sans Serif letter 'j'
+\providecommand{\sfk}{\inmathsf{k}} % Sans Serif letter 'k'
+\providecommand{\sfl}{\inmathsf{l}} % Sans Serif letter 'l'
+\providecommand{\sfm}{\inmathsf{m}} % Sans Serif letter 'm'
+\providecommand{\sfn}{\inmathsf{n}} % Sans Serif letter 'n'
+\providecommand{\sfo}{\inmathsf{o}} % Sans Serif letter 'o'
+\providecommand{\sfp}{\inmathsf{p}} % Sans Serif letter 'p'
+\providecommand{\sfq}{\inmathsf{q}} % Sans Serif letter 'q'
+\providecommand{\sfr}{\inmathsf{r}} % Sans Serif letter 'r'
+\providecommand{\sfs}{\inmathsf{s}} % Sans Serif letter 's'
+\providecommand{\sft}{\inmathsf{t}} % Sans Serif letter 't'
+\providecommand{\sfu}{\inmathsf{u}} % Sans Serif letter 'u'
+\providecommand{\sfv}{\inmathsf{v}} % Sans Serif letter 'v'
+\providecommand{\sfw}{\inmathsf{w}} % Sans Serif letter 'w'
+\providecommand{\sfx}{\inmathsf{x}} % Sans Serif letter 'x'
+\providecommand{\sfy}{\inmathsf{y}} % Sans Serif letter 'y'
+\providecommand{\sfz}{\inmathsf{z}} % Sans Serif letter 'z'
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Upright Letters in Math Mode
@@ -655,6 +697,37 @@
 \providecommand{\frakX}{\inmathfrak{X}} % Fraktur letter 'X'
 \providecommand{\frakY}{\inmathfrak{Y}} % Fraktur letter 'Y'
 \providecommand{\frakZ}{\inmathfrak{Z}} % Fraktur letter 'Z'
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Upright Sans Serif Letters in Math Mode
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\sfA}{\inmathsf{A}} % Sans Serif letter 'A'
+\providecommand{\sfB}{\inmathsf{B}} % Sans Serif letter 'B'
+\providecommand{\sfC}{\inmathsf{C}} % Sans Serif letter 'C'
+\providecommand{\sfD}{\inmathsf{D}} % Sans Serif letter 'D'
+\providecommand{\sfE}{\inmathsf{E}} % Sans Serif letter 'E'
+\providecommand{\sfF}{\inmathsf{F}} % Sans Serif letter 'F'
+\providecommand{\sfG}{\inmathsf{G}} % Sans Serif letter 'G'
+\providecommand{\sfH}{\inmathsf{H}} % Sans Serif letter 'H'
+\providecommand{\sfI}{\inmathsf{I}} % Sans Serif letter 'I'
+\providecommand{\sfJ}{\inmathsf{J}} % Sans Serif letter 'J'
+\providecommand{\sfK}{\inmathsf{K}} % Sans Serif letter 'K'
+\providecommand{\sfL}{\inmathsf{L}} % Sans Serif letter 'L'
+\providecommand{\sfM}{\inmathsf{M}} % Sans Serif letter 'M'
+\providecommand{\sfN}{\inmathsf{N}} % Sans Serif letter 'N'
+\providecommand{\sfO}{\inmathsf{O}} % Sans Serif letter 'O'
+\providecommand{\sfP}{\inmathsf{P}} % Sans Serif letter 'P'
+\providecommand{\sfQ}{\inmathsf{Q}} % Sans Serif letter 'Q'
+\providecommand{\sfR}{\inmathsf{R}} % Sans Serif letter 'R'
+\providecommand{\sfS}{\inmathsf{S}} % Sans Serif letter 'S'
+\providecommand{\sfT}{\inmathsf{T}} % Sans Serif letter 'T'
+\providecommand{\sfU}{\inmathsf{U}} % Sans Serif letter 'U'
+\providecommand{\sfV}{\inmathsf{V}} % Sans Serif letter 'V'
+\providecommand{\sfW}{\inmathsf{W}} % Sans Serif letter 'W'
+\providecommand{\sfX}{\inmathsf{X}} % Sans Serif letter 'X'
+\providecommand{\sfY}{\inmathsf{Y}} % Sans Serif letter 'Y'
+\providecommand{\sfZ}{\inmathsf{Z}} % Sans Serif letter 'Z'
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Latin Abbreviations
