@@ -235,14 +235,14 @@
 
 
 % Basic Complexity Classes
-\renewcommand{\coNP}{\ComplexityFont{co}\textsf{-}\NP} % coNP: Complement of NP
 \providecommand{\EXPTIME}{\ComplexityFont{EXPTIME}} % EXPTIME: Exponential time
 \providecommand{\NEXPTIME}{\ComplexityFont{NEXPTIME}} % NEXPTIME: Non-deterministic exponential time
+\renewcommand{\coNP}{\ComplexityFont{co}\textsf{-}\NP} % coNP: Complement of NP
 
 % Classes with Advice
+\providecommand{\EXPpoly}{\EXP/\poly} % EXP/poly: EXP with polynomial advice
 \providecommand{\NPpoly}{\NP/\poly} % NP/poly: NP with polynomial advice
 \providecommand{\PSPACEpoly}{\PSPACE/\poly} % PSPACE/poly: PSPACE with polynomial advice
-\providecommand{\EXPpoly}{\EXP/\poly} % EXP/poly: EXP with polynomial advice
 
 % Proof Classes
 \providecommand{\IPP}{\ComplexityFont{IPP}} % Interactive Proofs of Proximity
@@ -252,19 +252,15 @@
 \providecommand{\MRIP}{\ComplexityFont{MRIP}} % Multi-Rational Interactive Proofs
 \providecommand{\MRNIP}{\ComplexityFont{MRNIP}} % Multi-Rational Non-Interactive Proofs
 
-% Satisfiability Problems
+% Problems
 \providecommand{\CIRSAT}{\ComplexityFont{CIRC\textsf{-}\SAT}} % Circuit satisfiability problem
-\providecommand{\TSAT}{\ComplexityFont{3}\textsf{-}\SAT} % 3-SAT problem
-
-% Other Notable Classes
-\providecommand{\PRIMES}{\ComplexityFont{PRIMES}} % PRIMES: Primality testing
-\providecommand{\coRP}{\ComplexityFont{co\textsf{-}RP}} % coRP: Complement decidable by probabilistic polynomial-time
 \providecommand{\GI}{\ComplexityFont{GI}} % Graph Isomorphism
 \providecommand{\GNI}{\ComplexityFont{GNI}} % Generalized Non-Isomorphism
 \providecommand{\HALT}{\ComplexityFont{HALT}} % HALT: Halting problem
-\providecommand{\DLE}{\ComplexityFont{DLE}} % Decision Language of Exponential time
-\providecommand{\DLD}{\ComplexityFont{DLD}} % Decision Language of Deterministic time
+\providecommand{\PRIMES}{\ComplexityFont{PRIMES}} % PRIMES: Primality testing
+\providecommand{\TSAT}{\ComplexityFont{3}\textsf{-}\SAT} % 3-SAT problem
 \providecommand{\TSP}{\ComplexityFont{TSP}} % Traveling Salesman Problem
+\providecommand{\coRP}{\ComplexityFont{co\textsf{-}RP}} % coRP: Complement decidable in RP
 
 % Formal Language Notation
 \providecommand{\Lang}{\inmathsf{L}} % Formal language notation
