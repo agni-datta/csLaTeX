@@ -135,7 +135,7 @@
 \RequirePackage{ragged2e} % Provides enhanced justification options compared to standard LaTeX commands
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Package for Support for Colour
+% Package for Support for color
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage[x11names, dvipsnames, svgnames]{xcolor} % Provides color support with extended color schemes
@@ -158,9 +158,9 @@
 % \setaccentcolor{RoyalBlue4} % Sets accent color to RoyalBlue4
 % \setaccentcolor{} % Resets to the default blue
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Language and Typographic Settings
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Load language support
 \RequirePackage[english]{babel}  % Set language to English
@@ -573,9 +573,9 @@ postamble "\n\\end{theindex}\n"
 \hypersetup{%
 	pdfsubject={computer science},    % Set the subject of the PDF; fallback to \@course if not defined
 	pdfkeywords={computer science},   % Define keywords for the PDF; fallback to \@course if not defined
-	colorlinks=true,                  % Enable coloured hyperlinks
-	citecolor=accentcolor,            % Set colour for citation links
-	linkcolor=accentcolor,            % Set colour for internal document links
+	colorlinks=true,                  % Enable colored hyperlinks
+	citecolor=accentcolor,            % Set color for citation links
+	linkcolor=accentcolor,            % Set color for internal document links
 	urlcolor=accentcolor,             % Set color for URLs
 	frenchlinks=true,                 % Use French-style links with small caps
 	unicode=true,                     % Enable Unicode characters in links
@@ -775,12 +775,12 @@ postamble "\n\\end{theindex}\n"
 	framemethod=Tikz              % Use TikZ for frame styling
 ]{mdframed} % Configure vertical skip distances and enable TikZ for styling
 
-% Load the tcolorbox package for advanced colour box options
+% Load the tcolorbox package for advanced color box options
 \RequirePackage[most]{tcolorbox} % Include extensive features for colored boxes
 
 % Define a custom-framed environment with TikZ settings
 \newmdenv[%
-	tikzsetting={draw=black},     % Set the border colour of the frame to black
+	tikzsetting={draw=black},     % Set the border color of the frame to black
 	backgroundcolor=none,         % Set background to transparent
 	skipabove=10pt,               % Vertical space above the frame
 	skipbelow=10pt,               % Vertical space below the frame
@@ -812,12 +812,12 @@ postamble "\n\\end{theindex}\n"
 	\refstepcounter{constructioncounter} % Increment the counter
 	\newmdenv[%
 		font=\normalfont\small, % Font for the content
-		frametitlebackgroundcolor=none, % No background colour for the title
+		frametitlebackgroundcolor=none, % No background color for the title
 		frametitlefont=\scshape\sffamily\color{accentcolor}, % Title font style
 		frametitle={Construction~\thesection.\theconstructioncounter~(#1).}, % Title format
 		frametitlerulewidth=0.75pt, % Set the rule thickness
 		linewidth=0.75pt, % Frame line width
-		linecolor=black, % Frame line colour
+		linecolor=black, % Frame line color
 		innertopmargin=7.5pt, % Top inner margin
 		innerbottommargin=7.5pt, % Bottom inner margin
 		innerleftmargin=5pt, % Left inner margin
@@ -1024,12 +1024,12 @@ postamble "\n\\end{theindex}\n"
 % Definition of New Environments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Custom QED symbol rendered in the accent colour
+% Custom QED symbol rendered in the accent color
 \providecommand{\QEDsymbol}{\color{accentcolor}\ensuremath{\blacksquare}}
 % Replace the default QED symbol with the custom symbol
 \renewcommand{\qedsymbol}{\QEDsymbol}
 
-% Command to define new environments with coloured boxes
+% Command to define new environments with colored boxes
 \providecommand{\newcolorboxes}[6]{%
 	% Arguments:
 	%   #1: Environment name
@@ -1063,7 +1063,7 @@ postamble "\n\\end{theindex}\n"
 % Command to define fancy theorem environments
 \providecommand{\usefancythm}{
 
-	% Define coloured environments for theorems and related content
+	% Define colored environments for theorems and related content
 	\newcolorboxes{corollary}{Corollary}{RoyalBlue4!50!white}{black}{\itshape}{cor}
 	\newcolorboxes{lemma}{Lemma}{RoyalBlue4!60!white}{black}{\itshape}{lem}
 	\newcolorboxes{proposition}{Proposition}{RoyalBlue4!70!white}{black}{\itshape}{prop}
@@ -1510,11 +1510,11 @@ postamble "\n\\end{theindex}\n"
         {
         	\stepcounter{codeboxcounter} % Increment the code box counter
         	\newmdenv[%
-        		frametitlebackgroundcolor=none, % No background colour for the frame title
+        		frametitlebackgroundcolor=none, % No background color for the frame title
         		frametitlefont=\scshape\sffamily, % Use small caps and sans serif for the frame title
         		frametitleaboveskip=5pt, % Space above the frame title
         		frametitlerule=true, % Add a horizontal rule under the frame title
-        		frametitlerulecolor=black, % Set the rule colour to black
+        		frametitlerulecolor=black, % Set the rule color to black
         		frametitlerulewidth=1pt, % Set the rule thickness
         		frametitlealignment=\raggedright, % Align the frame title to the left
         		frametitle={\thechapter.\arabic{codeboxcounter}:~##1}, % Format for the frame title with chapter and code box numbers
@@ -1604,7 +1604,7 @@ postamble "\n\\end{theindex}\n"
 \providecommand{\missing}[1]{{\color{Firebrick1}#1}} % Highlights text in red to indicate missing or problematic content
 \providecommand{\strike}{\bgroup\ULdepth=-.55ex\ULset} % Applies a strike-through effect for deleted or emphasized text
 \providecommand{\term}[1]{#1\index{#1}} % Defines and indexes terms for glossary inclusion
-\providecommand{\textem}[1]{{\bfseries\color{accentcolor}#1}} % Formats emphasized text with bold font in a specified accent colour
+\providecommand{\textem}[1]{{\bfseries\color{accentcolor}#1}} % Formats emphasized text with bold font in a specified accent color
 \providecommand{\toc}{%
 	\tableofcontents % Generates the table of contents
 	\addcontentsline{toc}{chapter}{Contents} % Adds a "Contents" entry to the table of contents
