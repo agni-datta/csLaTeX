@@ -62,58 +62,61 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Boolean Flags
+\newbool{forprint}          % Flag to manage the use of print-specific settings
 \newbool{useanonymouspro}   % Flag to manage the use of Anonymous Pro font
 \newbool{usebiblatex}       % Flag to manage the use of BibLaTeX
+\newbool{usecodelists}      % Flag to manage the use of code lists
 \newbool{useebgaramond}     % Flag to manage the use of EB Garamond font
 \newbool{usefancythm}       % Flag to manage the use of fancy theorem formatting
 \newbool{usefiramono}       % Flag to manage the use of Fira Mono font
 \newbool{usefirasans}       % Flag to manage the use of Fira Sans font
-\newbool{usesourcesans}     % Flag to manage the use of Source Sans font
-\newbool{usesourcecode}     % Flag to manage the use of Source Code Pro font
+\newbool{usekepler}         % Flag to manage the use of KP font
 \newbool{uselibsans}        % Flag to manage the use of Libertinus Sans font
 \newbool{uselmodern}        % Flag to manage the use of Latin Modern font
-\newbool{usekepler}         % Flag to manage the use of KP font
-\newbool{usesrtbiblatex}    % Flag to manage the use of sorted BibLaTeX
 \newbool{usenormalthm}      % Flag to manage the use of standard theorem formatting
+\newbool{useoldlmodern}     % Flag to manage the use of Old Latin Modern font
+\newbool{usesourcecode}     % Flag to manage the use of Source Code Pro font
+\newbool{usesourcesans}     % Flag to manage the use of Source Sans font
+\newbool{usesrtbiblatex}    % Flag to manage the use of sorted BibLaTeX
 \newbool{usetikz}           % Flag to manage the use of TikZ
-\newbool{usecodelists}      % Flag to manage the use of code lists
-\newbool{forprint}          % Flag to manage the use of print-specific settings
 
 % Boolean Initialization
+\setbool{forprint}{false}          % Default: Printing-specific options off
 \setbool{useanonymouspro}{false}   % Default: Anonymous Pro font off
 \setbool{usebiblatex}{false}       % Default: BibLaTeX off
+\setbool{usecodelists}{false}      % Default: Code lists off
 \setbool{useebgaramond}{false}     % Default: EB Garamond font off
 \setbool{usefancythm}{false}       % Default: Fancy theorem formatting off
 \setbool{usefiramono}{false}       % Default: Fira Mono font off
 \setbool{usefirasans}{false}       % Default: Fira Sans font off
-\setbool{usesourcesans}{false}     % Default: Source Sans font off
-\setbool{usesourcecode}{false}     % Default: Source Code Pro font off
+\setbool{usekepler}{false}         % Default: KP font off
 \setbool{uselibsans}{false}        % Default: Libertinus Sans font off
 \setbool{uselmodern}{false}        % Default: Latin Modern font off
-\setbool{usekepler}{false}         % Default: KP font off
-\setbool{usesrtbiblatex}{false}    % Default: Sorted BibLaTeX off
 \setbool{usenormalthm}{false}      % Default: Standard theorem formatting off
+\setbool{useoldlmodern}{false}     % Default: Old Latin Modern font off
+\setbool{usesourcecode}{false}     % Default: Source Code Pro font off
+\setbool{usesourcesans}{false}     % Default: Source Sans font off
+\setbool{usesrtbiblatex}{false}    % Default: Sorted BibLaTeX off
 \setbool{usetikz}{false}           % Default: TikZ off
-\setbool{usecodelists}{false}      % Default: Code lists off
-\setbool{forprint}{false}          % Default: Printing-specific options off
 
 % Option Definitions
+\DeclareOption{forprint}{\setbool{forprint}{true}}                 % Enable print-specific settings if specified
 \DeclareOption{useanonymouspro}{\setbool{useanonymouspro}{true}}   % Enable Anonymous Pro font if specified
 \DeclareOption{usebiblatex}{\setbool{usebiblatex}{true}}           % Enable BibLaTeX if specified
+\DeclareOption{usecodelists}{\setbool{usecodelists}{true}}         % Enable code lists if specified
 \DeclareOption{useebgaramond}{\setbool{useebgaramond}{true}}       % Enable EB Garamond font if specified
 \DeclareOption{usefancythm}{\setbool{usefancythm}{true}}           % Enable fancy theorem formatting if specified
 \DeclareOption{usefiramono}{\setbool{usefiramono}{true}}           % Enable Fira Mono font if specified
 \DeclareOption{usefirasans}{\setbool{usefirasans}{true}}           % Enable Fira Sans font if specified
-\DeclareOption{usesourcesans}{\setbool{usesourcesans}{true}}       % Enable Source Sans font if specified
-\DeclareOption{usesourcecode}{\setbool{usesourcecode}{true}}       % Enable Source Code Pro font if specified
+\DeclareOption{usekepler}{\setbool{usekepler}{true}}               % Enable KP font if specified
 \DeclareOption{uselibsans}{\setbool{uselibsans}{true}}             % Enable Libertinus Sans font if specified
 \DeclareOption{uselmodern}{\setbool{uselmodern}{true}}             % Enable Latin Modern font if specified
-\DeclareOption{usekepler}{\setbool{usekepler}{true}}               % Enable KP font if specified
-\DeclareOption{usesrtbiblatex}{\setbool{usesrtbiblatex}{true}}     % Enable sorted BibLaTeX if specified
 \DeclareOption{usenormalthm}{\setbool{usenormalthm}{true}}         % Enable standard theorem formatting if specified
+\DeclareOption{useoldlmodern}{\setbool{useoldlmodern}{true}}       % Enable Old Latin Modern font if specified
+\DeclareOption{usesourcecode}{\setbool{usesourcecode}{true}}       % Enable Source Code Pro font if specified
+\DeclareOption{usesourcesans}{\setbool{usesourcesans}{true}}       % Enable Source Sans font if specified
+\DeclareOption{usesrtbiblatex}{\setbool{usesrtbiblatex}{true}}     % Enable sorted BibLaTeX if specified
 \DeclareOption{usetikz}{\setbool{usetikz}{true}}                   % Enable TikZ if specified
-\DeclareOption{usecodelists}{\setbool{usecodelists}{true}}         % Enable code lists if specified
-\DeclareOption{forprint}{\setbool{forprint}{true}}                 % Enable print-specific settings if specified
 
 % Handle Unrecognised Options
 \DeclareOption*{\PackageWarning{csbook}{Unrecognised option '\CurrentOption'}}  % Warn for any unknown options
@@ -250,17 +253,48 @@
 % Font Setup Command Definitions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Command to configure Latin Modern fonts for both text and math
+% Command to set up Old Latin Modern fonts for both text and mathematics
+\providecommand{\useoldlmodern}{%
+	\setmainfont[%
+		ItalicFont = lmroman10-italic.otf,            % Italic variant for emphasis
+		SmallCapsFont = lmromancaps10-regular.otf,    % Small caps variant for stylistic elements
+		SmallCapsFeatures = {RawFeature=+smcp},       % Enable small caps feature
+		BoldFont = lmroman10-bold.otf,                % Bold variant for headings
+		BoldItalicFont = lmroman10-bolditalic.otf,    % Bold italic for extra emphasis
+		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Advanced typographic features
+	]{lmroman10-regular.otf} % Set the main text font
+	\setmathfont[%
+		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Advanced typographic features
+	]{latinmodern-math.otf} % Set the mathematics font
+	\setsansfont[%
+		ItalicFont = lmsans10-oblique.otf,            % Italic variant for emphasis
+		SmallCapsFont = NewCMSans10-Book.otf,         % Small caps variant for stylistic elements
+		SmallCapsFeatures = {RawFeature=+smcp},       % Enable small caps feature
+		BoldFont = lmsans10-bold.otf,                 % Bold variant for headings
+		BoldItalicFont = lmsans10-boldoblique.otf,    % Bold italic for extra emphasis
+		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Advanced typographic features
+	]{lmsans10-regular.otf} % Set the sans-serif font
+}
+
+% Command to set up Latin Modern fonts for both text and mathematics
 \providecommand{\uselmodern}{%
 	\setmainfont[%
-		ItalicFont = NewCM10-BookItalic.otf, % Specify the italic font
-		SmallCapsFont = NewCM10-Book.otf, % Specify the small caps font
-		SmallCapsFeatures = {RawFeature=+smcp}, % Enable small caps feature
-		BoldFont = NewCM10-Bold.otf, % Specify the bold font
-		BoldItalicFont = NewCM10-BoldItalic.otf, % Specify the bold italic font
+		ItalicFont = NewCM10-BookItalic.otf,          % Italic font specification
+		SmallCapsFont = NewCM10-Book.otf,             % Small caps font specification
+		SmallCapsFeatures = {RawFeature=+smcp},       % Enable small caps feature
+		BoldFont = NewCM10-Bold.otf,                  % Bold font specification
+		BoldItalicFont = NewCM10-BoldItalic.otf,      % Bold italic font specification
 		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Apply advanced typographic features
-	]{NewCM10-Book.otf} % Set the main font
-	\setmathfont{NewCMMath-Book.otf} % Set the math font
+	]{NewCM10-Book.otf} % Set the main text font
+	\setmathfont{NewCMMath-Book.otf} % Set the mathematics font
+	\setsansfont[%
+		ItalicFont = NewCMSans10-Oblique.otf,         % Italic variant for emphasis
+		SmallCapsFont = NewCMSans10-Book.otf,         % Small caps variant for stylistic elements
+		SmallCapsFeatures = {RawFeature=+smcp},       % Enable small caps feature
+		BoldFont = NewCMSans10-Bold.otf,              % Bold variant for headings
+		BoldItalicFont = NewCMSans10-BoldOblique.otf, % Bold italic for extra emphasis
+		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Advanced typographic features
+	]{NewCMSans10-Book.otf} % Set the sans-serif font
 }
 
 % Command to configure EB Garamond fonts for text and math
@@ -350,24 +384,37 @@
 }
 
 % Activate font settings based on specified flags
-\ifbool{uselmodern}{\uselmodern}{\typeout{Latin Modern fonts are not applied.}} % Apply Latin Modern fonts if enabled
 \ifbool{useebgaramond}{\useebgaramond}{\typeout{EB Garamond fonts are not applied.}} % Apply EB Garamond fonts if enabled
 \ifbool{usekepler}{\usekepler}{\typeout{Kepler fonts are not applied.}} % Apply Kepler fonts if enabled
+\ifbool{uselmodern}{\uselmodern}{\typeout{Latin Modern fonts are not applied.}} % Apply Latin Modern fonts if enabled
+\ifbool{useoldlmodern}{\useoldlmodern}{\typeout{Old Latin Modern fonts are not applied.}} % Apply Old Latin Modern fonts if enabled
+
+\ifbool{useanonymouspro}{\useanonymouspro}{\typeout{Anonymous Pro fonts are not applied.}} % Apply Anonymous Pro fonts if enabled
+\ifbool{usefiramono}{\usefiramono}{\typeout{Fira Code fonts are not applied.}} % Apply Fira Mono fonts if enabled
+\ifbool{usesourcecode}{\usesourcecode}{\typeout{Source Code fonts are not applied.}} % Apply Source Code fonts if enabled
+
+\ifbool{usefirasans}{\usefirasans}{\typeout{Fira Sans fonts are not applied.}} % Apply Fira Sans fonts if enabled
 \ifbool{uselibsans}{\uselibsans}{\typeout{Libertinus Sans fonts are not applied.}} % Apply Libertinus Sans fonts if enabled
 \ifbool{usesourcesans}{\usesourcesans}{\typeout{Source Sans fonts are not applied.}} % Apply Source Sans fonts if enabled
-\ifbool{usesourcecode}{\usesourcecode}{\typeout{Source Code fonts are not applied.}} % Apply Source Code fonts if enabled
-\ifbool{usefirasans}{\usefirasans}{\typeout{Fira Sans fonts are not applied.}} % Apply Fira Sans fonts if enabled
-\ifbool{usefiramono}{\usefiramono}{\typeout{Fira Code fonts are not applied.}} % Apply Fira Mono fonts if enabled
-\ifbool{useanonymouspro}{\useanonymouspro}{\typeout{Anonymous Pro fonts are not applied.}} % Apply Anonymous Pro fonts if enabled
 
-% Additional Math Font Customization
+% Command to set the default font size
+\providecommand{\setglobalfontsize}[1]{\def\deffontsize{#1}} % Command to set font size
+
 \AtEndPreamble{%
-	\let\mathbfcal\relax  % Clear existing definition for \mathbfcal
-	\let\mathcal\relax    % Clear existing definition for \mathcal
+	% Resolve conflicts with existing math alphabet definitions
+	\let\mathbfcal\relax
 	\RequirePackage[%
-		bb=bboldx,   % Use extended Blackboard bold font options
-		cal=cm       % Use classic calligraphic font style for \mathcal
-	]{mathalpha}     % Load the mathalpha package for additional styles
+		bb=bboldx,  % Extended Blackboard bold options for math notation
+		cal=cm      % Classic calligraphic font style for math symbols
+	]{mathalpha}  	% Additional math font styles for diverse notation
+	    
+	% Set a default font size if \deffontsize is not defined
+	\ifx\deffontsize\undefined
+		\setglobalfontsize{10pt} % Default to 10pt
+	\fi
+	    
+	% Load the fontsize package
+	\RequirePackage[fontsize=\deffontsize]{fontsize} % Load the fontsize package
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
