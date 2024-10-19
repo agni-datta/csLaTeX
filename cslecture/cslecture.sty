@@ -13,8 +13,8 @@
 %   - It provides custom environments for theorems, definitions, and proofs, along with advanced formatting options for sections, tables of contents, and bibliographies.
 %   - The package integrates various LaTeX packages to offer a cohesive and feature-rich document preparation system tailored for computer science academia.
 % Features:
-%   - Custom theorem-like environments with coloured styling
-%   - Advanced section formatting with accent colours
+%   - Custom theorem-like environments with colored styling
+%   - Advanced section formatting with accent colors
 %   - Customizable table of contents
 %   - BibLaTeX integration for sophisticated bibliography management
 %   - Enhanced proof environments with custom QED symbols
@@ -94,7 +94,7 @@
 \RequirePackage{ragged2e} % Provides enhanced justification options compared to standard LaTeX commands
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Package for Support for Colour
+% Package for Support for color
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage[x11names, dvipsnames, svgnames]{xcolor} % Provides color support with extended color schemes
@@ -250,8 +250,8 @@
 
 % Section formatting
 \titleformat{\section}[block]%
-    {\Large\sffamily\scshape\color{accentcolor}} % Font and color for section title
-    {\Large\marginsecnumber\thesection} % Section number format
+    {\LARGE\sffamily\scshape\color{accentcolor}} % Font and color for section title
+    {\LARGE\marginsecnumber\thesection} % Section number format
     {0pt} % Space between number and title
     {#1\hrule} % Title formatting
         
@@ -319,9 +319,9 @@
 \renewcommand{\cftsubsubsecafterpnum}{\vskip1pt}  % Vertical space after subsubsection numbers
 
 % Specify font styles for Table of Contents entries
-\renewcommand{\cftsecfont}{\normalsize\scshape}         % Font style for sections (normal size, small caps)
-\renewcommand{\cftsubsecfont}{\normalsize}              % Font style for subsections (normal size)
-\renewcommand{\cftsubsubsecfont}{\normalsize}           % Font style for subsubsections (normal size)
+\renewcommand{\cftsecfont}{\normalsize\bfseries}  % Font style for sections
+\renewcommand{\cftsubsecfont}{\normalsize}        % Font style for subsections
+\renewcommand{\cftsubsubsecfont}{\normalsize}     % Font style for subsubsections
 
 % Configure the depth of section numbering and Table of Contents entries
 \setcounter{secnumdepth}{3} % Set the depth for section numbering
@@ -339,9 +339,9 @@
 \hypersetup{%
 	pdfsubject={computer science},    % Set the subject of the PDF; fallback to \@course if not defined
 	pdfkeywords={computer science},   % Define keywords for the PDF; fallback to \@course if not defined
-	colorlinks=true,                  % Enable coloured hyperlinks
-	citecolor=accentcolor,            % Set colour for citation links
-	linkcolor=accentcolor,            % Set colour for internal document links
+	colorlinks=true,                  % Enable colored hyperlinks
+	citecolor=accentcolor,            % Set color for citation links
+	linkcolor=accentcolor,            % Set color for internal document links
 	urlcolor=accentcolor,             % Set color for URLs
 	frenchlinks=true,                 % Use French-style links with small caps
 	unicode=true,                     % Enable Unicode characters in links
@@ -442,12 +442,12 @@
 	framemethod=Tikz              % Use TikZ for frame styling
 ]{mdframed} % Configure vertical skip distances and enable TikZ for styling
 
-% Load the tcolorbox package for advanced colour box options
+% Load the tcolorbox package for advanced color box options
 \RequirePackage[most]{tcolorbox} % Include extensive features for colored boxes
 
 % Define a custom-framed environment with TikZ settings
 \newmdenv[%
-	tikzsetting={draw=black},     % Set the border colour of the frame to black
+	tikzsetting={draw=black},     % Set the border color of the frame to black
 	backgroundcolor=none,         % Set background to transparent
 	skipabove=10pt,               % Vertical space above the frame
 	skipbelow=10pt,               % Vertical space below the frame
@@ -479,12 +479,12 @@
 	\refstepcounter{constructioncounter} % Increment the counter
 	\newmdenv[%
 		font=\normalfont\small, % Font for the content
-		frametitlebackgroundcolor=none, % No background colour for the title
+		frametitlebackgroundcolor=none, % No background color for the title
 		frametitlefont=\scshape\sffamily\color{accentcolor}, % Title font style
 		frametitle={Construction~\thesection.\theconstructioncounter~(#1).}, % Title format
 		frametitlerulewidth=0.75pt, % Set the rule thickness
 		linewidth=0.75pt, % Frame line width
-		linecolor=black, % Frame line colour
+		linecolor=black, % Frame line color
 		innertopmargin=7.5pt, % Top inner margin
 		innerbottommargin=7.5pt, % Bottom inner margin
 		innerleftmargin=5pt, % Left inner margin
@@ -571,7 +571,7 @@
 \RequirePackage{subcaption} % Subfigures and subcaptions within figures
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Definition of New Environments with Colour Box
+% Definition of New Environments with color Box
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Theorem Style
@@ -817,7 +817,7 @@
 \providecommand{\missing}[1]{{\color{Firebrick1}#1}} % Highlights text in red to indicate missing or problematic content
 \providecommand{\strike}{\bgroup\ULdepth=-.55ex\ULset} % Applies a strike-through effect for deleted or emphasized text
 \providecommand{\term}[1]{#1\index{#1}} % Defines and indexes terms for glossary inclusion
-\providecommand{\textem}[1]{{\bfseries\color{accentcolor}#1}} % Formats emphasized text with bold font in a specified accent colour
+\providecommand{\textem}[1]{{\bfseries\color{accentcolor}#1}} % Formats emphasized text with bold font in a specified accent color
 \providecommand{\toc}{%
 	\tableofcontents % Generates the table of contents
 	\addcontentsline{toc}{chapter}{Contents} % Adds a "Contents" entry to the table of contents
