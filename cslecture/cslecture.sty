@@ -213,10 +213,10 @@
 	RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Advanced typographic features
 ]{NewCMSans10-Book.otf} % Set the sans-serif font
 \setmonofont[%
-	Scale=0.90,                                  % Scale for monospaced font
+	Scale=0.95,                                  % Scale for monospaced font
 	SmallCapsFeatures = {RawFeature=+smcp},     % Enable small caps feature
 	RawFeature = {+calt, +case, +dlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Advanced typographic features
-]{Anonymous Pro} % Define the monospaced font
+]{Inconsolata} % Define the monospaced font
 
 % Command to set the default font size
 \providecommand{\setglobalfontsize}[1]{\def\deffontsize{#1}} % Command to set font size
@@ -250,8 +250,8 @@
 
 % Section formatting
 \titleformat{\section}[block]%
-    {\LARGE\sffamily\scshape\color{accentcolor}} % Font and color for section title
-    {\LARGE\marginsecnumber\thesection} % Section number format
+    {\Large\sffamily\scshape\color{accentcolor}} % Font and color for section title
+    {\Large\marginsecnumber\thesection} % Section number format
     {0pt} % Space between number and title
     {#1\hrule} % Title formatting
         
@@ -461,7 +461,7 @@
 % Define another custom-framed environment with specific formatting
 \newmdenv[%
 	hidealllines=true,            % Hide all frame lines
-	backgroundcolor={accentcolor!50!white}, % Set a semi-transparent background color
+	backgroundcolor={accentcolor!25!white}, % Set a semi-transparent background color
 	skipabove=10pt,               % Vertical space above the frame
 	skipbelow=10pt,               % Vertical space below the frame
 	innerleftmargin=7.5pt,        % Left margin inside the frame
