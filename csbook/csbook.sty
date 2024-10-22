@@ -63,7 +63,7 @@
 
 % Boolean Flags
 \newbool{forprint}          % Flag to manage the use of print-specific settings
-\newbool{useanonymouspro}   % Flag to manage the use of Anonymous Pro font
+\newbool{useinconsolata}    % Flag to manage the use of Inconsolata font
 \newbool{usebiblatex}       % Flag to manage the use of BibLaTeX
 \newbool{usecodelists}      % Flag to manage the use of code lists
 \newbool{useebgaramond}     % Flag to manage the use of EB Garamond font
@@ -82,7 +82,7 @@
 
 % Boolean Initialization
 \setbool{forprint}{false}          % Default: Printing-specific options off
-\setbool{useanonymouspro}{false}   % Default: Anonymous Pro font off
+\setbool{useinconsolata}{false}    % Default: Inconsolata font off
 \setbool{usebiblatex}{false}       % Default: BibLaTeX off
 \setbool{usecodelists}{false}      % Default: Code lists off
 \setbool{useebgaramond}{false}     % Default: EB Garamond font off
@@ -101,7 +101,7 @@
 
 % Option Definitions
 \DeclareOption{forprint}{\setbool{forprint}{true}}                 % Enable print-specific settings if specified
-\DeclareOption{useanonymouspro}{\setbool{useanonymouspro}{true}}   % Enable Anonymous Pro font if specified
+\DeclareOption{useinconsolata}{\setbool{useinconsolata}{true}}     % Enable Inconsolata font if specified
 \DeclareOption{usebiblatex}{\setbool{usebiblatex}{true}}           % Enable BibLaTeX if specified
 \DeclareOption{usecodelists}{\setbool{usecodelists}{true}}         % Enable code lists if specified
 \DeclareOption{useebgaramond}{\setbool{useebgaramond}{true}}       % Enable EB Garamond font if specified
@@ -170,10 +170,10 @@
 \RequirePackage[babel=true]{microtype} % For both XeTeX and LuaLaTeX
 % Conditional options based on engine
 \ifxetex
-	\PassOptionsToPackage{protrusion=true}{microtype} % Additional options for XeTeX
+\PassOptionsToPackage{protrusion=true}{microtype} % Additional options for XeTeX
 \fi
 \ifluatex
-	\PassOptionsToPackage{protrusion=true, expansion=true}{microtype}   % Additional options for LuaLaTeX
+\PassOptionsToPackage{protrusion=true, expansion=true}{microtype}   % Additional options for LuaLaTeX
 \fi
 
 % Configure line spacing and text symbols
@@ -187,7 +187,7 @@
 
 \providecommand{\forprint}{%
 	% Geometry settings for an A4-sized textbook layout
-        \RequirePackage[%
+	\RequirePackage[%
 		a4paper,                % Paper size: A4
 		left=1.5in,             % Left margin (wider for binding)
 		right=1in,              % Right margin (standard)
@@ -374,13 +374,12 @@
 	]{FiraMono-Regular.otf} % Define the Fira Mono font
 }
 
-% Command to configure Anonymous Pro font
-\providecommand{\useanonymouspro}{%
-	\RequirePackage{AnonymousPro} % Load the Anonymous Pro package
+% Command to configure Inconsolata font
+\providecommand{\useinconsolata}{%
 	\setmonofont[%
 		SmallCapsFeatures = {RawFeature=+smcp}, % Enable small caps feature
 		RawFeature = {+calt, +case, +dlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Apply advanced typographic features
-	]{Anonymous Pro} % Define the monospaced font
+	]{Inconsolata} % Define the monospaced font
 }
 
 % Activate font settings based on specified flags
@@ -389,7 +388,7 @@
 \ifbool{uselmodern}{\uselmodern}{\typeout{Latin Modern fonts are not applied.}} % Apply Latin Modern fonts if enabled
 \ifbool{useoldlmodern}{\useoldlmodern}{\typeout{Old Latin Modern fonts are not applied.}} % Apply Old Latin Modern fonts if enabled
 
-\ifbool{useanonymouspro}{\useanonymouspro}{\typeout{Anonymous Pro fonts are not applied.}} % Apply Anonymous Pro fonts if enabled
+\ifbool{useinconsolata}{\useinconsolata}{\typeout{Inconsolata fonts are not applied.}} % Apply Inconsolata fonts if enabled
 \ifbool{usefiramono}{\usefiramono}{\typeout{Fira Code fonts are not applied.}} % Apply Fira Mono fonts if enabled
 \ifbool{usesourcecode}{\usesourcecode}{\typeout{Source Code fonts are not applied.}} % Apply Source Code fonts if enabled
 
