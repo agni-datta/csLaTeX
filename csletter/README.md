@@ -2,7 +2,7 @@
 title: Package for Typesetting Application Letters (`csletter`)
 linter-yaml-title-alias: Package for Typesetting Application Letters (`csletter`)
 date created: Saturday, June 8th 2024, 11:30:20
-date modified: Thursday, October 17th 2024, 17:54:39
+date modified: Tuesday, October 22nd 2024, 10:50:26
 aliases: [Package for Typesetting Application Letters (`csletter`)]
 ---
 
