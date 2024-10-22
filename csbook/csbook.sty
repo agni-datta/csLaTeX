@@ -169,12 +169,8 @@
 % Load microtype conditionally based on the engine
 \RequirePackage[babel=true]{microtype} % For both XeTeX and LuaLaTeX
 % Conditional options based on engine
-\ifxetex
-\PassOptionsToPackage{protrusion=true}{microtype} % Additional options for XeTeX
-\fi
-\ifluatex
-\PassOptionsToPackage{protrusion=true, expansion=true}{microtype}   % Additional options for LuaLaTeX
-\fi
+\ifxetex\PassOptionsToPackage{protrusion=true}{microtype}\fi % Additional options for XeTeX
+\ifluatex\PassOptionsToPackage{protrusion=true,expansion=true}{microtype}\fi % Additional options for LuaLaTeX
 
 % Configure line spacing and text symbols
 \RequirePackage[onehalfspacing]{setspace}  % One and a half line spacing
