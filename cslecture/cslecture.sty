@@ -564,7 +564,7 @@
 % Packages for Captions and Graphics
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[font={rm, sc}]{caption} % Customizes caption formatting with font options
+\RequirePackage[font={sf}]{caption} % Customizes caption formatting with font options
 \RequirePackage{float} % Precise control over the placement of figures and tables
 \RequirePackage{graphics} % Standard package for graphics inclusion
 \RequirePackage{graphicx} % Inclusion of images in various formats
@@ -580,8 +580,8 @@
 	spacebelow=\topsep,
 	postheadspace=5pt,
 	headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
-	headfont=\sffamily\color{accentcolor},
-	notefont=\sffamily\color{accentcolor},
+	headfont=\sffamily\scshape\color{accentcolor},
+	notefont=\sffamily\scshape\color{accentcolor},
 	bodyfont=\normalfont,
 	numberwithin=section,
 	qed=$\color{accentcolor}\scriptscriptstyle\clubsuit$,
@@ -594,8 +594,8 @@
 	spacebelow=\topsep,
 	postheadspace=5pt,
 	headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
-	headfont=\sffamily\color{accentcolor},
-	notefont=\sffamily\color{accentcolor},
+	headfont=\sffamily\scshape\color{accentcolor},
+	notefont=\sffamily\scshape\color{accentcolor},
 	bodyfont=\normalfont,
 	numberwithin=section,
 	qed=$\color{accentcolor}\scriptscriptstyle\clubsuit$,
@@ -608,8 +608,8 @@
 	spacebelow=\topsep,
 	postheadspace=5pt,
 	headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
-	headfont=\sffamily\color{accentcolor},
-	notefont=\sffamily\color{accentcolor},
+	headfont=\sffamily\scshape\color{accentcolor},
+	notefont=\sffamily\scshape\color{accentcolor},
 	bodyfont=\normalfont,
 	numberwithin=section,
 	qed=$\color{accentcolor}\scriptscriptstyle\blacktriangleright$,
@@ -622,8 +622,8 @@
 	spacebelow=\topsep,
 	postheadspace=5pt,
 	headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
-	headfont=\sffamily\color{accentcolor},
-	notefont=\sffamily\color{accentcolor},
+	headfont=\sffamily\scshape\color{accentcolor},
+	notefont=\sffamily\scshape\color{accentcolor},
 	bodyfont=\normalfont\sffamily,
 	numberwithin=section,
 	qed=$\color{accentcolor}\scriptscriptstyle\blacklozenge$,
@@ -665,60 +665,33 @@
 % Cleveref Settings
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage{cleveref} % Load the cleveref package for intelligent cross-referencing
+\RequirePackage[capitalise]{cleveref} % Load the cleveref package for intelligent cross-referencing
 
-% Define plural and singular names for various types of references
-\Crefname{case}{Case}{Cases}
-\Crefname{chapter}{Chapter}{Chapters}
-\Crefname{claim}{Claim}{Claims}
-\Crefname{conjecture}{Conjecture}{Conjectures}
-\Crefname{corollary}{Corollary}{Corollaries}
-\Crefname{definition}{Definition}{Definitions}
-\Crefname{example}{Example}{Examples}
-\Crefname{exercise}{Exercise}{Exercises}
-\Crefname{fact}{Fact}{Facts}
-\Crefname{highlight}{Highlight}{Highlights}
-\Crefname{important}{Important}{Important Points}
-\Crefname{keypoint}{Keypoint}{Keypoints}
-\Crefname{lemma}{Lemma}{Lemmas}
-\Crefname{note}{Note}{Notes}
-\Crefname{problem}{Problem}{Problems}
-\Crefname{property}{Property}{Properties}
-\Crefname{proposition}{Proposition}{Propositions}
-\Crefname{question}{Question}{Questions}
-\Crefname{remark}{Remark}{Remarks}
-\Crefname{section}{Section}{Sections}
-\Crefname{solution}{Solution}{Solutions}
-\Crefname{subsection}{Subsection}{Subsections}
-\Crefname{subsubsection}{Subsubsection}{Subsubsections}
-\Crefname{theorem}{Theorem}{Theorems}
-
-% Define lowercase names for various types of references
-\crefname{case}{case}{cases}
-\crefname{chapter}{chapter}{chapters}
-\crefname{claim}{claim}{claims}
-\crefname{conjecture}{conjecture}{conjectures}
-\crefname{corollary}{corollary}{corollaries}
-\crefname{definition}{definition}{definitions}
-\crefname{example}{example}{examples}
-\crefname{exercise}{exercise}{exercises}
-\crefname{fact}{fact}{facts}
-\crefname{highlight}{highlight}{highlights}
-\crefname{important}{important}{important points}
-\crefname{keypoint}{keypoint}{keypoints}
-\crefname{lemma}{lemma}{lemmas}
-\crefname{note}{note}{notes}
-\crefname{part}{part}{parts}
-\crefname{problem}{problem}{problems}
-\crefname{property}{property}{properties}
-\crefname{proposition}{proposition}{propositions}
-\crefname{question}{question}{questions}
-\crefname{remark}{remark}{remarks}
-\crefname{section}{section}{sections}
-\crefname{solution}{solution}{solutions}
-\crefname{subsection}{subsection}{subsections}
-\crefname{subsubsection}{subsubsection}{subsubsections}
-\crefname{theorem}{theorem}{theorems}
+\crefname{case}{Case}{Cases}
+\crefname{chapter}{Chapter}{Chapters}
+\crefname{claim}{Claim}{Claims}
+\crefname{conjecture}{Conjecture}{Conjectures}
+\crefname{corollary}{Corollary}{Corollaries}
+\crefname{definition}{Definition}{Definitions}
+\crefname{example}{Example}{Examples}
+\crefname{exercise}{Exercise}{Exercises}
+\crefname{fact}{Fact}{Facts}
+\crefname{highlight}{Highlight}{Highlights}
+\crefname{important}{Important}{Important Points}
+\crefname{keypoint}{Key point}{Key points}
+\crefname{lemma}{Lemma}{Lemmas}
+\crefname{note}{Note}{Notes}
+\crefname{part}{Part}{Parts}
+\crefname{problem}{Problem}{Problems}
+\crefname{property}{Property}{Properties}
+\crefname{proposition}{Proposition}{Propositions}
+\crefname{question}{Question}{Questions}
+\crefname{remark}{Remark}{Remarks}
+\crefname{section}{Section}{Sections}
+\crefname{solution}{Solution}{Solutions}
+\crefname{subsection}{Subsection}{Subsections}
+\crefname{subsubsection}{Subsubsection}{Subsubsections}
+\crefname{theorem}{Theorem}{Theorems}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bibliography Management with BibLaTeX
