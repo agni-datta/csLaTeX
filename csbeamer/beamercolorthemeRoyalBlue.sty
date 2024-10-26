@@ -1,0 +1,44 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamercolorthemeRoyalBlue}[2024/07/09 Dark and contrasty beamer color theme using x11 color names]
+% 
+% Package Name: beamercolorthemeDarkContrast
+% Version: 2024/07/09
+% Description: This LaTeX package provides a dark and contrasty beamer color theme using x11 color names, designed for readability and visual appeal.
+% Author: Agni Datta
+%===============================================================================
+
+% Load necessary packages
+\RequirePackage[x11names]{xcolor}
+
+\colorlet{RoyalBlue0}{RoyalBlue1!10!white}
+
+% Define custom colors (using x11 color names)
+\definecolor{PrimaryDark}{named}{RoyalBlue4} % Main dark color
+\definecolor{PrimaryLight}{named}{RoyalBlue0} % Lighter contrast color
+
+% Set colors for various beamer elements
+\setbeamercolor{palette primary}{bg=PrimaryDark,fg=white} % Title and header
+\setbeamercolor{palette secondary}{bg=PrimaryLight,fg=PrimaryDark} % Section titles
+\setbeamercolor{palette tertiary}{bg=PrimaryDark,fg=white} % Footer and other elements
+\setbeamercolor{palette quaternary}{bg=PrimaryLight,fg=PrimaryDark} % Sidebar
+
+\setbeamercolor{structure}{fg=PrimaryDark} % Structure elements like bullets and items
+
+\setbeamercolor{section in toc}{fg=PrimaryDark} % Section titles in table of contents
+\setbeamercolor{subsection in toc}{fg=PrimaryDark} % Subsection titles in table of contents
+
+\setbeamercolor{block title}{bg=PrimaryDark,fg=PrimaryLight} % Block titles
+\setbeamercolor{block body}{bg=PrimaryDark!10,fg=PrimaryDark} % Block bodies
+\setbeamercolor{block title example}{bg=PrimaryLight,fg=PrimaryDark} % Example block titles
+\setbeamercolor{block body example}{bg=PrimaryDark!10,fg=PrimaryDark} % Example block bodies
+\setbeamercolor{block title alerted}{bg=PrimaryLight,fg=PrimaryDark} % Alert block titles
+\setbeamercolor{block body alerted}{bg=PrimaryDark!10,fg=PrimaryDark} % Alert block bodies
+
+\setbeamercolor{headline}{bg=PrimaryDark,fg=white} % Headline colors
+\setbeamercolor{footline}{bg=PrimaryDark,fg=white} % Footline colors
+\setbeamercolor{sidebar}{bg=PrimaryDark,fg=white} % Sidebar colors
+\setbeamercolor{title in sidebar}{fg=white} % Title in sidebar
+\setbeamercolor{navigation symbols dimmed}{fg=PrimaryDark} % Dimmed navigation symbols
+\setbeamercolor{navigation symbols}{fg=PrimaryDark} % Bright navigation symbols
+
+\endinput
