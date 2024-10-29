@@ -10,11 +10,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Packages for cryptographic and complexity notations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage[full, small]{complexity} % Computational complexity theory macros
+\RequirePackage[full]{complexity} % Computational complexity theory macros
 \RequirePackage[%
 	n,             % Disable notations
 	operators,     % Enable operators
-	advantage,     % Enable advantage 
+	advantage,     % Enable advantage
 	sets,          % Enable sets
 	adversary,     % Enable adversary
 	landau,        % Enable Landau notation
@@ -35,23 +35,23 @@
 % Font Styles
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % This section defines commands for various mathematical font styles used throughout the document.
-% Each command is designed to ensure consistent mathematical symbols and expression formatting.
+% Each command is designed to ensure consistent formatting of mathematical symbols and expressions.
 
-\providecommand{\asvector}[1]{\inmath{\vec{#1}}\xspace} % Vector notation with an arrow
-\providecommand{\complexityfont}[1]{\inmath{\ComplexityFont{#1}}\xspace} % Font style for complexity classes
-\providecommand{\inmathbb}[1]{\inmath{\mathbb{#1}}\xspace} % Blackboard Bold for sets and special objects
-\providecommand{\inmathbf}[1]{\inmath{\mathbf{#1}}\xspace} % Bold style for vectors and matrices
-\providecommand{\inmathcal}[1]{\inmath{\mathcal{#1}}\xspace} % Calligraphic style for script letters
-\providecommand{\inmathfrak}[1]{\inmath{\mathfrak{#1}}\xspace} % Fraktur style for algebras and structures
-\providecommand{\inmathrm}[1]{\inmath{\mathrm{#1}}\xspace} % Roman style for constants and functions
-\providecommand{\inmathsf}[1]{\inmath{\mathsf{#1}}\xspace} % Sans-serif style for math symbols
+\providecommand{\asvector}[1]{\inmath{\vec{#1}}} % Vector notation with an arrow
+\providecommand{\complexityfont}[1]{\inmath{\ComplexityFont{#1}}} % Font style for complexity classes
+\providecommand{\inmathbb}[1]{\inmath{\mathbb{#1}}} % Blackboard Bold for sets and special objects
+\providecommand{\inmathbf}[1]{\inmath{\mathbf{#1}}} % Bold style for vectors and matrices
+\providecommand{\inmathcal}[1]{\inmath{\mathcal{#1}}} % Calligraphic style for script letters
+\providecommand{\inmathfrak}[1]{\inmath{\mathfrak{#1}}} % Fraktur style for algebras and structures
+\providecommand{\inmathrm}[1]{\inmath{\mathrm{#1}}} % Roman style for constants and functions
+\providecommand{\inmathsf}[1]{\inmath{\mathsf{#1}}} % Sans-serif style for math symbols
 \providecommand{\inmath}[1]{\ensuremath{#1}} % Ensure the content is formatted as math mode
-\providecommand{\mathfontstyle}[1]{\inmath{\pcalgostyle{#1}}\xspace} % Custom style for math expressions
+\providecommand{\mathfontstyle}[1]{\inmath{\pcalgostyle{#1}}} % Custom style for math expressions
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Cryptographic Elements and Functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% This section defines commands for commonly used cryptographic elements, functions, 
+% This section defines commands for commonly used cryptographic elements, functions,
 % and notations in the document, ensuring consistency and clarity in their representation.
 
 % Removing previous definitions to avoid conflicts
@@ -136,55 +136,53 @@
 % This section defines various cryptographic concepts, problems, and related functions.
 % Each command represents a specific term or problem in cryptography for consistent usage throughout the document.
 
-\providecommand{\AAE}{\inmathsf{AAE}} % Attribute-Based Encryption
-\providecommand{\AE}{\inmathsf{AE}} % Authenticated Encryption
-\providecommand{\CDH}{\inmathsf{CDH}} % Computational Diffie-Hellman problem
-\providecommand{\DDH}{\inmathsf{DDH}} % Decisional Diffie-Hellman problem
-\providecommand{\DLP}{\inmathsf{DLP}} % Discrete Logarithm Problem
-\providecommand{\ECC}{\inmathsf{ECC}} % Elliptic Curve Cryptography
-\providecommand{\ECDH}{\inmathsf{ECDH}} % Elliptic Curve Diffie-Hellman
-\providecommand{\ECDLP}{\inmathsf{ECDLP}} % Elliptic Curve Discrete Logarithm Problem
-\providecommand{\FHE}{\inmathsf{FHE}} % Fully Homomorphic Encryption
-\providecommand{\HE}{\inmathsf{HE}} % Homomorphic Encryption
-\providecommand{\HIBE}{\inmathsf{HIBE}} % Hierarchical Identity-Based Encryption
-\providecommand{\HRA}{\inmathsf{HRA}} % Homomorphic Random Access
-\providecommand{\IBE}{\inmathsf{IBE}} % Identity-Based Encryption
-\providecommand{\LPN}{\inmathsf{LPN}} % Learning Parity with Noise
-\providecommand{\LWE}{\inmathsf{LWE}} % Learning with Errors problem
-\providecommand{\MPC}{\inmathsf{MPC}} % Multiparty Computation
-\providecommand{\NIZKs}{\inmathsf{NIZKs}} % Non-Interactive Zero-Knowledge proofs (plural)
-\providecommand{\NIZK}{\inmathsf{NIZK}} % Non-Interactive Zero-Knowledge proof
-\providecommand{\ORAM}{\inmathsf{ORAM}} % Oblivious RAM
-\providecommand{\OT}{\inmathsf{OT}} % Oblivious Transfer
-\providecommand{\OTS}{\inmathsf{OTS}} % One-Time Signature
-\providecommand{\PC}{\inmathsf{PC}} % Polynomial Commitments
-\providecommand{\PKC}{\inmathsf{PKC}} % Public Key Cryptography
-\providecommand{\PKE}{\inmathsf{PKE}} % Public Key Encryption
-\providecommand{\PPT}{\inmathsf{PPT}} % Probabilistic Polynomial Time
-\providecommand{\PRF}{\inmathsf{PRF}} % Pseudorandom Function
-\providecommand{\PRGs}{\inmathsf{PRGs}} % Pseudorandom Generators (plural)
-\providecommand{\PRPfs}{\inmathsf{PRPfs}} % Pseudorandom Permutation (full security, plural)
-\providecommand{\PRP}{\inmathsf{PRP}} % Pseudorandom Permutation
-\providecommand{\QNR}{\inmathsf{QNR}} % Quadratic non-residue
-\providecommand{\QR}{\inmathsf{QR}} % Quadratic residue
-\providecommand{\RKA}{\inmathsf{RKA}} % Related-Key Attack
-\providecommand{\RLWE}{\inmathsf{RLWE}} % Ring Learning with Errors problem
-\providecommand{\RNG}{\inmathsf{RNG}} % Random Number Generator
-\providecommand{\RPG}{\inmathsf{RPG}} % Randomized Polynomial Games
-\providecommand{\RSA}{\inmathsf{RSA}} % Rivest-Shamir-Adleman cryptosystem
-\providecommand{\RTP}{\inmathsf{RTP}} % Randomized Test Protocols
-\providecommand{\SDH}{\inmathsf{SDH}} % Strong Diffie-Hellman problem
-\providecommand{\SFE}{\inmathsf{SFE}} % Secure Function Evaluation
-\providecommand{\SMPC}{\inmathsf{SMPC}} % Secure Multiparty Computation
-\providecommand{\VCs}{\inmathsf{VCs}} % Vector Commitments (plural)
-\providecommand{\VC}{\inmathsf{VC}} % Vector Commitments
-\providecommand{\ZKPs}{\inmathsf{ZKPs}} % Zero-Knowledge Proofs (plural)
-\providecommand{\ZKP}{\inmathsf{ZKP}} % Zero-Knowledge Proof
-\providecommand{\ZK}{\inmathsf{ZK}} % Zero-Knowledge
+\providecommand{\AAE}{\ComplexityFont{AAE}} % Attribute-Based Encryption
+\providecommand{\AE}{\ComplexityFont{AE}} % Authenticated Encryption
+\providecommand{\CDH}{\ComplexityFont{CDH}} % Computational Diffie-Hellman problem
+\providecommand{\DDH}{\ComplexityFont{DDH}} % Decisional Diffie-Hellman problem
+\providecommand{\DLP}{\ComplexityFont{DLP}} % Discrete Logarithm Problem
+\providecommand{\ECC}{\ComplexityFont{ECC}} % Elliptic Curve Cryptography
+\providecommand{\ECDH}{\ComplexityFont{ECDH}} % Elliptic Curve Diffie-Hellman
+\providecommand{\ECDLP}{\ComplexityFont{ECDLP}} % Elliptic Curve Discrete Logarithm Problem
+\providecommand{\FHE}{\ComplexityFont{FHE}} % Fully Homomorphic Encryption
+\providecommand{\HE}{\ComplexityFont{HE}} % Homomorphic Encryption
+\providecommand{\HIBE}{\ComplexityFont{HIBE}} % Hierarchical Identity-Based Encryption
+\providecommand{\HRA}{\ComplexityFont{HRA}} % Homomorphic Random Access
+\providecommand{\IBE}{\ComplexityFont{IBE}} % Identity-Based Encryption
+\providecommand{\LPN}{\ComplexityFont{LPN}} % Learning Parity with Noise
+\providecommand{\LWE}{\ComplexityFont{LWE}} % Learning with Errors problem
+\providecommand{\MPC}{\ComplexityFont{MPC}} % Multiparty Computation
+\providecommand{\NIZKs}{\ComplexityFont{NIZKs}} % Non-Interactive Zero-Knowledge proofs (plural)
+\providecommand{\NIZK}{\ComplexityFont{NIZK}} % Non-Interactive Zero-Knowledge proof
+\providecommand{\ORAM}{\ComplexityFont{ORAM}} % Oblivious RAM
+\providecommand{\OT}{\ComplexityFont{OT}} % Oblivious Transfer
+\providecommand{\OTS}{\ComplexityFont{OTS}} % One-Time Signature
+\providecommand{\PC}{\ComplexityFont{PC}} % Polynomial Commitments
+\providecommand{\PKC}{\ComplexityFont{PKC}} % Public Key Cryptography
+\providecommand{\PKE}{\ComplexityFont{PKE}} % Public Key Encryption
+\providecommand{\PPT}{\ComplexityFont{PPT}} % Probabilistic Polynomial Time
+\providecommand{\PRF}{\ComplexityFont{PRF}} % Pseudorandom Function
+\providecommand{\PRGs}{\ComplexityFont{PRGs}} % Pseudorandom Generators (plural)
+\providecommand{\PRPfs}{\ComplexityFont{PRPfs}} % Pseudorandom Permutation (full security, plural)
+\providecommand{\PRP}{\ComplexityFont{PRP}} % Pseudorandom Permutation
+\providecommand{\QNR}{\ComplexityFont{QNR}} % Quadratic non-residue
+\providecommand{\QR}{\ComplexityFont{QR}} % Quadratic residue
+\providecommand{\RKA}{\ComplexityFont{RKA}} % Related-Key Attack
+\providecommand{\RLWE}{\ComplexityFont{RLWE}} % Ring Learning with Errors problem
+\providecommand{\RNG}{\ComplexityFont{RNG}} % Random Number Generator
+\providecommand{\RPG}{\ComplexityFont{RPG}} % Randomized Polynomial Games
+\providecommand{\RSA}{\ComplexityFont{RSA}} % Rivest-Shamir-Adleman cryptosystem
+\providecommand{\RTP}{\ComplexityFont{RTP}} % Randomized Test Protocols
+\providecommand{\SDH}{\ComplexityFont{SDH}} % Strong Diffie-Hellman problem
+\providecommand{\SFE}{\ComplexityFont{SFE}} % Secure Function Evaluation
+\providecommand{\SMPC}{\ComplexityFont{SMPC}} % Secure Multiparty Computation
+\providecommand{\VCs}{\ComplexityFont{VCs}} % Vector Commitments (plural)
+\providecommand{\VC}{\ComplexityFont{VC}} % Vector Commitments
+\providecommand{\ZKPs}{\ComplexityFont{ZKPs}} % Zero-Knowledge Proofs (plural)
+\providecommand{\ZKP}{\ComplexityFont{ZKP}} % Zero-Knowledge Proof
+\providecommand{\ZK}{\ComplexityFont{ZK}} % Zero-Knowledge
 
-\providecommand{\isPrime}{\inmathsf{isPrime}} % Prime-checking function
 \providecommand{\kSDH}{\inmath{k\mathhyphen\SDH}} % k-Strong Diffie-Hellman problem
-\providecommand{\primes}{\inmathsf{PRIMES}} % Set of prime numbers
 \providecommand{\qSDH}{\inmath{q\mathhyphen\SDH}} % q-Strong Diffie-Hellman problem
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -218,53 +216,74 @@
 \let\XOR\relax
 
 % Define logical operations for use in mathematical contexts
-\providecommand{\AND}{\inmathsf{AND}} % Logical AND operation
-\providecommand{\NAND}{\inmathsf{NAND}} % Logical NAND operation
-\providecommand{\NOR}{\inmathsf{NOR}} % Logical NOR operation
-\providecommand{\NOT}{\inmathsf{NOT}} % Logical NOT operation
-\providecommand{\OR}{\inmathsf{OR}} % Logical OR operation
-\providecommand{\XNOR}{\inmathsf{XNOR}} % Logical XNOR operation
-\providecommand{\XOR}{\inmathsf{XOR}} % Logical XOR operation
+\providecommand{\AND}{\ComplexityFont{AND}} % Logical AND operation
+\providecommand{\NAND}{\ComplexityFont{NAND}} % Logical NAND operation
+\providecommand{\NOR}{\ComplexityFont{NOR}} % Logical NOR operation
+\providecommand{\NOT}{\ComplexityFont{NOT}} % Logical NOT operation
+\providecommand{\OR}{\ComplexityFont{OR}} % Logical OR operation
+\providecommand{\XNOR}{\ComplexityFont{XNOR}} % Logical XNOR operation
+\providecommand{\XOR}{\ComplexityFont{XOR}} % Logical XOR operation
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Complexity Classes
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Note: The \usepackage[full]{complexity} package defines most commands for complexity classes. 
-% The following commands extend these definitions.
+% Note: The \usepackage[full]{complexity} package provides definitions for most complexity class commands.
+% The following commands enhance these definitions.
 
+% Clear any existing definitions to prevent conflicts
+\let\coNP\relax
 
-% Basic Complexity Classes
-\providecommand{\EXPTIME}{\ComplexityFont{EXPTIME}} % EXPTIME: Exponential time
-\providecommand{\NEXPTIME}{\ComplexityFont{NEXPTIME}} % NEXPTIME: Non-deterministic exponential time
-\renewcommand{\coNP}{\ComplexityFont{co}\textsf{-}\NP} % coNP: Complement of NP
+% Complexity Class Definitions
+\providecommand{\coNP}{\ComplexityFont{co\textsf{-}NP}} % Complement of NP
+\providecommand{\coRP}{\ComplexityFont{co\textsf{-}RP}} % Complement of RP
+\providecommand{\EXPpoly}{\ComplexityFont{EXP/poly}} % EXP with Polynomial Advice
+\providecommand{\EXPTIME}{\ComplexityFont{EXPTIME}} % Class of Problems Solvable in Exponential Time
+\providecommand{\NEXPTIME}{\ComplexityFont{NEXPTIME}} % Non-deterministic Exponential Time
+\providecommand{\NPpoly}{\ComplexityFont{NP/poly}} % NP with Polynomial Advice
+\providecommand{\PSPACEpoly}{\ComplexityFont{PSPACE/poly}} % PSPACE with Polynomial Advice
 
-% Classes with Advice
-\providecommand{\EXPpoly}{\EXP/\poly} % EXP/poly: EXP with polynomial advice
-\providecommand{\NPpoly}{\NP/\poly} % NP/poly: NP with polynomial advice
-\providecommand{\PSPACEpoly}{\PSPACE/\poly} % PSPACE/poly: PSPACE with polynomial advice
+% Definitions of Fundamental Problems
+\providecommand{\AUT}{\ComplexityFont{Aut}} % Automorphism Problem
+\providecommand{\BIPARTITE}{\ComplexityFont{BIPARTITE}} % Bipartite Graph Problem
+\providecommand{\CIRCEVAL}{\ComplexityFont{CIRCUIT\textsf{-}EVAL}} % Circuit Evaluation Problem
+\providecommand{\CIRSAT}{\ComplexityFont{CIRC\textsf{-}SAT}} % Circuit Satisfiability Problem
+\providecommand{\CLIQUE}{\ComplexityFont{CLIQUE}} % Clique Problem
+\providecommand{\CNF}{\ComplexityFont{CNF}} % Conjunctive Normal Form
+\providecommand{\COL}{\ComplexityFont{COL}} % Graph Coloring Problem
+\providecommand{\CYCLE}{\ComplexityFont{CYCLE}} % Cycle Problem in Graphs
+\providecommand{\DNF}{\ComplexityFont{DNF}} % Disjunctive Normal Form
+\providecommand{\FOURCOL}{\ComplexityFont{4COL}} % 4-Colorability Problem
+\providecommand{\GI}{\ComplexityFont{GI}} % Graph Isomorphism Problem
+\providecommand{\GNI}{\ComplexityFont{GNI}} % Graph Non-Isomorphism Problem
+\providecommand{\HALT}{\ComplexityFont{HALT}} % Halting Problem
+\providecommand{\HAMILTONIAN}{\ComplexityFont{HAMILTONIAN}} % Hamiltonian Path/Cycle Problem
+\providecommand{\INTEGERFACT}{\ComplexityFont{INTEGER\textsf{-}FACT}} % Integer Factorization Problem
+\providecommand{\ISO}{\ComplexityFont{ISO}} % Isomorphism Problem
+\providecommand{\PATH}{\ComplexityFont{PATH}} % Path Problem in Graphs
+\providecommand{\PRIMES}{\ComplexityFont{PRIMES}} % Primality Testing Problem
+\providecommand{\SHARPSAT}{\ComplexityFont{\#SAT}} % Sharp SAT Problem
+\providecommand{\SUMCHECK}{\ComplexityFont{SUMCHECK}} % Sum-Check Problem
+\providecommand{\THREECNF}{\ComplexityFont{3CNF}} % 3-Conjunctive Normal Form
+\providecommand{\THREECOL}{\ComplexityFont{3COL}} % 3-Colorability Problem
+\providecommand{\THREEDNF}{\ComplexityFont{3DNF}} % 3-Disjunctive Normal Form
+\providecommand{\THREESAT}{\inmathsf{3SAT}} % 3-SAT Problem
+\providecommand{\TQBF}{\ComplexityFont{TQBF}} % True Quantified Boolean Formula Problem
+\providecommand{\TSP}{\ComplexityFont{TSP}} % Traveling Salesman Problem
+\providecommand{\UPATH}{\ComplexityFont{UPATH}} % Undirected Path Problem
 
-% Proof Classes
+% Definitions of Proof Systems
+\providecommand{\dIP}{\ComplexityFont{dIP}} % Deterministic Interactive Proofs
 \providecommand{\IPP}{\ComplexityFont{IPP}} % Interactive Proofs of Proximity
+\providecommand{\MRIP}{\ComplexityFont{MRIP}} % Multi-Rational Interactive Proofs
+\providecommand{\MRNIP}{\ComplexityFont{MRNIP}} % Multi-Rational Non-Interactive Proofs
 \providecommand{\NIPP}{\ComplexityFont{NIPP}} % Non-Interactive Proofs of Proximity
 \providecommand{\RIP}{\ComplexityFont{RIP}} % Rational Interactive Proofs
 \providecommand{\RNIP}{\ComplexityFont{RNIP}} % Rational Non-Interactive Proofs
-\providecommand{\MRIP}{\ComplexityFont{MRIP}} % Multi-Rational Interactive Proofs
-\providecommand{\MRNIP}{\ComplexityFont{MRNIP}} % Multi-Rational Non-Interactive Proofs
-
-% Problems
-\providecommand{\CIRSAT}{\ComplexityFont{CIRC\textsf{-}\SAT}} % Circuit satisfiability problem
-\providecommand{\GI}{\ComplexityFont{GI}} % Graph Isomorphism
-\providecommand{\GNI}{\ComplexityFont{GNI}} % Graph Non-Isomorphism
-\providecommand{\HALT}{\ComplexityFont{HALT}} % HALT: Halting problem
-\providecommand{\PRIMES}{\ComplexityFont{PRIMES}} % PRIMES: Primality testing
-\providecommand{\TSAT}{\ComplexityFont{3}\textsf{-}\SAT} % 3-SAT problem
-\providecommand{\TSP}{\ComplexityFont{TSP}} % Traveling Salesman Problem
-\providecommand{\coRP}{\ComplexityFont{co\textsf{-}RP}} % coRP: Complement decidable in RP
 
 % Formal Language Notation
-\providecommand{\Lang}{\inmathsf{L}} % Formal language notation
-\providecommand{\NTM}{\inmathsf{N}} % Non-deterministic Turing machine
+\providecommand{\Lang}{\ComplexityFont{L}} % Formal language notation
+\providecommand{\NTM}{\ComplexityFont{N}} % Non-deterministic Turing machine
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Basic Mathematical Constants
@@ -279,7 +298,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \providecommand{\F}{\inmathbb{F}} % Generic field
-\providecommand{\GF}[1]{\inmathbb{GF}_{#1}} % Galois field (parameterized by size)
+\providecommand{\GF}{\inmathbb{GF}} % Galois field
 \providecommand{\Imag}{\inmathbb{I}} % Imaginary numbers
 \providecommand{\N}{\inmathbb{N}} % Natural numbers
 \providecommand{\Q}{\inmathbb{Q}} % Rational numbers
@@ -287,6 +306,21 @@
 
 \renewcommand{\C}{\inmathbb{C}} % Complex numbers
 \renewcommand{\R}{\inmathbb{R}} % Real numbers
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Mathematical Symbols Used in Graph Theory
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\adj}{\ComplexityFont{adj}} % Adjacency Matrix Representation
+\providecommand{\aut}{\ComplexityFont{aut}} % Graph Automorphism Definition
+\providecommand{\cut}{\ComplexityFont{cut}} % Graph Cut Definition
+\providecommand{\cycle}{\ComplexityFont{cycle}} % Cycle in a Graph
+\providecommand{\deg}{\ComplexityFont{deg}} % Vertex Degree Calculation
+\providecommand{\dist}{\ComplexityFont{dist}} % Distance Between Graph Vertices
+\providecommand{\size}{\ComplexityFont{size}} % Size of the Graph
+\providecommand{\supp}{\ComplexityFont{supp}} % Support of a Graph
+\providecommand{\tree}{\ComplexityFont{tree}} % Tree Structure Representation
+\providecommand{\trunc}{\inmath{\tau}} % Truncation Function Definition
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Basic Mathematical Operations
@@ -302,8 +336,8 @@
 \let\argmin\relax   % Ensure no conflict with existing definitions of arg min
 \let\gcd\relax      % Ensure no conflict with existing definitions of gcd
 
-\DeclareMathOperator*{\argmax}{\mathrm{arg\ max}} % Argument that maximizes a function
-\DeclareMathOperator*{\argmin}{\mathrm{arg\ min}} % Argument that minimizes a function
+\DeclareMathOperator*{\argmax}{\mathrm{arg\,max}} % Argument that maximizes a function
+\DeclareMathOperator*{\argmin}{\mathrm{arg\,min}} % Argument that minimizes a function
 \DeclareMathOperator*{\lcm}{\mathrm{lcm}} % Least common multiple
 \DeclareMathOperator*{\gcd}{\mathrm{gcd}} % Greatest common divisor
 
@@ -344,8 +378,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Clear any previous definitions for \Pr and \E to prevent naming conflicts
-\let\Pr\relax   
-\let\E\relax    
+\let\Pr\relax
+\let\E\relax
 
 % Define the expectation operator, denoted by \E
 \DeclareMathOperator*{\E}{\inmathbb{E}} % Expected value operator
