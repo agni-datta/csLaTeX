@@ -127,13 +127,8 @@
 
 % Load microtype conditionally based on the engine
 \RequirePackage[babel=true]{microtype} % For both XeTeX and LuaLaTeX
-% Conditional options based on engine
-\ifxetex
-\PassOptionsToPackage{protrusion=true}{microtype} % Additional options for XeTeX
-\fi
-\ifluatex
-\PassOptionsToPackage{protrusion=true, expansion=true}{microtype}   % Additional options for LuaLaTeX
-\fi
+\ifxetex\PassOptionsToPackage{protrusion=true}{microtype}\fi % Additional options for XeTeX
+\ifluatex\PassOptionsToPackage{protrusion=true, expansion=true}{microtype}\fi % Additional options for LuaLaTeX
 
 % Configure line spacing and text symbols
 \RequirePackage[onehalfspacing]{setspace}  % One and a half line spacing
@@ -227,12 +222,12 @@
 		bb=bboldx,  % Extended Blackboard bold options for math notation
 		cal=cm      % Classic calligraphic font style for math symbols
 	]{mathalpha}  	% Additional math font styles for diverse notation
-				    
+	
 	% Set a default font size if \deffontsize is not defined
 	\ifx\deffontsize\undefined
 		\setglobalfontsize{10pt} % Default to 10pt
 	\fi
-				    
+	
 	% Load the fontsize package
 	\RequirePackage[fontsize=\deffontsize]{fontsize} % Load the fontsize package
 }
@@ -250,11 +245,11 @@
 
 % Section formatting
 \titleformat{\section}[block]%
-    {\Large\sffamily\scshape\color{accentcolor}} % Font and color for section title
-    {\Large\marginsecnumber\thesection} % Section number format
-    {0pt} % Space between number and title
-    {#1\hrule} % Title formatting
-        
+        {\Large\sffamily\scshape\color{accentcolor}} % Font and color for section title
+        {\Large\marginsecnumber\thesection} % Section number format
+        {0pt} % Space between number and title
+        {#1\hrule} % Title formatting
+
 \titlespacing*{\section}{0pt}{10pt}{-7.5pt} % Spacing before and after section title
 
 % Command for margin subsection numbering
@@ -264,11 +259,11 @@
 
 % Subsection formatting
 \titleformat{\subsection}[block]%
-    {\large\sffamily\scshape\color{accentcolor}} % Font and color for subsection title
-    {\large\marginsubsecnumber\thesubsection} % Subsection number format
-    {0pt} % Space between number and title
-    {#1} % Title formatting
-        
+        {\large\sffamily\scshape\color{accentcolor}} % Font and color for subsection title
+        {\large\marginsubsecnumber\thesubsection} % Subsection number format
+        {0pt} % Space between number and title
+        {#1} % Title formatting
+
 % Command for margin subsubsection numbering
 \providecommand{\marginsubsubsecnumber}[1]{%
 	\makebox[0pt][r]{#1\hspace{7.5pt}}%
@@ -276,10 +271,10 @@
 
 % Subsubsection formatting
 \titleformat{\subsubsection}[runin]%
-    {\large\sffamily\scshape\color{accentcolor}} % Font and color for subsubsection title
-    {\large\marginsubsubsecnumber\thesubsubsection} % Subsubsection number format
-    {0pt} % Space between number and title
-    {#1.} % Title formatting
+        {\large\sffamily\scshape\color{accentcolor}} % Font and color for subsubsection title
+        {\large\marginsubsubsecnumber\thesubsubsection} % Subsubsection number format
+        {0pt} % Space between number and title
+        {#1.} % Title formatting
 
 % Command for margin paragraph numbering
 \providecommand{\marginparnumber}[1]{%
@@ -288,10 +283,10 @@
 
 % Paragraph formatting
 \titleformat{\paragraph}[runin]%
-    {\normalsize\bfseries\color{accentcolor}} % Font and color for paragraph title
-    {\marginparnumber\theparagraph} % Paragraph number format
-    {0pt} % Space between number and title
-    {#1.} % Title formatting
+        {\normalsize\sffamily\color{accentcolor}} % Font and color for paragraph title
+        {\marginparnumber\theparagraph} % Paragraph number format
+        {0pt} % Space between number and title
+        {#1.} % Title formatting
 
 \titlespacing*{\paragraph}{0pt}{5pt}{5pt} % Spacing before and after paragraph title
 
@@ -302,11 +297,11 @@
 
 % Subparagraph formatting
 \titleformat{\subparagraph}[runin]%
-    {\normalsize\sffamily\scshape\color{accentcolor}} % Font and color for subparagraph title
-    {\marginsubparnumber\thesubparagraph} % Subparagraph number format
-    {0pt} % Space between number and title
-    {#1.} % Title formatting
-    
+        {\normalsize\sffamily\scshape\color{accentcolor}} % Font and color for subparagraph title
+        {\marginsubparnumber\thesubparagraph} % Subparagraph number format
+        {0pt} % Space between number and title
+        {#1.} % Title formatting
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Table of Contents Customization
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -363,9 +358,9 @@
 
 \renewcommand{\maketitle}{%
 	\thispagestyle{plain}  % Use plain page style for the title page
-				    
-	\begin{tboxed}
-		\bfseries\Large\bigskip % Title Section
+	
+	\begin{tboxed}[tikzsetting={draw=accentcolor}, linewidth=0.5pt]
+		\color{accentcolor}\bfseries\Large\bigskip % Title Section
 		\ifx\@title\undefined
 		\else
 			\@title\par\bigskip
@@ -451,17 +446,17 @@
 	backgroundcolor=none,         % Set background to transparent
 	skipabove=10pt,               % Vertical space above the frame
 	skipbelow=10pt,               % Vertical space below the frame
-	innerleftmargin=7.5pt,       % Left margin inside the frame
-	innerrightmargin=7.5pt,      % Right margin inside the frame
-	innertopmargin=10pt,         % Top margin inside the frame
-	innerbottommargin=10pt,      % Bottom margin inside the frame
-	roundcorner=1pt              % Set rounded corners with a radius of 1pt
+	innerleftmargin=7.5pt,        % Left margin inside the frame
+	innerrightmargin=7.5pt,       % Right margin inside the frame
+	innertopmargin=10pt,          % Top margin inside the frame
+	innerbottommargin=10pt,       % Bottom margin inside the frame
+	roundcorner=1pt               % Set rounded corners with a radius of 1pt
 ]{tboxed} % Custom framed environment named "tboxed"
 
 % Define another custom-framed environment with specific formatting
 \newmdenv[%
 	hidealllines=true,            % Hide all frame lines
-	backgroundcolor={accentcolor!25!white}, % Set a semi-transparent background color
+	backgroundcolor={accentcolor!15!white}, % Set a semi-transparent background color
 	skipabove=10pt,               % Vertical space above the frame
 	skipbelow=10pt,               % Vertical space below the frame
 	innerleftmargin=7.5pt,        % Left margin inside the frame
@@ -544,9 +539,9 @@
 % Packages for Footnotes and Multi-Column Formatting
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[bottom, multiple, hang]{footmisc} % Customizes footnote formatting: positioning, multiple footnotes per page, and hanging indentation
-\RequirePackage{footnote}               % Allows footnotes within the document
-\RequirePackage{multicol}               % Supports multi-column formatting
+\RequirePackage[bottom, multiple, hang]{footmisc}   % Customizes footnote formatting
+\RequirePackage{footnote}                           % Allows footnotes within the document
+\RequirePackage{multicol}                           % Supports multi-column formatting
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Packages for Tables and Figures
@@ -699,35 +694,35 @@
 
 % Conditionally load and configure BibLaTeX if the biblatex option is specified
 \ifbiblatex
-    \RequirePackage[%
-    	hyperref=auto,          % Automatically configure compatibility with hyperref
-    	defernumbers=true,      % Defer citation numbering until after sorting
-    	style=alphabetic,       % Use alphabetic style for references
-    	backref=true,           % Enable back-references from bibliography to citations
-    	sorting=anyt,           % Sort entries by order of appearance
-    	autocite=superscript,   % Use superscript for in-text citations
-    	maxalphanames=99,       % Limit alphabetic labels to 99 names
-    	maxnames=999,           % Display up to 999 names in citations
-    	backend=biber           % Use Biber for bibliography processing
-    ]{biblatex} % Load BibLaTeX with the specified options
-                
-    % Define a command to add .bib files to the bibliography resources
-    % Usage: \referencedata{filename.bib}
-    \providecommand{\referencedata}[1]{%
-    	\addbibresource{#1} % Add the specified .bib file
-    }
-                
-    % Set font size for bibliography entries
-    \renewcommand*{\bibfont}{\small} % Use small font size for entries
-                
-    % Customize back-reference strings in the bibliography
-    \DefineBibliographyStrings{english}{%
-    	backrefpage={\unskip Cited on page},%
-    	backrefpages={\unskip Cited on pages}%
-    }
+	\RequirePackage[%
+		hyperref=auto,          % Automatically configure compatibility with hyperref
+		defernumbers=true,      % Defer citation numbering until after sorting
+		style=alphabetic,       % Use alphabetic style for references
+		backref=true,           % Enable back-references from bibliography to citations
+		sorting=anyt,           % Sort entries by order of appearance
+		autocite=superscript,   % Use superscript for in-text citations
+		maxalphanames=99,       % Limit alphabetic labels to 99 names
+		maxnames=999,           % Display up to 999 names in citations
+		backend=biber           % Use Biber for bibliography processing
+	]{biblatex} % Load BibLaTeX with the specified options
+
+	% Define a command to add .bib files to the bibliography resources
+	% Usage: \referencedata{filename.bib}
+	\providecommand{\referencedata}[1]{%
+		\addbibresource{#1} % Add the specified .bib file
+	}
+
+	% Set font size for bibliography entries
+	\renewcommand*{\bibfont}{\small} % Use small font size for entries
+
+	% Customize back-reference strings in the bibliography
+	\DefineBibliographyStrings{english}{%
+		backrefpage={\unskip Cited on page},%
+		backrefpages={\unskip Cited on pages}%
+	}
 \else
-    % Use a default bibliography style if BibLaTeX is not loaded
-    \bibliographystyle{amsalpha}
+	% Use a default bibliography style if BibLaTeX is not loaded
+	\bibliographystyle{amsalpha}
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
