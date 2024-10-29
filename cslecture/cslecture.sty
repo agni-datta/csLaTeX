@@ -142,8 +142,8 @@
 % Geometry settings for an A4-sized layout
 \RequirePackage[%
 	a4paper,               % Define A4 paper size
-	tmargin=2.50cm,        % Set top margin
-	bmargin=2.50cm,        % Set bottom margin
+	tmargin=2.75cm,        % Set top margin
+	bmargin=2.75cm,        % Set bottom margin
 	lmargin=3.50cm,        % Set left margin
 	rmargin=3.50cm,        % Set right margin
 	footskip=1.00cm        % Set distance from text to footer
@@ -463,7 +463,7 @@
 	innerrightmargin=7.5pt,       % Right margin inside the frame
 	innertopmargin=10pt,          % Top margin inside the frame
 	innerbottommargin=10pt,       % Bottom margin inside the frame
-	roundcorner=2pt               % Set rounded corners with a radius of 2pt
+	roundcorner=1pt               % Set rounded corners with a radius of 2pt
 ]{colbox} % Custom framed environment named "colbox"
 
 % Create a new counter for construction
@@ -787,10 +787,12 @@
 \providecommand{\term}[1]{#1\index{#1}} % Defines and indexes terms for glossary inclusion
 \providecommand{\textem}[1]{{\bfseries\color{accentcolor}#1}} % Formats emphasized text with bold font in a specified accent color
 \providecommand{\toc}{%
-	\tableofcontents % Generates the table of contents
-	\addcontentsline{toc}{section}{Contents} % Adds a "Contents" entry to the table of contents
-	\vfill % Fills vertical space to push content to the next page
-	\pagebreak % Forces a page break after the table of contents
+	\begingroup
+        	\sffamily\scshape % Set font to sans-serif and small caps
+        	\tableofcontents % Creates the table of contents based on sections and subsections
+        	\vfill % Fills the vertical space to push content to the next page
+        	\pagebreak % Forces a page break to start new content on a fresh page
+	\endgroup % Ends the group to revert to previous formatting
 }
 \providecommand{\urlref}[1]{\href{#1}{#1}} % Creates a hyperlink for a given URL
 
