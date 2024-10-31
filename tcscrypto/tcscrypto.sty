@@ -108,6 +108,7 @@
 \providecommand{\pp}{\inmathsf{pp}} % Public parameters
 \providecommand{\prover}{\inmathcal{P}} % Prover in a cryptographic protocol
 \providecommand{\prove}{\inmathsf{Prove}} % Proof generation function
+\providecommand{\protocol}{\inmath{\BbbPi}} % Protocol Symbol
 \providecommand{\qq}{\inmathsf{qq}} % General parameter notation
 \providecommand{\query}{\inmathsf{Query}} % Query operation
 \providecommand{\real}{\inmathsf{Real}} % Real function or process
@@ -331,7 +332,6 @@
 \providecommand{\eqdef}{\inmath{\overset{\Delta}{=}}} % Definition notation (defined as)
 \providecommand{\eqq}{\inmath{\overset{\textrm{?}}{=}}} % Question mark equality
 \providecommand{\inq}{\inmath{\overset{\textrm{?}}{\in}}} % Question mark membership
-\providecommand{\inv}{^{-1}} % Inverse notation
 
 \let\argmax\relax   % Ensure no conflict with existing definitions of arg max
 \let\argmin\relax   % Ensure no conflict with existing definitions of arg min
@@ -339,6 +339,7 @@
 
 \DeclareMathOperator*{\argmax}{\mathrm{arg\,max}} % Argument that maximizes a function
 \DeclareMathOperator*{\argmin}{\mathrm{arg\,min}} % Argument that minimizes a function
+\DeclareMathOperator*{\majority}{\mathrm{majority}} % Majority function
 \DeclareMathOperator*{\lcm}{\mathrm{lcm}} % Least common multiple
 \DeclareMathOperator*{\gcd}{\mathrm{gcd}} % Greatest common divisor
 
@@ -366,9 +367,13 @@
 % Set Theory and Operations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Clear any previous definitions for \iff to prevent naming conflicts
+\let\iff\relax % Ensure no conflict with existing definitions of iff
+
 \DeclareMathOperator{\intersection}{\inmath{\cap}} % Intersection operator
 \DeclareMathOperator{\union}{\ensuremath{\cup}} % Union operator
 
+\providecommand{\iff}{\longleftrightarrow}
 \providecommand{\set}[1]{\inmath{\left\{#1\right\}}} % Set notation
 \providecommand{\paren}[1]{\inmath{\left[#1\right]}} % Parentheses notation
 \providecommand{\floor}[1]{\inmath{\left\lfloor#1\right\rfloor}} % Floor function
