@@ -442,7 +442,9 @@
 
 % Define a custom-framed environment with TikZ settings
 \newmdenv[%
-	tikzsetting={draw=black},     % Set the border color of the frame to black
+	font=\normalfont\small,       % Font for the content
+	frametitlefont=\bfseries,     % Title font style
+        tikzsetting={draw=black},     % Set the border color of the frame to black
 	backgroundcolor=none,         % Set background to transparent
 	skipabove=10pt,               % Vertical space above the frame
 	skipbelow=10pt,               % Vertical space below the frame
@@ -455,7 +457,9 @@
 
 % Define another custom-framed environment with specific formatting
 \newmdenv[%
-	hidealllines=true,            % Hide all frame lines
+	font=\normalfont\small,       % Font for the content
+	frametitlefont=\bfseries,     % Title font style
+        hidealllines=true,            % Hide all frame lines
 	backgroundcolor={accentcolor!15!white}, % Set a semi-transparent background color
 	skipabove=10pt,               % Vertical space above the frame
 	skipbelow=10pt,               % Vertical space below the frame
