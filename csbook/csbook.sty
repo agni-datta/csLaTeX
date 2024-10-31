@@ -775,28 +775,32 @@ postamble "\n\\end{theindex}\n"
 
 % Define a custom-framed environment with TikZ settings
 \newmdenv[%
-	tikzsetting={draw=black},     % Set the border color of the frame to black
+	font=\normalfont\small,       % Font for the content
+	frametitlefont=\bfseries,     % Title font style
+        tikzsetting={draw=black},     % Set the border color of the frame to black
 	backgroundcolor=none,         % Set background to transparent
-	skipabove=10pt,               % Vertical space above the frame
-	skipbelow=10pt,               % Vertical space below the frame
-	innerleftmargin=7.5pt,       % Left margin inside the frame
-	innerrightmargin=7.5pt,      % Right margin inside the frame
-	innertopmargin=10pt,         % Top margin inside the frame
-	innerbottommargin=10pt,      % Bottom margin inside the frame
-	roundcorner=1pt              % Set rounded corners with a radius of 1pt
-]{tboxed} % Custom framed environment named "tboxed"
-
-% Define another custom-framed environment with specific formatting
-\newmdenv[%
-	hidealllines=true,            % Hide all frame lines
-	backgroundcolor={accentcolor!25!white}, % Set a semi-transparent background color
 	skipabove=10pt,               % Vertical space above the frame
 	skipbelow=10pt,               % Vertical space below the frame
 	innerleftmargin=7.5pt,        % Left margin inside the frame
 	innerrightmargin=7.5pt,       % Right margin inside the frame
 	innertopmargin=10pt,          % Top margin inside the frame
 	innerbottommargin=10pt,       % Bottom margin inside the frame
-	roundcorner=2pt               % Set rounded corners with a radius of 2pt
+	roundcorner=1pt               % Set rounded corners with a radius of 1pt
+]{tboxed} % Custom framed environment named "tboxed"
+
+% Define another custom-framed environment with specific formatting
+\newmdenv[%
+	font=\normalfont\small,       % Font for the content
+	frametitlefont=\bfseries,     % Title font style
+        hidealllines=true,            % Hide all frame lines
+	backgroundcolor={accentcolor!15!white}, % Set a semi-transparent background color
+	skipabove=10pt,               % Vertical space above the frame
+	skipbelow=10pt,               % Vertical space below the frame
+	innerleftmargin=7.5pt,        % Left margin inside the frame
+	innerrightmargin=7.5pt,       % Right margin inside the frame
+	innertopmargin=10pt,          % Top margin inside the frame
+	innerbottommargin=10pt,       % Bottom margin inside the frame
+	roundcorner=1pt               % Set rounded corners with a radius of 2pt
 ]{colbox} % Custom framed environment named "colbox"
 
 % Create a new counter for construction
