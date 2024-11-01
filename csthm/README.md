@@ -2,7 +2,7 @@
 title: Theorem Environments for Computer Science (`csthm.sty`)
 linter-yaml-title-alias: Theorem Environments for Computer Science (`csthm.sty`)
 date created: Monday, March 25th 2024, 14:13:16
-date modified: Thursday, October 31st 2024, 16:55:44
+date modified: Friday, November 1st 2024, 15:12:11
 aliases: [Theorem Environments for Computer Science (`csthm.sty`)]
 ---
 
