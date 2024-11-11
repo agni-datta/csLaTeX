@@ -53,16 +53,20 @@
 % Package Options
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Define internal flags for package options
-\newif\ifbiblatex % Flag to enable BibLaTeX
+% Define internal flags to manage package options
+\newif\ifbiblatex % Flag for enabling the BibLaTeX package
+\newif\ifebook    % Flag for enabling ebook-specific layout or settings
 
 % Declare package options
-\DeclareOption{biblatex}{\biblatextrue} % Enable BibLaTeX support
+\DeclareOption{biblatex}{\biblatextrue} % If the 'biblatex' option is passed, enable BibLaTeX support
+\DeclareOption{ebook}{\ebooktrue}       % If the 'ebook' option is passed, enable ebook-specific settings
 
-% Handle unknown options
-\DeclareOption*{\PackageWarning{\filename}{Unknown option '\CurrentOption'}} % Warn for unknown options
+% Handle unknown package options by issuing a warning
+\DeclareOption*{%
+    \PackageWarning{\filename}{Unknown option '\CurrentOption'} % Display a warning for any unknown options
+}
 
-% Process the declared options
+% Process the declared package options
 \ProcessOptions\relax
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -139,15 +143,27 @@
 % Page Layout Configuration
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Geometry settings for an A4-sized layout
+% Geometry settings for A4-sized paper layout
 \RequirePackage[%
-	a4paper,               % Define A4 paper size
-	tmargin=2.50cm,        % Set top margin
-	bmargin=2.50cm,        % Set bottom margin
-	lmargin=3.50cm,        % Set left margin
-	rmargin=3.50cm,        % Set right margin
-	footskip=1.00cm        % Set distance from text to footer
-]{geometry}                % Load geometry package for page layout management
+	a4paper,               % Specifies A4 paper size for the document
+	tmargin=2.50cm,        % Sets the top margin to 2.5 cm
+	bmargin=2.50cm,        % Sets the bottom margin to 2.5 cm
+	lmargin=3.50cm,        % Sets the left margin to 3.5 cm
+	rmargin=3.50cm,        % Sets the right margin to 3.5 cm
+	footskip=1.00cm        % Defines the distance between the body text and footer (1 cm)
+]{geometry}                % Load the 'geometry' package for managing custom page layout
+
+% Conditionally adjust the layout for ebook format if the 'ebook' option is enabled
+\ifebook
+        % Set up an A5 page layout with smaller margins suited for ebook viewing
+        \geometry{%
+        	a5paper,           % Specifies A5 paper size, commonly used for ebooks
+        	rmargin=1.75cm,    % Set the right margin to 1.75 cm
+        	lmargin=1.75cm,    % Set the left margin to 1.75 cm
+        	tmargin=2.00cm,    % Set the top margin to 2.00 cm
+        	bmargin=1.75cm     % Set the bottom margin to 1.75 cm
+        }
+\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Customization of Headers and Footers
