@@ -63,16 +63,17 @@
 
 % Boolean Flags
 \newbool{forprint}          % Flag to manage the use of print-specific settings
-\newbool{useinconsolata}    % Flag to manage the use of Inconsolata font
 \newbool{usebiblatex}       % Flag to manage the use of BibLaTeX
 \newbool{usecodelists}      % Flag to manage the use of code lists
 \newbool{useebgaramond}     % Flag to manage the use of EB Garamond font
 \newbool{usefancythm}       % Flag to manage the use of fancy theorem formatting
 \newbool{usefiramono}       % Flag to manage the use of Fira Mono font
 \newbool{usefirasans}       % Flag to manage the use of Fira Sans font
+\newbool{useinconsolata}    % Flag to manage the use of Inconsolata font
 \newbool{usekepler}         % Flag to manage the use of KP font
 \newbool{uselibsans}        % Flag to manage the use of Libertinus Sans font
 \newbool{uselmodern}        % Flag to manage the use of Latin Modern font
+\newbool{uselmsans}         % Flag to manage the use of Latin Modern Sans font
 \newbool{usenormalthm}      % Flag to manage the use of standard theorem formatting
 \newbool{useoldlmodern}     % Flag to manage the use of Old Latin Modern font
 \newbool{usesourcecode}     % Flag to manage the use of Source Code Pro font
@@ -82,16 +83,17 @@
 
 % Boolean Initialization
 \setbool{forprint}{false}          % Default: Printing-specific options off
-\setbool{useinconsolata}{false}    % Default: Inconsolata font off
 \setbool{usebiblatex}{false}       % Default: BibLaTeX off
 \setbool{usecodelists}{false}      % Default: Code lists off
 \setbool{useebgaramond}{false}     % Default: EB Garamond font off
 \setbool{usefancythm}{false}       % Default: Fancy theorem formatting off
 \setbool{usefiramono}{false}       % Default: Fira Mono font off
 \setbool{usefirasans}{false}       % Default: Fira Sans font off
+\setbool{useinconsolata}{false}    % Default: Inconsolata font off
 \setbool{usekepler}{false}         % Default: KP font off
 \setbool{uselibsans}{false}        % Default: Libertinus Sans font off
 \setbool{uselmodern}{false}        % Default: Latin Modern font off
+\setbool{uselmsans}{false}         % Default: Latin Modern Sans font off
 \setbool{usenormalthm}{false}      % Default: Standard theorem formatting off
 \setbool{useoldlmodern}{false}     % Default: Old Latin Modern font off
 \setbool{usesourcecode}{false}     % Default: Source Code Pro font off
@@ -101,16 +103,17 @@
 
 % Option Definitions
 \DeclareOption{forprint}{\setbool{forprint}{true}}                 % Enable print-specific settings if specified
-\DeclareOption{useinconsolata}{\setbool{useinconsolata}{true}}     % Enable Inconsolata font if specified
 \DeclareOption{usebiblatex}{\setbool{usebiblatex}{true}}           % Enable BibLaTeX if specified
 \DeclareOption{usecodelists}{\setbool{usecodelists}{true}}         % Enable code lists if specified
 \DeclareOption{useebgaramond}{\setbool{useebgaramond}{true}}       % Enable EB Garamond font if specified
 \DeclareOption{usefancythm}{\setbool{usefancythm}{true}}           % Enable fancy theorem formatting if specified
 \DeclareOption{usefiramono}{\setbool{usefiramono}{true}}           % Enable Fira Mono font if specified
 \DeclareOption{usefirasans}{\setbool{usefirasans}{true}}           % Enable Fira Sans font if specified
+\DeclareOption{useinconsolata}{\setbool{useinconsolata}{true}}     % Enable Inconsolata font if specified
 \DeclareOption{usekepler}{\setbool{usekepler}{true}}               % Enable KP font if specified
 \DeclareOption{uselibsans}{\setbool{uselibsans}{true}}             % Enable Libertinus Sans font if specified
 \DeclareOption{uselmodern}{\setbool{uselmodern}{true}}             % Enable Latin Modern font if specified
+\DeclareOption{uselmsans}{\setbool{uselmsans}{true}}               % Enable Latin Modern Sans font if specified
 \DeclareOption{usenormalthm}{\setbool{usenormalthm}{true}}         % Enable standard theorem formatting if specified
 \DeclareOption{useoldlmodern}{\setbool{useoldlmodern}{true}}       % Enable Old Latin Modern font if specified
 \DeclareOption{usesourcecode}{\setbool{usesourcecode}{true}}       % Enable Source Code Pro font if specified
@@ -205,8 +208,8 @@
 		a4paper,               % Define A4 paper size
 		tmargin=2.50cm,        % Set top margin
 		bmargin=2.50cm,        % Set bottom margin
-		lmargin=3.50cm,        % Set left margin
-		rmargin=3.50cm,        % Set right margin
+		lmargin=3.00cm,        % Set left margin
+		rmargin=3.00cm,        % Set right margin
 		footskip=1.00cm        % Set distance from text to footer
 	]{geometry}                % Load geometry package for page layout management
 }
@@ -245,60 +248,60 @@
 \RequirePackage{fontspec}               % Allows the use of custom fonts with XeLaTeX and LuaLaTeX
 \RequirePackage{unicode-math}           % Provides support for Unicode math fonts, enabling better math typography
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Font Setup Command Definitions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Command to set up Old Latin Modern fonts for both text and mathematics
+% Command to configure Old Latin Modern fonts for text and mathematics
 \providecommand{\useoldlmodern}{%
 	\setmainfont[%
 		ItalicFont = lmroman10-italic.otf,            % Italic variant for emphasis
-		SmallCapsFont = lmromancaps10-regular.otf,    % Small caps variant for stylistic elements
+		SmallCapsFont = lmromancaps10-regular.otf,    % Small caps font for stylistic elements
 		SmallCapsFeatures = {RawFeature=+smcp},       % Enable small caps feature
 		BoldFont = lmroman10-bold.otf,                % Bold variant for headings
-		BoldItalicFont = lmroman10-bolditalic.otf,    % Bold italic for extra emphasis
-		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Advanced typographic features
-	]{lmroman10-regular.otf} % Set the main text font
+		BoldItalicFont = lmroman10-bolditalic.otf,    % Bold italic variant for emphasis
+		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Enable advanced typographic features
+	]{lmroman10-regular.otf} % Set the regular text font
 	\setmathfont[%
-		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Advanced typographic features
+		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Apply advanced typographic features
 	]{latinmodern-math.otf} % Set the mathematics font
 	\setsansfont[%
 		ItalicFont = lmsans10-oblique.otf,            % Italic variant for emphasis
 		SmallCapsFont = NewCMSans10-Book.otf,         % Small caps variant for stylistic elements
 		SmallCapsFeatures = {RawFeature=+smcp},       % Enable small caps feature
 		BoldFont = lmsans10-bold.otf,                 % Bold variant for headings
-		BoldItalicFont = lmsans10-boldoblique.otf,    % Bold italic for extra emphasis
+		BoldItalicFont = lmsans10-boldoblique.otf,    % Bold italic variant for extra emphasis
 		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Advanced typographic features
 	]{lmsans10-regular.otf} % Set the sans-serif font
 }
 
-% Command to set up Latin Modern fonts for both text and mathematics
+% Command to configure Latin Modern fonts for text and mathematics
 \providecommand{\uselmodern}{%
 	\setmainfont[%
-		ItalicFont = NewCM10-BookItalic.otf,          % Italic font specification
-		SmallCapsFont = NewCM10-Book.otf,             % Small caps font specification
+		ItalicFont = NewCM10-BookItalic.otf,          % Italic variant for emphasis
+		SmallCapsFont = NewCM10-Book.otf,             % Small caps variant for stylistic elements
 		SmallCapsFeatures = {RawFeature=+smcp},       % Enable small caps feature
-		BoldFont = NewCM10-Bold.otf,                  % Bold font specification
-		BoldItalicFont = NewCM10-BoldItalic.otf,      % Bold italic font specification
-		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Apply advanced typographic features
-	]{NewCM10-Book.otf} % Set the main text font
+		BoldFont = NewCM10-Bold.otf,                  % Bold font for headings
+		BoldItalicFont = NewCM10-BoldItalic.otf,      % Bold italic variant for emphasis
+		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Enable advanced typographic features
+	]{NewCM10-Book.otf} % Set the regular text font
 	\setmathfont{NewCMMath-Book.otf} % Set the mathematics font
 	\setsansfont[%
 		ItalicFont = NewCMSans10-Oblique.otf,         % Italic variant for emphasis
 		SmallCapsFont = NewCMSans10-Book.otf,         % Small caps variant for stylistic elements
 		SmallCapsFeatures = {RawFeature=+smcp},       % Enable small caps feature
 		BoldFont = NewCMSans10-Bold.otf,              % Bold variant for headings
-		BoldItalicFont = NewCMSans10-BoldOblique.otf, % Bold italic for extra emphasis
-		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Advanced typographic features
+		BoldItalicFont = NewCMSans10-BoldOblique.otf, % Bold italic variant for emphasis
+		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Enable advanced typographic features
 	]{NewCMSans10-Book.otf} % Set the sans-serif font
 }
 
 % Command to configure EB Garamond fonts for text and math
 \providecommand{\useebgaramond}{%
 	\setmainfont[%
-		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum}, % Apply advanced typographic features
+		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum}, % Enable advanced typographic features
 		StylisticSet = {3,5} % Apply specific stylistic sets
-	]{EB Garamond} % Set the main font
+	]{EB Garamond} % Set the main text font
 	\setmathfont[%
 		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum}, % Apply advanced typographic features
 		StylisticSet = {2,6,7,9} % Apply specific stylistic sets
@@ -314,24 +317,36 @@
 % Command to configure Libertinus Sans font
 \providecommand{\uselibsans}{%
 	\setsansfont[%
-		UprightFont = LibertinusSans-Regular, % Specify the upright font
-		BoldFont = LibertinusSans-Bold.otf, % Specify the bold font
-		ItalicFont = LibertinusSans-Italic.otf, % Specify the italic font
-		SmallCapsFont = LibertinusSans-Regular, % Specify the small caps font
-		SmallCapsFeatures = {RawFeature=+smcp}, % Enable small caps feature
+		UprightFont = LibertinusSans-Regular,          % Define the regular upright font
+		BoldFont = LibertinusSans-Bold.otf,             % Specify the bold font
+		ItalicFont = LibertinusSans-Italic.otf,        % Define the italic font
+		SmallCapsFont = LibertinusSans-Regular,        % Define the small caps variant
+		SmallCapsFeatures = {RawFeature=+smcp},        % Enable small caps feature
 		RawFeature = {+calt, +case, +dlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum}, % Apply advanced typographic features
-		StylisticSet = {1,3} % Apply specific stylistic sets
-	]{LibertinusSans-Regular.otf} % Define the sans font
+		StylisticSet = {1,3}                           % Apply specific stylistic sets
+	]{LibertinusSans-Regular.otf}                    % Set Libertinus Sans as the default sans font
+}
+
+% Command to configure Latin Modern Sans font
+\providecommand{\uselmsans}{%
+	\setsansfont[%
+		ItalicFont = NewCMSans10-Oblique.otf,          % Define italic variant for emphasis
+		SmallCapsFont = NewCMSans10-Book.otf,          % Define small caps font for stylistic elements
+		SmallCapsFeatures = {RawFeature=+smcp},        % Enable small caps feature
+		BoldFont = NewCMSans10-Bold.otf,               % Set bold font for headings
+		BoldItalicFont = NewCMSans10-BoldOblique.otf,  % Define bold-italic font for extra emphasis
+		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Enable advanced typographic features
+	]{NewCMSans10-Book.otf}                          % Set NewCMSans as the default sans-serif font
 }
 
 % Command to configure Source Sans Pro font
 \providecommand{\usesourcesans}{%
 	\RequirePackage[otf, lining, proportional, scale=0.975]{sourcesanspro} % Load the Source Sans Pro package with specified options
 	\setsansfont[%
-		Scale = 0.975, % Set font scale
+		Scale = 0.950, % Set font scale
 		SmallCapsFeatures = {RawFeature=+smcp}, % Enable small caps feature
 		RawFeature = {+calt, +case, +dlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Apply advanced typographic features
-	]{Source Sans Pro} % Define the sans font
+	]{Source Sans Pro} % Define the Source Sans font
 }
 
 % Command to configure Source Code Pro font
@@ -347,14 +362,14 @@
 % Command to configure Fira Sans font
 \providecommand{\usefirasans}{%
 	\setsansfont[%
-		Scale = 0.95, % Set font scale
+		Scale = 0.925, % Set font scale
 		BoldFont = {FiraSans-Bold.otf}, % Specify the bold font
 		ItalicFont = {FiraSans-BookItalic.otf}, % Specify the italic font
-		BoldItalicFont = {FiraSans-BoldItalic.otf}, % Specify the bold italic font
+		BoldItalicFont = {FiraSans-BoldItalic.otf}, % Specify the bold-italic font
 		SmallCapsFont = {FiraSans-Book.otf}, % Specify the small caps font
 		SmallCapsFeatures = {RawFeature=+smcp}, % Enable small caps feature
 		RawFeature = {+calt, +case, +dlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Apply advanced typographic features
-	]{FiraSans-Book.otf} % Define the Fira Sans font
+	]{FiraSans-Book.otf} % Set the Fira Sans font
 }
 
 % Command to configure Fira Mono font
@@ -363,7 +378,7 @@
 		Scale = 0.865, % Set font scale for monospaced font
 		BoldFont = {FiraMono-Bold.otf}, % Specify the bold font
 		ItalicFont = {FiraMono-Oblique.otf}, % Specify the italic font
-		BoldItalicFont = {FiraMono-BoldOblique.otf}, % Specify the bold italic font
+		BoldItalicFont = {FiraMono-BoldOblique.otf}, % Specify the bold-italic font
 		SmallCapsFont = {FiraMono-Regular.otf}, % Specify the small caps font
 		SmallCapsFeatures = {RawFeature=+smcp}, % Enable small caps feature
 		RawFeature = {+calt, +case, +dlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Apply advanced typographic features
@@ -378,19 +393,20 @@
 	]{Inconsolata} % Define the monospaced font
 }
 
-% Activate font settings based on specified flags
-\ifbool{useebgaramond}{\useebgaramond}{\typeout{EB Garamond fonts are not applied.}} % Apply EB Garamond fonts if enabled
-\ifbool{usekepler}{\usekepler}{\typeout{Kepler fonts are not applied.}} % Apply Kepler fonts if enabled
-\ifbool{uselmodern}{\uselmodern}{\typeout{Latin Modern fonts are not applied.}} % Apply Latin Modern fonts if enabled
-\ifbool{useoldlmodern}{\useoldlmodern}{\typeout{Old Latin Modern fonts are not applied.}} % Apply Old Latin Modern fonts if enabled
+% Activate font settings based on the specified flags
+\ifbool{useebgaramond}{\useebgaramond}{\typeout{EB Garamond fonts not applied.}} % Apply EB Garamond fonts if enabled
+\ifbool{usekepler}{\usekepler}{\typeout{Kepler fonts not applied.}} % Apply Kepler fonts if enabled
+\ifbool{uselmodern}{\uselmodern}{\typeout{Latin Modern fonts not applied.}} % Apply Latin Modern fonts if enabled
+\ifbool{useoldlmodern}{\useoldlmodern}{\typeout{Old Latin Modern fonts not applied.}} % Apply Old Latin Modern fonts if enabled
 
-\ifbool{useinconsolata}{\useinconsolata}{\typeout{Inconsolata fonts are not applied.}} % Apply Inconsolata fonts if enabled
-\ifbool{usefiramono}{\usefiramono}{\typeout{Fira Code fonts are not applied.}} % Apply Fira Mono fonts if enabled
-\ifbool{usesourcecode}{\usesourcecode}{\typeout{Source Code fonts are not applied.}} % Apply Source Code fonts if enabled
+\ifbool{useinconsolata}{\useinconsolata}{\typeout{Inconsolata fonts not applied.}} % Apply Inconsolata fonts if enabled
+\ifbool{usefiramono}{\usefiramono}{\typeout{Fira Mono fonts not applied.}} % Apply Fira Mono fonts if enabled
+\ifbool{usesourcecode}{\usesourcecode}{\typeout{Source Code fonts not applied.}} % Apply Source Code fonts if enabled
 
-\ifbool{usefirasans}{\usefirasans}{\typeout{Fira Sans fonts are not applied.}} % Apply Fira Sans fonts if enabled
-\ifbool{uselibsans}{\uselibsans}{\typeout{Libertinus Sans fonts are not applied.}} % Apply Libertinus Sans fonts if enabled
-\ifbool{usesourcesans}{\usesourcesans}{\typeout{Source Sans fonts are not applied.}} % Apply Source Sans fonts if enabled
+\ifbool{usefirasans}{\usefirasans}{\typeout{Fira Sans fonts not applied.}} % Apply Fira Sans fonts if enabled
+\ifbool{uselibsans}{\uselibsans}{\typeout{Libertinus Sans fonts not applied.}} % Apply Libertinus Sans fonts if enabled
+\ifbool{uselmsans}{\uselmsans}{\typeout{Libertinus Sans fonts not applied.}} % Apply Latin Modern Sans fonts if enabled
+\ifbool{usesourcesans}{\usesourcesans}{\typeout{Source Sans fonts not applied.}} % Apply Source Sans fonts if enabled
 
 % Command to set the default font size
 \providecommand{\setglobalfontsize}[1]{\def\deffontsize{#1}} % Command to set font size
@@ -865,20 +881,12 @@ postamble "\n\\end{theindex}\n"
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newenvironment{abstract}{%
-	\if@twocolumn
-		\section*{\abstractname} % Unnumbered section for abstract in two-column mode
-	\else\small\vspace{-1em} % Adjust font size and vertical space in single-column mode
-		\begin{center}
-			{\scshape\abstractname\vspace{-.5em}\vspace{\z@}} % Title in small caps with vertical spacing
-		\end{center} % Center the abstract title
-		\quotation\sffamily % Start the quotation environment for abstract content
-	\fi
-}{%
-	\if@twocolumn
-		% No action is needed for the two-column mode
-	\else
-		\endquotation % End the quotation environment in single-column mode
-	\fi
+	\begin{center}
+            \textsf{\color{accentcolor}\textsc{\abstractname}\vspace{-2pt}}
+        \end{center}
+        \quotation\sffamily\small % Start the quotation environment for abstract content
+	}{%
+	\endquotation % End the quotation environment in single-column mode
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -901,8 +909,9 @@ postamble "\n\\end{theindex}\n"
 % Customizations for verbatim environments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage{verbatim}  % Allows inclusion of unformatted text or code snippets
-\RequirePackage{fancyvrb}  % Provides enhanced verbatim environments and features
+\RequirePackage{verbatim}  % Enables inclusion of raw text or code without formatting
+\RequirePackage{lettrine}  % Provides support for stylizing the first letter of paragraphs
+\RequirePackage{fancyvrb}  % Enhances the verbatim environments with additional features and customization
 
 % Save the original verbatim process line command
 \providecommand{\savedverbatim@processline}{}
@@ -1594,23 +1603,19 @@ postamble "\n\\end{theindex}\n"
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Custom Commands for Document Formatting
+% Custom Commands for Document Layout and Formatting
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand*{\code}[1]{{\ttfamily#1}} % Formats text in a monospaced font to represent code
-\providecommand{\cat}[1]{\ensuremath{\mathsf{#1}}} % Displays category names in math mode using a sans-serif font
-\providecommand{\missingcitation}{\code{\small\color{Firebrick1}<Citation Missing>}} % Formats missing citations in small red text
-\providecommand{\missing}[1]{{\color{Firebrick1}#1}} % Highlights text in red to indicate missing or problematic content
-\providecommand{\strike}{\bgroup\ULdepth=-.55ex\ULset} % Applies a strike-through effect for deleted or emphasized text
-\providecommand{\term}[1]{#1\index{#1}} % Defines and indexes terms for glossary inclusion
-\providecommand{\textem}[1]{{\bfseries\color{accentcolor}#1}} % Formats emphasized text with bold font in a specified accent color
-\providecommand{\toc}{%
-	\tableofcontents % Generates the table of contents
-	\addcontentsline{toc}{chapter}{Contents} % Adds a "Contents" entry to the table of contents
-	\vfill % Fills vertical space to push content to the next page
-	\pagebreak % Forces a page break after the table of contents
-}
-\providecommand{\urlref}[1]{\href{#1}{#1}} % Creates a hyperlink for a given URL
+\providecommand*{\code}[1]{{\ttfamily#1}} % Monospaced font for code snippets
+\providecommand{\cat}[1]{\ensuremath{\mathsf{#1}}} % Sans-serif for category names in math mode
+\providecommand{\missingcitation}{\code{\small\color{Firebrick1}<Citation Missing!>}} % Red, small text for missing citations
+\providecommand{\missing}[1]{{\color{Firebrick1}#1}} % Red text for missing/incomplete content
+\providecommand{\strike}{\bgroup\ULdepth=-.55ex\ULset} % Strike-through effect for deleted text
+\providecommand{\stylized}[2]{\lettrine[lines=2, lhang=0.25]{\textcolor{accentcolor}{#1}}{#2}} % Stylized first letter with color
+\providecommand{\term}[1]{#1\index{#1}} % Marks terms for glossary/index
+\providecommand{\textem}[1]{{\bfseries\color{accentcolor}#1}} % Bold, accent-colored emphasis
+\providecommand{\toc}{\tableofcontents\addcontentsline{toc}{chapter}{Contents}\vfill\pagebreak} % Custom table of contents
+\providecommand{\urlref}[1]{\href{#1}{#1}} % Hyperlink to URL
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % TODO Notes and Annotations
