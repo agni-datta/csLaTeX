@@ -2,7 +2,7 @@
 title: A LaTeX Package for Typesetting Theoretical CS and Cryptography (`tcscrypto.sty`)
 linter-yaml-title-alias: A LaTeX Package for Typesetting Theoretical CS and Cryptography (`tcscrypto.sty`)
 date created: Thursday, August 8th 2024, 15:30:01
-date modified: Thursday, November 28th 2024, 19:29:11
+date modified: Wednesday, December 4th 2024, 20:13:28
 aliases: [A LaTeX Package for Typesetting Theoretical CS and Cryptography (`tcscrypto.sty`)]
 ---
 
