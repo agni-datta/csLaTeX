@@ -1,0 +1,175 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Package: cspresentations.sty
+%% Author: Agni Datta
+%% Description: A Beamer theme and configuration for academic presentations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ProvidesPackage{cspresentations}[2024/12/05 v1.1 Custom Beamer Theme]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Core Packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{amsfonts, amsmath, amssymb, mathtools}  % Advanced mathematics
+\RequirePackage{adjustbox}                              % Box size adjustments
+\RequirePackage[T1]{fontenc}                            % Font encoding
+\RequirePackage[english]{babel}                         % Language support
+\RequirePackage{microtype}                              % Font rendering improvements
+\RequirePackage{textcomp}                               % Additional text symbols
+\RequirePackage{xspace}                                 % Spacing after macros
+\RequirePackage{xurl}                                   % Auto-break URLs
+\RequirePackage{csquotes}                               % Enhanced quotation marks
+\RequirePackage{ulem}                                   % Underline improvements
+\RequirePackage{booktabs}                               % Professional table formatting
+\RequirePackage{graphicx}                               % Image inclusion
+\RequirePackage{multimedia}                             % Multimedia embedding
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Beamer and Theme Packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usetheme{Rochester}                                    % Base theme
+\usecolortheme{whale}                                   % Colour theme
+\colorlet{accentcolor}{RoyalBlue1}                      % Define accent colour
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Additional Beamer Options
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{appendixnumberbeamer}                   % Custom appendix numbering
+\RequirePackage{comment}                                % Multi-line comments
+\RequirePackage{algorithm2e}                            % Pseudocode formatting
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Graphics and Plotting Packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{tikz}                                   % Vector graphics
+\usetikzlibrary{
+    arrows.meta, backgrounds, calc, fit, 
+    matrix, mindmap, positioning, shapes, shapes.multipart
+}                                                       % TikZ libraries
+\tikzset{>=latex}                                       % Default arrowhead style
+\RequirePackage{pgfplots}                               % Plotting
+\pgfplotsset{compat=1.18}                               % PGFPlots compatibility
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Cryptography-Specific Packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{tcscrypto}                              % Cryptographic proofs
+\RequirePackage[cal=cm, bb=bboldx]{mathalpha}           % Custom math fonts
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Theme Styling and Customisation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Title and Header Styling
+\setbeamercolor{title}{bg=accentcolor, fg=white}
+\setbeamercolor{author}{fg=accentcolor}
+\setbeamercolor{date}{fg=accentcolor}
+
+% Hyperlink Configuration
+\hypersetup{
+    colorlinks,
+    linkcolor=accentcolor,
+    urlcolor=accentcolor
+}
+
+% Background and Canvas
+\setbeamercolor{background canvas}{bg=white}
+
+% Block Styling
+\setbeamertemplate{block begin}[default]
+\setbeamertemplate{block end}[default]
+\setbeamercolor{block title}{bg=accentcolor, fg=white}
+\setbeamercolor{block body}{bg=accentcolor!15, fg=black}
+
+% Alert Block Styling
+\setbeamercolor{alertblock title}{bg=FireBrick4, fg=white}
+\setbeamercolor{alertblock body}{bg=FireBrick4!10, fg=black}
+
+% Example Block Styling
+\setbeamercolor{exampleblock title}{bg=SlateBlue1, fg=white}
+\setbeamercolor{exampleblock body}{bg=SlateBlue1!10, fg=black}
+
+% List Item Styling
+\setbeamertemplate{items}[circle]
+\setbeamertemplate{enumerate items}[circle]
+\setbeamercolor{item projected}{bg=accentcolor}
+\setbeamercolor{itemize item}{fg=accentcolor}
+\setbeamercolor{itemize subitem}{fg=accentcolor}
+\setbeamercolor{enumerate item}{fg=accentcolor}
+\setbeamercolor{enumerate subitem}{fg=accentcolor}
+\setbeamercolor{enumerate subsubitem}{fg=accentcolor}
+
+% Table of Contents Styling
+\setbeamercolor{section in toc}{fg=accentcolor}
+\setbeamercolor{subsection in toc}{fg=accentcolor}
+
+% Section and Subsection Number Styling
+\setbeamercolor{section number projected}{bg=accentcolor}
+\setbeamercolor{subsection number projected}{bg=accentcolor}
+
+% Frame Title Styling
+\setbeamercolor{frametitle}{bg=accentcolor, fg=white}
+
+% Footer and Footnote Styling
+\setbeamercolor{footline}{bg=white, fg=accentcolor}
+\setbeamercolor{footnote}{fg=accentcolor}
+
+% Navigation Symbols
+\setbeamercolor{navigation symbols}{fg=accentcolor}
+%\setbeamertemplate{navigation symbols}{} % Uncomment to disable navigation symbols
+
+% Advanced Element Handling
+\setbeamercovered{highly dynamic}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Custom Macros
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Redefine \underline to use \uline
+\renewcommand{\underline}[1]{\uline{#1}}
+
+% Custom Box Styles
+\providecommand{\colbox}[1]{%
+    \begin{tcolorbox}[
+            colback=accentcolor!15,
+            colframe=accentcolor!30,
+            boxrule=1pt,
+            arc=2pt,
+            width=4cm,
+            height=3cm,
+            valign=center,
+            halign=center,
+            nobeforeafter
+        ]
+        \centering\color{black}{#1}
+    \end{tcolorbox}
+}
+
+\providecommand{\defbox}[1]{%
+    \begin{tcolorbox}[
+            colback=accentcolor!15,
+            colframe=accentcolor!30,
+            boxrule=1pt,
+            arc=2pt,
+            width=7cm,
+            height=3cm,
+            valign=center,
+            halign=center,
+            nobeforeafter
+        ]
+        \centering\color{black}{#1}
+    \end{tcolorbox}
+}
+
+\providecommand{\quesbox}[1]{%
+    \begin{tcolorbox}[
+            colback=accentcolor!15,
+            colframe=accentcolor!30,
+            boxrule=1pt,
+            arc=2pt,
+            valign=center,
+            halign=center,
+            nobeforeafter
+        ]
+        \centering\color{black}{#1}
+    \end{tcolorbox}
+}
