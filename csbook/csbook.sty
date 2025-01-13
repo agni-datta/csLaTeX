@@ -206,8 +206,8 @@
 \ifbool{forprint}{\forprint}{%
 	\RequirePackage[%
 		a4paper,               % Define A4 paper size
-		tmargin=2.50cm,        % Set top margin
-		bmargin=2.50cm,        % Set bottom margin
+		tmargin=3.00cm,        % Set top margin
+		bmargin=3.00cm,        % Set bottom margin
 		lmargin=3.00cm,        % Set left margin
 		rmargin=3.00cm,        % Set right margin
 		footskip=1.00cm        % Set distance from text to footer
@@ -408,9 +408,6 @@
 \ifbool{uselmsans}{\uselmsans}{\typeout{Libertinus Sans fonts not applied.}} % Apply Latin Modern Sans fonts if enabled
 \ifbool{usesourcesans}{\usesourcesans}{\typeout{Source Sans fonts not applied.}} % Apply Source Sans fonts if enabled
 
-% Command to set the default font size
-\providecommand{\setglobalfontsize}[1]{\def\deffontsize{#1}} % Command to set font size
-
 \AtEndPreamble{%
 	% Resolve conflicts with existing math alphabet definitions
 	\let\mathbfcal\relax
@@ -418,78 +415,64 @@
 		bb=bboldx,  % Extended Blackboard bold options for math notation
 		cal=cm      % Classic calligraphic font style for math symbols
 	]{mathalpha}  	% Additional math font styles for diverse notation
-	    
-	% Set a default font size if \deffontsize is not defined
-	\ifx\deffontsize\undefined
-		\setglobalfontsize{10pt} % Default to 10pt
-	\fi
-	    
-	% Load the fontsize package
-	\RequirePackage[fontsize=\deffontsize]{fontsize} % Load the fontsize package
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Custom Sectioning Commands
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[explicit]{titlesec} % Package for customizing sectioning commands
+\RequirePackage[nobottomtitles, explicit]{titlesec} % Package for customizing sectioning commands
 
-% Define formatting for parts
+% Define font styles for a consistent thesis appearance
+\providecommand{\headerfont}{\sffamily} % General thesis font style (Chicago Manual suggests serif fonts)
+\providecommand{\partfont}{\normalfont\headerfont} % Title font style
+\providecommand{\sectionfont}{\Large\headerfont} % Section font style
+\providecommand{\subsectionfont}{\large\headerfont} % Subsection font style
+\providecommand{\subsubsectionfont}{\normalsize\headerfont} % Subsubsection font style
+
+% Formatting for parts
 \titleformat{\part}[display]
-    {\normalfont\scshape\color{accentcolor}\RaggedLeft} % Formatting for part title
-    {\Huge\partname~\thepart} % Format for part label
+    {\partfont\RaggedRight} % Part title styling
+    {\color{accentcolor}\LARGE\partname~\thepart} % Part label format
     {0pt} % No space between label and title
-    {\titlerule\bigskip\LARGE #1} % Format for part title
+    {\titlerule\bigskip\Huge#1\vfill} % Part title format
 
 % Use vertical fill for centring
 \titlespacing*{\part}{0pt}{\fill}{\fill} % Vertically centers the part title
 
-% Chapter formatting
-\titleformat{\chapter}[frame]
-    {\huge\scshape\sffamily\color{accentcolor}} % Font and color for chapter title
-    {~\filright{\large Chapter~\thechapter}~} % Chapter number format
-    {15pt} % Space between number and title
-    {\filcenter #1} % Title formatting
+% Formatting for chapters
+\titleformat{\chapter}[display]
+    {\LARGE\headerfont} % Chapter title styling
+    {\RaggedLeft{\rmfamily\large\chaptertitlename}~\Huge\color{accentcolor}\thechapter} % Chapter label format
+    {1ex} % Space between label and title
+    {\titlerule\vspace{1ex}#1}[\vspace{1ex}\titlerule] % Chapter title format
 
-\titlespacing*{\chapter}{0pt}{50pt}{100pt} % Spacing before and after chapter title
+% Spacing adjustments for chapters
+\titlespacing*{\chapter}{0pt}{25pt}{25pt} % Spacing before and after chapter title
 
-% Command for margin section numbering
-\providecommand{\marginsecnumber}[1]{%
-	\makebox[0pt][r]{#1\hspace{7.5pt}}%
-}
+% Formatting for sections
+\titleformat{\section}[block]
+    {\sectionfont} % Section title styling
+    {\color{accentcolor}\huge\thesection} % Section number format
+    {10pt} % Space between number and title
+    {#1\vspace{2.5pt}\hrule} % Section title format
 
-% Section formatting
-\titleformat{\section}[block]%
-    {\Large\sffamily\scshape\color{accentcolor}} % Font and color for section title
-    {\LARGE\marginsecnumber\thesection} % Section number format
-    {0pt} % Space between number and title
-    {#1\smallskip\hrule} % Title formatting
+% Spacing adjustments for chapters
+\titlespacing*{\section}{0pt}{15pt}{-10pt} % Spacing before and after section title
 
-\titlespacing*{\section}{0pt}{10pt}{-10pt} % Spacing before and after section title
+% Formatting for subsections
+\titleformat{\subsection}[block]
+    {\subsectionfont} % Subsection title styling
+    {\color{accentcolor}\Large\thesubsection} % Subsection number format
+    {7.5pt} % Space between number and title
+    {#1} % Subsection title format
 
-% Command for margin subsection numbering
-\providecommand{\marginsubsecnumber}[1]{%
-	\makebox[0pt][r]{#1\hspace{7.5pt}}%
-}
-
-% Subsection formatting
-\titleformat{\subsection}[block]%
-    {\large\sffamily\scshape\color{accentcolor}} % Font and color for subsection title
-    {\Large\marginsubsecnumber\thesubsection} % Subsection number format
-    {0pt} % Space between number and title
-    {#1} % Title formatting
-
-% Command for margin subsubsection numbering
-\providecommand{\marginsubsubsecnumber}[1]{%
-	\makebox[0pt][r]{#1\hspace{7.5pt}}%
-}
-
-% Subsubsection formatting
-\titleformat{\subsubsection}[runin]%
-    {\normalsize\sffamily\scshape\color{accentcolor}} % Font and color for subsubsection title
-    {\large\marginsubsubsecnumber\thesubsubsection} % Subsubsection number format
-    {0pt} % Space between number and title
-    {#1.} % Title formatting
+% Formatting for subsubsections
+\titleformat{\subsubsection}[runin]
+    {\subsubsectionfont} % Subsubsection title styling
+    {\color{accentcolor}\thesubsubsection} % Subsubsection number format
+    {5pt} % Space between number and title
+    {#1.} % Subsubsection title format
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Local Table of Contents
@@ -556,21 +539,23 @@
 
 \begin{filecontents}{csindex.ist}
 quote '+'
-columns 2
 letter_group
 symhead_positive "Symbols"
 numhead_positive "Numbers"
 headings_flag 1
-heading_prefix "\\textbf{"heading_suffix "}\n"
+heading_prefix "\\textcolor{\\accentcolor}{\\large\\textbf{" heading_suffix "}}\n"
 delim_0 "\\dotfill"
 delim_1 "\\dotfill"
 delim_2 "\\dotfill"
+delim_3 "\\dotfill"
+delim_4 "\\dotfill"
+delim_5 "\\dotfill"
 delim_r "\\dotfill"
-preamble "\\begin{theindex}\n\\rmfamily\n"
+preamble "\\begin{theindex}\n\\small\n"
 postamble "\n\\end{theindex}\n"
 \end{filecontents}
 
-\makeindex[intoc, title=Index, options=-s csindex] % Configure and create the index with custom style
+\makeindex[intoc, title=Index, columns=2, options=-s csindex] % Configure and create the index with custom style
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Hyperlinks and Metadata Configuration
@@ -668,7 +653,7 @@ postamble "\n\\end{theindex}\n"
 
 	% Authors
 	{%
-		\large\scshape
+		\large\sffamily
 		\ifx\@author\undefined
 		\else\@author
 		\fi\par
@@ -677,7 +662,7 @@ postamble "\n\\end{theindex}\n"
 
 	% Date
 	{%
-		\hfill\scshape\normalsize
+		\hfill\sffamily\normalsize
 		\ifx\@date\undefined
 		\else\@date
 		\fi
@@ -692,7 +677,7 @@ postamble "\n\\end{theindex}\n"
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \providecommand{\makecopyrightpage}{%
-	\thispagestyle{empty} % Remove headers and footers for this page
+	\pagestyle{empty} % Remove headers and footers for this page
 	\begingroup % Begin a local group to confine the scope of changes
 	\cleardoublepage\null\vfill % Center the content vertically on the page
 	\small % Set the font size as small for the copyright page
@@ -727,7 +712,7 @@ postamble "\n\\end{theindex}\n"
 	% Additional Details
 	\vspace{15pt} % Add vertical space before the additional details
 	\begin{center}
-		This edition was published on \@date\par % Information about the edition and publication date
+		This version was published on \@date\par % Information about the edition and publication date
 	\end{center}
 	\vspace*{15pt} % Add vertical space after the additional details
 
@@ -754,25 +739,44 @@ postamble "\n\\end{theindex}\n"
 \renewcommand{\labelitemiii}{\ensuremath{\color{accentcolor}\ast}}    % Asterisk symbol for third level
 \renewcommand{\labelitemiv}{\ensuremath{\color{accentcolor}\textasteriskcentered}} % Asterisk symbol for fourth level
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Packages for Captions and Graphics
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage[%
+    font={sf},                            % Set all captions to sans-serif font
+    labelfont={color=accentcolor,sf},     % Set label font to sans-serif and apply the accent color
+    labelsep=period,                      % Use a period as separator between the caption label and the content
+    skip=1em                               % Add 1em spacing before all captions
+]{caption} % Caption package for customizing figure, table, and algorithm captions.
+\RequirePackage{float} % Package for precise control over the placement of figures and tables.
+\RequirePackage{graphics} % Basic graphics inclusion package.
+\RequirePackage{graphicx} % Package for advanced graphic formats (like PDFs, EPS, etc.).
+\RequirePackage{subcaption} % Package for handling subfigures and subcaptions within a figure environment.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Packages for Typesetting Algorithms
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Load the algorithm2e package with specific options for algorithm formatting
+% Load `algorithm2e` package with custom options for algorithm formatting.
 \RequirePackage[%
-	algoruled,     % Encloses algorithms in a ruled style for improved readability
-	linesnumbered, % Enables line numbering for easier reference to individual steps
-	longend,       % Manages long end statements for a cleaner layout
-	vlined         % Adds vertical lines to enhance the structure
+    algochapter,    % Adds support for numbering algorithms by chapter
+    algonl,         % Supports algorithmic notation
+    boxed,          % Encloses the algorithm in a box
+    longend,        % Improves formatting of 'end' statements in long algorithms
+    vlined          % Adds vertical lines for better visual structure
 ]{algorithm2e}
 
-% Customize the appearance and style of the algorithms
-\SetAlFnt{\small}               % Set the algorithm text to a small font size for a more compact presentation
-\SetAlCapFnt{\normalsize}       % Use a normal font size for captions to provide emphasis
-\SetAlCapNameFnt{\normalsize}   % Set the font size of algorithm names to normal for better visibility
-\SetAlgoCaptionSeparator{.}     % Use a period as a separator between the caption and the algorithm content
-\SetAlgoNlRelativeSize{-2}      % Reduce the size of line numbers to lessen distraction from the main text
-\SetNlSty{texttt}{[}{]}         % Style line numbers in a typewriter font, enclosed in square brackets
+% Algorithm appearance settings
+\SetAlFnt{\small}                               % Set the algorithm text to a small font size for a more compact presentation
+\SetAlCapNameFnt{\normalfont\sffamily}          % Set font for algorithm caption title (e.g., "Algorithm X")
+\SetAlCapFnt{\normalfont\sffamily\color{accentcolor}} % Set font for algorithm caption text
+\SetAlgoSkip{medskip}                           % Increase space between algorithm steps
+\SetAlgoInsideSkip{medskip}                     % Add space between steps inside the algorithm
+\SetAlCapSkip{1em}                              % Adjust space between caption and algorithm content
+\SetAlgoNlRelativeSize{-2}                      % Reduce line number size for less distraction
+\SetNlSty{texttt}{[}{]}                         % Style line numbers with typewriter font and square brackets
+\SetAlgoCaptionSeparator{.}                     % Set separator between caption and content to period
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Package for Creating Framed Environments
@@ -809,7 +813,7 @@ postamble "\n\\end{theindex}\n"
 	font=\normalfont\small,       % Font for the content
 	frametitlefont=\bfseries,     % Title font style
         hidealllines=true,            % Hide all frame lines
-	backgroundcolor={accentcolor!15!white}, % Set a semi-transparent background color
+	backgroundcolor={accentcolor!10!white}, % Set a semi-transparent background color
 	skipabove=10pt,               % Vertical space above the frame
 	skipbelow=10pt,               % Vertical space below the frame
 	innerleftmargin=7.5pt,        % Left margin inside the frame
@@ -881,10 +885,8 @@ postamble "\n\\end{theindex}\n"
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newenvironment{abstract}{%
-	\begin{center}
-            \textsf{\color{accentcolor}\textsc{\abstractname}\vspace{-2pt}}
-        \end{center}
-        \quotation\sffamily\small % Start the quotation environment for abstract content
+        \quotation\small % Start the quotation environment for abstract content
+        \textsf{\color{accentcolor}\abstractname}.\
 	}{%
 	\endquotation % End the quotation environment in single-column mode
 }
@@ -930,7 +932,7 @@ postamble "\n\\end{theindex}\n"
 % Packages for Footnotes and Multi-Column Formatting
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[bottom, multiple, hang]{footmisc} % Customizes footnote formatting: positioning, multiple footnotes per page, and hanging indentation
+\RequirePackage[bottom, multiple, hang]{footmisc} % Customizes footnote formatting
 \RequirePackage{footnote}               % Allows footnotes within the document
 \RequirePackage{multicol}               % Supports multi-column formatting
 
@@ -945,16 +947,6 @@ postamble "\n\\end{theindex}\n"
 \RequirePackage{multirow}            % Allows cells to span multiple rows in tables
 \RequirePackage{tabularx}            % Flexible tables with adjustable width
 \RequirePackage{wrapfig}             % Text wrapping around figures
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Packages for Captions and Graphics
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage[font={sf}]{caption} % Customizes caption formatting with font options
-\RequirePackage{float} % Precise control over the placement of figures and tables
-\RequirePackage{graphics} % Standard package for graphics inclusion
-\RequirePackage{graphicx} % Inclusion of images in various formats
-\RequirePackage{subcaption} % Subfigures and subcaptions within figures
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Drawings and Diagrams
@@ -986,7 +978,7 @@ postamble "\n\\end{theindex}\n"
 %   #1: The dedication text
 %   #2: The author's name
 \providecommand{\dedication}[2]{%
-	\epigraph{#1}{\medskip\normalfont\scshape\par#2} % Formats the dedication with the text and author
+	\epigraph{#1}{\medskip\normalfont\sffamily\par#2} % Formats the dedication with the text and author
 	\bigskip % Adds vertical space after the dedication
 }
 
@@ -994,12 +986,13 @@ postamble "\n\\end{theindex}\n"
 % Argument:
 %   #1: List of dedication entries formatted using the \dedication command
 \providecommand{\generateDedications}[1]{%
-	\begin{center}
-		\thispagestyle{empty} % Removes page numbering and header/footer on this page
+	\thispagestyle{empty} % Removes page numbering and header/footer on this page
+        \begin{center}
 		\vspace*{\fill} % Adds vertical space before and after the content
 		\large#1 % Formats the list of dedications
 		\vspace*{\fill} % Adds vertical space after the content
 	\end{center}
+        \pagestyle{plain}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1156,133 +1149,120 @@ postamble "\n\\end{theindex}\n"
 
 % Command to define standard theorem environments
 \providecommand{\usenormalthm}{%
-
-	% Theorem Style
-	\declaretheoremstyle[%
+	\providecommand{\commonfont}{\color{\accentcolor}\sffamily}
+	
+        \declaretheoremstyle[
 		spaceabove=\topsep,
 		spacebelow=\topsep,
-		postheadspace=5pt,
-		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
-		headfont=\scshape\sffamily\color{accentcolor},
-		notefont=\scshape\sffamily\color{accentcolor},
+		headfont=\commonfont\ensuremath{\scriptstyle\blacktriangleright}~,
+		notefont=\commonfont,
 		bodyfont=\normalfont,
-		numberwithin=chapter,
-		qed=$\color{accentcolor}\scriptscriptstyle\clubsuit$,
-            headpunct={.}
+		postheadspace=5pt,
+		numberwithin=section,
+		qed=$\color{\accentcolor}\lrcorner$,
+		headpunct={.}
 	]{thmstyle}
-
-	% Definition Style
-	\declaretheoremstyle[%
+	
+	\declaretheoremstyle[
 		spaceabove=\topsep,
 		spacebelow=\topsep,
-		postheadspace=5pt,
-		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
-		headfont=\scshape\sffamily\color{accentcolor},
-		notefont=\scshape\sffamily\color{accentcolor},
+		headfont=\commonfont\ensuremath{\scriptstyle\blacksquare}~,
+		notefont=\commonfont,
 		bodyfont=\normalfont,
-		numberwithin=chapter,
-		qed=$\color{accentcolor}\scriptscriptstyle\clubsuit$,
+		postheadspace=5pt,
+		numberwithin=section,
+		qed=$\color{\accentcolor}\lrcorner$,
 		headpunct={.}
 	]{defstyle}
-
-	% Remark Style
-	\declaretheoremstyle[%
+	
+	\declaretheoremstyle[
 		spaceabove=\topsep,
 		spacebelow=\topsep,
-		postheadspace=5pt,
-		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
-		headfont=\scshape\sffamily\color{accentcolor},
-		notefont=\scshape\sffamily\color{accentcolor},
+		headfont=\commonfont\ensuremath{\scriptstyle\vartriangleright}~,
+		notefont=\commonfont,
 		bodyfont=\normalfont,
-		numberwithin=chapter,
-            qed=$\color{accentcolor}\scriptscriptstyle\blacktriangleright$,
+		postheadspace=5pt,
+		numberwithin=section,
+		qed=$\color{\accentcolor}\lrcorner$,
 		headpunct={.}
 	]{remarkstyle}
-
-	% Highlight Style
-	\declaretheoremstyle[%
+	
+	\declaretheoremstyle[
 		spaceabove=\topsep,
 		spacebelow=\topsep,
-		postheadspace=5pt,
-		headformat={\makebox[0pt][r]{\NUMBER\hspace{7.5pt}}\NAME \NOTE},
-		headfont=\scshape\sffamily\color{accentcolor},
-		notefont=\scshape\sffamily\color{accentcolor},
+		headfont=\commonfont\ensuremath{\scriptstyle\square}~,
+		notefont=\commonfont,
 		bodyfont=\normalfont\sffamily,
-		numberwithin=chapter,
-		qed=$\color{accentcolor}\scriptscriptstyle\blacklozenge$,
+		postheadspace=5pt,
+		numberwithin=section,
+		qed=$\color{\accentcolor}\lrcorner$,
 		headpunct={.}
 	]{hltstyle}
-
-	% Proof Style
+	
 	\declaretheoremstyle[%
-		headfont=\sffamily\scshape\color{accentcolor},
-		notefont=\sffamily\scshape\color{accentcolor},
+		headfont=\commonfont,
+		notefont=\commonfont,
 		bodyfont=\normalfont,
 		postheadspace=5pt,
 		numbered=no,
 		headpunct={.},
-		qed=$\color{accentcolor}\scriptscriptstyle\blacksquare$
+		qed=$\color{\accentcolor}\scriptstyle\blacktriangleleft$
 	]{proofstyle}
-
-	% Theorem and related environments
+	
+	% Mathematical Environments
 	\declaretheorem[style=thmstyle,name=Theorem]{theorem}
-	\declaretheorem[style=thmstyle,sibling=theorem]{assumption}
+	\declaretheorem[style=thmstyle,sibling=theorem]{axiom}
 	\declaretheorem[style=thmstyle,sibling=theorem]{claim}
 	\declaretheorem[style=thmstyle,sibling=theorem]{conjecture}
 	\declaretheorem[style=thmstyle,sibling=theorem]{corollary}
+	\declaretheorem[style=thmstyle,sibling=theorem]{hypothesis}
 	\declaretheorem[style=thmstyle,sibling=theorem]{lemma}
-	\declaretheorem[style=thmstyle,sibling=theorem]{property}
 	\declaretheorem[style=thmstyle,sibling=theorem]{proposition}
-
-	% Definition and related environments
+	
+	\declaretheorem[style=thmstyle,unnumbered,name=Axiom]{axiom*}
+	\declaretheorem[style=thmstyle,unnumbered,name=Claim]{claim*}
+	\declaretheorem[style=thmstyle,unnumbered,name=Conjecture]{conjecture*}
+	\declaretheorem[style=thmstyle,unnumbered,name=Corollary]{corollary*}
+	\declaretheorem[style=thmstyle,unnumbered,name=Hypothesis]{hypothesis*}
+	\declaretheorem[style=thmstyle,unnumbered,name=Lemma]{lemma*}
+	\declaretheorem[style=thmstyle,unnumbered,name=Proposition]{proposition*}
+	\declaretheorem[style=thmstyle,unnumbered,name=Theorem]{theorem*}
+	
+	% Definitions and Problems
 	\declaretheorem[style=defstyle,sibling=theorem]{definition}
-	\declaretheorem[style=defstyle,sibling=theorem]{example}
-	\declaretheorem[style=defstyle,sibling=theorem]{exercise}
+	\declaretheorem[style=defstyle,sibling=theorem]{notation}
 	\declaretheorem[style=defstyle,sibling=theorem]{problem}
-	\declaretheorem[style=defstyle,sibling=theorem]{question}
-
-	% Remark and related environments
+	\declaretheorem[style=defstyle,sibling=theorem]{protocol}
+	
+	\declaretheorem[style=defstyle,unnumbered,name=Definition]{definition*}
+	\declaretheorem[style=defstyle,unnumbered,name=Notation]{notation*}
+	\declaretheorem[style=defstyle,unnumbered,name=Protocol]{protocol*}
+	
+	% Remarks and Explanations
+	\declaretheorem[style=remarkstyle,sibling=theorem]{example}
 	\declaretheorem[style=remarkstyle,sibling=theorem]{note}
 	\declaretheorem[style=remarkstyle,sibling=theorem]{remark}
-	\declaretheorem[style=remarkstyle,sibling=theorem]{solution}
-
-	% Highlight styles
-	\declaretheorem[style=hltstyle,name=Important]{important}
-	\declaretheorem[style=hltstyle]{highlight}
-	\declaretheorem[style=hltstyle]{keypoint}
-
+	
+	\declaretheorem[style=remarkstyle,unnumbered,name=Example]{example*}
+	\declaretheorem[style=remarkstyle,unnumbered,name=Note]{note*}
+	\declaretheorem[style=remarkstyle,unnumbered,name=Remark]{remark*}
+	
+	% Highlights and Important Elements
+	\declaretheorem[style=hltstyle,sibling=theorem]{exercise}
+	\declaretheorem[style=hltstyle,sibling=theorem]{highlight}
+	\declaretheorem[style=hltstyle,sibling=theorem]{important}
+	\declaretheorem[style=hltstyle,sibling=theorem]{keypoint}
+	    
+	\declaretheorem[style=hltstyle,unnumbered,name=Exercise]{exercise*}
+	\declaretheorem[style=hltstyle,unnumbered,name=Highlight]{highlight*}
+	\declaretheorem[style=hltstyle,unnumbered,name=Important]{important*}
+	\declaretheorem[style=hltstyle,unnumbered,name=Key Point]{keypoint*}
+	\declaretheorem[style=hltstyle,unnumbered,name=Problem]{problem*}
+	
 	% Redefine proof environment
 	\let\proof\relax
 	\let\endproof\relax
 	\declaretheorem[style=proofstyle]{proof}
-
-	% Command to define cross-reference formats
-	\providecommand{\definecrefformat}[3]{%
-		\crefname{##1}{\MakeLowercase{##2}}{\MakeLowercase{##3}} % Define cref format for lowercase references
-		\Crefname{##1}{##2}{##3} % Define cref format for capitalized references
-	}
-
-	% Define cross-reference formats directly
-	\definecrefformat{theorem}{Theorem}{Theorems}
-	\definecrefformat{lemma}{Lemma}{Lemmas}
-	\definecrefformat{corollary}{Corollary}{Corollaries}
-	\definecrefformat{proposition}{Proposition}{Propositions}
-	\definecrefformat{claim}{Claim}{Claims}
-	\definecrefformat{conjecture}{Conjecture}{Conjectures}
-	\definecrefformat{fact}{Fact}{Facts}
-	\definecrefformat{property}{Property}{Properties}
-	\definecrefformat{definition}{Definition}{Definitions}
-	\definecrefformat{example}{Example}{Examples}
-	\definecrefformat{exercise}{Exercise}{Exercises}
-	\definecrefformat{problem}{Problem}{Problems}
-	\definecrefformat{question}{Question}{Questions}
-	\definecrefformat{note}{Note}{Notes}
-	\definecrefformat{remark}{Remark}{Remarks}
-	\definecrefformat{solution}{Solution}{Solutions}
-	\definecrefformat{important}{Important}{Importants}
-	\definecrefformat{keypoint}{Keypoint}{Keypoints}
-	\definecrefformat{highlight}{Highlight}{Highlights}
-	\definecrefformat{assumption}{Assumption}{Assumptions}
 }
 
 \ifbool{usefancythm}{\usefancythm}{}
@@ -1335,7 +1315,6 @@ postamble "\n\\end{theindex}\n"
 		}{%
 			% Fallback to default bibliography style
 			\typeout{Default bibliography style will be used as BibLaTeX is not enabled.}
-			\bibliographystyle{alpha}
 		}}}
 % Usage
 \setupbibliography
@@ -1556,22 +1535,52 @@ postamble "\n\\end{theindex}\n"
 % Environment for Problems and Exercises
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Define a new environment called 'problems' with an optional title argument (default: 'Problem Set')
+% Define a new environment 'learned' with an optional title argument
+\newenvironment{learned}[1][What Have We Learned?]{
+	% Begin an mdframed block with custom styling
+	\begin{colbox}[frametitle={\normalfont\sffamily#1\smallskip\hrule}] % Title displayed in bold at the top of the frame
+		}{
+	\end{colbox} % End the mdframed block
+}
+
+% Define a new environment 'chapternotes' with an optional title argument (default: 'Chapter Notes and History')
+\newenvironment{chapternotes}[1][Chapter Notes and History]{
+	\section*{#1} % Use an unnumbered section for this environment
+	\addcontentsline{toc}{section}{Chapter Notes and History}
+	% Optionally, add a distinctive text style for the content (e.g., italicized)
+	\begin{quote} % Add an indented block for a historical/note style
+		}{
+	\end{quote}
+	% Optional adjustments can be added here
+}
+
+% Define a new environment 'problems' with an optional title argument (default: 'Problem Set')
 \newenvironment{problems}[1][Problem Set]{
-	% Set the section heading to the provided title
-	\vfill\pagebreak\section{#1} % Make the title bold
-	\small % Set font size to small for the content
-	% Configure enumeration style:
-	% For the first level, set labels as (Problem ChapterNumber.ItemNumber)
-	\setlist[enumerate, 1]{label={${\color{accentcolor}\scriptstyle\vartriangleright\hspace{1pt}\displaystyle\thechapter.\arabic*}$}, left=0pt, labelsep=1em, itemsep=0.5em}
-	% For the second level, set labels as (a), (b), etc.
-	\setlist[enumerate, 2]{label=(\arabic*), left=1em, labelsep=1em, itemsep=0.5em}
-	% Begin an enumerated list for the problems
+	\section*{#1}
+        \addcontentsline{toc}{section}{Problem Set}
+	% Set font size to small for the content
+	\small
+	% Configure the enumeration styles:
+	% First level: Labels formatted as (Problem ChapterNumber.ItemNumber)
+	\setlist[enumerate, 1]{
+		label={$\scriptstyle\boxed{\texttt{\thechapter.\arabic*}}$},
+		labelsep=1.5em,
+		left=0pt,
+		itemsep=0.5em
+	}
+	% Second level: Labels formatted as (1), (2), etc.
+	\setlist[enumerate, 2]{
+		label=(\arabic*),
+		left=1em,
+		labelsep=1em,
+		itemsep=0.5em
+	}
+	% Begin the enumerated list for the problems
 	\begin{enumerate}
 		}{
 		% End the enumerated list
 	\end{enumerate}
-	% Adjust the layout or formatting as needed at the end
+	% Optional adjustments can be added here
 }
 
 % Define a new enumeration list style called 'caseList' with a single level
@@ -1588,34 +1597,22 @@ postamble "\n\\end{theindex}\n"
 	\end{caseList}%
 }
 
-% Define a new enumeration list style called 'axiomList' with a single level
-\newlist{axiomList}{enumerate}{1}
-% Configure 'axiomList' labels: bold text 'Axiom A:' where A is the letter index, with no left margin
-\setlist[axiomList]{label=\textbf{Axiom~\arabic*.}, leftmargin=*}
-
-% Define a new environment called 'axiom' with an optional argument (default: empty)
-\NewDocumentEnvironment{axiom}{O{}}{%
-	% Start the 'axiomList' enumeration with the optional title
-	\begin{axiomList}[#1]%
-		}{%
-		% End the 'axiomList' enumeration
-	\end{axiomList}%
-}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Custom Commands for Document Layout and Formatting
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand*{\code}[1]{{\ttfamily#1}} % Monospaced font for code snippets
+\let\oldtablecontents\tableofcontents % Save original table of contents command
+\renewcommand*{\tableofcontents}{\oldtablecontents\cleardoublepage\pagestyle{fancy}} % Redefine TOC with page break and fancy style
+
+\providecommand*{\code}[1]{{\ttfamily#1}} % Monospaced font for inline code
 \providecommand{\cat}[1]{\ensuremath{\mathsf{#1}}} % Sans-serif for category names in math mode
-\providecommand{\missingcitation}{\code{\small\color{Firebrick1}<Citation Missing!>}} % Red, small text for missing citations
+\providecommand{\missingcitation}{\code{\small\color{Firebrick1}<Citation Missing!>}} % Red, small, monospaced text for missing citations
 \providecommand{\missing}[1]{{\color{Firebrick1}#1}} % Red text for missing/incomplete content
 \providecommand{\strike}{\bgroup\ULdepth=-.55ex\ULset} % Strike-through effect for deleted text
-\providecommand{\stylized}[2]{\lettrine[lines=2, lhang=0.25]{\textcolor{accentcolor}{#1}}{#2}} % Stylized first letter with color
-\providecommand{\term}[1]{#1\index{#1}} % Marks terms for glossary/index
-\providecommand{\textem}[1]{{\bfseries\color{accentcolor}#1}} % Bold, accent-colored emphasis
-\providecommand{\toc}{\tableofcontents\addcontentsline{toc}{chapter}{Contents}\vfill\pagebreak} % Custom table of contents
-\providecommand{\urlref}[1]{\href{#1}{#1}} % Hyperlink to URL
+\providecommand{\stylized}[2]{\lettrine[lines=2, lhang=0.05]{\textcolor{accentcolor}{#1}}{#2}} % Drop-cap first letter with color
+\providecommand{\term}[1]{#1\index{#1}} % Mark terms for glossary or index
+\providecommand{\textem}[1]{{\bfseries\color{accentcolor}#1}} % Bold and accent-colored emphasis
+\providecommand{\urlref}[1]{\href{#1}{#1}} % Hyperlink to URL, displays the URL as text
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % TODO Notes and Annotations
