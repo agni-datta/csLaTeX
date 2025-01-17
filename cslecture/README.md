@@ -2,7 +2,7 @@
 title: CS Lecture Package (`cslecture.sty`)
 linter-yaml-title-alias: CS Lecture Package (`cslecture.sty`)
 date created: Friday, April 26th 2024, 18:13:44
-date modified: Sunday, May 19th 2024, 13:19:41
+date modified: Friday, January 17th 2025, 18:54:49
 aliases: [CS Lecture Package (`cslecture.sty`)]
 ---
 

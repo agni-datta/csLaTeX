@@ -2,7 +2,7 @@
 title: The `csthm` Package
 linter-yaml-title-alias: The `csthm` Package
 date created: Wednesday, September 11th 2024, 18:20:56
-date modified: Friday, January 17th 2025, 17:29:11
+date modified: Friday, January 17th 2025, 18:54:49
 aliases: [The `csthm` Package]
 ---
 

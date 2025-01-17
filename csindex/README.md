@@ -2,7 +2,7 @@
 title: File Documentation `csindex.ist`
 linter-yaml-title-alias: File Documentation `csindex.ist`
 date created: Friday, May 17th 2024, 15:47:43
-date modified: Friday, May 17th 2024, 15:55:01
+date modified: Friday, January 17th 2025, 18:54:49
 aliases: [File Documentation `csindex.ist`]
 ---
 

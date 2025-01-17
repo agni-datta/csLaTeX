@@ -2,7 +2,7 @@
 title: Coloured Theorem Environments for Computer Science (`cscolorthm.sty`)
 linter-yaml-title-alias: Coloured Theorem Environments for Computer Science (`cscolorthm.sty`)
 date created: Wednesday, April 17th 2024, 14:56:05
-date modified: Sunday, May 19th 2024, 08:21:12
+date modified: Friday, January 17th 2025, 18:54:49
 aliases: [Coloured Theorem Environments for Computer Science (`cscolorthm.sty`)]
 ---
 
