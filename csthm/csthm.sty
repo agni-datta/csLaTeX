@@ -21,9 +21,9 @@
 %% version 2008/05/04 or later.
 %% 
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
-\ProvidesPackage{csthm}
-[2024/08/31 v1.2 Theorem Environments for Computer Science]
+\ProvidesPackage{csthm}[2025/01/16 v1.3 Theorem Environments for Computer Science]
 \newif\if@csthm@loadcleveref
+
 \DeclareOption{cleveref}{\@csthm@loadclevereftrue}
 \ProcessOptions\relax
 
@@ -32,91 +32,140 @@
 \RequirePackage{amsthm}
 \RequirePackage{enumitem}
 \RequirePackage{thmtools}
+\RequirePackage{xcolor}
+
+\providecommand{\accentcolor}{blue!50!black}
+\providecommand{\setaccentcolor}[1]{\renewcommand{\accentcolor}{#1}}
+
+\providecommand{\commonfont}{\color{\accentcolor}\sffamily}
+\providecommand{\commonsymb}{\ensuremath{\color{\accentcolor}\lrcorner}}
 
 \if@csthm@loadcleveref
 \AtBeginDocument{%
 	\@ifpackageloaded{hyperref}{%
-		\RequirePackage{cleveref}
+		\RequirePackage{cleveref}%
 		}{%
-		\PackageWarning{csthm}{The 'cleveref' option was set, but 'hyperref' is not loaded. Skipping 'cleveref' loading.}
+		\PackageWarning{csthm}{%
+			The 'cleveref' option was set, but 'hyperref' is not loaded.
+			Skipping 'cleveref' loading.%
+		}%
 	}%
-}
+}%
 \fi
-
 \declaretheoremstyle[
 	spaceabove=\topsep,
 	spacebelow=\topsep,
-	headfont=\scshape,
-	notefont=\scshape,
+	headfont=\commonfont\ensuremath{\scriptstyle\blacktriangleright}~,
+	notefont=\commonfont,
 	bodyfont=\normalfont,
 	postheadspace=5pt,
 	numberwithin=section,
-	qed=$\scriptstyle\star$,
+	qed=\commonsymb,
 	headpunct={.}
 ]{thmstyle}
 
 \declaretheoremstyle[
 	spaceabove=\topsep,
 	spacebelow=\topsep,
-	headfont=\bfseries,
-	notefont=\bfseries,
+	headfont=\commonfont\ensuremath{\scriptstyle\blacksquare}~,
+	notefont=\commonfont,
 	bodyfont=\normalfont,
 	postheadspace=5pt,
 	numberwithin=section,
-	qed=$\scriptstyle\maltese$,
+	qed=\commonsymb,
 	headpunct={.}
 ]{defstyle}
 
 \declaretheoremstyle[
 	spaceabove=\topsep,
 	spacebelow=\topsep,
-	headfont=\itshape,
-	notefont=\itshape,
+	headfont=\commonfont\ensuremath{\scriptstyle\vartriangleright}~,
+	notefont=\commonfont,
 	bodyfont=\normalfont,
 	postheadspace=5pt,
 	numberwithin=section,
-	qed=$\scriptstyle\maltese$,
+	qed=\commonsymb,
 	headpunct={.}
 ]{remarkstyle}
 
 \declaretheoremstyle[
 	spaceabove=\topsep,
 	spacebelow=\topsep,
-	headfont=\sffamily\scshape,
-	notefont=\sffamily\scshape,
+	headfont=\commonfont\ensuremath{\scriptstyle\square}~,
+	notefont=\commonfont,
 	bodyfont=\normalfont\sffamily,
 	postheadspace=5pt,
 	numberwithin=section,
-	qed=$\scriptstyle\maltese$,
+	qed=\commonsymb,
 	headpunct={.}
 ]{hltstyle}
 
+\declaretheoremstyle[
+	headfont=\commonfont,
+	notefont=\commonfont,
+	bodyfont=\normalfont,
+	postheadspace=5pt,
+	numbered=no,
+	headpunct={.},
+	qed=$\color{\accentcolor}\scriptstyle\blacktriangleleft$
+]{proofstyle}
 \declaretheorem[style=thmstyle,name=Theorem]{theorem}
-\declaretheorem[style=defstyle,sibling=theorem]{fact}
 \declaretheorem[style=thmstyle,sibling=theorem]{assumption}
+\declaretheorem[style=thmstyle,sibling=theorem]{axiom}
 \declaretheorem[style=thmstyle,sibling=theorem]{claim}
 \declaretheorem[style=thmstyle,sibling=theorem]{conjecture}
 \declaretheorem[style=thmstyle,sibling=theorem]{corollary}
+\declaretheorem[style=thmstyle,sibling=theorem]{fact}
+\declaretheorem[style=thmstyle,sibling=theorem]{hypothesis}
 \declaretheorem[style=thmstyle,sibling=theorem]{lemma}
 \declaretheorem[style=thmstyle,sibling=theorem]{property}
 \declaretheorem[style=thmstyle,sibling=theorem]{proposition}
 
-\declaretheorem[style=defstyle,sibling=theorem]{definition}
-\declaretheorem[style=defstyle,sibling=theorem]{example}
-\declaretheorem[style=defstyle,sibling=theorem]{exercise}
-\declaretheorem[style=defstyle,sibling=theorem]{problem}
-\declaretheorem[style=defstyle,sibling=theorem]{question}
+\declaretheorem[style=thmstyle,unnumbered,name=Theorem]{theorem*}
+\declaretheorem[style=thmstyle,unnumbered,name=Assumption]{assumption*}
+\declaretheorem[style=thmstyle,unnumbered,name=Axiom]{axiom*}
+\declaretheorem[style=thmstyle,unnumbered,name=Claim]{claim*}
+\declaretheorem[style=thmstyle,unnumbered,name=Conjecture]{conjecture*}
+\declaretheorem[style=thmstyle,unnumbered,name=Corollary]{corollary*}
+\declaretheorem[style=thmstyle,unnumbered,name=Fact]{fact*}
+\declaretheorem[style=thmstyle,unnumbered,name=Hypothesis]{hypothesis*}
+\declaretheorem[style=thmstyle,unnumbered,name=Lemma]{lemma*}
+\declaretheorem[style=thmstyle,unnumbered,name=Property]{property*}
+\declaretheorem[style=thmstyle,unnumbered,name=Proposition]{proposition*}
 
+\declaretheorem[style=defstyle,sibling=theorem]{definition}
+\declaretheorem[style=defstyle,sibling=theorem]{notation}
+\declaretheorem[style=defstyle,sibling=theorem]{problem}
+\declaretheorem[style=defstyle,sibling=theorem]{protocol}
+
+\declaretheorem[style=defstyle,unnumbered,name=Definition]{definition*}
+\declaretheorem[style=defstyle,unnumbered,name=Notation]{notation*}
+\declaretheorem[style=defstyle,unnumbered,name=Problem]{problem*}
+\declaretheorem[style=defstyle,unnumbered,name=Protocol]{protocol*}
+
+\declaretheorem[style=remarkstyle,sibling=theorem]{example}
 \declaretheorem[style=remarkstyle,sibling=theorem]{note}
 \declaretheorem[style=remarkstyle,sibling=theorem]{remark}
-\declaretheorem[style=remarkstyle,sibling=theorem]{solution}
 
-\declaretheorem[style=hltstyle,name=Important]{important}
-\declaretheorem[style=hltstyle]{highlight}
-\declaretheorem[style=hltstyle]{keypoint}
+\declaretheorem[style=remarkstyle,unnumbered,name=Example]{example*}
+\declaretheorem[style=remarkstyle,unnumbered,name=Note]{note*}
+\declaretheorem[style=remarkstyle,unnumbered,name=Remark]{remark*}
+
+\declaretheorem[style=hltstyle,sibling=theorem]{exercise}
+\declaretheorem[style=hltstyle,sibling=theorem]{highlight}
+\declaretheorem[style=hltstyle,sibling=theorem]{important}
+\declaretheorem[style=hltstyle,sibling=theorem]{keypoint}
+
+\declaretheorem[style=hltstyle,unnumbered,name=Exercise]{exercise*}
+\declaretheorem[style=hltstyle,unnumbered,name=Highlight]{highlight*}
+\declaretheorem[style=hltstyle,unnumbered,name=Important]{important*}
+\declaretheorem[style=hltstyle,unnumbered,name=Key Point]{keypoint*}
+\let\proof\relax
+\let\endproof\relax
+\declaretheorem[style=proofstyle]{proof}
 
 \newlist{caseList}{enumerate}{1}
-\setlist[caseList]{label=\textbf{Case~\arabic*:},leftmargin=*}
+\setlist[caseList]{label=\textbf{Case~\arabic*:}, leftmargin=*}
 
 \NewDocumentEnvironment{case}{O{}}{%
 	\begin{caseList}[#1]%
@@ -124,23 +173,10 @@
 	\end{caseList}%
 }
 
-\newlist{axiomList}{enumerate}{1}
-\setlist[axiomList]{label=\textbf{Axiom~\Alph*:}, leftmargin=*}
-
-\NewDocumentEnvironment{axiom}{O{}}{%
-	\begin{axiomList}[#1]%
-		}{%
-	\end{axiomList}%
-}
-
-\renewcommand\qedsymbol{$\scriptstyle\blacksquare$}
-
-\providecommand{\accentcolor}{black}
+\renewcommand\qedsymbol{$\scriptstyle\color{\accentcolor}\blacksquare$}
 
 \providecommand{\csthmpkg}{\textsf{csthm}}
 \providecommand{\email}[1]{\href{mailto:#1}{\texttt{#1}}}
-
-\newcommand{\setaccentcolor}[1]{\renewcommand{\accentcolor}{#1}}
 \endinput
 %%
 %% End of file `csthm.sty'.

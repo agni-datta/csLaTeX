@@ -1,407 +1,333 @@
-\documentclass{ltxdoc}
+\documentclass{amsart}
 
-% Encoding and Fonts
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
+\usepackage[a4paper, margin=3cm]{geometry}
+\usepackage[english]{babel}
+\usepackage[foot]{amsaddr}
+\usepackage[onehalfspacing]{setspace}
+\usepackage[pdfusetitle, colorlinks=true, linkcolor=blue, urlcolor=blue]{hyperref}
+\usepackage{adjustbox}
 \usepackage{amsfonts}
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{lmodern}
-
-% Geometry and Layout
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{cleveref}
 \usepackage{csquotes}
-\usepackage[a4paper, margin=3.5cm]{geometry}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{lipsum}
+\usepackage{lmodern}
 \usepackage{microtype}
 \usepackage{parskip}
-\usepackage[onehalfspacing]{setspace}
-
-% Code Listings
-\usepackage{listings}
-\lstset{%
-    basicstyle=\scriptsize\ttfamily,
-    breaklines=true,
-    frame=single,
-    columns=fullflexible,
-    numbers=left,
-    numberstyle=\tiny\ttfamily\color{gray},
-    breakindent=0pt
-}
-
-% Colors and Hyperlinks
 \usepackage{xcolor}
-\usepackage[pdfusetitle, colorlinks=true, linkcolor=blue, urlcolor=violet]{hyperref}
 \usepackage{xurl}
-
-% Theorem-like Environments
 \usepackage{csthm}
 
-\definecolor{darkgreen}{rgb}{0,0.5,0}
-
-\newcommand{\pkg}[1]{\textsf{#1}}
-\newcommand{\opt}[1]{\texttt{#1}}
-\newcommand{\env}[1]{\texttt{#1}}
 \newcommand{\cmnd}[1]{\texttt{\textbackslash#1}}
+\newcommand{\env}[1]{\texttt{#1}}
+\newcommand{\opt}[1]{\texttt{#1}}
+\newcommand{\pkg}[1]{\textsf{#1}}
+\setcounter{tocdepth}{1}
+\setlist{nosep,noitemsep}
 
-\title{The \pkg{csthm} Package}
-\author{Agni Datta \\ \texttt{agnidatta.org@gmail.com}}
-\date{Version 1.2 (August 31, 2024)}
+\title[The \pkg{csthm} Package]{The \pkg{csthm} Package\\[1ex]\large A Comprehensive Set of Theorem Environments for Computer Science}
+\author{Agni Datta}
+\address[Version 1.3]{January 16, 2025}
 
 \begin{document}
+
+\begin{abstract}
+	The \pkg{csthm} package provides a comprehensive collection of theorem-like environments specifically designed for use in computer science documentation. It features a range of customizable theorem styles, distinct visual markers for different types of content, integrated support for cross-referencing, and extensive customization options. This documentation provides detailed examples, usage guidelines, and a complete overview of all available environments and features in the package.
+\end{abstract}
 
 \maketitle
 
 \tableofcontents
 
-\section{Introduction}
+\section{Package Overview}
 
-The \pkg{csthm} package provides a set of customised theorem-like environments specifically designed for computer science documents. It offers pre-defined theorem styles and environments to streamline the creation of theorems, definitions, remarks, and other common structures in computer science papers and documents.
+The \pkg{csthm} package offers a robust and flexible solution for typesetting theorems, definitions, proofs, and related content typically found in computer science literature. The package provides a variety of specialized environments, each with distinct visual markers and formatting styles suited to different types of content.
 
-\section{Package Options}
+Key features include:
+\begin{itemize}
+	\item Distinct visual styles for different content types, including theorems, definitions, proofs, and more.
+	\item Customizable theorem headers and QED symbols.
+	\item Optional integration with the \pkg{cleveref} package for enhanced cross-referencing.
+	\item Specialized environments tailored for theoretical computer science content.
+	\item Support for both numbered and unnumbered variants of all environments.
+\end{itemize}
 
-The \pkg{csthm} package supports the following option:
+\subsection{Installation}
 
-\begin{description}
-	\item[\opt{cleveref}] Loads the \pkg{cleveref} package for enhanced cross-referencing capabilities. This option requires the \pkg{hyperref} package to be loaded before \pkg{csthm}.
-\end{description}
+The \pkg{csthm} package can be installed via your TeX distribution's package manager or downloaded directly from CTAN:
+\begin{itemize}
+	\item \url{https://ctan.org/pkg/csthm}
+\end{itemize}
 
-\section{Usage}
+\subsection{Basic Usage}
 
-To use the package with default settings:
-
+To use the package, simply include it in the preamble of your document:
 \begin{verbatim}
 \usepackage{csthm}
 \end{verbatim}
 
-To use the package with \pkg{cleveref} support:
-
+If you require integration with the \pkg{cleveref} package for enhanced cross-referencing, load the package as follows:
 \begin{verbatim}
-\usepackage{hyperref}
 \usepackage[cleveref]{csthm}
 \end{verbatim}
 
-\section{Theorem Styles}
+\section{Environments}
 
-The package defines four theorem styles:
+The \pkg{csthm} package provides a wide range of theorem-like environments. Each environment is associated with a distinct visual style, marked by a specific bullet symbol. The package supports both numbered and unnumbered versions of each environment, with the unnumbered variants achieved by appending an asterisk (\texttt{*}) to the environment name (e.g., \texttt{theorem*}).
 
-\begin{description}
-	\item[thmstyle] Used for theorems, lemmas, corollaries, etc.
-	\item[defstyle] Used for definitions, examples, problems, etc.
-	\item[remarkstyle] Used for remarks, notes, solutions, etc.
-	\item[hltstyle] Used for highlighted content like important points.
-\end{description}
+\subsection{Complete List of Environments}
 
-\section{Predefined Environments}
+\Cref{tab:environments} outlines the available environments in the \pkg{csthm} package, including their respective styles and descriptions.
 
-\subsection{Theorem-like Environments}
+\begin{table}[!ht]
+	\centering
+	\begin{adjustbox}{valign=c, width=\textwidth}
+		\begin{tabular}{>{\ttfamily}l>{\ttfamily}ll}
+			\toprule
+			\normalfont\textbf{Environment} & \normalfont\textbf{Style} & \textbf{Description}                          \\
+			\midrule
+			\multicolumn{3}{l}{\textbf{Mathematical Theorems} --- Marked with black triangle ($\blacktriangleright$)} \\
+			\cmidrule{1-3}
+			theorem              & thmstyle       & Main theoretical results                      \\
+			assumption           & thmstyle       & Assumptions and prerequisites                 \\
+			axiom                & thmstyle       & Fundamental statements accepted without proof \\
+			claim                & thmstyle       & Minor results within proofs                   \\
+			conjecture           & thmstyle       & Unproven mathematical statements              \\
+			corollary            & thmstyle       & Results that follow from theorems             \\
+			fact                 & thmstyle       & Well-known or established results             \\
+			hypothesis           & thmstyle       & Proposed explanations or predictions          \\
+			lemma                & thmstyle       & Supporting theoretical results                \\
+			property             & thmstyle       & Characteristic attributes or features         \\
+			proposition          & thmstyle       & Minor theoretical results                     \\
+			\midrule
+			\multicolumn{3}{l}{\textbf{Definitions and Protocols} --- Marked with black square ($\blacksquare$)} \\
+			\cmidrule{1-3}
+			definition           & defstyle       & Formal definitions of terms                   \\
+			notation             & defstyle       & Explanation of mathematical notation          \\
+			problem              & defstyle       & Problem statements or tasks                   \\
+			protocol             & defstyle       & Step-by-step procedures or algorithms         \\
+			\midrule
+			\multicolumn{3}{l}{\textbf{Remarks and Examples} --- Marked with hollow triangle ($\vartriangleright$)} \\
+			\cmidrule{1-3}
+			example              & remarkstyle    & Illustrative examples                         \\
+			note                 & remarkstyle    & Additional information or clarifications      \\
+			remark               & remarkstyle    & Observations or comments                      \\
+			\midrule
+			\multicolumn{3}{l}{\textbf{Highlights} --- Marked with hollow square ($\square$)} \\
+			\cmidrule{1-3}
+			exercise             & hltstyle       & Practice problems or exercises                \\
+			highlight            & hltstyle       & Emphasized content                            \\
+			important            & hltstyle       & Critical information                          \\
+			keypoint             & hltstyle       & Essential concepts or takeaways               \\
+			\midrule
+			\multicolumn{3}{l}{\textbf{Special Environments}} \\
+			\cmidrule{1-3}
+			proof                & proofstyle     & Proofs with custom QED symbol                 \\
+			case                 & (list)         & Enumerated case analysis                      \\
+			\bottomrule
+			\multicolumn{3}{p{\linewidth}}{\small\smallskip Note: All environments (except proof and case) have unnumbered versions available by adding an asterisk (*) to the environment name (e.g., theorem*).}
+		\end{tabular}
+	\end{adjustbox}
+	\caption{Complete List of Environments Provided by the \pkg{csthm} Package}
+	\label{tab:environments}
+\end{table}
 
-\begin{itemize}
-	\item \env{theorem}
-	\item \env{fact}
-	\item \env{assumption}
-	\item \env{claim}
-	\item \env{conjecture}
-	\item \env{corollary}
-	\item \env{lemma}
-	\item \env{property}
-	\item \env{proposition}
-\end{itemize}
+\subsection{Mathematical Theorems}
 
-Usage:
-\begin{verbatim}
-\begin{theorem}[Optional Title]
-    Theorem content...
+These environments are used to represent core theoretical results and are marked with a black triangle ($\blacktriangleright$) bullet. Here are some examples:
+
+\begin{theorem}
+	This is a sample theorem environment.
 \end{theorem}
-\end{verbatim}
 
-\subsection{Definition-like Environments}
+\begin{assumption}
+	This is a sample assumption environment.
+\end{assumption}
 
-\begin{itemize}
-	\item \env{definition}
-	\item \env{example}
-	\item \env{exercise}
-	\item \env{problem}
-	\item \env{question}
-\end{itemize}
+\begin{axiom}
+	This is a sample axiom environment.
+\end{axiom}
 
-Usage:
-\begin{verbatim}
-\begin{definition}[Optional Title]
-    Definition content...
+\begin{claim}
+	This is a sample claim environment.
+\end{claim}
+
+\begin{conjecture}
+	This is a sample conjecture environment.
+\end{conjecture}
+
+\begin{corollary}
+	This is a sample corollary environment.
+\end{corollary}
+
+\begin{fact}
+	This is a sample fact environment.
+\end{fact}
+
+\begin{hypothesis}
+	This is a sample hypothesis environment.
+\end{hypothesis}
+
+\begin{lemma}
+	This is a sample lemma environment.
+\end{lemma}
+
+\begin{property}
+	This is a sample property environment.
+\end{property}
+
+\begin{proposition}
+	This is a sample proposition environment.
+\end{proposition}
+
+\subsection{Definitions and Protocols}
+
+These environments are used for definitions, notations, problems, and protocols. They are marked with a black square ($\blacksquare$) bullet:
+
+\begin{definition}
+	This is a sample definition environment.
 \end{definition}
-\end{verbatim}
 
-\subsection{Remark-like Environments}
+\begin{notation}
+	This is a sample notation environment.
+\end{notation}
 
-\begin{itemize}
-	\item \env{note}
-	\item \env{remark}
-	\item \env{solution}
-\end{itemize}
+\begin{problem}
+This is a sample problem environment.
+\end{problem}
 
-Usage:
-\begin{verbatim}
-\begin{remark}[Optional Title]
-    Remark content...
+\begin{protocol}
+	This is a sample protocol environment.
+\end{protocol}
+
+\subsection{Remarks and Examples}
+
+These environments provide additional explanations and clarifications, marked with a hollow triangle ($\vartriangleright$) bullet:
+
+\begin{example}
+	This is a sample example environment.
+\end{example}
+
+\begin{note}
+	This is a sample note environment.
+\end{note}
+
+\begin{remark}
+	This is a sample remark environment.
 \end{remark}
-\end{verbatim}
 
-\subsection{Highlight Environments}
+\subsection{Highlights and Important Content}
 
-\begin{itemize}
-	\item \env{important}
-	\item \env{highlight}
-	\item \env{keypoint}
-\end{itemize}
+These environments emphasize key concepts, tasks, or points, marked with a hollow square ($\square$) bullet:
 
-Usage:
-\begin{verbatim}
-\begin{important}[Optional Title]
-    Important content...
+\begin{exercise}
+	This is a sample exercise environment.
+\end{exercise}
+
+\begin{highlight}
+	This is a sample highlight environment.
+\end{highlight}
+
+\begin{important}
+	This is a sample important environment.
 \end{important}
-\end{verbatim}
+
+\begin{keypoint}
+	This is a sample keypoint environment.
+\end{keypoint}
 
 \subsection{Special Environments}
 
-\subsubsection{Case Environment}
-
-The \env{case} environment provides an enumerated list for describing different cases in a proof or analysis.
-
-Usage:
-\begin{verbatim}
-\begin{case}[Optional arguments for enumerate]
-    \item Case 1: ...
-    \item Case 2: ...
-\end{case}
-\end{verbatim}
-
-\subsubsection{Axiom Environment}
-
-The \env{axiom} environment provides an enumerated list for stating axioms.
-
-Usage:
-\begin{verbatim}
-\begin{axiom}[Optional arguments for enumerate]
-    \item Axiom 1: ...
-    \item Axiom 2: ...
-\end{axiom}
-\end{verbatim}
-
-\section{Customization}
-
-\subsection{Accent Color}
-
-You can customise the accent colour used in the package by redefining the \cmnd{accentcolor} command:
-
-\begin{verbatim}
-\renewcommand{\accentcolor}{blue}
-\end{verbatim}
-
-Or use the provided command:
-
-\begin{verbatim}
-\setaccentcolor{blue}
-\end{verbatim}
-
-\subsection{QED Symbol}
-
-The package redefines the QED symbol to a filled black square. You can customise this by redefining the \cmnd{qedsymbol} command:
-
-\begin{verbatim}
-\renewcommand\qedsymbol{$\square$}
-\end{verbatim}
-
-\section{Examples}
-
-Here are some examples demonstrating the usage of various environments:
-
-\begin{theorem}[Complexity of Bubble Sort]
-	The time complexity of the Bubble Sort algorithm is $\mathcal{O}(n^2)$ in the worst and average cases, where $n$ is the number of elements to be sorted.
-\end{theorem}
+The proof environment provides a custom QED symbol, and the case environment allows for enumerated cases:
 
 \begin{proof}
-	Bubble Sort uses two nested loops to compare and swap adjacent elements. The outer loop runs $n-1$ times, and the inner loop runs $n-i-1$ times for each iteration $i$ of the outer loop. This results in approximately $n^2/2$ comparisons, leading to a time complexity of $\mathcal{O}(n^2)$.
+	This is a sample proof environment with a custom QED symbol.
 \end{proof}
 
-\begin{definition}[Big O Notation]
-	For functions $f(n)$ and $g(n)$, we say $f(n) = \mathcal{O}(g(n))$ if there exist positive constants $c$ and $n_0$ such that $0 \leq f(n) \leq cg(n)$ for all $n \geq n_0$.
-\end{definition}
+\subsubsection{Case Analysis}
 
-\begin{remark}
-	While Bubble Sort has a worst-case time complexity of $\mathcal{O}(n^2)$, it can be useful for small datasets or nearly sorted arrays due to its simplicity and in-place sorting nature.
-\end{remark}
-
-\begin{important}
-	Understanding time and space complexity is crucial for designing efficient algorithms and selecting appropriate data structures.
-\end{important}
+The \env{case} environment provides an enumerated list for case analysis:
 
 \begin{case}
-	\item Best Case: The time complexity is $\mathcal{O}(n \log n)$ when the pivot always divides the array into two halves.
-	\item Average Case: The expected time complexity is $\mathcal{O}(n \log n)$ with random pivot selection.
-	\item Worst Case: The time complexity is $\mathcal{O}(n^2)$ when the pivot is always the smallest or largest element.
+	\item Case 1: This is the first case.
+	\item Case 2: This is the second case.
+	\item Case 3: This is the third case.
 \end{case}
 
-\begin{axiom}
-	\item Axiom of Extensionality: Two sets are equal if and only if they have the same elements.
-	\item Axiom of Pairing: For any two sets $a$ and $b$, there exists a set $\{a, b\}$ that contains exactly $a$ and $b$ as its elements.
-\end{axiom}
+\subsection{Customization}
 
-\section{Requirements}
+The \pkg{csthm} package offers extensive customization options. Below are examples of common customizations.
 
-The \pkg{csthm} package requires the following packages:
+\subsubsection{Accent Color}
+
+To change the accent color used for theorem headers and symbols, you can use the following commands:
+
+\begin{verbatim}
+\setaccentcolor{darkblue}  % or
+\renewcommand{\accentcolor}{darkblue}
+\end{verbatim}
+
+\subsubsection{QED Symbols}
+
+You can customize the QED symbol used in proof environments with the following command:
+
+\begin{verbatim}
+\renewcommand\qedsymbol{$\scriptstyle\color{\accentcolor}\blacksquare$}
+\end{verbatim}
+
+\section{Implementation Notes}
+
+\subsection{Dependencies}
+
+The following packages are required for the correct functionality of the \pkg{csthm} package:
 
 \begin{itemize}
-	\item \pkg{amsmath}
-	\item \pkg{amssymb}
-	\item \pkg{amsthm}
-	\item \pkg{enumitem}
-	\item \pkg{thmtools}
+	\item \pkg{amsmath} - Provides advanced mathematical typesetting features.
+	\item \pkg{amssymb} - Adds additional mathematical symbols.
+	\item \pkg{amsthm} - Basic theorem functionality.
+	\item \pkg{enumitem} - Customizes list environments.
+	\item \pkg{thmtools} - Provides advanced theorem tools.
 \end{itemize}
 
-If the \opt{cleveref} option is used, the \pkg{hyperref} package must be loaded before \pkg{csthm}.
+Optional dependencies include:
+
+\begin{itemize}
+	\item \pkg{hyperref} - Enables hyperlinked cross-references.
+	\item \pkg{cleveref} - Provides enhanced cross-referencing features.
+\end{itemize}
 
 \section{Version History}
 
 \begin{description}
-	\item[v1.0 (2024/08/31)] Initial version
-	\item[v1.1 (2024/08/31)] Added \opt{cleveref} support
-	\item[v1.2 (2024/08/31)] Improved documentation, code structure, and added to CTAN
+        \ttfamily
+	\item[v1.0 (2024/01/01)] Initial release.
+	\item[v1.1 (2024/05/15)] Added support for \pkg{cleveref}.
+	\item[v1.2 (2024/08/31)] Released on CTAN.
+	\item[v1.3 (2025/01/16)] Current version:
+	\begin{itemize}
+		\item Added starred versions of all environments.
+		\item Enhanced theorem styling.
+		\item Added new environments.
+		\item Improved customization options.
+	\end{itemize}
 \end{description}
 
 \section{License}
 
-This work may be distributed and/or modified under the conditions of the LaTeX Project Public License, either version 1.3c of this license or (at your option) any later version. The latest version of this license is in:
+This work may be distributed and/or modified under the conditions of the \LaTeX\ Project Public License, either version 1.3c or later. The latest version is available at \href{http://www.latex-project.org/lppl.txt}{\LaTeX\ Project Public License}.
 
-\url{http://www.latex-project.org/lppl.txt}
+\section{Contact and Support}
 
-and version 1.3c or later is part of all distributions of LaTeX version 2008/05/04 or later.
-
-\section{Feedback and Contributions}
-
-For bug reports, feature requests, or general feedback, please contact the package maintainer, Agni Datta, at \texttt{\hyperlink{mailto:agnidatta.org@gmail.com}{agnidatta.org@gmail.com}}.
-
-Contributions to the package are welcome. Please submit pull requests or issues to the package's GitHub repository.
-
-\section{Package Source Code}
-
-The following listing shows the source code of the \texttt{csthm.sty} file:
-
-\lstinputlisting{csthm.sty}
-
-\appendix
-
-\section{Real-Life Usage Examples}
-
-\subsection{Theorem Environments}
-
-The \pkg{csthm} package provides several theorem-like environments commonly used in computer science literature:
-
-\begin{theorem}[Graph Colouring]
-	For any graph $G$, the chromatic number $\chi(G)$ is the minimum number of colours needed to colour the vertices of $G$ such that no two adjacent vertices share the same colour.
-\end{theorem}
-
-\begin{lemma}[Sum of Odd Numbers]
-	For every positive integer $n$, the sum of the first $n$ odd numbers is equal to $n^2$.
-\end{lemma}
-
-\begin{proof}
-	We can prove this by induction on $n$:
-	
-	\begin{case}
-		\item \textbf{Base case:} For $n=1$, the first odd number is 1, and $1^2 = 1$. The statement holds.
-		    
-		\item \textbf{Inductive step:} Assume the statement holds for some $k \geq 1$. We need to prove it for $k+1$.
-		    
-		The $(k+1)$-th odd number is $2k+1$. So, we have:
-		    
-		$\sum_{i=1}^{k+1} (2i-1) = \sum_{i=1}^k (2i-1) + (2k+1)$
-		    
-		$= k^2 + (2k+1)$ (by induction hypothesis)
-		    
-		$= k^2 + 2k + 1$
-		    
-		$= (k+1)^2$
-		    
-		Thus, the statement holds for $k+1$, completing the proof.    
-	\end{case}
-\end{proof}
-
-\begin{corollary}[Sum of Integers]
-	The sum of the first $n$ positive integers is given by $\frac{n(n+1)}{2}$.
-\end{corollary}
-
-\begin{proposition}[Even Sum Property]
-	The sum of two even integers is always even.
-\end{proposition}
-
-\begin{conjecture}[Goldbach's Conjecture]
-	Every even integer greater than 2 can be expressed as the sum of two prime numbers.
-\end{conjecture}
-
-\subsection{Definition and Example Environments}
-
-To introduce key definitions and illustrative examples:
-
-\begin{definition}[Tree]
-	A \emph{tree} is a connected, undirected graph with no cycles.
-\end{definition}
-
-\begin{example}[Binary Tree]
-	Consider a binary tree with 7 nodes labelled from 1 to 7:
-	\begin{verbatim}
-         1
-       /   \
-      2     3
-     / \   / \
-    4   5 6   7
-	\end{verbatim}    
-	This tree has 3 levels, and each parent node has at most 2 children.
-\end{example}
-
-\subsection{Remark Environments}
-
-To include remarks and notes that highlight important observations:
-
-\begin{remark}
-	While all trees are graphs, not all graphs are trees. A graph must be acyclic and connected to be classified as a tree.
-\end{remark}
-
-\begin{note}
-	Many conjectures, like Goldbach's Conjecture, remain unproven for centuries despite numerous verified instances. This highlights the complexity of certain mathematical problems.
-\end{note}
-
-\subsection{Highlight Environments}
-
-To emphasise crucial points within the document:
-
-\begin{important}
-	Algorithm efficiency is critical in computer science. Always consider time and space complexity when designing and analysing algorithms.
-\end{important}
-
-\begin{keypoint}
-	Understanding the P vs NP problem is fundamental in computational complexity theory and has significant implications for algorithm design and cryptography.
-\end{keypoint}
-
-\subsection{Case Environment}
-
-Used to present distinct cases in an argument or proof:
-
-\begin{theorem}[Factorial Definition]
-	The factorial of a non-negative integer $n$, denoted as $n!$, is defined as follows:
-\end{theorem}
-
-\begin{case}
-	\item When $n = 0$, $0! = 1$ (by definition).
-	\item When $n > 0$, $n! = n \times (n-1) \times \cdots \times 2 \times 1$.
-\end{case}
-
-\subsection{Axiom Environment}
-
-To enumerate foundational axioms in formal proofs:
-
-\begin{axiom}
-	\item For any sets $A$ and $B$, $A \cup B = B \cup A$ (Commutative Law of Union).
-	\item For any sets $A$, $B$, and $C$, $A \cap (B \cup C) = (A \cap B) \cup (A \cap C)$ (Distributive Law).
-	\item For any set $A$, $A \cup \emptyset = A$ (Identity Law of Union).
-\end{axiom}
+For bug reports, feature requests, or general feedback, please contact:
+\begin{itemize}
+	\item \textbf{Email:} \url{agnidatta.org@gmail.com}
+	\item \textbf{GitHub:} \url{https://github.com/agnidatta/csthm}
+	\item \textbf{CTAN:} \url{https://ctan.org/pkg/csthm}
+\end{itemize}
 
 \end{document}

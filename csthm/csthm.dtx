@@ -1,24 +1,17 @@
 % \iffalse meta-comment
 %
-% Copyright (C) 2024 by Agni Datta <agnidatta.org@gmail.com>
+% Copyright (C) 2024 by Agni Datta
+% -----------------------------------
 %
-% This file may be distributed and/or modified under the conditions of
-% the LaTeX Project Public License, either version 1.3c of this license
-% or (at your option) any later version. The latest version of this
-% license is in:
+% This file may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3c
+% of this license or (at your option) any later version.
+% The latest version of this license is in:
 %
 %    http://www.latex-project.org/lppl.txt
 %
 % and version 1.3c or later is part of all distributions of LaTeX
 % version 2008/05/04 or later.
-%
-%
-% This work has the LPPL maintenance status `maintained'.
-%
-% The Current Maintainer of this work is Agni Datta.
-%
-% This work consists of the files csthm.dtx and csthm.ins
-% and the derived file csthm.sty.
 %
 % \fi
 %
@@ -27,21 +20,22 @@
 \ProvidesFile{csthm.dtx}
 %</driver>
 %<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
-%<package>\ProvidesPackage{csthm}
-%<*package>
-    [2024/08/31 v1.2 Theorem Environments for Computer Science]
-%</package>
+%<package>\ProvidesPackage{csthm}[2025/01/16 v1.3 Theorem Environments for Computer Science]
 %
 %<*driver>
 \documentclass{ltxdoc}
 \usepackage{csthm}
+\usepackage{parskip}
+\usepackage{microtype}
+\usepackage[margin=3cm]{geometry}
+\usepackage{hyperref}
 \EnableCrossrefs
 \CodelineIndex
 \RecordChanges
 \begin{document}
-\DocInput{csthm.dtx}
-\PrintChanges
-\PrintIndex
+  \DocInput{csthm.dtx}
+  \PrintChanges
+  \PrintIndex
 \end{document}
 %</driver>
 % \fi
@@ -64,24 +58,27 @@
 %   Grave accent  \`     Left brace    \{     Vertical bar  \|
 %   Right brace   \}     Tilde         \~}
 %
-%
-% \changes{v1.0}{2024/08/31}{Initial version}
-% \changes{v1.1}{2024/08/31}{Added cleveref support}
-% \changes{v1.2}{2024/08/31}{Improved documentation and code structure}
+% \changes{v1.0}{2024/01/01}{Initial version}
+% \changes{v1.1}{2024/05/15}{Added cleveref support}
+% \changes{v1.2}{2024/08/31}{Enhanced theorem styling and QED symbols}
+% \changes{v1.3}{2025/01/16}{Added major new environments and modified styles}
 %
 % \DoNotIndex{\newcommand,\newenvironment}
 %
-% \providecommand*{\url}{\texttt}
 % \GetFileInfo{csthm.dtx}
 % \title{The \textsf{csthm} package}
-% \author{Agni Datta \\ \url{agnidatta.org@gmail.com}}
+% \author{Agni Datta \\ \texttt{agnidatta.org@gmail.com}}
 % \date{\filedate}
 %
 % \maketitle
 %
 % \section{Introduction}
 %
-% This package provides customized theorem-like environments specifically designed for computer science documents. It offers a set of pre-defined theorem styles and environments to streamline the creation of theorems, definitions, remarks, and other common structures in computer science papers and documents.
+% This package offers a robust and flexible solution for typesetting theorems,
+% definitions, proofs, and related content typically found in computer science
+% literature. The package provides a variety of specialized environments, each
+% with distinct visual markers and formatting styles suited to different types
+% of content.
 %
 % \section{Usage}
 %
@@ -97,142 +94,202 @@
 %
 % \section{Implementation}
 %
+% First, we'll implement the package options and basic setup.
+%
 %    \begin{macrocode}
 %<*package>
-% Package options
 \newif\if@csthm@loadcleveref
+
 \DeclareOption{cleveref}{\@csthm@loadclevereftrue}
 \ProcessOptions\relax
 
-% Required packages
+% Load required packages
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
 \RequirePackage{amsthm}
 \RequirePackage{enumitem}
 \RequirePackage{thmtools}
+\RequirePackage{xcolor}
 
-% Conditionally load cleveref if the option is set and hyperref is loaded
+% Define accent color
+\providecommand{\accentcolor}{blue!50!black}
+\providecommand{\setaccentcolor}[1]{\renewcommand{\accentcolor}{#1}}
+
+% Common styling elements
+\providecommand{\commonfont}{\color{\accentcolor}\sffamily}
+\providecommand{\commonsymb}{\ensuremath{\color{\accentcolor}\lrcorner}}
+
+% Handle cleveref loading
 \if@csthm@loadcleveref
-\AtBeginDocument{%
-	\@ifpackageloaded{hyperref}{%
-		\RequirePackage{cleveref}
-		}{%
-		\PackageWarning{csthm}{The 'cleveref' option was set, but 'hyperref' is not loaded. Skipping 'cleveref' loading.}
-	}%
-}
+  \AtBeginDocument{%
+    \@ifpackageloaded{hyperref}{%
+      \RequirePackage{cleveref}%
+    }{%
+      \PackageWarning{csthm}{%
+        The 'cleveref' option was set, but 'hyperref' is not loaded.
+        Skipping 'cleveref' loading.%
+      }%
+    }%
+  }%
 \fi
-
-% Define theorem styles
+%    \end{macrocode}
+%
+% Define the basic theorem styles that will be used throughout the package.
+%
+%    \begin{macrocode}
+% Standard theorem style
 \declaretheoremstyle[
-	spaceabove=\topsep,
-	spacebelow=\topsep,
-	headfont=\scshape,
-	notefont=\scshape,
-	bodyfont=\normalfont,
-	postheadspace=5pt,
-	numberwithin=section,
-	qed=$\scriptstyle\star$,
-	headpunct={.}
+  spaceabove=\topsep,
+  spacebelow=\topsep,
+  headfont=\commonfont\ensuremath{\scriptstyle\blacktriangleright}~,
+  notefont=\commonfont,
+  bodyfont=\normalfont,
+  postheadspace=5pt,
+  numberwithin=section,
+  qed=\commonsymb,
+  headpunct={.}
 ]{thmstyle}
 
+% Definition style
 \declaretheoremstyle[
-	spaceabove=\topsep,
-	spacebelow=\topsep,
-	headfont=\bfseries,
-	notefont=\bfseries,
-	bodyfont=\normalfont,
-	postheadspace=5pt,
-	numberwithin=section,
-	qed=$\scriptstyle\maltese$,
-	headpunct={.}
+  spaceabove=\topsep,
+  spacebelow=\topsep,
+  headfont=\commonfont\ensuremath{\scriptstyle\blacksquare}~,
+  notefont=\commonfont,
+  bodyfont=\normalfont,
+  postheadspace=5pt,
+  numberwithin=section,
+  qed=\commonsymb,
+  headpunct={.}
 ]{defstyle}
 
+% Remark style
 \declaretheoremstyle[
-	spaceabove=\topsep,
-	spacebelow=\topsep,
-	headfont=\itshape,
-	notefont=\itshape,
-	bodyfont=\normalfont,
-	postheadspace=5pt,
-	numberwithin=section,
-	qed=$\scriptstyle\maltese$,
-	headpunct={.}
+  spaceabove=\topsep,
+  spacebelow=\topsep,
+  headfont=\commonfont\ensuremath{\scriptstyle\vartriangleright}~,
+  notefont=\commonfont,
+  bodyfont=\normalfont,
+  postheadspace=5pt,
+  numberwithin=section,
+  qed=\commonsymb,
+  headpunct={.}
 ]{remarkstyle}
 
+% Highlight style
 \declaretheoremstyle[
-	spaceabove=\topsep,
-	spacebelow=\topsep,
-	headfont=\sffamily\scshape,
-	notefont=\sffamily\scshape,
-	bodyfont=\normalfont\sffamily,
-	postheadspace=5pt,
-	numberwithin=section,
-	qed=$\scriptstyle\maltese$,
-	headpunct={.}
+  spaceabove=\topsep,
+  spacebelow=\topsep,
+  headfont=\commonfont\ensuremath{\scriptstyle\square}~,
+  notefont=\commonfont,
+  bodyfont=\normalfont\sffamily,
+  postheadspace=5pt,
+  numberwithin=section,
+  qed=\commonsymb,
+  headpunct={.}
 ]{hltstyle}
 
-% Define theorem environments
+% Proof style
+\declaretheoremstyle[
+  headfont=\commonfont,
+  notefont=\commonfont,
+  bodyfont=\normalfont,
+  postheadspace=5pt,
+  numbered=no,
+  headpunct={.},
+  qed=$\color{\accentcolor}\scriptstyle\blacktriangleleft$
+]{proofstyle}
+%    \end{macrocode}
+%
+% Now we'll declare all the theorem environments.
+%
+%    \begin{macrocode}
+% Mathematical Theorems (Numbered)
 \declaretheorem[style=thmstyle,name=Theorem]{theorem}
-\declaretheorem[style=defstyle,sibling=theorem]{fact}
 \declaretheorem[style=thmstyle,sibling=theorem]{assumption}
+\declaretheorem[style=thmstyle,sibling=theorem]{axiom}
 \declaretheorem[style=thmstyle,sibling=theorem]{claim}
 \declaretheorem[style=thmstyle,sibling=theorem]{conjecture}
 \declaretheorem[style=thmstyle,sibling=theorem]{corollary}
+\declaretheorem[style=thmstyle,sibling=theorem]{fact}
+\declaretheorem[style=thmstyle,sibling=theorem]{hypothesis}
 \declaretheorem[style=thmstyle,sibling=theorem]{lemma}
 \declaretheorem[style=thmstyle,sibling=theorem]{property}
 \declaretheorem[style=thmstyle,sibling=theorem]{proposition}
 
-% Define definition environments
-\declaretheorem[style=defstyle,sibling=theorem]{definition}
-\declaretheorem[style=defstyle,sibling=theorem]{example}
-\declaretheorem[style=defstyle,sibling=theorem]{exercise}
-\declaretheorem[style=defstyle,sibling=theorem]{problem}
-\declaretheorem[style=defstyle,sibling=theorem]{question}
+% Unnumbered Mathematical Environments
+\declaretheorem[style=thmstyle,unnumbered,name=Theorem]{theorem*}
+\declaretheorem[style=thmstyle,unnumbered,name=Assumption]{assumption*}
+\declaretheorem[style=thmstyle,unnumbered,name=Axiom]{axiom*}
+\declaretheorem[style=thmstyle,unnumbered,name=Claim]{claim*}
+\declaretheorem[style=thmstyle,unnumbered,name=Conjecture]{conjecture*}
+\declaretheorem[style=thmstyle,unnumbered,name=Corollary]{corollary*}
+\declaretheorem[style=thmstyle,unnumbered,name=Fact]{fact*}
+\declaretheorem[style=thmstyle,unnumbered,name=Hypothesis]{hypothesis*}
+\declaretheorem[style=thmstyle,unnumbered,name=Lemma]{lemma*}
+\declaretheorem[style=thmstyle,unnumbered,name=Property]{property*}
+\declaretheorem[style=thmstyle,unnumbered,name=Proposition]{proposition*}
 
-% Define remark environments
+% Definitions and Protocols (Numbered)
+\declaretheorem[style=defstyle,sibling=theorem]{definition}
+\declaretheorem[style=defstyle,sibling=theorem]{notation}
+\declaretheorem[style=defstyle,sibling=theorem]{problem}
+\declaretheorem[style=defstyle,sibling=theorem]{protocol}
+
+% Unnumbered Definitions and Protocols
+\declaretheorem[style=defstyle,unnumbered,name=Definition]{definition*}
+\declaretheorem[style=defstyle,unnumbered,name=Notation]{notation*}
+\declaretheorem[style=defstyle,unnumbered,name=Problem]{problem*}
+\declaretheorem[style=defstyle,unnumbered,name=Protocol]{protocol*}
+
+% Remarks and Examples (Numbered)
+\declaretheorem[style=remarkstyle,sibling=theorem]{example}
 \declaretheorem[style=remarkstyle,sibling=theorem]{note}
 \declaretheorem[style=remarkstyle,sibling=theorem]{remark}
-\declaretheorem[style=remarkstyle,sibling=theorem]{solution}
 
-% Define highlight environments
-\declaretheorem[style=hltstyle,name=Important]{important}
-\declaretheorem[style=hltstyle]{highlight}
-\declaretheorem[style=hltstyle]{keypoint}
+% Unnumbered Remarks and Examples
+\declaretheorem[style=remarkstyle,unnumbered,name=Example]{example*}
+\declaretheorem[style=remarkstyle,unnumbered,name=Note]{note*}
+\declaretheorem[style=remarkstyle,unnumbered,name=Remark]{remark*}
 
-% Define case environment
+% Highlights and Important Elements (Numbered)
+\declaretheorem[style=hltstyle,sibling=theorem]{exercise}
+\declaretheorem[style=hltstyle,sibling=theorem]{highlight}
+\declaretheorem[style=hltstyle,sibling=theorem]{important}
+\declaretheorem[style=hltstyle,sibling=theorem]{keypoint}
+
+% Unnumbered Highlights and Important Elements
+\declaretheorem[style=hltstyle,unnumbered,name=Exercise]{exercise*}
+\declaretheorem[style=hltstyle,unnumbered,name=Highlight]{highlight*}
+\declaretheorem[style=hltstyle,unnumbered,name=Important]{important*}
+\declaretheorem[style=hltstyle,unnumbered,name=Key Point]{keypoint*}
+%    \end{macrocode}
+%
+% Set up the proof environment and case list.
+%
+%    \begin{macrocode}
+% Remove and redefine proof environment
+\let\proof\relax
+\let\endproof\relax
+\declaretheorem[style=proofstyle]{proof}
+
+% Custom case list environment
 \newlist{caseList}{enumerate}{1}
-\setlist[caseList]{label=\textbf{Case~\arabic*:},leftmargin=*}
+\setlist[caseList]{label=\textbf{Case~\arabic*:}, leftmargin=*}
 
 \NewDocumentEnvironment{case}{O{}}{%
-	\begin{caseList}[#1]%
-		}{%
-	\end{caseList}%
+  \begin{caseList}[#1]%
+}{%
+  \end{caseList}%
 }
 
-% Define axiom environment
-\newlist{axiomList}{enumerate}{1}
-\setlist[axiomList]{label=\textbf{Axiom~\Alph*:}, leftmargin=*}
+% Redefine QED symbol
+\renewcommand\qedsymbol{$\scriptstyle\color{\accentcolor}\blacksquare$}
 
-\NewDocumentEnvironment{axiom}{O{}}{%
-	\begin{axiomList}[#1]%
-		}{%
-	\end{axiomList}%
-}
-
-% Custom QED symbol
-\renewcommand\qedsymbol{$\scriptstyle\blacksquare$}
-
-% Define accent color (customizable by the user)
-\providecommand{\accentcolor}{black}
-
-% Package documentation commands
+% Utility commands
 \providecommand{\csthmpkg}{\textsf{csthm}}
 \providecommand{\email}[1]{\href{mailto:#1}{\texttt{#1}}}
-
-% User-level commands for customization
-\newcommand{\setaccentcolor}[1]{\renewcommand{\accentcolor}{#1}}
 %</package>
 %    \end{macrocode}
 %
 % \Finale
-\endinput
