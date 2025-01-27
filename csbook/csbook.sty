@@ -417,62 +417,68 @@
 	]{mathalpha}  	% Additional math font styles for diverse notation
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Custom Sectioning Commands
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Custom Sectioning Commands for Thesis Formatting
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[nobottomtitles*, explicit, compact]{titlesec} % Package for customizing sectioning commands
+% Import the 'titlesec' package to customize sectioning commands
+\RequirePackage[explicit, compact]{titlesec}
 
-% Define font styles for a consistent thesis appearance
-\providecommand{\headerfont}{\sffamily} % General thesis font style (Chicago Manual suggests serif fonts)
-\providecommand{\partfont}{\normalfont\headerfont} % Title font style
-\providecommand{\sectionfont}{\Large\headerfont} % Section font style
-\providecommand{\subsectionfont}{\large\headerfont} % Subsection font style
-\providecommand{\subsubsectionfont}{\normalsize\headerfont} % Subsubsection font style
+% Set penalties for widows and orphans to improve page layout
+\widowpenalty=1000
+\clubpenalty=1000
 
-% Formatting for parts
+% Define font styles for consistency across the document
+% The Chicago Manual of Style recommends serif fonts, but we opt for sans-serif for clarity
+\providecommand{\headerfont}{\sffamily} % General font style for the document
+\providecommand{\partfont}{\normalfont\headerfont} % Font style for part titles
+\providecommand{\sectionfont}{\Large\headerfont} % Font style for section titles
+\providecommand{\subsectionfont}{\large\headerfont} % Font style for subsection titles
+\providecommand{\subsubsectionfont}{\normalsize\headerfont} % Font style for subsubsection titles
+
+% Define formatting for part titles
 \titleformat{\part}[display]
-	{\partfont\RaggedRight} % Part title styling
-	{\color{accentcolor}\LARGE\partname~\thepart} % Part label format
-	{0pt} % No space between label and title
-	{\titlerule\bigskip\Huge#1\vfill} % Part title format
+    {\partfont\RaggedRight} % Part title styling: sans-serif, right-aligned
+    {\color{accentcolor}\LARGE\partname~\thepart} % Format part label (e.g., "Part 1")
+    {0pt} % No space between part label and the title text
+    {\titlerule\bigskip\Huge#1\vfill} % Part title format: large, with horizontal rule above and below
 
-% Use vertical fill for centring
-\titlespacing*{\part}{0pt}{\fill}{\fill} % Vertically centers the part title
+% Vertically center the part title by adjusting the spacing
+\titlespacing*{\part}{0pt}{\fill}{\fill} % Equal vertical space above and below the part title
 
-% Formatting for chapters
+% Define formatting for chapter titles
 \titleformat{\chapter}[display]
-	{\LARGE\headerfont} % Chapter title styling
-	{\RaggedLeft{\rmfamily\large\chaptertitlename}~\Huge\color{accentcolor}\thechapter} % Chapter label format
-	{1ex} % Space between label and title
-	{\titlerule\vspace{1ex}#1}[\vspace{1ex}\titlerule] % Chapter title format
+    {\LARGE\headerfont} % Chapter title styling: large, sans-serif font
+    {\RaggedLeft{\rmfamily\scshape\large\chaptertitlename}~\Huge\color{accentcolor}\thechapter} % Format chapter label and number
+    {1ex} % Space between chapter number and the title
+    {\titlerule\vspace{1ex}#1}[\vspace{1ex}\titlerule] % Chapter title format: horizontal rule before and after
 
-% Spacing adjustments for chapters
-\titlespacing*{\chapter}{0pt}{25pt}{25pt} % Spacing before and after chapter title
+% Adjust spacing before and after the chapter title
+\titlespacing*{\chapter}{0pt}{25pt}{25pt} % 25pt before and after chapter title
 
-% Formatting for sections
+% Define formatting for section titles
 \titleformat{\section}[block]
-	{\sectionfont} % Section title styling
-	{\color{accentcolor}\huge\thesection} % Section number format
-	{10pt} % Space between number and title
-	{#1\vspace{2.5pt}\hrule} % Section title format
+    {\sectionfont} % Section title styling: large sans-serif font
+    {\color{accentcolor}\huge\thesection} % Section number format with color and large size
+    {10pt} % Space between section number and the title text
+    {#1\vspace{2.5pt}\hrule} % Section title format: rule after the title
 
-% Spacing adjustments for chapters
-\titlespacing*{\section}{0pt}{15pt}{-10pt} % Spacing before and after section title
+% Adjust spacing before and after section titles
+\titlespacing*{\section}{0pt}{15pt}{-10pt} % 15pt before, -10pt after the section title (negative space after)
 
-% Formatting for subsections
+% Define formatting for subsection titles
 \titleformat{\subsection}[block]
-	{\subsectionfont} % Subsection title styling
-	{\color{accentcolor}\Large\thesubsection} % Subsection number format
-	{7.5pt} % Space between number and title
-	{#1} % Subsection title format
+    {\subsectionfont} % Subsection title styling: medium-sized sans-serif font
+    {\color{accentcolor}\Large\thesubsection} % Subsection number format with color and medium size
+    {7.5pt} % Space between subsection number and the title text
+    {#1} % Subsection title format
 
-% Formatting for subsubsections
+% Define formatting for subsubsection titles (run-in format)
 \titleformat{\subsubsection}[runin]
-	{\subsubsectionfont} % Subsubsection title styling
-	{\color{accentcolor}\thesubsubsection} % Subsubsection number format
-	{5pt} % Space between number and title
-	{#1.} % Subsubsection title format
+    {\subsubsectionfont} % Subsubsection title styling: regular sans-serif font
+    {\color{accentcolor}\thesubsubsection} % Subsubsection number format with color
+    {5pt} % Space between subsubsection number and the title text
+    {#1.} % Subsubsection title format: period after title text
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Local Table of Contents
