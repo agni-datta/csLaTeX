@@ -2,8 +2,8 @@
 title: CS Presentations Package (`cspresentations.sty`)
 linter-yaml-title-alias: CS Presentations Package (`cspresentations.sty`)
 date created: Wednesday, December 4th 2024, 20:11:49
-date modified: Friday, January 17th 2025, 18:54:49
-aliases: [CS Presentations Package (`cspresentations.sty`)]
+date modified: Thursday, January 23rd 2025, 13:22:38
+aliases: CS Presentations Package (`cspresentations.sty`)
 ---
 
 # CS Presentations Package (`cspresentations.sty`)
