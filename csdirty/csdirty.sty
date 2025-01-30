@@ -1,0 +1,311 @@
+% csdirty.sty - A LaTeX Package by Agni Datta
+% This package compiles commonly utilised LaTeX packages to streamline document preparation.
+
+\ProvidesPackage{csdirty}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Page Layout and Spacing Settings                                         %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage[english]{babel} % Enables English language support
+\RequirePackage[2.0, objcompress, compress]{bxpdfver} % Sets PDF version and compression settings
+\RequirePackage[a4paper, margin=2.75cm]{geometry} % Sets page dimension
+\RequirePackage[onehalfspacing]{setspace} % Adjusts line spacing to 1.5
+\renewcommand{\baselinestretch}{1.15}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Mathematical Tools and Fonts                                            %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{amsfonts} % Loads AMS fonts (e.g., blackboard bold)
+\RequirePackage{amsmath} % Provides advanced mathematical environments
+\RequirePackage{amssymb} % Adds supplementary mathematical symbols
+\RequirePackage{amsthm} % Creates theorem environments
+\RequirePackage{bm} % Enables bold mathematical symbols
+\RequirePackage{mathrsfs} % Supports script-style mathematical fonts
+\RequirePackage{mathtools} % Extends mathematical functionality
+\RequirePackage{nicefrac} % Improves diagonal fractions
+\RequirePackage{siunitx} % Handles units and numerical data
+\RequirePackage[cal=cm, bb=bboldx]{mathalpha} % Customises calligraphic and blackboard bold fonts
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Colour Management                                                       %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage[x11names, dvipsnames, svgnames]{xcolor} % Provides X11, SVG, and named colours
+\IfFileExists{csthm.sty}{%
+	\RequirePackage{csthm} % Customises theorem environments
+	\providecommand{\accentcolor}{black!75!RoyalBlue1} % Defines accent colour if not pre-specified
+	\setaccentcolor{black!75!RoyalBlue1}
+	}{%
+	\PackageWarning{csdirty}{The package `csthm` is not present. Please install it.}
+	\providecommand{\accentcolor}{black!60} % Defines accent colour if not pre-specified
+	\setaccentcolor{black!60}
+}
+\RequirePackage{xspace} % Adds intelligent spacing after commands
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Text and Font Enhancements                                              %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage[autostyle=true, csdisplay=true]{csquotes} % Implements smart quotation marks
+\RequirePackage[final]{microtype} % Enhances text justification and hyphenation
+\RequirePackage{textcomp} % Adds text symbols (e.g., degree signs)
+\RequirePackage[normalem]{ulem} % Supports underlining and strikethroughs
+\RequirePackage{lmodern} % Sets the Latin Modern font family
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Algorithm Formatting                                                    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage[%
+	algonl,         % Allows algorithmic notation
+	boxed,          % Frames the algorithm
+	longend,        % Refines 'end' formatting in long algorithms
+	vlined          % Adds vertical lines for enhanced structure
+]{algorithm2e}
+
+\SetAlFnt{\small} % Sets algorithm text size to small for compactness
+\SetAlCapNameFnt{\normalfont\rmfamily} % Formats algorithm caption titles
+\SetAlCapFnt{\normalfont\sffamily\color{\accentcolor}} % Formats caption text
+\SetAlgoSkip{medskip} % Adjusts spacing between algorithm steps
+\SetAlgoInsideSkip{medskip} % Adds spacing within the algorithm
+\SetAlCapSkip{1em} % Alters spacing between captions and algorithm content
+\SetAlgoNlRelativeSize{-2} % Reduces line number size
+\SetNlSty{texttt}{[}{]} % Formats line numbers
+\SetAlgoCaptionSeparator{.} % Sets caption-content separator to a period
+
+\RequirePackage{listings} % Enables syntax highlighting for code
+\RequirePackage{fancyvrb} % Enhances verbatim environments
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Hyperlinks and Cross-referencing                                        %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage[%
+	frenchlinks=true,             % Utilises small caps for hyperlinks
+	unicode=true,                 % Supports Unicode in hyperlinks
+	bookmarksnumbered=true,       % Numbers bookmarks for easier navigation
+	breaklinks=true,              % Enables line-breaking in links
+	colorlinks=true,              % Activates coloured hyperlinks
+	linkcolor=SlateBlue1,         % Specifies link colour
+	citecolor=MediumPurple1,      % Specifies citation link colour
+	urlcolor=RoyalBlue1,          % Specifies URL link colour
+	pdfusetitle,                  % Allow PDF to have bibliographic details
+	pagebackref                   % Allow for back-references to objects
+]{hyperref}
+\renewcommand*{\backref}[1]{}
+\renewcommand*{\backrefalt}[4]{%
+	\ifcase #1%
+	\or(Cited on page~#2).%
+	\else(Cited on pages~#2).%
+	\fi%
+}
+\RequirePackage[capitalise]{cleveref} % Simplifies references (e.g., "Theorem 1")
+\RequirePackage{xr} % Facilitates cross-referencing between documents
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Figures and Tables                                                     %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{adjustbox} % Allows flexible adjustments of content
+\RequirePackage{array} % Enhances array and tabular environments
+\RequirePackage{booktabs} % Produces professional table rules
+\RequirePackage{float} % Better placement control for floating objects (e.g., figures, tables).
+\RequirePackage{graphicx} % Enables graphics inclusion
+\RequirePackage{longtable} % Supports multi-page tables
+\RequirePackage{multirow} % Permits multi-row table cells
+\RequirePackage{ragged2e} % Improved text alignment (left and right ragged).
+\RequirePackage{subcaption} % Provides subfigure and subcaption features
+\RequirePackage{supertabular} % Multi-page tables with enhanced control.
+\RequirePackage{tabularx} % Defines tables with flexible column widths
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Customisable Lists                                                     %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{enumitem} % Provides enhanced list customisation
+
+\setlist{nosep} % Removes extra list spacing
+\setlist[enumerate,1]{label=(\arabic*)} % Configures first-level enumerations
+\setlist[enumerate,2]{label=(\alph*)} % Configures second-level enumerations
+\setlist[itemize,1]{label=\ensuremath{\color{\accentcolor}\bullet}} % Sets primary list bullet style
+\setlist[itemize,2]{label=\ensuremath{\color{\accentcolor}\circ}} % Sets secondary list bullet style
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Diagrams and Graphics                                                  %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage[%
+	skipabove=10pt, % Set vertical space above frames
+	skipbelow=10pt, % Set vertical space below frames
+	ntheorem,       % Integrate with theorem environments
+	framemethod=Tikz % Use TikZ for styling
+]{mdframed}
+\RequirePackage{pgfplots} % Enable advanced plotting
+\pgfplotsset{compat=1.18} % Set compatibility version
+\RequirePackage{tikz} % Create high-quality graphics
+\RequirePackage{tikz-cd} % Draw commutative diagrams
+\RequirePackage{tikz-3dplot} % Render 3D plots
+\usetikzlibrary{%
+	arrows,           % Arrow tips
+	automata,         % Automaton drawing
+	backgrounds,      % Background layers
+	calc,             % Perform calculations in TikZ
+	decorations.markings, % Custom arrow and path markings
+	decorations.pathmorphing, % Path decorations (e.g., waves, zigzags)
+	decorations.text, % Add text decorations
+	fit,              % Fit nodes inside shapes
+	graphs,           % Graph drawing
+	intersections,    % Intersections of paths
+	matrix,           % Matrices and tables
+	patterns,         % Predefined patterns for fills
+	positioning,      % Node positioning
+	scopes,           % Grouping and scoping
+	shapes.geometric  % Geometric shapes
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Cryptography and Complexity Theory                                     %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\IfFileExists{tcscrypto.sty}{%
+	\RequirePackage{tcscrypto} % Adds cryptography and complexity theory symbols
+	}{%
+	\PackageWarning{csdirty}{The package `tcscrypto` is not present. Please install it.}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Miscellaneous Enhancements                                             %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{etoolbox} % Implements conditional logic
+\RequirePackage{lipsum} % Generates placeholder text
+\RequirePackage{pdfpages} % Includes external PDF pages
+\RequirePackage{xurl} % Supports URL line-breaking
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Captions                                                               %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage[%
+	font={rm},                            % Sets captions to sans-serif font
+	labelfont={color=\accentcolor,sf},    % Configures label font and colour
+	labelsep=period,                      % Separates label and content with a period
+	skip=1em                               % Adds spacing before captions
+]{caption}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Appendix Handling                                                      %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage[%
+	toc,        % Includes appendices in the table of contents
+	page,       % Starts each appendix on a new page
+	title,      % Prefixes appendix titles with "Appendix"
+	header,     % Adds "Appendix" to headers
+	titletoc    % Prefixes appendix entries in the TOC
+]{appendix}
+
+\AtBeginDocument{%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%% Compatibility Adjustments for Specific Document Classes                %%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		
+	% llncs class adjustments
+	\@ifclassloaded{llncs}{%
+		\RequirePackage{etoolbox}
+		\setlength{\belowcaptionskip}{-10pt}
+		}{}
+			
+	% amsart class adjustments
+	\@ifclassloaded{amsart}{%
+		\RequirePackage[foot]{amsaddr}
+		}{}
+			
+	% article class adjustments
+	\@ifclassloaded{article}{%
+		\RequirePackage{hep-title}
+		\titlefont{\normalfont\huge\scshape}
+		\authorfont{\normalfont\normalsize\large\scshape}
+		\affiliationfont{\normalfont\normalsize\scshape}
+		\datefont{\normalfont\small\scshape}
+		\RequirePackage{titlesec}
+		\titleformat*{\section}{\Large\sffamily}
+		\titleformat*{\subsection}{\large\sffamily}
+		\titleformat*{\subsubsection}{\normalsize\sffamily}
+		\titleformat*{\paragraph}{\normalsize\bfseries}
+		\titleformat*{\subparagraph}{\normalsize\scshape}
+		\renewenvironment{abstract}{%
+			\quotation\small
+			\textbf{\abstractname.}
+			}{\endquotation}
+		}{}
+		
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%% Command Definitions                                                    %%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		
+	% Define a command for author notes with an accent color
+	\providecommand{\authnote}[1]{\textcolor{\accentcolor}{\textsf{#1~A.D.}}}
+		
+	% Define a command for paragraphs without a dot after the heading
+	\providecommand{\paragraphnodot}[1]{\smallskip\noindent{\normalfont\bfseries#1}}
+		
+	% Redefine the paragraph to add a period after the heading
+	\let\paragraph\relax
+	\providecommand{\paragraph}[1]{\smallskip\noindent{\normalfont\bfseries#1.}}
+		
+	% Save the original table of contents command
+	\let\oldtableofcontents\tableofcontents
+		
+	% Redefine the table of contents to add page breaks before and after
+	\renewcommand{\tableofcontents}{%
+		\vfill\pagebreak        % Add page break before TOC
+		\oldtableofcontents      % Original TOC
+		\vfill\pagebreak        % Add page break after TOC
+	}
+		
+	% Define the bibliographyprint command
+	% Example usage: \bibliographyprint{acm}{bibliography}
+	% #1 = bibliography style, #2 = .bib files
+	\providecommand{\bibliographyprint}[2]{%
+		\begingroup
+		\small\singlespacing     % Set small font and single spacing
+		\bibliographystyle{#1}   % Set bibliography style
+		\addcontentsline{toc}{section}{References}  % Add "References" to TOC
+		\bibliography{#2}        % Set .bib files
+		\endgroup
+	}
+		
+	% Save the original appendix command
+	\let\oldappendix\appendix
+		
+	% Redefine the appendix command to add it to TOC and title it as "Appendix"
+	\renewcommand{\appendix}{%
+		\section*{Appendix}        % Title for the Appendix section (without numbering)
+		\addcontentsline{toc}{section}{Appendix} % Add "Appendix" to the Table of Contents
+		\oldappendix              % Call the original \appendix functionality (e.g., switching to appendix mode)
+	}
+}
+
+% Define toggles for versioning and comments
+\newif\ifFullVersion  % Toggle for full version
+\newif\ifShortVersion % Toggle for short version
+\newif\ifComments     % Toggle for displaying comments
+
+% Set default configuration (can be modified in the document preamble)
+\FullVersiontrue      % Set this to 'true' for the full version
+\Commentsfalse        % Set this to 'true' to enable comments
+
+% Automatically set the opposite version if the full version is active
+\ifFullVersion
+    \ShortVersionfalse  % Full version enabled, short version disabled
+\else
+    \ShortVersiontrue   % Short version enabled, full version disabled
+\fi
+
+% Define the generic \newcomment command
+\newcommand{\newcomment}[3]{%
+    \ifComments
+        % If comments are enabled, define the comment macro
+        \expandafter\newcommand\csname #3\endcsname[1]{%
+            {\noindent\textcolor{#2}{\sffamily ##1 -- $\mathsf{#1}$}}%
+        }%
+    \else
+        % If comments are disabled, define the comment macro as a no-op
+        \expandafter\newcommand\csname #3\endcsname[1]{}%
+    \fi
+}
+
+\makeatother
+\endinput
