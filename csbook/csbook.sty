@@ -421,15 +421,14 @@
 % Custom Sectioning Commands for Thesis Formatting
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Import the 'titlesec' package to customize sectioning commands
-\RequirePackage[explicit, compact]{titlesec}
+% Load the 'titlesec' package for customizing section title formatting
+\RequirePackage[nobottomtitles*, explicit, compact]{titlesec}
 
 % Set penalties for widows and orphans to improve page layout
-\widowpenalty=1000
-\clubpenalty=1000
+\renewcommand{\bottomtitlespace}{0.1\textheight}
 
-% Define font styles for consistency across the document
-% The Chicago Manual of Style recommends serif fonts, but we opt for sans-serif for clarity
+% Define consistent font styles across the document
+% Although the Chicago Manual of Style recommends serif fonts, we use sans-serif for clarity
 \providecommand{\headerfont}{\sffamily} % General font style for the document
 \providecommand{\partfont}{\normalfont\headerfont} % Font style for part titles
 \providecommand{\sectionfont}{\Large\headerfont} % Font style for section titles
@@ -440,7 +439,7 @@
 \titleformat{\part}[display]
     {\partfont\RaggedRight} % Part title styling: sans-serif, right-aligned
     {\color{accentcolor}\LARGE\partname~\thepart} % Format part label (e.g., "Part 1")
-    {0pt} % No space between part label and the title text
+    {0pt} % No space between part label and title text
     {\titlerule\bigskip\Huge#1\vfill} % Part title format: large, with horizontal rule above and below
 
 % Vertically center the part title by adjusting the spacing
@@ -453,32 +452,38 @@
     {1ex} % Space between chapter number and the title
     {\titlerule\vspace{1ex}#1}[\vspace{1ex}\titlerule] % Chapter title format: horizontal rule before and after
 
-% Adjust spacing before and after the chapter title
+% Adjust the vertical spacing before and after the chapter title
 \titlespacing*{\chapter}{0pt}{25pt}{25pt} % 25pt before and after chapter title
 
 % Define formatting for section titles
 \titleformat{\section}[block]
     {\sectionfont} % Section title styling: large sans-serif font
     {\color{accentcolor}\huge\thesection} % Section number format with color and large size
-    {10pt} % Space between section number and the title text
-    {#1\vspace{2.5pt}\hrule} % Section title format: rule after the title
+    {10pt} % Space between section number and title text
+    {#1\vspace{2.5pt}\hrule} % Section title format: horizontal rule after the title
 
-% Adjust spacing before and after section titles
-\titlespacing*{\section}{0pt}{15pt}{-10pt} % 15pt before, -10pt after the section title (negative space after)
+% Adjust the vertical spacing before and after section titles
+\titlespacing*{\section}{0pt}{5pt}{-12.5pt} % 15pt before, -10pt after the section title (negative space after)
 
 % Define formatting for subsection titles
 \titleformat{\subsection}[block]
     {\subsectionfont} % Subsection title styling: medium-sized sans-serif font
     {\color{accentcolor}\Large\thesubsection} % Subsection number format with color and medium size
-    {7.5pt} % Space between subsection number and the title text
+    {7.5pt} % Space between subsection number and title text
     {#1} % Subsection title format
 
 % Define formatting for subsubsection titles (run-in format)
 \titleformat{\subsubsection}[runin]
     {\subsubsectionfont} % Subsubsection title styling: regular sans-serif font
     {\color{accentcolor}\thesubsubsection} % Subsubsection number format with color
-    {5pt} % Space between subsubsection number and the title text
+    {5pt} % Space between subsubsection number and title text
     {#1.} % Subsubsection title format: period after title text
+
+% Customize the formatting of paragraph titles
+\renewcommand*{\paragraph}[1]{\noindent\normalfont{\textbf{#1.}}}
+
+% Customize the formatting of subparagraph titles
+\renewcommand*{\subparagraph}[1]{\noindent\normalfont{\textsc{#1.}}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Local Table of Contents

@@ -2,7 +2,7 @@
 title: Contribution Guidelines
 linter-yaml-title-alias: Contribution Guidelines
 date created: Friday, May 17th 2024, 16:06:33
-date modified: Thursday, January 23rd 2025, 13:22:38
+date modified: Thursday, January 30th 2025, 16:28:02
 aliases: Contribution Guidelines
 ---
 
