@@ -605,10 +605,10 @@ postamble "\n\\end{theindex}\n"
 \setlist[enumerate, 2]{label=(\alph*)}      % Second level (a, b, c, ...)
 
 % Redefine Bullet Symbols for Itemize
-\renewcommand{\labelitemi}{\textcolor{accentcolor}{\textbullet}{}}            % First level bullet
-\renewcommand{\labelitemii}{\textcolor{accentcolor}{\textcircled{}}}          % Second level circle
-\renewcommand{\labelitemiii}{\textcolor{accentcolor}{\ast{}}}                 % Third level asterisk
-\renewcommand{\labelitemiv}{\textcolor{accentcolor}{\textasteriskcentered{}}} % Fourth level asterisk
+\renewcommand{\labelitemi}{{\color{accentcolor}\ensuremath{\bullet}}} % First level bullet
+\renewcommand{\labelitemii}{{\color{accentcolor}\ensuremath{\circ}}   % Second level circle
+\renewcommand{\labelitemiii}{{\color{accentcolor}\ensuremath{\ast}}}  % Third level asterisk
+\renewcommand{\labelitemiv}{{\color{accentcolor}\ensuremath{\star}}}  % Fourth level asterisk
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Packages for Captions and Graphics
