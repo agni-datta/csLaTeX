@@ -1,14 +1,15 @@
 quote '+'
-columns 2
 letter_group
-symhead_positive "Symbole"
-numhead_positive "Zahlen"
+symhead_positive "Symbols"
+numhead_positive "Numbers"
 headings_flag 1
-heading_prefix "\\textbf{"
-heading_suffix "}\n"
+heading_prefix "\\textcolor{\\accentcolor}{\\large\\textbf{" heading_suffix "}}\n"
 delim_0 "\\dotfill"
 delim_1 "\\dotfill"
 delim_2 "\\dotfill"
+delim_3 "\\dotfill"
+delim_4 "\\dotfill"
+delim_5 "\\dotfill"
 delim_r "\\dotfill"
-preamble "\\begin{theindex}\n\\sffamily\n"
+preamble "\\begin{theindex}\n\\small\n"
 postamble "\n\\end{theindex}\n"
