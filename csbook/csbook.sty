@@ -499,8 +499,8 @@
 
 % Set font styles for Table of Contents entries
 \renewcommand{\cftpartfont}{\Large\sffamily}            % Parts font style
-\renewcommand{\cftchapfont}{\Large\scshape}             % Chapters font style
-\renewcommand{\cftsecfont}{\normalsize\bfseries}        % Sections font style
+\renewcommand{\cftchapfont}{\large\scshape}             % Chapters font style
+\renewcommand{\cftsecfont}{\normalsize\scshape}        % Sections font style
 \renewcommand{\cftsubsecfont}{\normalsize}              % Subsections font style
 \renewcommand{\cftsubsubsecfont}{\normalsize}           % Subsubsections font style
 
@@ -605,10 +605,10 @@ postamble "\n\\end{theindex}\n"
 \setlist[enumerate, 2]{label=(\alph*)}      % Second level (a, b, c, ...)
 
 % Redefine Bullet Symbols for Itemize
-\renewcommand{\labelitemi}{{\color{accentcolor}\ensuremath{\bullet}}} % First level bullet
-\renewcommand{\labelitemii}{{\color{accentcolor}\ensuremath{\circ}}   % Second level circle
-\renewcommand{\labelitemiii}{{\color{accentcolor}\ensuremath{\ast}}}  % Third level asterisk
-\renewcommand{\labelitemiv}{{\color{accentcolor}\ensuremath{\star}}}  % Fourth level asterisk
+\renewcommand{\labelitemi}{\ensuremath{\color{accentcolor}\bullet}} % First level bullet
+\renewcommand{\labelitemii}{\ensuremath{\color{accentcolor}\circ}}   % Second level circle
+\renewcommand{\labelitemiii}{\ensuremath{\color{accentcolor}\ast}}  % Third level asterisk
+\renewcommand{\labelitemiv}{\ensuremath{\color{accentcolor}\star}}  % Fourth level asterisk
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Packages for Captions and Graphics
