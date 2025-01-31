@@ -52,7 +52,7 @@
 	}%
 }%
 \fi
-\declaretheoremstyle[
+\declaretheoremstyle[%
 	spaceabove=\topsep,
 	spacebelow=\topsep,
 	headfont=\commonfont\ensuremath{\scriptstyle\blacktriangleright}~,
@@ -64,7 +64,7 @@
 	headpunct={.}
 ]{thmstyle}
 
-\declaretheoremstyle[
+\declaretheoremstyle[%
 	spaceabove=\topsep,
 	spacebelow=\topsep,
 	headfont=\commonfont\ensuremath{\scriptstyle\blacksquare}~,
@@ -76,7 +76,7 @@
 	headpunct={.}
 ]{defstyle}
 
-\declaretheoremstyle[
+\declaretheoremstyle[%
 	spaceabove=\topsep,
 	spacebelow=\topsep,
 	headfont=\commonfont\ensuremath{\scriptstyle\vartriangleright}~,
@@ -88,7 +88,7 @@
 	headpunct={.}
 ]{remarkstyle}
 
-\declaretheoremstyle[
+\declaretheoremstyle[%
 	spaceabove=\topsep,
 	spacebelow=\topsep,
 	headfont=\commonfont\ensuremath{\scriptstyle\square}~,
@@ -100,7 +100,7 @@
 	headpunct={.}
 ]{hltstyle}
 
-\declaretheoremstyle[
+\declaretheoremstyle[%
 	headfont=\commonfont,
 	notefont=\commonfont,
 	bodyfont=\normalfont,
@@ -110,57 +110,87 @@
 	qed=$\color{\accentcolor}\scriptstyle\blacktriangleleft$
 ]{proofstyle}
 
+% Theorem-like statements (thmstyle)
 \declaretheorem[style=thmstyle,name=Theorem]{theorem}
+\declaretheorem[style=thmstyle,sibling=theorem]{assertion}
 \declaretheorem[style=thmstyle,sibling=theorem]{assumption}
 \declaretheorem[style=thmstyle,sibling=theorem]{axiom}
 \declaretheorem[style=thmstyle,sibling=theorem]{claim}
+\declaretheorem[style=thmstyle,sibling=theorem]{conclusion}
 \declaretheorem[style=thmstyle,sibling=theorem]{conjecture}
 \declaretheorem[style=thmstyle,sibling=theorem]{corollary}
 \declaretheorem[style=thmstyle,sibling=theorem]{fact}
 \declaretheorem[style=thmstyle,sibling=theorem]{hypothesis}
 \declaretheorem[style=thmstyle,sibling=theorem]{lemma}
+\declaretheorem[style=thmstyle,sibling=theorem]{postulate}
 \declaretheorem[style=thmstyle,sibling=theorem]{property}
 \declaretheorem[style=thmstyle,sibling=theorem]{proposition}
 
+% Unnumbered theorem-like statements
 \declaretheorem[style=thmstyle,unnumbered,name=Theorem]{theorem*}
+\declaretheorem[style=thmstyle,unnumbered,name=Assertion]{assertion*}
 \declaretheorem[style=thmstyle,unnumbered,name=Assumption]{assumption*}
 \declaretheorem[style=thmstyle,unnumbered,name=Axiom]{axiom*}
 \declaretheorem[style=thmstyle,unnumbered,name=Claim]{claim*}
+\declaretheorem[style=thmstyle,unnumbered,name=Conclusion]{conclusion*}
 \declaretheorem[style=thmstyle,unnumbered,name=Conjecture]{conjecture*}
 \declaretheorem[style=thmstyle,unnumbered,name=Corollary]{corollary*}
 \declaretheorem[style=thmstyle,unnumbered,name=Fact]{fact*}
 \declaretheorem[style=thmstyle,unnumbered,name=Hypothesis]{hypothesis*}
 \declaretheorem[style=thmstyle,unnumbered,name=Lemma]{lemma*}
+\declaretheorem[style=thmstyle,unnumbered,name=Postulate]{postulate*}
 \declaretheorem[style=thmstyle,unnumbered,name=Property]{property*}
 \declaretheorem[style=thmstyle,unnumbered,name=Proposition]{proposition*}
 
+% Definition-like statements (defstyle)
+\declaretheorem[style=defstyle,sibling=theorem]{application}
+\declaretheorem[style=defstyle,sibling=theorem]{construction}
+\declaretheorem[style=defstyle,sibling=theorem]{convention}
 \declaretheorem[style=defstyle,sibling=theorem]{definition}
 \declaretheorem[style=defstyle,sibling=theorem]{notation}
 \declaretheorem[style=defstyle,sibling=theorem]{problem}
 \declaretheorem[style=defstyle,sibling=theorem]{protocol}
 
+% Unnumbered definition-like statements
+\declaretheorem[style=defstyle,unnumbered,name=Application]{application*}
+\declaretheorem[style=defstyle,unnumbered,name=Construction]{construction*}
+\declaretheorem[style=defstyle,unnumbered,name=Convention]{convention*}
 \declaretheorem[style=defstyle,unnumbered,name=Definition]{definition*}
 \declaretheorem[style=defstyle,unnumbered,name=Notation]{notation*}
 \declaretheorem[style=defstyle,unnumbered,name=Problem]{problem*}
 \declaretheorem[style=defstyle,unnumbered,name=Protocol]{protocol*}
 
+% Remark-like statements (remarkstyle)
+\declaretheorem[style=remarkstyle,sibling=theorem]{commentary}
 \declaretheorem[style=remarkstyle,sibling=theorem]{example}
+\declaretheorem[style=remarkstyle,sibling=theorem]{exercise}
+\declaretheorem[style=remarkstyle,sibling=theorem]{motivation}
 \declaretheorem[style=remarkstyle,sibling=theorem]{note}
+\declaretheorem[style=remarkstyle,sibling=theorem]{observation}
+\declaretheorem[style=remarkstyle,sibling=theorem]{question}
 \declaretheorem[style=remarkstyle,sibling=theorem]{remark}
 
+% Unnumbered remark-like statements
+\declaretheorem[style=remarkstyle,unnumbered,name=Commentary]{commentary*}
 \declaretheorem[style=remarkstyle,unnumbered,name=Example]{example*}
+\declaretheorem[style=remarkstyle,unnumbered,name=Exercise]{exercise*}
+\declaretheorem[style=remarkstyle,unnumbered,name=Motivation]{motivation*}
 \declaretheorem[style=remarkstyle,unnumbered,name=Note]{note*}
+\declaretheorem[style=remarkstyle,unnumbered,name=Observation]{observation*}
+\declaretheorem[style=remarkstyle,unnumbered,name=Question]{question*}
 \declaretheorem[style=remarkstyle,unnumbered,name=Remark]{remark*}
 
-\declaretheorem[style=hltstyle,sibling=theorem]{exercise}
+% Highlight-like statements (hltstyle)
 \declaretheorem[style=hltstyle,sibling=theorem]{highlight}
 \declaretheorem[style=hltstyle,sibling=theorem]{important}
 \declaretheorem[style=hltstyle,sibling=theorem]{keypoint}
+\declaretheorem[style=hltstyle,sibling=theorem]{recall}
 
-\declaretheorem[style=hltstyle,unnumbered,name=Exercise]{exercise*}
+% Unnumbered highlight-like statements
 \declaretheorem[style=hltstyle,unnumbered,name=Highlight]{highlight*}
 \declaretheorem[style=hltstyle,unnumbered,name=Important]{important*}
 \declaretheorem[style=hltstyle,unnumbered,name=Key Point]{keypoint*}
+\declaretheorem[style=hltstyle,unnumbered,name=Recall]{recall*}
 
 \let\proof\relax
 \let\endproof\relax
