@@ -21,6 +21,8 @@ $pdf_mode = 1;
 $silent = 1;
 $cleanup_mode = 1;
 $postscript_mode = $dvi_mode = 0;
+$go_mode = 3;
+$bibtex_use = 2;
 
 # ----------------------------------------
 # Cleanup Configuration
@@ -163,9 +165,6 @@ if (defined $ENV{'CHKTEX_OPTIONS'}) {
 $compiling_cmd = "internal latexpdf_pre_process %T %D";
 $success_cmd = "internal latexpdf_post_process %T %D";
 $failure_cmd = $success_cmd;
-
-$go_mode = 3;
-$bibtex_use = 2;
 
 my $ORIG_PDF_AGE;
 
