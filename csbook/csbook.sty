@@ -20,11 +20,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Package Declaration
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\providecommand{\filename}{csbook} % Package filename
-\providecommand{\fileversion}{v1} % Version
-\providecommand{\filedate}{2024/04/17} % Release date
-\providecommand{\fileauthor}{Agni Datta} % Author
-\providecommand{\csbook@version}{1.0} % Internal version
+\newcommand{\filename}{csbook} % Package filename
+\newcommand{\fileversion}{v1} % Version
+\newcommand{\filedate}{2024/04/17} % Release date
+\newcommand{\fileauthor}{Agni Datta} % Author
+\newcommand{\csbook@version}{1.0} % Internal version
 
 \NeedsTeXFormat{LaTeX2e} % Requires LaTeX2e
 \AtEndOfPackage{%
@@ -134,11 +134,11 @@
 \RequirePackage[x11names, dvipsnames, svgnames]{xcolor} % Extended color schemes
 
 % Variable initialization for accent color
-\providecommand{\declvar}[2]{\def#1{#2}} % Declare variables
+\newcommand{\declvar}[2]{\def#1{#2}} % Declare variables
 \declvar{\accentcolor}{RoyalBlue4} % Default accent color
 
 % Command to set accent color
-\providecommand{\setaccentcolor}[1]{%
+\newcommand{\setaccentcolor}[1]{%
 	\ifx\relax#1\relax
 		\declvar{\accentcolor}{RoyalBlue4} % Reset to default if empty
 	\else
@@ -168,7 +168,7 @@
 % Page Layout Configuration
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand{\forprint}{%
+\newcommand{\forprint}{%
 	% Geometry settings for A4 layout
 	\RequirePackage[%
 		a4paper,                % Paper size: A4
@@ -214,23 +214,29 @@
 
 \pagestyle{fancy} % Apply custom style
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Font and Mathematics Packages
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage[T1]{fontenc}            % T1 font encoding
 \RequirePackage{amsfonts}               % Mathematical fonts
-\RequirePackage{amssymb}                % Additional symbols
 \RequirePackage{amsmath}                % Advanced math formatting
+\RequirePackage{amssymb}                % Additional symbols
+\RequirePackage{bm}                     % Bold math symbols
+\RequirePackage{mathrsfs}               % Script-style math fonts
+\RequirePackage{mathtools}              % Extended math functionality
+\RequirePackage{nicefrac}               % Diagonal fractions
+\RequirePackage{sansmath}               % Sans-serif math font
+\RequirePackage{siunitx}                % Units and numerical data
+
 \RequirePackage{amsthm}                 % Theorem environments
-\RequirePackage{thmtools}               % Enhanced theorem functionalities
-\RequirePackage{nicefrac}               % Better fractions
-\RequirePackage{siunitx}                % SI units formatting
+\RequirePackage{thmtools}               % Enhanced theorem features
+
 \RequirePackage{fontspec}               % Custom fonts (XeLaTeX/LuaLaTeX)
 \RequirePackage{unicode-math}           % Unicode math fonts
 
 % Old Latin Modern font configuration for text and math
-\providecommand{\useoldlmodern}{%
+\newcommand{\useoldlmodern}{%
 	\setmainfont[%
 		ItalicFont = lmroman10-italic.otf, % Italic font
 		SmallCapsFont = lmromancaps10-regular.otf, % Small caps font
@@ -253,7 +259,7 @@
 }
 
 % Latin Modern font configuration for text and math
-\providecommand{\uselmodern}{%
+\newcommand{\uselmodern}{%
 	\setmainfont[%
 		ItalicFont = NewCM10-BookItalic.otf, % Italic font
 		SmallCapsFont = NewCM10-Book.otf, % Small caps font
@@ -274,7 +280,7 @@
 }
 
 % EB Garamond font configuration for text and math
-\providecommand{\useebgaramond}{%
+\newcommand{\useebgaramond}{%
 	\setmainfont[%
 		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum}, % Typographic features
 		StylisticSet = {3,5} % Stylistic sets
@@ -286,13 +292,13 @@
 }
 
 % Kepler font configuration
-\providecommand{\usekepler}{%
+\newcommand{\usekepler}{%
 	\RequirePackage{kpfonts-otf} % Load Kepler package
 	\let\D\relax % Reset definition of \D
 }
 
 % Libertinus Sans font configuration
-\providecommand{\uselibsans}{%
+\newcommand{\uselibsans}{%
 	\setsansfont[%
 		UprightFont = LibertinusSans-Regular, % Regular font
 		BoldFont = LibertinusSans-Bold.otf, % Bold font
@@ -305,7 +311,7 @@
 }
 
 % Latin Modern Sans font configuration
-\providecommand{\uselmsans}{%
+\newcommand{\uselmsans}{%
 	\setsansfont[%
 		ItalicFont = NewCMSans10-Oblique.otf, % Italic font
 		SmallCapsFont = NewCMSans10-Book.otf, % Small caps font
@@ -317,7 +323,7 @@
 }
 
 % Source Sans Pro font configuration
-\providecommand{\usesourcesans}{%
+\newcommand{\usesourcesans}{%
 	\RequirePackage[otf, lining, proportional, scale=0.975]{sourcesanspro} % Load package with options
 	\setsansfont[%
 		Scale = 0.950, % Font scale
@@ -327,7 +333,7 @@
 }
 
 % Source Code Pro font configuration
-\providecommand{\usesourcecode}{%
+\newcommand{\usesourcecode}{%
 	\RequirePackage[otf, lining, scale=0.865]{sourcecodepro} % Load package with options
 	\setmonofont[%
 		Scale = 0.865, % Font scale
@@ -337,7 +343,7 @@
 }
 
 % Fira Sans font configuration
-\providecommand{\usefirasans}{%
+\newcommand{\usefirasans}{%
 	\setsansfont[%
 		Scale = 0.925, % Font scale
 		BoldFont = {FiraSans-Bold.otf}, % Bold font
@@ -350,7 +356,7 @@
 }
 
 % Fira Mono font configuration
-\providecommand{\usefiramono}{%
+\newcommand{\usefiramono}{%
 	\setmonofont[%
 		Scale = 0.865, % Font scale
 		BoldFont = {FiraMono-Bold.otf}, % Bold font
@@ -363,7 +369,7 @@
 }
 
 % Inconsolata font configuration
-\providecommand{\useinconsolata}{%
+\newcommand{\useinconsolata}{%
 	\setmonofont[%
 		SmallCapsFeatures = {RawFeature=+smcp}, % Small caps
 		RawFeature = {+calt, +case, +dlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Typographic features
@@ -403,11 +409,11 @@
 \renewcommand{\bottomtitlespace}{0.1\textheight}
 
 % Font styles
-\providecommand{\headerfont}{\sffamily}
-\providecommand{\partfont}{\normalfont\headerfont}
-\providecommand{\sectionfont}{\Large\headerfont}
-\providecommand{\subsectionfont}{\large\headerfont}
-\providecommand{\subsubsectionfont}{\normalsize\headerfont}
+\newcommand{\headerfont}{\sffamily}
+\newcommand{\partfont}{\normalfont\headerfont}
+\newcommand{\sectionfont}{\Large\headerfont}
+\newcommand{\subsectionfont}{\large\headerfont}
+\newcommand{\subsubsectionfont}{\normalsize\headerfont}
 
 % Part title formatting
 \titleformat{\part}[display]
@@ -461,7 +467,7 @@
 
 % Command: \localtoc
 % Description: Generates a local table of contents with distinct fonts for sections and subsections, and enhanced formatting.
-\providecommand{\localtoc}{%
+\newcommand{\localtoc}{%
 	\begingroup
 	\etocsettocstyle{}{} % Clear default headings
 	\etocsetnexttocdepth{section} % Display entries up to section level
@@ -706,7 +712,7 @@ postamble "\n\\end{theindex}\n"
 \RequirePackage{fancyvrb}  % Enhanced verbatim environments
 
 % Redefine verbatim line processing
-\providecommand{\savedverbatim@processline}{} % Save original command
+\newcommand{\savedverbatim@processline}{} % Save original command
 \let\savedverbatim@processline=\verbatim@processline
 
 \renewcommand{\verbatim@processline}{%
@@ -736,11 +742,12 @@ postamble "\n\\end{theindex}\n"
 % Drawings and Diagrams
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand{\usetikz}{%
-	\RequirePackage{tikz} % Load TikZ for creating graphics and diagrams
-	\RequirePackage{tikz-cd} % Load TikZ-cd for commutative diagrams
-	\RequirePackage{pgfplots} % Load pgfplots for advanced plotting
-	\pgfplotsset{compat=1.18} % Set compatibility with version 1.18
+\newcommand{\usetikz}{%
+	\RequirePackage{tikz}         % Load TikZ for creating graphics and diagrams
+	\RequirePackage{tikz-cd}      % Load TikZ-cd for commutative diagrams
+	\RequirePackage{tikzscale}    % Load tikzscale to automatically scale TikZ figures
+    \RequirePackage{pgfplots}     % Load pgfplots for advanced plotting
+	\pgfplotsset{compat=1.18}    % Set compatibility with version 1.18
 }
 
 \ifbool{usetikz}{\usetikz}{\typeout{TikZ and related packages are not included.}}
@@ -750,12 +757,13 @@ postamble "\n\\end{theindex}\n"
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \AtBeginDocument{%
-	\RequirePackage[%
-		font={rm},                        % Sets caption text to sans-serif font
-		labelfont={color=accentcolor,sf}, % Configures label font and color
-		labelsep=period,                  % Separates label and content with a period
-		skip=1em                          % Adds vertical spacing before captions
-	]{caption}
+    \RequirePackage[%
+        font={rm},                        % Sets caption text to serif font
+        labelfont={color=accentcolor,sf}, % Configures label font and color
+        labelsep=period,                  % Separates label and content with a period
+        skip=1em,                         % Adds vertical spacing before captions
+        position=below                    % Forces captions to appear below the figure or table
+    ]{caption}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -774,7 +782,7 @@ postamble "\n\\end{theindex}\n"
 % Arguments:
 %   #1: The dedication text
 %   #2: The author's name
-\providecommand{\dedication}[2]{%
+\newcommand{\dedication}[2]{%
 	\epigraph{#1}{\medskip\normalfont\sffamily\par#2} % Formats the dedication with the text and author
 	\bigskip % Adds vertical space after the dedication
 }
@@ -782,7 +790,7 @@ postamble "\n\\end{theindex}\n"
 % Command to generate a complete set of dedications
 % Argument:
 %   #1: List of dedication entries formatted using the \dedication command
-\providecommand{\generateDedications}[1]{%
+\newcommand{\generateDedications}[1]{%
 	\thispagestyle{empty} % Removes page numbering and header/footer on this page
 	\begin{center}
 		\vspace*{\fill} % Adds vertical space before and after the content
@@ -797,23 +805,23 @@ postamble "\n\\end{theindex}\n"
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Custom QED symbol rendered in the accent color
-\providecommand{\QEDsymbol}{\color{accentcolor}\ensuremath{\blacksquare}}
+\newcommand{\QEDsymbol}{\ensuremath{\color{accentcolor}\blacksquare}}
 % Replace the default QED symbol with the custom symbol
 \renewcommand{\qedsymbol}{\QEDsymbol}
 
 % Define Fancy Theorem Environments
-\providecommand{\usefancythm}{%
+\newcommand{\usefancythm}{%
 	% Define the font style commands for each theorem type
-	\providecommand{\thmfont}{\normalfont} % Font for theorems
-	\providecommand{\defnfont}{\normalfont} % Font for definitions
-	\providecommand{\remarkfont}{\normalfont} % Font for remarks
-	\providecommand{\hltfont}{\normalfont\sffamily} % Font for highlighted statements
+	\newcommand{\thmfont}{\normalfont} % Font for theorems
+	\newcommand{\defnfont}{\normalfont} % Font for definitions
+	\newcommand{\remarkfont}{\normalfont} % Font for remarks
+	\newcommand{\hltfont}{\normalfont\sffamily} % Font for highlighted statements
 
 	% Define the color commands for each type
-	\providecommand{\thmcolor}{DodgerBlue1} % Color for theorems
-	\providecommand{\defncolor}{RoyalBlue1} % Color for definitions
-	\providecommand{\remarkcolor}{Aquamarine4} % Color for remarks
-	\providecommand{\hltcolor}{IndianRed1} % Color for highlighted statements
+	\newcommand{\thmcolor}{DodgerBlue1} % Color for theorems
+	\newcommand{\defncolor}{RoyalBlue1} % Color for definitions
+	\newcommand{\remarkcolor}{Aquamarine4} % Color for remarks
+	\newcommand{\hltcolor}{IndianRed1} % Color for highlighted statements
 
 	% Declare the theorem style for theorems
 	\declaretheoremstyle[%
@@ -823,7 +831,7 @@ postamble "\n\\end{theindex}\n"
 		bodyfont=\normalfont,
 		postheadspace=5pt,
 		numberwithin=section,
-		mdframed={
+		mdframed={%
 				linewidth=2pt,
 				rightline=false, topline=false, bottomline=false,
 				linecolor=\thmcolor, backgroundcolor=\thmcolor!5,
@@ -839,7 +847,7 @@ postamble "\n\\end{theindex}\n"
 		bodyfont=\normalfont,
 		postheadspace=5pt,
 		numberwithin=section,
-		mdframed={
+		mdframed={%
 				linewidth=2pt,
 				rightline=false, topline=false, bottomline=false,
 				linecolor=\defncolor, backgroundcolor=\defncolor!5,
@@ -855,7 +863,7 @@ postamble "\n\\end{theindex}\n"
 		bodyfont=\normalfont,
 		postheadspace=5pt,
 		numberwithin=section,
-		mdframed={
+		mdframed={%
 				linewidth=2pt,
 				rightline=false, topline=false, bottomline=false,
 				linecolor=\remarkcolor, backgroundcolor=\remarkcolor!5,
@@ -868,10 +876,10 @@ postamble "\n\\end{theindex}\n"
 		spaceabove=0pt, spacebelow=0pt,
 		headfont=\sffamily\color{\hltcolor},
 		notefont=\sffamily\color{\hltcolor},
-		bodyfont=\normalfont\sffamily,
+		bodyfont=\normalfont\sffamily\sansmath,
 		postheadspace=5pt,
 		numberwithin=section,
-		mdframed={
+		mdframed={%
 				linewidth=2pt,
 				rightline=false, topline=false, bottomline=false,
 				linecolor=\hltcolor, backgroundcolor=\hltcolor!5,
@@ -887,7 +895,7 @@ postamble "\n\\end{theindex}\n"
 		postheadspace=5pt,
 		numbered=no,
 		headpunct={.},
-		qed=$\color{\thmcolor}\scriptstyle\blacksquare$
+		qed=$\scriptstyle\color{\thmcolor}\blacksquare$
 	]{proofstyle}
 
 	% Theorem-like statements (thmstyle)
@@ -978,9 +986,9 @@ postamble "\n\\end{theindex}\n"
 }
 
 % Define Standard Theorem Environments
-\providecommand*{\usenormalthm}{%
-	\providecommand{\commonfont}{\color{\accentcolor}\sffamily} % Set common font
-	\providecommand{\commonsymb}{\ensuremath{\color{\accentcolor}\lrcorner}} % Set common symbol
+\newcommand*{\usenormalthm}{%
+	\newcommand{\commonfont}{\color{\accentcolor}\sffamily} % Set common font
+	\newcommand{\commonsymb}{\ensuremath{\color{\accentcolor}\lrcorner}} % Set common symbol
 
 	% Theorem Style
 	\declaretheoremstyle[%
@@ -1117,7 +1125,7 @@ postamble "\n\\end{theindex}\n"
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Configure BibLaTeX package with desired settings
-\providecommand{\usebiblatex}{%
+\newcommand{\usebiblatex}{%
 	\RequirePackage[%
 		hyperref=auto,         % Enable compatibility with hyperref for clickable links
 		defernumbers=true,     % Delay reference number assignment until all entries are processed
@@ -1140,14 +1148,14 @@ postamble "\n\\end{theindex}\n"
 }
 
 % Command to apply sorted bibliography entries
-\providecommand{\usesrtbiblatex}{%
+\newcommand{\usesrtbiblatex}{%
 	\usebiblatex % Apply BibLaTeX configuration
 	\DeclareBibliographyCategory{cited} % Create a 'cited' category for referenced items
 	\AtEveryCitekey{\addtocategory{cited}{\thefield{entrykey}}} % Automatically add cited entries to the 'cited' category
 }
 
 % Bibliography Setup Logic (if BibLaTeX is enabled)
-\providecommand{\setupbibliography}{%
+\newcommand{\setupbibliography}{%
 	\ifthenelse{\boolean{usebiblatex}}{%
 		% Use BibLaTeX configuration if enabled
 		\usebiblatex
@@ -1205,13 +1213,26 @@ postamble "\n\\end{theindex}\n"
 
 % 'caseList' enumeration with 'Case n:' label
 \newlist{caseList}{enumerate}{1}
-\setlist[caseList]{label=\textsc{Case~\arabic*:}, leftmargin=*}
+\setlist[caseList]{label=\textbf{Case~\arabic*:}, leftmargin=*}
 
 % 'case' environment with optional title
 \NewDocumentEnvironment{case}{O{}}{%
 	\begin{caseList}[#1]
 		}{%
 	\end{caseList}
+}
+
+% Command to define new environments with colored boxes
+\newcommand{\newcolorboxes}[6]{%
+    % Usage: \newcolorboxes{envname}{title}{bgcolor}{titlecolor}{contentstyle}{labelprefix}
+	\newtcbtheorem[number within=chapter]{#1}{#2}{%
+		enhanced, colback=#3!5, colframe=#3!80!black, arc=1pt, boxrule=0.5pt, 
+		fonttitle=\color{#4}\sffamily\scshape, before upper={\parindent15pt}, 
+		before lower={\parindent15pt}, fontupper={\color{black}\normalfont#5}, 
+		fontlower={\color{black}\normalfont#5}, right=10pt, top=10pt, bottom=10pt, 
+		attach boxed title to top left={yshift=-5pt,xshift=10pt}, label={#6:\thetcbcounter},
+		boxed title style={colback=#3!20, colframe=#3!80!black, boxrule=0.5pt},
+		}{#6}%
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1224,15 +1245,15 @@ postamble "\n\\end{theindex}\n"
 \RequirePackage{xspace} % Provides control over spaces after macros
 
 % Inline Commands
-\providecommand*{\code}[1]{{\ttfamily#1}} % Inline code in monospaced font
-\providecommand{\cat}[1]{\ensuremath{\mathsf{#1}}} % Sans-serif math mode for category names
-\providecommand{\missingcitation}{\code{\small\color{Firebrick1}<Citation Missing!>}} % Mark missing citations
-\providecommand{\missing}[1]{{\color{Firebrick1}#1}} % Red for missing content
-\providecommand{\strike}{\bgroup\ULdepth=-.55ex\ULset} % Strike-through for deleted text
-\providecommand{\stylized}[2]{\lettrine[lines=2, lhang=0.05]{\textcolor{accentcolor}{#1}}{#2}} % Drop-cap with color
-\providecommand{\term}[1]{#1\index{#1}} % Mark terms for glossary/index
-\providecommand{\textem}[1]{{\bfseries\color{accentcolor}#1}} % Bold and accent-colored emphasis
-\providecommand{\urlref}[1]{\href{#1}{#1}} % Hyperlink URL display
+\newcommand*{\code}[1]{{\ttfamily#1}} % Inline code in monospaced font
+\newcommand{\cat}[1]{\ensuremath{\mathsf{#1}}} % Sans-serif math mode for category names
+\newcommand{\missingcitation}{\code{\small\color{Firebrick1}<Citation Missing!>}} % Mark missing citations
+\newcommand{\missing}[1]{{\color{Firebrick1}#1}} % Red for missing content
+\newcommand{\strike}{\bgroup\ULdepth=-.55ex\ULset} % Strike-through for deleted text
+\newcommand{\stylized}[2]{\lettrine[lines=2, lhang=0.05]{\textcolor{accentcolor}{#1}}{#2}} % Drop-cap with color
+\newcommand{\term}[1]{#1\index{#1}} % Mark terms for glossary/index
+\newcommand{\textem}[1]{{\bfseries\color{accentcolor}#1}} % Bold and accent-colored emphasis
+\newcommand{\urlref}[1]{\href{#1}{#1}} % Hyperlink URL display
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Comments and TODOs
@@ -1242,7 +1263,7 @@ postamble "\n\\end{theindex}\n"
 \Commentsfalse % Set to 'true' to enable comments
 
 % Define comment macro
-\providecommand{\newcomment}[3]{%
+\newcommand{\newcomment}[3]{%
 	\ifComments
 		\expandafter\newcommand\csname #3\endcsname[1]{%
 			{\noindent\textcolor{#2}{\sffamily ##1 -- $\mathsf{#1}$}}%
@@ -1256,14 +1277,14 @@ postamble "\n\\end{theindex}\n"
 \RequirePackage{todonotes} % Enable TODOs
 
 % Inline TODO notes with custom style
-\providecommand{\mynote}[1]{%
+\newcommand{\mynote}[1]{%
 	\smallskip
 	\todo[inline, size=\small, bordercolor=Firebrick1!20, color=Firebrick1!20]{\sffamily#1}
 	\smallskip
 }
 
 % Mark sections needing citation
-\providecommand{\needcite}{%
+\newcommand{\needcite}{%
 	\todo[noline, size=\small, bordercolor=Firebrick1!20, color=Firebrick1!20]{\sffamily~Requires citation.}
 }
 
@@ -1271,27 +1292,35 @@ postamble "\n\\end{theindex}\n"
 % Customisation of \maketitle Command
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage{hep-title}    % Title customisation
+\RequirePackage{hep-title}    % Title customisation (hypothetical, assuming this is a custom or special package)
 \RequirePackage{pgfornament}  % Decorative ornaments
 
-% Title Formatting
-\pretitle{\begin{center}\normalfont\huge\scshape}
-		\posttitle{\par\textcolor{accentcolor}{\pgfornament[width=0.1\textwidth]{80}}\end{center}}
-% Subtitle Formatting
-\presubtitle{\medskip\begin{center}\Large\normalfont}
-		\postsubtitle{\par\vspace{5em}\end{center}}
-% Author Formatting
-\preauthor{\begin{center}\normalfont\large\scshape\lineskip 0.5em\begin{tabular}[t]{c}}
-			\postauthor{\end{tabular}\par\end{center}}
-% Date Formatting
-\predate{\vfill\begin{center}\par\bigskip\normalfont\normalsize\scshape}
-		\postdate{\par\end{center}}
+\newcommand{\fancymaketitle}{
+    % Title Formatting
+    \pretitle{\begin{flushright}\normalfont\scshape\huge}
+    \posttitle{\vspace{1em}\hrule\end{flushright}}
+
+    % Subtitle Formatting
+    \presubtitle{\vspace{1em}\begin{flushright}\large\normalfont\itshape}
+    \postsubtitle{\par\vspace{5em}\end{flushright}}
+
+    % Author Formatting
+    \preauthor{\begin{flushright}\normalfont\large\scshape\lineskip 0.5em\begin{tabular}[t]{c}}
+    \postauthor{\end{tabular}\par\end{flushright}}
+
+    % Date Formatting
+    \predate{\vfill\begin{flushright}\par\bigskip\normalfont\normalsize\scshape}
+    \postdate{\par\end{flushright}}
+}
+
+% Apply the custom title formatting
+\fancymaketitle
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Command for Generating the Copyright Page
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand*{\makecopyrightpage}{%
+\newcommand*{\makecopyrightpage}{%
 	\pagestyle{empty} % Suppress headers and footers
 	\begingroup % Scope formatting
 	\cleardoublepage\null\vfill % Vertically centre content
@@ -1340,7 +1369,7 @@ postamble "\n\\end{theindex}\n"
 % Code Listings and Snippets Setup
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand{\usecodelists}{%
+\newcommand{\usecodelists}{%
 	\RequirePackage{listings}  % Load the listings package
 
 	% Define style for C code
@@ -1439,30 +1468,6 @@ postamble "\n\\end{theindex}\n"
 		escapeinside={\%*}{*)}         % Escape LaTeX inside code
 	}
 
-	% Define style for Rust code
-	\lstdefestyle{RustStyle}{%
-		language=Rust,                 % Set language to Rust
-		basicstyle=\ttfamily\small,    % Use small monospaced font
-		keywordstyle=\color{RoyalBlue3},% Royal Blue for keywords
-		keywordstyle=[2]\color{HotPink4}, % Medium Purple for specific keywords
-		keywordstyle=[3]\color{SpringGreen4}, % Chartreuse for specific keywords
-		keywordstyle=[4]\color{SlateBlue2},  % Slate Blue for specific keywords
-		commentstyle=\color{LightSteelBlue4}, % Light Steel Blue for comments
-		stringstyle=\color{Firebrick2},     % Firebrick color for strings
-		numberstyle=\tiny\ttfamily\color{SlateGray4}, % Line number style
-		numbers=left,                  % Line numbers on the left
-		stepnumber=1,                  % Number every line
-		numbersep=10pt,                % Space between numbers and code
-		backgroundcolor=\color{white}, % White background
-		breaklines=true,               % Automatic line breaking
-		captionpos=b,                  % Captions at the bottom
-		showspaces=false,              % Don't show spaces
-		showstringspaces=false,        % Don't show spaces within strings
-		showtabs=false,                % Don't show tabs
-		tabsize=4,                     % Tab size 4
-		escapeinside={\%*}{*)}         % Escape LaTeX inside code
-	}
-
 	% Reset code box counter for each chapter
 	\preto\chapter{\setcounter{codeboxcounter}{0}}
 
@@ -1494,7 +1499,7 @@ postamble "\n\\end{theindex}\n"
 	}
 
 	% Define a command for adding code with title in a code box
-	\providecommand{\addCode}[4]{%
+	\newcommand{\addCode}[4]{%
 		\begin{codebox}[##1]\label{code:##2} % Start code box
 			\lstinputlisting[style=##3]{##4} % Include code with chosen style
 		\end{codebox} % End code box
