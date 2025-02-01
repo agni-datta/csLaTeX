@@ -546,7 +546,7 @@ postamble "\n\\end{theindex}\n"
 % Hyperlinks and Metadata Configuration
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[pdfusetitle, pagebackref]{hyperref} % Enable hyperlinks and PDF metadata
+\RequirePackage[pdfusetitle]{hyperref} % Enable hyperlinks and PDF metadata
 \RequirePackage{bookmark} % Handle PDF bookmarks for easy navigation
 \RequirePackage{xurl} % Handle automatic line breaks for long URLs
 
@@ -1136,10 +1136,8 @@ postamble "\n\\end{theindex}\n"
 		maxnames=999,          % Display up to 999 authors in citations before truncating
 		backend=biber          % Use Biber for bibliography processing (recommended over BibTeX)
 	]{biblatex}
-
 	% Set bibliography font size
 	\renewcommand*{\bibfont}{\small}
-
 	% Customize back-reference text for singular and plural
 	\DefineBibliographyStrings{english}{
 		backrefpage={\unskip Cited on page},  % Singular back-reference format
@@ -1167,6 +1165,7 @@ postamble "\n\\end{theindex}\n"
 			% Fallback if BibLaTeX is not enabled
 			\typeout{Default bibliography style will be used.}
 			\AtEndOfPackage{%
+                \hypersetup{pagebackref}
 				\renewcommand*{\backref}[1]{}      % Clear default back-reference output
 				\renewcommand*{\backrefalt}[4]{%   % Modify back-reference format
 					\ifcase ##1%
