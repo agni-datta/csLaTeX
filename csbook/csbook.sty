@@ -1162,17 +1162,8 @@ postamble "\n\\end{theindex}\n"
 			% Use sorted BibLaTeX configuration if enabled
 			\usesrtbiblatex
 		}{%
-			% Fallback if BibLaTeX is not enabled
+			% Fallback if neither BibLaTeX options are enabled
 			\typeout{Default bibliography style will be used.}
-			\AtEndOfPackage{%
-                \hypersetup{pagebackref}
-				\renewcommand*{\backref}[1]{}      % Clear default back-reference output
-				\renewcommand*{\backrefalt}[4]{%   % Modify back-reference format
-					\ifcase ##1%
-					\or(Cited on page~##2).%  % For a single page reference
-					\else(Cited on pages~##2).%  % For multiple page references
-				}
-			}
 		}
 	}
 }
