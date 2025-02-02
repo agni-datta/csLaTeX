@@ -564,11 +564,6 @@ postamble "\n\\end{theindex}\n"
 	breaklinks=true                   % Allow line breaks for long URLs
 }
 
-% Cleveref for intelligent cross-referencing (better handling of references)
-\AtBeginDocument{%
-	\RequirePackage{cleveref}         % Load Cleveref for smart cross-referencing
-}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Page Style Customizations for Document Structure
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -670,7 +665,7 @@ postamble "\n\\end{theindex}\n"
 \setabbreviationstyle[acronym]{long-short}  % Acronym style
 \renewcommand{\glsnamefont}[1]{{\normalfont\sffamily\color{accentcolor}#1.}} % Glossary name font
 \renewcommand{\glossarypreamble}{\begin{small}} % Glossary preamble
-		\renewcommand{\glossarypostamble}{\end{small}} % Glossary postamble
+\renewcommand{\glossarypostamble}{\end{small}} % Glossary postamble
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Abstract Environment Definition
@@ -804,10 +799,91 @@ postamble "\n\\end{theindex}\n"
 % Definition of New Environments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Custom QED symbol rendered in the accent color
-\newcommand{\QEDsymbol}{\ensuremath{\color{accentcolor}\blacksquare}}
-% Replace the default QED symbol with the custom symbol
-\renewcommand{\qedsymbol}{\QEDsymbol}
+\newcommand{\commonfont}{\color{accentcolor}\sffamily} % Common font with accent color and sans-serif
+\newcommand{\commonsymb}{\ensuremath{\color{accentcolor}\lrcorner}} % Common symbol with accent color
+\renewcommand{\qedsymbol}{$\scriptstyle\color{\accentcolor}\blacksquare$} % Custom QED symbol in accent color
+
+\newcommand{\basicenv}{%
+	% Theorem-like Environments
+	\declaretheorem[style=thmstyle,name=Theorem]{theorem}
+	\declaretheorem[style=thmstyle,name=Assertion]{assertion}
+	\declaretheorem[style=thmstyle,name=Assumption]{assumption}
+	\declaretheorem[style=thmstyle,name=Axiom]{axiom}
+	\declaretheorem[style=thmstyle,name=Claim]{claim}
+	\declaretheorem[style=thmstyle,name=Conclusion]{conclusion}
+	\declaretheorem[style=thmstyle,name=Conjecture]{conjecture}
+	\declaretheorem[style=thmstyle,name=Corollary]{corollary}
+	\declaretheorem[style=thmstyle,name=Fact]{fact}
+	\declaretheorem[style=thmstyle,name=Hypothesis]{hypothesis}
+	\declaretheorem[style=thmstyle,name=Lemma]{lemma}
+	\declaretheorem[style=thmstyle,name=Postulate]{postulate}
+	\declaretheorem[style=thmstyle,name=Property]{property}
+	\declaretheorem[style=thmstyle,name=Proposition]{proposition}
+			
+	% Unnumbered Theorem-like Environments
+	\declaretheorem[style=thmstyle,unnumbered,name=Theorem*]{theorem*}
+	\declaretheorem[style=thmstyle,unnumbered,name=Assertion*]{assertion*}
+	\declaretheorem[style=thmstyle,unnumbered,name=Assumption*]{assumption*}
+	\declaretheorem[style=thmstyle,unnumbered,name=Axiom*]{axiom*}
+	\declaretheorem[style=thmstyle,unnumbered,name=Claim*]{claim*}
+	\declaretheorem[style=thmstyle,unnumbered,name=Conclusion*]{conclusion*}
+	\declaretheorem[style=thmstyle,unnumbered,name=Conjecture*]{conjecture*}
+	\declaretheorem[style=thmstyle,unnumbered,name=Corollary*]{corollary*}
+	\declaretheorem[style=thmstyle,unnumbered,name=Fact*]{fact*}
+	\declaretheorem[style=thmstyle,unnumbered,name=Hypothesis*]{hypothesis*}
+	\declaretheorem[style=thmstyle,unnumbered,name=Lemma*]{lemma*}
+	\declaretheorem[style=thmstyle,unnumbered,name=Postulate*]{postulate*}
+	\declaretheorem[style=thmstyle,unnumbered,name=Property*]{property*}
+	\declaretheorem[style=thmstyle,unnumbered,name=Proposition*]{proposition*}
+			
+	% Definition-like Environments
+	\declaretheorem[style=defstyle,name=Application]{application}
+	\declaretheorem[style=defstyle,name=Construction]{construction}
+	\declaretheorem[style=defstyle,name=Convention]{convention}
+	\declaretheorem[style=defstyle,name=Definition]{definition}
+	\declaretheorem[style=defstyle,name=Notation]{notation}
+	\declaretheorem[style=defstyle,name=Problem]{problem}
+	\declaretheorem[style=defstyle,name=Protocol]{protocol}
+			
+	% Unnumbered Definition-like Environments
+	\declaretheorem[style=defstyle,unnumbered,name=Application*]{application*}
+	\declaretheorem[style=defstyle,unnumbered,name=Construction*]{construction*}
+	\declaretheorem[style=defstyle,unnumbered,name=Convention*]{convention*}
+	\declaretheorem[style=defstyle,unnumbered,name=Definition*]{definition*}
+	\declaretheorem[style=defstyle,unnumbered,name=Notation*]{notation*}
+	\declaretheorem[style=defstyle,unnumbered,name=Problem*]{problem*}
+	\declaretheorem[style=defstyle,unnumbered,name=Protocol*]{protocol*}
+			
+	% Remark-like Environments
+	\declaretheorem[style=remarkstyle,name=Commentary]{commentary}
+	\declaretheorem[style=remarkstyle,name=Example]{example}
+	\declaretheorem[style=remarkstyle,name=Exercise]{exercise}
+	\declaretheorem[style=remarkstyle,name=Motivation]{motivation}
+	\declaretheorem[style=remarkstyle,name=Note]{note}
+	\declaretheorem[style=remarkstyle,name=Observation]{observation}
+	\declaretheorem[style=remarkstyle,name=Question]{question}
+	\declaretheorem[style=remarkstyle,name=Remark]{remark}
+			
+	% Unnumbered Remark-like Environments
+	\declaretheorem[style=remarkstyle,unnumbered,name=Commentary*]{commentary*}
+	\declaretheorem[style=remarkstyle,unnumbered,name=Example*]{example*}
+	\declaretheorem[style=remarkstyle,unnumbered,name=Exercise*]{exercise*}
+	\declaretheorem[style=remarkstyle,unnumbered,name=Motivation*]{motivation*}
+	\declaretheorem[style=remarkstyle,unnumbered,name=Note*]{note*}
+	\declaretheorem[style=remarkstyle,unnumbered,name=Observation*]{observation*}
+	\declaretheorem[style=remarkstyle,unnumbered,name=Question*]{question*}
+	\declaretheorem[style=remarkstyle,unnumbered,name=Remark*]{remark*}
+			
+	% Highlight-like Environments
+	\declaretheorem[style=hltstyle,name=Highlight]{highlight}
+	\declaretheorem[style=hltstyle,name=Important]{important}
+	\declaretheorem[style=hltstyle,name=KeyPoint]{keypoint}
+	\declaretheorem[style=hltstyle,name=Recall]{recall}
+			
+	\let\proof\relax
+	\let\endproof\relax
+	\declaretheorem[style=proofstyle]{proof}
+}
 
 % Define Fancy Theorem Environments
 \newcommand{\usefancythm}{%
@@ -816,13 +892,13 @@ postamble "\n\\end{theindex}\n"
 	\newcommand{\defnfont}{\normalfont} % Font for definitions
 	\newcommand{\remarkfont}{\normalfont} % Font for remarks
 	\newcommand{\hltfont}{\normalfont\sffamily} % Font for highlighted statements
-
+			
 	% Define the color commands for each type
-	\newcommand{\thmcolor}{DodgerBlue1} % Color for theorems
-	\newcommand{\defncolor}{RoyalBlue1} % Color for definitions
+	\newcommand{\thmcolor}{DeepSkyBlue4} % Color for theorems
+	\newcommand{\defncolor}{RoyalBlue4} % Color for definitions
 	\newcommand{\remarkcolor}{Aquamarine4} % Color for remarks
-	\newcommand{\hltcolor}{IndianRed1} % Color for highlighted statements
-
+	\newcommand{\hltcolor}{DeepPink4} % Color for highlighted statements
+			
 	% Declare the theorem style for theorems
 	\declaretheoremstyle[%
 		spaceabove=0pt, spacebelow=0pt,
@@ -832,13 +908,13 @@ postamble "\n\\end{theindex}\n"
 		postheadspace=5pt,
 		numberwithin=section,
 		mdframed={%
-				linewidth=2pt,
-				rightline=false, topline=false, bottomline=false,
-				linecolor=\thmcolor, backgroundcolor=\thmcolor!5,
-			},
+			linewidth=2pt,
+			rightline=false, topline=false, bottomline=false,
+			linecolor=\thmcolor, backgroundcolor=\thmcolor!5,
+		},
 		headpunct={.}
 	]{thmstyle}
-
+			
 	% Declare the theorem style for definitions
 	\declaretheoremstyle[%
 		spaceabove=0pt, spacebelow=0pt,
@@ -848,13 +924,13 @@ postamble "\n\\end{theindex}\n"
 		postheadspace=5pt,
 		numberwithin=section,
 		mdframed={%
-				linewidth=2pt,
-				rightline=false, topline=false, bottomline=false,
-				linecolor=\defncolor, backgroundcolor=\defncolor!5,
-			},
+			linewidth=2pt,
+			rightline=false, topline=false, bottomline=false,
+			linecolor=\defncolor, backgroundcolor=\defncolor!5,
+		},
 		headpunct={.}
 	]{defstyle}
-
+			
 	% Declare the theorem style for remarks
 	\declaretheoremstyle[%
 		spaceabove=0pt, spacebelow=0pt,
@@ -864,13 +940,13 @@ postamble "\n\\end{theindex}\n"
 		postheadspace=5pt,
 		numberwithin=section,
 		mdframed={%
-				linewidth=2pt,
-				rightline=false, topline=false, bottomline=false,
-				linecolor=\remarkcolor, backgroundcolor=\remarkcolor!5,
-			},
+			linewidth=2pt,
+			rightline=false, topline=false, bottomline=false,
+			linecolor=\remarkcolor, backgroundcolor=\remarkcolor!5,
+		},
 		headpunct={.}
 	]{remarkstyle}
-
+			
 	% Declare the theorem style for highlighted text
 	\declaretheoremstyle[%
 		spaceabove=0pt, spacebelow=0pt,
@@ -880,13 +956,13 @@ postamble "\n\\end{theindex}\n"
 		postheadspace=5pt,
 		numberwithin=section,
 		mdframed={%
-				linewidth=2pt,
-				rightline=false, topline=false, bottomline=false,
-				linecolor=\hltcolor, backgroundcolor=\hltcolor!5,
-			},
+			linewidth=2pt,
+			rightline=false, topline=false, bottomline=false,
+			linecolor=\hltcolor, backgroundcolor=\hltcolor!5,
+		},
 		headpunct={.}
 	]{hltstyle}
-
+			
 	% Declare the proof style
 	\declaretheoremstyle[%
 		headfont=\sffamily\color{\thmcolor},
@@ -897,99 +973,15 @@ postamble "\n\\end{theindex}\n"
 		headpunct={.},
 		qed=$\scriptstyle\color{\thmcolor}\blacksquare$
 	]{proofstyle}
-
-	% Theorem-like statements (thmstyle)
-	\declaretheorem[style=thmstyle,name=Theorem]{theorem}
-	\declaretheorem[style=thmstyle,sibling=theorem]{assertion}
-	\declaretheorem[style=thmstyle,sibling=theorem]{assumption}
-	\declaretheorem[style=thmstyle,sibling=theorem]{axiom}
-	\declaretheorem[style=thmstyle,sibling=theorem]{claim}
-	\declaretheorem[style=thmstyle,sibling=theorem]{conclusion}
-	\declaretheorem[style=thmstyle,sibling=theorem]{conjecture}
-	\declaretheorem[style=thmstyle,sibling=theorem]{corollary}
-	\declaretheorem[style=thmstyle,sibling=theorem]{fact}
-	\declaretheorem[style=thmstyle,sibling=theorem]{hypothesis}
-	\declaretheorem[style=thmstyle,sibling=theorem]{lemma}
-	\declaretheorem[style=thmstyle,sibling=theorem]{postulate}
-	\declaretheorem[style=thmstyle,sibling=theorem]{property}
-	\declaretheorem[style=thmstyle,sibling=theorem]{proposition}
-
-	% Unnumbered theorem-like statements
-	\declaretheorem[style=thmstyle,unnumbered,name=Theorem]{theorem*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Assertion]{assertion*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Assumption]{assumption*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Axiom]{axiom*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Claim]{claim*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Conclusion]{conclusion*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Conjecture]{conjecture*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Corollary]{corollary*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Fact]{fact*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Hypothesis]{hypothesis*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Lemma]{lemma*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Postulate]{postulate*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Property]{property*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Proposition]{proposition*}
-
-	% Definition-like statements (defstyle)
-	\declaretheorem[style=defstyle,sibling=theorem]{application}
-	\declaretheorem[style=defstyle,sibling=theorem]{construction}
-	\declaretheorem[style=defstyle,sibling=theorem]{convention}
-	\declaretheorem[style=defstyle,sibling=theorem]{definition}
-	\declaretheorem[style=defstyle,sibling=theorem]{notation}
-	\declaretheorem[style=defstyle,sibling=theorem]{problem}
-	\declaretheorem[style=defstyle,sibling=theorem]{protocol}
-
-	% Unnumbered definition-like statements
-	\declaretheorem[style=defstyle,unnumbered,name=Application]{application*}
-	\declaretheorem[style=defstyle,unnumbered,name=Construction]{construction*}
-	\declaretheorem[style=defstyle,unnumbered,name=Convention]{convention*}
-	\declaretheorem[style=defstyle,unnumbered,name=Definition]{definition*}
-	\declaretheorem[style=defstyle,unnumbered,name=Notation]{notation*}
-	\declaretheorem[style=defstyle,unnumbered,name=Problem]{problem*}
-	\declaretheorem[style=defstyle,unnumbered,name=Protocol]{protocol*}
-
-	% Remark-like statements (remarkstyle)
-	\declaretheorem[style=remarkstyle,sibling=theorem]{commentary}
-	\declaretheorem[style=remarkstyle,sibling=theorem]{example}
-	\declaretheorem[style=remarkstyle,sibling=theorem]{exercise}
-	\declaretheorem[style=remarkstyle,sibling=theorem]{motivation}
-	\declaretheorem[style=remarkstyle,sibling=theorem]{note}
-	\declaretheorem[style=remarkstyle,sibling=theorem]{observation}
-	\declaretheorem[style=remarkstyle,sibling=theorem]{question}
-	\declaretheorem[style=remarkstyle,sibling=theorem]{remark}
-
-	% Unnumbered remark-like statements
-	\declaretheorem[style=remarkstyle,unnumbered,name=Commentary]{commentary*}
-	\declaretheorem[style=remarkstyle,unnumbered,name=Example]{example*}
-	\declaretheorem[style=remarkstyle,unnumbered,name=Exercise]{exercise*}
-	\declaretheorem[style=remarkstyle,unnumbered,name=Motivation]{motivation*}
-	\declaretheorem[style=remarkstyle,unnumbered,name=Note]{note*}
-	\declaretheorem[style=remarkstyle,unnumbered,name=Observation]{observation*}
-	\declaretheorem[style=remarkstyle,unnumbered,name=Question]{question*}
-	\declaretheorem[style=remarkstyle,unnumbered,name=Remark]{remark*}
-
-	% Highlight-like statements (hltstyle)
-	\declaretheorem[style=hltstyle,sibling=theorem]{highlight}
-	\declaretheorem[style=hltstyle,sibling=theorem]{important}
-	\declaretheorem[style=hltstyle,sibling=theorem]{keypoint}
-	\declaretheorem[style=hltstyle,sibling=theorem]{recall}
-
-	% Unnumbered highlight-like statements
-	\declaretheorem[style=hltstyle,unnumbered,name=Highlight]{highlight*}
-	\declaretheorem[style=hltstyle,unnumbered,name=Important]{important*}
-	\declaretheorem[style=hltstyle,unnumbered,name=Key Point]{keypoint*}
-	\declaretheorem[style=hltstyle,unnumbered,name=Recall]{recall*}
-
-	\let\proof\relax
-	\let\endproof\relax
-	\declaretheorem[style=proofstyle]{proof}
+			
+	\basicenv
 }
 
 % Define Standard Theorem Environments
 \newcommand*{\usenormalthm}{%
-	\newcommand{\commonfont}{\color{\accentcolor}\sffamily} % Set common font
-	\newcommand{\commonsymb}{\ensuremath{\color{\accentcolor}\lrcorner}} % Set common symbol
-
+	\renewcommand{\commonfont}{\color{\accentcolor}\sffamily} % Set common font
+	\renewcommand{\commonsymb}{\ensuremath{\color{\accentcolor}\lrcorner}} % Set common symbol
+			
 	% Theorem Style
 	\declaretheoremstyle[%
 		spaceabove=\topsep, spacebelow=\topsep,
@@ -997,7 +989,7 @@ postamble "\n\\end{theindex}\n"
 		notefont=\commonfont, bodyfont=\normalfont,
 		postheadspace=5pt, numberwithin=section, qed=\commonsymb, headpunct={.}
 	]{thmstyle}
-
+			
 	% Definition Style
 	\declaretheoremstyle[%
 		spaceabove=\topsep, spacebelow=\topsep,
@@ -1005,7 +997,7 @@ postamble "\n\\end{theindex}\n"
 		notefont=\commonfont, bodyfont=\normalfont,
 		postheadspace=5pt, numberwithin=section, qed=\commonsymb, headpunct={.}
 	]{defstyle}
-
+			
 	% Remark Style
 	\declaretheoremstyle[%
 		spaceabove=\topsep, spacebelow=\topsep,
@@ -1013,7 +1005,7 @@ postamble "\n\\end{theindex}\n"
 		notefont=\commonfont, bodyfont=\normalfont,
 		postheadspace=5pt, numberwithin=section, qed=\commonsymb, headpunct={.}
 	]{remarkstyle}
-
+			
 	% Highlight Style
 	\declaretheoremstyle[%
 		spaceabove=\topsep, spacebelow=\topsep,
@@ -1021,104 +1013,68 @@ postamble "\n\\end{theindex}\n"
 		notefont=\commonfont, bodyfont=\normalfont\sffamily,
 		postheadspace=5pt, numberwithin=section, qed=\commonsymb, headpunct={.}
 	]{hltstyle}
-
+			
 	% Proof Style
 	\declaretheoremstyle[%
 		headfont=\commonfont, notefont=\commonfont, bodyfont=\normalfont,
 		postheadspace=5pt, numbered=no, headpunct={.},
 		qed=$\color{\accentcolor}\scriptstyle\blacktriangleleft$
 	]{proofstyle}
-
-	% Declare Theorem-like Environments
-	\declaretheorem[style=thmstyle,name=Theorem]{theorem}
-	\declaretheorem[style=thmstyle,sibling=theorem]{assertion}
-	\declaretheorem[style=thmstyle,sibling=theorem]{assumption}
-	\declaretheorem[style=thmstyle,sibling=theorem]{axiom}
-	\declaretheorem[style=thmstyle,sibling=theorem]{claim}
-	\declaretheorem[style=thmstyle,sibling=theorem]{conclusion}
-	\declaretheorem[style=thmstyle,sibling=theorem]{conjecture}
-	\declaretheorem[style=thmstyle,sibling=theorem]{corollary}
-	\declaretheorem[style=thmstyle,sibling=theorem]{fact}
-	\declaretheorem[style=thmstyle,sibling=theorem]{hypothesis}
-	\declaretheorem[style=thmstyle,sibling=theorem]{lemma}
-	\declaretheorem[style=thmstyle,sibling=theorem]{postulate}
-	\declaretheorem[style=thmstyle,sibling=theorem]{property}
-	\declaretheorem[style=thmstyle,sibling=theorem]{proposition}
-
-	% Unnumbered Theorem-like Environments
-	\declaretheorem[style=thmstyle,unnumbered,name=Theorem]{theorem*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Assertion]{assertion*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Assumption]{assumption*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Axiom]{axiom*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Claim]{claim*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Conclusion]{conclusion*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Conjecture]{conjecture*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Corollary]{corollary*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Fact]{fact*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Hypothesis]{hypothesis*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Lemma]{lemma*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Postulate]{postulate*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Property]{property*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Proposition]{proposition*}
-
-	% Definition-like Environments
-	\declaretheorem[style=defstyle,sibling=theorem]{application}
-	\declaretheorem[style=defstyle,sibling=theorem]{construction}
-	\declaretheorem[style=defstyle,sibling=theorem]{convention}
-	\declaretheorem[style=defstyle,sibling=theorem]{definition}
-	\declaretheorem[style=defstyle,sibling=theorem]{notation}
-	\declaretheorem[style=defstyle,sibling=theorem]{problem}
-	\declaretheorem[style=defstyle,sibling=theorem]{protocol}
-
-	% Unnumbered Definition-like Environments
-	\declaretheorem[style=defstyle,unnumbered,name=Application]{application*}
-	\declaretheorem[style=defstyle,unnumbered,name=Construction]{construction*}
-	\declaretheorem[style=defstyle,unnumbered,name=Convention]{convention*}
-	\declaretheorem[style=defstyle,unnumbered,name=Definition]{definition*}
-	\declaretheorem[style=defstyle,unnumbered,name=Notation]{notation*}
-	\declaretheorem[style=defstyle,unnumbered,name=Problem]{problem*}
-	\declaretheorem[style=defstyle,unnumbered,name=Protocol]{protocol*}
-
-	% Remark-like Environments
-	\declaretheorem[style=remarkstyle,sibling=theorem]{commentary}
-	\declaretheorem[style=remarkstyle,sibling=theorem]{example}
-	\declaretheorem[style=remarkstyle,sibling=theorem]{exercise}
-	\declaretheorem[style=remarkstyle,sibling=theorem]{motivation}
-	\declaretheorem[style=remarkstyle,sibling=theorem]{note}
-	\declaretheorem[style=remarkstyle,sibling=theorem]{observation}
-	\declaretheorem[style=remarkstyle,sibling=theorem]{question}
-	\declaretheorem[style=remarkstyle,sibling=theorem]{remark}
-
-	% Unnumbered Remark-like Environments
-	\declaretheorem[style=remarkstyle,unnumbered,name=Commentary]{commentary*}
-	\declaretheorem[style=remarkstyle,unnumbered,name=Example]{example*}
-	\declaretheorem[style=remarkstyle,unnumbered,name=Exercise]{exercise*}
-	\declaretheorem[style=remarkstyle,unnumbered,name=Motivation]{motivation*}
-	\declaretheorem[style=remarkstyle,unnumbered,name=Note]{note*}
-	\declaretheorem[style=remarkstyle,unnumbered,name=Observation]{observation*}
-	\declaretheorem[style=remarkstyle,unnumbered,name=Question]{question*}
-	\declaretheorem[style=remarkstyle,unnumbered,name=Remark]{remark*}
-
-	% Highlight-like Environments
-	\declaretheorem[style=hltstyle,sibling=theorem]{highlight}
-	\declaretheorem[style=hltstyle,sibling=theorem]{important}
-	\declaretheorem[style=hltstyle,sibling=theorem]{keypoint}
-	\declaretheorem[style=hltstyle,sibling=theorem]{recall}
-
-	% Unnumbered Highlight-like Environments
-	\declaretheorem[style=hltstyle,unnumbered,name=Highlight]{highlight*}
-	\declaretheorem[style=hltstyle,unnumbered,name=Important]{important*}
-	\declaretheorem[style=hltstyle,unnumbered,name=Key Point]{keypoint*}
-	\declaretheorem[style=hltstyle,unnumbered,name=Recall]{recall*}
-
-	% Redefine Proof
-	\let\proof\relax
-	\let\endproof\relax
-	\declaretheorem[style=proofstyle]{proof}
+			
+	\basicenv
 }
 
-\ifbool{usefancythm}{\usefancythm}{} % Use fancy theorem style if needed
-\ifbool{usenormalthm}{\usenormalthm}{} % Use standard theorem style if needed
+% Cleveref for intelligent cross-referencing (better handling of references)
+\AtEndOfPackage{%
+
+    % Load Cleveref for smart cross-referencing
+	\RequirePackage[capitalise]{cleveref}
+	
+	% Theorem-like Environments
+	\crefname{theorem}{theorem}{theorems}
+	\crefname{assertion}{assertion}{assertions}
+	\crefname{assumption}{assumption}{assumptions}
+	\crefname{axiom}{axiom}{axioms}
+	\crefname{claim}{claim}{claims}
+	\crefname{conclusion}{conclusion}{conclusions}
+	\crefname{conjecture}{conjecture}{conjectures}
+	\crefname{corollary}{corollary}{corollaries}
+	\crefname{fact}{fact}{facts}
+	\crefname{hypothesis}{hypothesis}{hypotheses}
+	\crefname{lemma}{lemma}{lemmas}
+	\crefname{postulate}{postulate}{postulates}
+	\crefname{property}{property}{properties}
+	\crefname{proposition}{proposition}{propositions}
+	
+	% Definition-like Environments
+	\crefname{application}{application}{applications}
+	\crefname{construction}{construction}{constructions}
+	\crefname{convention}{convention}{conventions}
+	\crefname{definition}{definition}{definitions}
+	\crefname{notation}{notation}{notations}
+	\crefname{problem}{problem}{problems}
+	\crefname{protocol}{protocol}{protocols}
+	
+	% Remark-like Environments
+	\crefname{commentary}{commentary}{commentaries}
+	\crefname{example}{example}{examples}
+	\crefname{exercise}{exercise}{exercises}
+	\crefname{motivation}{motivation}{motivations}
+	\crefname{note}{note}{notes}
+	\crefname{observation}{observation}{observations}
+	\crefname{question}{question}{questions}
+	\crefname{remark}{remark}{remarks}
+	
+	% Highlight-like Environments
+	\crefname{highlight}{highlight}{highlights}
+	\crefname{important}{important}{importants}
+	\crefname{keypoint}{keypoint}{keypoints}
+	\crefname{recall}{recall}{recalls}
+}
+
+% Conditional Theorem Style
+\ifbool{usefancythm}{\usefancythm}{\typeout{Using fancy theorem style.}}  % Use fancy theorem style if 'usefancythm' is true
+\ifbool{usenormalthm}{\usenormalthm}{\typeout{Using normal theorem style.}}  % Use standard theorem style if 'usenormalthm' is true
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bibliography Management with BibLaTeX
@@ -1293,7 +1249,7 @@ postamble "\n\\end{theindex}\n"
     \presubtitle{\vspace{1em}\begin{center}\large\normalfont\itshape}
     \postsubtitle{\par\vspace{1em}\end{center}}
     % Author Formatting
-    \preauthor{\begin{center}\normalfont\large\scshape\lineskip 0.5em\begin{tabular}[t]{c}}
+    \preauthor{\begin{center}\normalfont\large\scshape\lineskip0.25em\begin{tabular}[t]{c}}
     \postauthor{\end{tabular}\par\end{center}}
     % Date Formatting
     \predate{\begin{center}\par\bigskip\normalfont\normalsize\scshape}
@@ -1312,42 +1268,39 @@ postamble "\n\\end{theindex}\n"
 	\begingroup % Scope formatting
 	\cleardoublepage\null\vfill % Vertically centre content
 	\centering % Centre text
-
+	
 	% Title and author information
 	\textsc{\large\@title}\par\medskip
 	\textcopyright~\@date~by~\@author\par
 	All rights reserved.\par
-
+	
 	% Author Draft Licence
 	\justify
-	This document is issued under the Author Draft Licence, which
-	imposes strict conditions on its use, distribution, and reproduction.
-	The licence permits its use solely for private academic usage, scholarly
-	critique, or peer feedback. Reproduction, adaptation, or distribution of
-	this work is prohibited without explicit, prior, and written permission
-	from the author.
-
-	Commercial use, instruction, and industrial applications of this work are
-	explicitly forbidden. The creation of derivative works, including
-	modifications, translations, or transformations, is not authorised.
-	Integration of this document into machine learning or artificial intelligence
-	systems is expressly prohibited. Redistribution must preserve the document in
-	its original form and comply fully with the terms of this licence.
-
-	Unauthorised use, reproduction, or distribution constitutes a violation
-	of intellectual property laws. The author reserves the right to enforce
-	all applicable legal protections under national and international laws
-	and treaties. Requests for permissions, collaborations, or inquiries
-	must be directed to the author using the contact information provided
-	in this document.
-
+	This document, issued under the Author Draft Licence, is
+	intended solely for private academic use, scholarly critique,
+	and peer feedback. Reproduction, distribution, adaptation, or
+	derivative works, including modifications or transformations,
+	are prohibited without the author's explicit written permission.
+	Commercial use, instructional applications, industrial purposes,
+	or integration into machine learning or artificial intelligence
+	systems are expressly forbidden. Redistribution must preserve
+	the original form and comply fully with this licence. This
+	preliminary draft has not undergone peer review or rigorous
+	verification and may contain errors, incomplete arguments, or
+	inaccuracies; it should not be relied upon as authoritative.
+	Unauthorised use or distribution violates intellectual property
+	laws, and the author reserves the right to enforce legal
+	protections. Permissions or inquiries must be directed to the
+	contact information provided in this document. Constructive
+	feedback is welcome to refine and improve the work.
+	
 	% Publication date
 	\vspace{15pt}
 	\begin{center}
 		This version was published on \@date.\par
 	\end{center}
 	\vspace*{15pt}
-
+	
 	\endgroup % End formatting scope
 	\cleardoublepage % Start a fresh page
 }
