@@ -33,13 +33,13 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage[x11names, dvipsnames, svgnames]{xcolor} % Provides X11, SVG, and named colours
 \IfFileExists{csthm.sty}{%
-	\RequirePackage{csthm} % Customises theorem environments
-	\providecommand{\accentcolor}{black!75!RoyalBlue1} % Defines accent colour if not pre-specified
-	\setaccentcolor{black!75!RoyalBlue1}
+    	\RequirePackage[usenormalthm]{csthm} % Customises theorem environments
+    	\providecommand{\accentcolor}{black!75!RoyalBlue1} % Defines accent colour if not pre-specified
+    	\setaccentcolor{black!75!RoyalBlue1}
 	}{%
-	\PackageWarning{csdirty}{The package `csthm` is not present. Please install it.}
-	\providecommand{\accentcolor}{black!75!RoyalBlue1} % Defines accent colour if not pre-specified
-	\setaccentcolor{black!75!RoyalBlue1}
+    	\PackageWarning{csdirty}{The package `csthm` is not present. Please install it.}
+    	\providecommand{\accentcolor}{black!60} % Defines accent colour if not pre-specified
+    	\setaccentcolor{black!60}
 }
 \RequirePackage{xspace} % Adds intelligent spacing after commands
 
@@ -130,9 +130,9 @@
 %% Diagrams and Graphics                                                  %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage[%
-	skipabove=10pt, % Set vertical space above frames
-	skipbelow=10pt, % Set vertical space below frames
-	ntheorem,       % Integrate with theorem environments
+	skipabove=10pt,  % Set vertical space above frames
+	skipbelow=10pt,  % Set vertical space below frames
+	ntheorem,        % Integrate with theorem environments
 	framemethod=Tikz % Use TikZ for styling
 ]{mdframed}
 \RequirePackage{pgfplots} % Enable advanced plotting
@@ -295,7 +295,7 @@
 \fi
 
 % Define the generic \newcomment command
-\providecommand{\newcomment}[3]{%
+\newcommand{\newcomment}[3]{%
     \ifComments
         % If comments are enabled, define the comment macro
         \expandafter\newcommand\csname #3\endcsname[1]{%
