@@ -404,9 +404,9 @@
 % Custom Sectioning Commands
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[nobottomtitles*, explicit, compact]{titlesec}
+\RequirePackage[explicit, compact]{titlesec}
 
-\renewcommand{\bottomtitlespace}{0.1\textheight}
+%\renewcommand{\bottomtitlespace}{0.15\textheight}
 
 % Font styles
 \newcommand{\headerfont}{\sffamily}
@@ -436,8 +436,8 @@
         {\sectionfont}
         {\color{accentcolor}\huge\thesection}
         {10pt}
-        {#1\vspace{2.5pt}\hrule}
-        \titlespacing*{\section}{0pt}{5pt}{-12.5pt}
+        {#1}[\vspace{5pt}\titlerule]
+        \titlespacing*{\section}{0pt}{15pt}{10pt}
 
 % Subsection title formatting
 \titleformat{\subsection}[block]
@@ -746,8 +746,8 @@ postamble "\n\\end{theindex}\n"
 	\RequirePackage{tikz}         % Load TikZ for creating graphics and diagrams
 	\RequirePackage{tikz-cd}      % Load TikZ-cd for commutative diagrams
 	\RequirePackage{tikzscale}    % Load tikzscale to automatically scale TikZ figures
-    \RequirePackage{pgfplots}     % Load pgfplots for advanced plotting
-	\pgfplotsset{compat=1.18}    % Set compatibility with version 1.18
+	\RequirePackage{pgfplots}     % Load pgfplots for advanced plotting
+	\pgfplotsset{compat=1.18}     % Set compatibility with version 1.18
 }
 
 \ifbool{usetikz}{\usetikz}{\typeout{TikZ and related packages are not included.}}
