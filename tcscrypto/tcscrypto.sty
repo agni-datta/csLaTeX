@@ -27,13 +27,13 @@
 ]{cryptocode} % Macros for cryptography
 \RequirePackage{xspace} % Automatically manage spaces after commands
 
-\AtBeginDocument{%
+\AtEndPreamble{%
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Font Styles
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% This section defines commands for various mathematical font styles used throughout the document.
 	% Each command is designed to ensure consistent formatting of mathematical symbols and expressions.
-		
+				
 	\providecommand{\asvector}[1]{\inmath{\vec{#1}}} % Vector notation with an arrow
 	\providecommand{\complexityfont}[1]{\inmath{\ComplexityFont{#1}}} % Font style for complexity classes
 	\providecommand{\inmathbb}[1]{\inmath{\mathbb{#1}}} % Blackboard Bold for sets and special objects
@@ -44,13 +44,13 @@
 	\providecommand{\inmathsf}[1]{\inmath{\mathsf{#1}}} % Sans-serif style for math symbols
 	\providecommand{\inmath}[1]{\ensuremath{#1}} % Ensure the content is formatted as math mode
 	\providecommand{\mathfontstyle}[1]{\inmath{\pcalgostyle{#1}}} % Custom style for math expressions
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Cryptographic Elements and Functions
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% This section defines commands for commonly used cryptographic elements, functions,
 	% and notations in the document, ensuring consistency and clarity in their representation.
-		
+				
 	% Removing previous definitions to avoid conflicts
 	\let\Game\relax       % Relax previously defined \Game command
 	\let\extractor\relax  % Relax previously defined \extractor command
@@ -61,7 +61,7 @@
 	\let\simulator\relax  % Relax previously defined \simulator command
 	\let\verifier\relax   % Relax previously defined \verifier command
 	\let\verify\relax     % Relax previously defined \verify command
-		
+				
 	% Cryptographic Notations and Functions
 	\providecommand{\Adv}{\inmathsf{Adv}} % Adversary function
 	\providecommand{\DB}{\inmathsf{DB}} % Database notation
@@ -72,51 +72,56 @@
 	\providecommand{\Left}{\inmathsf{L}} % Represents a left symbol
 	\providecommand{\Right}{\inmathsf{R}} % Represents a right symbol
 	\providecommand{\RO}{\inmathcal{H}} % Random Oracle
-		
-	\providecommand{\accept}{\inmathsf{accept}} % Acceptance indicator
+				
+	\providecommand{\accept}{\inmathsf{accept}} % Indicator for acceptance
 	\providecommand{\accum}{\inmathsf{Accum}} % Accumulation function
 	\providecommand{\acc}{\inmathsf{acc}} % Accumulator notation
 	\providecommand{\add}{\inmathsf{Add}} % Addition operation
 	\providecommand{\aux}{\inmathsf{aux}} % Auxiliary data
-	\providecommand{\batch}{\inmathsf{Batch}} % Batch processing notation
+	\providecommand{\batch}{\inmathsf{Batch}} % Batch processing
 	\providecommand{\commit}{\inmathsf{Com}} % Commitment scheme
+	\providecommand{\compute}{\inmathsf{Compute}} % Computation function
 	\providecommand{\com}{\inmathsf{com}} % Commitment value
-	\providecommand{\cred}{\inmathsf{cred}} % Credential notation
+	\providecommand{\cred}{\inmathsf{cred}} % Credential representation
 	\providecommand{\crsgen}{\inmathsf{CRSGen}} % Common Reference String Generation
 	\providecommand{\crs}{\inmathsf{crs}} % Common Reference String
 	\providecommand{\delete}{\inmathsf{Delete}} % Deletion operation
+	\providecommand{\domain}{\inmathsf{Domain}} % Domain
 	\providecommand{\environment}{\inmathsf{Env}} % Cryptographic environment
-	\providecommand{\ep}{\inmath{\hat{e}}} % Pairing function symbol
+	\providecommand{\ep}{\inmath{\hat{e}}} % Pairing function notation
+	\providecommand{\expverif}{\inmathsf{ExpVerif}} % Experimental verification function
 	\providecommand{\extractor}{\inmathsf{Ext}} % Extractor function
-	\providecommand{\flag}{\inmathsf{flag}} % Flag indicator
+	\providecommand{\flag}{\inmathsf{flag}} % Flag status indicator
 	\providecommand{\gen}{\inmathsf{Gen}} % Key generation function
-	\providecommand{\groupgen}{\inmathsf{GG}} % Group generator
+	\providecommand{\groupgen}{\inmathsf{GG}} % Group generator function
 	\providecommand{\group}{\inmathbb{G}} % Cryptographic group
 	\providecommand{\hardequivocate}{\inmathsf{HardEquivocate}} % Hard equivocation function
 	\providecommand{\hashfunc}{\inmathcal{H}} % Hash function
 	\providecommand{\hidgrp}{\group_{?}} % Hidden group notation
-	\providecommand{\ideal}{\inmathsf{Ideal}} % Ideal function or process
+	\providecommand{\ideal}{\inmathsf{Ideal}} % Idealized function or process
 	\providecommand{\id}{\inmathsf{id}} % Identifier
 	\providecommand{\issue}{\inmathsf{Issue}} % Issue operation
+	\providecommand{\keygen}{\inmathsf{KeyGen}} % Key generation function
 	\providecommand{\len}{\inmath{\ell}} % Length notation
 	\providecommand{\msk}{\inmathsf{msk}} % Master secret key
 	\providecommand{\open}{\inmathsf{Open}} % Commitment opening function
 	\providecommand{\out}{\inmathsf{output}} % Output function
 	\providecommand{\pp}{\inmathsf{pp}} % Public parameters
+	\providecommand{\probgen}{\inmathsf{ProbGen}} % Probabilistic generator function
+	\providecommand{\protocol}{\inmath{\BbbPi}} % Cryptographic protocol notation
 	\providecommand{\prover}{\inmathcal{P}} % Prover in a cryptographic protocol
 	\providecommand{\prove}{\inmathsf{Prove}} % Proof generation function
-	\providecommand{\protocol}{\inmath{\BbbPi}} % Protocol Symbol
 	\providecommand{\qq}{\inmathsf{qq}} % General parameter notation
 	\providecommand{\query}{\inmathsf{Query}} % Query operation
-	\providecommand{\real}{\inmathsf{Real}} % Real function or process
+	\providecommand{\real}{\inmathsf{Real}} % Real-world function or process
 	\providecommand{\reject}{\inmathsf{reject}} % Rejection indicator
 	\providecommand{\revoke}{\inmathsf{Revoke}} % Revoke operation
 	\providecommand{\reward}{\inmathsf{reward}} % Reward function
-	\providecommand{\sample}{\inmath{\overset{\scriptscriptstyle\$}{\leftarrow}}} % Random sampling
+	\providecommand{\sample}{\inmath{\overset{\scriptscriptstyle\$}{\leftarrow}}} % Random sampling notation
 	\providecommand{\setup}{\inmathsf{Setup}} % Setup algorithm
 	\providecommand{\simulator}{\inmathsf{Sim}} % Simulator in cryptographic arguments
 	\providecommand{\softcommit}{\inmathsf{SoftCommit}} % Soft commitment function
-	\providecommand{\softopen}{\inmathsf{SoftOpen}} % Soft opening function
+	\providecommand{\softopen}{\inmathsf{SoftOpen}} % Soft commitment opening function
 	\providecommand{\state}{\inmathsf{state}} % State representation
 	\providecommand{\succ}{\inmathsf{Succ}} % Successor function
 	\providecommand{\td}{\inmathsf{td}} % Trapdoor information
@@ -127,13 +132,13 @@
 	\providecommand{\view}{\inmathsf{View}} % View or state representation
 	\providecommand{\witgen}{\inmathsf{WitGen}} % Witness generation function
 	\providecommand{\witupdate}{\inmathsf{WitUpdate}} % Witness update function
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Cryptographic Concepts, Problems, and Definitions
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% This section defines various cryptographic concepts, problems, and related functions.
 	% Each command represents a specific term or problem in cryptography for consistent usage throughout the document.
-		
+				
 	\providecommand{\AAE}{\ComplexityFont{AAE}} % Attribute-Based Encryption
 	\providecommand{\AE}{\ComplexityFont{AE}} % Authenticated Encryption
 	\providecommand{\CDH}{\ComplexityFont{CDH}} % Computational Diffie-Hellman problem
@@ -179,31 +184,31 @@
 	\providecommand{\ZKPs}{\ComplexityFont{ZKPs}} % Zero-Knowledge Proofs (plural)
 	\providecommand{\ZKP}{\ComplexityFont{ZKP}} % Zero-Knowledge Proof
 	\providecommand{\ZK}{\ComplexityFont{ZK}} % Zero-Knowledge
-		
+				
 	\providecommand{\kSDH}{\inmath{k\mathhyphen\SDH}} % k-Strong Diffie-Hellman problem
 	\providecommand{\qSDH}{\inmath{q\mathhyphen\SDH}} % q-Strong Diffie-Hellman problem
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Indistinguishability Notations
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	% Remove any existing definitions to avoid conflicts
 	\let\cindist\relax
 	\let\pindist\relax
 	\let\sindist\relax
-		
+				
 	% Define indistinguishability notations
 	\providecommand{\cindist}{\inmath{\approx_c}} % Computational indistinguishability
 	\providecommand{\pindist}{\inmath{=_{p}}} % Perfect indistinguishability
 	\providecommand{\sindist}{\inmath{\approx_s}} % Statistical indistinguishability
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Logical Operations
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	\providecommand{\bits}{\{0, 1\}^{*}} % Set of all binary strings (finite length)
 	\providecommand{\bit}{\{0, 1\}} % Set of binary digits (0 and 1)
-		
+				
 	% Remove any existing definitions to avoid conflicts
 	\let\AND\relax
 	\let\NAND\relax
@@ -212,7 +217,7 @@
 	\let\OR\relax
 	\let\XNOR\relax
 	\let\XOR\relax
-		
+				
 	% Define logical operations for use in mathematical contexts
 	\providecommand{\AND}{\ComplexityFont{AND}} % Logical AND operation
 	\providecommand{\NAND}{\ComplexityFont{NAND}} % Logical NAND operation
@@ -221,17 +226,17 @@
 	\providecommand{\OR}{\ComplexityFont{OR}} % Logical OR operation
 	\providecommand{\XNOR}{\ComplexityFont{XNOR}} % Logical XNOR operation
 	\providecommand{\XOR}{\ComplexityFont{XOR}} % Logical XOR operation
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Complexity Classes
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	% Note: The \usepackage[full]{complexity} package provides definitions for most complexity class commands.
 	% The following commands enhance these definitions.
-		
+				
 	% Clear any existing definitions to prevent conflicts
 	\let\coNP\relax
-		
+				
 	% Complexity Class Definitions
 	\providecommand{\coNP}{\ComplexityFont{co\textsf{-}NP}} % Complement of NP
 	\providecommand{\coRP}{\ComplexityFont{co\textsf{-}RP}} % Complement of RP
@@ -240,7 +245,7 @@
 	\providecommand{\NEXPTIME}{\ComplexityFont{NEXPTIME}} % Non-deterministic Exponential Time
 	\providecommand{\NPpoly}{\ComplexityFont{NP/poly}} % NP with Polynomial Advice
 	\providecommand{\PSPACEpoly}{\ComplexityFont{PSPACE/poly}} % PSPACE with Polynomial Advice
-		
+				
 	% Definitions of Fundamental Problems
 	\providecommand{\AUT}{\ComplexityFont{Aut}} % Automorphism Problem
 	\providecommand{\BIPARTITE}{\ComplexityFont{BIPARTITE}} % Bipartite Graph Problem
@@ -269,7 +274,7 @@
 	\providecommand{\TQBF}{\ComplexityFont{TQBF}} % True Quantified Boolean Formula Problem
 	\providecommand{\TSP}{\ComplexityFont{TSP}} % Traveling Salesman Problem
 	\providecommand{\UPATH}{\ComplexityFont{UPATH}} % Undirected Path Problem
-		
+				
 	% Definitions of Proof Systems
 	\providecommand{\DRMA}{\ComplexityFont{DRMA}} % Decisional Rational Merlin-Arthur Proofs
 	\providecommand{\FRMA}{\ComplexityFont{FRMA}} % Functional Rational Merlin-Arthur Proofs
@@ -281,37 +286,37 @@
 	\providecommand{\RIP}{\ComplexityFont{RIP}} % Rational Interactive Proofs
 	\providecommand{\RNIP}{\ComplexityFont{RNIP}} % Rational Non-Interactive Proofs
 	\providecommand{\dIP}{\ComplexityFont{dIP}} % Deterministic Interactive Proofs
-		
+				
 	% Formal Language Notation
 	\providecommand{\Lang}{\ComplexityFont{L}} % Formal language notation
 	\providecommand{\NTM}{\ComplexityFont{N}} % Non-deterministic Turing machine
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Basic Mathematical Constants
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	\providecommand{\half}{\inmath{\frac{1}{2}}} % One-half constant
 	\providecommand{\third}{\inmath{\frac{1}{3}}} % One-third constant
 	\providecommand{\quart}{\inmath{\frac{1}{4}}} % One-quarter constant
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Number Sets
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	\providecommand{\F}{\inmathbb{F}} % Generic field
 	\providecommand{\GF}{\inmathbb{GF}} % Galois field
 	\providecommand{\Imag}{\inmathbb{I}} % Imaginary numbers
 	\providecommand{\N}{\inmathbb{N}} % Natural numbers
 	\providecommand{\Q}{\inmathbb{Q}} % Rational numbers
 	\providecommand{\Z}{\inmathbb{Z}} % Integers
-		
+				
 	\renewcommand{\C}{\inmathbb{C}} % Complex numbers
 	\renewcommand{\R}{\inmathbb{R}} % Real numbers
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Mathematical Symbols Used in Graph Theory
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	\providecommand{\adj}{\ComplexityFont{adj}} % Adjacency Matrix Representation
 	\providecommand{\aut}{\ComplexityFont{aut}} % Graph Automorphism Definition
 	\providecommand{\cut}{\ComplexityFont{cut}} % Graph Cut Definition
@@ -322,98 +327,98 @@
 	\providecommand{\supp}{\ComplexityFont{supp}} % Support of a Graph
 	\providecommand{\tree}{\ComplexityFont{tree}} % Tree Structure Representation
 	\providecommand{\trunc}{\inmath{\tau}} % Truncation Function Definition
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Basic Mathematical Operations
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	\providecommand{\abs}[1]{\inmath{\left|#1\right|}} % Absolute value notation
 	\providecommand{\eqdef}{\inmath{\overset{\Delta}{=}}} % Definition notation (defined as)
 	\providecommand{\eqq}{\inmath{\overset{\textrm{?}}{=}}} % Question mark equality
 	\providecommand{\inq}{\inmath{\overset{\textrm{?}}{\in}}} % Question mark membership
-		
+				
 	\let\argmax\relax   % Ensure no conflict with existing definitions of arg max
 	\let\argmin\relax   % Ensure no conflict with existing definitions of arg min
 	\let\gcd\relax      % Ensure no conflict with existing definitions of gcd
-		
+				
 	\DeclareMathOperator*{\argmax}{\mathrm{arg\,max}} % Argument that maximizes a function
 	\DeclareMathOperator*{\argmin}{\mathrm{arg\,min}} % Argument that minimizes a function
 	\DeclareMathOperator*{\majority}{\mathrm{majority}} % Majority function
 	\DeclareMathOperator*{\lcm}{\mathrm{lcm}} % Least common multiple
 	\DeclareMathOperator*{\gcd}{\mathrm{gcd}} % Greatest common divisor
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Combinatorial and Permutation Notations
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	\providecommand{\nCrf}[2]{\inmath{\frac{#1!}{(#1-#2)!#2!}}} % Combinations (factorials)
 	\providecommand{\nCr}[2]{{\inmath{#1}\mathrm{C}{#2}}} % Combinations
 	\providecommand{\nPrf}[2]{\inmath{\frac{#1!}{(#1-#2)!}}} % Permutations (factorials)
 	\providecommand{\nPr}[2]{\inmath{{#1}\mathrm{P}{#2}}} % Permutations
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Dirac Notation
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	\providecommand{\ket}[1]{\inmath{|#1\rangle}} % Ket notation
 	\providecommand{\bra}[1]{\inmath{\langle #1|}} % Bra notation
 	\providecommand{\braket}[2]{\inmath{\langle #1 | #2 \rangle}} % Braket notation
 	\providecommand{\braKet}[2]{\inmath{\langle #1 | #2 \rangle}} % Bra-Ket notation
 	\providecommand{\ketbra}[2]{\inmath{|#1\rangle \langle #2|}} % Ket-Bra notation
 	\providecommand{\proj}[1]{\inmath{|#1\rangle \langle #1|}} % Projection operator
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Set Theory and Operations
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	% Clear any previous definitions for \iff to prevent naming conflicts
 	\let\iff\relax % Ensure no conflict with existing definitions of iff
-		
+				
 	\DeclareMathOperator{\intersection}{\inmath{\cap}} % Intersection operator
 	\DeclareMathOperator{\union}{\ensuremath{\cup}} % Union operator
-		
+				
 	\providecommand{\iff}{\longleftrightarrow}
 	\providecommand{\set}[1]{\inmath{\left\{#1\right\}}} % Set notation
 	\providecommand{\paren}[1]{\inmath{\left[#1\right]}} % Parentheses notation
 	\providecommand{\floor}[1]{\inmath{\left\lfloor#1\right\rfloor}} % Floor function
 	\providecommand{\ceil}[1]{\inmath{\left\lceil#1\right\rceil}} % Ceiling function
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Probability and Expectation
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	% Clear any previous definitions for \Pr and \E to prevent naming conflicts
 	\let\Pr\relax
 	\let\E\relax
-		
+				
 	% Define the expectation operator, denoted by \E
 	\DeclareMathOperator*{\E}{\inmathbb{E}} % Expected value operator
 	\DeclareMathOperator*{\Pr}{\inmathsf{Pr}} % Probability operator
 	\DeclareMathOperator*{\Var}{\inmathrm{Var}} % Variance operator
 	\DeclareMathOperator*{\Cov}{\inmathrm{Cov}} % Covariance operator
 	\providecommand{\Expect}[1]{\E\paren{#1}} % Expectation of a given argument, formatted for clarity
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Differential and Partial Derivatives
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	\providecommand{\dd}{\mathrm{d}} % Differential operator (d for differentiation)
 	\providecommand{\ddiff}[2]{\frac{\dd{#1}}{\dd{#2}}} % Differential quotient (total derivative) \frac{d#1}{d#2}
 	\providecommand{\pdiff}[2]{\frac{\partial{#1}}{\partial{#2}}} % Partial derivative \frac{\partial #1}{\partial #2}
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Vector Calculus
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	\providecommand{\grad}{\nabla} % Gradient operator
 	\providecommand{\divg}{\nabla\cdot} % Divergence operator
 	\providecommand{\curl}{\nabla\times} % Curl operator
 	\providecommand{\lap}{\nabla^2} % Laplacian operator
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Transform Notations
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	\providecommand{\laplace}[1]{\inmathcal{L}\set{#1}} % Laplace transform notation
 	\providecommand{\ilaplace}[1]{\inmathcal{L}^{-1}\set{#1}} % Inverse Laplace transform notation
 	\providecommand{\fourier}[1]{\inmathcal{F}\set{#1}} % Fourier transform notation
@@ -424,16 +429,16 @@
 	\providecommand{\iradon}[1]{\inmathcal{R}^{-1}\set{#1}} % Inverse Radon transform notation
 	\providecommand{\wavelet}[1]{\inmathcal{W}\set{#1}} % Wavelet transform notation
 	\providecommand{\iwavelet}[1]{\inmathcal{W}^{-1}\set{#1}} % Inverse Wavelet transform notation
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Trigonometric Functions
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	% Clear existing definitions for inverse trigonometric functions
 	\let\arcsin\relax
 	\let\arccos\relax
 	\let\arctan\relax
-		
+				
 	% Define inverse trigonometric functions
 	\providecommand{\arcsin}{\sin^{-1}} % Inverse sine
 	\providecommand{\arccos}{\cos^{-1}} % Inverse cosine
@@ -441,7 +446,7 @@
 	\providecommand{\arccot}{\cot^{-1}} % Inverse cotangent
 	\providecommand{\arcsec}{\sec^{-1}} % Inverse secant
 	\providecommand{\arccsc}{\csc^{-1}} % Inverse cosecant
-		
+				
 	% Define hyperbolic inverse functions
 	\providecommand{\arsinh}{\sinh^{-1}} % Hyperbolic inverse sine
 	\providecommand{\arcosh}{\cosh^{-1}} % Hyperbolic inverse cosine
@@ -449,15 +454,15 @@
 	\providecommand{\arcoth}{\coth^{-1}} % Hyperbolic inverse cotangent
 	\providecommand{\arsech}{\sech^{-1}} % Hyperbolic inverse secant
 	\providecommand{\arcsch}{\csch^{-1}} % Hyperbolic inverse cosecant
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Vector Notation
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	\renewcommand{\i}{\hat{i}} % Unit vector i
 	\renewcommand{\j}{\hat{j}} % Unit vector j
 	\renewcommand{\k}{\hat{k}} % Unit vector k
-		
+				
 	\providecommand{\avec}{\asvector{a}} % Vector a
 	\providecommand{\bvec}{\asvector{b}} % Vector b
 	\providecommand{\cvec}{\asvector{c}} % Vector c
@@ -484,11 +489,11 @@
 	\providecommand{\xvec}{\asvector{x}} % Vector x
 	\providecommand{\yvec}{\asvector{y}} % Vector y
 	\providecommand{\zvec}{\asvector{z}} % Vector z
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Boldface Letters
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	\providecommand{\bfa}{\inmathbf{a}} % Boldface letter 'a'
 	\providecommand{\bfb}{\inmathbf{b}} % Boldface letter 'b'
 	\providecommand{\bfc}{\inmathbf{c}} % Boldface letter 'c'
@@ -515,11 +520,11 @@
 	\providecommand{\bfx}{\inmathbf{x}} % Boldface letter 'x'
 	\providecommand{\bfy}{\inmathbf{y}} % Boldface letter 'y'
 	\providecommand{\bfz}{\inmathbf{z}} % Boldface letter 'z'
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Upright Letters
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	\providecommand{\rma}{\inmathrm{a}} % Upright letter 'a'
 	\providecommand{\rmb}{\inmathrm{b}} % Upright letter 'b'
 	\providecommand{\rmc}{\inmathrm{c}} % Upright letter 'c'
@@ -546,11 +551,11 @@
 	\providecommand{\rmx}{\inmathrm{x}} % Upright letter 'x'
 	\providecommand{\rmy}{\inmathrm{y}} % Upright letter 'y'
 	\providecommand{\rmz}{\inmathrm{z}} % Upright letter 'z'
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Sans Serif Letters
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	\providecommand{\sfa}{\inmathsf{a}} % Sans Serif letter 'a'
 	\providecommand{\sfb}{\inmathsf{b}} % Sans Serif letter 'b'
 	\providecommand{\sfc}{\inmathsf{c}} % Sans Serif letter 'c'
@@ -577,11 +582,11 @@
 	\providecommand{\sfx}{\inmathsf{x}} % Sans Serif letter 'x'
 	\providecommand{\sfy}{\inmathsf{y}} % Sans Serif letter 'y'
 	\providecommand{\sfz}{\inmathsf{z}} % Sans Serif letter 'z'
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Upright Letters in Math Mode
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	\providecommand{\rmA}{\inmathrm{A}} % Upright letter 'A'
 	\providecommand{\rmB}{\inmathrm{B}} % Upright letter 'B'
 	\providecommand{\rmC}{\inmathrm{C}} % Upright letter 'C'
@@ -608,11 +613,11 @@
 	\providecommand{\rmX}{\inmathrm{X}} % Upright letter 'X'
 	\providecommand{\rmY}{\inmathrm{Y}} % Upright letter 'Y'
 	\providecommand{\rmZ}{\inmathrm{Z}} % Upright letter 'Z'
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Boldface Letters in Math Mode
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	\providecommand{\bfA}{\inmathbf{A}} % Boldface letter 'A'
 	\providecommand{\bfB}{\inmathbf{B}} % Boldface letter 'B'
 	\providecommand{\bfC}{\inmathbf{C}} % Boldface letter 'C'
@@ -639,11 +644,11 @@
 	\providecommand{\bfX}{\inmathbf{X}} % Boldface letter 'X'
 	\providecommand{\bfY}{\inmathbf{Y}} % Boldface letter 'Y'
 	\providecommand{\bfZ}{\inmathbf{Z}} % Boldface letter 'Z'
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Blackboard Bold Letters
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	\providecommand{\bbA}{\inmathbb{A}} % Blackboard bold letter 'A'
 	\providecommand{\bbB}{\inmathbb{B}} % Blackboard bold letter 'B'
 	\providecommand{\bbC}{\inmathbb{C}} % Blackboard bold letter 'C'
@@ -670,11 +675,11 @@
 	\providecommand{\bbX}{\inmathbb{X}} % Blackboard bold letter 'X'
 	\providecommand{\bbY}{\inmathbb{Y}} % Blackboard bold letter 'Y'
 	\providecommand{\bbZ}{\inmathbb{Z}} % Blackboard bold letter 'Z'
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Calligraphic Letters
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	\providecommand{\calA}{\inmathcal{A}} % Calligraphic letter 'A'
 	\providecommand{\calB}{\inmathcal{B}} % Calligraphic letter 'B'
 	\providecommand{\calC}{\inmathcal{C}} % Calligraphic letter 'C'
@@ -701,11 +706,11 @@
 	\providecommand{\calX}{\inmathcal{X}} % Calligraphic letter 'X'
 	\providecommand{\calY}{\inmathcal{Y}} % Calligraphic letter 'Y'
 	\providecommand{\calZ}{\inmathcal{Z}} % Calligraphic letter 'Z'
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Fraktur Letters
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	\providecommand{\frakA}{\inmathfrak{A}} % Fraktur letter 'A'
 	\providecommand{\frakB}{\inmathfrak{B}} % Fraktur letter 'B'
 	\providecommand{\frakC}{\inmathfrak{C}} % Fraktur letter 'C'
@@ -732,11 +737,11 @@
 	\providecommand{\frakX}{\inmathfrak{X}} % Fraktur letter 'X'
 	\providecommand{\frakY}{\inmathfrak{Y}} % Fraktur letter 'Y'
 	\providecommand{\frakZ}{\inmathfrak{Z}} % Fraktur letter 'Z'
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Upright Sans Serif Letters in Math Mode
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	\providecommand{\sfA}{\inmathsf{A}} % Sans Serif letter 'A'
 	\providecommand{\sfB}{\inmathsf{B}} % Sans Serif letter 'B'
 	\providecommand{\sfC}{\inmathsf{C}} % Sans Serif letter 'C'
@@ -763,11 +768,11 @@
 	\providecommand{\sfX}{\inmathsf{X}} % Sans Serif letter 'X'
 	\providecommand{\sfY}{\inmathsf{Y}} % Sans Serif letter 'Y'
 	\providecommand{\sfZ}{\inmathsf{Z}} % Sans Serif letter 'Z'
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Latin Abbreviations
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	\providecommand{\aew}{a.e.\xspace} % Almost everywhere
 	\providecommand{\aka}{a.k.a.\xspace} % Also known as
 	\providecommand{\cf}{cf.\xspace} % Compare
@@ -782,31 +787,31 @@
 	\providecommand{\vs}{vs.\xspace} % Versus
 	\providecommand{\wlog}{w.l.o.g.\xspace} % Without loss of generality
 	\providecommand{\wrt}{w.r.t.\xspace} % With respect to
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% English Abbreviations
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	\providecommand{\dr}{Dr.\ } % Doctor
 	\providecommand{\jr}{Jr.\ } % Junior
 	\providecommand{\mrs}{Mrs.\ } % Missis
 	\providecommand{\mr}{Mr.\ } % Mister
 	\providecommand{\ms}{Ms.\ } % Miss
 	\providecommand{\sr}{Sr.\ } % Senior
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Academic Abbreviations
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	\providecommand{\assocprof}{Assoc.\ \prof} % Associate Professor
 	\providecommand{\asstprof}{Asst.\ \prof} % Assistant Professor
 	\providecommand{\lect}{Lect.\ } % Lecturer
 	\providecommand{\prof}{Prof.\ } % Professor
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Titles and Honors
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	\providecommand{\ba}{B.A.\xspace} % Bachelor of Arts
 	\providecommand{\bsc}{B.Sc.\xspace} % Bachelor of Science
 	\providecommand{\eng}{Eng.\xspace} % Engineer
@@ -816,20 +821,20 @@
 	\providecommand{\md}{M.D.\xspace} % Doctor of Medicine
 	\providecommand{\msc}{M.Sc.\xspace} % Master of Science
 	\providecommand{\phd}{Ph.D.\xspace} % Doctor of Philosophy
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Time and Date
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	\providecommand{\ad}{A.D.\xspace} % Anno Domini
 	\providecommand{\am}{a.m.\xspace} % Ante Meridiem
 	\providecommand{\bc}{B.C.\xspace} % Before Christ
 	\providecommand{\pmtime}{p.m.\xspace} % Post Meridiem
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Miscellaneous
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	\providecommand{\ap}{A/p\xspace} % Attention
 	\providecommand{\comp}{Co.\xspace} % Company
 	\providecommand{\deptof}{Dept.\ of\xspace} % Department of
@@ -841,30 +846,30 @@
 	\providecommand{\ph}{Ph.\xspace} % Phone
 	\providecommand{\rf}{R/F\xspace} % Reference
 	\providecommand{\tel}{Tel.\xspace} % Telephone
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Commands for Text Formatting
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+				
 	% Code and URL Formatting
 	\providecommand*{\code}[1]{{\ttfamily#1}} % Code formatting
 	\providecommand{\urlref}[1]{\texttt{\href{#1}{#1}}} % Hyperlinked URLs
-		
+				
 	% Text Styles
 	\providecommand{\strike}{\bgroup\ULdepth=-.55ex\ULset} % Strike-through text
 	\providecommand{\keyword}[1]{\textsf{#1}} % Format for keywords
-		
+				
 	% Mathematical Formatting
 	\providecommand{\cat}[1]{\inmathsf{#1}} % Format for category names
 	\mathchardef\mathhyphen="2D % Hyphen in math
-		
+				
 	% Highlighting and Annotations
 	\providecommand{\missing}[1]{{\color{red}#1}} % Highlight missing or problematic text
 	\providecommand{\missingcitation}{\code{\small\color{red}<Citation Missing>}} % Format for missing citations
-		
+				
 	% Term Indexing
 	\providecommand{\term}[1]{{#1\index{#1}}} % Italicize and index terms
-		
+				
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 }
 
