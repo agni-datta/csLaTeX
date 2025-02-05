@@ -33,13 +33,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage[x11names, dvipsnames, svgnames]{xcolor} % Provides X11, SVG, and named colours
 \IfFileExists{csthm.sty}{%
-    	\RequirePackage[usenormalthm]{csthm} % Customises theorem environments
-    	\providecommand{\accentcolor}{black!75!RoyalBlue1} % Defines accent colour if not pre-specified
-    	\setaccentcolor{black!75!RoyalBlue1}
+	\RequirePackage[usenormalthm]{csthm} % Customises theorem environments
+	\providecommand{\accentcolor}{black!75!RoyalBlue1} % Defines accent colour if not pre-specified
+	\setaccentcolor{black!75!RoyalBlue1}
 	}{%
-    	\PackageWarning{csdirty}{The package `csthm` is not present. Please install it.}
-    	\providecommand{\accentcolor}{black!60} % Defines accent colour if not pre-specified
-    	\setaccentcolor{black!60}
+	\PackageWarning{csdirty}{The package `csthm` is not present. Please install it.}
+	\providecommand{\accentcolor}{black!60} % Defines accent colour if not pre-specified
 }
 \RequirePackage{xspace} % Adds intelligent spacing after commands
 
@@ -174,6 +173,7 @@
 \RequirePackage{lipsum} % Generates placeholder text
 \RequirePackage{pdfpages} % Includes external PDF pages
 \RequirePackage{xurl} % Supports URL line-breaking
+\RequirePackage[titles]{tocloft} % Load the tocloft package for customising the table of contents
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Captions                                                               %%
@@ -200,61 +200,152 @@
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	%% Compatibility Adjustments for Specific Document Classes                %%
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+							
 	% llncs class adjustments
 	\@ifclassloaded{llncs}{%
 		\RequirePackage{etoolbox}
 		\setlength{\belowcaptionskip}{-10pt}
 		}{}
-			
+								
 	% amsart class adjustments
 	\@ifclassloaded{amsart}{%
 		\RequirePackage[foot]{amsaddr}
 		}{}
-			
-	% article class adjustments
-	\@ifclassloaded{article}{%
+								
+	% Common formatting commands for all classes
+	\newcommand{\sethepfonts}{%
+		% Load hep-title package and set title, author, affiliation, and date fonts
 		\RequirePackage{hep-title}
 		\titlefont{\normalfont\huge\scshape}
 		\authorfont{\normalfont\normalsize\large\scshape}
 		\affiliationfont{\normalfont\normalsize\scshape}
 		\datefont{\normalfont\small\scshape}
+		% Ensure consistent section title formatting
 		\RequirePackage{titlesec}
-		\titleformat*{\section}{\Large\sffamily}
-		\titleformat*{\subsection}{\large\sffamily}
-		\titleformat*{\subsubsection}{\normalsize\sffamily}
-		\titleformat*{\paragraph}{\normalsize\bfseries}
-		\titleformat*{\subparagraph}{\normalsize\scshape}
+	}
+
+	% Define a custom command to adjust TOC spacing
+	\newcommand{\adjusttocspacing}[3]{%
+		\addtolength{\cftchapnumwidth}{#1}   % Adjust chapter number width
+		\addtolength{\cftsecnumwidth}{#2}   % Adjust section number width
+		\addtolength{\cftsubsecnumwidth}{#3} % Adjust subsection number width
+	}
+			
+	% Formatting for chapters (specific to report and book classes)
+	\newcommand{\setchapterformat}{%
+		% Roman numeral chapter numbering
+		\renewcommand{\thechapter}{\Roman{chapter}}
+		% Chapter title format: display style with horizontal rules
+		\titleformat{\chapter}[display]
+		{\commonheadingfont\huge}
+		{\filleft\textrm{\textsc{\chaptertitlename}\Huge~\textbf{\thechapter}}}
+		{4ex}
+		{\titlerule\vspace{2ex}\filright}
+		[\vspace{2ex}\titlerule]
+	}
+				
+	% Formatting for sections, subsections, paragraphs, etc.
+	\newcommand{\setsectionformats}{%
+		\titleformat{\section}{\commonheadingfont\LARGE}{\thesection}{1em}{}
+		\titleformat{\subsection}{\commonheadingfont\Large}{\thesubsection}{1em}{}
+		\titleformat{\subsubsection}{\commonheadingfont\large}{\thesubsubsection}{1em}{}
+		\titleformat{\paragraph}[runin]{\normalsize\bfseries}{\theparagraph}{1em}{}
+		\titleformat{\subparagraph}[runin]{\normalsize\scshape}{\thesubparagraph}{1em}{}
+	}
+	
+	% Define a reusable command for setting up the fancy header
+	\newcommand{\simplefancyheader}{%
+		% Load the fancyhdr package for custom headers and footers
+		\RequirePackage{fancyhdr}
+		\pagestyle{fancy}       % Activate the fancy header style
+		\fancyhf{}              % Clear all default header/footer content
+		\fancyhead[LE,RO]{\sffamily\@title} % Chapter name on left pages (even)
+		\fancyhead[RE,LO]{\sffamily\thepage}  % Page number on right pages (odd)
+		\fancyfoot{}                        % Clear the footer
+		\setlength{\headheight}{12pt}        % Adjust header height (avoids warnings)
+	}
+	
+	% Example usage in the document preamble:
+	% \simplefancyheader
+	
+				
+	% Adjustments for article class
+	\@ifclassloaded{article}{%
+		% Apply common hep-title fonts
+		\sethepfonts
+		% Define a consistent heading font style
+		\providecommand{\commonheadingfont}{\normalfont\sffamily}
+		% Article-specific title formatting
+		\setsectionformats
+		% Abstract formatting
 		\renewenvironment{abstract}{%
 			\quotation\small
 			\textbf{\abstractname.}
 			}{\endquotation}
 		}{}
-		
+				
+	% Adjustments for report class
+	\@ifclassloaded{report}{%
+		% Apply common hep-title fonts and chapter formatting
+		\sethepfonts
+		% Define a consistent heading font style
+		\providecommand{\commonheadingfont}{\normalfont\sffamily}
+		\setchapterformat
+		% Apply section-level formatting
+		\setsectionformats
+		% Example usage: adjust TOC spacing
+		\adjusttocspacing{10pt}{10pt}{7.5pt}
+		% Abstract formatting
+		\renewenvironment{abstract}{%
+			\quotation\small
+			\textbf{\abstractname.}
+			}{\endquotation}
+		\simplefancyheader
+		}{}
+				
+	% Adjustments for book class
+	\@ifclassloaded{book}{%
+		% Apply common hep-title fonts and chapter formatting
+		\sethepfonts
+		% Define a consistent heading font style
+		\providecommand{\commonheadingfont}{\normalfont\sffamily}
+		\setchapterformat
+		% Apply section-level formatting
+		\setsectionformats
+		% Example usage: adjust TOC spacing
+		\adjusttocspacing{10pt}{10pt}{7.5pt}
+		% Abstract formatting
+		\newenvironment{abstract}{%
+			\quotation\small
+			\textbf{\abstractname.}
+			}{\endquotation}
+		\simplefancyheader
+		}{}
+							
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	%% Command Definitions                                                    %%
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
+							
 	% Define a command for author notes with an accent color
 	\providecommand{\authnote}[1]{\textcolor{\accentcolor}{\textsf{#1~A.D.}}}
-		
+							
 	% Define a command for paragraphs without a dot after the heading
 	\providecommand{\paragraphnodot}[1]{\smallskip\noindent{\normalfont\bfseries#1}}
-		
+							
 	% Redefine the paragraph to add a period after the heading
 	\let\paragraph\relax
 	\providecommand{\paragraph}[1]{\smallskip\noindent{\normalfont\bfseries#1.}}
-		
+							
 	% Save the original table of contents command
 	\let\oldtableofcontents\tableofcontents
-		
+							
 	% Redefine the table of contents to add page breaks before and after
 	\renewcommand{\tableofcontents}{%
 		\vfill\pagebreak        % Add page break before TOC
 		\oldtableofcontents      % Original TOC
 		\vfill\pagebreak        % Add page break after TOC
 	}
-		
+							
 	% Define the bibliographyprint command
 	% Example usage: \bibliographyprint{acm}{bibliography}
 	% #1 = bibliography style, #2 = .bib files
@@ -266,10 +357,10 @@
 		\bibliography{#2}        % Set .bib files
 		\endgroup
 	}
-		
+							
 	% Save the original appendix command
 	\let\oldappendix\appendix
-		
+							
 	% Redefine the appendix command to add it to TOC and title it as "Appendix"
 	\renewcommand{\appendix}{%
 		\section*{Appendix}        % Title for the Appendix section (without numbering)
@@ -278,33 +369,64 @@
 	}
 }
 
-% Define toggles for versioning and comments
-\newif\ifFullVersion  % Toggle for full version
-\newif\ifShortVersion % Toggle for short version
-\newif\ifComments     % Toggle for displaying comments
+% Provide clear documentation for users
+% -----------------------------------------------------------------------------
+% Usage:
+% 1. To enable the full version, use \fullversion in the preamble.
+% 2. To enable the short version, use \shortversion in the preamble.
+% 3. To enable comments, use \usecomments in the preamble.
+% 
+% The \newcomment command allows the creation of structured comments:
+%   \newcomment{Author}{Color}{MacroName}
+% Example:
+%   \newcomment{John}{red}{johncomment}
+% Then use:
+%   \johncomment{This is a comment.}
+%
+% -----------------------------------------------------------------------------
 
-% Set default configuration (can be modified in the document preamble)
-\FullVersiontrue      % Set this to 'true' for the full version
-\Commentsfalse        % Set this to 'true' to enable comments
+% Package options and toggle definitions for versioning and comments
+\newif\ifFullVersion    % Toggle for full version
+\newif\ifShortVersion   % Toggle for short version
+\newif\ifComments       % Toggle for enabling comments
 
-% Automatically set the opposite version if the full version is active
+% Default settings (modifiable in the document preamble)
+\FullVersionfalse        % Default: Full version disabled
+\ShortVersiontrue        % Default: Short version enabled
+\Commentsfalse           % Default: Comments disabled
+
+% Automatically adjust short/full version toggles to maintain exclusivity
 \ifFullVersion
-    \ShortVersionfalse  % Full version enabled, short version disabled
-\else
-    \ShortVersiontrue   % Short version enabled, full version disabled
+\ShortVersionfalse     % Disable short version if full version is enabled
 \fi
 
-% Define the generic \newcomment command
+% Define user-level commands for switching versions
+\newcommand{\fullversion}{%
+	\FullVersiontrue
+	\ShortVersionfalse
+}
+
+\newcommand{\shortversion}{%
+	\ShortVersiontrue
+	\FullVersionfalse
+}
+
+% Define a command to enable comments
+\newcommand{\usecomments}{%
+	\Commentstrue
+}
+
+% Generic \newcomment command for adding structured comments
 \newcommand{\newcomment}[3]{%
-    \ifComments
-        % If comments are enabled, define the comment macro
-        \expandafter\newcommand\csname #3\endcsname[1]{%
-            {\noindent\textcolor{#2}{\sffamily ##1 -- $\mathsf{#1}$}}%
-        }%
-    \else
-        % If comments are disabled, define the comment macro as a no-op
-        \expandafter\newcommand\csname #3\endcsname[1]{}%
-    \fi
+	\ifComments
+	% Define a visible comment macro if comments are enabled
+	\expandafter\newcommand\csname #3\endcsname[1]{%
+		\noindent\textcolor{#2}{\sffamily ##1 -- $\mathsf{#1}$}%
+	}%
+	\else
+	% Define the comment macro as a no-op if comments are disabled
+	\expandafter\newcommand\csname #3\endcsname[1]{}%
+	\fi
 }
 
 \makeatother
