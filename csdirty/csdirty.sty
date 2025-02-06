@@ -17,29 +17,23 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Mathematical Tools and Fonts                                            %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{amsfonts} % Loads AMS fonts (e.g., blackboard bold)
-\RequirePackage{amsmath} % Provides advanced mathematical environments
-\RequirePackage{amssymb} % Adds supplementary mathematical symbols
-\RequirePackage{amsthm} % Creates theorem environments
-\RequirePackage{bm} % Enables bold mathematical symbols
-\RequirePackage{mathrsfs} % Supports script-style mathematical fonts
-\RequirePackage{mathtools} % Extends mathematical functionality
-\RequirePackage{nicefrac} % Improves diagonal fractions
-\RequirePackage{siunitx} % Handles units and numerical data
-\RequirePackage[cal=cm, bb=bboldx]{mathalpha} % Customises calligraphic and blackboard bold fonts
+\RequirePackage[T1]{fontenc} % Type 1 font encoding for better output
+\RequirePackage{amsfonts} % AMS fonts for symbols like blackboard bold
+\RequirePackage{amsmath} % Advanced math environments (e.g., align, cases)
+\RequirePackage{amssymb} % Additional symbols like \mathbb and \mathfrak
+\RequirePackage{amsthm} % Provides theorem-like environments (e.g., theorem, lemma)
+\RequirePackage{bm} % Bold math symbols using \bm{}
+\RequirePackage{mathrsfs} % Script-style mathematical fonts (\mathscr{})
+\RequirePackage{mathtools} % Enhances amsmath with extra features
+\RequirePackage{nicefrac} % Provides nicer fraction formatting (\nicefrac)
+\RequirePackage{siunitx} % Consistent handling of units and numbers
+\RequirePackage{lmodern} % Load Latin Modern font
+\RequirePackage[cal=cm, bb=bboldx]{mathalpha} % Customizes calligraphic and bbold fonts
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Colour Management                                                       %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage[x11names, dvipsnames, svgnames]{xcolor} % Provides X11, SVG, and named colours
-\IfFileExists{csthm.sty}{%
-	\RequirePackage[usenormalthm]{csthm} % Customises theorem environments
-	\providecommand{\accentcolor}{black!75!RoyalBlue1} % Defines accent colour if not pre-specified
-	\setaccentcolor{black!75!RoyalBlue1}
-	}{%
-	\PackageWarning{csdirty}{The package `csthm` is not present. Please install it.}
-	\providecommand{\accentcolor}{black!60} % Defines accent colour if not pre-specified
-}
 \RequirePackage{xspace} % Adds intelligent spacing after commands
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -83,9 +77,9 @@
 	bookmarksnumbered=true,       % Numbers bookmarks for easier navigation
 	breaklinks=true,              % Enables line-breaking in links
 	colorlinks=true,              % Activates coloured hyperlinks
-	linkcolor=SlateBlue1,         % Specifies link colour
+	linkcolor=SlateBlue3,         % Specifies link colour
 	citecolor=MediumPurple1,      % Specifies citation link colour
-	urlcolor=RoyalBlue1,          % Specifies URL link colour
+	urlcolor=RoyalBlue3,          % Specifies URL link colour
 	pdfusetitle,                  % Allow PDF to have bibliographic details
 	pagebackref                   % Allow for back-references to objects
 ]{hyperref}
@@ -122,8 +116,8 @@
 \setlist{nosep} % Removes extra list spacing
 \setlist[enumerate,1]{label=(\arabic*)} % Configures first-level enumerations
 \setlist[enumerate,2]{label=(\alph*)} % Configures second-level enumerations
-\setlist[itemize,1]{label=\ensuremath{\color{\accentcolor}\bullet}} % Sets primary list bullet style
-\setlist[itemize,2]{label=\ensuremath{\color{\accentcolor}\circ}} % Sets secondary list bullet style
+\setlist[itemize,1]{label=\ensuremath{\color{Blue4}\bullet}} % Sets primary list bullet style
+\setlist[itemize,2]{label=\ensuremath{\color{Blue4}\circ}} % Sets secondary list bullet style
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Diagrams and Graphics                                                  %%
@@ -158,31 +152,21 @@
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Cryptography and Complexity Theory                                     %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\IfFileExists{tcscrypto.sty}{%
-	\RequirePackage{tcscrypto} % Adds cryptography and complexity theory symbols
-	}{%
-	\PackageWarning{csdirty}{The package `tcscrypto` is not present. Please install it.}
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Miscellaneous Enhancements                                             %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage{etoolbox} % Implements conditional logic
 \RequirePackage{lipsum} % Generates placeholder text
 \RequirePackage{pdfpages} % Includes external PDF pages
 \RequirePackage{xurl} % Supports URL line-breaking
-\RequirePackage[titles]{tocloft} % Load the tocloft package for customising the table of contents
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Captions                                                               %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage[%
 	font={rm},                            % Sets captions to sans-serif font
-	labelfont={color=\accentcolor,sf},    % Configures label font and colour
+	labelfont={color=Blue4,sf},            % Configures label font and colour
 	labelsep=period,                      % Separates label and content with a period
-	skip=1em                               % Adds spacing before captions
+	skip=1em                              % Adds spacing before captions
 ]{caption}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -196,177 +180,165 @@
 	titletoc    % Prefixes appendix entries in the TOC
 ]{appendix}
 
-\AtBeginDocument{%
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	%% Compatibility Adjustments for Specific Document Classes                %%
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-							
-	% llncs class adjustments
-	\@ifclassloaded{llncs}{%
-		\RequirePackage{etoolbox}
-		\setlength{\belowcaptionskip}{-10pt}
-		}{}
-								
-	% amsart class adjustments
-	\@ifclassloaded{amsart}{%
-		\RequirePackage[foot]{amsaddr}
-		}{}
-								
-	% Common formatting commands for all classes
-	\newcommand{\sethepfonts}{%
-		% Load hep-title package and set title, author, affiliation, and date fonts
-		\RequirePackage{hep-title}
-		\titlefont{\normalfont\huge\scshape}
-		\authorfont{\normalfont\normalsize\large\scshape}
-		\affiliationfont{\normalfont\normalsize\scshape}
-		\datefont{\normalfont\small\scshape}
-		% Ensure consistent section title formatting
-		\RequirePackage{titlesec}
-	}
-
-	% Define a custom command to adjust TOC spacing
-	\newcommand{\adjusttocspacing}[3]{%
-		\addtolength{\cftchapnumwidth}{#1}   % Adjust chapter number width
-		\addtolength{\cftsecnumwidth}{#2}   % Adjust section number width
-		\addtolength{\cftsubsecnumwidth}{#3} % Adjust subsection number width
-	}
-			
-	% Formatting for chapters (specific to report and book classes)
-	\newcommand{\setchapterformat}{%
-		% Roman numeral chapter numbering
-		\renewcommand{\thechapter}{\Roman{chapter}}
-		% Chapter title format: display style with horizontal rules
-		\titleformat{\chapter}[display]
-		{\commonheadingfont\huge}
-		{\filleft\textrm{\textsc{\chaptertitlename}\Huge~\textbf{\thechapter}}}
-		{4ex}
-		{\titlerule\vspace{2ex}\filright}
-		[\vspace{2ex}\titlerule]
-	}
-				
-	% Formatting for sections, subsections, paragraphs, etc.
-	\newcommand{\setsectionformats}{%
-		\titleformat{\section}{\commonheadingfont\LARGE}{\thesection}{1em}{}
-		\titleformat{\subsection}{\commonheadingfont\Large}{\thesubsection}{1em}{}
-		\titleformat{\subsubsection}{\commonheadingfont\large}{\thesubsubsection}{1em}{}
-		\titleformat{\paragraph}[runin]{\normalsize\bfseries}{\theparagraph}{1em}{}
-		\titleformat{\subparagraph}[runin]{\normalsize\scshape}{\thesubparagraph}{1em}{}
-	}
-	
-	% Define a reusable command for setting up the fancy header
-	\newcommand{\simplefancyheader}{%
-		% Load the fancyhdr package for custom headers and footers
-		\RequirePackage{fancyhdr}
-		\pagestyle{fancy}       % Activate the fancy header style
-		\fancyhf{}              % Clear all default header/footer content
-		\fancyhead[LE,RO]{\sffamily\@title} % Chapter name on left pages (even)
-		\fancyhead[RE,LO]{\sffamily\thepage}  % Page number on right pages (odd)
-		\fancyfoot{}                        % Clear the footer
-		\setlength{\headheight}{12pt}        % Adjust header height (avoids warnings)
-	}
-	
-	% Example usage in the document preamble:
-	% \simplefancyheader
-	
-				
-	% Adjustments for article class
-	\@ifclassloaded{article}{%
-		% Apply common hep-title fonts
-		\sethepfonts
-		% Define a consistent heading font style
-		\providecommand{\commonheadingfont}{\normalfont\sffamily}
-		% Article-specific title formatting
-		\setsectionformats
-		% Abstract formatting
-		\renewenvironment{abstract}{%
-			\quotation\small
-			\textbf{\abstractname.}
-			}{\endquotation}
-		}{}
-				
-	% Adjustments for report class
-	\@ifclassloaded{report}{%
-		% Apply common hep-title fonts and chapter formatting
-		\sethepfonts
-		% Define a consistent heading font style
-		\providecommand{\commonheadingfont}{\normalfont\sffamily}
-		\setchapterformat
-		% Apply section-level formatting
-		\setsectionformats
-		% Example usage: adjust TOC spacing
-		\adjusttocspacing{10pt}{10pt}{7.5pt}
-		% Abstract formatting
-		\renewenvironment{abstract}{%
-			\quotation\small
-			\textbf{\abstractname.}
-			}{\endquotation}
-		\simplefancyheader
-		}{}
-				
-	% Adjustments for book class
-	\@ifclassloaded{book}{%
-		% Apply common hep-title fonts and chapter formatting
-		\sethepfonts
-		% Define a consistent heading font style
-		\providecommand{\commonheadingfont}{\normalfont\sffamily}
-		\setchapterformat
-		% Apply section-level formatting
-		\setsectionformats
-		% Example usage: adjust TOC spacing
-		\adjusttocspacing{10pt}{10pt}{7.5pt}
-		% Abstract formatting
-		\newenvironment{abstract}{%
-			\quotation\small
-			\textbf{\abstractname.}
-			}{\endquotation}
-		\simplefancyheader
-		}{}
-							
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	%% Command Definitions                                                    %%
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-							
-	% Define a command for author notes with an accent color
-	\providecommand{\authnote}[1]{\textcolor{\accentcolor}{\textsf{#1~A.D.}}}
-							
-	% Define a command for paragraphs without a dot after the heading
-	\providecommand{\paragraphnodot}[1]{\smallskip\noindent{\normalfont\bfseries#1}}
-							
-	% Redefine the paragraph to add a period after the heading
-	\let\paragraph\relax
-	\providecommand{\paragraph}[1]{\smallskip\noindent{\normalfont\bfseries#1.}}
-							
-	% Save the original table of contents command
-	\let\oldtableofcontents\tableofcontents
-							
-	% Redefine the table of contents to add page breaks before and after
-	\renewcommand{\tableofcontents}{%
-		\vfill\pagebreak        % Add page break before TOC
-		\oldtableofcontents      % Original TOC
-		\vfill\pagebreak        % Add page break after TOC
-	}
-							
-	% Define the bibliographyprint command
-	% Example usage: \bibliographyprint{acm}{bibliography}
-	% #1 = bibliography style, #2 = .bib files
-	\providecommand{\bibliographyprint}[2]{%
-		\begingroup
-		\small\singlespacing     % Set small font and single spacing
-		\bibliographystyle{#1}   % Set bibliography style
-		\addcontentsline{toc}{section}{References}  % Add "References" to TOC
-		\bibliography{#2}        % Set .bib files
-		\endgroup
-	}
-							
-	% Save the original appendix command
-	\let\oldappendix\appendix
-							
-	% Redefine the appendix command to add it to TOC and title it as "Appendix"
-	\renewcommand{\appendix}{%
-		\section*{Appendix}        % Title for the Appendix section (without numbering)
-		\addcontentsline{toc}{section}{Appendix} % Add "Appendix" to the Table of Contents
-		\oldappendix              % Call the original \appendix functionality (e.g., switching to appendix mode)
-	}
+\AtEndOfPackage{%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %% Compatibility Adjustments for Specific Document Classes                   %%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    % Command to load 'csthm' package if available
+    \newcommand{\loadcsthm}{%
+        \IfFileExists{csthm.sty}{%
+            \RequirePackage[usenormalthm]{csthm} % Load csthm for theorems
+            \providecommand{\accentcolor}{Blue4} % Set default accent color
+            \setaccentcolor{Blue4} % Apply accent color
+        }{%
+            \PackageWarning{csdirty}{The package `csthm` is missing. Please install it.} % Warn if missing
+            \providecommand{\accentcolor}{Blue4} % Fallback accent color
+        }
+    }
+    
+    % Adjustments for 'llncs' class
+    \@ifclassloaded{llncs}{%
+        \RequirePackage{etoolbox} % Load etoolbox for further tweaks
+        \setlength{\belowcaptionskip}{-10pt} % Reduce space below captions
+    }{}
+    
+    % Adjustments for 'amsart' class
+    \@ifclassloaded{amsart}{%
+        \loadcsthm % Load csthm for theorems
+        \RequirePackage[foot]{amsaddr} % For footnotes in author addresses
+    }{}
+    
+    % Common font and title settings
+    \newcommand{\sethepfonts}{%
+        \RequirePackage{hep-title} % Load hep-title for fonts
+        \titlefont{\normalfont\huge\scshape} % Set title font
+        \authorfont{\normalfont\normalsize\large\scshape} % Set author font
+        \affiliationfont{\normalfont\normalsize\scshape} % Set affiliation font
+        \datefont{\normalfont\small\scshape} % Set date font
+        \RequirePackage{titlesec} % Ensure section title formatting
+        \RequirePackage[titles]{tocloft} % Load the tocloft package for customising the table of contents
+    }
+    
+    % Adjust TOC spacing for chapter, section, subsection
+    \newcommand{\adjusttocspacing}[3]{%
+        \addtolength{\cftchapnumwidth}{#1} % Adjust chapter width
+        \addtolength{\cftsecnumwidth}{#2} % Adjust section width
+        \addtolength{\cftsubsecnumwidth}{#3} % Adjust subsection width
+    }
+    
+    % Formatting for chapters (Roman numerals, rules)
+    \newcommand{\setchapterformat}{%
+        \renewcommand{\thechapter}{\Roman{chapter}} % Roman numerals for chapters
+        \titleformat{\chapter}[display] % Chapter title format
+            {\commonheadingfont\huge}
+            {\filleft\textrm{\textsc{\chaptertitlename}\Huge~\textbf{\thechapter}}}
+            {4ex}
+            {\titlerule\vspace{2ex}\filright}
+            [\vspace{2ex}\titlerule]
+    }
+    
+    % Section, subsection, and paragraph formatting
+    \newcommand{\setsectionformats}{%
+        \titleformat{\section}{\commonheadingfont\LARGE}{\thesection}{1em}{} % Section format
+        \titleformat{\subsection}{\commonheadingfont\Large}{\thesubsection}{1em}{} % Subsection format
+        \titleformat{\subsubsection}{\commonheadingfont\large}{\thesubsubsection}{1em}{} % Subsubsection format
+        \titleformat{\paragraph}[runin]{\normalsize\bfseries}{\theparagraph}{1em}{} % Paragraph format
+        \titleformat{\subparagraph}[runin]{\normalsize\scshape}{\thesubparagraph}{1em}{} % Subparagraph format
+    }
+    
+    % Simple custom header with page numbers and document title
+    \newcommand{\simplefancyheader}{%
+        \RequirePackage{fancyhdr} % Load fancyhdr for custom header
+        \pagestyle{fancy} % Set page style to fancy
+        \fancyhf{} % Clear default header/footer
+        \fancyhead[LE,RO]{\sffamily\@title} % Title on left (even), right (odd) pages
+        \fancyhead[RE,LO]{\sffamily\thepage} % Page number on right (odd), left (even)
+        \fancyfoot{} % Clear footer
+        \setlength{\headheight}{12pt} % Adjust header height
+    }
+    
+    % Adjustments for the 'article' class
+    \@ifclassloaded{article}{%
+        \loadcsthm % Load csthm for theorems
+        \sethepfonts % Apply hep-title fonts
+        \providecommand{\commonheadingfont}{\normalfont\sffamily} % Set common heading font
+        \setsectionformats % Apply section formatting
+        \renewenvironment{abstract}{%
+            \quotation\small
+            \textbf{\abstractname.}
+        }{\endquotation} % Format abstract
+    }{}
+    
+    % Adjustments for the 'report' class
+    \@ifclassloaded{report}{%
+        \loadcsthm % Load csthm for theorems
+        \sethepfonts % Apply hep-title fonts
+        \providecommand{\commonheadingfont}{\normalfont\sffamily} % Set common heading font
+        \setchapterformat % Apply chapter formatting
+        \setsectionformats % Apply section formatting
+        \adjusttocspacing{10pt}{10pt}{7.5pt} % Adjust TOC spacing
+        \renewenvironment{abstract}{%
+            \quotation\small
+            \textbf{\abstractname.}
+        }{\endquotation} % Format abstract
+        \simplefancyheader % Apply simple header
+    }{}
+    
+    % Adjustments for the 'book' class
+    \@ifclassloaded{book}{%
+        \loadcsthm % Load csthm for theorems
+        \sethepfonts % Apply hep-title fonts
+        \providecommand{\commonheadingfont}{\normalfont\sffamily} % Set common heading font
+        \setchapterformat % Apply chapter formatting
+        \setsectionformats % Apply section formatting
+        \adjusttocspacing{10pt}{10pt}{7.5pt} % Adjust TOC spacing
+        \newenvironment{abstract}{%
+            \quotation\small
+            \textbf{\abstractname.}
+        }{\endquotation} % Format abstract
+        \simplefancyheader % Apply simple header
+    }{}
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %% Command Definitions                                                      %%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    % Author note with accent color
+    \providecommand{\authnote}[1]{\textcolor{\accentcolor}{\textsf{#1~A.D.}}}
+    
+    % Paragraph without period after the heading
+    \providecommand{\paragraphnodot}[1]{\smallskip\noindent{\normalfont\bfseries#1}}
+    
+    % Redefine paragraph command to add a period after heading
+    \let\paragraph\relax
+    \providecommand{\paragraph}[1]{\smallskip\noindent{\normalfont\bfseries#1.}}
+    
+    % Custom table of contents with page breaks
+    \let\oldtableofcontents\tableofcontents
+    \renewcommand{\tableofcontents}{%
+        \vfill\pagebreak % Page break before TOC
+        \oldtableofcontents % Display original TOC
+        \vfill\pagebreak % Page break after TOC
+    }
+    
+    % Print bibliography with specified style and .bib files
+    \providecommand{\bibliographyprint}[2]{%
+        \begingroup
+        \small\singlespacing % Small font, single-spaced
+        \bibliographystyle{#1} % Set bibliography style
+        \addcontentsline{toc}{section}{References} % Add to TOC
+        \bibliography{#2} % Load .bib files
+        \endgroup
+    }
+    
+    % Redefine appendix command and add it to TOC
+    \let\oldappendix\appendix
+    \renewcommand{\appendix}{%
+        \section*{Appendix} % Title for Appendix section
+        \addcontentsline{toc}{section}{Appendix} % Add to TOC
+        \oldappendix % Call original appendix functionality
+    }
 }
 
 % Provide clear documentation for users
@@ -427,6 +399,15 @@
 	% Define the comment macro as a no-op if comments are disabled
 	\expandafter\newcommand\csname #3\endcsname[1]{}%
 	\fi
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Cryptography and Complexity Theory                                     %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\IfFileExists{tcscrypto.sty}{%
+	\RequirePackage{tcscrypto} % Adds cryptography and complexity theory symbols
+	}{%
+	\PackageWarning{csdirty}{The package `tcscrypto` is not present. Please install it.}
 }
 
 \makeatother
