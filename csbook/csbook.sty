@@ -1208,14 +1208,21 @@ postamble "\n\\end{theindex}\n"
 \newif\ifComments % Toggle for displaying comments
 \Commentsfalse % Set to 'true' to enable comments
 
-% Define comment macro
+% Define a command to enable comments
+\newcommand{\usecomments}{%
+	\Commentstrue
+}
+
+% Generic \newcomment command for adding structured comments
 \newcommand{\newcomment}[3]{%
 	\ifComments
-		\expandafter\newcommand\csname #3\endcsname[1]{%
-			{\noindent\textcolor{#2}{\sffamily ##1 -- $\mathsf{#1}$}}%
-		}%
+	% Define a visible comment macro if comments are enabled
+	\expandafter\newcommand\csname #3\endcsname[1]{%
+		\noindent\textcolor{#2}{\sffamily ##1 -- $\mathsf{#1}$}%
+	}%
 	\else
-		\expandafter\newcommand\csname #3\endcsname[1]{}%
+	% Define the comment macro as a no-op if comments are disabled
+	\expandafter\newcommand\csname #3\endcsname[1]{}%
 	\fi
 }
 
