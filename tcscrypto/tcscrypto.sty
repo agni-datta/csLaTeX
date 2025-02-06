@@ -27,7 +27,7 @@
 ]{cryptocode} % Macros for cryptography
 \RequirePackage{xspace} % Automatically manage spaces after commands
 
-\AtEndPreamble{%
+\AtEndOfPackage{%
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% Font Styles
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -108,7 +108,6 @@
 	\providecommand{\out}{\inmathsf{output}} % Output function
 	\providecommand{\pp}{\inmathsf{pp}} % Public parameters
 	\providecommand{\probgen}{\inmathsf{ProbGen}} % Probabilistic generator function
-	\providecommand{\protocol}{\inmath{\BbbPi}} % Cryptographic protocol notation
 	\providecommand{\prover}{\inmathcal{P}} % Prover in a cryptographic protocol
 	\providecommand{\prove}{\inmathsf{Prove}} % Proof generation function
 	\providecommand{\qq}{\inmathsf{qq}} % General parameter notation
@@ -144,6 +143,8 @@
 	\providecommand{\CDH}{\ComplexityFont{CDH}} % Computational Diffie-Hellman problem
 	\providecommand{\DDH}{\ComplexityFont{DDH}} % Decisional Diffie-Hellman problem
 	\providecommand{\DLP}{\ComplexityFont{DLP}} % Discrete Logarithm Problem
+	\providecommand{\DLE}{\ComplexityFont{DLE}} % Discrete Logarithm Equality
+	\providecommand{\DLD}{\ComplexityFont{DLD}} % Discrete Logarithm Difference
 	\providecommand{\ECC}{\ComplexityFont{ECC}} % Elliptic Curve Cryptography
 	\providecommand{\ECDH}{\ComplexityFont{ECDH}} % Elliptic Curve Diffie-Hellman
 	\providecommand{\ECDLP}{\ComplexityFont{ECDLP}} % Elliptic Curve Discrete Logarithm Problem
