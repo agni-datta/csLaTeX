@@ -27,16 +27,19 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Option Definitions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newbool{usefancythm}       % Enable fancy theorem formatting
-\newbool{usenormalthm}      % Enable standard theorem formatting
+\newbool{fancy}       % Enable fancy theorem formatting
+\newbool{normal}      % Enable standard theorem formatting
+\newbool{oldschool}   % Enable oldschool theorem formatting
 
 % Default Boolean Initialization
-\setbool{usefancythm}{false}
-\setbool{usenormalthm}{false}
+\setbool{fancy}{false}
+\setbool{normal}{false}
+\setbool{oldschool}{false}
 
 % Option Definitions
-\DeclareOption{usefancythm}{\setbool{usefancythm}{true}}
-\DeclareOption{usenormalthm}{\setbool{usenormalthm}{true}}
+\DeclareOption{fancy}{\setbool{fancy}{true}}
+\DeclareOption{normal}{\setbool{normal}{true}}
+\DeclareOption{oldschool}{\setbool{oldschool}{true}}
 
 % Handle Unrecognized Options
 \DeclareOption*{\PackageWarning{csbook}{Unrecognized option '\CurrentOption'}}
@@ -63,318 +66,392 @@
 \RequirePackage[x11names, dvipsnames, svgnames]{xcolor} % X11, SVG, and named colors
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Color and Font Definitions
+% Color and Font Definitions for the csthm package
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand{\accentcolor}{blue!50!black}  % Default accent color
-\providecommand{\setaccentcolor}[1]{\renewcommand{\accentcolor}{#1}}  % Set custom accent color
+% --- Accent Color Settings ---
+\providecommand{\accentcolor}{gray}%
+\providecommand{\setaccentcolor}[1]{\renewcommand{\accentcolor}{#1}}%
 
-\providecommand{\commonfont}{\color{\accentcolor}\sffamily}  % Common font with accent color and sans-serif
-\providecommand{\commonsymb}{\ensuremath{\color{\accentcolor}\lrcorner}}  % Common symbol with accent color
+% --- Common Font and Symbol ---
+\newcommand{\commonthmfont}{\sffamily}%
+\newcommand{\commonthmsymb}{\ensuremath{\color{\accentcolor}\lrcorner}}%
 
-\renewcommand{\qedsymbol}{$\scriptstyle\color{\accentcolor}\blacksquare$}  % Custom QED symbol in accent color
-\providecommand{\csthmpkg}{\textsf{csthm}}  % Reference to the csthm package
+% --- Heading Fonts ---
+\newcommand{\thmheadfont}{\sffamily}%
+\newcommand{\defnheadfont}{\sffamily}%
+\newcommand{\remarkheadfont}{\sffamily}%
+\newcommand{\hltheadfont}{\sffamily}%
+
+% --- Body Fonts ---
+\providecommand{\thmfont}{\normalfont}%
+\providecommand{\defnfont}{\normalfont}%
+\providecommand{\remarkfont}{\normalfont}%
+\providecommand{\hltfont}{\normalfont\sffamily}%
+
+% --- Environment Symbols ---
+\newcommand{\thmsymb}{\ensuremath{\color{\accentcolor}\scriptstyle\blacktriangleright}}%
+\newcommand{\defnsymb}{\ensuremath{\color{\accentcolor}\scriptstyle\blacksquare}}%
+\newcommand{\remarksymb}{\ensuremath{\color{\accentcolor}\scriptstyle\vartriangleright}}%
+\newcommand{\hltsymb}{\ensuremath{\color{\accentcolor}\scriptstyle\square}}%
+
+% --- QED Symbol ---
+\renewcommand{\qedsymbol}{$\scriptstyle\color{\accentcolor}\blacksquare$}%
+
+% --- Package Reference ---
+\newcommand{\csthmpkg}{\textsf{csthm}}%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Case List and Environment Definitions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newlist{caseList}{enumerate}{1}  % Define a new list type 'caseList' based on 'enumerate'
-\setlist[caseList]{label=\textbf{Case~\arabic*:}, leftmargin=*}  % Customize 'caseList' labels
+% --- Case List Definition ---
+\newlist{caseList}{enumerate}{1}% Define a new list type 'caseList'
+\setlist[caseList]{label=\textbf{Case~\arabic*:}, leftmargin=*}% Customize 'caseList' labels
 
-\NewDocumentEnvironment{case}{O{}}{%
-	\begin{caseList}[#1]  % Begin 'caseList' with an optional argument for customization
+\NewDocumentEnvironment{case}{O{}}{% Begin 'case' environment with optional argument
+	\begin{caseList}[#1]%
 		}{%
-	\end{caseList}  % End 'caseList'
+	\end{caseList}% End 'case' environment
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Definition of New Environments
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+% --- Definition of New Environments ---
 \newcommand{\basicenv}{%
 	% Theorem-like Environments
-	\declaretheorem[style=thmstyle,name=Theorem]{theorem}
-	\declaretheorem[style=thmstyle,name=Assertion]{assertion}
-	\declaretheorem[style=thmstyle,name=Assumption]{assumption}
-	\declaretheorem[style=thmstyle,name=Axiom]{axiom}
-	\declaretheorem[style=thmstyle,name=Claim]{claim}
-	\declaretheorem[style=thmstyle,name=Conclusion]{conclusion}
-	\declaretheorem[style=thmstyle,name=Conjecture]{conjecture}
-	\declaretheorem[style=thmstyle,name=Corollary]{corollary}
-	\declaretheorem[style=thmstyle,name=Fact]{fact}
-	\declaretheorem[style=thmstyle,name=Hypothesis]{hypothesis}
-	\declaretheorem[style=thmstyle,name=Lemma]{lemma}
-	\declaretheorem[style=thmstyle,name=Postulate]{postulate}
-	\declaretheorem[style=thmstyle,name=Property]{property}
-	\declaretheorem[style=thmstyle,name=Proposition]{proposition}
-			
+	\declaretheorem[style=thmstyle,name=Theorem]{theorem}%
+	\declaretheorem[style=thmstyle,name=Assertion]{assertion}%
+	\declaretheorem[style=thmstyle,name=Assumption]{assumption}%
+	\declaretheorem[style=thmstyle,name=Axiom]{axiom}%
+	\declaretheorem[style=thmstyle,name=Claim]{claim}%
+	\declaretheorem[style=thmstyle,name=Conclusion]{conclusion}%
+	\declaretheorem[style=thmstyle,name=Conjecture]{conjecture}%
+	\declaretheorem[style=thmstyle,name=Corollary]{corollary}%
+	\declaretheorem[style=thmstyle,name=Fact]{fact}%
+	\declaretheorem[style=thmstyle,name=Hypothesis]{hypothesis}%
+	\declaretheorem[style=thmstyle,name=Lemma]{lemma}%
+	\declaretheorem[style=thmstyle,name=Postulate]{postulate}%
+	\declaretheorem[style=thmstyle,name=Property]{property}%
+	\declaretheorem[style=thmstyle,name=Proposition]{proposition}%
+	
 	% Unnumbered Theorem-like Environments
-	\declaretheorem[style=thmstyle,unnumbered,name=Theorem*]{theorem*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Assertion*]{assertion*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Assumption*]{assumption*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Axiom*]{axiom*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Claim*]{claim*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Conclusion*]{conclusion*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Conjecture*]{conjecture*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Corollary*]{corollary*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Fact*]{fact*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Hypothesis*]{hypothesis*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Lemma*]{lemma*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Postulate*]{postulate*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Property*]{property*}
-	\declaretheorem[style=thmstyle,unnumbered,name=Proposition*]{proposition*}
-			
+	\declaretheorem[style=thmstyle,unnumbered,name=Theorem*]{theorem*}%
+	\declaretheorem[style=thmstyle,unnumbered,name=Assertion*]{assertion*}%
+	\declaretheorem[style=thmstyle,unnumbered,name=Assumption*]{assumption*}%
+	\declaretheorem[style=thmstyle,unnumbered,name=Axiom*]{axiom*}%
+	\declaretheorem[style=thmstyle,unnumbered,name=Claim*]{claim*}%
+	\declaretheorem[style=thmstyle,unnumbered,name=Conclusion*]{conclusion*}%
+	\declaretheorem[style=thmstyle,unnumbered,name=Conjecture*]{conjecture*}%
+	\declaretheorem[style=thmstyle,unnumbered,name=Corollary*]{corollary*}%
+	\declaretheorem[style=thmstyle,unnumbered,name=Fact*]{fact*}%
+	\declaretheorem[style=thmstyle,unnumbered,name=Hypothesis*]{hypothesis*}%
+	\declaretheorem[style=thmstyle,unnumbered,name=Lemma*]{lemma*}%
+	\declaretheorem[style=thmstyle,unnumbered,name=Postulate*]{postulate*}%
+	\declaretheorem[style=thmstyle,unnumbered,name=Property*]{property*}%
+	\declaretheorem[style=thmstyle,unnumbered,name=Proposition*]{proposition*}%
+	
 	% Definition-like Environments
-	\declaretheorem[style=defstyle,name=Application]{application}
-	\declaretheorem[style=defstyle,name=Construction]{construction}
-	\declaretheorem[style=defstyle,name=Convention]{convention}
-	\declaretheorem[style=defstyle,name=Definition]{definition}
-	\declaretheorem[style=defstyle,name=Experiment]{experiment}
-	\declaretheorem[style=defstyle,name=Notation]{notation}
-	\declaretheorem[style=defstyle,name=Problem]{problem}
-	\declaretheorem[style=defstyle,name=Protocol]{protocol}
-			
+	\declaretheorem[style=defstyle,name=Application]{application}%
+	\declaretheorem[style=defstyle,name=Construction]{construction}%
+	\declaretheorem[style=defstyle,name=Convention]{convention}%
+	\declaretheorem[style=defstyle,name=Definition]{definition}%
+	\declaretheorem[style=defstyle,name=Experiment]{experiment}%
+	\declaretheorem[style=defstyle,name=Notation]{notation}%
+	\declaretheorem[style=defstyle,name=Problem]{problem}%
+	\declaretheorem[style=defstyle,name=Protocol]{protocol}%
+	
 	% Unnumbered Definition-like Environments
-	\declaretheorem[style=defstyle,unnumbered,name=Application*]{application*}
-	\declaretheorem[style=defstyle,unnumbered,name=Construction*]{construction*}
-	\declaretheorem[style=defstyle,unnumbered,name=Convention*]{convention*}
-	\declaretheorem[style=defstyle,unnumbered,name=Definition*]{definition*}
-	\declaretheorem[style=defstyle,unnumbered,name=Experiment*]{experiment*}
-	\declaretheorem[style=defstyle,unnumbered,name=Notation*]{notation*}
-	\declaretheorem[style=defstyle,unnumbered,name=Problem*]{problem*}
-	\declaretheorem[style=defstyle,unnumbered,name=Protocol*]{protocol*}
-			
+	\declaretheorem[style=defstyle,unnumbered,name=Application*]{application*}%
+	\declaretheorem[style=defstyle,unnumbered,name=Construction*]{construction*}%
+	\declaretheorem[style=defstyle,unnumbered,name=Convention*]{convention*}%
+	\declaretheorem[style=defstyle,unnumbered,name=Definition*]{definition*}%
+	\declaretheorem[style=defstyle,unnumbered,name=Experiment*]{experiment*}%
+	\declaretheorem[style=defstyle,unnumbered,name=Notation*]{notation*}%
+	\declaretheorem[style=defstyle,unnumbered,name=Problem*]{problem*}%
+	\declaretheorem[style=defstyle,unnumbered,name=Protocol*]{protocol*}%
+	
 	% Remark-like Environments
-	\declaretheorem[style=remarkstyle,name=Commentary]{commentary}
-	\declaretheorem[style=remarkstyle,name=Example]{example}
-	\declaretheorem[style=remarkstyle,name=Exercise]{exercise}
-	\declaretheorem[style=remarkstyle,name=Motivation]{motivation}
-	\declaretheorem[style=remarkstyle,name=Note]{note}
-	\declaretheorem[style=remarkstyle,name=Observation]{observation}
-	\declaretheorem[style=remarkstyle,name=Question]{question}
-	\declaretheorem[style=remarkstyle,name=Remark]{remark}
-			
+	\declaretheorem[style=remarkstyle,name=Commentary]{commentary}%
+	\declaretheorem[style=remarkstyle,name=Example]{example}%
+	\declaretheorem[style=remarkstyle,name=Exercise]{exercise}%
+	\declaretheorem[style=remarkstyle,name=Motivation]{motivation}%
+	\declaretheorem[style=remarkstyle,name=Note]{note}%
+	\declaretheorem[style=remarkstyle,name=Observation]{observation}%
+	\declaretheorem[style=remarkstyle,name=Question]{question}%
+	\declaretheorem[style=remarkstyle,name=Remark]{remark}%
+	
 	% Unnumbered Remark-like Environments
-	\declaretheorem[style=remarkstyle,unnumbered,name=Commentary*]{commentary*}
-	\declaretheorem[style=remarkstyle,unnumbered,name=Example*]{example*}
-	\declaretheorem[style=remarkstyle,unnumbered,name=Exercise*]{exercise*}
-	\declaretheorem[style=remarkstyle,unnumbered,name=Motivation*]{motivation*}
-	\declaretheorem[style=remarkstyle,unnumbered,name=Note*]{note*}
-	\declaretheorem[style=remarkstyle,unnumbered,name=Observation*]{observation*}
-	\declaretheorem[style=remarkstyle,unnumbered,name=Question*]{question*}
-	\declaretheorem[style=remarkstyle,unnumbered,name=Remark*]{remark*}
-			
+	\declaretheorem[style=remarkstyle,unnumbered,name=Commentary*]{commentary*}%
+	\declaretheorem[style=remarkstyle,unnumbered,name=Example*]{example*}%
+	\declaretheorem[style=remarkstyle,unnumbered,name=Exercise*]{exercise*}%
+	\declaretheorem[style=remarkstyle,unnumbered,name=Motivation*]{motivation*}%
+	\declaretheorem[style=remarkstyle,unnumbered,name=Note*]{note*}%
+	\declaretheorem[style=remarkstyle,unnumbered,name=Observation*]{observation*}%
+	\declaretheorem[style=remarkstyle,unnumbered,name=Question*]{question*}%
+	\declaretheorem[style=remarkstyle,unnumbered,name=Remark*]{remark*}%
+	
 	% Highlight-like Environments
-	\declaretheorem[style=hltstyle,name=Highlight]{highlight}
-	\declaretheorem[style=hltstyle,name=Important]{important}
-	\declaretheorem[style=hltstyle,name=KeyPoint]{keypoint}
-	\declaretheorem[style=hltstyle,name=Recall]{recall}
-			
-	\let\proof\relax
-	\let\endproof\relax
-	\declaretheorem[style=proofstyle]{proof}
+	\declaretheorem[style=hltstyle,name=Highlight]{highlight}%
+	\declaretheorem[style=hltstyle,name=Important]{important}%
+	\declaretheorem[style=hltstyle,name=KeyPoint]{keypoint}%
+	\declaretheorem[style=hltstyle,name=Recall]{recall}%
+	
+	% Proof Environment (reset any previous definitions)
+	\let\proof\relax%
+	\let\endproof\relax%
+	\declaretheorem[style=proofstyle]{proof}%
+}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Fancy Theorem Environments
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\fancythm}{%
+	% Common settings
+	\renewcommand{\commonthmfont}{\normalfont}%
+	\renewcommand{\commonthmsymb}{\ensuremath{\color{\accentcolor}\lrcorner}}%
+	\renewcommand{\qedsymbol}{\ensuremath{\color{\accentcolor}\scriptstyle\blacksquare}}%
+	% Heading fonts
+	\renewcommand{\thmheadfont}{\sffamily}%
+	\renewcommand{\defnheadfont}{\sffamily}%
+	\renewcommand{\remarkheadfont}{\sffamily}%
+	\renewcommand{\hltheadfont}{\sffamily}%
+	% Body fonts
+	\renewcommand{\thmfont}{\normalfont}%
+	\renewcommand{\defnfont}{\normalfont}%
+	\renewcommand{\remarkfont}{\normalfont}%
+	\renewcommand{\hltfont}{\normalfont\sffamily}%
+	% (Empty) symbol definitions
+	\renewcommand{\thmsymb}{}%
+	\renewcommand{\defnsymb}{}%
+	\renewcommand{\remarksymb}{}%
+	\renewcommand{\hltsymb}{}%
+	% Color definitions
+	\renewcommand{\thmcolor}{DeepSkyBlue4}%
+	\renewcommand{\defncolor}{RoyalBlue4}%
+	\renewcommand{\remarkcolor}{Aquamarine4}%
+	\renewcommand{\hltcolor}{DeepPink4}%
+	% Theorem style (with mdframed)
+	\declaretheoremstyle[%
+		spaceabove=0pt, spacebelow=0pt,%
+		headfont=\thmheadfont\color{\thmcolor}, notefont=\thmheadfont\color{\thmcolor},%
+		bodyfont=\thmfont, postheadspace=5pt, numberwithin=section,%
+		mdframed={linewidth=2pt, rightline=false, topline=false, bottomline=false,%
+			linecolor=\thmcolor, backgroundcolor=\thmcolor!5},%
+		headpunct={.}%
+	]{thmstyle}%
+	% Definition style
+	\declaretheoremstyle[%
+		spaceabove=0pt, spacebelow=0pt,%
+		headfont=\defnheadfont\color{\defncolor}, notefont=\defnheadfont\color{\defncolor},%
+		bodyfont=\defnfont, postheadspace=5pt, numberwithin=section,%
+		mdframed={linewidth=2pt, rightline=false, topline=false, bottomline=false,%
+			linecolor=\defncolor, backgroundcolor=\defncolor!5},%
+		headpunct={.}%
+	]{defstyle}%
+	% Remark style
+	\declaretheoremstyle[%
+		spaceabove=0pt, spacebelow=0pt,%
+		headfont=\remarkheadfont\color{\remarkcolor}, notefont=\remarkheadfont\color{\remarkcolor},%
+		bodyfont=\remarkfont, postheadspace=5pt, numberwithin=section,%
+		mdframed={linewidth=2pt, rightline=false, topline=false, bottomline=false,%
+			linecolor=\remarkcolor, backgroundcolor=\remarkcolor!5},%
+		headpunct={.}%
+	]{remarkstyle}%
+	% Highlight style
+	\declaretheoremstyle[%
+		spaceabove=0pt, spacebelow=0pt,%
+		headfont=\sffamily\color{\hltcolor}, notefont=\sffamily\color{\hltcolor},%
+		bodyfont=\normalfont\sffamily\sansmath, postheadspace=5pt, numberwithin=section,%
+		mdframed={linewidth=2pt, rightline=false, topline=false, bottomline=false,%
+			linecolor=\hltcolor, backgroundcolor=\hltcolor!5},%
+		headpunct={.}%
+	]{hltstyle}%
+	% Proof style
+	\declaretheoremstyle[%
+		headfont=\hltheadfont\color{\thmcolor}, notefont=\hltheadfont\color{\thmcolor},%
+		bodyfont=\hltfont, postheadspace=5pt, numbered=no, headpunct={.},%
+		qed=\qedsymbol%
+	]{proofstyle}%
+	\basicenv%
 }
 
-% Define Fancy Theorem Environments
-\newcommand{\usefancythm}{%
-	% Define the font style commands for each theorem type
-	\newcommand{\thmfont}{\normalfont} % Font for theorems
-	\newcommand{\defnfont}{\normalfont} % Font for definitions
-	\newcommand{\remarkfont}{\normalfont} % Font for remarks
-	\newcommand{\hltfont}{\normalfont\sffamily} % Font for highlighted statements
-			
-	% Define the color commands for each type
-	\newcommand{\thmcolor}{DeepSkyBlue4} % Color for theorems
-	\newcommand{\defncolor}{RoyalBlue4} % Color for definitions
-	\newcommand{\remarkcolor}{Aquamarine4} % Color for remarks
-	\newcommand{\hltcolor}{DeepPink4} % Color for highlighted statements
-			
-	% Declare the theorem style for theorems
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Standard (Normal) Theorem Environments
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand*{\normalthm}{%
+	% Common settings
+	\renewcommand{\commonthmfont}{\sffamily}%
+	\renewcommand{\commonthmsymb}{\ensuremath{\color{\accentcolor}\lrcorner}}%
+	\renewcommand{\qedsymbol}{\ensuremath{\color{\accentcolor}\scriptstyle\blacksquare}}%
+	% Heading fonts
+	\renewcommand{\thmheadfont}{\sffamily}%
+	\renewcommand{\defnheadfont}{\sffamily}%
+	\renewcommand{\remarkheadfont}{\sffamily}%
+	\renewcommand{\hltheadfont}{\sffamily}%
+	% Body fonts
+	\renewcommand{\thmfont}{\normalfont}%
+	\renewcommand{\defnfont}{\normalfont}%
+	\renewcommand{\remarkfont}{\normalfont}%
+	\renewcommand{\hltfont}{\normalfont\sffamily}%
+	% Symbol definitions
+	\renewcommand{\thmsymb}{\ensuremath{\color{\accentcolor}\scriptstyle\blacktriangleright}}%
+	\renewcommand{\defnsymb}{\ensuremath{\color{\accentcolor}\scriptstyle\blacksquare}}%
+	\renewcommand{\remarksymb}{\ensuremath{\color{\accentcolor}\scriptstyle\vartriangleright}}%
+	\renewcommand{\hltsymb}{\ensuremath{\color{\accentcolor}\scriptstyle\square}}%
+	% Theorem style
 	\declaretheoremstyle[%
-		spaceabove=0pt, spacebelow=0pt,
-		headfont=\sffamily\color{\thmcolor},
-		notefont=\sffamily\color{\thmcolor},
-		bodyfont=\normalfont,
-		postheadspace=5pt,
-		numberwithin=section,
-		mdframed={%
-			linewidth=2pt,
-			rightline=false, topline=false, bottomline=false,
-			linecolor=\thmcolor, backgroundcolor=\thmcolor!5,
-		},
-		headpunct={.}
-	]{thmstyle}
-			
-	% Declare the theorem style for definitions
+		spaceabove=\topsep, spacebelow=\topsep,%
+		headfont=\thmheadfont\thmsymb~, notefont=\thmheadfont,%
+		bodyfont=\thmfont, postheadspace=5pt, numberwithin=section,%
+		qed=\commonthmsymb, headpunct={.}%
+	]{thmstyle}%
+	% Definition style
 	\declaretheoremstyle[%
-		spaceabove=0pt, spacebelow=0pt,
-		headfont=\sffamily\color{\defncolor},
-		notefont=\sffamily\color{\defncolor},
-		bodyfont=\normalfont,
-		postheadspace=5pt,
-		numberwithin=section,
-		mdframed={%
-			linewidth=2pt,
-			rightline=false, topline=false, bottomline=false,
-			linecolor=\defncolor, backgroundcolor=\defncolor!5,
-		},
-		headpunct={.}
-	]{defstyle}
-			
-	% Declare the theorem style for remarks
+		spaceabove=\topsep, spacebelow=\topsep,%
+		headfont=\defnheadfont\defnsymb~, notefont=\defnheadfont,%
+		bodyfont=\defnfont, postheadspace=5pt, numberwithin=section,%
+		qed=\commonthmsymb, headpunct={.}%
+	]{defstyle}%
+	% Remark style
 	\declaretheoremstyle[%
-		spaceabove=0pt, spacebelow=0pt,
-		headfont=\sffamily\color{\remarkcolor},
-		notefont=\sffamily\color{\remarkcolor},
-		bodyfont=\normalfont,
-		postheadspace=5pt,
-		numberwithin=section,
-		mdframed={%
-			linewidth=2pt,
-			rightline=false, topline=false, bottomline=false,
-			linecolor=\remarkcolor, backgroundcolor=\remarkcolor!5,
-		},
-		headpunct={.}
-	]{remarkstyle}
-			
-	% Declare the theorem style for highlighted text
+		spaceabove=\topsep, spacebelow=\topsep,%
+		headfont=\remarkheadfont\remarksymb~, notefont=\remarkheadfont,%
+		bodyfont=\remarkfont, postheadspace=5pt, numberwithin=section,%
+		qed=\commonthmsymb, headpunct={.}%
+	]{remarkstyle}%
+	% Highlight style
 	\declaretheoremstyle[%
-		spaceabove=0pt, spacebelow=0pt,
-		headfont=\sffamily\color{\hltcolor},
-		notefont=\sffamily\color{\hltcolor},
-		bodyfont=\normalfont\sffamily\sansmath,
-		postheadspace=5pt,
-		numberwithin=section,
-		mdframed={%
-			linewidth=2pt,
-			rightline=false, topline=false, bottomline=false,
-			linecolor=\hltcolor, backgroundcolor=\hltcolor!5,
-		},
-		headpunct={.}
-	]{hltstyle}
-			
-	% Declare the proof style
+		spaceabove=\topsep, spacebelow=\topsep,%
+		headfont=\hltheadfont\hltsymb~, notefont=\hltheadfont,%
+		bodyfont=\hltfont, postheadspace=5pt, numberwithin=section,%
+		qed=\commonthmsymb, headpunct={.}%
+	]{hltstyle}%
+	% Proof style
 	\declaretheoremstyle[%
-		headfont=\sffamily\color{\thmcolor},
-		notefont=\sffamily\color{\thmcolor},
-		bodyfont=\normalfont,
-		postheadspace=5pt,
-		numbered=no,
-		headpunct={.},
-		qed=$\scriptstyle\color{\thmcolor}\blacksquare$
-	]{proofstyle}
-			
-	\basicenv
+		headfont=\commonthmfont, notefont=\commonthmfont, bodyfont=\normalfont,%
+		postheadspace=5pt, numbered=no, headpunct={.}, qed=\qedsymbol%
+	]{proofstyle}%
+	\basicenv%
 }
 
-% Define Standard Theorem Environments
-\newcommand*{\usenormalthm}{%
-	\renewcommand{\commonfont}{\color{\accentcolor}\sffamily} % Set common font
-	\renewcommand{\commonsymb}{\ensuremath{\color{\accentcolor}\lrcorner}} % Set common symbol
-			
-	% Theorem Style
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Old-School Theorem Environments
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand*{\oldschoolthm}{%
+	% Common settings
+	\renewcommand{\commonthmfont}{\normalfont}%
+	\renewcommand{\commonthmsymb}{\ensuremath{\color{\accentcolor}\lrcorner}}%
+	\renewcommand{\qedsymbol}{\ensuremath{\color{\accentcolor}\scriptstyle\blacksquare}}%
+	% Heading fonts (old-school)
+	\renewcommand{\thmheadfont}{\bfseries}%
+	\renewcommand{\defnheadfont}{\scshape}%
+	\renewcommand{\remarkheadfont}{\bfseries}%
+	\renewcommand{\hltheadfont}{\sffamily}%
+	% Body fonts
+	\renewcommand{\thmfont}{\normalfont}%
+	\renewcommand{\defnfont}{\normalfont}%
+	\renewcommand{\remarkfont}{\normalfont}%
+	\renewcommand{\hltfont}{\normalfont\sffamily}%
+	% (Empty) symbol definitions
+	\renewcommand{\thmsymb}{}%
+	\renewcommand{\defnsymb}{}%
+	\renewcommand{\remarksymb}{}%
+	\renewcommand{\hltsymb}{}%
+	% Theorem style
 	\declaretheoremstyle[%
-		spaceabove=\topsep, spacebelow=\topsep,
-		headfont=\commonfont\ensuremath{\scriptstyle\blacktriangleright}~,
-		notefont=\commonfont, bodyfont=\normalfont,
-		postheadspace=5pt, numberwithin=section, qed=\commonsymb, headpunct={.}
-	]{thmstyle}
-			
-	% Definition Style
+		spaceabove=\topsep, spacebelow=\topsep,%
+		headfont=\thmheadfont\thmsymb, notefont=\thmheadfont,%
+		bodyfont=\thmfont, postheadspace=5pt, numberwithin=section,%
+		headpunct={.}%
+	]{thmstyle}%
+	% Definition style
 	\declaretheoremstyle[%
-		spaceabove=\topsep, spacebelow=\topsep,
-		headfont=\commonfont\ensuremath{\scriptstyle\blacksquare}~,
-		notefont=\commonfont, bodyfont=\normalfont,
-		postheadspace=5pt, numberwithin=section, qed=\commonsymb, headpunct={.}
-	]{defstyle}
-			
-	% Remark Style
+		spaceabove=\topsep, spacebelow=\topsep,%
+		headfont=\defnheadfont\defnsymb, notefont=\normalfont,%
+		bodyfont=\defnfont, postheadspace=5pt, numberwithin=section,%
+		headpunct={.}%
+	]{defstyle}%
+	% Remark style
 	\declaretheoremstyle[%
-		spaceabove=\topsep, spacebelow=\topsep,
-		headfont=\commonfont\ensuremath{\scriptstyle\vartriangleright}~,
-		notefont=\commonfont, bodyfont=\normalfont,
-		postheadspace=5pt, numberwithin=section, qed=\commonsymb, headpunct={.}
-	]{remarkstyle}
-			
-	% Highlight Style
+		spaceabove=\topsep, spacebelow=\topsep,%
+		headfont=\remarkheadfont\remarksymb, notefont=\normalfont,%
+		bodyfont=\remarkfont, postheadspace=5pt, numberwithin=section,%
+		headpunct={.}%
+	]{remarkstyle}%
+	% Highlight style
 	\declaretheoremstyle[%
-		spaceabove=\topsep, spacebelow=\topsep,
-		headfont=\commonfont\ensuremath{\scriptstyle\square}~,
-		notefont=\commonfont, bodyfont=\normalfont\sffamily,
-		postheadspace=5pt, numberwithin=section, qed=\commonsymb, headpunct={.}
-	]{hltstyle}
-			
-	% Proof Style
+		spaceabove=\topsep, spacebelow=\topsep,%
+		headfont=\hltheadfont\hltsymb, notefont=\hltheadfont,%
+		bodyfont=\hltfont, postheadspace=5pt, numberwithin=section,%
+		headpunct={.}%
+	]{hltstyle}%
+	% Proof style (italicized)
 	\declaretheoremstyle[%
-		headfont=\commonfont, notefont=\commonfont, bodyfont=\normalfont,
-		postheadspace=5pt, numbered=no, headpunct={.},
-		qed=$\color{\accentcolor}\scriptstyle\blacktriangleleft$
-	]{proofstyle}
-			
-	\basicenv
+		headfont=\itshape, notefont=\itshape, bodyfont=\normalfont,%
+		postheadspace=5pt, numbered=no, headpunct={.}, qed=\qedsymbol%
+	]{proofstyle}%
+	\basicenv%
 }
 
-% Cleveref for intelligent cross-referencing (better handling of references)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Cleveref Setup for Intelligent Cross-Referencing
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \AtBeginDocument{%
 	\@ifpackageloaded{hyperref}{%
-        \RequirePackage{cleveref}%
-		
-        % Theorem-like Environments
-		\crefname{theorem}{theorem}{theorems}
-		\crefname{assertion}{assertion}{assertions}
-		\crefname{assumption}{assumption}{assumptions}
-		\crefname{axiom}{axiom}{axioms}
-		\crefname{claim}{claim}{claims}
-		\crefname{conclusion}{conclusion}{conclusions}
-		\crefname{conjecture}{conjecture}{conjectures}
-		\crefname{corollary}{corollary}{corollaries}
-		\crefname{fact}{fact}{facts}
-		\crefname{hypothesis}{hypothesis}{hypotheses}
-		\crefname{lemma}{lemma}{lemmas}
-		\crefname{postulate}{postulate}{postulates}
-		\crefname{property}{property}{properties}
-		\crefname{proposition}{proposition}{propositions}
-				
-		% Definition-like Environments
-		\crefname{application}{application}{applications}
-		\crefname{construction}{construction}{constructions}
-		\crefname{convention}{convention}{conventions}
-		\crefname{definition}{definition}{definitions}
-		\crefname{experiment}{experiment}{experiments}
-		\crefname{notation}{notation}{notations}
-		\crefname{problem}{problem}{problems}
-		\crefname{protocol}{protocol}{protocols}
-				
-		% Remark-like Environments
-		\crefname{commentary}{commentary}{commentaries}
-		\crefname{example}{example}{examples}
-		\crefname{exercise}{exercise}{exercises}
-		\crefname{motivation}{motivation}{motivations}
-		\crefname{note}{note}{notes}
-		\crefname{observation}{observation}{observations}
-		\crefname{question}{question}{questions}
-		\crefname{remark}{remark}{remarks}
-				
-		% Highlight-like Environments
-		\crefname{highlight}{highlight}{highlights}
-		\crefname{important}{important}{importants}
-		\crefname{keypoint}{keypoint}{keypoints}
-		\crefname{recall}{recall}{recalls}
-
-        % Email link formatting
-        \providecommand{\email}[1]{\href{mailto:#1}{\texttt{#1}}}
+		\RequirePackage{cleveref}%
+		% --- Theorem-like Environments ---
+		\crefname{theorem}{theorem}{theorems}%
+		\crefname{assertion}{assertion}{assertions}%
+		\crefname{assumption}{assumption}{assumptions}%
+		\crefname{axiom}{axiom}{axioms}%
+		\crefname{claim}{claim}{claims}%
+		\crefname{conclusion}{conclusion}{conclusions}%
+		\crefname{conjecture}{conjecture}{conjectures}%
+		\crefname{corollary}{corollary}{corollaries}%
+		\crefname{fact}{fact}{facts}%
+		\crefname{hypothesis}{hypothesis}{hypotheses}%
+		\crefname{lemma}{lemma}{lemmas}%
+		\crefname{postulate}{postulate}{postulates}%
+		\crefname{property}{property}{properties}%
+		\crefname{proposition}{proposition}{propositions}%
+		% --- Definition-like Environments ---
+		\crefname{application}{application}{applications}%
+		\crefname{construction}{construction}{constructions}%
+		\crefname{convention}{convention}{conventions}%
+		\crefname{definition}{definition}{definitions}%
+		\crefname{experiment}{experiment}{experiments}%
+		\crefname{notation}{notation}{notations}%
+		\crefname{problem}{problem}{problems}%
+		\crefname{protocol}{protocol}{protocols}%
+		% --- Remark-like Environments ---
+		\crefname{commentary}{commentary}{commentaries}%
+		\crefname{example}{example}{examples}%
+		\crefname{exercise}{exercise}{exercises}%
+		\crefname{motivation}{motivation}{motivations}%
+		\crefname{note}{note}{notes}%
+		\crefname{observation}{observation}{observations}%
+		\crefname{question}{question}{questions}%
+		\crefname{remark}{remark}{remarks}%
+		% --- Highlight-like Environments ---
+		\crefname{highlight}{highlight}{highlights}%
+		\crefname{important}{important}{importants}%
+		\crefname{keypoint}{keypoint}{keypoints}%
+		\crefname{recall}{recall}{recalls}%
+		% --- Email Link Formatting ---
+		\providecommand{\email}[1]{\href{mailto:#1}{\texttt{#1}}}%
 		}{%
 		\PackageWarning{csthm}{%
-			The 'cleveref' option was set, but 'hyperref' is not loaded.
+			The 'cleveref' option was set, but 'hyperref' is not loaded.%
 			Skipping 'cleveref' loading.%
 		}%
 	}%
 }%
 
-% Conditional Theorem Style
-\ifbool{usefancythm}{\usefancythm}{\typeout{Using fancy theorem style.}}  % Use fancy theorem style if 'usefancythm' is true
-\ifbool{usenormalthm}{\usenormalthm}{\typeout{Using normal theorem style.}}  % Use standard theorem style if 'usenormalthm' is true
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Conditional Theorem Style Setup
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ifbool{fancy}{\fancythm}{\typeout{Using fancy theorem style.}}%
+\ifbool{normal}{\normalthm}{\typeout{Using normal theorem style.}}%
+\ifbool{oldschool}{\oldschoolthm}{\typeout{Using normal theorem style.}}%
 
 \endinput
 %%
