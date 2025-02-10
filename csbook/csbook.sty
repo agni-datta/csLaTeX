@@ -46,7 +46,9 @@
 	\ifLuaTeX
 		\typeout{Running with LuaLaTeX. The package is compatible.}
 	\else
-		\PackageError{\csbook@filename}{This package is only compatible with XeLaTeX or LuaLaTeX.}{An unsupported engine has been detected. The package cannot function.}
+		\PackageError{\csbook@filename}
+		{This package is only compatible with XeLaTeX or LuaLaTeX.}
+		{An unsupported engine has been detected. The package cannot function.}
 	\fi
 \fi
 
@@ -130,7 +132,7 @@
 \DeclareOption{usetikz}{\setbool{usetikz}{true}}
 
 % Handle Unrecognized Options
-\DeclareOption*{\PackageWarning{csbook}{Unrecognised option '\CurrentOption'}}
+\DeclareOption*{\PackageWarning{csbook}{Unrecognized option '\CurrentOption'}}
 
 % Process Options
 \ProcessOptions\relax
@@ -469,7 +471,7 @@
 	{0pt}
 	{\titlerule\bigskip\Huge#1\vfill}
 	\titlespacing*{\part}{0pt}{\fill}{\fill}
-	
+
 	% Chapter title formatting
 	\titleformat{\chapter}[display]
 	{\LARGE\headerfont}
@@ -477,7 +479,7 @@
 	{1ex}
 	{\titlerule\vspace{1ex}#1}[\vspace{1ex}\titlerule]
 	\titlespacing*{\chapter}{0pt}{25pt}{25pt}
-	
+
 	% Section title formatting
 	\titleformat{\section}[block]
 	{\sectionfont}
@@ -485,21 +487,21 @@
 	{10pt}
 	{#1}[\vspace{5pt}\titlerule]
 	\titlespacing*{\section}{0pt}{15pt}{10pt}
-	
+
 	% Subsection title formatting
 	\titleformat{\subsection}[block]
 	{\subsectionfont}
 	{\color{accentcolor}\Large\thesubsection}
 	{7.5pt}
 	{#1}
-	
+
 	% Subsubsection title formatting
 	\titleformat{\subsubsection}[runin]
 	{\subsubsectionfont}
 	{\color{accentcolor}\thesubsubsection}
 	{5pt}
 	{#1.}
-	
+
 	% Paragraph and subparagraph formatting
 	\renewcommand*{\paragraph}[1]{\noindent\normalfont{\textbf{#1.}}}
 	\renewcommand*{\subparagraph}[1]{\noindent\normalfont{\textsc{#1.}}}
@@ -730,7 +732,7 @@ postamble "\n\\end{theindex}\n"
 % Define the command for creating two environments: numbered and unnumbered
 \NewDocumentCommand{\newcolorboxes}{mmm}{%
 	\newcounter{#1ctr} % Define counter for numbered version
-	
+
 	% Numbered version
 	\newtcolorbox{#1}[1][]{%
 		enhanced, % Enable advanced features
@@ -754,7 +756,7 @@ postamble "\n\\end{theindex}\n"
 		title={\refstepcounter{#1ctr}#2~\thesection.\arabic{#1ctr}%
 			\if\relax\detokenize{##1}\relax\else: ##1\fi} % Title with counter
 	}%
-	
+
 	% Unumbered version
 	\newtcolorbox{#1*}[1][]{%
 		enhanced, % Enable advanced features
