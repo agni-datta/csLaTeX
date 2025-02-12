@@ -20,11 +20,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Package Metadata
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\providecommand{\csbook@filename}{csbook} % Package name
-\providecommand{\csbook@fileversion}{v1} % Version
-\providecommand{\csbook@filedate}{2024/04/17} % Release date
-\providecommand{\csbook@fileauthor}{Agni Datta} % Author
-\providecommand{\csbook@version}{1.0} % Internal version
+
+\newcommand{\csbook@filename}{csbook} % Package name
+\newcommand{\csbook@fileversion}{v1} % Version
+\newcommand{\csbook@filedate}{2024/04/17} % Release date
+\newcommand{\csbook@fileauthor}{Agni Datta} % Author
+\newcommand{\csbook@version}{1.0} % Internal version
 
 \NeedsTeXFormat{LaTeX2e} % Requires LaTeX2e
 \AtEndOfPackage{%
@@ -36,9 +37,22 @@
 \ProvidesPackage{\csbook@filename}[\csbook@version\space A LaTeX package for typesetting computer science books]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Package Dependencies
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{calc} % Perform LaTeX calculations
+\RequirePackage{comment} % Comment handling
+\RequirePackage{etoolbox} % Advanced conditionals and loops
+\RequirePackage{iftex} % Detect TeX engine
+\RequirePackage{kvoptions} % Key-value option management
+\RequirePackage{lipsum} % Placeholder text generation
+\RequirePackage{xkeyval} % Key-value argument parsing
+\RequirePackage{xparse} % Complex macro definitions
+\RequirePackage{xpatch} % Flexible command patching
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Engine Compatibility Check
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{iftex} % Detect TeX engine
 
 % Ensure the engine is XeLaTeX or LuaLaTeX
 \ifXeTeX
@@ -54,20 +68,9 @@
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Package Dependencies
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{calc} % Perform LaTeX calculations
-\RequirePackage{comment} % Comment handling
-\RequirePackage{etoolbox} % Advanced conditionals and loops
-\RequirePackage{kvoptions} % Key-value option management
-\RequirePackage{lipsum} % Placeholder text generation
-\RequirePackage{xkeyval} % Key-value argument parsing
-\RequirePackage{xparse} % Complex macro definitions
-\RequirePackage{xpatch} % Flexible command patching
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Option Definitions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % Declare internal flags for package options
 \newif\ifcsbook@biblatex
 \newif\ifcsbook@codelist
@@ -147,6 +150,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PDF Management and External File Handling
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \RequirePackage[2.0, objcompress, compress]{bxpdfver} % Set PDF version and compression
 \RequirePackage{pdfpages} % Include external PDF pages
 \RequirePackage{pdflscape} % Enable landscape pages
@@ -155,10 +159,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Package for Color Support
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \RequirePackage[x11names, dvipsnames, svgnames]{xcolor} % Extended color support
 
 % Define and manage accent color
-\providecommand{\accentcolor}{gray} % Default accent color
+\newcommand{\accentcolor}{gray} % Default accent color
 \colorlet{accentcolor}{\accentcolor} % Alias for accent color
 
 % Command to set accent color (default: gray)
@@ -174,6 +179,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Language and Typographic Settings
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \RequirePackage{babel} % Language support
 \RequirePackage[autostyle=true, csdisplay=true]{csquotes} % Advanced quotations
 \RequirePackage[babel=true]{microtype} % Microtypography for XeTeX and LuaLaTeX
@@ -194,8 +200,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Page Layout Configuration
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % Mobile eBook Layout
-\providecommand{\ebook}{%
+\newcommand{\ebook}{%
 	\RequirePackage[%
 		paperwidth=6in, paperheight=9in, left=0.5in, right=0.5in, top=0.5in, bottom=0.5in, % Page dimensions
 		headheight=10pt, headsep=10pt, footskip=15pt, textheight=6.5in, textwidth=4.4in, % Text area
@@ -204,7 +211,7 @@
 }
 
 % A4 Print Layout
-\providecommand{\print}{%
+\newcommand{\print}{%
 	\RequirePackage[%
 		a4paper, left=1.5in, right=1in, top=1in, bottom=1in, bindingoffset=0.5in, % A4 page dimensions and binding offset
 		headheight=15pt, headsep=20pt, footskip=25pt, textheight=9.5in, textwidth=6in, % Text area
@@ -213,7 +220,7 @@
 }
 
 % General Layout Configuration
-\providecommand{\generallayout}{%
+\newcommand{\generallayout}{%
 	\RequirePackage[%
 		a4paper, tmargin=3.00cm, bmargin=3.00cm, lmargin=3.00cm, rmargin=3.00cm, footskip=1.00cm % General margin settings
 	]{geometry} % General page layout
@@ -222,7 +229,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Customization of Headers and Footers
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\providecommand{\loadheaderfooter}{%
+
+\newcommand{\loadheaderfooter}{%
 	\RequirePackage{fancyhdr} % Custom header and footer formatting
 	\fancyhf{} % Clear default header and footer
 	\fancyhead[LE, RO]{\normalfont\small\sffamily\thepage} % Page number on left (even) and right (odd) pages
@@ -231,9 +239,25 @@
 	\pagestyle{fancy} % Apply custom header/footer style
 }
 
+\ifcsbook@print
+	\print
+	\loadheaderfooter
+	\typeout{csbook: Print layout is enabled.}
+\fi
+\ifcsbook@ebook
+	\ebook
+	\loadheaderfooter
+	\typeout{csbook: Ebook layout is enabled.}
+\else
+	\generallayout
+	\loadheaderfooter
+	\typeout{csbook: General layout is in use.}
+\fi
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Font and Mathematics Packages
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \RequirePackage[T1]{fontenc}            % Enable T1 font encoding for enhanced font support
 \RequirePackage{amsfonts}               % AMS fonts for mathematical symbols
 \RequirePackage{amsmath}                % Advanced mathematical formatting
@@ -248,6 +272,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Theorem and Environments Packages
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \RequirePackage{amsthm}                 % Support for theorem environments
 \RequirePackage{thmtools}               % Enhance theorem environments
 \RequirePackage{thm-restate}            % Additional features for restating theorems
@@ -255,11 +280,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Fontspec and Unicode Math (XeLaTeX/LuaLaTeX)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \RequirePackage{fontspec}               % Support for custom fonts (XeLaTeX/LuaLaTeX only)
 \RequirePackage{unicode-math}           % Unicode mathematical fonts for consistent typesetting
 
 % Old Latin Modern font configuration for text and mathematics
-\NewDocumentCommand{\oldlmserif}{}{%
+\newcommand{\oldlmserif}{%
 	\setmainfont[%
 		ItalicFont = lmroman10-italic.otf, % Italic font
 		SmallCapsFont = lmromancaps10-regular.otf, % Small caps font
@@ -282,7 +308,7 @@
 }
 
 % Latin Modern font configuration for text and mathematics
-\NewDocumentCommand{\lmserif}{}{%
+\newcommand{\lmserif}{%
 	\setmainfont[%
 		ItalicFont = NewCM10-BookItalic.otf, % Italic font
 		SmallCapsFont = NewCM10-Book.otf, % Small caps font
@@ -303,7 +329,7 @@
 }
 
 % EB Garamond font configuration for text and mathematics
-\NewDocumentCommand{\garamond}{}{%
+\newcommand{\garamond}{%
 	\setmainfont[%
 		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum}, % Typographic features
 		StylisticSet = {3,5} % Stylistic sets
@@ -315,13 +341,13 @@
 }
 
 % Kepler font configuration
-\NewDocumentCommand{\kepler}{}{%
+\newcommand{\kepler}{%
 	\RequirePackage{kpfonts-otf} % Load Kepler package
 	\let\D\relax % Reset definition of \D
 }
 
 % Libertinus Sans font configuration
-\NewDocumentCommand{\libertinesans}{}{%
+\newcommand{\libertinesans}{%
 	\setsansfont[%
 		UprightFont = LibertinusSans-Regular, % Regular font
 		BoldFont = LibertinusSans-Bold.otf, % Bold font
@@ -334,7 +360,7 @@
 }
 
 % Latin Modern Sans font configuration
-\NewDocumentCommand{\lmsans}{}{%
+\newcommand{\lmsans}{%
 	\setsansfont[%
 		ItalicFont = NewCMSans10-Oblique.otf, % Italic font
 		SmallCapsFont = NewCMSans10-Book.otf, % Small caps font
@@ -346,7 +372,7 @@
 }
 
 % Source Sans Pro font configuration
-\NewDocumentCommand{\sourcesans}{}{%
+\newcommand{\sourcesans}{%
 	\RequirePackage[otf, lining, proportional, scale=0.975]{sourcesanspro} % Load package with options
 	\setsansfont[%
 		Scale = 0.950, % Font scale
@@ -356,7 +382,7 @@
 }
 
 % Source Code Pro font configuration
-\NewDocumentCommand{\sourcecode}{}{%
+\newcommand{\sourcecode}{%
 	\RequirePackage[otf, lining, scale=0.865]{sourcecodepro} % Load package with options
 	\setmonofont[%
 		Scale = 0.865, % Font scale
@@ -366,7 +392,7 @@
 }
 
 % Fira Sans font configuration
-\NewDocumentCommand{\firasans}{}{%
+\newcommand{\firasans}{%
 	\setsansfont[%
 		Scale = 0.925, % Font scale
 		BoldFont = {FiraSans-Bold.otf}, % Bold font
@@ -379,7 +405,7 @@
 }
 
 % Fira Mono font configuration
-\NewDocumentCommand{\firacode}{}{%
+\newcommand{\firacode}{%
 	\setmonofont[%
 		Scale = 0.865, % Font scale
 		BoldFont = {firacode-Bold.otf}, % Bold font
@@ -392,7 +418,7 @@
 }
 
 % Inconsolata font configuration
-\NewDocumentCommand{\inconsolata}{}{%
+\newcommand{\inconsolata}{%
 	\setmonofont[%
 		SmallCapsFeatures = {RawFeature=+smcp}, % Small caps
 		RawFeature = {+calt, +case, +dlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Typographic features
@@ -408,6 +434,78 @@
 	]{mathalpha}
 }
 
+% Check for Serif Font
+\ifcsbook@garamond
+	\garamond
+	\typeout{csbook: Garamond fonts are applied.}
+\else
+	\typeout{csbook: Garamond fonts are not applied.}
+\fi
+\ifcsbook@kepler
+	\kepler
+	\typeout{csbook: Kepler fonts are applied.}
+\else
+	\typeout{csbook: Kepler fonts are not applied.}
+\fi
+\ifcsbook@lmserif
+	\lmserif
+	\typeout{csbook: Latin Modern Serif fonts are applied.}
+\else
+	\typeout{csbook: Latin Modern Serif fonts are not applied.}
+\fi
+\ifcsbook@oldlmserif
+	\oldlmserif
+	\typeout{csbook: Old Latin Modern Serif fonts are applied.}
+\else
+	\typeout{csbook: Old Latin Modern Serif fonts are not applied.}
+\fi
+
+% Check for Sans Serif Font
+\ifcsbook@firasans
+	\firasans
+	\typeout{csbook: Fira Sans fonts are applied.}
+\else
+	\typeout{csbook: Fira Sans fonts are not applied.}
+\fi
+\ifcsbook@libertinesans
+	\libertinesans
+	\typeout{csbook: Libertinus Sans fonts are applied.}
+\else
+	\typeout{csbook: Libertinus Sans fonts are not applied.}
+\fi
+\ifcsbook@lmsans
+	\lmsans
+	\typeout{csbook: Latin Modern Sans fonts are applied.}
+\else
+	\typeout{csbook: Latin Modern Sans fonts are not applied.}
+\fi
+\ifcsbook@sourcesans
+	\sourcesans
+	\typeout{csbook: Source Sans fonts are applied.}
+\else
+	\typeout{csbook: Source Sans fonts are not applied.}
+\fi
+
+% Check for Monospace Font
+\ifcsbook@firacode
+	\firacode
+	\typeout{csbook: Fira Mono fonts are applied.}
+\else
+	\typeout{csbook: Fira Mono fonts are not applied.}
+\fi
+\ifcsbook@inconsolata
+	\inconsolata
+	\typeout{csbook: Inconsolata fonts are applied.}
+\else
+	\typeout{csbook: Inconsolata fonts are not applied.}
+\fi
+\ifcsbook@sourcecode
+	\sourcecode
+	\typeout{csbook: Source Code Pro fonts are applied.}
+\else
+	\typeout{csbook: Source Code Pro fonts are not applied.}
+\fi
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Custom Sectioning Commands
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -415,12 +513,12 @@
 \RequirePackage[explicit, compact]{titlesec}  % Sectioning commands customization
 
 % Define heading font commands
-\NewDocumentCommand{\headerfont}{}{\sffamily}
-\NewDocumentCommand{\partfont}{}{\normalfont\headerfont}
-\NewDocumentCommand{\chapterfont}{}{\LARGE\headerfont}
-\NewDocumentCommand{\sectionfont}{}{\Large\headerfont}
-\NewDocumentCommand{\subsectionfont}{}{\large\headerfont}
-\NewDocumentCommand{\subsubsectionfont}{}{\normalsize\headerfont}
+\newcommand{\headerfont}{\sffamily}
+\newcommand{\partfont}{\normalfont\headerfont}
+\newcommand{\chapterfont}{\LARGE\headerfont}
+\newcommand{\sectionfont}{\Large\headerfont}
+\newcommand{\subsectionfont}{\large\headerfont}
+\newcommand{\subsubsectionfont}{\normalsize\headerfont}
 
 \AtEndPreamble{%
 	% Part title formatting
@@ -429,7 +527,7 @@
     	{\color{accentcolor}\LARGE\partname~\normalfont\thepart} % Title and number format
     	{0pt}                                      % Space between number and title
     	{\titlerule\bigskip\Huge#1\vfill}          % Title appearance
-	\titlespacing*{\part}{0pt}{\fill}{\fill}   % Title spacing
+    	\titlespacing*{\part}{0pt}{\fill}{\fill}   % Title spacing
 
 	% Chapter title formatting
 	\titleformat{\chapter}[display]
@@ -437,33 +535,33 @@
     	{\RaggedLeft{\rmfamily\scshape\large\chaptertitlename}~\Huge\normalfont\color{accentcolor}\thechapter} % Title and number format
     	{1ex}                                      % Space between number and title
     	{\titlerule\vspace{1ex}#1}[\vspace{1ex}\titlerule] % Title appearance and rule
-	\titlespacing*{\chapter}{0pt}{25pt}{25pt}  % Title spacing
+    	\titlespacing*{\chapter}{0pt}{25pt}{25pt}  % Title spacing
 
 	% Section title formatting
 	\titleformat{\section}[block]
     	{\sectionfont}                             % Font style
-    	{\normalfont\color{accentcolor}\huge\thesection}  % Title and number format
+    	{\normalfont\color{accentcolor}\huge\sffamily\thesection}  % Title and number format
     	{10pt}                                     % Space between number and title
     	{#1}[\vspace{5pt}\titlerule]               % Title appearance and rule
-	\titlespacing*{\section}{0pt}{15pt}{10pt}  % Title spacing
+    	\titlespacing*{\section}{0pt}{15pt}{10pt}  % Title spacing
 
 	% Subsection title formatting
 	\titleformat{\subsection}[block]
     	{\subsectionfont}                          % Font style
-    	{\color{accentcolor}\normalfont\Large\thesubsection}  % Title and number format
+    	{\color{accentcolor}\normalfont\Large\sffamily\thesubsection}  % Title and number format
     	{7.5pt}                                    % Space between number and title
     	{#1}                                       % Title content
 
 	% Subsubsection title formatting
 	\titleformat{\subsubsection}[runin]
     	{\subsubsectionfont}                       % Font style
-    	{\normalfont\color{accentcolor}\thesubsubsection}  % Title and number format
+    	{\normalfont\color{accentcolor}\sffamily\thesubsubsection}  % Title and number format
     	{5pt}                                      % Space between number and title
     	{#1.}                                      % Title content with period
 
 	% Paragraph and subparagraph formatting
-	\RenewDocumentCommand{\paragraph}{m}{\noindent\normalfont{\textbf{#1.}}}  % Paragraph format
-	\RenewDocumentCommand{\subparagraph}{m}{\noindent\normalfont{\textsc{#1.}}}  % Subparagraph format
+	\renewcommand{\paragraph}[1]{\noindent\normalfont{\textbf{#1.}}}  % Paragraph format
+	\renewcommand{\subparagraph}[1]{\noindent\normalfont{\textsc{#1.}}}  % Subparagraph format
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -473,11 +571,11 @@
 \RequirePackage[titles]{tocloft}  % TOC customization package
 
 % Adjust spacing, number alignment, and indentation for TOC entries
-\RenewDocumentCommand{\cftpartafterpnum}{}{\vskip1pt}  % Part number spacing
-\RenewDocumentCommand{\cftchapafterpnum}{}{\vskip1pt}  % Chapter number spacing
-\RenewDocumentCommand{\cftsecafterpnum}{}{\vskip1pt}   % Section number spacing
-\RenewDocumentCommand{\cftsubsecafterpnum}{}{\vskip1pt} % Subsection number spacing
-\RenewDocumentCommand{\cftsubsubsecafterpnum}{}{\vskip1pt} % Subsubsection number spacing
+\renewcommand{\cftpartafterpnum}{}{\vskip1pt}  % Part number spacing
+\renewcommand{\cftchapafterpnum}{}{\vskip1pt}  % Chapter number spacing
+\renewcommand{\cftsecafterpnum}{}{\vskip1pt}   % Section number spacing
+\renewcommand{\cftsubsecafterpnum}{}{\vskip1pt} % Subsection number spacing
+\renewcommand{\cftsubsubsecafterpnum}{}{\vskip1pt} % Subsubsection number spacing
 
 % Adjust number alignment widths
 \addtolength{\cftpartnumwidth}{2.5pt}    % Part number width
@@ -492,11 +590,11 @@
 \addtolength{\cftsubsubsecindent}{12pt}  % Subsubsection indentation
 
 % Customize TOC font styles
-\RenewDocumentCommand{\cftpartfont}{}{\Large\sffamily}    % Part font
-\RenewDocumentCommand{\cftchapfont}{}{\large\scshape}     % Chapter font
-\RenewDocumentCommand{\cftsecfont}{}{\normalsize\scshape} % Section font
-\RenewDocumentCommand{\cftsubsecfont}{}{\normalsize}      % Subsection font
-\RenewDocumentCommand{\cftsubsubsecfont}{}{\normalsize}   % Subsubsection font
+\renewcommand{\cftpartfont}{}{\Large\sffamily}    % Part font
+\renewcommand{\cftchapfont}{}{\large\scshape}     % Chapter font
+\renewcommand{\cftsecfont}{}{\normalsize\scshape} % Section font
+\renewcommand{\cftsubsecfont}{}{\normalsize}      % Subsection font
+\renewcommand{\cftsubsubsecfont}{}{\normalsize}   % Subsubsection font
 
 % Set numbering and TOC depth
 \setcounter{secnumdepth}{4}  % Depth of numbering (part, chapter, section, subsection)
@@ -571,7 +669,7 @@ postamble "\n\\end{theindex}\n"
 \setabbreviationstyle[acronym]{long-short}  % Acronym style
 \renewcommand{\glsnamefont}[1]{{\normalfont\sffamily\color{accentcolor}#1.}} % Glossary name font
 \renewcommand{\glossarypreamble}{\begin{normalsize}} % Glossary preamble
-\renewcommand{\glossarypostamble}{\end{normalsize}} % Glossary postamble
+		\renewcommand{\glossarypostamble}{\end{normalsize}} % Glossary postamble
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Package for Customizing Lists
@@ -729,7 +827,7 @@ postamble "\n\\end{theindex}\n"
 
 % Save original \appendix command
 \let\oldappendices\appendix
-\RenewDocumentCommand{\appendix}{}{% New definition of \appendix
+\renewcommand{\appendix}{% New definition of \appendix
 	\part*{Appendix} % Display the "Appendix" title without numbering
 	\oldappendices    % Invoke the original appendix functionality
 }
@@ -739,16 +837,13 @@ postamble "\n\\end{theindex}\n"
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{verbatim}  % Raw text/code inclusion
-\RequirePackage{lettrine}  % First letter stylization
 \RequirePackage{fancyvrb}  % Enhanced verbatim environments
 
 % Save the original verbatim line processing command
-\NewDocumentCommand{\savedverbatim@processline}{}{%
-	% This placeholder will be replaced by the actual command below.
-}
+\newcommand{\savedverbatim@processline}{}
 \let\savedverbatim@processline=\verbatim@processline
 
-\RenewDocumentCommand{\verbatim@processline}{}{% New verbatim line processing
+\renewcommand{\verbatim@processline}{% New verbatim line processing
 	\let\verbatim@processline=\savedverbatim@processline
 	\if\relax\the\verbatim@line\relax
 	\else
@@ -768,24 +863,33 @@ postamble "\n\\end{theindex}\n"
 \RequirePackage{footnote}            % Enables footnotes within the document
 \RequirePackage{graphics}            % Basic graphics inclusion
 \RequirePackage{graphicx}            % Advanced graphic formats (PDF, EPS, etc.)
+\RequirePackage{lettrine}            % First letter stylization
 \RequirePackage{longtable}           % Tables that span multiple pages
 \RequirePackage{multicol}            % Supports multi-column formatting
 \RequirePackage{multirow}            % Allows multi-row spanning in tables
 \RequirePackage{subcaption}          % Handle subfigures/subcaptions
 \RequirePackage{tabularx}            % Flexible tables with adjustable column width
 \RequirePackage{wrapfig}             % Enables text wrapping around figures
+\RequirePackage{xspace}              % Manages space after macros
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Drawings and Diagrams
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\NewDocumentCommand{\loadtikz}{}{%
+\newcommand{\loadtikz}{%
 	\RequirePackage{tikz}          % Load TikZ for creating graphics and diagrams
 	\RequirePackage{tikz-cd}       % Load TikZ-cd for commutative diagrams
 	\RequirePackage{tikzscale}     % Load tikzscale to automatically scale TikZ figures
 	\RequirePackage{pgfplots}      % Load pgfplots for advanced plotting
 	\pgfplotsset{compat=1.18}      % Set compatibility with version 1.18
 }
+
+\ifcsbook@tikz
+	\loadtikz
+	\typeout{csbook: TikZ is enabled.}
+\else
+	\typeout{csbook: TikZ is not included.}
+\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Captions Setup (unchanged)
@@ -809,22 +913,22 @@ postamble "\n\\end{theindex}\n"
 % Epigraph Formatting
 \setlength{\epigraphrule}{0.65pt}           		% Thickness of the rule below epigraphs
 \setlength{\epigraphwidth}{0.6\textwidth}    		% Width of the epigraph text block
-\RenewDocumentCommand{\textflush}{} {flushright}  	% Align epigraph text to the right
-\RenewDocumentCommand{\epigraphsize}{}{\small}     	% Set epigraph text size
+\renewcommand{\textflush}{flushright}  	            % Align epigraph text to the right
+\renewcommand{\epigraphsize}{\small}     	        % Set epigraph text size
 
 % Modify epigraph to customize author font and size
 \let\oldepigraph\epigraph
-\RenewDocumentCommand{\epigraph}{mm}{%
+\renewcommand{\epigraph}[2]{%
 	\oldepigraph{#1}{\medskip\normalfont\sffamily#2}%
 }
 
 % Dedication Command: Formats a single dedication
-\NewDocumentCommand{\dedication}{mm}{%
+\newcommand{\dedication}[2]{%
 	\epigraph{#1}{#2}%
 }
 
 % Generate Dedications: Produces a page of dedications
-\NewDocumentCommand{\generateDedications}{m}{%
+\newcommand{\generateDedications}[1]{%
 	\thispagestyle{empty} % Remove header/footer and page numbers
 	\begin{center}
 		\vspace*{\fill}      % Add vertical space to centre the content
@@ -840,14 +944,14 @@ postamble "\n\\end{theindex}\n"
 
 % Front matter: Set page style to plain
 \let\oldfrontmatter\frontmatter
-\RenewDocumentCommand{\frontmatter}{}{%
+\renewcommand{\frontmatter}{%
 	\oldfrontmatter       % Keep the original front matter behavior
 	\pagestyle{plain}     % Set page style to plain for the front matter
 }
 
 % Main matter: Use fancy page style and ensure chapters start on right-hand pages
 \let\oldmainmatter\mainmatter
-\RenewDocumentCommand{\mainmatter}{}{%
+\renewcommand{\mainmatter}{%
 	\oldmainmatter       % Keep the original main matter behavior
 	\@openrighttrue      % Ensure chapters begin on right-hand pages
 	\pagestyle{fancy}    % Apply fancy page style to the main matter
@@ -855,7 +959,7 @@ postamble "\n\\end{theindex}\n"
 
 % Back matter: Use plain page style and ensure sections begin on right-hand pages
 \let\oldbackmatter\backmatter
-\RenewDocumentCommand{\backmatter}{}{%
+\renewcommand{\backmatter}{%
 	\oldbackmatter       % Keep the original backmatter behavior
 	\@openrighttrue      % Ensure sections begin on right-hand pages
 	\bookmarksetup{startatroot} % Set bookmarks to start from root
@@ -864,7 +968,7 @@ postamble "\n\\end{theindex}\n"
 
 % Redefine Table of Contents: Add a page break and apply fancy style
 \let\oldtablecontents\tableofcontents
-\RenewDocumentCommand{\tableofcontents}{}{%
+\renewcommand{\tableofcontents}{%
 	\oldtablecontents    % Retain original table of contents behavior
 	\cleardoublepage     % Insert a page break after the contents
 	\pagestyle{fancy}    % Set fancy page style for the following content
@@ -875,38 +979,47 @@ postamble "\n\\end{theindex}\n"
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Common Font and Symbol
-\providecommand{\commonthmfont}{\sffamily} % Common theorem font
-\providecommand{\commonthmsymb}{\ensuremath{\color{\accentcolor}\lrcorner}} % Common theorem symbol
+\newcommand{\commonthmfont}{\sffamily} % Common theorem font
+\newcommand{\commonthmsymb}{\ensuremath{\color{\accentcolor}\lrcorner}} % Common theorem symbol
 
 % Heading Fonts
-\providecommand{\thmheadfont}{\sffamily} % Theorem heading font
-\providecommand{\defnheadfont}{\sffamily} % Definition heading font
-\providecommand{\remarkheadfont}{\sffamily} % Remark heading font
-\providecommand{\hltheadfont}{\sffamily} % Highlight heading font
+\newcommand{\thmheadfont}{\sffamily} % Theorem heading font
+\newcommand{\defnheadfont}{\sffamily} % Definition heading font
+\newcommand{\remarkheadfont}{\sffamily} % Remark heading font
+\newcommand{\hltheadfont}{\sffamily} % Highlight heading font
 
 % Body Fonts
-\providecommand{\thmfont}{\normalfont} % Theorem body font
-\providecommand{\defnfont}{\normalfont} % Definition body font
-\providecommand{\remarkfont}{\normalfont} % Remark body font
-\providecommand{\hltfont}{\normalfont\sffamily} % Highlight body font
+\newcommand{\thmfont}{\normalfont} % Theorem body font
+\newcommand{\defnfont}{\normalfont} % Definition body font
+\newcommand{\remarkfont}{\normalfont} % Remark body font
+\newcommand{\hltfont}{\normalfont\sffamily} % Highlight body font
 
 % Environment Symbols
-\providecommand{\thmsymb}{\ensuremath{\color{\accentcolor}\scriptstyle\blacktriangleright}} % Theorem symbol
-\providecommand{\defnsymb}{\ensuremath{\color{\accentcolor}\scriptstyle\blacksquare}} % Definition symbol
-\providecommand{\remarksymb}{\ensuremath{\color{\accentcolor}\scriptstyle\vartriangleright}} % Remark symbol
-\providecommand{\hltsymb}{\ensuremath{\color{\accentcolor}\scriptstyle\square}} % Highlight symbol
+\newcommand{\thmsymb}{\ensuremath{\color{\accentcolor}\scriptstyle\blacktriangleright}} % Theorem symbol
+\newcommand{\defnsymb}{\ensuremath{\color{\accentcolor}\scriptstyle\blacksquare}} % Definition symbol
+\newcommand{\remarksymb}{\ensuremath{\color{\accentcolor}\scriptstyle\vartriangleright}} % Remark symbol
+\newcommand{\hltsymb}{\ensuremath{\color{\accentcolor}\scriptstyle\square}} % Highlight symbol
 
 % Color Definitions
-\providecommand{\thmcolor}{DeepSkyBlue4} % Theorem color
-\providecommand{\defncolor}{RoyalBlue4} % Definition color
-\providecommand{\remarkcolor}{Aquamarine4} % Remark color
-\providecommand{\hltcolor}{DeepPink4} % Highlight color
+\newcommand{\thmcolor}{DeepSkyBlue4} % Theorem color
+\newcommand{\defncolor}{RoyalBlue4} % Definition color
+\newcommand{\remarkcolor}{Aquamarine4} % Remark color
+\newcommand{\hltcolor}{DeepPink4} % Highlight color
+
+% Case List Definition
+\newlist{caseList}{enumerate}{1}% Define a new list type 'caseList'
+\setlist[caseList]{label=\textbf{Case~\arabic*:}, leftmargin=*}% Customize 'caseList' labels
+\NewDocumentEnvironment{case}{O{}}{% Begin 'case' environment with optional argument
+	\begin{caseList}[#1]%
+		}{%
+	\end{caseList}% End 'case' environment
+}
 
 % QED Symbol
 \renewcommand{\qedsymbol}{$\scriptstyle\color{\accentcolor}\blacksquare$} % QED symbol
 
 % Definition of New Environments
-\NewDocumentCommand{\basicenv}{}{%
+\newcommand{\basicenv}{%
 	% Theorem-like Environments
 	\declaretheorem[style=thmstyle,name=Theorem]{theorem}%
 	\declaretheorem[style=thmstyle,name=Assertion]{assertion}%
@@ -992,29 +1105,29 @@ postamble "\n\\end{theindex}\n"
 }
 
 % Fancy Theorem Environments
-\NewDocumentCommand{\fancythm}{}{%
+\newcommand{\fancythm}{%
 	% Common settings
-	\RenewDocumentCommand{\commonthmfont}{}{\normalfont}%
-	\RenewDocumentCommand{\commonthmsymb}{}{\ensuremath{\color{\accentcolor}\lrcorner}}%
-	\RenewDocumentCommand{\qedsymbol}{}{\ensuremath{\color{\accentcolor}\scriptstyle\blacksquare}}%
+	\renewcommand{\commonthmfont}{\normalfont}%
+	\renewcommand{\commonthmsymb}{\ensuremath{\color{\accentcolor}\lrcorner}}%
+	\renewcommand{\qedsymbol}{\ensuremath{\color{\accentcolor}\scriptstyle\blacksquare}}%
 
 	% Heading fonts
-	\RenewDocumentCommand{\thmheadfont}{}{\sffamily}%
-	\RenewDocumentCommand{\defnheadfont}{}{\sffamily}%
-	\RenewDocumentCommand{\remarkheadfont}{}{\sffamily}%
-	\RenewDocumentCommand{\hltheadfont}{}{\sffamily}%
+	\renewcommand{\thmheadfont}{\sffamily}%
+	\renewcommand{\defnheadfont}{\sffamily}%
+	\renewcommand{\remarkheadfont}{\sffamily}%
+	\renewcommand{\hltheadfont}{\sffamily}%
 
 	% Body fonts
-	\RenewDocumentCommand{\thmfont}{}{\normalfont}%
-	\RenewDocumentCommand{\defnfont}{}{\normalfont}%
-	\RenewDocumentCommand{\remarkfont}{}{\normalfont}%
-	\RenewDocumentCommand{\hltfont}{}{\normalfont\sffamily}%
+	\renewcommand{\thmfont}{\normalfont}%
+	\renewcommand{\defnfont}{\normalfont}%
+	\renewcommand{\remarkfont}{\normalfont}%
+	\renewcommand{\hltfont}{\normalfont\sffamily}%
 
 	% Symbol definitions
-	\RenewDocumentCommand{\thmsymb}{}{}%
-	\RenewDocumentCommand{\defnsymb}{}{}%
-	\RenewDocumentCommand{\remarksymb}{}{}%
-	\RenewDocumentCommand{\hltsymb}{}{}%
+	\renewcommand{\thmsymb}{}%
+	\renewcommand{\defnsymb}{}%
+	\renewcommand{\remarksymb}{}%
+	\renewcommand{\hltsymb}{}%
 
 	% Theorem style (with mdframed)
 	\declaretheoremstyle[%
@@ -1067,29 +1180,29 @@ postamble "\n\\end{theindex}\n"
 }
 
 % Standard (Normal) Theorem Environments
-\NewDocumentCommand{\normalthm}{}{%
+\newcommand{\normalthm}{%
 	% Common settings
-	\RenewDocumentCommand{\commonthmfont}{}{\sffamily}%
-	\RenewDocumentCommand{\commonthmsymb}{}{\ensuremath{\color{\accentcolor}\lrcorner}}%
-	\RenewDocumentCommand{\qedsymbol}{}{\ensuremath{\color{\accentcolor}\scriptstyle\blacksquare}}%
+	\renewcommand{\commonthmfont}{\sffamily}%
+	\renewcommand{\commonthmsymb}{\ensuremath{\color{\accentcolor}\lrcorner}}%
+	\renewcommand{\qedsymbol}{\ensuremath{\color{\accentcolor}\scriptstyle\blacksquare}}%
 
 	% Heading fonts
-	\RenewDocumentCommand{\thmheadfont}{}{\sffamily}%
-	\RenewDocumentCommand{\defnheadfont}{}{\sffamily}%
-	\RenewDocumentCommand{\remarkheadfont}{}{\sffamily}%
-	\RenewDocumentCommand{\hltheadfont}{}{\sffamily}%
+	\renewcommand{\thmheadfont}{\sffamily}%
+	\renewcommand{\defnheadfont}{\sffamily}%
+	\renewcommand{\remarkheadfont}{\sffamily}%
+	\renewcommand{\hltheadfont}{\sffamily}%
 
 	% Body fonts
-	\RenewDocumentCommand{\thmfont}{}{\normalfont}%
-	\RenewDocumentCommand{\defnfont}{}{\normalfont}%
-	\RenewDocumentCommand{\remarkfont}{}{\normalfont}%
-	\RenewDocumentCommand{\hltfont}{}{\normalfont\sffamily}%
+	\renewcommand{\thmfont}{\normalfont}%
+	\renewcommand{\defnfont}{\normalfont}%
+	\renewcommand{\remarkfont}{\normalfont}%
+	\renewcommand{\hltfont}{\normalfont\sffamily}%
 
 	% Symbol definitions
-	\RenewDocumentCommand{\thmsymb}{}{\ensuremath{\color{\accentcolor}\scriptstyle\blacktriangleright}}%
-	\RenewDocumentCommand{\defnsymb}{}{\ensuremath{\color{\accentcolor}\scriptstyle\blacksquare}}%
-	\RenewDocumentCommand{\remarksymb}{}{\ensuremath{\color{\accentcolor}\scriptstyle\vartriangleright}}%
-	\RenewDocumentCommand{\hltsymb}{}{\ensuremath{\color{\accentcolor}\scriptstyle\square}}%
+	\renewcommand{\thmsymb}{\ensuremath{\color{\accentcolor}\scriptstyle\blacktriangleright}}%
+	\renewcommand{\defnsymb}{\ensuremath{\color{\accentcolor}\scriptstyle\blacksquare}}%
+	\renewcommand{\remarksymb}{\ensuremath{\color{\accentcolor}\scriptstyle\vartriangleright}}%
+	\renewcommand{\hltsymb}{\ensuremath{\color{\accentcolor}\scriptstyle\square}}%
 
 	% Theorem style
 	\declaretheoremstyle[%
@@ -1133,29 +1246,29 @@ postamble "\n\\end{theindex}\n"
 }
 
 % Old-School Theorem Environments
-\NewDocumentCommand{\oldschoolthm}{}{%
+\newcommand{\oldschoolthm}{%
 	% Common settings
-	\RenewDocumentCommand{\commonthmfont}{}{\normalfont}%
-	\RenewDocumentCommand{\commonthmsymb}{}{\ensuremath{\color{\accentcolor}\lrcorner}}%
-	\RenewDocumentCommand{\qedsymbol}{}{\ensuremath{\color{\accentcolor}\scriptstyle\blacksquare}}%
+	\renewcommand{\commonthmfont}{\normalfont}%
+	\renewcommand{\commonthmsymb}{\ensuremath{\color{\accentcolor}\lrcorner}}%
+	\renewcommand{\qedsymbol}{\ensuremath{\color{\accentcolor}\scriptstyle\blacksquare}}%
 
 	% Heading fonts (old-school)
-	\RenewDocumentCommand{\thmheadfont}{}{\bfseries}%
-	\RenewDocumentCommand{\defnheadfont}{}{\scshape}%
-	\RenewDocumentCommand{\remarkheadfont}{}{\bfseries}%
-	\RenewDocumentCommand{\hltheadfont}{}{\sffamily}%
+	\renewcommand{\thmheadfont}{\bfseries}%
+	\renewcommand{\defnheadfont}{\scshape}%
+	\renewcommand{\remarkheadfont}{\bfseries}%
+	\renewcommand{\hltheadfont}{\sffamily}%
 
 	% Body fonts
-	\RenewDocumentCommand{\thmfont}{}{\normalfont}%
-	\RenewDocumentCommand{\defnfont}{}{\normalfont}%
-	\RenewDocumentCommand{\remarkfont}{}{\normalfont}%
-	\RenewDocumentCommand{\hltfont}{}{\normalfont\sffamily}%
+	\renewcommand{\thmfont}{\normalfont}%
+	\renewcommand{\defnfont}{\normalfont}%
+	\renewcommand{\remarkfont}{\normalfont}%
+	\renewcommand{\hltfont}{\normalfont\sffamily}%
 
 	% Symbol definitions
-	\RenewDocumentCommand{\thmsymb}{}{}%
-	\RenewDocumentCommand{\defnsymb}{}{}%
-	\RenewDocumentCommand{\remarksymb}{}{}%
-	\RenewDocumentCommand{\hltsymb}{}{}%
+	\renewcommand{\thmsymb}{}%
+	\renewcommand{\defnsymb}{}%
+	\renewcommand{\remarksymb}{}%
+	\renewcommand{\hltsymb}{}%
 
 	% Theorem style
 	\declaretheoremstyle[%
@@ -1255,12 +1368,31 @@ postamble "\n\\end{theindex}\n"
 	}%
 }%
 
+\ifcsbook@fancythm
+	\fancythm
+	\typeout{csbook: Fancy theorem style is enabled.}
+\else
+	\typeout{csbook: Fancy theorem style is not enabled.}
+\fi
+\ifcsbook@normalthm
+	\normalthm
+	\typeout{csbook: Normal theorem style is enabled.}
+\else
+	\typeout{csbook: Normal theorem style is not enabled.}
+\fi
+\ifcsbook@oldschoolthm
+	\oldschoolthm
+	\typeout{csbook: Old school theorem style is enabled.}
+\else
+	\typeout{csbook: Old school theorem style is not enabled.}
+\fi
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bibliography Management with BibLaTeX
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Configure BibLaTeX package with desired settings
-\NewDocumentCommand{\biblatex}{}{% no argument
+\newcommand{\biblatex}{% no argument
 	\RequirePackage[%
 		hyperref=auto,         % Enable compatibility with hyperref for clickable links
 		defernumbers=true,     % Delay reference number assignment until all entries are processed
@@ -1273,7 +1405,7 @@ postamble "\n\\end{theindex}\n"
 	]{biblatex}%
 
 	% Set bibliography font size
-	\RenewDocumentCommand*{\bibfont}{}{\small}%
+	\renewcommand*{\bibfont}{\small}%
 
 	% Customize back-reference text for singular and plural
 	\DefineBibliographyStrings{english}{%
@@ -1283,11 +1415,24 @@ postamble "\n\\end{theindex}\n"
 }
 
 % Command to apply sorted BibLaTeX configuration
-\NewDocumentCommand{\sortedbib}{}{% no argument
+\newcommand{\sortedbib}{% no argument
 	\biblatex%
 	\DeclareBibliographyCategory{cited}%
 	\AtEveryCitekey{\addtocategory{cited}{\thefield{entrykey}}}%
 }
+
+\ifcsbook@biblatex
+	\biblatex
+	\typeout{csbook: BibLaTeX is enabled.}
+\else
+	\typeout{csbook: BibLaTeX is not used.}
+\fi
+\ifcsbook@sortedbib
+	\sortedbib
+	\typeout{csbook: Sorted BibLaTeX is enabled.}
+\else
+	\typeout{csbook: Sorted BibLaTeX is not used.}
+\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Environments and Custom Commands
@@ -1358,16 +1503,14 @@ postamble "\n\\end{theindex}\n"
 % Utility Commands
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage{xspace} % Manages space after macros
-
 % Inline Commands
-\NewDocumentCommand{\code}{m}{{\ttfamily#1}} % Renders inline code
-\NewDocumentCommand{\cat}{m}{\ensuremath{\mathsf{#1}}} % Renders category names in math mode
-\NewDocumentCommand{\strike}{m}{\bgroup\ULdepth=-.55ex\ULon#1\ULoff\egroup} % Strike-through text
-\NewDocumentCommand{\dropcap}{mm}{\lettrine[lines=2, lhang=0.05]{\textcolor{accentcolor}{#1}}{#2}} % Creates a colored drop-cap
-\NewDocumentCommand{\term}{m}{#1\index{#1}} % Marks a term for glossary/indexing
-\NewDocumentCommand{\textem}{m}{{\bfseries\color{accentcolor}#1}} % Applies bold and colored emphasis
-\NewDocumentCommand{\urlref}{m}{\href{#1}{#1}} % Creates a hyperlink to a URL
+\newcommand{\code}[1]{{\ttfamily#1}} % Renders inline code
+\newcommand{\cat}[1]{\ensuremath{\mathsf{#1}}} % Renders category names in math mode
+\newcommand{\strike}[1]{\bgroup\ULdepth=-.55ex\ULon#1\ULoff\egroup} % Strike-through text
+\newcommand{\dropcap}[2]{\lettrine[lines=2, lhang=0.05]{\textcolor{accentcolor}{#1}}{#2}} % Creates a colored drop-cap
+\newcommand{\term}[1]{#1\index{#1}} % Marks a term for glossary/indexing
+\newcommand{\textem}[1]{{\bfseries\color{accentcolor}#1}} % Applies bold and colored emphasis
+\newcommand{\urlref}[1]{\href{#1}{#1}} % Creates a hyperlink to a URL
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Customisation of \maketitle Command
@@ -1376,7 +1519,7 @@ postamble "\n\\end{theindex}\n"
 \RequirePackage{hep-title}    % Custom title formatting package
 \RequirePackage{pgfornament}  % Package for adding decorative elements
 
-\NewDocumentCommand{\fancymaketitle}{}{%
+\newcommand{\fancymaketitle}{%
 	% Title Formatting
 	\pretitle{\normalfont\scshape\LARGE\begin{center}} % Title styling and center alignment
 			\posttitle{\end{center}} % End title alignment
@@ -1398,7 +1541,7 @@ postamble "\n\\end{theindex}\n"
 % Print Title Page
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand{\printtitlepage}{
+\newcommand{\printtitlepage}{
 	\cleardoublepage % Start a new page
 	\begingroup
 	\thispagestyle{empty} % No header/footer on the title page
@@ -1420,7 +1563,7 @@ postamble "\n\\end{theindex}\n"
 % Command for Generating the Copyright Page
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand{\makecopyrightpage}{%
+\newcommand{\makecopyrightpage}{%
 	\pagestyle{empty} % No header/footer on the copyright page
 	\begingroup
 	% Title and copyright information
@@ -1434,7 +1577,7 @@ postamble "\n\\end{theindex}\n"
 	\begin{small}
 		This is a prepublication manuscript. The contents are subject to revision and may differ from the final published version. This draft is provided for limited distribution for academic, editorial, and peer review purposes only. It is not to be considered a final or authoritative edition of the work. All rights to this manuscript, including but not limited to rights of reproduction, distribution, adaptation, and public display, are reserved by the author. No part of this work may be copied, shared, reproduced, stored, or transmitted in any form, including electronic, mechanical, photocopying, or any other means, without explicit prior written permission from the author or authorized publisher. The author grants permission for fair use in academic discourse, including citation, commentary, and critique. However, commercial reproduction, distribution, adaptation, and integration into artificial intelligence or machine learning models are strictly prohibited without formal licensing agreements. This manuscript is provided ``as is'' without warranties of any kind, express or implied. The author makes no representations regarding the accuracy, completeness, or suitability of the content for any specific purpose. The author assumes no liability for any reliance on this work before its official publication. For permissions, licensing, or inquiries regarding publication rights, please contact the author directly. Unauthorized use may result in legal action under applicable copyright and intellectual property laws.
 	\end{small}
-    \endgroup
+	\endgroup
 	\cleardoublepage % Start a new page
 }
 
@@ -1442,7 +1585,7 @@ postamble "\n\\end{theindex}\n"
 % Code Listings and Snippets Setup
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\NewDocumentCommand{\codelist}{}{%
+\newcommand{\codelist}{%
 	\RequirePackage{listings}  % Package for code listings
 
 	% Define C code style
@@ -1573,12 +1716,19 @@ postamble "\n\\end{theindex}\n"
 	%   #2 = Label (without "code:" prefix)
 	%   #3 = Listing style (e.g. CStyle, CPlusPlusStyle, etc.)
 	%   #4 = Filename of the code to include
-	\NewDocumentCommand{\addCode}{mmmm}{%
+	\newcommand{\addCode}[4]{%
 		\begin{codebox}[##1]\label{code:##2}  % Create a code box with a title and label
 			\lstinputlisting[style=##3]{##4}  % Input the code from the specified file
 		\end{codebox}%
 	}
 }
+
+\ifcsbook@codelist
+	\codelist
+	\typeout{csbook: Code listings are enabled.}
+\else
+	\typeout{csbook: Code listings are not used.}
+\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Comments and TODOs
@@ -1632,176 +1782,6 @@ postamble "\n\\end{theindex}\n"
 	\NewDocumentCommand{\missing}{m}{}  % No action for missing content
 	\NewDocumentCommand{\newcomment}{mmm}{\expandafter\NewDocumentCommand\csname#3\endcsname{m}}{}  % No action for new comment macros
 	\typeout{csbook: Comments are not used.}  % Notify that comments are not active
-\fi
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Layout and Style Configuration Checks
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Check if BibLaTeX is enabled
-\ifcsbook@biblatex
-	\biblatex  % Enable BibLaTeX for citation management
-	\typeout{csbook: BibLaTeX is enabled.}  % Notify that BibLaTeX is in use
-\else
-	\typeout{csbook: BibLaTeX is not used.}  % Notify that BibLaTeX is not in use
-\fi
-
-% Check if code listings are enabled
-\ifcsbook@codelist
-	\codelist  % Enable code listings setup
-	\typeout{csbook: Code listings are enabled.}  % Notify that code listings are enabled
-\else
-	\typeout{csbook: Code listings are not used.}  % Notify that code listings are not used
-\fi
-
-% Check if the ebook layout is enabled
-\ifcsbook@ebook
-	\ebook  % Enable ebook layout configuration
-	\loadheaderfooter  % Load header and footer for ebook layout
-	\typeout{csbook: Ebook layout is enabled.}  % Notify that the ebook layout is enabled
-\else
-	\generallayout  % Enable general layout configuration
-	\loadheaderfooter  % Load header and footer for general layout
-	\typeout{csbook: General layout is in use.}  % Notify that general layout is in use
-\fi
-
-% Check if fancy theorem style is enabled
-\ifcsbook@fancythm
-	\fancythm  % Enable fancy theorem style
-	\typeout{csbook: Fancy theorem style is enabled.}  % Notify that fancy theorem style is enabled
-\else
-	\typeout{csbook: Fancy theorem style is not enabled.}  % Notify that fancy theorem style is not enabled
-\fi
-
-% Check if Fira Mono font is applied
-\ifcsbook@firacode
-	\firacode  % Apply Fira Mono font
-	\typeout{csbook: Fira Mono fonts are applied.}  % Notify that Fira Mono font is applied
-\else
-	\typeout{csbook: Fira Mono fonts are not applied.}  % Notify that Fira Mono font is not applied
-\fi
-
-% Check if Fira Sans font is applied
-\ifcsbook@firasans
-	\firasans  % Apply Fira Sans font
-	\typeout{csbook: Fira Sans fonts are applied.}  % Notify that Fira Sans font is applied
-\else
-	\typeout{csbook: Fira Sans fonts are not applied.}  % Notify that Fira Sans font is not applied
-\fi
-
-% Check if Garamond font is applied
-\ifcsbook@garamond
-	\garamond  % Apply Garamond font
-	\typeout{csbook: Garamond fonts are applied.}  % Notify that Garamond font is applied
-\else
-	\typeout{csbook: Garamond fonts are not applied.}  % Notify that Garamond font is not applied
-\fi
-
-% Check if Inconsolata font is applied
-\ifcsbook@inconsolata
-	\inconsolata  % Apply Inconsolata font
-	\typeout{csbook: Inconsolata fonts are applied.}  % Notify that Inconsolata font is applied
-\else
-	\typeout{csbook: Inconsolata fonts are not applied.}  % Notify that Inconsolata font is not applied
-\fi
-
-% Check if Kepler font is applied
-\ifcsbook@kepler
-	\kepler  % Apply Kepler font
-	\typeout{csbook: Kepler fonts are applied.}  % Notify that Kepler font is applied
-\else
-	\typeout{csbook: Kepler fonts are not applied.}  % Notify that Kepler font is not applied
-\fi
-
-% Check if Libertinus Sans font is applied
-\ifcsbook@libertinesans
-	\libertinesans  % Apply Libertinus Sans font
-	\typeout{csbook: Libertinus Sans fonts are applied.}  % Notify that Libertinus Sans font is applied
-\else
-	\typeout{csbook: Libertinus Sans fonts are not applied.}  % Notify that Libertinus Sans font is not applied
-\fi
-
-% Check if Latin Modern Sans font is applied
-\ifcsbook@lmsans
-	\lmsans  % Apply Latin Modern Sans font
-	\typeout{csbook: Latin Modern Sans fonts are applied.}  % Notify that Latin Modern Sans font is applied
-\else
-	\typeout{csbook: Latin Modern Sans fonts are not applied.}  % Notify that Latin Modern Sans font is not applied
-\fi
-
-% Check if Latin Modern Serif font is applied
-\ifcsbook@lmserif
-	\lmserif  % Apply Latin Modern Serif font
-	\typeout{csbook: Latin Modern Serif fonts are applied.}  % Notify that Latin Modern Serif font is applied
-\else
-	\typeout{csbook: Latin Modern Serif fonts are not applied.}  % Notify that Latin Modern Serif font is not applied
-\fi
-
-% Check if normal theorem style is enabled
-\ifcsbook@normalthm
-	\normalthm  % Enable normal theorem style
-	\typeout{csbook: Normal theorem style is enabled.}  % Notify that normal theorem style is enabled
-\else
-	\typeout{csbook: Normal theorem style is not enabled.}  % Notify that normal theorem style is not enabled
-\fi
-
-% Check if old Latin Modern Serif font is applied
-\ifcsbook@oldlmserif
-	\oldlmserif  % Apply old Latin Modern Serif font
-	\typeout{csbook: Old Latin Modern Serif fonts are applied.}  % Notify that Old Latin Modern Serif font is applied
-\else
-	\typeout{csbook: Old Latin Modern Serif fonts are not applied.}  % Notify that Old Latin Modern Serif font is not applied
-\fi
-
-% Check if old school theorem style is enabled
-\ifcsbook@oldschoolthm
-	\oldschoolthm  % Enable old-school theorem style
-	\typeout{csbook: Old school theorem style is enabled.}  % Notify that old school theorem style is enabled
-\else
-	\typeout{csbook: Old school theorem style is not enabled.}  % Notify that old school theorem style is not enabled
-\fi
-
-% Check if the print layout is enabled
-\ifcsbook@print
-	\print  % Enable print layout configuration
-	\loadheaderfooter  % Load header and footer for print layout
-	\typeout{csbook: Print layout is enabled.}  % Notify that print layout is enabled
-\else
-	\generallayout  % Enable general layout configuration
-	\loadheaderfooter  % Load header and footer for general layout
-	\typeout{csbook: General layout is in use.}  % Notify that general layout is in use
-\fi
-
-% Check if sorted BibLaTeX is enabled
-\ifcsbook@sortedbib
-	\sortedbib  % Enable sorted BibLaTeX for references
-	\typeout{csbook: Sorted BibLaTeX is enabled.}  % Notify that sorted BibLaTeX is enabled
-\else
-	\typeout{csbook: Sorted BibLaTeX is not used.}  % Notify that sorted BibLaTeX is not used
-\fi
-
-% Check if Source Code Pro font is applied
-\ifcsbook@sourcecode
-	\sourcecode  % Apply Source Code Pro font
-	\typeout{csbook: Source Code Pro fonts are applied.}  % Notify that Source Code Pro font is applied
-\else
-	\typeout{csbook: Source Code Pro fonts are not applied.}  % Notify that Source Code Pro font is not applied
-\fi
-
-% Check if Source Sans font is applied
-\ifcsbook@sourcesans
-	\sourcesans  % Apply Source Sans font
-	\typeout{csbook: Source Sans fonts are applied.}  % Notify that Source Sans font is applied
-\else
-	\typeout{csbook: Source Sans fonts are not applied.}  % Notify that Source Sans font is not applied
-\fi
-
-% Check if TikZ is enabled
-\ifcsbook@tikz
-	\loadtikz  % Enable TikZ for graphics
-	\typeout{csbook: TikZ is enabled.}  % Notify that TikZ is enabled
-\else
-	\typeout{csbook: TikZ is not included.}  % Notify that TikZ is not enabled
 \fi
 
 % Disable the use of '@' in command names
