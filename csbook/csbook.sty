@@ -669,7 +669,7 @@ postamble "\n\\end{theindex}\n"
 \setabbreviationstyle[acronym]{long-short}  % Acronym style
 \renewcommand{\glsnamefont}[1]{{\normalfont\sffamily\color{accentcolor}#1.}} % Glossary name font
 \renewcommand{\glossarypreamble}{\begin{normalsize}} % Glossary preamble
-		\renewcommand{\glossarypostamble}{\end{normalsize}} % Glossary postamble
+\renewcommand{\glossarypostamble}{\end{normalsize}} % Glossary postamble
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Package for Customizing Lists
@@ -1121,7 +1121,7 @@ postamble "\n\\end{theindex}\n"
 	\renewcommand{\thmfont}{\normalfont}%
 	\renewcommand{\defnfont}{\normalfont}%
 	\renewcommand{\remarkfont}{\normalfont}%
-	\renewcommand{\hltfont}{\normalfont\sffamily}%
+	\renewcommand{\hltfont}{\normalfont\sffamily\sansmath}%
 
 	% Symbol definitions
 	\renewcommand{\thmsymb}{}%
@@ -1162,8 +1162,8 @@ postamble "\n\\end{theindex}\n"
 	% Highlight style
 	\declaretheoremstyle[%
 		spaceabove=0pt, spacebelow=0pt,%
-		headfont=\sffamily\color{\hltcolor}, notefont=\sffamily\color{\hltcolor},%
-		bodyfont=\normalfont\sffamily\sansmath, postheadspace=5pt, numberwithin=section,%
+		headfont=\hltheadfont\color{\hltcolor}, notefont=\hltheadfont\color{\hltcolor},%
+		bodyfont=\hltfont, postheadspace=5pt, numberwithin=section,%
 		mdframed={linewidth=2pt, rightline=false, topline=false, bottomline=false,%
 				linecolor=\hltcolor, backgroundcolor=\hltcolor!5},%
 		headpunct={.}%
@@ -1171,8 +1171,8 @@ postamble "\n\\end{theindex}\n"
 
 	% Proof style
 	\declaretheoremstyle[%
-		headfont=\hltheadfont\color{\thmcolor}, notefont=\hltheadfont\color{\thmcolor},%
-		bodyfont=\hltfont, postheadspace=5pt, numbered=no, headpunct={.},%
+		headfont=\sffamily\color{\thmcolor}, notefont=\sffamily\color{\thmcolor},%
+		bodyfont=\normalfont, postheadspace=5pt, numbered=no, headpunct={.},%
 		qed=\qedsymbol%
 	]{proofstyle}%
 
