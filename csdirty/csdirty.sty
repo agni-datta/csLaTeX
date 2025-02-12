@@ -12,13 +12,13 @@
 
 \makeatletter
 
-% Required packages
-\RequirePackage{xparse} % For new command/environment definitions
-\RequirePackage{comment} % For comment environment
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Package Options: Versioning, Comments, and Anonymization
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Required packages
+\RequirePackage{xparse} % For new command/environment definitions
+\RequirePackage{comment} % For comment environment
 
 % Toggle switches for versioning, comments, and anonymization
 \newif\ifFullVersion    % Full version enabled
@@ -66,7 +66,7 @@
 \RequirePackage{nicefrac}                                 % Nicer fraction formatting (\nicefrac)
 \RequirePackage{siunitx}                                  % Consistent units and numbers
 \RequirePackage{lmodern}                                  % Latin Modern font
-\RequirePackage[cal=cm, bb=bboldx]{mathalpha}             % Custom calligraphic and bbold fonts
+\RequirePackage[cal=cm, bb=bboldx]{mathalpha}             % Custom calligraphic and blackboard fonts
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Colour Management
@@ -109,8 +109,8 @@
 	breaklinks=true,              % Line-breaking in links
 	colorlinks=true,              % Coloured hyperlinks
 	linkcolor=RoyalBlue4,         % Link colour
-	citecolor=DodgerBlue2,        % Citation link colour
-	urlcolor=RoyalBlue3,          % URL link colour
+	citecolor=DodgerBlue2,        % Citation link color
+	urlcolor=RoyalBlue3,          % URL link color
 	pdfusetitle,                  % PDF bibliographic details
 	pagebackref                   % Back-references to objects
 ]{hyperref}%
@@ -155,7 +155,7 @@
 \RequirePackage{tikz}%
 \RequirePackage{tikz-cd}%
 \RequirePackage{tikz-3dplot}%
-\usetikzlibrary{
+\usetikzlibrary{%
 	arrows, automata, backgrounds, calc, decorations.markings,
 	decorations.pathmorphing, decorations.text, fit, graphs, intersections,
 	matrix, patterns, positioning, scopes, shapes.geometric
@@ -199,7 +199,7 @@
 }
 
 % Define acknowledgment environment with optional title argument
-\NewDocumentEnvironment{acknowledgment}{ o }{%
+\NewDocumentEnvironment{acknowledgment}{o}{%
     \IfNoValueTF{#1}{%
         \paragraph*{Acknowledgment}  % Default title
     }{%
@@ -209,7 +209,7 @@
 
 % Suppress acknowledgment in anonymized mode
 \ifAnonymize
-    \RenewDocumentEnvironment{acknowledgment}{ o }{}{ }  % Empty environment
+    \RenewDocumentEnvironment{acknowledgment}{o}{}{}  % Empty environment
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -344,14 +344,14 @@
     	\renewcommand{\@date}{}%
         \renewcommand{\hep@preprint@box}{}%
     	% In anonymized mode, make the acknowledgment environment produce nothing.
-    	\RenewDocumentEnvironment{acknowledgment}{ o }{}{ }
+    	\RenewDocumentEnvironment{acknowledgment}{o}{}{}
 	\fi
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Captions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage[
+\RequirePackage[%
 	font={rm},                            % Roman font for captions
 	labelfont={color=black!75,rm},        % Label font and colour
 	labelsep=period,                      % Label, and content separator: period
