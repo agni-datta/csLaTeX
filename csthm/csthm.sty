@@ -158,6 +158,7 @@
 	\declaretheorem[style=defstyle,name=Notation]{notation}%
 	\declaretheorem[style=defstyle,name=Problem]{problem}%
 	\declaretheorem[style=defstyle,name=Protocol]{protocol}%
+	\declaretheorem[style=defstyle,name=Result]{result}%
 	
 	% Unnumbered Definition-like Environments
 	\declaretheorem[style=defstyle,unnumbered,name=Application*]{application*}%
@@ -168,6 +169,7 @@
 	\declaretheorem[style=defstyle,unnumbered,name=Notation*]{notation*}%
 	\declaretheorem[style=defstyle,unnumbered,name=Problem*]{problem*}%
 	\declaretheorem[style=defstyle,unnumbered,name=Protocol*]{protocol*}%
+	\declaretheorem[style=defstyle,unnumbered,name=Result*]{result*}%
 	
 	% Remark-like Environments
 	\declaretheorem[style=remarkstyle,name=Commentary]{commentary}%
@@ -192,7 +194,7 @@
 	% Highlight-like Environments
 	\declaretheorem[style=hltstyle,name=Highlight]{highlight}%
 	\declaretheorem[style=hltstyle,name=Important]{important}%
-	\declaretheorem[style=hltstyle,name=KeyPoint]{keypoint}%
+	\declaretheorem[style=hltstyle,name=Key Point]{keypoint}%
 	\declaretheorem[style=hltstyle,name=Recall]{recall}%
 	
 	% Proof Environment (reset any previous definitions)
@@ -218,7 +220,7 @@
 	\renewcommand{\thmfont}{\normalfont}%
 	\renewcommand{\defnfont}{\normalfont}%
 	\renewcommand{\remarkfont}{\normalfont}%
-	\renewcommand{\hltfont}{\normalfont\sffamily}%
+	\renewcommand{\hltfont}{\normalfont\sffamily\sansmath}%
 	% (Empty) symbol definitions
 	\renewcommand{\thmsymb}{}%
 	\renewcommand{\defnsymb}{}%
@@ -259,15 +261,15 @@
 	% Highlight style
 	\declaretheoremstyle[%
 		spaceabove=0pt, spacebelow=0pt,%
-		headfont=\sffamily\color{\hltcolor}, notefont=\sffamily\color{\hltcolor},%
-		bodyfont=\normalfont\sffamily\sansmath, postheadspace=5pt, numberwithin=section,%
+		headfont=\hltheadfont\color{\hltcolor}, notefont=\hltheadfont\color{\hltcolor},%
+		bodyfont=\hltfont, postheadspace=5pt, numberwithin=section,%
 		mdframed={linewidth=2pt, rightline=false, topline=false, bottomline=false,%
 			linecolor=\hltcolor, backgroundcolor=\hltcolor!5},%
 		headpunct={.}%
 	]{hltstyle}%
 	% Proof style
 	\declaretheoremstyle[%
-		headfont=\hltheadfont\color{\thmcolor}, notefont=\hltheadfont\color{\thmcolor},%
+		headfont=\sffamily\color{\thmcolor}, notefont=\sffamily\color{\thmcolor},%
 		bodyfont=\hltfont, postheadspace=5pt, numbered=no, headpunct={.},%
 		qed=\qedsymbol%
 	]{proofstyle}%
@@ -422,6 +424,7 @@
 		\crefname{notation}{notation}{notations}%
 		\crefname{problem}{problem}{problems}%
 		\crefname{protocol}{protocol}{protocols}%
+		\crefname{result}{result}{results}%
 		% --- Remark-like Environments ---
 		\crefname{commentary}{commentary}{commentaries}%
 		\crefname{example}{example}{examples}%
