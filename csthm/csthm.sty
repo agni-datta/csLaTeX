@@ -84,10 +84,10 @@
 \newcommand{\hltheadfont}{\sffamily}%
 
 % --- Body Fonts ---
-\providecommand{\thmfont}{\normalfont}%
-\providecommand{\defnfont}{\normalfont}%
-\providecommand{\remarkfont}{\normalfont}%
-\providecommand{\hltfont}{\normalfont\sffamily}%
+\newcommand{\thmfont}{\normalfont}%
+\newcommand{\defnfont}{\normalfont}%
+\newcommand{\remarkfont}{\normalfont}%
+\newcommand{\hltfont}{\normalfont\sffamily}%
 
 % --- Environment Symbols ---
 \newcommand{\thmsymb}{\ensuremath{\color{\accentcolor}\scriptstyle\blacktriangleright}}%
@@ -345,8 +345,8 @@
 	\renewcommand{\qedsymbol}{\ensuremath{\color{\accentcolor}\scriptstyle\blacksquare}}%
 	% Heading fonts (old-school)
 	\renewcommand{\thmheadfont}{\bfseries}%
-	\renewcommand{\defnheadfont}{\scshape}%
-	\renewcommand{\remarkheadfont}{\bfseries}%
+	\renewcommand{\defnheadfont}{\bfseries}%
+	\renewcommand{\remarkheadfont}{\scshape}%
 	\renewcommand{\hltheadfont}{\sffamily}%
 	% Body fonts
 	\renewcommand{\thmfont}{\normalfont}%
@@ -368,14 +368,14 @@
 	% Definition style
 	\declaretheoremstyle[%
 		spaceabove=\topsep, spacebelow=\topsep,%
-		headfont=\defnheadfont\defnsymb, notefont=\normalfont,%
+		headfont=\defnheadfont\defnsymb, notefont=\defnheadfont,%
 		bodyfont=\defnfont, postheadspace=5pt, numberwithin=section,%
 		headpunct={.}%
 	]{defstyle}%
 	% Remark style
 	\declaretheoremstyle[%
 		spaceabove=\topsep, spacebelow=\topsep,%
-		headfont=\remarkheadfont\remarksymb, notefont=\normalfont,%
+		headfont=\remarkheadfont\remarksymb, notefont=\remarkheadfont,%
 		bodyfont=\remarkfont, postheadspace=5pt, numberwithin=section,%
 		headpunct={.}%
 	]{remarkstyle}%
