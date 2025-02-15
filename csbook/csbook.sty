@@ -1181,6 +1181,13 @@ postamble "\n\\end{theindex}\n"
 	\basicenv%
 }
 
+\ifcsbook@fancythm
+	\fancythm
+	\typeout{csbook: Fancy theorem style is enabled.}
+\else
+	\typeout{csbook: Fancy theorem style is not enabled.}
+\fi
+
 % Standard (Normal) Theorem Environments
 \newcommand{\normalthm}{%
 	% Common settings
@@ -1246,6 +1253,13 @@ postamble "\n\\end{theindex}\n"
 
 	\basicenv%
 }
+
+\ifcsbook@normalthm
+	\normalthm
+	\typeout{csbook: Normal theorem style is enabled.}
+\else
+	\typeout{csbook: Normal theorem style is not enabled.}
+\fi
 
 % Old-School Theorem Environments
 \newcommand{\oldschoolthm}{%
@@ -1313,6 +1327,13 @@ postamble "\n\\end{theindex}\n"
 	\basicenv%
 }
 
+\ifcsbook@oldschoolthm
+	\oldschoolthm
+	\typeout{csbook: Old school theorem style is enabled.}
+\else
+	\typeout{csbook: Old school theorem style is not enabled.}
+\fi
+
 % Cleveref Setup for Intelligent Cross-Referencing
 \AtEndOfPackage{%
 	\@ifpackageloaded{hyperref}{%
@@ -1370,25 +1391,6 @@ postamble "\n\\end{theindex}\n"
 		}%
 	}%
 }%
-
-\ifcsbook@fancythm
-	\fancythm
-	\typeout{csbook: Fancy theorem style is enabled.}
-\else
-	\typeout{csbook: Fancy theorem style is not enabled.}
-\fi
-\ifcsbook@normalthm
-	\normalthm
-	\typeout{csbook: Normal theorem style is enabled.}
-\else
-	\typeout{csbook: Normal theorem style is not enabled.}
-\fi
-\ifcsbook@oldschoolthm
-	\oldschoolthm
-	\typeout{csbook: Old school theorem style is enabled.}
-\else
-	\typeout{csbook: Old school theorem style is not enabled.}
-\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bibliography Management with BibLaTeX
@@ -1509,7 +1511,6 @@ postamble "\n\\end{theindex}\n"
 % Inline Commands
 \newcommand{\code}[1]{{\ttfamily#1}} % Renders inline code
 \newcommand{\cat}[1]{\ensuremath{\mathsf{#1}}} % Renders category names in math mode
-\newcommand{\strike}[1]{\bgroup\ULdepth=-.55ex\ULon#1\ULoff\egroup} % Strike-through text
 \newcommand{\dropcap}[2]{\lettrine[lines=2, lhang=0.05]{\textcolor{accentcolor}{#1}}{#2}} % Creates a colored drop-cap
 \newcommand{\term}[1]{#1\index{#1}} % Marks a term for glossary/indexing
 \newcommand{\textem}[1]{{\bfseries\color{accentcolor}#1}} % Applies bold and colored emphasis
