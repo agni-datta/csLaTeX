@@ -540,7 +540,7 @@
 	% Section title formatting
 	\titleformat{\section}[block]
     	{\sectionfont}                             % Font style
-    	{\normalfont\color{accentcolor}\huge\sffamily\thesection}  % Title and number format
+    	{\color{accentcolor}\huge\thesection}  % Title and number format
     	{10pt}                                     % Space between number and title
     	{#1}[\vspace{5pt}\titlerule]               % Title appearance and rule
     	\titlespacing*{\section}{0pt}{15pt}{10pt}  % Title spacing
@@ -548,14 +548,14 @@
 	% Subsection title formatting
 	\titleformat{\subsection}[block]
     	{\subsectionfont}                          % Font style
-    	{\color{accentcolor}\normalfont\Large\sffamily\thesubsection}  % Title and number format
+    	{\color{accentcolor}\Large\thesubsection}  % Title and number format
     	{7.5pt}                                    % Space between number and title
     	{#1}                                       % Title content
 
 	% Subsubsection title formatting
-	\titleformat{\subsubsection}[runin]
+	\titleformat{\subsubsection}[block]
     	{\subsubsectionfont}                       % Font style
-    	{\normalfont\color{accentcolor}\sffamily\thesubsubsection}  % Title and number format
+    	{\color{accentcolor}\thesubsubsection}     % Title and number format
     	{5pt}                                      % Space between number and title
     	{#1.}                                      % Title content with period
 
@@ -1524,18 +1524,57 @@ postamble "\n\\end{theindex}\n"
 \RequirePackage{pgfornament}  % Package for adding decorative elements
 
 \newcommand{\fancymaketitle}{%
-	% Title Formatting
-	\pretitle{\normalfont\scshape\LARGE\begin{center}} % Title styling and center alignment
-			\posttitle{\end{center}} % End title alignment
+	\pretitle{%
+		\begin{mdframed}[%
+				backgroundcolor=none,
+				linecolor=black,
+				linewidth=1pt,
+				topline=true,
+				bottomline=true,
+				leftline=false,
+				rightline=false,
+				innerleftmargin=15pt,
+				innerrightmargin=15pt,
+				innertopmargin=15pt,
+				innerbottommargin=15pt,
+				roundcorner=0pt,
+			]%
+			\begin{center}%
+				\normalfont\bfseries\Huge%
+				}%
+				\posttitle{%
+			\end{center}%
+		\end{mdframed}%
+		\vspace{1em}%
+	}%
 	% Subtitle Formatting
-	\presubtitle{\Large\scshape\begin{center}} % Subtitle styling and center alignment
-			\postsubtitle{\par\end{center}} % End subtitle alignment
+	\presubtitle{%
+		\begin{center}%
+			\normalfont\Large\itshape%
+			}%
+			\postsubtitle{%
+			\par\vspace{1.5em}%
+		\end{center}%
+	}%
 	% Author Formatting
-	\preauthor{\scshape\large\begin{center}\lineskip0.25em\begin{tabular}[t]{c}} % Author styling and center alignment
-				\postauthor{\end{tabular}\par\end{center}} % End author alignment
+	\preauthor{%
+		\begin{center}%
+			\normalfont\scshape\large%
+			}%
+			\postauthor{%
+			\par\vspace{1em}%
+			\vspace{1em}%
+		\end{center}%
+	}%
 	% Date Formatting
-	\predate{\normalsize\scshape\begin{center}\par} % Date styling and center alignment
-			\postdate{\par\end{center}} % End date alignment
+	\predate{%
+		\begin{center}%
+			\normalfont\small%
+			}%
+			\postdate{%
+			\par\vspace*{2em}%
+		\end{center}%
+	}%
 }
 
 % Apply custom title formatting at the end of the preamble
@@ -1550,7 +1589,7 @@ postamble "\n\\end{theindex}\n"
 	\begingroup
 	\thispagestyle{empty} % No header/footer on the title page
 	\vspace*{\fill} % Center content vertically
-	\Huge\scshape % Apply title styling
+	\Huge\bfseries % Apply title styling
 	\begin{flushright} % Right-align title
 		\hrule width \textwidth height 1pt\par % Horizontal rule above title
 		\vspace{1cm} % Space between rule and title
