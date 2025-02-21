@@ -2,7 +2,7 @@
 title: A LaTeX Package for Quick and Dirty Typesetting (`csdirty.sty`)
 linter-yaml-title-alias: A LaTeX Package for Quick and Dirty Typesetting (`csdirty.sty`)
 date created: Thursday, January 30th 2025, 16:22:02
-date modified: Thursday, January 30th 2025, 16:28:09
+date modified: Friday, February 21st 2025, 18:44:42
 aliases: A LaTeX Package for Quick and Dirty Typesetting (`csdirty.sty`)
 ---
 

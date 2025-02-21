@@ -2,7 +2,7 @@
 title: A Group of LaTeX Packages
 linter-yaml-title-alias: A Group of LaTeX Packages
 date created: Sunday, May 19th 2024, 08:13:05
-date modified: Thursday, January 30th 2025, 16:28:02
+date modified: Friday, February 21st 2025, 18:44:42
 aliases: A Group of LaTeX Packages
 ---
 
