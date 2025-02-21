@@ -523,41 +523,41 @@
 \AtEndPreamble{%
 	% Part title formatting
 	\titleformat{\part}[display]
-    	{\partfont\RaggedRight}                    % Font and alignment
-    	{\color{accentcolor}\LARGE\partname~\normalfont\thepart} % Title and number format
-    	{0pt}                                      % Space between number and title
-    	{\titlerule\bigskip\Huge#1\vfill}          % Title appearance
-    	\titlespacing*{\part}{0pt}{\fill}{\fill}   % Title spacing
+		{\partfont\RaggedRight}                    % Font and alignment
+		{\color{accentcolor}\LARGE\partname~\normalfont\thepart} % Title and number format
+		{0pt}                                      % Space between number and title
+		{\titlerule\bigskip\Huge#1\vfill}          % Title appearance
+		\titlespacing*{\part}{0pt}{\fill}{\fill}   % Title spacing
 
 	% Chapter title formatting
 	\titleformat{\chapter}[display]
-    	{\chapterfont}                             % Font style
-    	{\RaggedLeft{\rmfamily\scshape\large\chaptertitlename}~\Huge\normalfont\color{accentcolor}\thechapter} % Title and number format
-    	{1ex}                                      % Space between number and title
-    	{\titlerule\vspace{1ex}#1}[\vspace{1ex}\titlerule] % Title appearance and rule
-    	\titlespacing*{\chapter}{0pt}{25pt}{25pt}  % Title spacing
+		{\chapterfont}                             % Font style
+		{\RaggedLeft{\rmfamily\scshape\large\chaptertitlename}~\Huge\normalfont\color{accentcolor}\thechapter} % Title and number format
+		{1ex}                                      % Space between number and title
+		{\titlerule\vspace{1ex}#1}[\vspace{1ex}\titlerule] % Title appearance and rule
+		\titlespacing*{\chapter}{0pt}{25pt}{25pt}  % Title spacing
 
 	% Section title formatting
 	\titleformat{\section}[block]
-    	{\sectionfont}                             % Font style
-    	{\color{accentcolor}\huge\thesection}  % Title and number format
-    	{10pt}                                     % Space between number and title
-    	{#1}[\vspace{5pt}\titlerule]               % Title appearance and rule
-    	\titlespacing*{\section}{0pt}{15pt}{10pt}  % Title spacing
+		{\sectionfont}                             % Font style
+		{\color{accentcolor}\thesection}  % Title and number format
+		{10pt}                                     % Space between number and title
+		{#1}[\vspace{5pt}\titlerule]               % Title appearance and rule
+		\titlespacing*{\section}{0pt}{15pt}{10pt}  % Title spacing
 
 	% Subsection title formatting
 	\titleformat{\subsection}[block]
-    	{\subsectionfont}                          % Font style
-    	{\color{accentcolor}\Large\thesubsection}  % Title and number format
-    	{7.5pt}                                    % Space between number and title
-    	{#1}                                       % Title content
+		{\subsectionfont}                          % Font style
+		{\color{accentcolor}\thesubsection}  % Title and number format
+		{7.5pt}                                    % Space between number and title
+		{#1}                                       % Title content
 
 	% Subsubsection title formatting
 	\titleformat{\subsubsection}[block]
-    	{\subsubsectionfont}                       % Font style
-    	{\color{accentcolor}\thesubsubsection}     % Title and number format
-    	{5pt}                                      % Space between number and title
-    	{#1.}                                      % Title content with period
+		{\subsubsectionfont}                       % Font style
+		{\color{accentcolor}\thesubsubsection}     % Title and number format
+		{5pt}                                      % Space between number and title
+		{#1.}                                      % Title content with period
 
 	% Paragraph and subparagraph formatting
 	\renewcommand{\paragraph}[1]{\noindent\normalfont{\textbf{#1.}}}  % Paragraph format
@@ -698,7 +698,7 @@ postamble "\n\\end{theindex}\n"
 
 \RequirePackage[algonl, boxed, longend, vlined]{algorithm2e} % Algorithm formatting
 \SetAlFnt{\small}                               % Small font for algorithms
-\SetAlCapNameFnt{\normalfont\sffamily}          % Caption font style
+\SetAlCapNameFnt{\normalfont\rmfamily}          % Caption font style
 \SetAlCapFnt{\normalfont\sffamily\color{accentcolor}} % Caption color
 \SetAlgoSkip{medskip}                           % Space between steps
 \SetAlgoInsideSkip{medskip}                     % Space inside algorithm
@@ -757,6 +757,7 @@ postamble "\n\\end{theindex}\n"
 	% Numbered version
 	\newtcolorbox{#1}[1][]{%
 		enhanced, % Enable advanced features
+		breakable, % Enable page break
 		colback=#3!5, % Light background
 		colframe=#3!80!black, % Dark frame
 		arc=1pt, % Rounded corners
@@ -781,6 +782,7 @@ postamble "\n\\end{theindex}\n"
 	% Unumbered version
 	\newtcolorbox{#1*}[1][]{%
 		enhanced, % Enable advanced features
+		breakable, % Enable page break
 		colback=#3!5, % Light background
 		colframe=#3!80!black, % Dark frame
 		arc=1pt, % Rounded corners
