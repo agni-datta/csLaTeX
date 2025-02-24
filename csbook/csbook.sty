@@ -206,7 +206,7 @@
 	\RequirePackage[%
 		paperwidth=6in, paperheight=9in, left=0.5in, right=0.5in, top=0.5in, bottom=0.5in, % Page dimensions
 		headheight=10pt, headsep=10pt, footskip=15pt, textheight=6.5in, textwidth=4.4in, % Text area
-		centering, includeheadfoot % Center content and include minimal headers/footers
+		centering, includeheadfoot % Center content and minimal headers/footers
 	]{geometry} % Mobile eBook layout
 }
 
@@ -215,7 +215,7 @@
 	\RequirePackage[%
 		a4paper, left=1.5in, right=1in, top=1in, bottom=1in, bindingoffset=0.5in, % A4 page dimensions and binding offset
 		headheight=15pt, headsep=20pt, footskip=25pt, textheight=9.5in, textwidth=6in, % Text area
-		centering, includeheadfoot % Center content and include headers/footers
+		centering, includeheadfoot % Center content and headers/footers
 	]{geometry} % Print layout
 }
 
@@ -518,7 +518,7 @@
 \newcommand{\headerfont}{\sffamily}
 \newcommand{\partfont}{\normalfont\headerfont}
 \newcommand{\chapterfont}{\LARGE\headerfont}
-\newcommand{\sectionfont}{\Large\headerfont}
+\newcommand{\sectionfont}{\large\headerfont}
 \newcommand{\subsectionfont}{\large\headerfont}
 \newcommand{\subsubsectionfont}{\normalsize\headerfont}
 
@@ -545,7 +545,7 @@
     	{\color{accentcolor}\thesection}  % Title and number format
     	{10pt}                                     % Space between number and title
     	{#1}[\vspace{5pt}\titlerule]               % Title appearance and rule
-    	\titlespacing*{\section}{0pt}{15pt}{10pt}  % Title spacing
+    	\titlespacing*{\section}{0pt}{15pt}{15pt}  % Title spacing
 
 	% Subsection title formatting
 	\titleformat{\subsection}[block]
@@ -610,18 +610,18 @@
 
 % Custom index style
 \begin{filecontents}{csindex.ist}
-	quote '+'
-	letter_group
-	symhead_positive "Symbols"
-	numhead_positive "Numbers"
-	headings_flag 1
-	heading_prefix "\\textcolor{\\accentcolor}{\\large\\textbf{" heading_suffix "}}\n"
-	delim_0 "\\dotfill"
-	delim_1 "\\dotfill"
-	delim_2 "\\dotfill"
-	delim_r "\\dotfill"
-	preamble "\\begin{theindex}\n\\small\n"
-		postamble "\n\\end{theindex}\n"
+quote '+'
+letter_group
+symhead_positive "Symbols"
+numhead_positive "Numbers"
+headings_flag 1
+heading_prefix "\\textcolor{\\accentcolor}{\\large\\textbf{" heading_suffix "}}\n"
+delim_0 "\\dotfill"
+delim_1 "\\dotfill"
+delim_2 "\\dotfill"
+delim_r "\\dotfill"
+preamble "\\begin{theindex}\n\\small\n"
+postamble "\n\\end{theindex}\n"
 \end{filecontents}
 
 % Create the index with the custom style and layout
@@ -892,7 +892,7 @@
 	\loadtikz
 	\typeout{csbook: TikZ is enabled.}
 \else
-	\typeout{csbook: TikZ is not included.}
+	\typeout{csbook: TikZ is omitted.}
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1041,20 +1041,20 @@
 	\declaretheorem[style=thmstyle,name=Proposition]{proposition}%
 
 	% Unnumbered Theorem-like Environments
-	\declaretheorem[style=thmstyle,unnumbered,name=Theorem*]{theorem*}%
-	\declaretheorem[style=thmstyle,unnumbered,name=Assertion*]{assertion*}%
-	\declaretheorem[style=thmstyle,unnumbered,name=Assumption*]{assumption*}%
-	\declaretheorem[style=thmstyle,unnumbered,name=Axiom*]{axiom*}%
-	\declaretheorem[style=thmstyle,unnumbered,name=Claim*]{claim*}%
-	\declaretheorem[style=thmstyle,unnumbered,name=Conclusion*]{conclusion*}%
-	\declaretheorem[style=thmstyle,unnumbered,name=Conjecture*]{conjecture*}%
-	\declaretheorem[style=thmstyle,unnumbered,name=Corollary*]{corollary*}%
-	\declaretheorem[style=thmstyle,unnumbered,name=Fact*]{fact*}%
-	\declaretheorem[style=thmstyle,unnumbered,name=Hypothesis*]{hypothesis*}%
-	\declaretheorem[style=thmstyle,unnumbered,name=Lemma*]{lemma*}%
-	\declaretheorem[style=thmstyle,unnumbered,name=Postulate*]{postulate*}%
-	\declaretheorem[style=thmstyle,unnumbered,name=Property*]{property*}%
-	\declaretheorem[style=thmstyle,unnumbered,name=Proposition*]{proposition*}%
+	\declaretheorem[style=thmstyle,unnumbered,name=Theorem]{theorem*}%
+	\declaretheorem[style=thmstyle,unnumbered,name=Assertion]{assertion*}%
+	\declaretheorem[style=thmstyle,unnumbered,name=Assumption]{assumption*}%
+	\declaretheorem[style=thmstyle,unnumbered,name=Axiom]{axiom*}%
+	\declaretheorem[style=thmstyle,unnumbered,name=Claim]{claim*}%
+	\declaretheorem[style=thmstyle,unnumbered,name=Conclusion]{conclusion*}%
+	\declaretheorem[style=thmstyle,unnumbered,name=Conjecture]{conjecture*}%
+	\declaretheorem[style=thmstyle,unnumbered,name=Corollary]{corollary*}%
+	\declaretheorem[style=thmstyle,unnumbered,name=Fact]{fact*}%
+	\declaretheorem[style=thmstyle,unnumbered,name=Hypothesis]{hypothesis*}%
+	\declaretheorem[style=thmstyle,unnumbered,name=Lemma]{lemma*}%
+	\declaretheorem[style=thmstyle,unnumbered,name=Postulate]{postulate*}%
+	\declaretheorem[style=thmstyle,unnumbered,name=Property]{property*}%
+	\declaretheorem[style=thmstyle,unnumbered,name=Proposition]{proposition*}%
 
 	% Definition-like Environments
 	\declaretheorem[style=defstyle,name=Application]{application}%
@@ -1068,15 +1068,15 @@
 	\declaretheorem[style=defstyle,name=Result]{result}%
 
 	% Unnumbered Definition-like Environments
-	\declaretheorem[style=defstyle,unnumbered,name=Application*]{application*}%
-	\declaretheorem[style=defstyle,unnumbered,name=Construction*]{construction*}%
-	\declaretheorem[style=defstyle,unnumbered,name=Convention*]{convention*}%
-	\declaretheorem[style=defstyle,unnumbered,name=Definition*]{definition*}%
-	\declaretheorem[style=defstyle,unnumbered,name=Experiment*]{experiment*}%
-	\declaretheorem[style=defstyle,unnumbered,name=Notation*]{notation*}%
-	\declaretheorem[style=defstyle,unnumbered,name=Problem*]{problem*}%
-	\declaretheorem[style=defstyle,unnumbered,name=Protocol*]{protocol*}%
-	\declaretheorem[style=defstyle,unnumbered,name=Result*]{result*}%
+	\declaretheorem[style=defstyle,unnumbered,name=Application]{application*}%
+	\declaretheorem[style=defstyle,unnumbered,name=Construction]{construction*}%
+	\declaretheorem[style=defstyle,unnumbered,name=Convention]{convention*}%
+	\declaretheorem[style=defstyle,unnumbered,name=Definition]{definition*}%
+	\declaretheorem[style=defstyle,unnumbered,name=Experiment]{experiment*}%
+	\declaretheorem[style=defstyle,unnumbered,name=Notation]{notation*}%
+	\declaretheorem[style=defstyle,unnumbered,name=Problem]{problem*}%
+	\declaretheorem[style=defstyle,unnumbered,name=Protocol]{protocol*}%
+	\declaretheorem[style=defstyle,unnumbered,name=Result]{result*}%
 
 	% Remark-like Environments
 	\declaretheorem[style=remarkstyle,name=Commentary]{commentary}%
@@ -1090,15 +1090,15 @@
 	\declaretheorem[style=remarkstyle,name=Remark]{remark}%
 
 	% Unnumbered Remark-like Environments
-	\declaretheorem[style=remarkstyle,unnumbered,name=Commentary*]{commentary*}%
-	\declaretheorem[style=remarkstyle,unnumbered,name=Example*]{example*}%
-	\declaretheorem[style=remarkstyle,unnumbered,name=Exercise*]{exercise*}%
-	\declaretheorem[style=remarkstyle,unnumbered,name=Motivation*]{motivation*}%
-	\declaretheorem[style=remarkstyle,unnumbered,name=Note*]{note*}%
-	\declaretheorem[style=remarkstyle,unnumbered,name=Observation*]{observation*}%
-	\declaretheorem[style=remarkstyle,unnumbered,name=Open Problem*]{openproblem*}%
-	\declaretheorem[style=remarkstyle,unnumbered,name=Question*]{question*}%
-	\declaretheorem[style=remarkstyle,unnumbered,name=Remark*]{remark*}%
+	\declaretheorem[style=remarkstyle,unnumbered,name=Commentary]{commentary*}%
+	\declaretheorem[style=remarkstyle,unnumbered,name=Example]{example*}%
+	\declaretheorem[style=remarkstyle,unnumbered,name=Exercise]{exercise*}%
+	\declaretheorem[style=remarkstyle,unnumbered,name=Motivation]{motivation*}%
+	\declaretheorem[style=remarkstyle,unnumbered,name=Note]{note*}%
+	\declaretheorem[style=remarkstyle,unnumbered,name=Observation]{observation*}%
+	\declaretheorem[style=remarkstyle,unnumbered,name=Open Problem]{openproblem*}%
+	\declaretheorem[style=remarkstyle,unnumbered,name=Question]{question*}%
+	\declaretheorem[style=remarkstyle,unnumbered,name=Remark]{remark*}%
 
 	% Highlight-like Environments
 	\declaretheorem[style=hltstyle,name=Highlight]{highlight}%
@@ -1379,13 +1379,14 @@
 		\crefname{motivation}{motivation}{motivations}%
 		\crefname{note}{note}{notes}%
 		\crefname{observation}{observation}{observations}%
+        \crefname{openproblem}{open problem}{open problems}%
 		\crefname{question}{question}{questions}%
 		\crefname{remark}{remark}{remarks}%
 
 		% Highlight-like Environments
 		\crefname{highlight}{highlight}{highlights}%
-		\crefname{important}{important}{importants}%
-		\crefname{keypoint}{keypoint}{keypoints}%
+		\crefname{important}{important}{important points}%
+		\crefname{key point}{key point}{key points}%
 		\crefname{recall}{recall}{recalls}%
 
 		% Email Link Formatting
@@ -1537,14 +1538,14 @@
 % Inline Commands
 \newcommand{\code}[1]{{\ttfamily#1}} % Renders inline code
 \newcommand{\cat}[1]{\ensuremath{\mathsf{#1}}} % Renders category names in math mode
-\newcommand{\dropcap}[2]{\lettrine[lines=2, lhang=0.05]{\textcolor{accentcolor}{#1}}{#2}} % Creates a colored drop-cap
+\newcommand{\dropcap}[2]{\lettrine[lines=2,lhang=0.05]{\textcolor{accentcolor}{#1}}{#2}} % Creates a colored drop-cap
 \newcommand{\term}[1]{#1\index{#1}} % Marks a term for glossary/indexing
 \newcommand{\textem}[1]{{\bfseries\color{accentcolor}#1}} % Applies bold and colored emphasis
 \newcommand{\urlref}[1]{\href{#1}{#1}} % Creates a hyperlink to a URL
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Customisation of \maketitle Command
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{hep-title}    % Custom title formatting package
 \RequirePackage{pgfornament}  % Package for decorative elements
@@ -1554,8 +1555,8 @@
 	\pretitle{%
 		\begin{center}%
 			\hrule width \textwidth height 1pt\par % Horizontal rule above title
-			\vspace{1cm} % Space between rule and title
-			\normalfont\bfseries\Huge%   % Title font style
+			\vspace{2em} % Space between rule and title
+			\normalfont\bfseries\LARGE%   % Title font style
 			\begingroup
 			}%
 	\posttitle{%
@@ -1569,7 +1570,7 @@
 	% Subtitle Formatting: Centers the subtitle and applies the italic font
 	\presubtitle{%
 		\begin{center}%
-			\normalfont\Large\itshape%   % Subtitle font style
+			\normalfont\large\itshape%   % Subtitle font style
 			}%
 			\postsubtitle{%
 			\par\vspace{1.5em} % Space after subtitle
@@ -1605,17 +1606,17 @@
 % Print Title Page
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\printtitlepage}{
+\newcommand{\printtitlepage}{%
 	\cleardoublepage % Start a new page
 	\begingroup
 	\thispagestyle{empty} % No header/footer on the title page
 	\vspace*{\fill} % Center content vertically
-	\Huge\sffamily % Apply title styling
+	\LARGE\sffamily % Apply title styling
 	\begin{flushright} % Right-align title
 		\hrule width \textwidth height 1pt\par % Horizontal rule above title
-		\vspace{1cm} % Space between rule and title
+		\vspace{1em} % Space between rule and title
 		\@title\par % Display the title
-		\vspace{1cm} % Space between title and rule
+		\vspace{1em} % Space between title and rule
 		\hrule width \textwidth height 1pt % Horizontal rule below title
 	\end{flushright}
 	\vspace*{\fill} % Center content vertically
@@ -1627,20 +1628,23 @@
 % Command for Generating the Copyright Page
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\makecopyrightpage}{%
+\newcommand*{\makecopyrightpage}{%
 	\pagestyle{empty} % No header/footer on the copyright page
 	\begingroup
 	% Title and copyright information
 	\begin{flushleft}
-		{\noindent\large\textbf{\@title}}\par\medskip % Title in large bold text
+		{\noindent\normalsize\textbf{\@title}}\par\medskip % Title in large bold text
 		{\noindent\normalsize By \@author}\par\smallskip % Author information
-		{\noindent\normalsize\textcopyright~\@date. All Rights Reserved.}\par % Copyright symbol and date
+		{\noindent\textcopyright~\@date. All Rights Reserved.}\par\small % Copyright symbol and date
 	\end{flushleft}
-	\vfill % Push content to the bottom
+    % Push content to the bottom
+	\vspace*{\fill}
 	% Copyright and usage notice
-	\begin{small}
-		This is a prepublication manuscript. The contents are subject to revision and may differ from the final published version. This draft is provided for limited distribution for academic, editorial, and peer review purposes only. It should not be considered a final or authoritative edition of the work. All rights to this manuscript, including but not limited to rights of reproduction, distribution, adaptation, and public display, are reserved by the author. No part of this work may be copied, shared, reproduced, stored, or transmitted in any form, including electronic, mechanical, photocopying, or any other means, without explicit prior written permission from the author or authorized publisher. The author grants permission for fair use in academic discourse, including citation, commentary, and critique. However, commercial reproduction, distribution, adaptation, and integration into artificial intelligence or machine learning models are strictly prohibited without formal licensing agreements. This manuscript is provided ``as is'' without warranties of any kind, express or implied. The author makes no representations regarding the accuracy, completeness, or suitability of the content for any specific purpose. The author assumes no liability for any reliance on this work before its official publication. For permissions, licensing, or inquiries regarding publication rights, please get in touch with the author directly. Unauthorized use may result in legal action under applicable copyright and intellectual property laws.
-	\end{small}
+    \begingroup
+		This is a prepublication manuscript. The contents are subject to revision and may differ from the final published version. This draft is provided for limited distribution for academic, editorial, and peer review purposes only. It should not be considered a final or authoritative edition of the work. All rights to this manuscript, including but not limited to rights of reproduction, distribution, adaptation, and public display, are reserved by the author. No part of this work may be copied, shared, reproduced, stored, or transmitted in any form, including electronic, mechanical, photocopying, or any other means, without explicit prior written permission from the author or authorized publisher.
+        
+        The author grants permission for fair use in academic discourse, including citation, commentary, and critique. However, commercial reproduction, distribution, adaptation, and integration into artificial intelligence or machine learning models are strictly prohibited without formal licensing agreements. This manuscript is provided ``as is'' without warranties, express or implied. The author makes no representations regarding the accuracy, completeness, or suitability of the content for any specific purpose. The author assumes no liability for any reliance on this work before its official publication. For permissions, licensing, or inquiries regarding publication rights, please get in touch with the author directly. Unauthorized use may result in legal action under applicable copyright and intellectual property laws.
+	\endgroup
 	\endgroup
 	\cleardoublepage % Start a new page
 }
