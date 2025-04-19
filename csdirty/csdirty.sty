@@ -364,13 +364,6 @@
 	\sethepfonts%
 	\providecommand{\commonheadingfont}{\normalfont\sffamily}%
 	\setsectionformats%
-	\NewDocumentCommand{\paragraphnodot}{m}{%
-		\par\noindent{\normalfont\textbf{#1}}%
-	}%
-	\let\paragraph\relax%
-	\NewDocumentCommand{\paragraph}{m}{%
-		\par\noindent{\normalfont\textbf{#1.}}%
-	}%
 }{}
 % Adjustments for the 'report' class
 \@ifclassloaded{report}{%
