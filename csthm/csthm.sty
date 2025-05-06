@@ -5,18 +5,18 @@
 %% The original source files were:
 %%
 %% csthm.dtx  (with options: package')
-%% 
+%%
 %% This is a generated file.
-%% 
+%%
 %% Copyright (C) 2024 by Agni Datta <agnidatta.org@gmail.com>
-%% 
+%%
 %% This file may be distributed and/or modified under the conditions of
 %% the LaTeX Project Public License, either version 1.3c of this license
 %% or (at your option) any later version. The latest version of this
 %% license is in:
-%% 
+%%
 %%    http://www.latex-project.org/lppl.txt
-%% 
+%%
 %% and version 1.3c or later is part of all distributions of LaTeX
 %% version 2008/05/04 or later.
 %%
@@ -115,7 +115,7 @@
 	\end{caseList}% End 'case' environment
 }
 
-% --- Definition of New Environments ---
+% --- Definition of New Environments (Numbered and Unnumbered) ---
 \newcommand{\basicenv}{%
 	% Theorem-like Environments
 	\declaretheorem[style=thmstyle,name=Theorem]{theorem}%
@@ -176,6 +176,7 @@
 	\declaretheorem[style=remarkstyle,name=Example]{example}%
 	\declaretheorem[style=remarkstyle,name=Exercise]{exercise}%
 	\declaretheorem[style=remarkstyle,name=Motivation]{motivation}%
+	\declaretheorem[style=remarkstyle,name=Notation Abuse]{notationabuse}%
 	\declaretheorem[style=remarkstyle,name=Note]{note}%
 	\declaretheorem[style=remarkstyle,name=Observation]{observation}%
 	\declaretheorem[style=remarkstyle,name=Question]{question}%
@@ -186,18 +187,37 @@
 	\declaretheorem[style=remarkstyle,unnumbered,name=Example*]{example*}%
 	\declaretheorem[style=remarkstyle,unnumbered,name=Exercise*]{exercise*}%
 	\declaretheorem[style=remarkstyle,unnumbered,name=Motivation*]{motivation*}%
+	\declaretheorem[style=remarkstyle,unnumbered,name=Notation Abuse*]{notationabuse*}%
 	\declaretheorem[style=remarkstyle,unnumbered,name=Note*]{note*}%
 	\declaretheorem[style=remarkstyle,unnumbered,name=Observation*]{observation*}%
 	\declaretheorem[style=remarkstyle,unnumbered,name=Question*]{question*}%
 	\declaretheorem[style=remarkstyle,unnumbered,name=Remark*]{remark*}%
 	
 	% Highlight-like Environments
+	\declaretheorem[style=hltstyle,name=Guideline]{guideline}%
 	\declaretheorem[style=hltstyle,name=Highlight]{highlight}%
 	\declaretheorem[style=hltstyle,name=Important]{important}%
+	\declaretheorem[style=hltstyle,name=Insight]{insight}%
 	\declaretheorem[style=hltstyle,name=Key Point]{keypoint}%
 	\declaretheorem[style=hltstyle,name=Recall]{recall}%
+	\declaretheorem[style=hltstyle,name=Summary]{summary}%
+	\declaretheorem[style=hltstyle,name=Takeaway]{takeaway}%
+	\declaretheorem[style=hltstyle,name=Tip]{tip}%
+	\declaretheorem[style=hltstyle,name=Warning]{warning}%
 	
-	% Proof Environment (reset any previous definitions)
+	% Unnumbered Highlight-like Environments
+	\declaretheorem[style=hltstyle,unnumbered,name=Guideline*]{guideline*}%
+	\declaretheorem[style=hltstyle,unnumbered,name=Highlight*]{highlight*}%
+	\declaretheorem[style=hltstyle,unnumbered,name=Important*]{important*}%
+	\declaretheorem[style=hltstyle,unnumbered,name=Insight*]{insight*}%
+	\declaretheorem[style=hltstyle,unnumbered,name=Key Point*]{keypoint*}%
+	\declaretheorem[style=hltstyle,unnumbered,name=Recall*]{recall*}%
+	\declaretheorem[style=hltstyle,unnumbered,name=Summary*]{summary*}%
+	\declaretheorem[style=hltstyle,unnumbered,name=Takeaway*]{takeaway*}%
+	\declaretheorem[style=hltstyle,unnumbered,name=Tip*]{tip*}%
+	\declaretheorem[style=hltstyle,unnumbered,name=Warning*]{warning*}%
+	
+	% Proof Environment
 	\let\proof\relax%
 	\let\endproof\relax%
 	\declaretheorem[style=proofstyle]{proof}%
@@ -361,21 +381,21 @@
 	% Theorem style
 	\declaretheoremstyle[%
 		spaceabove=\topsep, spacebelow=\topsep,%
-		headfont=\thmheadfont\thmsymb, notefont=\thmheadfont,%
+		headfont=\thmheadfont\thmsymb, notefont=\normalfont,%
 		bodyfont=\thmfont, postheadspace=5pt, numberwithin=section,%
 		headpunct={.}%
 	]{thmstyle}%
 	% Definition style
 	\declaretheoremstyle[%
 		spaceabove=\topsep, spacebelow=\topsep,%
-		headfont=\defnheadfont\defnsymb, notefont=\defnheadfont,%
+		headfont=\defnheadfont\defnsymb, notefont=\normalfont,%
 		bodyfont=\defnfont, postheadspace=5pt, numberwithin=section,%
 		headpunct={.}%
 	]{defstyle}%
 	% Remark style
 	\declaretheoremstyle[%
 		spaceabove=\topsep, spacebelow=\topsep,%
-		headfont=\remarkheadfont\remarksymb, notefont=\remarkheadfont,%
+		headfont=\remarkheadfont\remarksymb, notefont=\normalfont,%
 		bodyfont=\remarkfont, postheadspace=5pt, numberwithin=section,%
 		headpunct={.}%
 	]{remarkstyle}%
@@ -400,45 +420,98 @@
 \AtBeginDocument{%
 	\@ifpackageloaded{hyperref}{%
 		\RequirePackage{cleveref}%
-		% --- Theorem-like Environments ---
-		\crefname{theorem}{theorem}{theorems}%
-		\crefname{assertion}{assertion}{assertions}%
-		\crefname{assumption}{assumption}{assumptions}%
-		\crefname{axiom}{axiom}{axioms}%
-		\crefname{claim}{claim}{claims}%
-		\crefname{conclusion}{conclusion}{conclusions}%
-		\crefname{conjecture}{conjecture}{conjectures}%
-		\crefname{corollary}{corollary}{corollaries}%
-		\crefname{fact}{fact}{facts}%
-		\crefname{hypothesis}{hypothesis}{hypotheses}%
-		\crefname{lemma}{lemma}{lemmas}%
-		\crefname{postulate}{postulate}{postulates}%
-		\crefname{property}{property}{properties}%
-		\crefname{proposition}{proposition}{propositions}%
-		% --- Definition-like Environments ---
-		\crefname{application}{application}{applications}%
-		\crefname{construction}{construction}{constructions}%
-		\crefname{convention}{convention}{conventions}%
-		\crefname{definition}{definition}{definitions}%
-		\crefname{experiment}{experiment}{experiments}%
-		\crefname{notation}{notation}{notations}%
-		\crefname{problem}{problem}{problems}%
-		\crefname{protocol}{protocol}{protocols}%
-		\crefname{result}{result}{results}%
-		% --- Remark-like Environments ---
-		\crefname{commentary}{commentary}{commentaries}%
-		\crefname{example}{example}{examples}%
-		\crefname{exercise}{exercise}{exercises}%
-		\crefname{motivation}{motivation}{motivations}%
-		\crefname{note}{note}{notes}%
-		\crefname{observation}{observation}{observations}%
-		\crefname{question}{question}{questions}%
-		\crefname{remark}{remark}{remarks}%
-		% --- Highlight-like Environments ---
-		\crefname{highlight}{highlight}{highlights}%
-		\crefname{important}{important}{importants}%
-		\crefname{keypoint}{keypoint}{keypoints}%
-		\crefname{recall}{recall}{recalls}%
+		% --- Cleveref Name Declarations for All Environments ---
+		% Theorem-like
+		\crefname{theorem}{theorem}{theorems}
+		\Crefname{theorem}{Theorem}{Theorems}
+		\crefname{assertion}{assertion}{assertions}
+		\Crefname{assertion}{Assertion}{Assertions}
+		\crefname{assumption}{assumption}{assumptions}
+		\Crefname{assumption}{Assumption}{Assumptions}
+		\crefname{axiom}{axiom}{axioms}
+		\Crefname{axiom}{Axiom}{Axioms}
+		\crefname{claim}{claim}{claims}
+		\Crefname{claim}{Claim}{Claims}
+		\crefname{conclusion}{conclusion}{conclusions}
+		\Crefname{conclusion}{Conclusion}{Conclusions}
+		\crefname{conjecture}{conjecture}{conjectures}
+		\Crefname{conjecture}{Conjecture}{Conjectures}
+		\crefname{corollary}{corollary}{corollaries}
+		\Crefname{corollary}{Corollary}{Corollaries}
+		\crefname{fact}{fact}{facts}
+		\Crefname{fact}{Fact}{Facts}
+		\crefname{hypothesis}{hypothesis}{hypotheses}
+		\Crefname{hypothesis}{Hypothesis}{Hypotheses}
+		\crefname{lemma}{lemma}{lemmas}
+		\Crefname{lemma}{Lemma}{Lemmas}
+		\crefname{postulate}{postulate}{postulates}
+		\Crefname{postulate}{Postulate}{Postulates}
+		\crefname{property}{property}{properties}
+		\Crefname{property}{Property}{Properties}
+		\crefname{proposition}{proposition}{propositions}
+		\Crefname{proposition}{Proposition}{Propositions}
+		% Definition-like
+		\crefname{application}{application}{applications}
+		\Crefname{application}{Application}{Applications}
+		\crefname{construction}{construction}{constructions}
+		\Crefname{construction}{Construction}{Constructions}
+		\crefname{convention}{convention}{conventions}
+		\Crefname{convention}{Convention}{Conventions}
+		\crefname{definition}{definition}{definitions}
+		\Crefname{definition}{Definition}{Definitions}
+		\crefname{experiment}{experiment}{experiments}
+		\Crefname{experiment}{Experiment}{Experiments}
+		\crefname{notation}{notation}{notations}
+		\Crefname{notation}{Notation}{Notations}
+		\crefname{problem}{problem}{problems}
+		\Crefname{problem}{Problem}{Problems}
+		\crefname{protocol}{protocol}{protocols}
+		\Crefname{protocol}{Protocol}{Protocols}
+		\crefname{result}{result}{results}
+		\Crefname{result}{Result}{Results}
+		% Remark-like
+		\crefname{commentary}{commentary}{commentaries}
+		\Crefname{commentary}{Commentary}{Commentaries}
+		\crefname{example}{example}{examples}
+		\Crefname{example}{Example}{Examples}
+		\crefname{exercise}{exercise}{exercises}
+		\Crefname{exercise}{Exercise}{Exercises}
+		\crefname{motivation}{motivation}{motivations}
+		\Crefname{motivation}{Motivation}{Motivations}
+		\crefname{notationabuse}{notation abuse}{notation abuses}
+		\Crefname{notationabuse}{Notation Abuse}{Notation Abuses}
+		\crefname{note}{note}{notes}
+		\Crefname{note}{Note}{Notes}
+		\crefname{observation}{observation}{observations}
+		\Crefname{observation}{Observation}{Observations}
+		\crefname{question}{question}{questions}
+		\Crefname{question}{Question}{Questions}
+		\crefname{remark}{remark}{remarks}
+		\Crefname{remark}{Remark}{Remarks}
+		% Highlight-like
+		\crefname{guideline}{guideline}{guidelines}
+		\Crefname{guideline}{Guideline}{Guidelines}
+		\crefname{highlight}{highlight}{highlights}
+		\Crefname{highlight}{Highlight}{Highlights}
+		\crefname{important}{important point}{important points}
+		\Crefname{important}{Important}{Important Points}
+		\crefname{insight}{insight}{insights}
+		\Crefname{insight}{Insight}{Insights}
+		\crefname{keypoint}{key point}{key points}
+		\Crefname{keypoint}{Key Point}{Key Points}
+		\crefname{recall}{recall}{recalls}
+		\Crefname{recall}{Recall}{Recalls}
+		\crefname{summary}{summary}{summaries}
+		\Crefname{summary}{Summary}{Summaries}
+		\crefname{takeaway}{takeaway}{takeaways}
+		\Crefname{takeaway}{Takeaway}{Takeaways}
+		\crefname{tip}{tip}{tips}
+		\Crefname{tip}{Tip}{Tips}
+		\crefname{warning}{warning}{warnings}
+		\Crefname{warning}{Warning}{Warnings}
+		% Proof
+		\crefname{proof}{proof}{proofs}
+		\Crefname{proof}{Proof}{Proofs}
 		% --- Email Link Formatting ---
 		\providecommand{\email}[1]{\href{mailto:#1}{\texttt{#1}}}%
 		}{%
