@@ -44,9 +44,9 @@
 
 \RequirePackage{babel}                                   % Multilingual support (default English)
 \RequirePackage[2.0,objcompress,compress]{bxpdfver}      % Set PDF version and compression
-\RequirePackage[margin=3.75cm]{geometry}                 % Set page dimensions and margins
+\RequirePackage[margin=3.00cm]{geometry}                 % Set page dimensions and margins
 \RequirePackage[onehalfspacing]{setspace}                % Set 1.5 line spacing
-\renewcommand{\baselinestretch}{1.300}                   % Adjust baseline stretch
+\renewcommand{\baselinestretch}{1.125}                   % Adjust baseline stretch
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Mathematical Tools and Fonts
@@ -78,7 +78,7 @@
 
 \RequirePackage[autostyle=true, csdisplay=true]{csquotes} % Automatic quotation marks and smart citations
 \RequirePackage[final]{microtype}                         % Improved justification and hyphenation
-\RequirePackage{textcomp}                                 % Additional text symbols (e.g., degree sign)
+\RequirePackage[full]{textcomp}                           % Additional text symbols (e.g., degree sign)
 \RequirePackage[normalem]{ulem}                           % Underlining and strikethrough capabilities
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -104,25 +104,25 @@
 
 \RequirePackage{nameref}              % Reference sections by their names
 \RequirePackage[%
-	frenchlinks=true,                 % Use small caps for links
-	unicode=true,                     % Support for Unicode
-	bookmarksnumbered=true,           % Number PDF bookmarks
-	breaklinks=true,                  % Allow links to break over lines
-	colorlinks=true,                  % Use colored links
-	linkcolor=RoyalBlue2,             % Color for internal links
-	citecolor=SlateBlue3,             % Color for citations
-	urlcolor=SpringGreen3,            % Color for URLs
-	pdfusetitle,                      % Use document title as PDF title
-	pdfpagelabels=true,               % Correct page labels in PDF
-	pagebackref                       % Back-references from bibliography
+    frenchlinks=true,                 % Use small caps for links
+    unicode=true,                     % Support for Unicode
+    bookmarksnumbered=true,           % Number PDF bookmarks
+    breaklinks=true,                  % Allow links to break over lines
+    colorlinks=true,                  % Use colored links
+    linkcolor=RoyalBlue2,             % Color for internal links
+    citecolor=SlateBlue2,             % Color for citations
+    urlcolor=SpringGreen2,            % Color for URLs
+    pdfusetitle,                      % Use document title as PDF title
+    pdfpagelabels=true,               % Correct page labels in PDF
+    pagebackref                       % Back-references from bibliography
 ]{hyperref}
 
 \renewcommand*{\backref}[1]{}         % Disable default back-reference text
 \renewcommand*{\backrefalt}[4]{%      % Custom back-reference format
-	\ifcase #1%
-	\or (Cited on p.~#2).%
-	\else (Cited on pp.~#2).%
-	\fi%
+    \ifcase #1%
+    \or (Cited on p.~#2).%
+    \else (Cited on pp.~#2).%
+    \fi%
 }
 \RequirePackage{xr}                   % Enable cross-document referencing
 
@@ -162,10 +162,10 @@
 \RequirePackage{tikz-cd}           % Commutative diagrams with TikZ
 \RequirePackage{tikz-3dplot}       % 3D plotting with TikZ
 \usetikzlibrary{%
-	arrows, automata, backgrounds, calc, decorations.markings,
-	decorations.pathmorphing, decorations.text,
-	external, fit, graphs, intersections,
-	matrix, patterns, positioning, scopes, shapes.geometric
+    arrows, automata, backgrounds, calc, decorations.markings,
+    decorations.pathmorphing, decorations.text,
+    external, fit, graphs, intersections,
+    matrix, patterns, positioning, scopes, shapes.geometric
 }                                  % Load various TikZ libraries
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -183,11 +183,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage[%
-	toc,        % Include appendices in the table of contents
-	page,       % Start each appendix on a new page
-	title,      % Prefix appendix titles with "Appendix"
-	header,     % Add "Appendix" to header areas
-	titletoc    % Prefix TOC entries with "Appendix"
+    toc,        % Include appendices in the table of contents
+    page,       % Start each appendix on a new page
+    title,      % Prefix appendix titles with "Appendix"
+    header,     % Add "Appendix" to header areas
+    titletoc    % Prefix TOC entries with "Appendix"
 ]{appendix}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -196,57 +196,57 @@
 
 % Redefine abstract environment with small, indented format.
 \@ifclassloaded{book}{%
-	\NewDocumentEnvironment{abstract}{}{%
-		\quotation\small\textbf{\abstractname.~}% Start quote with abstract title in bold
-		\addcontentsline{toc}{section}{\protect{\abstractname}}% Add abstract title to TOC
-	}{%
-		\endquotation% End quote
-	}
+    \NewDocumentEnvironment{abstract}{}{%
+        \quotation\small\textbf{\abstractname.~}% Start quote with abstract title in bold
+        \addcontentsline{toc}{section}{\protect{\abstractname}}% Add abstract title to TOC
+    }{%
+        \endquotation% End quote
+    }
 }{%
-	\RenewDocumentEnvironment{abstract}{}{%
-		\quotation\small\textbf{\abstractname.~}% Start quote with abstract title in bold
-		\addcontentsline{toc}{section}{\protect{\abstractname}}% Add abstract title to TOC
-	}{%
-		\endquotation% End quote
-	}
+    \RenewDocumentEnvironment{abstract}{}{%
+        \quotation\small\textbf{\abstractname.~}% Start quote with abstract title in bold
+        \addcontentsline{toc}{section}{\protect{\abstractname}}% Add abstract title to TOC
+    }{%
+        \endquotation% End quote
+    }
 }
 
 % Define acknowledgment environment with an optional title.
 \NewDocumentEnvironment{acknowledgment}{o}{%
-	\IfNoValueTF{#1}{%
-		\paragraph*{Acknowledgment}% Default title if not provided
-	}{%
-		\paragraph*{#1}% Use custom title if provided
-	}
+    \IfNoValueTF{#1}{%
+        \paragraph*{Acknowledgment}% Default title if not provided
+    }{%
+        \paragraph*{#1}% Use custom title if provided
+    }
 }{}
 
 % Define \supplementary command with an optional title (default: Supplementary Material).
 \newcommand{\supplementary}[1][Supplementary Material]{%
-	\@ifclassloaded{llncs}{%
-		\section*{#1}% Section heading for llncs class
-		\addcontentsline{toc}{section}{#1}% Add TOC entry for llncs
-	}{}
-	\@ifclassloaded{amsart}{%
-		\section*{#1}% Section heading for amsart class
-		\addcontentsline{toc}{section}{#1}% Add TOC entry for amsart
-	}{}
-	\@ifclassloaded{article}{%
-		\section*{#1}% Section heading for article class
-		\addcontentsline{toc}{section}{#1}% Add TOC entry for article
-	}{}
-	\@ifclassloaded{report}{%
-		\chapter*{#1}% Chapter heading for report class
-		\addcontentsline{toc}{chapter}{#1}% Add TOC entry for report
-	}{}
-	\@ifclassloaded{book}{%
-		\part*{#1}% Part heading for book class
-		\addcontentsline{toc}{chapter}{#1}% Add TOC entry for book
-	}%
+    \@ifclassloaded{llncs}{%
+        \section*{#1}% Section heading for llncs class
+        \addcontentsline{toc}{section}{#1}% Add TOC entry for llncs
+    }{}
+    \@ifclassloaded{amsart}{%
+        \section*{#1}% Section heading for amsart class
+        \addcontentsline{toc}{section}{#1}% Add TOC entry for amsart
+    }{}
+    \@ifclassloaded{article}{%
+        \section*{#1}% Section heading for article class
+        \addcontentsline{toc}{section}{#1}% Add TOC entry for article
+    }{}
+    \@ifclassloaded{report}{%
+        \chapter*{#1}% Chapter heading for report class
+        \addcontentsline{toc}{chapter}{#1}% Add TOC entry for report
+    }{}
+    \@ifclassloaded{book}{%
+        \part*{#1}% Part heading for book class
+        \addcontentsline{toc}{chapter}{#1}% Add TOC entry for book
+    }%
 }
 
 % In anonymized mode, suppress the acknowledgment environment.
 \ifAnonymize
-	\RenewDocumentEnvironment{acknowledgment}{o}{}{}  % Empty environment for acknowledgments
+    \RenewDocumentEnvironment{acknowledgment}{o}{}{}  % Empty environment for acknowledgments
 \fi
 
 % Full reference combining hyperref, autoref, and nameref.
@@ -259,77 +259,77 @@
 \AtEndOfPackage{%
 %%% Compatibility Adjustments for Specific Document Classes %%%
 \NewDocumentCommand{\loadcsthm}{}{%
-	\IfFileExists{csthm.sty}{%
-		\RequirePackage[oldschool]{csthm}% Load csthm for theorem formatting
-		\providecommand{\accentcolor}{black!75}% Default accent color if not defined
-		\setaccentcolor{black!75}%
-	}{%
-		\PackageWarning{csdirty}{The package `csthm` is missing. Please install it.}%
-		\providecommand{\accentcolor}{black!75}% Fallback accent color
-	}%
+    \IfFileExists{csthm.sty}{%
+        \RequirePackage[oldschool]{csthm}% Load csthm for theorem formatting
+        \providecommand{\accentcolor}{black!75}% Default accent color if not defined
+        \setaccentcolor{black!75}%
+    }{%
+        \PackageWarning{csdirty}{The package `csthm` is missing. Please install it.}%
+        \providecommand{\accentcolor}{black!75}% Fallback accent color
+    }%
 }%
 %%% Cryptography and Complexity Theory %%%
 \IfFileExists{tcscrypto.sty}{%
-	\RequirePackage{tcscrypto}% Load cryptography package if available
+    \RequirePackage{tcscrypto}% Load cryptography package if available
 }{%
-	\PackageWarning{csdirty}{The package `tcscrypto` is missing. Please install it.}%
+    \PackageWarning{csdirty}{The package `tcscrypto` is missing. Please install it.}%
 }%
 % Simplify references (e.g., "Theorem 1")
 \RequirePackage[capitalise]{cleveref}% Enhanced cross-referencing
 \renewcommand{\cref}[1]{\Cref{#1}}%
 % Adjustments for 'llncs' class
 \@ifclassloaded{llncs}{%
-	\RequirePackage{etoolbox}% Conditional programming tools
-	\setlength{\belowcaptionskip}{-10pt}% Adjust caption spacing
-	%%% Command Definitions %%%
-	\NewDocumentCommand{\paragraphnodot}{m}{%
-		\par\noindent{\normalfont\textbf{#1}}%
-	}%
-	\let\paragraph\relax%
-	\NewDocumentCommand{\paragraph}{m}{%
-		\par\noindent{\normalfont\textbf{#1.}}%
-	}%
+    \RequirePackage{etoolbox}% Conditional programming tools
+    \setlength{\belowcaptionskip}{-10pt}% Adjust caption spacing
+    %%% Command Definitions %%%
+    \NewDocumentCommand{\paragraphnodot}{m}{%
+        \par\noindent{\normalfont\textbf{#1}}%
+    }%
+    \let\paragraph\relax%
+    \NewDocumentCommand{\paragraph}{m}{%
+        \par\noindent{\normalfont\textbf{#1.}}%
+    }%
 }{}
 % Adjustments for 'amsart' class
 \@ifclassloaded{amsart}{%
-	\loadcsthm%
-	\RequirePackage[foot]{amsaddr}% Author address formatting for amsart
-	%%% Command Definitions %%%
-	\NewDocumentCommand{\paragraphnodot}{m}{%
-		\par\noindent{\normalfont\textbf{#1}}%
-	}%
-	\let\paragraph\relax%
-	\NewDocumentCommand{\paragraph}{m}{%
-		\par\noindent{\normalfont\textbf{#1.}}%
-	}%
+    \loadcsthm%
+    \RequirePackage[foot]{amsaddr}% Author address formatting for amsart
+    %%% Command Definitions %%%
+    \NewDocumentCommand{\paragraphnodot}{m}{%
+        \par\noindent{\normalfont\textbf{#1}}%
+    }%
+    \let\paragraph\relax%
+    \NewDocumentCommand{\paragraph}{m}{%
+        \par\noindent{\normalfont\textbf{#1.}}%
+    }%
 }{}
 % Common font and title settings
 \NewDocumentCommand{\sethepfonts}{}{%
-	\RequirePackage{hep-title}% For high-energy physics title formatting
-	\titlefont{\normalfont\LARGE\scshape}% Title font
-	\subtitlefont{\normalfont\large}% Subtitle font
-	\authorfont{\normalfont\large\scshape}% Author font
-	\affiliationfont{\normalfont\large\scshape}% Affiliation font
-	\datefont{\normalfont\normalsize\scshape}% Date font
-	\RequirePackage{titlesec}% Section title formatting
-	\RequirePackage[titles]{tocloft}% TOC title formatting
+    \RequirePackage{hep-title}% For high-energy physics title formatting
+    \titlefont{\normalfont\LARGE\scshape}% Title font
+    \subtitlefont{\normalfont\large}% Subtitle font
+    \authorfont{\normalfont\large\scshape}% Author font
+    \affiliationfont{\normalfont\large\scshape}% Affiliation font
+    \datefont{\normalfont\normalsize\scshape}% Date font
+    \RequirePackage{titlesec}% Section title formatting
+    \RequirePackage[titles]{tocloft}% TOC title formatting
 }%
 \NewDocumentCommand{\adjusttocspacing}{}{%
-	\addtolength{\cftchapnumwidth}{5.0pt}%
-	\addtolength{\cftsecnumwidth}{3.5pt}%
-	\addtolength{\cftsubsecnumwidth}{3.5pt}%
-	\addtolength{\cftsubsubsecnumwidth}{3.5pt}%
-	\addtolength{\cftsecindent}{5pt}%
-	\addtolength{\cftsubsecindent}{8.5pt}%
-	\addtolength{\cftsubsubsecindent}{12pt}%
+    \addtolength{\cftchapnumwidth}{5.0pt}%
+    \addtolength{\cftsecnumwidth}{3.5pt}%
+    \addtolength{\cftsubsecnumwidth}{3.5pt}%
+    \addtolength{\cftsubsubsecnumwidth}{3.5pt}%
+    \addtolength{\cftsecindent}{5pt}%
+    \addtolength{\cftsubsecindent}{8.5pt}%
+    \addtolength{\cftsubsubsecindent}{12pt}%
 }%
 \NewDocumentCommand{\setchapterformat}{}{%
 \titleformat{\chapter}[display]
-{\huge}%
-{\filleft\textrm{\textsc{\large\chaptertitlename}~\Huge\thechapter}}%
-{2ex}
-{\commonheadingfont\titlerule\vspace{1ex}\filright}%
-[\vspace{1ex}\titlerule]%
+    {\huge}%
+    {\filleft\textrm{\textsc{\large\chaptertitlename}~\Huge\thechapter}}%
+    {2ex}
+    {\commonheadingfont\titlerule\vspace{1ex}\filright}%
+    [\vspace{1ex}\titlerule]%
 \@ifclassloaded{book}{%
 \titleclass{\part}{top}
 \titleformat{\part}[display]
@@ -341,72 +341,72 @@
 }{}
 }%
 \NewDocumentCommand{\setsectionformats}{}{%
-	\titleformat{\section}{\commonheadingfont\Large}{\thesection}{10pt}{}%
-	\titleformat{\subsection}{\commonheadingfont\large}{\thesubsection}{10pt}{}%
-	\titleformat{\subsubsection}{\commonheadingfont\large}{\thesubsubsection}{10pt}{}%
-	\titleformat{\paragraph}[runin]{\normalsize\scshape}{\theparagraph}{1em}{}[.]%
-	\titlespacing*{\paragraph}{0pt}{\medskipamount}{*1}%
-	\titleformat{\subparagraph}[runin]{\normalsize\scshape}{\thesubparagraph}{1em}{}[.]%
-	\titlespacing*{\subparagraph}{0pt}{\medskipamount}{*1}%
+    \titleformat{\section}{\commonheadingfont\Large}{\thesection}{10pt}{}%
+    \titleformat{\subsection}{\commonheadingfont\large}{\thesubsection}{10pt}{}%
+    \titleformat{\subsubsection}{\commonheadingfont\large}{\thesubsubsection}{10pt}{}%
+    \titleformat{\paragraph}[runin]{\normalsize\scshape}{\theparagraph}{1em}{}[.]%
+    \titlespacing*{\paragraph}{0pt}{\medskipamount}{*1}%
+    \titleformat{\subparagraph}[runin]{\normalsize\scshape}{\thesubparagraph}{1em}{}[.]%
+    \titlespacing*{\subparagraph}{0pt}{\medskipamount}{*1}%
 }%
 \NewDocumentCommand{\simplefancyheader}{}{%
-	\RequirePackage{fancyhdr}% Header/footer customization
-	\pagestyle{fancy}%
-	\fancyhf{}%
-	\fancyhead[LE,RO]{\rmfamily\small\textnormal{\@title}}%
-	\fancyhead[RE,LO]{\rmfamily\small\thepage}%
-	\fancyfoot{}%
-	\setlength{\headheight}{12pt}%
+    \RequirePackage{fancyhdr}% Header/footer customization
+    \pagestyle{fancy}%
+    \fancyhf{}%
+    \fancyhead[LE,RO]{\rmfamily\small\textnormal{\@title}}%
+    \fancyhead[RE,LO]{\rmfamily\small\thepage}%
+    \fancyfoot{}%
+    \setlength{\headheight}{12pt}%
 }%
 % Adjustments for the 'article' class
 \@ifclassloaded{article}{%
-	\loadcsthm%
-	\sethepfonts%
-	\providecommand{\commonheadingfont}{\normalfont\sffamily}%
-	\setsectionformats%
+    \loadcsthm%
+    \sethepfonts%
+    \providecommand{\commonheadingfont}{\normalfont\sffamily}%
+    \setsectionformats%
 }{}
 % Adjustments for the 'report' class
 \@ifclassloaded{report}{%
-	\loadcsthm%
-	\sethepfonts%
-	\providecommand{\commonheadingfont}{\normalfont\sffamily}%
-	\renewcommand{\thechapter}{\Roman{chapter}}%
-	\setchapterformat%
-	\setsectionformats%
-	\adjusttocspacing%
-	\simplefancyheader%
+    \loadcsthm%
+    \sethepfonts%
+    \providecommand{\commonheadingfont}{\normalfont\sffamily}%
+    \renewcommand{\thechapter}{\Roman{chapter}}%
+    \setchapterformat%
+    \setsectionformats%
+    \adjusttocspacing%
+    \simplefancyheader%
 }{}
 % Adjustments for the 'book' class
 \@ifclassloaded{book}{%
-	\loadcsthm%
-	\sethepfonts%
-	\providecommand{\commonheadingfont}{\normalfont\sffamily}%
-	\setchapterformat%
-	\adjusttocspacing%
-	\setsectionformats%
-	\simplefancyheader%
+    \loadcsthm%
+    \sethepfonts%
+    \providecommand{\commonheadingfont}{\normalfont\sffamily}%
+    \setchapterformat%
+    \adjusttocspacing%
+    \setsectionformats%
+    \simplefancyheader%
 }{}
 \let\oldtableofcontents\tableofcontents%
 \renewcommand{\tableofcontents}{%
-	\vfill\pagebreak%
-	\oldtableofcontents%
-	\vfill\pagebreak%
+    \vfill\pagebreak%
+    \oldtableofcontents%
+    \vfill\pagebreak%
 }%
 \NewDocumentCommand{\bibliographyprint}{mm}{%
-	\begingroup%
-	\small\singlespacing%
-	\bibliographystyle{#1}%
-	\addcontentsline{toc}{section}{References}%
-	\bibliography{#2}%
-	\endgroup%
+    \begingroup%
+    \small\singlespacing%
+    \bibliographystyle{#1}%
+    \addcontentsline{toc}{section}{References}%
+    \bibliography{#2}%
+    \endgroup%
 }%
 %%% Anonymization Adjustments %%%
 \ifAnonymize
-	\renewcommand{\@author}{}%
-	\renewcommand{\@date}{}%
-	\renewcommand{\hep@preprint@box}{}%
-	% In anonymized mode, make the acknowledgment environment produce nothing.
-	\RenewDocumentEnvironment{acknowledgment}{o}{}{}%
+    \renewcommand{\@author}{}%
+    \renewcommand{\@date}{}%
+    \renewcommand{\hep@preprint@box}{}%
+    % In anonymized mode, make the acknowledgment environment produce nothing.
+    \RenewDocumentEnvironment{acknowledgment}{o}{}{}%
 \fi
 }
 
@@ -415,10 +415,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage[%
-	font={rm},                            % Use roman font for captions
-	labelfont={color=black!75,rm},         % Label font: roman with specific color
-	labelsep=period,                      % Separator between label and caption text
-	skip=1em                              % Spacing before captions
+    font={rm},                            % Use roman font for captions
+    labelfont={color=black!75,rm},         % Label font: roman with specific color
+    labelsep=period,                      % Separator between label and caption text
+    skip=1em                              % Spacing before captions
 ]{caption}%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -426,27 +426,27 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NewDocumentCommand{\fullversion}{}{%
-	\FullVersiontrue%
-	\ShortVersionfalse%
+    \FullVersiontrue%
+    \ShortVersionfalse%
 }%
 
 \NewDocumentCommand{\shortversion}{}{%
-	\ShortVersiontrue%
-	\FullVersionfalse%
+    \ShortVersiontrue%
+    \FullVersionfalse%
 }%
 
 \NewDocumentCommand{\usecomments}{}{%
-	\Commentstrue%
+    \Commentstrue%
 }%
 
 \NewDocumentCommand{\newcomment}{mmm}{%
-	\ifComments
-		\expandafter\NewDocumentCommand\csname#3\endcsname{m}{%
-			\noindent\textcolor{#2}{\sffamily##1 -- $\mathsf{#1}$}%
-		}%
-	\else
-		\expandafter\NewDocumentCommand\csname#3\endcsname{m}{}%
-	\fi
+    \ifComments
+        \expandafter\NewDocumentCommand\csname#3\endcsname{m}{%
+            \noindent\textcolor{#2}{\sffamily##1 -- $\mathsf{#1}$}%
+        }%
+    \else
+        \expandafter\NewDocumentCommand\csname#3\endcsname{m}{}%
+    \fi
 }%
 
 \makeatother
