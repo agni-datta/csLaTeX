@@ -41,16 +41,16 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Fonts and Math
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage[T1]{fontenc}                               % Font encoding for proper hyphenation
-\RequirePackage{lmodern}                                   % Modern Latin font
-\RequirePackage{moresize}                                  % More font sizes
-\RequirePackage{amssymb, amsfonts}                         % AMS math tools
-\RequirePackage{mathtools}                                 % Math enhancements
-\RequirePackage{bm}                                        % Bold math symbols
-\RequirePackage{mathrsfs}                                  % Script fonts
-\RequirePackage{nicefrac}                                  % Inline fractions
-\RequirePackage{siunitx}                                   % Units and number formatting
-\RequirePackage[cal=cm,bb=bboldx,scr=dutchcal]{mathalpha}  % Custom math fonts
+\RequirePackage[T1]{fontenc}                               	 % Font encoding for proper hyphenation
+\RequirePackage{lmodern}                                   	 % Modern Latin font
+\RequirePackage{moresize}                                  	 % More font sizes
+\RequirePackage{amssymb, amsfonts}                         	 % AMS math tools
+\RequirePackage{mathtools}                                 	 % Math enhancements
+\RequirePackage{bm}                                        	 % Bold math symbols
+\RequirePackage{mathrsfs}                                  	 % Script fonts
+\RequirePackage{nicefrac}                                  	 % Inline fractions
+\RequirePackage{siunitx}                                   	 % Units and number formatting
+\RequirePackage[cal=cm,bb=bboldx,scr=dutchcal]{mathalpha}  	 % Custom math fonts
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Hyperlinks & Referencing
@@ -81,42 +81,45 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Figures and Tables
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{adjustbox}                                     % Advanced box customization
-\RequirePackage{array}                                         % Extra functionality for arrays
-\RequirePackage{booktabs}                                      % Better looking tables with horizontal lines
-\RequirePackage{caption}                                       % Customizing captions
-\RequirePackage{dashbox}                                       % Dashed boxes in tables
-\RequirePackage{diagbox}                                       % Diagonal lines in table cells
-\RequirePackage{fbox}                                          % Framed boxes
-\RequirePackage{float}                                         % Improved control of float placement
-\RequirePackage{graphicx}                                      % Graphics handling
-\RequirePackage{longtable}                                     % Support for tables that span multiple pages
-\RequirePackage{multicol}                                      % Multi-column in document
-\RequirePackage{multirow}                                      % Multi-row cells in tables
-\RequirePackage{pdflscape}                                     % Landscape pages in PDFs
-\RequirePackage{placeins}                                      % To control float placements
-\RequirePackage{ragged2e}                                      % Advanced text alignment
-\RequirePackage{rotating}                                      % Rotating tables and figures
-\RequirePackage{subcaption}                                    % Support for subfigures/subtables
-\RequirePackage{supertabular}                                  % Extended table features
-\RequirePackage{tabularray}                                    % Advanced table formatting
-\RequirePackage{tabularx}                                      % Tables with automatic column width
+\RequirePackage{adjustbox}                                     % Box adjustments: scaling, trimming, framing
+\RequirePackage{array}                                         % Extended column types in tables
+\RequirePackage{booktabs}                                      % Formal horizontal rules in tables
+\RequirePackage{caption}                                       % Caption formatting control
+\RequirePackage{colortbl}                                      % Table cell coloring
+\RequirePackage{dashbox}                                       % Dashed boxes
+\RequirePackage{diagbox}                                       % Diagonal split cells
+\RequirePackage{fbox}                                          % Basic framed boxes
+\RequirePackage{float}                                         % Float placement control (e.g., [H])
+\RequirePackage{graphicx}                                      % Include and scale graphics
+\RequirePackage{longtable}                                     % Multi-page tables
+\RequirePackage{multicol}                                      % Multi-column text
+\RequirePackage{multirow}                                      % Multi-row table cells
+\RequirePackage{pdflscape}                                     % Landscape pages in PDF
+\RequirePackage{placeins}                                      % Float placement barriers
+\RequirePackage{ragged2e}                                      % Improved text alignment
+\RequirePackage{rotating}                                      % Rotated floats
+\RequirePackage{subcaption}                                    % Subfigures and subtables
+\RequirePackage{supertabular}                                  % Breakable extended tables
+\RequirePackage{tabularray}                                    % Modern table formatting
+\RequirePackage{tabularx}                                      % Auto-width columns
+
 \AtBeginDocument{%
     \captionsetup{%
-        font={rm},
-        labelfont={color=black,rm},
-        labelsep=period,
-        skip=5pt
+        font={rm},                                             % Roman font
+        labelfont={color=black,rm},                            % Label in black roman
+        labelsep=period,                                       % Label ends with period
+        skip=5pt                                               % Space below caption
     }%
 }%
-\captionsetup[table]{position=bottom, skip=5pt}
-\captionsetup[figure]{position=bottom, skip=5pt}
+
+\captionsetup[table]{position=bottom, skip=5pt}                % Table captions below
+\captionsetup[figure]{position=bottom, skip=5pt}               % Figure captions below
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Lists
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{enumitem}                                      % Customizing lists
-\setlist{nosep}                                               % Remove extra space between items
+\RequirePackage{enumitem}                                      	% Customizing lists
+\setlist{nosep}                                               	% Remove extra space between items
 \setlist[enumerate,1]{label=(\arabic*)}                         % Top-level numbered lists
 \setlist[enumerate,2]{label=(\alph*)}                           % Second-level numbered lists
 \setlist[itemize,1]{label=\ensuremath{\color{black!75}\bullet}} % Top-level itemized lists
