@@ -381,21 +381,21 @@
 	% Theorem style
 	\declaretheoremstyle[%
 		spaceabove=\topsep, spacebelow=\topsep,%
-		headfont=\thmheadfont\thmsymb, notefont=\normalfont,%
+		headfont=\thmheadfont\thmsymb, notefont=\thmheadfont,%
 		bodyfont=\thmfont, postheadspace=5pt, numberwithin=section,%
 		headpunct={.}%
 	]{thmstyle}%
 	% Definition style
 	\declaretheoremstyle[%
 		spaceabove=\topsep, spacebelow=\topsep,%
-		headfont=\defnheadfont\defnsymb, notefont=\normalfont,%
+		headfont=\defnheadfont\defnsymb, notefont=\defnheadfont,%
 		bodyfont=\defnfont, postheadspace=5pt, numberwithin=section,%
 		headpunct={.}%
 	]{defstyle}%
 	% Remark style
 	\declaretheoremstyle[%
 		spaceabove=\topsep, spacebelow=\topsep,%
-		headfont=\remarkheadfont\remarksymb, notefont=\normalfont,%
+		headfont=\remarkheadfont\remarksymb, notefont=\remarkheadfont,%
 		bodyfont=\remarkfont, postheadspace=5pt, numberwithin=section,%
 		headpunct={.}%
 	]{remarkstyle}%
@@ -419,7 +419,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \AtBeginDocument{%
 	\@ifpackageloaded{hyperref}{%
-		\RequirePackage{cleveref}%
+		\RequirePackage[capitalize,noabbrev]{cleveref}%
 		% --- Cleveref Name Declarations for All Environments ---
 		% Theorem-like
 		\crefname{theorem}{theorem}{theorems}
@@ -512,7 +512,9 @@
 		% Proof
 		\crefname{proof}{proof}{proofs}
 		\Crefname{proof}{Proof}{Proofs}
-		% --- Email Link Formatting ---
+		% --- Capitalise References ---				
+		\renewcommand{\cref}[1]{\Cref{#1}}%
+		% --- Email Link Formatting ---		
 		\providecommand{\email}[1]{\href{mailto:#1}{\texttt{#1}}}%
 		}{%
 		\PackageWarning{csthm}{%
