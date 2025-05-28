@@ -5,8 +5,6 @@
 %% Note: Do not remove or modify package calls unless necessary.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\ProvidesPackage{llncs-crypto}[2025/06/01 v1.0 llncs-crypto package]
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Color
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -41,33 +39,33 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Fonts and Math
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage[T1]{fontenc}                               	 % Font encoding for proper hyphenation
-\RequirePackage{lmodern}                                   	 % Modern Latin font
-\RequirePackage{moresize}                                  	 % More font sizes
-\RequirePackage{amssymb, amsfonts}                         	 % AMS math tools
-\RequirePackage{mathtools}                                 	 % Math enhancements
-\RequirePackage{bm}                                        	 % Bold math symbols
-\RequirePackage{mathrsfs}                                  	 % Script fonts
-\RequirePackage{nicefrac}                                  	 % Inline fractions
-\RequirePackage{siunitx}                                   	 % Units and number formatting
-\RequirePackage[cal=cm,bb=bboldx,scr=dutchcal]{mathalpha}  	 % Custom math fonts
+\RequirePackage[T1]{fontenc}                                 % Font encoding for proper hyphenation
+\RequirePackage{lmodern}                                     % Modern Latin font
+\RequirePackage{moresize}                                    % More font sizes
+\RequirePackage{amssymb, amsfonts}                           % AMS math tools
+\RequirePackage{mathtools}                                   % Math enhancements
+\RequirePackage{bm}                                          % Bold math symbols
+\RequirePackage{mathrsfs}                                    % Script fonts
+\RequirePackage{nicefrac}                                    % Inline fractions
+\RequirePackage{siunitx}                                     % Units and number formatting
+\RequirePackage[cal=cm,bb=bboldx,scr=dutchcal]{mathalpha}    % Custom math fonts
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Hyperlinks & Referencing
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{nameref}                                       % Name-based referencing
+\RequirePackage{nameref}                                     % Name-based referencing
 \RequirePackage[%
-    frenchlinks=true,                                           % Use small caps for links
-    unicode=true,                                               % Support for Unicode
-    bookmarksnumbered=true,                                     % Number PDF bookmarks
-    breaklinks=true,                                            % Allow links to break over lines
-    colorlinks=true,                                            % Use colored links
-    linkcolor=RoyalBlue2,                                       % Color for internal links
-    citecolor=SlateBlue2,                                       % Color for citations
-    urlcolor=SpringGreen2,                                      % Color for URLs
-    pdfusetitle,                                                % Use document title as PDF title
-    pdfpagelabels=true,                                         % Correct page labels in PDF
-    pagebackref                                                 % Back-references from bibliography
+    frenchlinks=true,                                        % Use small caps for links
+    unicode=true,                                            % Support for Unicode
+    bookmarksnumbered=true,                                  % Number PDF bookmarks
+    breaklinks=true,                                         % Allow links to break over lines
+    colorlinks=true,                                         % Use colored links
+    linkcolor=RoyalBlue2,                                    % Color for internal links
+    citecolor=SlateBlue2,                                    % Color for citations
+    urlcolor=SpringGreen4,                                   % Color for URLs
+    pdfusetitle,                                             % Use document title as PDF title
+    pdfpagelabels=true,                                      % Correct page labels in PDF
+    pagebackref                                              % Back-references from bibliography
 ]{hyperref}
 % Customize backrefs
 \renewcommand*{\backref}[1]{}
@@ -78,30 +76,34 @@
 }
 \RequirePackage{xr}                                           % Cross-document references
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Figures and Tables
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{adjustbox}                                     % Box adjustments: scaling, trimming, framing
-\RequirePackage{array}                                         % Extended column types in tables
-\RequirePackage{booktabs}                                      % Formal horizontal rules in tables
-\RequirePackage{caption}                                       % Caption formatting control
-\RequirePackage{colortbl}                                      % Table cell coloring
-\RequirePackage{dashbox}                                       % Dashed boxes
-\RequirePackage{diagbox}                                       % Diagonal split cells
-\RequirePackage{fbox}                                          % Basic framed boxes
-\RequirePackage{float}                                         % Float placement control (e.g., [H])
-\RequirePackage{graphicx}                                      % Include and scale graphics
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{adjustbox}                                     % Graphic/table boxes: scaling, trimming, framing
+\RequirePackage{array}                                         % Custom column types and alignment
+\RequirePackage{booktabs}                                      % High-quality horizontal rules for tables
+\RequirePackage{caption}                                       % Custom caption formatting
+\RequirePackage{colortbl}                                      % Cell background coloring in tables
+\RequirePackage{dashbox}                                       % Dashed framed boxes
+\RequirePackage{diagbox}                                       % Diagonal split table headers
+\RequirePackage{fancybox}                                      % Simple framed boxes
+\RequirePackage{float}                                         % Precise float positioning
+\RequirePackage{framed}                                        % Framed environments (e.g., figures, text)
+\RequirePackage{graphicx}                                      % Image inclusion and scaling
 \RequirePackage{longtable}                                     % Multi-page tables
-\RequirePackage{multicol}                                      % Multi-column text
-\RequirePackage{multirow}                                      % Multi-row table cells
-\RequirePackage{pdflscape}                                     % Landscape pages in PDF
-\RequirePackage{placeins}                                      % Float placement barriers
-\RequirePackage{ragged2e}                                      % Improved text alignment
-\RequirePackage{rotating}                                      % Rotated floats
-\RequirePackage{subcaption}                                    % Subfigures and subtables
-\RequirePackage{supertabular}                                  % Breakable extended tables
-\RequirePackage{tabularray}                                    % Modern table formatting
-\RequirePackage{tabularx}                                      % Auto-width columns
+\RequirePackage{makecell}                                      % Line breaks and formatting in cells
+\RequirePackage{multicol}                                      % Multiple text columns
+\RequirePackage{multirow}                                      % Multi-row cells in tables
+\RequirePackage{pdflscape}                                     % Landscape pages in PDF output
+\RequirePackage{placeins}                                      % Float placement control (e.g., \FloatBarrier)
+\RequirePackage{ragged2e}                                      % Improved text justification
+\RequirePackage{rotating}                                      % Rotated figures and tables
+\RequirePackage{subcaption}                                    % Subfigures and subtables with captions
+\RequirePackage{tabularray}                                    % Advanced table types and styling
+\RequirePackage{tabularx}                                      % Tables with auto-stretching columns
+\RequirePackage{threeparttable}                                % Notes and footnotes in tables
+\RequirePackage{wrapfig}                                       % Text wrapping around figures/tables
+\RequirePackage{xtab}                                          % Page-breaking tables (alt to supertabular)
 
 \AtBeginDocument{%
     \captionsetup{%
@@ -118,8 +120,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Lists
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{enumitem}                                      	% Customizing lists
-\setlist{nosep}                                               	% Remove extra space between items
+\RequirePackage{enumitem}                                       % Customizing lists
+\setlist{nosep}                                                 % Remove extra space between items
 \setlist[enumerate,1]{label=(\arabic*)}                         % Top-level numbered lists
 \setlist[enumerate,2]{label=(\alph*)}                           % Second-level numbered lists
 \setlist[itemize,1]{label=\ensuremath{\color{black!75}\bullet}} % Top-level itemized lists
@@ -375,20 +377,19 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newif\ifFullVersion    \FullVersionfalse
 \newif\ifShortVersion   \ShortVersionfalse
-\newif\ifComments       \Commentstrue
+\newif\ifComments       \Commentsfalse
 \newif\ifAnonymize      \Anonymizefalse
 
 \NewDocumentCommand{\fullversion}{}{\FullVersiontrue\ShortVersionfalse}
 \NewDocumentCommand{\shortversion}{}{\ShortVersiontrue\FullVersionfalse}
 \NewDocumentCommand{\usecomments}{}{\Commentstrue}
+
 \NewDocumentCommand{\newcomment}{mmm}{%
+  \expandafter\NewDocumentCommand\csname#3\endcsname{m}{%
     \ifComments
-        \expandafter\NewDocumentCommand\csname#3\endcsname{m}{%
-            \noindent\textcolor{#2}{\sffamily##1 -- $\mathsf{#1}$}%
-        }
-    \else
-        \expandafter\NewDocumentCommand\csname#3\endcsname{m}{}%
+      \noindent\textcolor{#2}{\sffamily##1 -- $\mathsf{#1}$}%
     \fi
+  }%
 }
 
 % Define acknowledgment environment with an optional title.
