@@ -25,6 +25,91 @@
 \ProvidesPackage{csthm}[2025/02/02 v2.0 Theorem Environments for Computer Science]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% csthm.sty - Theorem Environments for Computer Science
+% ---------------------------------------------------------------------------
+% Author: Agni Datta <agnidatta.org@gmail.com>
+% Version: 2.0
+% Date: 2025/02/02
+% License: LaTeX Project Public License v1.3c or later
+%
+% DESCRIPTION:
+%   The csthm package provides a comprehensive suite of theorem-like environments
+%   tailored for computer science documents. It offers modern, customizable, and
+%   visually distinct styles for theorems, definitions, remarks, and highlights,
+%   supporting both numbered and unnumbered variants. The package is designed to
+%   work seamlessly with amsthm, thmtools, mdframed, and cleveref for advanced
+%   cross-referencing and presentation.
+%
+% FEATURES:
+%   - Multiple theorem styles: 'fancy', 'normal', and 'oldschool', selectable via
+%     package options.
+%   - Extensive set of environments: theorem, assertion, assumption, axiom, claim,
+%     conclusion, conjecture, corollary, fact, hypothesis, lemma, postulate,
+%     property, proposition, application, construction, convention, definition,
+%     experiment, notation, problem, protocol, result, commentary, example,
+%     exercise, motivation, notation abuse, note, observation, question, remark,
+%     guideline, highlight, important, insight, key point, recall, summary,
+%     takeaway, tip, warning, and proof.
+%   - Numbered and unnumbered (starred) versions for all environments.
+%   - Customizable accent color and font settings.
+%   - Modern framed environments using mdframed and TikZ for the 'fancy' style.
+%   - Intelligent cross-referencing with cleveref and hyperref integration.
+%   - Consistent symbol and font usage across environments.
+%   - Dedicated 'case' environment for structured case analysis.
+%
+% USAGE:
+%   \usepackage[<style>]{csthm}
+%     where <style> is one of: fancy, normal, oldschool
+%     (default: no style; user must specify one)
+%
+%   Example:
+%     \usepackage[fancy]{csthm}
+%
+%   To change the accent color:
+%     \setaccentcolor{<color>}
+%     (where <color> is any color recognized by xcolor)
+%
+%   To use the 'case' environment:
+%     \begin{case}
+%       \item ...
+%       \item ...
+%     \end{case}
+%
+% DEPENDENCIES:
+%   - amsmath, amssymb, amsthm: Mathematical typesetting and theorem support
+%   - sansmath: Sans-serif math fonts
+%   - enumitem: Customizable list environments
+%   - thmtools: Advanced theorem customization
+%   - mdframed: Framed boxes for environments (with TikZ)
+%   - xcolor: Extended color support (X11, SVG, dvipsnames)
+%   - cleveref (optional, auto-loaded if hyperref is present): Smart cross-referencing
+%
+% OPTIONS:
+%   - fancy: Modern, colored, framed theorem environments
+%   - normal: Standard sans-serif theorem environments with symbols
+%   - oldschool: Classic bold/scshape theorem environments
+%
+% INTERNALS:
+%   - Boolean flags control which style is activated.
+%   - All environments are defined via \declaretheorem from thmtools.
+%   - Styles are set up via \declaretheoremstyle.
+%   - Cleveref names are set for all environments for consistent referencing.
+%   - The package issues warnings for unrecognized options.
+%
+% NOTES:
+%   - Only one style should be active at a time.
+%   - If no style is selected, the package will output a message but not define environments.
+%   - The proof environment is redefined for consistency with the selected style.
+%   - The package is intended for use in computer science and related technical documents.
+%
+% SEE ALSO:
+%   - thmtools, amsthm, mdframed, cleveref, xcolor documentation for further customization.
+%
+% ---------------------------------------------------------------------------
+% End of documentation for csthm.sty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Option Definitions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newbool{fancy}       % Enable fancy theorem formatting
@@ -62,7 +147,7 @@
 	skipbelow=10pt,            % Space below frames
 	ntheorem,                  % Integration with theorem environments
 	framemethod=Tikz           % TikZ frame styling
-]{mdframed}                   % Framed environments
+]{mdframed}                    % Framed environments
 \RequirePackage[x11names, dvipsnames, svgnames]{xcolor} % X11, SVG, and named colors
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
