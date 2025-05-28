@@ -5,54 +5,65 @@
 %% Note: Do not remove or modify package calls unless necessary.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Color
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage[x11names, dvipsnames, svgnames]{xcolor}     % Extended color support.
 
-\RequirePackage[x11names,dvipsnames]{xcolor}                 % Extended color support.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Core Programming and Utility Packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{calc}                                        % Arithmetic with lengths
+\RequirePackage{comment}                                     % Block comment environment
+\RequirePackage{etoolbox}                                    % Logic and macro patching
+\RequirePackage{ifpdf}                                       % Detect PDF output mode
+\RequirePackage{iftex}                                       % Detect engine: pdfTeX, XeTeX, LuaTeX
+\RequirePackage{xparse}                                      % Extended command/environment definitions
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% PDF & Document Control
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage[2.0,objcompress,compress]{bxpdfver}          % Set PDF version and compression
-\RequirePackage[nottoc]{tocbibind}                           % Add bibliography to TOC (exclude TOC itself)
-\RequirePackage{babel}                                       % Multilingual support (default: English)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PDF and Document Structure Control
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage[2.0,objcompress,compress]{bxpdfver}          % PDF version and compression settings
+\RequirePackage[nottoc]{tocbibind}                           % Add bibliography, list of figures, etc. to TOC (excluding TOC itself)
+\RequirePackage{babel}                                       % Language and hyphenation support
 \RequirePackage{pdfpages}                                    % Include external PDF pages
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Text, Layout, and Miscellaneous Enhancements
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage[autostyle=true, csdisplay=true]{csquotes}    % Quotation formatting
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage[autostyle=true, csdisplay=true]{csquotes}    % Automatic quotation marks and smart citations
+\RequirePackage[final]{microtype}                            % Improved justification and hyphenation
+\RequirePackage[full]{textcomp}                              % Additional text symbols (e.g., degree sign)
 \RequirePackage[nocompress]{cite}                            % Citation package for references
-\RequirePackage[normalem]{ulem}                              % Underline, strikethrough
-\RequirePackage{comment}                                     % Comment block support
+\RequirePackage[normalem]{ulem}                              % Underlining and strikethrough capabilities
 \RequirePackage{emptypage}                                   % No page numbers on empty pages
-\RequirePackage{etoolbox}                                    % Advanced logic (if/then)
 \RequirePackage{lipsum}                                      % Dummy text
-\RequirePackage{microtype}                                   % Typographic refinements
 \RequirePackage{pifont}                                      % For using Dingbat fonts
 \RequirePackage{soul}                                        % For text highlighting
-\RequirePackage{textcomp}                                    % Extra text symbols
 \RequirePackage{xspace}                                      % Intelligent spacing after macros
 \RequirePackage{xurl}                                        % Breakable URLs
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Fonts and Math
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage[T1]{fontenc}                                 % Font encoding for proper hyphenation
-\RequirePackage{lmodern}                                     % Modern Latin font
-\RequirePackage{moresize}                                    % More font sizes
-\RequirePackage{amssymb, amsfonts}                           % AMS math tools
-\RequirePackage{mathtools}                                   % Math enhancements
+\RequirePackage{amsfonts}                                    % AMS fonts (blackboard bold, etc.)
+\RequirePackage{amsmath}                                     % Advanced math typesetting
+\RequirePackage{amssymb}                                     % Additional math symbols
+\RequirePackage{amsthm}                                      % Theorem environments
+\RequirePackage{mathrsfs}                                    % Script-style math fonts
 \RequirePackage{bm}                                          % Bold math symbols
+\RequirePackage{lmodern}                                     % Modern Latin font
 \RequirePackage{mathrsfs}                                    % Script fonts
+\RequirePackage{mathtools}                                   % Math enhancements
+\RequirePackage{moresize}                                    % More font sizes
 \RequirePackage{nicefrac}                                    % Inline fractions
 \RequirePackage{siunitx}                                     % Units and number formatting
 \RequirePackage[cal=cm,bb=bboldx,scr=dutchcal]{mathalpha}    % Custom math fonts
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Hyperlinks & Referencing
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage{nameref}                                     % Name-based referencing
 \RequirePackage[%
     frenchlinks=true,                                        % Use small caps for links
@@ -67,6 +78,7 @@
     pdfpagelabels=true,                                      % Correct page labels in PDF
     pagebackref                                              % Back-references from bibliography
 ]{hyperref}
+\RequirePackage{xr}                                          % Cross-document references
 % Customize backrefs
 \renewcommand*{\backref}[1]{}
 \renewcommand*{\backrefalt}[4]{%
@@ -74,7 +86,8 @@
     \else (Cited on pp.~#2).%
     \fi
 }
-\RequirePackage{xr}                                           % Cross-document references
+% Full reference combining hyperref, autoref, and nameref.
+\newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1}~\nameref*{#1}}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Figures and Tables
@@ -138,11 +151,29 @@
 \RequirePackage{tikz}                                          % TikZ for drawing diagrams
 \RequirePackage{tikz-cd}                                       % TikZ for commutative diagrams
 \RequirePackage{tikz-3dplot}                                   % 3D plotting with TikZ
+% TikZ libraries for enhanced diagrammatic capability
 \usetikzlibrary{%
-    arrows, automata, backgrounds, calc, decorations.markings, % Various TikZ libraries
-    decorations.pathmorphing, decorations.text, fit, graphs,
-    intersections, matrix, patterns, positioning, scopes,
-    shapes.geometric
+    3d,                     % Basic 3D transformations
+    arrows.meta,            % Advanced arrow tips
+    automata,               % Finite state machines
+    backgrounds,            % Background layers
+    calc,                   % Coordinate calculations
+    chains,                 % Node chains
+    decorations.markings,   % Custom arrow markings
+    decorations.pathmorphing, % Deformable paths
+    decorations.text,       % Text along paths
+    fit,                    % Node fitting
+    graphs,                 % Graph structures
+    hobby,                  % Spline curves
+    intersections,          % Path intersection detection
+    matrix,                 % Matrix layout
+    patterns,               % Fill patterns
+    positioning,            % Relative positioning of nodes
+    quotes,                 % Quoted edge labels
+    scopes,                 % Local scoping
+    shapes.geometric,       % Basic geometric shapes
+    shapes.misc,            % Additional shapes (e.g., star, cylinder)
+    through                 % Path through points
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
