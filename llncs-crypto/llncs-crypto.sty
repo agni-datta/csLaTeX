@@ -1,18 +1,18 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% llncs-crypto.sty – Enhanced Style for LNCS + Cryptography
 %% Author: Matteo Campanelli & Agni Datta
 %% Purpose: Clean and structured LaTeX preamble for advanced academic writing
 %% Note: Do not remove or modify package calls unless necessary.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Color
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage[x11names, dvipsnames, svgnames]{xcolor}     % Extended color support.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Core Programming and Utility Packages
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage{calc}                                        % Arithmetic with lengths
 \RequirePackage{comment}                                     % Block comment environment
 \RequirePackage{etoolbox}                                    % Logic and macro patching
@@ -20,17 +20,17 @@
 \RequirePackage{iftex}                                       % Detect engine: pdfTeX, XeTeX, LuaTeX
 \RequirePackage{xparse}                                      % Extended command/environment definitions
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PDF and Document Structure Control
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage[2.0,objcompress,compress]{bxpdfver}          % PDF version and compression settings
 \RequirePackage[nottoc]{tocbibind}                           % Add bibliography, list of figures, etc. to TOC (excluding TOC itself)
 \RequirePackage{babel}                                       % Language and hyphenation support
 \RequirePackage{pdfpages}                                    % Include external PDF pages
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Text, Layout, and Miscellaneous Enhancements
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage[autostyle=true, csdisplay=true]{csquotes}    % Automatic quotation marks and smart citations
 \RequirePackage[final]{microtype}                            % Improved justification and hyphenation
 \RequirePackage[full]{textcomp}                              % Additional text symbols (e.g., degree sign)
@@ -43,9 +43,9 @@
 \RequirePackage{xspace}                                      % Intelligent spacing after macros
 \RequirePackage{xurl}                                        % Breakable URLs
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Fonts and Math
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage[T1]{fontenc}                                 % Font encoding for proper hyphenation
 \RequirePackage{amsfonts}                                    % AMS fonts (blackboard bold, etc.)
 \RequirePackage{amsmath}                                     % Advanced math typesetting
@@ -61,9 +61,9 @@
 \RequirePackage{siunitx}                                     % Units and number formatting
 \RequirePackage[cal=cm,bb=bboldx,scr=dutchcal]{mathalpha}    % Custom math fonts
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Hyperlinks & Referencing
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage{nameref}                                     % Name-based referencing
 \RequirePackage[%
     frenchlinks=true,                                        % Use small caps for links
@@ -89,9 +89,9 @@
 % Full reference combining hyperref, autoref, and nameref.
 \newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1}~\nameref*{#1}}}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Figures and Tables
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage{adjustbox}                                     % Graphic/table boxes: scaling, trimming, framing
 \RequirePackage{array}                                         % Custom column types and alignment
 \RequirePackage{booktabs}                                      % High-quality horizontal rules for tables
@@ -130,9 +130,9 @@
 \captionsetup[table]{position=bottom, skip=5pt}                % Table captions below
 \captionsetup[figure]{position=bottom, skip=5pt}               % Figure captions below
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Lists
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage{enumitem}                                       % Customizing lists
 \setlist{nosep}                                                 % Remove extra space between items
 \setlist[enumerate,1]{label=(\arabic*)}                         % Top-level numbered lists
@@ -140,9 +140,9 @@
 \setlist[itemize,1]{label=\ensuremath{\color{black!75}\bullet}} % Top-level itemized lists
 \setlist[itemize,2]{label=\ensuremath{\color{black!75}\circ}}   % Second-level itemized lists
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Diagrams and TikZ Graphics
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage{epigraph}                                      % For epigraphs (quotations at the start)
 \RequirePackage[most]{tcolorbox}                               % For colored boxes
 \RequirePackage[skipabove=10pt, skipbelow=10pt, ntheorem, framemethod=Tikz]{mdframed} % Framed boxes with TikZ
@@ -176,20 +176,20 @@
     through                 % Path through points
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Appendices
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage[page, title, header, titletoc, toc]{appendix}   % For handling appendices
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Cryptography
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage{tcscrypto}                                     % Cryptography tools
 \RequirePackage{orcidlink}                                     % ORCID ID and Logo
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Theorem Environments for LLNCS Style
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \makeatletter
 \AtBeginDocument{%
     % Theorem-like environments
@@ -299,9 +299,9 @@
 }
 \makeatother
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Cleveref Setup
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage[capitalize,noabbrev]{cleveref} % Smart referencing with automatic names
 
 % Declare names for all environments for cref/Cref
@@ -403,9 +403,9 @@
 
 \renewcommand{\cref}[1]{\Cref{#1}}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Commenting and Version Control Macros
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newif\ifFullVersion    \FullVersionfalse
 \newif\ifShortVersion   \ShortVersionfalse
 \newif\ifComments       \Commentsfalse
@@ -416,11 +416,11 @@
 \NewDocumentCommand{\usecomments}{}{\Commentstrue}
 
 \NewDocumentCommand{\newcomment}{mmm}{%
-  \expandafter\NewDocumentCommand\csname#3\endcsname{m}{%
-    \ifComments
-      \noindent\textcolor{#2}{\sffamily##1 -- $\mathsf{#1}$}%
-    \fi
-  }%
+    \expandafter\NewDocumentCommand\csname#3\endcsname{m}{%
+        \ifComments
+            \noindent\textcolor{#2}{\sffamily##1 -- $\mathsf{#1}$}%
+        \fi
+    }%
 }
 
 % Define acknowledgment environment with an optional title.
@@ -432,9 +432,9 @@
     }
 }{}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Upright Greek Letters Setup Using `upgreek` and `mathastext`
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage[italic,LGRgreek]{mathastext} % Enable Greek with LGR encoding, default italic
 \RequirePackage{upgreek} % Load upright Greek letter symbols
 
@@ -442,68 +442,68 @@
 \MTgreekfont{CourierOneZeroPitch-TLF} % Set Greek font
 
 % Provide definitions for missing uppercase Greek macros as roman letters, if undefined
-\@ifundefined{Alpha}{\newcommand{\Alpha}{\mathrm{A}}}{} 
-\@ifundefined{Beta}{\newcommand{\Beta}{\mathrm{B}}}{} 
-\@ifundefined{Chi}{\newcommand{\Chi}{\mathrm{X}}}{} 
-\@ifundefined{Epsilon}{\newcommand{\Epsilon}{\mathrm{E}}}{} 
-\@ifundefined{Eta}{\newcommand{\Eta}{\mathrm{H}}}{} 
-\@ifundefined{Iota}{\newcommand{\Iota}{\mathrm{I}}}{} 
-\@ifundefined{Kappa}{\newcommand{\Kappa}{\mathrm{K}}}{} 
-\@ifundefined{Mu}{\newcommand{\Mu}{\mathrm{M}}}{} 
-\@ifundefined{Nu}{\newcommand{\Nu}{\mathrm{N}}}{} 
-\@ifundefined{Omicron}{\newcommand{\Omicron}{\mathrm{O}}}{} 
-\@ifundefined{Rho}{\newcommand{\Rho}{\mathrm{R}}}{} 
-\@ifundefined{Tau}{\newcommand{\Tau}{\mathrm{T}}}{} 
-\@ifundefined{Zeta}{\newcommand{\Zeta}{\mathrm{Z}}}{} 
-\@ifundefined{omicron}{\newcommand{\omicron}{\mathrm{o}}}{} 
+\@ifundefined{Alpha}{\newcommand{\Alpha}{\mathrm{A}}}{}
+\@ifundefined{Beta}{\newcommand{\Beta}{\mathrm{B}}}{}
+\@ifundefined{Chi}{\newcommand{\Chi}{\mathrm{X}}}{}
+\@ifundefined{Epsilon}{\newcommand{\Epsilon}{\mathrm{E}}}{}
+\@ifundefined{Eta}{\newcommand{\Eta}{\mathrm{H}}}{}
+\@ifundefined{Iota}{\newcommand{\Iota}{\mathrm{I}}}{}
+\@ifundefined{Kappa}{\newcommand{\Kappa}{\mathrm{K}}}{}
+\@ifundefined{Mu}{\newcommand{\Mu}{\mathrm{M}}}{}
+\@ifundefined{Nu}{\newcommand{\Nu}{\mathrm{N}}}{}
+\@ifundefined{Omicron}{\newcommand{\Omicron}{\mathrm{O}}}{}
+\@ifundefined{Rho}{\newcommand{\Rho}{\mathrm{R}}}{}
+\@ifundefined{Tau}{\newcommand{\Tau}{\mathrm{T}}}{}
+\@ifundefined{Zeta}{\newcommand{\Zeta}{\mathrm{Z}}}{}
+\@ifundefined{omicron}{\newcommand{\omicron}{\mathrm{o}}}{}
 
 % Fallbacks for upright forms from `upgreek`, if undefined
-\@ifundefined{Upalpha}{\newcommand{\Upalpha}{\mathrm{A}}}{} 
-\@ifundefined{Upbeta}{\newcommand{\Upbeta}{\mathrm{B}}}{} 
-\@ifundefined{Upchi}{\newcommand{\Upchi}{\mathrm{X}}}{} 
-\@ifundefined{Upepsilon}{\newcommand{\Upepsilon}{\mathrm{E}}}{} 
-\@ifundefined{Upeta}{\newcommand{\Upeta}{\mathrm{H}}}{} 
-\@ifundefined{Upiota}{\newcommand{\Upiota}{\mathrm{I}}}{} 
-\@ifundefined{Upkappa}{\newcommand{\Upkappa}{\mathrm{K}}}{} 
-\@ifundefined{Upmu}{\newcommand{\Upmu}{\mathrm{M}}}{} 
-\@ifundefined{Upnu}{\newcommand{\Upnu}{\mathrm{N}}}{} 
-\@ifundefined{Upomicron}{\newcommand{\Upomicron}{\mathrm{O}}}{} 
-\@ifundefined{Uprho}{\newcommand{\Uprho}{\mathrm{R}}}{} 
-\@ifundefined{Uptau}{\newcommand{\Uptau}{\mathrm{T}}}{} 
-\@ifundefined{Upzeta}{\newcommand{\Upzeta}{\mathrm{Z}}}{} 
-\@ifundefined{upomicron}{\newcommand{\upomicron}{\mathrm{o}}}{} 
+\@ifundefined{Upalpha}{\newcommand{\Upalpha}{\mathrm{A}}}{}
+\@ifundefined{Upbeta}{\newcommand{\Upbeta}{\mathrm{B}}}{}
+\@ifundefined{Upchi}{\newcommand{\Upchi}{\mathrm{X}}}{}
+\@ifundefined{Upepsilon}{\newcommand{\Upepsilon}{\mathrm{E}}}{}
+\@ifundefined{Upeta}{\newcommand{\Upeta}{\mathrm{H}}}{}
+\@ifundefined{Upiota}{\newcommand{\Upiota}{\mathrm{I}}}{}
+\@ifundefined{Upkappa}{\newcommand{\Upkappa}{\mathrm{K}}}{}
+\@ifundefined{Upmu}{\newcommand{\Upmu}{\mathrm{M}}}{}
+\@ifundefined{Upnu}{\newcommand{\Upnu}{\mathrm{N}}}{}
+\@ifundefined{Upomicron}{\newcommand{\Upomicron}{\mathrm{O}}}{}
+\@ifundefined{Uprho}{\newcommand{\Uprho}{\mathrm{R}}}{}
+\@ifundefined{Uptau}{\newcommand{\Uptau}{\mathrm{T}}}{}
+\@ifundefined{Upzeta}{\newcommand{\Upzeta}{\mathrm{Z}}}{}
+\@ifundefined{upomicron}{\newcommand{\upomicron}{\mathrm{o}}}{}
 
 % If available, overwrite standard Greek macros with their upright versions
-\@ifundefined{Upalpha}{}{\renewcommand{\Alpha}{\Upalpha}} 
-\@ifundefined{Upbeta}{}{\renewcommand{\Beta}{\Upbeta}} 
-\@ifundefined{Upchi}{}{\renewcommand{\Chi}{\Upchi}} 
-\@ifundefined{Updelta}{}{\renewcommand{\Delta}{\Updelta}} 
-\@ifundefined{Upepsilon}{}{\renewcommand{\Epsilon}{\Upepsilon}} 
-\@ifundefined{Upeta}{}{\renewcommand{\Eta}{\Upeta}} 
-\@ifundefined{Upgamma}{}{\renewcommand{\Gamma}{\Upgamma}} 
-\@ifundefined{Upiota}{}{\renewcommand{\Iota}{\Upiota}} 
-\@ifundefined{Upkappa}{}{\renewcommand{\Kappa}{\Upkappa}} 
-\@ifundefined{Uplambda}{}{\renewcommand{\Lambda}{\Uplambda}} 
-\@ifundefined{Upmu}{}{\renewcommand{\Mu}{\Upmu}} 
-\@ifundefined{Upnu}{}{\renewcommand{\Nu}{\Upnu}} 
-\@ifundefined{Upomega}{}{\renewcommand{\Omega}{\Upomega}} 
-\@ifundefined{Upomicron}{}{\renewcommand{\Omicron}{\Upomicron}} 
-\@ifundefined{Upphi}{}{\renewcommand{\Phi}{\Upphi}} 
-\@ifundefined{Uppi}{}{\renewcommand{\Pi}{\Uppi}} 
-\@ifundefined{Uppsi}{}{\renewcommand{\Psi}{\Uppsi}} 
-\@ifundefined{Uprho}{}{\renewcommand{\Rho}{\Uprho}} 
-\@ifundefined{Upsigma}{}{\renewcommand{\Sigma}{\Upsigma}} 
-\@ifundefined{Uptau}{}{\renewcommand{\Tau}{\Uptau}} 
-\@ifundefined{Uptheta}{}{\renewcommand{\Theta}{\Uptheta}} 
-\@ifundefined{Upupsilon}{}{\renewcommand{\Upsilon}{\Upupsilon}} 
-\@ifundefined{Upxi}{}{\renewcommand{\Xi}{\Upxi}} 
-\@ifundefined{Upzeta}{}{\renewcommand{\Zeta}{\Upzeta}} 
+\@ifundefined{Upalpha}{}{\renewcommand{\Alpha}{\Upalpha}}
+\@ifundefined{Upbeta}{}{\renewcommand{\Beta}{\Upbeta}}
+\@ifundefined{Upchi}{}{\renewcommand{\Chi}{\Upchi}}
+\@ifundefined{Updelta}{}{\renewcommand{\Delta}{\Updelta}}
+\@ifundefined{Upepsilon}{}{\renewcommand{\Epsilon}{\Upepsilon}}
+\@ifundefined{Upeta}{}{\renewcommand{\Eta}{\Upeta}}
+\@ifundefined{Upgamma}{}{\renewcommand{\Gamma}{\Upgamma}}
+\@ifundefined{Upiota}{}{\renewcommand{\Iota}{\Upiota}}
+\@ifundefined{Upkappa}{}{\renewcommand{\Kappa}{\Upkappa}}
+\@ifundefined{Uplambda}{}{\renewcommand{\Lambda}{\Uplambda}}
+\@ifundefined{Upmu}{}{\renewcommand{\Mu}{\Upmu}}
+\@ifundefined{Upnu}{}{\renewcommand{\Nu}{\Upnu}}
+\@ifundefined{Upomega}{}{\renewcommand{\Omega}{\Upomega}}
+\@ifundefined{Upomicron}{}{\renewcommand{\Omicron}{\Upomicron}}
+\@ifundefined{Upphi}{}{\renewcommand{\Phi}{\Upphi}}
+\@ifundefined{Uppi}{}{\renewcommand{\Pi}{\Uppi}}
+\@ifundefined{Uppsi}{}{\renewcommand{\Psi}{\Uppsi}}
+\@ifundefined{Uprho}{}{\renewcommand{\Rho}{\Uprho}}
+\@ifundefined{Upsigma}{}{\renewcommand{\Sigma}{\Upsigma}}
+\@ifundefined{Uptau}{}{\renewcommand{\Tau}{\Uptau}}
+\@ifundefined{Uptheta}{}{\renewcommand{\Theta}{\Uptheta}}
+\@ifundefined{Upupsilon}{}{\renewcommand{\Upsilon}{\Upupsilon}}
+\@ifundefined{Upxi}{}{\renewcommand{\Xi}{\Upxi}}
+\@ifundefined{Upzeta}{}{\renewcommand{\Zeta}{\Upzeta}}
 \makeatother
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTE: You do not need to modify this preamble. It is fully set up and ready. %
 % If you wish to add or change anything, do so in the `settings.tex` file.     %
 % That file will be loaded automatically if it exists.                         %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \IfFileExists{settings.tex}{\input{settings.tex}}{\typeout{"settings.tex" does not exists!}}
