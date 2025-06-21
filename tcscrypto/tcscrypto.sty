@@ -267,6 +267,7 @@
 
 \providecommand{\Ideal}{\inmathsf{Ideal}} % Ideal function
 \providecommand{\Init}{\inmathsf{Init}} % Initialization function
+\providecommand{\Inv}{\inmathsf{Inv}} % Inversion function
 \providecommand{\Issue}{\inmathsf{Issue}} % Issue function
 
 \providecommand{\Key}{\inmathsf{Key}} % Key symbol
@@ -398,7 +399,8 @@
 \providecommand{\id}{\inmathsf{id}} % Identity / identifier
 \providecommand{\iv}{\inmathsf{iv}} % Initialization vector
 
-\providecommand{\key}{\inmathsf{k}} % Generic key
+\providecommand{\k}{\inmathsf{k}} % Generic key
+\providecommand{\key}{\k} % Generic key
 
 \providecommand{\labelsym}{\inmathsf{lbl}} % Label (e.g., for commitment schemes)
 \providecommand{\lengthblock}{\ell_{\inmathsf{blk}}} % Block length
@@ -457,7 +459,7 @@
 
 \providecommand{\Alphabet}{\inmathsf{\Sigma}} % Alphabet 
 \providecommand{\AlphabetSize}{\inmathsf{\lambda}} % Size of alphabet 
-\providecommand{\Concat}{\mathbin{\|}} % Concatenation operator
+\providecommand{\Concat}{\mathbin{\parallel}} % Concatenation operator
 \providecommand{\EmptyString}{\varepsilon} % Empty string
 \providecommand{\Formula}{\varphi} % Boolean formula
 \providecommand{\IndexVar}{\mathbbm{i}} % Index variable
@@ -480,15 +482,15 @@
 % Turing Machines
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand{\TuringMachine}{\inmathsf{TM}} % Turing machine
-\providecommand{\TuringMachineAccept}{\inmathsf{Accept}} % Accept state
-\providecommand{\TuringMachineEnd}{\inmathsf{End}} % End state
-\providecommand{\TuringMachineInput}{\inmathsf{x}} % Input symbol
-\providecommand{\TuringMachineOutput}{\inmathsf{y}} % Output symbol
-\providecommand{\TuringMachineReject}{\inmathsf{Reject}} % Reject state
-\providecommand{\TuringMachineStart}{\inmathsf{Start}} % Start state
-\providecommand{\TuringMachineState}{\inmathsf{q}} % Machine state
-\providecommand{\TuringMachineTransition}{\inmathsf{t}} % Transition function
+\providecommand{\TM}{\inmathsf{TM}} % Turing machine
+\providecommand{\TMAccept}{\inmathsf{Accept}} % Accept state
+\providecommand{\TMEnd}{\inmathsf{End}} % End state
+\providecommand{\TMInput}{\inmathsf{x}} % Input symbol
+\providecommand{\TMOutput}{\inmathsf{y}} % Output symbol
+\providecommand{\TMReject}{\inmathsf{Reject}} % Reject state
+\providecommand{\TMStart}{\inmathsf{Start}} % Start state
+\providecommand{\TMState}{\inmathsf{q}} % Machine state
+\providecommand{\TMTransition}{\inmathsf{t}} % Transition function
 
 % Turing Machine Aliases and Models
 \providecommand{\DTM}{\inmathsf{DTM}} % Deterministic Turing machine
@@ -499,17 +501,6 @@
 \providecommand{\RTM}{\inmathsf{RTM}} % Random-access Turing machine
 \providecommand{\STM}{\inmathsf{STM}} % Space-bounded Turing machine
 \providecommand{\TTM}{\inmathsf{TTM}} % Time-bounded Turing machine
-
-% Turing Machine Short-hand Notation
-\providecommand{\TM}{\TuringMachine} % Turing machine
-\providecommand{\TMAccept}{\TuringMachineAccept} % Accept state
-\providecommand{\TME}{\TuringMachineEnd} % End state
-\providecommand{\TMInput}{\TuringMachineInput} % Input
-\providecommand{\TMOutput}{\TuringMachineOutput} % Output
-\providecommand{\TMReject}{\TuringMachineReject} % Reject state
-\providecommand{\TMS}{\TuringMachineStart} % Start state
-\providecommand{\TMState}{\TuringMachineState} % State
-\providecommand{\TMTransition}{\TuringMachineTransition} % Transition
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Generic Functions
@@ -544,17 +535,32 @@
 \providecommand{\PwithAdvice}{\P/\Advice} % P with advice
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Answers and Entropy
+% Entropy and Sources
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand{\AnswersList}{\inmathsf{\mathbf{a}}} % List of answers
-\providecommand{\EntSample}{\inmathsf{z}} % Entropy sample
-\providecommand{\Entropy}{\inmathsf{H}} % Entropy
-\providecommand{\EntropySample}{\inmathsf{z}} % Entropy sample
+\providecommand{\AffineSource}{\inmathsf{AffSrc}} % Affine source
+\providecommand{\BlockSource}{\inmathsf{BlockSrc}} % Block source
+\providecommand{\CondEntropy}[2]{\inmathsf{H}(#1 \mid #2)} % Conditional Shannon entropy
+\providecommand{\CondMinEntropy}[2]{\inmathsf{H}_{\infty}(#1 \mid #2)} % Conditional min-entropy
+\providecommand{\Entropy}{\inmathsf{H}} % General entropy function
+\providecommand{\EntropyDeficit}{\delta_{\Entropy}} % Entropy deficit parameter
+\providecommand{\EntropyFunction}{\inmathsf{h}} % Function representing entropy (e.g., Shannon entropy)
+\providecommand{\EntropyLoss}{\inmathsf{loss}} % Entropy loss during extraction
+\providecommand{\EntropyMachine}{\TM^{\Entropy}} % Turing machine with entropy access
+\providecommand{\EntropyOutput}{\inmathsf{Y}} % Output from an extractor
+\providecommand{\EntropyRate}{\inmathsf{rate}} % Entropy rate
+\providecommand{\EntropySample}{\inmathsf{z}} % A single entropy sample
 \providecommand{\EntropySet}{\inmathsf{Z}} % Set of entropy samples
-\providecommand{\EntropyFunction}{\inmathsf{h}} % Entropy function
-\providecommand{\EntropyMachine}{\TM^{\Entropy}} % Machine with entropy
-\providecommand{\PwithEntropy}{\ComplexityFont{P}/\Entropy} % P with entropy
+\providecommand{\EntropySource}{\inmathsf{X}} % Entropy source (random variable)
+\providecommand{\Extractor}{\inmathsf{Ext}} % Extractor function
+\providecommand{\ExtractorSeed}{\inmathsf{s}} % Seed for extractor
+\providecommand{\MinEntropy}{\inmathsf{H}_{\infty}} % Min-entropy
+\providecommand{\PwithEntropy}{\ComplexityFont{P}/\Entropy} % P with entropy advice
+\providecommand{\SanthaVaziraniSource}{\inmathsf{SVSrc}} % Santha–Vazirani source
+\providecommand{\ShannonEntropy}[1]{\inmathsf{H}(#1)} % Shannon entropy of variable
+\providecommand{\SideInfo}{\inmathsf{Z}} % Side information (e.g., leakage)
+\providecommand{\SourceLength}{n} % Bit-length of source
+\providecommand{\WeakSource}{\inmathsf{W}} % Weak source
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Constraint Satisfaction Problems (CSP)
@@ -679,12 +685,10 @@
 \providecommand{\Balanced}{\inmathsf{Bal}} % Balanced Boolean functions
 \providecommand{\BoolFuncs}{\inmathbb{B}} % Full set of Boolean functions
 \providecommand{\BoolFuncsArity}[1]{\BoolFuncs_{#1}} % Boolean functions over #1 bits
-\providecommand{\CNF}{\inmathsf{CNF}} % Conjunctive Normal Form class
 \providecommand{\CNFDepth}{\inmath{d}} % CNF depth parameter
 \providecommand{\CNFSize}{\inmath{s}} % CNF size parameter
 \providecommand{\Dictator}{\inmathsf{Dictator}} % Dictator function
 \providecommand{\DictatorParam}[1]{\inmath{x_{#1}}} % i-th dictator function
-\providecommand{\DNF}{\inmathsf{DNF}} % Disjunctive Normal Form class
 \providecommand{\DNFDepth}{\inmath{d}} % DNF depth parameter
 \providecommand{\DNFSize}{\inmath{s}} % DNF size parameter
 \providecommand{\Halfspace}{\inmathsf{HS}} % Halfspace functions
