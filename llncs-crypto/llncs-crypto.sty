@@ -28,9 +28,9 @@
 \RequirePackage{babel}                                       % Language and hyphenation support
 \RequirePackage{pdfpages}                                    % Include external PDF pages
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Text, Layout, and Miscellaneous Enhancements
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage[autostyle=true, csdisplay=true]{csquotes}    % Automatic quotation marks and smart citations
 \RequirePackage[final]{microtype}                            % Improved justification and hyphenation
 \RequirePackage[full]{textcomp}                              % Additional text symbols (e.g., degree sign)
@@ -38,6 +38,7 @@
 \RequirePackage[normalem]{ulem}                              % Underlining and strikethrough capabilities
 \RequirePackage{emptypage}                                   % No page numbers on empty pages
 \RequirePackage{lipsum}                                      % Dummy text
+\RequirePackage{paralist}                                    % Long List Style environments
 \RequirePackage{pifont}                                      % For using Dingbat fonts
 \RequirePackage{soul}                                        % For text highlighting
 \RequirePackage{xspace}                                      % Intelligent spacing after macros
@@ -88,9 +89,9 @@
 % Full reference combining hyperref, autoref, and nameref.
 \newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1}~\nameref*{#1}}}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Figures and Tables
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage{adjustbox}                                     % Graphic/table boxes: scaling, trimming, framing
 \RequirePackage{array}                                         % Custom column types and alignment
 \RequirePackage{booktabs}                                      % High-quality horizontal rules for tables
@@ -102,7 +103,9 @@
 \RequirePackage{float}                                         % Precise float positioning
 \RequirePackage{framed}                                        % Framed environments (e.g., figures, text)
 \RequirePackage{graphicx}                                      % Image inclusion and scaling
+\RequirePackage{hhline}                                        % Horizontal lines in tables
 \RequirePackage{longtable}                                     % Multi-page tables
+\RequirePackage{makecell}                                      % Line breaks and formatting in cells
 \RequirePackage{makecell}                                      % Line breaks and formatting in cells
 \RequirePackage{multicol}                                      % Multiple text columns
 \RequirePackage{multirow}                                      % Multi-row cells in tables
@@ -116,7 +119,6 @@
 \RequirePackage{threeparttable}                                % Notes and footnotes in tables
 \RequirePackage{wrapfig}                                       % Text wrapping around figures/tables
 \RequirePackage{xtab}                                          % Page-breaking tables (alt to supertabular)
-
 \AtBeginDocument{%
     \captionsetup{%
         font={rm},                                             % Roman font
@@ -125,7 +127,6 @@
         skip=5pt                                               % Space below caption
     }%
 }%
-
 \captionsetup[table]{position=bottom, skip=5pt}                % Table captions below
 \captionsetup[figure]{position=bottom, skip=5pt}               % Figure captions below
 
@@ -139,40 +140,90 @@
 \setlist[itemize,1]{label=\ensuremath{\color{black!75}\bullet}} % Top-level itemized lists
 \setlist[itemize,2]{label=\ensuremath{\color{black!75}\circ}}   % Second-level itemized lists
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Diagrams and TikZ Graphics
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{epigraph}                                      % For epigraphs (quotations at the start)
-\RequirePackage[most]{tcolorbox}                               % For colored boxes
-\RequirePackage[skipabove=10pt, skipbelow=10pt, ntheorem, framemethod=Tikz]{mdframed} % Framed boxes with TikZ
-\RequirePackage{pgfplots}                                      % For creating plots
-\pgfplotsset{compat=1.18}                                      % Set version for PGFPlots
-\RequirePackage{tikz}                                          % TikZ for drawing diagrams
-\RequirePackage{tikz-cd}                                       % TikZ for commutative diagrams
-\RequirePackage{tikz-3dplot}                                   % 3D plotting with TikZ
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{epigraph}                                     % Epigraphs (introductory quotations)
+
+% Epigraph configuration
+\setlength{\epigraphrule}{0.5pt}
+\setlength{\epigraphwidth}{0.65\textwidth}
+\renewcommand{\textflush}{flushright}
+\renewcommand{\epigraphsize}{\small}
+
+% Enhanced epigraph command
+\let\oldepigraph\epigraph
+\renewcommand{\epigraph}[2]{%
+    \oldepigraph{\textsf{#1}}{\smallskip\textsc{#2}}%
+}
+
+\RequirePackage[most]{tcolorbox}                              % Colored and styled boxes
+\RequirePackage[%
+    skipabove=10pt,                                           % Vertical space above the frame
+    skipbelow=10pt,                                           % Vertical space below the frame
+    ntheorem,                                                 % Compatibility with theorem environments
+    framemethod=Tikz                                          % Use TikZ for frame rendering
+]{mdframed}                                                   % Framed environments with theorem support
+\RequirePackage{pgfplots}                                     % Function/data plots
+\pgfplotsset{compat=1.18}                                     % PGFPlots compatibility version
+\RequirePackage{tikz}                                         % Core TikZ package
+\RequirePackage{tikz-cd}                                      % Commutative diagrams
+\RequirePackage{tikz-3dplot}                                  % 3D coordinate plotting
+
 % TikZ libraries for enhanced diagrammatic capability
 \usetikzlibrary{%
-    3d,                     % Basic 3D transformations
-    arrows.meta,            % Advanced arrow tips
-    automata,               % Finite state machines
-    backgrounds,            % Background layers
-    calc,                   % Coordinate calculations
-    chains,                 % Node chains
-    decorations.markings,   % Custom arrow markings
-    decorations.pathmorphing, % Deformable paths
-    decorations.text,       % Text along paths
-    fit,                    % Node fitting
-    graphs,                 % Graph structures
-    hobby,                  % Spline curves
-    intersections,          % Path intersection detection
-    matrix,                 % Matrix layout
-    patterns,               % Fill patterns
-    positioning,            % Relative positioning of nodes
-    quotes,                 % Quoted edge labels
-    scopes,                 % Local scoping
-    shapes.geometric,       % Basic geometric shapes
-    shapes.misc,            % Additional shapes (e.g., star, cylinder)
-    through                 % Path through points
+    3d,
+    arrows,
+    arrows.meta,
+    automata,
+    babel,
+    backgrounds,
+    bending,
+    calc,
+    calendar,
+    chains,
+    circuits.ee.IEC,
+    circuits.logic.IEC,
+    datavisualization,
+    datavisualization.formats.functions,
+    decorations,
+    decorations.markings,
+    decorations.pathmorphing,
+    decorations.shapes,
+    decorations.text,
+    er,
+    external,
+    fadings,
+    fit,
+    graphdrawing,
+    graphs,
+    graphs.standard,
+    hobby,
+    intersections,
+    lindenmayersystems,
+    matrix,
+    mindmap,
+    patterns,
+    patterns.meta,
+    petri,
+    plothandlers,
+    plotmarks,
+    positioning,
+    quotes,
+    scopes,
+    shadows,
+    shapes,
+    shapes.arrows,
+    shapes.callouts,
+    shapes.geometric,
+    shapes.misc,
+    shapes.multipart,
+    shapes.symbols,
+    spy,
+    svg.path,
+    through,
+    tikzmark,
+    trees
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -183,7 +234,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Cryptography
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{tcscrypto}                                     % Cryptography tools
+\IfFileExists{tcscrypto.sty}{\RequirePackage{tcscrypto}}     % Cryptography macros
+{\PackageWarning{csdirty}{Package `tcscrypto` not found.}}%
 \RequirePackage{orcidlink}                                     % ORCID ID and Logo
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -431,14 +483,276 @@
     }
 }{}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Paragraph formatting
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Flag for punctuation detection
+\newif\ifcsdirty@haspunctuation
+
+% Check whether the second argument is empty (used for punctuation detection)
+\def\llncscrypto@checkpunctuation#1{%
+    \ifx\llncscrypto@checkpunctuation#1\llncscrypto@checkpunctuation
+    \else
+        \llncscrypto@haspunctuationtrue
+    \fi
+}
+
+% Specific punctuation testers for '.', '?', '!', ':'
+\def\llncscrypto@checkdot#1.\llncscrypto@delim#2\llncscrypto@stop{\llncscrypto@checkpunctuation{#2}}
+\def\llncscrypto@checkquestion#1?\llncscrypto@delim#2\llncscrypto@stop{\llncscrypto@checkpunctuation{#2}}
+\def\llncscrypto@checkexclam#1!\llncscrypto@delim#2\llncscrypto@stop{\llncscrypto@checkpunctuation{#2}}
+\def\llncscrypto@checkcolon#1:\llncscrypto@delim#2\llncscrypto@stop{\llncscrypto@checkpunctuation{#2}}
+
+% Main interface: Append period unless line ends with '.', '?', '!', or ':'
+\def\llncscrypto@appendpunctuationifneeded#1{%
+    \llncscrypto@haspunctuationfalse
+    \llncscrypto@checkdot#1\llncscrypto@delim.\llncscrypto@delim\llncscrypto@stop
+    \llncscrypto@checkquestion#1\llncscrypto@delim?\llncscrypto@delim\llncscrypto@stop
+    \llncscrypto@checkexclam#1\llncscrypto@delim!\llncscrypto@delim\llncscrypto@stop
+    \llncscrypto@checkcolon#1\llncscrypto@delim:\llncscrypto@delim\llncscrypto@stop
+    #1\ifcsdirty@haspunctuation \else.\fi%
+}
+
+% Skip spaces and implicit paragraphs (blank lines)
+\def\llncscrypto@ignorewhitespaceandimplicitpars{%
+    \begingroup
+    \catcode13=10 %
+    \@ifnextchar\relax
+    {\endgroup}
+    {\endgroup}%
+}
+
+% Skip spaces, implicit paragraphs, and explicit \par commands
+\def\llncscrypto@ignoreallpars{%
+    \begingroup
+    \catcode13=10 %
+    \@ifnextchar\par
+    {\endgroup\expandafter\llncscrypto@ignoreallpars\@gobble}
+    {\endgroup}%
+}
+
+% Section-style paragraph header with automatic punctuation and spacing
+\newcommand{\llncscrypto@paragraphhead}[1]{%
+    \smallskip
+    \noindent
+    \textbf{\boldmath\ignorespaces\llncscrypto@appendpunctuationifneeded{#1}}%
+    \hskip 0.9em plus 0.3em minus 0.3em
+    \llncscrypto@ignorewhitespaceandimplicitpars
+}
+
+\newcommand{\parhead}[1]{\llncscrypto@paragraphhead{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Nested bar environment
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Custom box construction with vertical rule, top/bottom bars, and optional content
+\long\def\llncscrypto@customfbox#1#2#3#4#5#6#7#8#9{%
+    \leavevmode
+    \begingroup
+    \setbox\@tempboxa\hbox{%
+        \color@begingroup
+        \kern\fboxsep{#9}\kern\fboxsep
+        \color@endgroup}%
+    \hbox{%
+        \begingroup
+        \@tempdima#4\relax
+        \advance\@tempdima\fboxsep
+        \advance\@tempdima\dp\@tempboxa
+        \expandafter\endgroup
+        \expandafter\lower\the\@tempdima\hbox{%
+            \vbox{%
+                \hrule \@height#3 \@width#7
+                #1%
+                \hbox{%
+                    \vrule \@width#5
+                    \hspace{#8}%
+                    \vbox{%
+                        \vskip\fboxsep
+                        \copy\@tempboxa
+                        \vskip\fboxsep}%
+                    \vrule \@width#6}%
+                #2%
+                \hrule \@height#4\@width#7}%
+        }%
+    }%
+    \endgroup
+}
+
+% Parameters for bar dimensions and spacing
+\newcommand{\llncscrypto@nestedbar@topbotrulelength}{1em}
+\newcommand{\llncscrypto@nestedbar@indent}{0.4em}
+
+% FrameCommand helper that sets up side rule and spacing
+\def\llncscrypto@openframebox#1#2{%
+    \fboxsep=\FrameSep
+    \llncscrypto@customfbox
+    {}{}% no content above or below
+    {#1}{#2}% top and bottom rule thicknesses
+    \FrameRule\z@% left and right rule thickness
+    \llncscrypto@nestedbar@topbotrulelength% horizontal rule length
+    \llncscrypto@nestedbar@indent% indent from vertical rule
+}
+
+% Definition of the nestedbar environment
+\newenvironment{nestedbar}[1][\hsize]{%
+    \@ifundefined{OuterFrameSep}{%
+        \@latex@error{To use nestedbar, update framed.sty to a recent version.}\@ehd}{}%
+    \def\FrameCommand{\llncscrypto@openframebox\FrameRule\FrameRule}%
+    \def\FirstFrameCommand{\llncscrypto@openframebox\FrameRule\z@}%
+    \def\MidFrameCommand{\llncscrypto@openframebox\z@\z@}%
+    \def\LastFrameCommand{\llncscrypto@openframebox\z@\FrameRule}%
+    \OuterFrameSep=1ex
+    \FrameSep=0pt
+    \MakeFramed{\hsize#1\advance\hsize-\width\FrameRestore}%
+}{%
+    \endMakeFramed
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Protocol box environment
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\NewDocumentEnvironment{protocolbox}{o}
+{%
+    \begin{mdframed}[
+            font=\small,
+            roundcorner=1.5pt,
+            linewidth=0.5pt,
+            skipabove=0.5\baselineskip,
+            skipbelow=0.1\baselineskip,
+            leftmargin=0pt,
+            rightmargin=0pt,
+            innerleftmargin=5pt,
+            innerrightmargin=5pt,
+            innertopmargin=5pt,
+            innerbottommargin=5pt,
+            backgroundcolor=white,
+            linecolor=black
+        ]%
+        \IfNoValueF{#1}{%
+            \noindent\textnormal{\small\textbf{#1}}\par\smallskip
+            \noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}%
+        }%
+        \begin{itemize}[label={--},nosep]%
+            }
+            {%
+        \end{itemize}
+    \end{mdframed}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Wire box environment
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newtcolorbox{wirebox}{%
+    colframe=black,
+    colback=white,
+    sharp corners,
+    boxrule=0.5pt,
+    coltitle=black,
+    colbacktitle=white,
+    boxsep=5pt,
+    top=0pt,
+    bottom=0pt,
+    left=5pt,
+    right=5pt
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Simple fancyhdr header setup
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\NewDocumentCommand{\simplefancyheader}{}{%
+    \RequirePackage{fancyhdr}%
+    \pagestyle{fancy}%
+    \fancyhf{}%
+    \fancyhead[LE,RO]{\rmfamily\small\textnormal{\@title}}%
+    \fancyhead[RE,LO]{\rmfamily\small\thepage}%
+    \fancyfoot{}%
+    \setlength{\headheight}{12pt}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Class-specific adjustments
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\AtBeginDocument{%
+    \@ifclassloaded{article}{%
+        \setsectionformats%
+    }{}
+
+    \@ifclassloaded{report}{%
+        \setchapterformat%
+        \setsectionformats%
+        \simplefancyheader%
+        \adjusttocspacing%
+    }{}
+
+    \@ifclassloaded{book}{%
+        \setchapterformat%
+        \setpartformat%
+        \setsectionformats%
+        \simplefancyheader%
+        \adjusttocspacing%
+    }{}
+}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Useful commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Commands for the main document
+\begin{filecontents*}{useful-commands.tex}
+    % Highlight color for text and math
+    \newcommand{\highlightcolor}{RoyalBlue}
+    \newcommand{\sethighlightcolor}[1]{\renewcommand{\highlightcolor}{#1}}
+
+    % Text and math highlighting
+    \newcommand{\textem}[1]{\textcolor{\highlightcolor}{#1}}
+    \newcommand{\emphtext}[1]{\textcolor{\highlightcolor}{#1}}
+    \newcommand{\emphmath}[1]{\textcolor{\highlightcolor}{\mathrm{#1}}}
+
+    % Code highlighting
+    \newcommand{\code}[1]{{\texttt{#1}}}
+
+    % Math small caps and bold italic
+    \newcommand{\mathsc}[1]{\textnormal{\textsc{#1}}}
+    \newcommand{\mathbi}[1]{\textnormal{\textbf{\textit{#1}}}}
+
+    % Double-struck Pi symbol for different engines
+    \newcommand{\dsPi}{%
+        \ifluatex
+            \char"213F
+        \else
+            \ifxetex
+                \char"213F
+            \else
+                \Pi
+            \fi
+        \fi
+    }
+
+    % Sans-serif Pi symbol for different engines
+    \newcommand{\sansPi}{%
+        \ifluatex
+            \char"1D765
+        \else
+            \ifxetex
+                \char"1D765
+            \else
+                \Pi
+            \fi
+        \fi
+    }
+\end{filecontents*}
+
+% For use in the main document
+\input{useful-commands.tex}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Upright Greek Letters Setup Using `upgreek` and `mathastext`
+% Upright Greek Letters Setup Using `upgreek`
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage[italic,LGRgreek]{mathastext} % Enable Greek with LGR encoding, default italic
 \RequirePackage{upgreek} % Load upright Greek letter symbols
 
 \makeatletter
-\MTgreekfont{CourierOneZeroPitch-TLF} % Set Greek font
 
 % Provide definitions for missing uppercase Greek macros as roman letters, if undefined
 \@ifundefined{Alpha}{\newcommand{\Alpha}{\mathrm{A}}}{}
