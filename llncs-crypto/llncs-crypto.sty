@@ -704,51 +704,87 @@
 
 % Commands for the main document
 \begin{filecontents*}{useful-commands.tex}
-    
+
     % Highlight color for text and math
-    \newcommand{\highlightcolor}{RoyalBlue}
-    \newcommand{\sethighlightcolor}[1]{\renewcommand{\highlightcolor}{#1}}
+    \if@undefined{highlightcolor}{\newcommand{\highlightcolor}{RoyalBlue}}{}%
+    \if@undefined{sethighlightcolor}{\newcommand{\sethighlightcolor}[1]{\renewcommand{\highlightcolor}{#1}}}{}%
 
     % Text and math highlighting
-    \newcommand{\textem}[1]{\textcolor{\highlightcolor}{#1}}
-    \newcommand{\emphtext}[1]{\textcolor{\highlightcolor}{#1}}
-    \newcommand{\emphmath}[1]{\textcolor{\highlightcolor}{\mathrm{#1}}}
+    \if@undefined{textem}{\newcommand{\textem}[1]{\textcolor{\highlightcolor}{#1}}}{}%
+    \if@undefined{emphtext}{\newcommand{\emphtext}[1]{\textcolor{\highlightcolor}{#1}}}{}%
+    \if@undefined{emphmath}{\newcommand{\emphmath}[1]{\textcolor{\highlightcolor}{\mathrm{#1}}}}{}%
 
     % Code highlighting
-    \newcommand{\code}[1]{{\texttt{#1}}}
+    \if@undefined{code}{\newcommand{\code}[1]{{\texttt{#1}}}}{}%
 
     % Math small caps and bold italic
-    \newcommand{\mathsc}[1]{\textnormal{\textsc{#1}}}
-    \newcommand{\mathbi}[1]{\textnormal{\textbf{\textit{#1}}}}
+    \if@undefined{mathsc}{\newcommand{\mathsc}[1]{\textnormal{\textsc{#1}}}}{}%
+    \if@undefined{mathbi}{\newcommand{\mathbi}[1]{\textnormal{\textbf{\textit{#1}}}}}{}%
 
     % Inline math shortcut
-    \NewDocumentCommand{\inmath}{m}{\ensuremath{#1}}
+    \if@undefined{inmath}{\NewDocumentCommand{\inmath}{m}{\ensuremath{#1}}}{}%
+
+    % Hyphen in math
+    \mathchardef\mathhyphen="2D
+
+    % Put in quotes
+    \if@undefined{putInQuotes}{\newcommand{\putInQuotes}[1]{``#1''}}{}%
+
+    % Strike-through text
+    \if@undefined{strike}{\newcommand{\strike}[1]{\bgroup\ULdepth=-.55ex\ULset\strike{#1}\egroup}}{}%
+
+    % Highlight missing or problematic text
+    \newcounter{missingctr}
+    \if@undefined{missinglist}{\newcommand{\missinglist}{}}{}%
+
+    % Main \missing command
+    \if@undefined{missing}{\newcommand{\missing}[1]{%
+            \refstepcounter{missingctr}%
+            \label{missing:\themissingctr}%
+            \gappto\missinglist{%
+                \noindent\textcolor{Brown4}{\ensuremath{\star}~\themissingctr~(\textsf{Missing at p.~\pageref{missing:\themissingctr}}):~#1}\par\medskip
+            }%
+            \textcolor{Brown4}{#1}%
+        }
+    }{}%
+
+    % Print all collected missing items with page references
+    \if@undefined{printmissing}{\newcommand{\printmissing}{%
+            \section*{Missing Content Report}%
+            \missinglist
+        }
+    }{}%
+
+    % Format for missing citations
+    \if@undefined{missingcitation}{\providecommand{\missingcitation}{\textcolor{red}{\code{<Citation Missing>}}}}{}%
 
     % Double-struck Pi symbol for different engines
-    \newcommand{\dsPi}{%
-        \ifluatex
-            \char"213F
-        \else
-            \ifxetex
+    \if@undefined{dsPi}{\newcommand{\dsPi}{%
+            \ifluatex
                 \char"213F
             \else
-                \Pi
+                \ifxetex
+                    \char"213F
+                \else
+                    \Pi
+                \fi
             \fi
-        \fi
-    }
+        }
+    }{}%
 
     % Sans-serif Pi symbol for different engines
-    \newcommand{\sansPi}{%
-        \ifluatex
-            \char"1D765
-        \else
-            \ifxetex
+    \if@undefined{sansPi}{\newcommand{\sansPi}{%
+            \ifluatex
                 \char"1D765
             \else
-                \Pi
+                \ifxetex
+                    \char"1D765
+                \else
+                    \Pi
+                \fi
             \fi
-        \fi
-    }
+        }
+    }{}%
 \end{filecontents*}
 
 % For use in the main document
