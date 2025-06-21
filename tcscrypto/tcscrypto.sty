@@ -28,10 +28,44 @@
 \RequirePackage{xspace} % Automatically manage spaces after commands
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Relax previously defined commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\let\AND\relax
+\let\arccos\relax
+\let\arcsin\relax
+\let\arctan\relax
+\let\argmax\relax
+\let\argmin\relax
+\let\C\relax
+\let\cindist\relax
+\let\coNP\relax
+\let\E\relax
+\let\extractor\relax
+\let\Game\relax
+\let\gcd\relax
+\let\iff\relax
+\let\iO\relax
+\let\NAND\relax
+\let\NOR\relax
+\let\NOT\relax
+\let\OR\relax
+\let\pindist\relax
+\let\pp\relax
+\let\Pr\relax
+\let\prover\relax
+\let\qq\relax
+\let\R\relax
+\let\sample\relax
+\let\simulator\relax
+\let\sindist\relax
+\let\verifier\relax
+\let\verify\relax
+\let\XOR\relax
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Font Styles
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% This section defines commands for various mathematical font styles used throughout the document.
-% Each command is designed to ensure consistent mathematical symbols and expression formatting.
 
 \providecommand{\asvector}[1]{\inmath{\vec{#1}}} % Vector notation with an arrow
 \providecommand{\complexityfont}[1]{\inmath{\ComplexityFont{#1}}} % Font style for complexity classes
@@ -40,185 +74,1400 @@
 \providecommand{\inmathcal}[1]{\inmath{\mathcal{#1}}} % Calligraphic style for script letters
 \providecommand{\inmathfrak}[1]{\inmath{\mathfrak{#1}}} % Fraktur style for algebras and structures
 \providecommand{\inmathrm}[1]{\inmath{\mathrm{#1}}} % Roman style for constants and functions
+\providecommand{\inmathscr}[1]{\inmath{\mathscr{#1}}} % Script style for math symbols
 \providecommand{\inmathsf}[1]{\inmath{\mathsf{#1}}} % Sans-serif style for math symbols
 \providecommand{\inmath}[1]{\ensuremath{#1}} % Ensure the content is formatted as math mode
 \providecommand{\mathfontstyle}[1]{\inmath{\pcalgostyle{#1}}} % Custom style for math expressions
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Cryptographic Elements and Functions
+% Short Hand Notation of Primitives and Problems
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% This section defines commands for commonly used cryptographic elements, functions,
-% and notations in the document, ensuring consistency and clarity in their representation.
-
-% Removing previous definitions to avoid conflicts
-\let\Game\relax       % Relax previously defined \Game command
-\let\extractor\relax  % Relax previously defined \extractor command
-\let\pp\relax         % Relax previously defined \pp command
-\let\prover\relax     % Relax previously defined \prover command
-\let\qq\relax         % Relax previously defined \qq command
-\let\sample\relax     % Relax previously defined \sample command
-\let\simulator\relax  % Relax previously defined \simulator command
-\let\verifier\relax   % Relax previously defined \verifier command
-\let\verify\relax     % Relax previously defined \verify command
-
-% Cryptographic Notations and Functions
-\providecommand{\Adv}{\inmathsf{Adv}} % Adversary function
-\providecommand{\DB}{\inmathsf{DB}} % Database notation
-\providecommand{\FS}{\inmathsf{FS}} % Fiat-Shamir transformation
-\providecommand{\Game}{\reflectbox{\inmathsf{G}}} % Cryptographic game notation
-\providecommand{\Group}{\inmathsf{Group}} % Cryptographic group
-\providecommand{\Hash}{\inmathsf{Hash}} % Hash function notation
-\providecommand{\Left}{\inmathsf{L}} % Represents a left symbol
-\providecommand{\Right}{\inmathsf{R}} % Represents a right symbol
-\providecommand{\RO}{\inmathcal{H}} % Random Oracle
-
-\providecommand{\accept}{\inmathsf{accept}} % Indicator for acceptance
-\providecommand{\accum}{\inmathsf{Accum}} % Accumulation function
-\providecommand{\acc}{\inmathsf{acc}} % Accumulator notation
-\providecommand{\add}{\inmathsf{Add}} % Addition operation
-\providecommand{\aux}{\inmathsf{aux}} % Auxiliary data
-\providecommand{\batch}{\inmathsf{Batch}} % Batch processing
-\providecommand{\commit}{\inmathsf{Com}} % Commitment scheme
-\providecommand{\compute}{\inmathsf{Compute}} % Computation function
-\providecommand{\com}{\inmathsf{com}} % Commitment value
-\providecommand{\cred}{\inmathsf{cred}} % Credential representation
-\providecommand{\crsgen}{\inmathsf{CRSGen}} % Common Reference String Generation
-\providecommand{\crs}{\inmathsf{crs}} % Common Reference String
-\providecommand{\delete}{\inmathsf{Delete}} % Deletion operation
-\providecommand{\domain}{\inmathsf{Domain}} % Domain
-\providecommand{\environment}{\inmathsf{Env}} % Cryptographic environment
-\providecommand{\ep}{\inmath{\hat{e}}} % Pairing function notation
-\providecommand{\expverif}{\inmathsf{ExpVerif}} % Experimental verification function
-\providecommand{\extractor}{\inmathsf{Ext}} % Extractor function
-\providecommand{\flag}{\inmathsf{flag}} % Flag status indicator
-\providecommand{\gen}{\inmathsf{Gen}} % Key generation function
-\providecommand{\groupgen}{\inmathsf{GG}} % Group generator function
-\providecommand{\group}{\inmathbb{G}} % Cryptographic group
-\providecommand{\hardequivocate}{\inmathsf{HardEquivocate}} % Hard equivocation function
-\providecommand{\hashfunc}{\inmathcal{H}} % Hash function
-\providecommand{\hidgrp}{\group_{?}} % Hidden group notation
-\providecommand{\ideal}{\inmathsf{Ideal}} % Idealized function or process
-\providecommand{\id}{\inmathsf{id}} % Identifier
-\providecommand{\issue}{\inmathsf{Issue}} % Issue operation
-\providecommand{\keygen}{\inmathsf{KeyGen}} % Key generation function
-\providecommand{\len}{\inmath{\ell}} % Length notation
-\providecommand{\msk}{\inmathsf{msk}} % Master secret key
-\providecommand{\open}{\inmathsf{Open}} % Commitment opening function
-\providecommand{\out}{\inmathsf{output}} % Output function
-\providecommand{\pp}{\inmathsf{pp}} % Public parameters
-\providecommand{\probgen}{\inmathsf{ProbGen}} % Probabilistic generator function
-\providecommand{\prover}{\inmathcal{P}} % Prover in a cryptographic protocol
-\providecommand{\prove}{\inmathsf{Prove}} % Proof generation function
-\providecommand{\qq}{\inmathsf{qq}} % General parameter notation
-\providecommand{\query}{\inmathsf{Query}} % Query operation
-\providecommand{\real}{\inmathsf{Real}} % Real-world function or process
-\providecommand{\reject}{\inmathsf{reject}} % Rejection indicator
-\providecommand{\revoke}{\inmathsf{Revoke}} % Revoke operation
-\providecommand{\reward}{\inmathsf{reward}} % Reward function
-\providecommand{\sample}{\inmath{\overset{\scriptscriptstyle\$}{\leftarrow}}} % Random sampling notation
-\providecommand{\setup}{\inmathsf{Setup}} % Setup algorithm
-\providecommand{\simulator}{\inmathsf{Sim}} % Simulator in cryptographic arguments
-\providecommand{\softcommit}{\inmathsf{SoftCommit}} % Soft commitment function
-\providecommand{\softopen}{\inmathsf{SoftOpen}} % Soft commitment opening function
-\providecommand{\state}{\inmathsf{state}} % State representation
-\providecommand{\succ}{\inmathsf{Succ}} % Successor function
-\providecommand{\td}{\inmathsf{td}} % Trapdoor information
-\providecommand{\updateproof}{\inmathsf{UpdateProof}} % Update proof function
-\providecommand{\update}{\inmathsf{Update}} % Update operation
-\providecommand{\verifier}{\inmathcal{V}} % Verifier in a cryptographic protocol
-\providecommand{\verify}{\inmathsf{Verify}} % Verification function
-\providecommand{\view}{\inmathsf{View}} % View or state representation
-\providecommand{\witgen}{\inmathsf{WitGen}} % Witness generation function
-\providecommand{\witupdate}{\inmathsf{WitUpdate}} % Witness update function
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Cryptographic Concepts, Problems, and Definitions
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% This section defines various cryptographic concepts, problems, and related functions.
-% Each command represents a specific term or problem in cryptography for consistent usage throughout the document.
 
 \providecommand{\AAE}{\ComplexityFont{AAE}} % Attribute-Based Encryption
+\providecommand{\ADEAD}{\ComplexityFont{ADEAD}} % Authenticated Data Encryption Algorithm
 \providecommand{\AE}{\ComplexityFont{AE}} % Authenticated Encryption
+
+\providecommand{\BBQKD}{\ComplexityFont{BB84}} % BB84 Quantum Key Distribution protocol
+\providecommand{\BDEAD}{\ComplexityFont{BDEAD}} % Blind Data Encryption Algorithm
+\providecommand{\BSS}{\ComplexityFont{BSS}} % Boolean Secret Sharing
+
 \providecommand{\CDH}{\ComplexityFont{CDH}} % Computational Diffie-Hellman problem
+
+\providecommand{\DB}{\ComplexityFont{DB}} % Database
 \providecommand{\DDH}{\ComplexityFont{DDH}} % Decisional Diffie-Hellman problem
-\providecommand{\DLP}{\ComplexityFont{DLP}} % Discrete Logarithm Problem
-\providecommand{\DLE}{\ComplexityFont{DLE}} % Discrete Logarithm Equality
 \providecommand{\DLD}{\ComplexityFont{DLD}} % Discrete Logarithm Difference
+\providecommand{\DLE}{\ComplexityFont{DLE}} % Discrete Logarithm Equality
+\providecommand{\DLP}{\ComplexityFont{DLP}} % Discrete Logarithm Problem
+\providecommand{\DS}{\ComplexityFont{DS}} % Digital Signature
+\providecommand{\DSS}{\ComplexityFont{DSS}} % Distributed Secret Sharing
+
 \providecommand{\ECC}{\ComplexityFont{ECC}} % Elliptic Curve Cryptography
 \providecommand{\ECDH}{\ComplexityFont{ECDH}} % Elliptic Curve Diffie-Hellman
 \providecommand{\ECDLP}{\ComplexityFont{ECDLP}} % Elliptic Curve Discrete Logarithm Problem
+\providecommand{\EPR}{\ComplexityFont{EPR}} % Einstein-Podolsky-Rosen pair (quantum entanglement)
+
+\providecommand{\FC}{\ComplexityFont{FC}} % Functional Commitment
 \providecommand{\FHE}{\ComplexityFont{FHE}} % Fully Homomorphic Encryption
+\providecommand{\FS}{\inmathsf{FS}} % Fiat-Shamir Transformation
+\providecommand{\FSS}{\ComplexityFont{FSS}} % Function Secret Sharing
+
 \providecommand{\HE}{\ComplexityFont{HE}} % Homomorphic Encryption
 \providecommand{\HIBE}{\ComplexityFont{HIBE}} % Hierarchical Identity-Based Encryption
 \providecommand{\HRA}{\ComplexityFont{HRA}} % Homomorphic Random Access
+\providecommand{\HSS}{\ComplexityFont{HSS}} % Homomorphic Secret Sharing
+
 \providecommand{\IBE}{\ComplexityFont{IBE}} % Identity-Based Encryption
+\providecommand{\IOPP}{\inmathsf{IOPP}} % Interactive Oracle Proof of Proximity
+
+\providecommand{\KEM}{\ComplexityFont{KEM}} % Key Encapsulation Mechanism
+
 \providecommand{\LPN}{\ComplexityFont{LPN}} % Learning Parity with Noise
 \providecommand{\LWE}{\ComplexityFont{LWE}} % Learning with Errors problem
+
 \providecommand{\MPC}{\ComplexityFont{MPC}} % Multiparty Computation
+
+\providecommand{\NIZK}{\ComplexityFont{NIZK}} % Non-Interactive Zero-Knowledge
+\providecommand{\NIZKP}{\ComplexityFont{NIZKP}} % Non-Interactive Zero-Knowledge Proof
+\providecommand{\NIZKPs}{\ComplexityFont{NIZKPs}} % Non-Interactive Zero-Knowledge Proofs (plural)
 \providecommand{\NIZKs}{\ComplexityFont{NIZKs}} % Non-Interactive Zero-Knowledge proofs (plural)
-\providecommand{\NIZK}{\ComplexityFont{NIZK}} % Non-Interactive Zero-Knowledge proof
+\providecommand{\NTRU}{\ComplexityFont{NTRU}} % NTRU encryption scheme
+
 \providecommand{\ORAM}{\ComplexityFont{ORAM}} % Oblivious RAM
 \providecommand{\OT}{\ComplexityFont{OT}} % Oblivious Transfer
 \providecommand{\OTS}{\ComplexityFont{OTS}} % One-Time Signature
-\providecommand{\PC}{\ComplexityFont{PC}} % Polynomial Commitments
+\providecommand{\OWF}{\ComplexityFont{OWF}} % One-Way Function
+\providecommand{\OWP}{\ComplexityFont{OWP}} % One-Way Permutation
+
+\providecommand{\PC}{\ComplexityFont{PC}} % Polynomial Commitment
+\providecommand{\PCPP}{\inmathsf{PCPP}} % Probabilistically Checkable Proof of Proximity
 \providecommand{\PKC}{\ComplexityFont{PKC}} % Public Key Cryptography
 \providecommand{\PKE}{\ComplexityFont{PKE}} % Public Key Encryption
 \providecommand{\PPT}{\ComplexityFont{PPT}} % Probabilistic Polynomial Time
 \providecommand{\PRF}{\ComplexityFont{PRF}} % Pseudorandom Function
 \providecommand{\PRGs}{\ComplexityFont{PRGs}} % Pseudorandom Generators (plural)
-\providecommand{\PRPfs}{\ComplexityFont{PRPfs}} % Pseudorandom Permutation (full security, plural)
+\providecommand{\PPRF}{\inmathsf{PPRF}} % Punctured Pseudorandom function
 \providecommand{\PRP}{\ComplexityFont{PRP}} % Pseudorandom Permutation
+\providecommand{\PRPfs}{\ComplexityFont{PRPfs}} % Pseudorandom Permutation (full security, plural)
+
+\providecommand{\QC}{\ComplexityFont{QC}} % Quantum Computation
+\providecommand{\QEC}{\ComplexityFont{QEC}} % Quantum Error Correction
+\providecommand{\QHE}{\ComplexityFont{QHE}} % Quantum Homomorphic Encryption
+\providecommand{\QKD}{\ComplexityFont{QKD}} % Quantum Key Distribution
+\providecommand{\QMA}{\ComplexityFont{QMA}} % Quantum Merlin-Arthur (complexity class)
 \providecommand{\QNR}{\ComplexityFont{QNR}} % Quadratic non-residue
+\providecommand{\QOT}{\ComplexityFont{QOT}} % Quantum Oblivious Transfer
+\providecommand{\QPRF}{\ComplexityFont{QPRF}} % Quantum Pseudorandom Function
+\providecommand{\QPRG}{\ComplexityFont{QPRG}} % Quantum Pseudorandom Generator
 \providecommand{\QR}{\ComplexityFont{QR}} % Quadratic residue
+\providecommand{\QROM}{\ComplexityFont{QROM}} % Quantum Random Oracle Model
+\providecommand{\QSS}{\ComplexityFont{QSS}} % Quantum Secret Sharing
+\providecommand{\QSZK}{\ComplexityFont{QSZK}} % Quantum Statistical Zero-Knowledge
+\providecommand{\QZK}{\ComplexityFont{QZK}} % Quantum Zero-Knowledge
+
 \providecommand{\RKA}{\ComplexityFont{RKA}} % Related-Key Attack
-\providecommand{\RLWE}{\ComplexityFont{RLWE}} % Ring Learning with Errors problem
+\providecommand{\RLWE}{\ComplexityFont{RLWE}} % Ring Learning With Errors
 \providecommand{\RNG}{\ComplexityFont{RNG}} % Random Number Generator
+\providecommand{\ROM}{\ComplexityFont{ROM}} % Random Oracle Model
 \providecommand{\RPG}{\ComplexityFont{RPG}} % Randomized Polynomial Games
 \providecommand{\RSA}{\ComplexityFont{RSA}} % Rivest-Shamir-Adleman cryptosystem
+\providecommand{\RSS}{\ComplexityFont{RSS}} % Robust Secret Sharing
 \providecommand{\RTP}{\ComplexityFont{RTP}} % Randomized Test Protocols
+
 \providecommand{\SDH}{\ComplexityFont{SDH}} % Strong Diffie-Hellman problem
 \providecommand{\SFE}{\ComplexityFont{SFE}} % Secure Function Evaluation
+\providecommand{\SIP}{\ComplexityFont{SIP}} % Streaming Interactive Proof
+\providecommand{\SIPs}{\ComplexityFont{SIPs}} % Streaming Interactive Proofs (plural)
+\providecommand{\SIS}{\ComplexityFont{SIS}} % Short Integer Solution problem
+\providecommand{\SKE}{\ComplexityFont{SKE}} % Symmetric-Key Encryption
 \providecommand{\SMPC}{\ComplexityFont{SMPC}} % Secure Multiparty Computation
+\providecommand{\SSS}{\ComplexityFont{SSS}} % Secret Sharing Scheme
+
+\providecommand{\VC}{\ComplexityFont{VC}} % Vector Commitment
 \providecommand{\VCs}{\ComplexityFont{VCs}} % Vector Commitments (plural)
-\providecommand{\VC}{\ComplexityFont{VC}} % Vector Commitments
-\providecommand{\ZKPs}{\ComplexityFont{ZKPs}} % Zero-Knowledge Proofs (plural)
-\providecommand{\ZKP}{\ComplexityFont{ZKP}} % Zero-Knowledge Proof
+\providecommand{\VSS}{\ComplexityFont{VSS}} % Verifiable Secret Sharing
+
 \providecommand{\ZK}{\ComplexityFont{ZK}} % Zero-Knowledge
+\providecommand{\ZKHVC}{\ComplexityFont{ZKHVC}} % Zero-Knowledge Honest-verifier Computational
+\providecommand{\ZKHVS}{\ComplexityFont{ZKHVS}} % Zero-Knowledge Honest-verifier Statistical
+\providecommand{\ZKP}{\ComplexityFont{ZKP}} % Zero-Knowledge Proof
+\providecommand{\ZKPC}{\ComplexityFont{ZKPC}} % Zero-Knowledge Perfect Completeness
+\providecommand{\ZKPoK}{\ComplexityFont{ZKPoK}} % Zero-Knowledge Proof of Knowledge
+\providecommand{\ZKPoKs}{\ComplexityFont{ZKPoKs}} % Zero-Knowledge Proofs of Knowledge (plural)
+\providecommand{\ZKPs}{\ComplexityFont{ZKPs}} % Zero-Knowledge Proofs (plural)
+\providecommand{\ZKs}{\ComplexityFont{ZKs}} % Zero-Knowledge Proofs (plural)
 
 \providecommand{\kSDH}{\inmath{k\mathhyphen\SDH}} % k-Strong Diffie-Hellman problem
 \providecommand{\qSDH}{\inmath{q\mathhyphen\SDH}} % q-Strong Diffie-Hellman problem
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Generic Interfaces, Lifecycle, and Core Primitives
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\Abort}{\inmathsf{Abort}} % Abort operation
+\providecommand{\Access}{\inmathsf{Access}} % Access function
+\providecommand{\Accumulate}{\inmathsf{Accumulate}} % Accumulation function
+\providecommand{\Add}{\inmathsf{Add}} % Addition function
+\providecommand{\Adversary}{\inmathsf{A}} % Adversary
+\providecommand{\Advice}{\inmathsf{Advice}} % Advice input
+\providecommand{\Auxiliary}{\inmathsf{Aux}} % Auxiliary input
+
+\providecommand{\Batch}{\inmathsf{Batch}} % Batch processing
+\providecommand{\Bias}{\inmathsf{Bias}} % Bias function
+
+\providecommand{\Cert}{\inmathsf{Cert}} % Certificate function
+\providecommand{\Certify}{\inmathsf{Certify}} % Certificate function
+\providecommand{\Chal}{\inmathsf{Chal}} % Challenge 
+\providecommand{\Challenge}{\inmathsf{Challenge}} % Challenge function
+\providecommand{\Close}{\inmathsf{Close}} % Close function
+\providecommand{\Codomain}{\inmathsf{Codomain}} % Codomain function
+\providecommand{\Collisions}{\inmathsf{Col}} % Collision function
+\providecommand{\Commit}{\inmathsf{Com}} % Commitment function
+\providecommand{\Compile}{\inmathsf{Compile}} % Compiler function
+\providecommand{\Compose}{\inmathsf{Compose}} % Composition function
+\providecommand{\Compress}{\inmathsf{Compress}} % Compression function
+\providecommand{\CompressFE}{\inmathsf{CompressFE}} % FE compression function
+\providecommand{\Compute}{\inmathsf{Compute}} % Computation function
+\providecommand{\ComputeFE}{\inmathsf{ComputeFE}} % FE computation function
+\providecommand{\Cred}{\inmathsf{Cred}} % Credential function
+
+\providecommand{\Dec}{\inmathsf{Dec}} % Decryption function
+\providecommand{\Decap}{\inmathsf{Decap}} % Key decapsulation mechanism
+\providecommand{\Decommit}{\inmathsf{Decom}} % Decommitment function
+\providecommand{\Decrypt}{\inmathsf{Dec}} % Decryption function
+\providecommand{\DecryptFE}{\inmathsf{DecFE}} % FE decryption
+\providecommand{\Delete}{\inmathsf{Delete}} % Delete function
+\providecommand{\Domain}{\inmathsf{Domain}} % Domain
+
+\providecommand{\Easy}{\inmathsf{Easy}} % Easy function
+\providecommand{\Enc}{\inmathsf{Enc}} % Encryption function
+\providecommand{\Encap}{\inmathsf{Encap}} % Key encapsulation mechanism
+\providecommand{\Encrypt}{\inmathsf{Enc}} % Encryption function
+\providecommand{\EncryptFE}{\inmathsf{EncFE}} % FE encryption
+\providecommand{\Environment}{\inmathsf{Env}} % Environment
+\providecommand{\Equivocate}{\inmathsf{Equivocate}} % Equivocate function
+\providecommand{\Eval}{\inmathsf{Eval}} % Homomorphic evaluation
+\providecommand{\ExpVrfy}{\inmathsf{ExpVrfy}} % ExpVrfy function
+\providecommand{\Exp}{\inmathsf{Exp}} % Experiment
+\providecommand{\Ext}{\inmathsf{Ext}} % Extraction function
+\providecommand{\Extract}{\inmathsf{Extract}} % Knowledge extractor
+\providecommand{\ExtractKey}{\inmathsf{ExtractKey}} % Extract key from structure
+
+\providecommand{\Func}{\inmathsf{Func}} % Function
+\providecommand{\FunctionKeyGen}{\inmathsf{Func\KeyGen}} % Function key generation
+
+\providecommand{\GenChal}{\inmathsf{GenChal}} % Challenge generation
+\providecommand{\GenCRS}{\inmathsf{GenCRS}} % CRS generation
+\providecommand{\GenKey}{\inmathsf{GenKey}} % Key generation
+
+\providecommand{\Hard}{\inmathsf{Hard}} % Hard
+\providecommand{\HardEquivocate}{\inmathsf{HardEquivocate}} % Hard equivocate function
+\providecommand{\Hash}{\inmathsf{Hash}} % Hash function
+\providecommand{\Hide}{\inmathsf{Hide}} % Hide function
+\providecommand{\Hint}{\inmathsf{Hint}} % Hint string
+
+\providecommand{\Ideal}{\inmathsf{Ideal}} % Ideal function
+\providecommand{\Init}{\inmathsf{Init}} % Initialization function
+\providecommand{\Issue}{\inmathsf{Issue}} % Issue function
+
+\providecommand{\Key}{\inmathsf{Key}} % Key symbol
+\providecommand{\KeyGen}{\inmathsf{KeyGen}} % Key generation function
+\providecommand{\KeyGenFE}{\inmathsf{KeyGenFE}} % FE key generation
+
+\providecommand{\Mac}{\inmathsf{MAC}} % Message authentication code
+\providecommand{\Mem}{\inmathsf{Mem}} % Membership function
+\providecommand{\Membership}{\inmathsf{Mem}} % Membership function
+\providecommand{\Message}{\inmathsf{Message}} % Message
+
+\providecommand{\Open}{\inmathsf{Open}} % Open function
+\providecommand{\Oracle}{\inmathsf{Oracle}} % Oracle
+\providecommand{\Output}{\inmathsf{Output}} % Output function
+
+\providecommand{\Parse}{\inmathsf{Parse}} % Parsing function
+\providecommand{\Polarize}{\inmathsf{Polarize}} % Polarization function
+\providecommand{\ProbGen}{\inmathsf{ProbGen}} % Probabilistic generator
+\providecommand{\Prove}{\inmathsf{Prove}} % Proving algorithm
+\providecommand{\Prover}{\inmathsf{Prover}} % Prover
+\providecommand{\Puncture}{\inmathsf{Puncture}} % Puncturing function
+
+\providecommand{\Query}{\inmathsf{Query}} % Oracle query
+\providecommand{\Question}{\inmathsf{Question}} % Question
+
+\providecommand{\Randomize}{\inmathsf{Randomize}} % Randomization function
+\providecommand{\Real}{\inmathsf{Real}} % Real-world function or proces
+\providecommand{\Recover}{\inmathsf{Recover}} % Solution recovery
+\providecommand{\RecoverSol}{\inmathsf{RecoverSol}} % Solution recovery
+\providecommand{\Refresh}{\inmathsf{Refresh}} % Refresh function
+\providecommand{\Rerand}{\inmathsf{Rerand}} % Rerandomization function
+\providecommand{\Revoke}{\inmathsf{Revoke}} % Revoke function
+\providecommand{\Reward}{\inmathsf{Reward}} % Reward function
+
+\providecommand{\Sample}{\inmathsf{Sample}} % Sampling function
+\providecommand{\Setup}{\inmathsf{Setup}} % Setup function
+\providecommand{\Sign}{\inmathsf{Sign}} % Signing algorithm
+\providecommand{\Sim}{\inmathsf{Sim}} % Simulator function
+\providecommand{\Simulate}{\inmathsf{Simulate}} % Simulator algorithm
+\providecommand{\Simulator}{\inmathsf{Simulator}} % Simulator
+\providecommand{\SoftCommit}{\inmathsf{SoftCom}} % Soft commitment function
+\providecommand{\SoftOpen}{\inmathsf{SoftOpen}} % Soft commitment opening function
+\providecommand{\Solution}{\inmathsf{Sol}} % Solution
+\providecommand{\State}{\inmathsf{State}} % State function
+
+\providecommand{\Test}{\inmathsf{Test}} % Test algorithm (e.g., indistinguishability)
+\providecommand{\Transform}{\inmathsf{Transform}} % Transformation function
+
+\providecommand{\Update}{\inmathsf{Update}} % Update function
+\providecommand{\UpdateKey}{\inmathsf{UpdateKey}} % Key update function
+\providecommand{\UpdateProof}{\inmathsf{UpdateProof}} % Proof update
+\providecommand{\UpdateWitness}{\inmathsf{UpdateWitness}} % Witness update
+
+\providecommand{\Ver}{\inmathsf{Ver}} % Verification algorithm
+\providecommand{\Verifier}{\inmathsf{Verifier}} % Verifier
+\providecommand{\Verify}{\inmathsf{Verify}} % Verification algorithm
+\providecommand{\VerifyMac}{\inmathsf{MacVer}} % MAC verification
+\providecommand{\VerifyMem}{\inmathsf{VerifyMem}} % Membership verification
+\providecommand{\VerifyMembership}{\inmathsf{VerifyMem}} % Membership verification
+\providecommand{\VerifyNonMem}{\inmathsf{VerifyNonMem}} % Non-membership verification
+\providecommand{\VerifyNonMembership}{\inmathsf{VerifyNonMem}} % Non-membership verification
+\providecommand{\VerifySig}{\inmathsf{Ver}} % Signature verification
+\providecommand{\View}{\inmathsf{View}} % View of an interaction
+\providecommand{\Vrfy}{\inmathsf{Vrfy}} % Verification algorithm
+
+\providecommand{\Unhide}{\inmathsf{Unhide}} % Unhide function
+
+\providecommand{\WitGen}{\inmathsf{WitGen}} % Witness generation function
+\providecommand{\WitUpdate}{\inmathsf{WitUpd}} % Witness update function
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Miscellaneous Notations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\sample}{\inmath{\overset{\scriptscriptstyle\$}{\leftarrow}}} % Random sampling notation
+\providecommand{\tinymath}[1]{{\scriptscriptstyle #1}} % Tiny font command
+
+\providecommand{\Game}{\inmathsf{Game}} % Game symbol
+\providecommand{\interact}[1]{\langle#1\rangle} % Interaction notation (Lazy Use)
+\providecommand{\Interact}[2]{\langle#1,#2\rangle} % Interaction notation
+
+\@ifundefined{sansPi}{%
+	% \sansPi is undefined, define \Prot to \Pi
+	\providecommand{\Prot}{\inmath{\Pi}}
+}{
+	% \sansPi is defined, define \Prot to \sansPi
+	\providecommand{\Prot}{\inmath{\sansPi}}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Symbolic Notation for Cryptographic Inputs, Keys, Identifiers, and Labels
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\acc}{\inmathsf{acc}} % Acceptance
+\providecommand{\accept}{\inmathsf{accept}} % Acceptance
+\providecommand{\accumulate}{\inmathsf{accumulate}} % Accumulate
+\providecommand{\aux}{\inmathsf{aux}} % Auxiliary input
+
+\providecommand{\bias}{\inmathsf{bias}} % Bias function
+\providecommand{\event}{\inmathsf{event}} % Event indicator
+
+\providecommand{\cert}{\inmathsf{cert}} % Certificate
+\providecommand{\challengebit}{\inmathsf{b}} % Challenge bit
+\providecommand{\challengebitcheck}{\challengebit^{\star}} % Checked challenge bit
+\providecommand{\commitment}{\inmathsf{c}} % Commitment
+\providecommand{\count}{\inmathsf{count}} % Count
+\providecommand{\cred}{\inmathsf{cred}} % Credential
+\providecommand{\ct}{\inmathsf{ct}} % Ciphertext
+\providecommand{\ctx}{\ct} % Ciphertext
+
+\providecommand{\db}{\inmathsf{db}} % Database
+\providecommand{\decision}{\inmathsf{decision}} % Decision
+\providecommand{\decommitment}{\inmathsf{d}} % Decommitment
+\providecommand{\delete}{\inmathsf{delete}} % Delete
+\providecommand{\digest}{\inmathsf{dgst}} % Digest
+\providecommand{\dk}{\inmathsf{dk}} % Decryption key
+
+\providecommand{\ek}{\inmathsf{ek}} % Encryption key
+\providecommand{\empty}{\inmathsf{empty}} % Empty
+
+\providecommand{\failure}{\inmathsf{failure}} % Failure
+\providecommand{\flag}{\inmathsf{flag}} % Flag
+
+\providecommand{\hash}{\inmathsf{h}} % Hash output
+\providecommand{\hk}{\inmathsf{hk}} % Hash key
+\providecommand{\hold}{\inmathsf{hold}} % Hold
+\providecommand{\ht}{\inmathsf{ht}} % Time taken to hash
+
+\providecommand{\id}{\inmathsf{id}} % Identity / identifier
+\providecommand{\iv}{\inmathsf{iv}} % Initialization vector
+
+\providecommand{\key}{\inmathsf{k}} % Generic key
+
+\providecommand{\labelsym}{\inmathsf{lbl}} % Label (e.g., for commitment schemes)
+\providecommand{\lengthblock}{\ell_{\inmathsf{blk}}} % Block length
+\providecommand{\lengthin}{\ell_{\inmathsf{in}}} % Input length
+\providecommand{\lengthkey}{\ell_{\inmathsf{key}}} % Key length
+\providecommand{\lengthout}{\ell_{\inmathsf{out}}} % Output length
+\providecommand{\loop}{\inmathsf{loop}} % Loop
+
+\providecommand{\mac}{\inmathsf{mac}} % Message authentication code
+\providecommand{\mackey}{\inmathsf{mk}} % Message authentication code key
+\providecommand{\meta}{\inmathsf{meta}} % Metadata (e.g., public tag, header info)
+\providecommand{\msg}{\inmathsf{m}} % Message
+\providecommand{\msk}{\inmathsf{msk}} % Master secret key
+
+\providecommand{\nonce}{\inmathsf{nonce}} % Nonce
+\providecommand{\null}{\inmathsf{null}} % Null
+
+\providecommand{\ok}{\inmathsf{ok}} % Obfuscation key
+\providecommand{\out}{\inmathsf{output}} % Output
+
+\providecommand{\pk}{\inmathsf{pk}} % Public key
+\providecommand{\proof}{\inmathsf{proof}} % Proof (e.g., in NIZK)
+\providecommand{\prover}{\inmathsf{P}} % Prover
+\providecommand{\pt}{\inmathsf{pt}} % Plaintext
+
+\providecommand{\qq}{\inmathsf{qq}} % Public query
+\providecommand{\query}{\inmathsf{q}} % Query
+
+\providecommand{\reject}{\inmathsf{reject}} % Rejection
+\providecommand{\release}{\inmathsf{release}} % Release
+\providecommand{\round}{\inmathsf{round}} % Round
+
+\providecommand{\salt}{\inmathsf{salt}} % Salt
+\providecommand{\sig}{\inmathsf{sig}} % Signature
+\providecommand{\sigk}{\inmathsf{sigk}} % Signing key
+\providecommand{\sk}{\inmathsf{sk}} % Secret key
+\providecommand{\st}{\inmathsf{st}} % State
+\providecommand{\state}{\inmathsf{state}} % State
+\providecommand{\step}{\inmathsf{step}} % Step
+\providecommand{\succ}{\inmathsf{succ}} % Successor function
+\providecommand{\success}{\inmathsf{success}} % Success
+
+\providecommand{\tagg}{\inmathsf{tag}} % Tag (for MAC or signature)
+\providecommand{\td}{\inmathsf{td}} % Trapdoor
+\providecommand{\tk}{\inmathsf{tk}} % Token key (e.g., for traitor tracing)
+\providecommand{\transcript}{\inmathsf{trans}} % Transcript of interaction
+
+\providecommand{\val}{\inmathsf{val}} % Value
+\providecommand{\value}{\inmathsf{value}} % Value
+\providecommand{\verifier}{\inmathsf{V}} % Verifier
+\providecommand{\vk}{\inmathsf{vk}} % Verification key
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Generic Theoretical Computer Science Notations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\Alphabet}{\inmathsf{\Sigma}} % Alphabet 
+\providecommand{\AlphabetSize}{\inmathsf{\lambda}} % Size of alphabet 
+\providecommand{\Concat}{\mathbin{\|}} % Concatenation operator
+\providecommand{\EmptyString}{\varepsilon} % Empty string
+\providecommand{\Formula}{\varphi} % Boolean formula
+\providecommand{\IndexVar}{\mathbbm{i}} % Index variable
+\providecommand{\InputExplicit}{\mathbbm{y}} % Explicit input
+\providecommand{\InputImplicit}{\mathbbm{x}} % Implicit input
+\providecommand{\Instance}{\inmathsf{x}} % Input instance
+\providecommand{\Language}{\inmathscr{L}} % Language
+\providecommand{\Left}{\inmathsf{L}} % Left symbol (e.g., for tree or string)
+\providecommand{\LeftSymb}{\blacktriangleleft} % Black left-pointing triangle symbol
+\providecommand{\Prefix}{\inmathsf{prefix}} % Prefix of a string or sequence
+\providecommand{\Relation}{\inmathcal{R}} % Relation
+\providecommand{\Right}{\inmathsf{R}} % Right symbol (e.g., for tree or string)
+\providecommand{\RightSymb}{\blacktriangleright} % Black right-pointing triangle symbol
+\providecommand{\Statement}{\inmathsf{x}} % Statement
+\providecommand{\Suffix}{\inmathsf{suffix}} % Suffix of a string or sequence
+\providecommand{\SymDiff}{\triangle} % Symmetric difference of sets
+\providecommand{\Witness}{\inmathsf{w}} % Witness
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Turing Machines
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\TuringMachine}{\inmathsf{TM}} % Turing machine
+\providecommand{\TuringMachineAccept}{\inmathsf{Accept}} % Accept state
+\providecommand{\TuringMachineEnd}{\inmathsf{End}} % End state
+\providecommand{\TuringMachineInput}{\inmathsf{x}} % Input symbol
+\providecommand{\TuringMachineOutput}{\inmathsf{y}} % Output symbol
+\providecommand{\TuringMachineReject}{\inmathsf{Reject}} % Reject state
+\providecommand{\TuringMachineStart}{\inmathsf{Start}} % Start state
+\providecommand{\TuringMachineState}{\inmathsf{q}} % Machine state
+\providecommand{\TuringMachineTransition}{\inmathsf{t}} % Transition function
+
+% Turing Machine Aliases and Models
+\providecommand{\DTM}{\inmathsf{DTM}} % Deterministic Turing machine
+\providecommand{\NTM}{\inmathsf{NTM}} % Non-deterministic Turing machine
+\providecommand{\PTM}{\inmathsf{PTM}} % Probabilistic Turing machine
+\providecommand{\UTM}{\inmathsf{UTM}} % Universal Turing machine
+\providecommand{\LTM}{\inmathsf{LTM}} % Linear-time Turing machine
+\providecommand{\RTM}{\inmathsf{RTM}} % Random-access Turing machine
+\providecommand{\STM}{\inmathsf{STM}} % Space-bounded Turing machine
+\providecommand{\TTM}{\inmathsf{TTM}} % Time-bounded Turing machine
+
+% Turing Machine Short-hand Notation
+\providecommand{\TM}{\TuringMachine} % Turing machine
+\providecommand{\TMAccept}{\TuringMachineAccept} % Accept state
+\providecommand{\TME}{\TuringMachineEnd} % End state
+\providecommand{\TMInput}{\TuringMachineInput} % Input
+\providecommand{\TMOutput}{\TuringMachineOutput} % Output
+\providecommand{\TMReject}{\TuringMachineReject} % Reject state
+\providecommand{\TMS}{\TuringMachineStart} % Start state
+\providecommand{\TMState}{\TuringMachineState} % State
+\providecommand{\TMTransition}{\TuringMachineTransition} % Transition
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Generic Functions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\Func}{\inmathsf{F}} % Generic function symbol
+\providecommand{\FuncDomain}{\inmathsf{X}} % Function domain
+\providecommand{\FuncEval}[2]{#1(#2)} % Function evaluation
+\providecommand{\FuncFamily}{\inmathcal{F}} % Alias for function family
+\providecommand{\FuncInput}{\inmathsf{x}} % Generic input to the function
+\providecommand{\FuncName}[1]{\inmathsf{F}_{#1}} % Named function, e.g., \FuncName{1}
+\providecommand{\FuncOutput}{\inmathsf{y}} % Generic output from the function
+\providecommand{\FuncParam}{\inmathsf{p}} % Generic function parameter
+\providecommand{\FuncRange}{\inmathsf{Y}} % Function range
+\providecommand{\FuncRestrict}[2]{#1|_{#2}} % Restriction of function #1 to set #2
+\providecommand{\FuncSet}{\inmathcal{F}} % Family of functions
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Advice Complexity Notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\Advice}{\inmathsf{z}} % Advice string
+\providecommand{\AdviceAt}[1]{\Advice_{#1}} % Advice at length #1
+\providecommand{\AdviceFn}[1]{\AdviceFunction(#1)} % Advice function of #1
+\providecommand{\AdviceFunction}{\inmathsf{a}} % Advice function
+\providecommand{\AdviceLength}{\inmathsf{\ell}} % Length of the advice
+\providecommand{\AdviceMachine}{\TM^{\Advice}} % Machine with advice
+\providecommand{\AdviceSet}{\inmathsf{Y}} % Set of possible advice strings
+\providecommand{\BPPwithAdvice}{\BPP/\Advice} % BPP with advice
+\providecommand{\EXPwithAdvice}{\EXP/\Advice} % EXP with advice
+\providecommand{\NPwithAdvice}{\NP/\Advice} % NP with advice
+\providecommand{\PwithAdvice}{\P/\Advice} % P with advice
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Answers and Entropy
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\AnswersList}{\inmathsf{\mathbf{a}}} % List of answers
+\providecommand{\EntSample}{\inmathsf{z}} % Entropy sample
+\providecommand{\Entropy}{\inmathsf{H}} % Entropy
+\providecommand{\EntropySample}{\inmathsf{z}} % Entropy sample
+\providecommand{\EntropySet}{\inmathsf{Z}} % Set of entropy samples
+\providecommand{\EntropyFunction}{\inmathsf{h}} % Entropy function
+\providecommand{\EntropyMachine}{\TM^{\Entropy}} % Machine with entropy
+\providecommand{\PwithEntropy}{\ComplexityFont{P}/\Entropy} % P with entropy
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Constraint Satisfaction Problems (CSP)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\CSPAlphabet}{\Alphabet} % Underlying alphabet (usually finite domain)
+\providecommand{\CSPArity}{\inmath{q}} % Arity of constraints (number of variables per constraint)
+\providecommand{\CSPAssignment}{\inmath{a}} % Assignment to variables
+\providecommand{\CSPAssignmentVec}{\asvec{\CSPAssignment}} % Full assignment vector
+\providecommand{\CSPConstraint}{\inmath{C}} % A single constraint predicate
+\providecommand{\CSPConstraintFunction}{\inmath{f}} % Constraint function (maps assignments to 0/1)
+\providecommand{\CSPConstraintNum}{\inmath{m}} % Number of constraints
+\providecommand{\CSPConstraintSet}{\inmathcal{C}} % Set of all constraints
+\providecommand{\CSPDomain}{\CSPAlphabet} % Alias for domain
+\providecommand{\CSPInstance}{\inmath{\psi}} % CSP instance
+\providecommand{\CSPLength}{\inmath{\ell}} % Encoding length of the instance (optional)
+\providecommand{\CSPMaxVal}{\inmathsf{opt}} % Optimal value over all assignments
+\providecommand{\CSPVal}{\inmathsf{val}} % Value of an assignment
+\providecommand{\CSPVariables}{\inmath{n}} % Number of variables
+\providecommand{\CSPVarSet}{\inmath{[n]}} % Variable index set
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% One-Way Function (OWF)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\OWFAdv}{\Adv^{\OWF}} % OWF advantage
+\providecommand{\OWFChal}{\OWFOutput^{\star}} % OWF challenge output (for inversion)
+\providecommand{\OWFDomain}{\FuncDomain} % OWF domain
+\providecommand{\OWFEval}{\FuncEval} % OWF evaluation function
+\providecommand{\OWFGen}{\OWF.\Gen} % OWF key generation algorithm
+\providecommand{\OWFInput}{\FuncInput} % OWF input
+\providecommand{\OWFInv}{\Adversary} % OWF adversary attempting inversion
+\providecommand{\OWFKey}{\FuncKey} % OWF key or index
+\providecommand{\OWFOutput}{\FuncOutput} % OWF output
+\providecommand{\OWFRange}{\FuncRange} % OWF range
+\providecommand{\OWFSet}{\FuncSet} % OWF family
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% One-Way Permutation (OWP)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\OWPEval}{\FuncEval} % OWP evaluation function
+\providecommand{\OWPInvEval}{\FuncEval^{-1}} % OWP inverse evaluation
+\providecommand{\OWPKey}{\FuncKey} % OWP key or index
+\providecommand{\OWPInput}{\FuncInput} % OWP input
+\providecommand{\OWPOutput}{\FuncOutput} % OWP output
+\providecommand{\OWPChal}{\FuncOutput^{\star}} % OWP challenge output (for inversion)
+\providecommand{\OWPDomain}{\FuncDomain} % OWP domain
+\providecommand{\OWPRange}{\FuncRange} % OWP range (usually equal to domain)
+\providecommand{\OWPSet}{\FuncSet} % OWP family
+\providecommand{\OWPGen}{\OWP.\Gen} % OWP key generation algorithm
+\providecommand{\OWPInv}{\Adversary} % OWP adversary attempting inversion
+\providecommand{\OWPAdv}{\Adv^{\OWP}} % OWP advantage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Complexity Classes
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Complexity Classes
+\providecommand{\coNP}{\ComplexityFont{co\textsf{-}NP}} % Complement of NP
+\providecommand{\coRP}{\ComplexityFont{co\textsf{-}RP}} % Complement of RP
+\providecommand{\dIP}{\ComplexityFont{dIP}} % Deterministic Interactive Proofs
+\providecommand{\DRMA}{\ComplexityFont{DRMA}} % Decisional Rational Merlin-Arthur Proofs
+\providecommand{\EXPpoly}{\ComplexityFont{EXP/poly}} % EXP with Polynomial Advice
+\providecommand{\EXPTIME}{\ComplexityFont{EXPTIME}} % Class of Problems Solvable in Exponential Time
+\providecommand{\FRMA}{\ComplexityFont{FRMA}} % Functional Rational Merlin-Arthur Proofs
+\providecommand{\IOP}{\ComplexityFont{IOP}} % Interactive Oracle Proofs
+\providecommand{\IPP}{\ComplexityFont{IPP}} % Interactive Proofs of Proximity
+\providecommand{\MAP}{\ComplexityFont{MAP}} % Merlin-Arthur Proofs of Proximity
+\providecommand{\MRIP}{\ComplexityFont{MRIP}} % Multi-Rational Interactive Proofs
+\providecommand{\MRNIP}{\ComplexityFont{MRNIP}} % Multi-Rational Non-Interactive Proofs
+\providecommand{\NEXPTIME}{\ComplexityFont{NEXPTIME}} % Non-deterministic Exponential Time
+\providecommand{\NIPP}{\ComplexityFont{NIPP}} % Non-Interactive Proofs of Proximity
+\providecommand{\NPpoly}{\ComplexityFont{NP/poly}} % NP with Polynomial Advice
+\providecommand{\NSPACE}{\ComplexityFont{NSPACE}} % Non-deterministic space
+\providecommand{\PSPACEpoly}{\ComplexityFont{PSPACE/poly}} % PSPACE with Polynomial Advice
+\providecommand{\PTIME}{\ComplexityFont{PTIME}} % Probabilistic Time
+\providecommand{\RIP}{\ComplexityFont{RIP}} % Rational Interactive Proofs
+\providecommand{\RNIP}{\ComplexityFont{RNIP}} % Rational Non-Interactive Proofs
+\providecommand{\SharpP}{\ComplexityFont{\#P}} % Sharp-P class
+
+% Parametrized Complexity Classes
+\providecommand{\am}[1]{\AM\left(#1\right)} % Arthur-Merlin games
+\providecommand{\bpp}[1]{\BPP\left(#1\right)} % Bounded-error probabilistic time
+\providecommand{\dtime}[1]{\DTIME\left(#1\right)} % Deterministic time
+\providecommand{\iop}[1]{\IOP\left(#1\right)} % Interactive oracle proofs
+\providecommand{\ip}[1]{\IP\left(#1\right)} % Interactive proofs
+\providecommand{\ma}[1]{\MA\left(#1\right)} % Merlin-Arthur games
+\providecommand{\ntime}[1]{\NTIME\left(#1\right)} % Non-deterministic time
+\providecommand{\pcp}[1]{\PCP\left(#1\right)} % Probabilistic checking polynomial time
+\providecommand{\ptime}[1]{\PTIME\left(#1\right)} % Probabilistic time
+\providecommand{\space}[1]{\SPACE\left(#1\right)} % Space
+
+% Complexity Measures and Related Notation
+\providecommand{\InputSize}{\inmathsf{n}} % Input size parameter
+\providecommand{\MachineTime}{\inmathcal{T}} % Machine (algorithm) running time
+\providecommand{\OutputSize}{\inmathsf{m}} % Output size parameter
+\providecommand{\QueryComplexity}{\inmathsf{q}} % Query complexity measure
+\providecommand{\RoundComplexity}{\inmathsf{r}} % Number of rounds in an interactive protocol
+\providecommand{\Space}{\inmathsf{s}} % Space complexity measure
+\providecommand{\Time}{\inmathsf{t}} % Time complexity measure
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Promise Problems
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\GapProblem}[1]{\PromiseGap\textsf{-}#1} % The class of promise problems
+\providecommand{\PromiseClass}[1]{\inmathsf{Promise}\textsf{-}#1} % Specific class of promise problems, e.g., Promise-BPP, Promise-NP
+\providecommand{\PromiseDecider}{\inmathsf{A}} % Algorithm deciding under promise
+\providecommand{\PromiseDomain}{\inmathcal{D}} % Domain of definition of the promise
+\providecommand{\PromiseGap}{\inmathsf{Gap}} % Gap region (undefined behavior)
+\providecommand{\PromiseInst}{\inmathsf{x}} % A generic instance
+\providecommand{\PromiseLang}{\inmathscr{L}} % Promise language
+\providecommand{\PromiseNo}{\inmathsf{N}} % No-instances of the promise problem
+\providecommand{\PromiseProblem}{\inmath{\Pi}} % The class of promise problems
+\providecommand{\PromiseYes}{\inmathsf{Y}} % Yes-instances of the promise problem
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Boolean Functions and Parameterized Families
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\Balanced}{\inmathsf{Bal}} % Balanced Boolean functions
+\providecommand{\BoolFuncs}{\inmathbb{B}} % Full set of Boolean functions
+\providecommand{\BoolFuncsArity}[1]{\BoolFuncs_{#1}} % Boolean functions over #1 bits
+\providecommand{\CNF}{\inmathsf{CNF}} % Conjunctive Normal Form class
+\providecommand{\CNFDepth}{\inmath{d}} % CNF depth parameter
+\providecommand{\CNFSize}{\inmath{s}} % CNF size parameter
+\providecommand{\Dictator}{\inmathsf{Dictator}} % Dictator function
+\providecommand{\DictatorParam}[1]{\inmath{x_{#1}}} % i-th dictator function
+\providecommand{\DNF}{\inmathsf{DNF}} % Disjunctive Normal Form class
+\providecommand{\DNFDepth}{\inmath{d}} % DNF depth parameter
+\providecommand{\DNFSize}{\inmath{s}} % DNF size parameter
+\providecommand{\Halfspace}{\inmathsf{HS}} % Halfspace functions
+\providecommand{\Junta}{\inmathsf{Junta}} % k-junta function class
+\providecommand{\JuntaParam}[1]{\Junta_{#1}} % k-junta shorthand
+\providecommand{\JuntaSize}{\inmath{k}} % Junta size parameter
+\providecommand{\LinFunc}{\inmathsf{Lin}} % Linear Boolean functions
+\providecommand{\LTF}{\inmathsf{LTF}} % Linear Threshold Function
+\providecommand{\LTFBias}{\inmath{\theta}} % Bias term in LTF
+\providecommand{\LTFWeights}{\asvec{w}} % Weights in an LTF
+\providecommand{\Maj}{\inmathsf{Maj}} % Majority function
+\providecommand{\MajParam}[1]{\Maj_{#1}} % Majority on n bits
+\providecommand{\Monotone}{\inmathsf{Mon}} % Monotone Boolean functions
+\providecommand{\Negation}{\inmathsf{Neg}} % Negation class
+\providecommand{\Parity}{\inmathsf{Parity}} % Parity function
+\providecommand{\ParityParam}[1]{\Parity_{#1}} % Parity on n bits
+\providecommand{\Thr}{\inmathsf{Thr}} % General threshold function
+\providecommand{\ThrParam}[2]{\Thr_{#1}^{#2}} % Threshold on n inputs, threshold \ThrParam
+\providecommand{\ThrParam}{\inmath{\theta}} % Threshold parameter for \Thr
+\providecommand{\Tribes}{\inmathsf{Tribes}} % Tribes function
+\providecommand{\TribesParam}{\inmath{(w,s)}} % Tribes width and size parameters
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Exponential Time Hypotheses and Related Assumptions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\AMETH}{\inmathsf{AMETH}} % Arthur-Merlin ETH
+\providecommand{\ETH}{\inmathsf{ETH}} % Exponential Time Hypothesis
+\providecommand{\ETHConst}{\inmath{\epsilon_{\ETH}}} % Lower bound exponent for ETH
+\providecommand{\NSETH}{\inmathsf{NSETH}} % Non-deterministic SETH
+\providecommand{\PCPETH}{\inmathsf{PCPETH}} % ETH under PCP-type assumptions
+\providecommand{\QETH}{\inmathsf{QETH}} % Quantum ETH
+\providecommand{\RETH}{\inmathsf{RETH}} % Randomized ETH
+\providecommand{\RETHConst}{\inmath{\epsilon_{\RETH}}} % Randomized lower bound constant
+\providecommand{\SETH}{\inmathsf{SETH}} % Strong ETH
+\providecommand{\SETHConst}{\inmath{\epsilon_{\SETH}}} % Exponent constant for SETH
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Probabilistically Checkable Proofs (PCP)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\PCPProof}{\pi_{\PCP}} % PCP proof string
+\providecommand{\PCPProver}{\Prover_{\PCP}} % PCP prover
+\providecommand{\PCPRandomness}{\Randomness_{\PCPVerifier}} % Randomness used by verifier
+\providecommand{\PCPSystem}{(\PCPProver, \PCPVerifier)} % PCP system tuple
+\providecommand{\PCPVerifier}{\Verifier_{\PCP}} % PCP verifier
+\providecommand{\PCPVerifierQueryComplexity}{\Queries_{\PCPVerifier}} % Number of queries verifier makes
+\providecommand{\PCPVerifierSoundnessError}{\ErrorFunc_{\PCPVerifier}} % Soundness error
+\providecommand{\PCPVerifierTime}{\Time_{\PCPVerifier}} % Time complexity of verifier
+\providecommand{\QueriesInputImplicit}{\Queries_{\InputImplicit}} % Queries on implicit input
+\providecommand{\QueriesWitness}{\Queries_{\Witness}} % Queries on witness
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Probabilistically Checkable Proofs of Proximity (PCPP)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\PCPPDistanceMeasure}{\inmathsf{d}} % Distance measure (e.g., Hamming distance)
+\providecommand{\PCPPProof}{\pi_{\PCPP}} % PCPP proof string
+\providecommand{\PCPPProver}{\Prover_{\PCPP}} % PCPP prover
+\providecommand{\PCPPProximityParameter}{\delta} % Proximity parameter in PCPP
+\providecommand{\PCPPRandomness}{\Randomness_{\PCPPVerifier}} % Randomness used by PCPP verifier
+\providecommand{\PCPPVerifier}{\Verifier_{\PCPP}} % PCPP verifier
+\providecommand{\PCPPVerifierQueryComplexity}{\Queries_{\PCPPVerifier}} % Number of queries PCPP verifier makes
+\providecommand{\PCPPVerifierSoundnessError}{\epsilon_{\PCPPVerifier}} % Soundness error
+\providecommand{\PCPPVerifierTime}{\Time_{\PCPPVerifier}} % Time complexity of PCPP verifier
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Oracles
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\Oracle}{\inmathsf{O}} % Oracle symbol (output/query)
+\providecommand{\OracleByKeyValuePair}[1]{\left\langle#1\right\rangle} % Oracle query as key-value pair notation
+\providecommand{\OracleAlgorithm}{\inmathsf{A}} % Oracle algorithm
+\providecommand{\OracleFamily}{\inmathbb{O}} % Family of oracles
+\providecommand{\OracleDist}[1]{\OracleFamily_{#1}} % Distribution on oracle family indexed by #1
+\providecommand{\OracleQuery}{\Oracle.\Query} % Oracle query variable
+\providecommand{\OracleResponse}{\Oracle.\Response} % Oracle response variable
+\providecommand{\OracleTable}{\Oracle.\Table} % Oracle internal table/state
+\providecommand{\OracleInput}{\inmathsf{x}} % Oracle input
+\providecommand{\OracleOutput}{\inmathsf{y}} % Oracle output
+\providecommand{\OracleAccess}{\Oracle.\Access} % Oracle access procedure
+\providecommand{\OracleRandomness}{\inmathsf{\varrho}} % Oracle internal randomness
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Tree Notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\BinarySearchTree}{\inmathsf{BST}} % Binary Search Tree
+\providecommand{\BST}{\BinarySearchTree} % Binary Search Tree (Short Form)
+\providecommand{\BSTLeftChild}{\BST.\inmathsf{Left}} % BST left child
+\providecommand{\BSTRightChild}{\BST.\inmathsf{Right}} % BST right child
+\providecommand{\BSTRoot}{\BST.\inmathsf{Root}} % BST root
+\providecommand{\MerkleLeaves}{\MT.\inmathsf{Leaves}} % Set of leaves in the Merkle tree
+\providecommand{\MerkleNodeHash}{\MT.\inmathsf{Hash}} % Hash of a Merkle tree node
+\providecommand{\MerklePath}{\MT.\inmathsf{Path}} % Path of nodes in Merkle proof
+\providecommand{\MerkleProof}{\MT.\inmathsf{Proof}} % Merkle proof (authentication path)
+\providecommand{\MerkleRoot}{\MT.\inmathsf{Root}} % Merkle Tree Root
+\providecommand{\MerkleTree}{\inmathsf{MT}} % Merkle Tree structure
+\providecommand{\MerkleVerify}{\MT.\inmathsf{Verify}} % Merkle verification procedure
+\providecommand{\MT}{\MerkleTree} % Merkle Tree (Short Form)
+\providecommand{\Tree}{\inmathsf{T}} % Tree structure
+\providecommand{\TreeChildren}{\Tree.\inmathsf{Children}} % Children of a node
+\providecommand{\TreeDepth}{\Tree.\inmathsf{Depth}} % Depth of a node in the tree
+\providecommand{\TreeHeight}{\Tree.\inmathsf{Height}} % Height of the tree
+\providecommand{\TreeLeaves}{\Tree.\inmathsf{Leaves}} % Set of leaves
+\providecommand{\TreeNode}{\Tree.\inmathsf{Node}} % Generic tree node
+\providecommand{\TreeParent}{\Tree.\inmathsf{Parent}} % Parent of a node
+\providecommand{\TreePath}{\Tree.\inmathsf{Path}} % Path in the tree
+\providecommand{\TreeRoot}{\Tree.\inmathsf{Root}} % Tree root node
+\providecommand{\TreeSize}{\Tree.\inmathsf{Size}} % Number of nodes in the tree
+\providecommand{\TreeSubtree}{\Tree.\inmathsf{Subtree}} % Subtree rooted at a node
+\providecommand{\TreeValue}{\Tree.\inmathsf{Value}} % Value at a tree node
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Interactive Proofs
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\Algorithm}{\inmathsf{A}} % Algorithm
+\providecommand{\Challenge}{\inmathsf{c}} % Challenge
+\providecommand{\ChallengeMessage}{\inmathsf{c}} % Challenge message
+\providecommand{\ChallengeResponse}{\inmathsf{(c,r)}} % Challenge-response pair
+\providecommand{\Completeness}{\inmathsf{c}} % Completeness parameter 
+\providecommand{\Crs}{\inmathsf{CRS}} % Common reference string
+\providecommand{\CrsGen}{\inmathsf{CRSGen}} % CRS generation algorithm
+\providecommand{\CrsUpdate}{\inmathsf{CRSUpdate}} % CRS update algorithm
+\providecommand{\Decoder}{\inmathcal{D}} % Decoder
+\providecommand{\Error}{\inmathsf{\varepsilon}} % Error parameter 
+\providecommand{\ErrorAdditiveFunc}{\inmath{\epsilon_2}} % Additive error function 
+\providecommand{\ErrorFunc}{\inmath{\Soundness}} % Error function (soundness) 
+\providecommand{\ErrorMultFunc}{\inmath{\epsilon}} % Multiplicative error function 
+\providecommand{\FixedRandomness}{\inmathsf{Z}} % Fixed randomness 
+\providecommand{\Indexer}{\inmathcal{I}} % Indexer
+\providecommand{\Knowledge}{\inmathsf{\kappa}} % Knowledge parameter 
+\providecommand{\Length}{\inmathsf{l}} % Length parameter 
+\providecommand{\LengthP}{\inmath{\Length_{\tinymath{\Prover}}}} % Prover length 
+\providecommand{\LengthV}{\inmath{\Length_{\tinymath{\Verifier}}}} % Verifier length 
+\providecommand{\MaliciousProof}{\inmath{\Malicious{\pi}}} % Malicious proof
+\providecommand{\Message}{\inmathsf{m}} % Message
+\providecommand{\MessageOne}{\inmathsf{a}} % First message on round
+\providecommand{\MessageThree}{\inmathsf{c}} % Third message on round
+\providecommand{\MessageTwo}{\inmathsf{b}} % Second message on round
+\providecommand{\NumberOfRounds}{\ell} % Number of rounds
+\providecommand{\Proof}{\inmath{\pi}} % Honest proof
+\providecommand{\Prover}{\inmathcal{P}} % Prover
+\providecommand{\ProverMessage}{\inmathsf{m}} % Prover message
+\providecommand{\Proximity}{\inmath{\delta}} % Proximity parameter 
+\providecommand{\Queries}{\inmathsf{q}} % Number of queries 
+\providecommand{\QueriesSet}{\inmathsf{Q}} % Set of queries 
+\providecommand{\QueryIndex}{\inmathsf{j}} % Query index 
+\providecommand{\QueryLocation}{\inmathsf{z}} % Query location 
+\providecommand{\Randomness}{\inmathsf{r}} % Randomness
+\providecommand{\Response}{\inmathsf{r}} % Response
+\providecommand{\ResponseMessage}{\inmathsf{r}} % Response message
+\providecommand{\Robustness}{\inmathsf{\sigma}} % Robustness parameter 
+\providecommand{\Round}{\inmathsf{k}} % Round number 
+\providecommand{\RoundIndex}{\inmathsf{\ell}} % Round index 
+\providecommand{\RoundsQueried}{\inmathsf{q}_{\tinymath{\round}}} % Number of rounds queried 
+\providecommand{\Simulator}{\inmathcal{S}} % Simulator
+\providecommand{\Soundness}{\inmathsf{s}} % Soundness parameter 
+\providecommand{\Table}{\inmathsf{T}} % Table
+\providecommand{\TimeD}{\inmathsf{dt}} % Decision time parameter 
+\providecommand{\TimeI}{\inmathsf{it}} % Interaction time parameter 
+\providecommand{\TimeP}{\inmathsf{pt}} % Prover time parameter 
+\providecommand{\TimeV}{\inmathsf{vt}} % Verifier time parameter 
+\providecommand{\TimeVDecision}{\inmathsf{d}} % Verifier decision indicator 
+\providecommand{\Transcript}{\inmath{\tau}} % Transcript
+\providecommand{\Verifier}{\inmathcal{V}} % Verifier
+\providecommand{\VerifierMessage}{\inmathsf{a}} % Verifier message
+\providecommand{\VerifierRandomness}{\inmathsf{\varrho}} % Verifier randomness 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Adversary Notations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\Malicious}[1]{\hat{#1}} % Malicious adversary
+\providecommand{\MaliciousProver}{\Malicious{\Prover}} % Malicious prover
+\providecommand{\MaliciousVerifier}{\Malicious{\Verifier}} % Malicious verifier
+\providecommand{\MaliciousIndexer}{\Malicious{\Indexer}} % Malicious indexer
+\providecommand{\MaliciousDecoder}{\Malicious{\Decoder}} % Malicious decoder
+\providecommand{\MaliciousSimulator}{\Malicious{\Simulator}} % Malicious simulator
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Generic Parameters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\SecParam}{\lambda} % Security parameter
+\providecommand{\CompParam}{\kappa} % Computational parameter
+\providecommand{\KeyLengthParam}{\ell} % Key length parameter
+\providecommand{\SpaceParam}{\varsigma} % Space parameter
+\providecommand{\RoundParam}{\ell} % Round parameter
+\providecommand{\SodParam}{s} % Salted soundness parameter
+\providecommand{\TimeParam}{\tau} % Time parameter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Random Oracle Notations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\RandomOracle}{\RO} % Random Oracle
+\providecommand{\RODistribution}[1]{\ROUniverse(#1)} % Uniform distribution over set #1
+\providecommand{\ROFunc}{\zeta} % RO function symbol
+\providecommand{\ROGetQueries}[2]{\ROQuery(#1, #2)} % Queries made by #1 on input #2
+\providecommand{\ROInterface}{\left[\ROFunc\right]} % RO interface notation
+\providecommand{\ROOutput}{\inmathsf{o}} % RO output
+\providecommand{\ROQuery}{\inmathsf{q}} % RO query
+\providecommand{\ROQueryVar}{t} % RO query variable
+\providecommand{\ROracleKey}{\inmathsf{ROKey}} % Random Oracle key
+\providecommand{\ROResponse}{\inmathsf{r}} % RO response
+\providecommand{\ROSpecialSet}{\inmathsf{set}} % Special symbol related to RO (generic)
+\providecommand{\ROTable}{\inmathsf{T}} % RO table
+\providecommand{\ROUniverse}{\inmathsf{U}} % RO universe
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Argument System (ARG) Notations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\ARGAdaptiveRounds}{\inmathsf{a}} % Adaptive rounds count
+\providecommand{\ARGAdaptiveWidth}{\inmathsf{m}} % Adaptive width
+\providecommand{\ARGIndexer}{\Indexer} % Indexer algorithm
+\providecommand{\ARGipk}{\mathsf{ipk}} % Index public key
+\providecommand{\ARGipkLength}{\mathsf{ipks}} % Index public key size
+\providecommand{\ARGivk}{\mathsf{ivk}} % Index verification key
+\providecommand{\ARGivkLength}{\mathsf{ivks}} % Index verification key size
+\providecommand{\ARGKnowledge}{\kappa} % Knowledge parameter
+\providecommand{\ARGLength}{\mathsf{as}} % Argument size / length
+\providecommand{\ARGProver}{P} % Prover algorithm
+\providecommand{\ARGQueryI}{\mathsf{iq}} % Indexer queries
+\providecommand{\ARGQueryP}{\mathsf{pq}} % Prover queries
+\providecommand{\ARGQuerySize}{\mathsf{n}} % Query size
+\providecommand{\ARGQueryV}{\mathsf{vq}} % Verifier queries
+\providecommand{\ARGRound}{\mathsf{k}} % Round number
+\providecommand{\ARGSoundness}{\mathsf{\epsilon}} % Soundness error
+\providecommand{\ARGSpaceV}{\mathsf{sv}} % Verifier space
+\providecommand{\ARGSymbol}{\mathsf{ARG}} % Argument system symbol
+\providecommand{\ARGSystem}{(\ARGIndexer, \ARGProver, \ARGVerifier)} % Full ARG system
+\providecommand{\ARGSystemWI}{(\ARGProver, \ARGVerifier)} % ARG system without indexer
+\providecommand{\ARGTimeI}{\mathsf{it}} % Indexer time
+\providecommand{\ARGTimeP}{\mathsf{pt}} % Prover time
+\providecommand{\ARGTimeV}{\mathsf{vt}} % Verifier time
+\providecommand{\ARGVerifier}{V} % Verifier algorithm
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Interactive Oracle Proofs
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\IOPAlphabet}{\Alphabet_{\IOPSubscript}} % Alphabet for IOP
+\providecommand{\IOPAlphabetSize}{\AlphabetSize_{\IOPSubscript}} % Alphabet size for IOP
+\providecommand{\IOPCompleteness}{\Completeness_{\IOPSubscript}} % Completeness parameter for IOP
+\providecommand{\IOPDecisionRandomness}{\DecisionRandomness[\IOPSubscript,]} % Decision randomness in IOP
+\providecommand{\IOPDecoder}{\Decoder_{\IOPSubscript}} % Decoder in IOP
+\providecommand{\IOPIndexer}{\Indexer_{\IOPSubscript}} % Indexer in IOP
+\providecommand{\IOPIndexerRandomness}{\rho_{0}} % Indexer randomness in IOP
+\providecommand{\IOPInteractionRandomness}{\InteractionRandomness[\IOPSubscript,]} % Interaction randomness in IOP
+\providecommand{\IOPKnowledge}{\Knowledge_{\IOPSubscript}} % Knowledge parameter in IOP
+\providecommand{\IOPLength}{\Length_{\IOPSubscript}} % Length parameter in IOP
+\providecommand{\IOPMaliciousIndexerProof}{\MaliciousIndexerProof} % Malicious indexer proof in IOP
+\providecommand{\IOPMaliciousProof}{\MaliciousProof} % Malicious proof in IOP
+\providecommand{\IOPMaliciousProver}{\MaliciousProver_{\IOPSubscript}} % Malicious prover in IOP
+\providecommand{\IOPProof}{\Proof} % Proof in IOP
+\providecommand{\IOPProver}{\Prover_{\IOPSubscript}} % Prover in IOP
+\providecommand{\IOPQueries}{\Queries_{\IOPSubscript}} % Queries in IOP
+\providecommand{\IOPQueryDistribution}{\inmathcal{D}} % Query distribution in IOP
+\providecommand{\IOPQueryEntropy}{\inmathsf{h}} % Query entropy in IOP
+\providecommand{\IOPQueryLocations}{\inmathcal{I}} % Query locations in IOP
+\providecommand{\IOPRandomness}{\Randomness_{\IOPSubscript}} % Randomness in IOP
+\providecommand{\IOPRandomnessQueryDistribution}{\inmathcal{D}} % Randomness query distribution in IOP
+\providecommand{\IOPRandomnessQueryEntropy}{\inmathsf{h}} % Randomness query entropy in IOP
+\providecommand{\IOPRound}{\Round_{\IOPSubscript}} % Round number in IOP
+\providecommand{\IOPRQueries}{\Queries_{\scriptscriptstyle \IOPSymbol, \InteractionSubscript}} % Interaction queries in IOP
+\providecommand{\IOPSoundness}{\Soundness_{\IOPSubscript}} % Soundness in IOP
+\providecommand{\IOPSubscript}{{\tiny\IOP}} % IOP subscript format
+\providecommand{\IOPSymbol}{\IOP} % IOP symbol format
+\providecommand{\IOPSystem}{(\IOPProver, \IOPVerifier)} % IOP system (Prover, Verifier)
+\providecommand{\IOPSystemWI}{(\IOPProver, \IOPVerifier)} % IOP system witness-indistinguishable (same as above)
+\providecommand{\IOPTimeI}{\TimeI_{\IOPSubscript}} % Interaction time in IOP
+\providecommand{\IOPTimeP}{\TimeP_{\IOPSubscript}} % Prover time in IOP
+\providecommand{\IOPTimeV}{\TimeV_{\IOPSubscript}} % Verifier time in IOP
+\providecommand{\IOPTranscript}{\tau} % Transcript in IOP
+\providecommand{\IOPVerifier}{\Verifier_{\IOPSubscript}} % Verifier in IOP
+\providecommand{\IOPVerifierAllRandomness}{\boldsymbol{\IOPVerifierRandomness}} % All verifier randomness in IOP
+\providecommand{\IOPVerifierDecisionRandomness}{\DecisionVerifierRandomness} % Verifier decision randomness in IOP
+\providecommand{\IOPVerifierRandomness}{\VerifierRandomness} % Verifier randomness in IOP
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Pseudorandom Functions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\PRFEval}{\inmathsf{Eval}} % Pseudorandom function evaluation
+\providecommand{\PRFFunction}{\inmathsf{F}} % Pseudorandom function function
+\providecommand{\PRFInput}{\inmathsf{x}} % Pseudorandom function input
+\providecommand{\PRFKey}{\Key} % Pseudorandom function key
+\providecommand{\PRFKeyLengthInput}{\KeyLengthParam_{\inmathsf{in}}} % Pseudorandom function key length
+\providecommand{\PRFKeyLengthOutput}{\KeyLengthParam_{\inmathsf{out}}} % Pseudorandom function key length
+\providecommand{\PRFOutput}{\inmathsf{y}} % Pseudorandom function output
+\providecommand{\PRFOutputSet}{\inmathsf{Y}} % Pseudorandom function output set
+\providecommand{\PRFPuncture}{\inmathsf{Punc}} % Punctured Pseudorandom function
+\providecommand{\PRFQuery}{\inmathsf{q}} % Pseudorandom function query
+\providecommand{\PRFResponse}{\inmathsf{r}} % Pseudorandom function response
+\providecommand{\PRFTable}{\inmathsf{T}} % Pseudorandom function table
+\providecommand{\PuncturedPRFKey}{\inmathsf{k}^{\star}} % Punctured PRF key
+\providecommand{\PuncturedStatement}{\inmathsf{x}^{\star}} % Punctured statement
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Pseudorandom Permutations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\PRP}{\inmathsf{PRP}} % Pseudorandom permutation
+\providecommand{\PRPEval}{\inmathsf{Eval}} % Pseudorandom permutation evaluation
+\providecommand{\PRPFunction}{\inmathsf{F}} % Pseudorandom permutation function
+\providecommand{\PRPInput}{\inmathsf{x}} % Pseudorandom permutation input
+\providecommand{\PRPOutput}{\inmathsf{y}} % Pseudorandom permutation output
+\providecommand{\PRPOutputSet}{\inmathsf{Y}} % Pseudorandom permutation output set
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Pseudorandom Generators
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\PRGError}{\epsilon_{\PRG}} % Advantage or error
+\providecommand{\PRGFunction}{\inmathsf{G}} % PRG function G
+\providecommand{\PRGOutputLength}{\inmathsf{n}_{\PRG}} % Output length
+\providecommand{\PRGRunningTime}{\inmathsf{t}_{\PRG}} % Time bound
+\providecommand{\PRGSeed}{\seed} % Seed input
+\providecommand{\PRGSeedLength}{\ell_{\PRG}} % Seed length
+\providecommand{\PRGStretch}{\stretch} % Output length function or integer
+\providecommand{\PRGSubscript}{{\PRG}} % Tiny subscript PRG
+\providecommand{\PRGTime}{\PRGRunningTime} % Alias for clarity
+\providecommand{\PRGtSize}{\inmathsf{s}_{\PRG}} % Size/security parameter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Hash Functions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\HashAdv}{\Adv^{\Hash}} % Adversarial advantage
+\providecommand{\HashColGame}{\Game^{\HashScript}_{\inmathsf{coll}}} % Collision game
+\providecommand{\HashCollEvent}{\Event_{\inmathsf{col}}} % Collision event
+\providecommand{\HashDigest}{\inmathsf{d}} % Hash digest
+\providecommand{\HashDomain}{\inmathcal{X}} % Input space
+\providecommand{\HashEval}{\HashScript.\Eval} % Hash evaluation function
+\providecommand{\HashFunction}[1]{\HashScript_{#1}} % Specific hash function H_k
+\providecommand{\HashGen}{\HashScript.\Gen} % Hash key generation algorithm
+\providecommand{\HashInpLenFunc}{\ell_{\inmathsf{in}}} % Input length function
+\providecommand{\HashInput}{\inmathsf{x}} % Input to hash
+\providecommand{\HashKey}{\hk} % Hash key (if keyed hash)
+\providecommand{\HashOutLenFunc}{\ell_{\inmathsf{out}}} % Output length function
+\providecommand{\HashOutput}{\inmathsf{y}} % Output of hash
+\providecommand{\HashRange}{\inmathcal{Y}} % Output space
+\providecommand{\HashScript}{\Hash} % Name of the hash function family
+\providecommand{\HashSet}{\inmathcal{H}} % Family of hash functions
+\providecommand{\HashTime}{\Time_{\HashScript}} % Time complexity of hash function
+\providecommand{\Universe}{\inmathscr{U}} % Universe
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Indistinguishability Obfuscation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\Circuit}{\inmathcal{C}} % Circuit
+\providecommand{\CircuitFamily}{\inmathscr{C}} % Circuit family
+\providecommand{\Ckt}{\Circuit} % Circuit
+\providecommand{\CktSize}{\inmath{\sigma}} % Circuit size
+\providecommand{\Distinguisher}{\inmathbb{D}} % Distinguisher
+\providecommand{\Distribution}{\inmathcal{D}} % Distribution
+\providecommand{\Hybrid}{\inmathsf{Hyb}} % Hybrid
+\providecommand{\iO}{\inmathsf{i}\inmathcal{O}} % Indistinguishability obfuscation
+\providecommand{\Obf}{\inmathsf{Obf}} % Obfuscation
+\providecommand{\Obfuscated}[1]{\inmath{\widehat{#1}}} % Obfuscated program
+\providecommand{\ObfuscatedCkt}{\Obfuscated{\Ckt}} % Obfuscated circuit
+\providecommand{\ObfuscatedProgram}{\Obfuscated{\Program}} % Obfuscated program
+\providecommand{\Program}{\inmath{\Phi}} % Program
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Rerandomizable One-Way Functions (rOWF)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\rOWF}{\ComplexityFont{rOWF}} % Name or symbol for the rOWF family
+\providecommand{\rOWFCoDomain}{\FuncCoDomain} % Co-domain size or output length for rOWF
+\providecommand{\rOWFDomain}{\FuncDomain} % Domain size or input length for rOWF
+\providecommand{\rOWFGenChal}{\rOWF.\GenChal} % Challenge generation
+\providecommand{\rOWFRecoverSol}{\rOWF.\RecoverSol} % Solution recovery
+\providecommand{\rOWFRerand}{\rOWF.\Rerand} % Rerandomization procedure
+\providecommand{\rOWFSetup}{\rOWF.\Setup} % Setup algorithm
+\providecommand{\rOWFVer}{\rOWF.\Ver} % Verification algorithm
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Encryption Spaces
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\CiphertextSpace}{\inmathcal{C}} % Ciphertext space
+\providecommand{\KeySpace}{\inmathcal{K}} % Key space
+\providecommand{\MessageSpace}{\inmathcal{M}} % Message space
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Public Key Encryption
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\PKEKeyGen}{\PKE.\KeyGen} % Key generation algorithm
+\providecommand{\PKEEnc}{\PKE.\Enc} % Encryption algorithm
+\providecommand{\PKEDec}{\PKE.\Dec} % Decryption algorithm
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Digital Signature
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\DSKeyGen}{\DS.\KeyGen} % Key generation algorithm
+\providecommand{\DSSign}{\DS.\Sign} % Signing algorithm
+\providecommand{\DSVerify}{\DS.\Verify} % Verification algorithm
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% One-Time Signature
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\OTSKeyGen}{\OTS.\KeyGen} % Key generation algorithm
+\providecommand{\OTSSign}{\OTS.\Sign} % Signing algorithm
+\providecommand{\OTSVerify}{\OTS.\Verify} % Verification algorithm
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Symmetric-Key Encryption
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\SKEGen}{\SKE.\Gen} % Key generation algorithm
+\providecommand{\SKEEnc}{\SKE.\Enc} % Encryption algorithm
+\providecommand{\SKEDec}{\SKE.\Dec} % Decryption algorithm
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Key Encapsulation Mechanism
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\KEMKeyGen}{\KEM.\KeyGen} % Key generation algorithm
+\providecommand{\KEMEncap}{\KEM.\Encap} % Key encapsulation algorithm
+\providecommand{\KEMDecap}{\KEM.\Decap} % Key decapsulation algorithm
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Authenticated Encryption
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\AEKeyGen}{\AE.\KeyGen} % Key generation algorithm
+\providecommand{\AEEnc}{\AE.\Enc} % Authenticated encryption algorithm
+\providecommand{\AEDec}{\AE.\Dec} % Authenticated decryption algorithm
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Fully Homomorphic Encryption
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\FHEGen}{\FHE.\Gen} % Key generation algorithm
+\providecommand{\FHEEnc}{\FHE.\Enc} % Fully homomorphic encryption algorithm
+\providecommand{\FHEDec}{\FHE.\Dec} % Fully homomorphic decryption algorithm
+\providecommand{\FHEEval}{\FHE.\Eval} % Fully homomorphic evaluation algorithm
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Non-Interactive Zero-Knowledge Proofs
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\NIZKGen}{\NIZK.\Gen} % Key generation algorithm
+\providecommand{\NIZKCRSGen}{\NIZK.\CRSGen} % Common reference string generation algorithm
+\providecommand{\NIZKProver}{\NIZK.\Prover} % Prover algorithm
+\providecommand{\NIZKVerifier}{\NIZK.\Verifier} % Verifier algorithm
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Commitment Schemes
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\CM}{\inmathsf{CM}} % Commitment scheme
+\providecommand{\CMCommit}{\CM.\Commit} % Commitment scheme commitment algorithm
+\providecommand{\CMOpen}{\CM.\Open} % Commitment scheme opening algorithm
+\providecommand{\CMVerify}{\CM.\Verify} % Commitment scheme verification algorithm
+\providecommand{\CMDecommit}{\CM.\Decommit} % Commitment scheme decommitment algorithm
+\providecommand{\CMHide}{\CM.\Hide} % Commitment scheme hiding algorithm
+\providecommand{\CMUnhide}{\CM.\Unhide} % Commitment scheme unhiding algorithm
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Indistinguishability Notations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Remove any existing definitions to avoid conflicts
-\let\cindist\relax
-\let\pindist\relax
-\let\sindist\relax
-
-% Define indistinguishability notations
-\providecommand{\cindist}{\inmath{\approx_c}} % Computational indistinguishability
-\providecommand{\pindist}{\inmath{=_{p}}} % Perfect indistinguishability
-\providecommand{\sindist}{\inmath{\approx_s}} % Statistical indistinguishability
+\providecommand{\cindist}{\inmath{\equiv_c}} % Computational indistinguishability
+\providecommand{\pindist}{\inmath{\equiv_p}} % Perfect indistinguishability
+\providecommand{\sindist}{\inmath{\equiv_s}} % Statistical indistinguishability
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Logical Operations
+% Challenge Notations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand{\bits}{\{0, 1\}^{*}} % Set of all binary strings (finite length)
-\providecommand{\bit}{\{0, 1\}} % Set of binary digits (0 and 1)
+\providecommand{\ChalBitSol}{\ChallengeBit} % Bit solution to challenge
+\providecommand{\ChalBitSolNew}{\ChallengeBit^\star} % New bit solution variant
+\providecommand{\ChalConvert}{\Chal.\Convert} % Challenge conversion
+\providecommand{\ChalLeft}{\ChalVar_{\Left}} % Left challenge component
+\providecommand{\ChalNew}{\ChalVar^\star} % New challenge variant
+\providecommand{\ChalRecoverSolution}{\Chal.\RecoverSol} % Recover solution
+\providecommand{\ChalRerand}{\Chal.\Rerand} % Challenge rerandomization
+\providecommand{\ChalRight}{\ChalVar_{\Right}} % Right challenge component
+\providecommand{\ChalSamp}{\Chal.\Samp} % Challenge sampling
+\providecommand{\ChalSampFirst}{\Chal.\Samp_1} % First sampling procedure
+\providecommand{\ChalSampSec}{\Chal.\Samp_2} % Second sampling procedure
+\providecommand{\ChalSetup}{\Chal.\Setup} % Challenge setup
+\providecommand{\ChalSizeFirst}{m_1} % First challenge size parameter
+\providecommand{\ChalSizeSecond}{m_2} % Second challenge size parameter
+\providecommand{\ChalSol}{\inmathsf{x}} % Solution to the challenge
+\providecommand{\ChalSolNew}{\ChalSol^\star} % New solution variant
+\providecommand{\ChalVar}{\inmathsf{y}} % Generic challenge variable
+\providecommand{\ChalVerFirst}{\Chal.\Ver_1} % First verification procedure
+\providecommand{\ChalVerSec}{\Chal.\Ver_2} % Second verification procedure
 
-% Remove any existing definitions to avoid conflicts
-\let\AND\relax
-\let\NAND\relax
-\let\NOR\relax
-\let\NOT\relax
-\let\OR\relax
-\let\XNOR\relax
-\let\XOR\relax
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Events
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Define logical operations for use in mathematical contexts
+\providecommand{\EventAbort}{\Event_{\inmathsf{abort}}} % Protocol abort event
+\providecommand{\EventBinding}{\Event_{\inmathsf{bind}}} % Binding event
+\providecommand{\EventCollision}{\Event_{\inmathsf{col}}} % Collision event
+\providecommand{\EventCorrelated}{\Event_{\inmathsf{corr}}} % Correlated event
+\providecommand{\EventExtraction}{\Event_{\inmathsf{extract}}} % Extraction failure event
+\providecommand{\EventForgery}{\Event_{\inmathsf{forge}}} % Forgery event
+\providecommand{\EventLeakage}{\Event_{\inmathsf{leak}}} % Leakage event
+\providecommand{\EventReplay}{\Event_{\inmathsf{replay}}} % Replay attack event
+\providecommand{\EventReset}{\Event_{\inmathsf{reset}}} % Reset attack event
+\providecommand{\EventSimulation}{\Event_{\inmathsf{sim}}} % Simulation failure event
+\providecommand{\EventSoundness}{\Event_{\inmathsf{sound}}} % Soundness failure event
+\providecommand{\EventTimeout}{\Event_{\inmathsf{timeout}}} % Timeout event
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Group Notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\Group}{\inmathbb{G}} % Generic group
+\providecommand{\GroupSet}{\Group} % Set notation for group
+\providecommand{\GroupOrder}{\inmath{q}} % Group order
+\providecommand{\GroupNeutral}{\inmath{1}} % Group neutral element
+\providecommand{\GroupInv}[1]{#1^{-1}} % Inverse of group element
+\providecommand{\GroupOp}{\inmath{\cdot}} % Group operation
+\providecommand{\GroupGen}{\inmath{\Group.\Gen}} % Group generator \Group.Gen
+\providecommand{\GroupElem}{\inmath{g}} % Generic group element
+\providecommand{\GroupElemAlt}{\inmath{h}} % Alternate group element
+\providecommand{\GroupElemSet}{\Group} % Group elements set
+\providecommand{\GroupGenSet}{\inmath{\Group.\G}} % Set of generators \Group.G
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Ring Notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\Ring}{\inmathbb{R}} % Generic ring
+\providecommand{\RingOp}{\inmath{+}} % Ring operation
+\providecommand{\RingMult}{\inmath{\cdot}} % Ring multiplication
+\providecommand{\RingUnit}{\inmath{1}} % Multiplicative identity
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Field Notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\Field}{\inmathbb{F}} % Generic field
+\providecommand{\GF}{\inmathbb{GF}} % Galois field
+\providecommand{\FieldOrder}{\inmath{\Field.\q}} % Field order
+\providecommand{\FieldOp}{\inmath{\Field.\cdot}} % Field multiplication
+\providecommand{\FieldElem}{\inmath{a}} % Field element
+\providecommand{\FieldElemAlt}{\inmath{b}} % Alternate field element
+\providecommand{\FieldElemSet}{\inmath{A}} % Set of field elements
+\providecommand{\FieldGen}{\inmath{\Field.\Gen}} % Generator of field \Field.Gen
+\providecommand{\FieldGenSet}{\inmath{\Field.\G}} % Set of field generators \Field.G
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Pairing Notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Pairing-Friendly Groups and Elements
+\providecommand{\GroupOne}{\inmathbb{G}_1} % Source group G₁
+\providecommand{\GroupTwo}{\inmathbb{G}_2} % Source group G₂
+\providecommand{\GroupTgt}{\inmathbb{G}_T} % Target group G_T
+\providecommand{\GroupSym}{\inmathbb{G}} % Symmetric source group
+\providecommand{\GroupElemOne}{\inmath{g_1}} % Element in G₁
+\providecommand{\GroupElemTwo}{\inmath{g_2}} % Element in G₂
+\providecommand{\GroupElemTgt}{\inmath{g_T}} % Element in G_T
+\providecommand{\GroupOneGen}{\inmath{\GroupOne.\Gen}} % Generator of G₁
+\providecommand{\GroupTwoGen}{\inmath{\GroupTwo.\Gen}} % Generator of G₂
+\providecommand{\GroupTgtGen}{\inmath{\GroupTgt.\Gen}} % Generator of G_T
+\providecommand{\GroupSymGen}{\inmath{\GroupSym.\Gen}} % Generator of G (symmetric)
+
+% Bilinear Pairings
+\providecommand{\Pair}{\inmath{\hat{e}}} % Pairing map
+\providecommand{\Pairing}{\Pair} % Alias
+\providecommand{\BilinearMap}{\inmath{\hat{e}}} % Bilinear map
+\providecommand{\PairingDesc}{\Pair : \GroupOne \times \GroupTwo \to \GroupTgt} % e: G₁ × G₂ → G_T
+\providecommand{\SymmetricPairing}{\Pair : \GroupSym \times \GroupSym \to \GroupTgt} % e: G × G → G_T
+
+% Multilinear Pairings
+\providecommand{\MultiPair}{\inmath{\hat{e}}} % Generic multilinear map
+\providecommand{\MultilinearMap}[1]{\MultiPair_{#1}} % e_k: k-linear map
+\providecommand{\MultilinearDesc}[2]{\MultiPair_{#1} : \GroupSym^{#1} \to \GroupTgt^{(#2)}} % e_k: G^k → G_T^(#2)
+\providecommand{\GroupTgtK}[1]{\inmathbb{G}_T^{(#1)}} % G_T^(k): k-th level target group
+\providecommand{\TrilinearPairing}{\MultilinearMap{3}} % e₃: trilinear map
+\providecommand{\QuadlinearPairing}{\MultilinearMap{4}} % e₄: 4-linear map
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Computational Problems
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\APX}{\ComplexityFont{APX}} % Approximable problems
+\providecommand{\AUT}{\ComplexityFont{AUT}} % Automorphism Problem
+\providecommand{\BIPARTITE}{\ComplexityFont{BIPARTITE}} % Bipartite Graph Problem
+\providecommand{\CEVAL}{\ComplexityFont{CEVAL}} % Circuit Evaluation Problem
+\providecommand{\CSAT}{\ComplexityFont{CSAT}} % Circuit Satisfiability Problem
+\providecommand{\CLIQUE}{\ComplexityFont{CLIQUE}} % Clique Problem
+\providecommand{\CNF}{\ComplexityFont{CNF}} % Conjunctive Normal Form
+\providecommand{\COL}{\ComplexityFont{COL}} % Graph Coloring Problem
+\providecommand{\CYCLE}{\ComplexityFont{CYCLE}} % Cycle Problem in Graphs
+\providecommand{\DNF}{\ComplexityFont{DNF}} % Disjunctive Normal Form
+\providecommand{\FEEDBACKVERTEX}{\ComplexityFont{FEEDBACK\textsf{-}VERTEX\textsf{-}SET}} % Feedback Vertex Set problem
+\providecommand{\FOURCOL}{\ComplexityFont{4COL}} % 4-Colorability Problem
+\providecommand{\FPTAS}{\ComplexityFont{FPTAS}} % Fully Polynomial-Time Approximation Scheme
+\providecommand{\GI}{\ComplexityFont{GI}} % Graph Isomorphism Problem
+\providecommand{\GNI}{\ComplexityFont{GNI}} % Graph Non-Isomorphism Problem
+\providecommand{\GRAPHCOLORING}{\ComplexityFont{GRAPH\textsf{-}COLORING}} % Graph Coloring
+\providecommand{\GRAPHISOMORPHISM}{\ComplexityFont{GRAPH\textsf{-}ISOMORPHISM}} % Graph Isomorphism problem
+\providecommand{\HALT}{\ComplexityFont{HALT}} % Halting Problem
+\providecommand{\HAMILTONCYCLE}{\ComplexityFont{HAMILTONIAN\textsf{-}CYCLE}} % Hamiltonian Cycle
+\providecommand{\HAMILTONIAN}{\ComplexityFont{HAMILTONIAN}} % Hamiltonian Path/Cycle Problem
+\providecommand{\INTEGERFACT}{\ComplexityFont{INTEGER\textsf{-}FACT}} % Integer Factorization Problem
+\providecommand{\ISO}{\ComplexityFont{ISO}} % Isomorphism Problem
+\providecommand{\KNAPSACK}{\ComplexityFont{KNAPSACK}} % Knapsack problem
+\providecommand{\LONGESTPATH}{\ComplexityFont{LONGEST\textsf{-}PATH}} % Longest Path problem
+\providecommand{\MAXCUT}{\ComplexityFont{MAXCUT}} % Max Cut problem
+\providecommand{\PARTITION}{\ComplexityFont{PARTITION}} % Partition problem
+\providecommand{\PATH}{\ComplexityFont{PATH}} % Path Problem in Graphs
+\providecommand{\PRIMES}{\ComplexityFont{PRIMES}} % Primality Testing Problem
+\providecommand{\PTAS}{\ComplexityFont{PTAS}} % Polynomial-Time Approximation Scheme
+\providecommand{\SAT}{\ComplexityFont{SAT}} % Boolean satisfiability problem
+\providecommand{\SETCOVER}{\ComplexityFont{SET\textsf{-}COVER}} % Set Cover problem
+\providecommand{\SHARPSAT}{\ComplexityFont{\#SAT}} % Sharp SAT Problem
+\providecommand{\SUBSET}{\ComplexityFont{SUBSET\textsf{-}SUM}} % Subset Sum problem
+\providecommand{\SUMCHECK}{\ComplexityFont{SUMCHECK}} % Sum-Check Problem
+\providecommand{\THREECNF}{\ComplexityFont{3CNF}} % 3-Conjunctive Normal Form
+\providecommand{\THREECOL}{\ComplexityFont{3COL}} % 3-Colorability Problem
+\providecommand{\THREEDM}{\ComplexityFont{3DM}} % 3-Dimensional Matching
+\providecommand{\THREEDNF}{\ComplexityFont{3DNF}} % 3-Disjunctive Normal Form
+\providecommand{\THREESAT}{\ComplexityFont{3SAT}} % 3-SAT Problem
+\providecommand{\TQBF}{\ComplexityFont{TQBF}} % True Quantified Boolean Formula Problem
+\providecommand{\TSP}{\ComplexityFont{TSP}} % Traveling Salesman Problem
+\providecommand{\QBF}{\ComplexityFont{QBF}} % Quantified Boolean Formula Problem
+\providecommand{\UPATH}{\ComplexityFont{UPATH}} % Undirected Path Problem
+\providecommand{\VERTEXCOVER}{\ComplexityFont{VERTEX\textsf{-}COVER}} % Vertex Cover problem
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Compiler Construction and Transformations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\AST}{\inmathsf{AST}} % Abstract Syntax Tree
+\providecommand{\Codegen}{\inmathsf{Gen}} % Code generation function\
+\providecommand{\Compiler}{\inmathsf{Comp}} % Compiler transformation function
+\providecommand{\CompilerIn}{\inmathsf{src}} % Source language input
+\providecommand{\CompilerOut}{\inmathsf{tgt}} % Target language output
+\providecommand{\CompilerTrans}{\Compiler(\CompilerIn)} % Transformation result
+\providecommand{\Env}{\rho} % Environment (semantic or runtime)
+\providecommand{\Grammar}{\inmathcal{G}} % Grammar definition
+\providecommand{\IR}{\inmathsf{IR}} % Intermediate Representation
+\providecommand{\Lexer}{\inmathsf{Lex}} % Lexical analyzer
+\providecommand{\NonTerminals}{\inmathsf{NT}} % Non-terminal symbols
+\providecommand{\OptPass}{\inmathsf{Opt}} % Optimization pass
+\providecommand{\Parser}{\Parse} % Syntax parser
+\providecommand{\ParseTable}{\inmathsf{PT}} % Parse table
+\providecommand{\ProductionRules}{\inmathsf{P}} % Production rules
+\providecommand{\Semantics}{\llbracket \cdot \rrbracket} % Denotational semantics brackets
+\providecommand{\SourceLang}{\inmathcal{L}_S} % Source language
+\providecommand{\StartSymbol}{\inmathsf{S}} % Start symbol
+\providecommand{\SymTable}{\inmathsf{SymTab}} % Symbol table
+\providecommand{\TableSize}{\inmathsf{M}} % Size or dimension of the table
+\providecommand{\TableT}{\inmathsf{T}} % Table T (e.g., parsing or transition table)
+\providecommand{\TargetLang}{\inmathcal{L}_T} % Target language
+\providecommand{\Terminals}{\inmathsf{T}} % Terminal symbols
+\providecommand{\Token}{\tau} % Generic token
+\providecommand{\Tokens}{\boldsymbol{\tau}} % Token stream
+\providecommand{\Transformation}{\inmathbb{T}} % Transformation function or relation
+\providecommand{\TransFunc}{\inmathbb{T}} % General transformation function
+\providecommand{\TypingEnv}{\Gamma} % Typing environment
+\providecommand{\Xqueries}{\inmathsf{X}} % Query set or feature vector
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Basic Mathematical Constants with values (for reference)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\half}{\inmath{\frac{1}{2}}} % 0.5
+\providecommand{\third}{\inmath{\frac{1}{3}}} % ≈0.3333
+\providecommand{\quart}{\inmath{\frac{1}{4}}} % 0.25
+\providecommand{\fifth}{\inmath{\frac{1}{5}}} % 0.2
+\providecommand{\sixth}{\inmath{\frac{1}{6}}} % ≈0.1667
+\providecommand{\eighth}{\inmath{\frac{1}{8}}} % 0.125
+\providecommand{\tenth}{\inmath{\frac{1}{10}}} % 0.1
+
+\providecommand{\piConst}{\inmath{\pi}} % ≈3.14159
+\providecommand{\eConst}{\inmath{e}} % ≈2.71828
+\providecommand{\phiConst}{\inmath{\varphi}} % ≈1.61803 (Golden ratio)
+\providecommand{\gammaConst}{\inmath{\gamma}} % ≈0.57721 (Euler-Mascheroni constant)
+\providecommand{\tauConst}{\inmath{\tau}} % ≈6.28318 (Tau, 2π)
+
+\providecommand{\infinity}{\inmath{\infty}} % Infinity symbol
+\providecommand{\zero}{\inmath{0}} % Zero
+\providecommand{\one}{\inmath{1}} % One
+
+% Mathematical constants with approximate values (numeric form)
+\providecommand{\sqrtTwo}{\inmath{\sqrt{2}}} % ≈1.41421
+\providecommand{\sqrtThree}{\inmath{\sqrt{3}}} % ≈1.73205
+\providecommand{\lnTwo}{\inmath{\ln 2}} % ≈0.69315
+\providecommand{\lnTen}{\inmath{\ln 10}} % ≈2.30259
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Graph Theory
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Graphs and Graph Sets
+\providecommand{\Graph}{\inmathscr{G}} % Graph
+\providecommand{\GraphSet}{\inmathcal{G}} % Set of Graphs
+\providecommand{\IsomorphicGraph}{\inmathscr{H}} % Isomorphic Graph
+\providecommand{\IsomorphicGraphSet}{\inmathcal{H}} % Set of Isomorphic Graphs
+
+% Operators (functions, invariants, graph-theoretic notions)
+\providecommand{\adj}{\inmathsf{adj}} % Adjacency Matrix Representation
+\providecommand{\aut}{\inmathsf{aut}} % Graph Automorphism Function
+\providecommand{\cut}{\inmathsf{cut}} % Graph Cut Definition
+\providecommand{\cycle}{\inmathsf{cycle}} % Cycle in a Graph
+\providecommand{\deg}{\inmathsf{deg}} % Vertex Degree Calculation
+\providecommand{\dist}{\inmathsf{dist}} % Distance Between Graph Vertices
+\providecommand{\iso}{\inmathsf{iso}} % Isomorphism
+\providecommand{\size}{\inmathsf{size}} % Size of the Graph
+\providecommand{\supp}{\inmathsf{supp}} % Support of a Graph
+\providecommand{\tree}{\inmathsf{tree}} % Tree Structure Representation
+\providecommand{\trunc}{\inmathsf{trunc}} % Truncation Function Definition
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Number Sets
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\C}{\inmathbb{C}} % Complex numbers
+\providecommand{\F}{\Field} % Generic field
+\providecommand{\Imag}{\inmathbb{I}} % Imaginary numbers
+\providecommand{\N}{\inmathbb{N}} % Natural numbers
+\providecommand{\Q}{\inmathbb{Q}} % Rational numbers
+\providecommand{\R}{\inmathbb{R}} % Real numbers
+\providecommand{\Z}{\inmathbb{Z}} % Integers
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Bracket, Delimiter, and Functional Notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\abs}[1]{\inmath{\left|#1\right|}} % Absolute value
+\providecommand{\parens}[1]{\inmath{\left(#1\right)}} % Parentheses
+\providecommand{\brackets}[1]{\inmath{\left[#1\right]}} % Square brackets
+\providecommand{\ceil}[1]{\inmath{\left\lceil#1\right\rceil}} % Ceiling function
+\providecommand{\floor}[1]{\inmath{\left\lfloor#1\right\rfloor}} % Floor function
+\providecommand{\angles}[1]{\inmath{\left\langle#1\right\rangle}} % Inner product / angle brackets
+\providecommand{\norm}[1]{\inmath{\left\lVert#1\right\rVert}} % Norm
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Logical, Symbolic, and Bitwise Relations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\defeq}{\inmath{\overset{\Delta}{=}}} % Defined as
+\providecommand{\qeq}{\inmath{\overset{\textrm{?}}{=}}} % Questioned equality
+\providecommand{\qin}{\inmath{\overset{\textrm{?}}{\in}}} % Questioned membership
+\providecommand{\xor}{\inmath{\oplus}} % Exclusive OR (bitwise)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Arithmetic and Extremal Operators
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\DeclareMathOperator*{\argmax}{\inmathrm{arg\,max}} % Argument of maximum
+\DeclareMathOperator*{\argmin}{\inmathrm{arg\,min}} % Argument of minimum
+\DeclareMathOperator*{\gcd}{\inmathrm{gcd}} % Greatest common divisor
+\DeclareMathOperator*{\lcm}{\inmathrm{lcm}} % Least common multiple
+\DeclareMathOperator*{\majority}{\inmathrm{majority}} % Majority function
+\DeclareMathOperator*{\perm}{\inmathrm{perm}} % Permutation function
+\DeclareMathOperator*{\sgn}{\inmathrm{sgn}} % Sign function
+\DeclareMathOperator*{\thresh}{\inmathrm{thr}} % Threshold function
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Complexity Classes and Iterated Functions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\poly}{\inmathsf{poly}} % Polynomial time
+\providecommand{\polylog}{\inmathsf{polylog}} % Polynomial logarithmic time
+\providecommand{\polyloglog}{\inmathsf{polyloglog}} % Polynomial log-log time
+\providecommand{\loglog}{\inmathrm{loglog}} % Log-log time
+\providecommand{\logloglog}{\inmathrm{logloglog}} % Log-log-log time
+\providecommand{\logiter}[1]{\log^{[#1]}} % Iterated logarithm (parameterized)
+\providecommand{\logstar}{\log^*} % Iterated logarithm
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Boolean Logic Operators (textual)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \providecommand{\AND}{\ComplexityFont{AND}} % Logical AND operation
 \providecommand{\NAND}{\ComplexityFont{NAND}} % Logical NAND operation
 \providecommand{\NOR}{\ComplexityFont{NOR}} % Logical NOR operation
@@ -228,216 +1477,137 @@
 \providecommand{\XOR}{\ComplexityFont{XOR}} % Logical XOR operation
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Complexity Classes
+% Miscellaneous Symbolic and Set Notation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Note: The \usepackage[full]{complexity} package provides definitions for most complexity class commands.
-% The following commands enhance these definitions.
-
-% Clear any existing definitions to prevent conflicts
-\let\coNP\relax
-
-% Complexity Class Definitions
-\providecommand{\coNP}{\ComplexityFont{co\textsf{-}NP}} % Complement of NP
-\providecommand{\coRP}{\ComplexityFont{co\textsf{-}RP}} % Complement of RP
-\providecommand{\EXPpoly}{\ComplexityFont{EXP/poly}} % EXP with Polynomial Advice
-\providecommand{\EXPTIME}{\ComplexityFont{EXPTIME}} % Class of Problems Solvable in Exponential Time
-\providecommand{\NEXPTIME}{\ComplexityFont{NEXPTIME}} % Non-deterministic Exponential Time
-\providecommand{\NPpoly}{\ComplexityFont{NP/poly}} % NP with Polynomial Advice
-\providecommand{\PSPACEpoly}{\ComplexityFont{PSPACE/poly}} % PSPACE with Polynomial Advice
-
-% Definitions of Fundamental Problems
-\providecommand{\AUT}{\ComplexityFont{Aut}} % Automorphism Problem
-\providecommand{\BIPARTITE}{\ComplexityFont{BIPARTITE}} % Bipartite Graph Problem
-\providecommand{\CIRCEVAL}{\ComplexityFont{CIRCUIT\textsf{-}EVAL}} % Circuit Evaluation Problem
-\providecommand{\CIRSAT}{\ComplexityFont{CIRC\textsf{-}SAT}} % Circuit Satisfiability Problem
-\providecommand{\CLIQUE}{\ComplexityFont{CLIQUE}} % Clique Problem
-\providecommand{\CNF}{\ComplexityFont{CNF}} % Conjunctive Normal Form
-\providecommand{\COL}{\ComplexityFont{COL}} % Graph Coloring Problem
-\providecommand{\CYCLE}{\ComplexityFont{CYCLE}} % Cycle Problem in Graphs
-\providecommand{\DNF}{\ComplexityFont{DNF}} % Disjunctive Normal Form
-\providecommand{\FOURCOL}{\ComplexityFont{4COL}} % 4-Colorability Problem
-\providecommand{\GI}{\ComplexityFont{GI}} % Graph Isomorphism Problem
-\providecommand{\GNI}{\ComplexityFont{GNI}} % Graph Non-Isomorphism Problem
-\providecommand{\HALT}{\ComplexityFont{HALT}} % Halting Problem
-\providecommand{\HAMILTONIAN}{\ComplexityFont{HAMILTONIAN}} % Hamiltonian Path/Cycle Problem
-\providecommand{\INTEGERFACT}{\ComplexityFont{INTEGER\textsf{-}FACT}} % Integer Factorization Problem
-\providecommand{\ISO}{\ComplexityFont{ISO}} % Isomorphism Problem
-\providecommand{\PATH}{\ComplexityFont{PATH}} % Path Problem in Graphs
-\providecommand{\PRIMES}{\ComplexityFont{PRIMES}} % Primality Testing Problem
-\providecommand{\SHARPSAT}{\ComplexityFont{\#SAT}} % Sharp SAT Problem
-\providecommand{\SUMCHECK}{\ComplexityFont{SUMCHECK}} % Sum-Check Problem
-\providecommand{\THREECNF}{\ComplexityFont{3CNF}} % 3-Conjunctive Normal Form
-\providecommand{\THREECOL}{\ComplexityFont{3COL}} % 3-Colorability Problem
-\providecommand{\THREEDNF}{\ComplexityFont{3DNF}} % 3-Disjunctive Normal Form
-\providecommand{\THREESAT}{\inmathsf{3SAT}} % 3-SAT Problem
-\providecommand{\TQBF}{\ComplexityFont{TQBF}} % True Quantified Boolean Formula Problem
-\providecommand{\TSP}{\ComplexityFont{TSP}} % Traveling Salesman Problem
-\providecommand{\UPATH}{\ComplexityFont{UPATH}} % Undirected Path Problem
-
-% Definitions of Proof Systems
-\providecommand{\DRMA}{\ComplexityFont{DRMA}} % Decisional Rational Merlin-Arthur Proofs
-\providecommand{\FRMA}{\ComplexityFont{FRMA}} % Functional Rational Merlin-Arthur Proofs
-\providecommand{\IOP}{\ComplexityFont{IOP}} % Interactive Oracle Proofs
-\providecommand{\IPP}{\ComplexityFont{IPP}} % Interactive Proofs of Proximity
-\providecommand{\MRIP}{\ComplexityFont{MRIP}} % Multi-Rational Interactive Proofs
-\providecommand{\MRNIP}{\ComplexityFont{MRNIP}} % Multi-Rational Non-Interactive Proofs
-\providecommand{\NIPP}{\ComplexityFont{NIPP}} % Non-Interactive Proofs of Proximity
-\providecommand{\RIP}{\ComplexityFont{RIP}} % Rational Interactive Proofs
-\providecommand{\RNIP}{\ComplexityFont{RNIP}} % Rational Non-Interactive Proofs
-\providecommand{\dIP}{\ComplexityFont{dIP}} % Deterministic Interactive Proofs
-
-% Formal Language Notation
-\providecommand{\Lang}{\ComplexityFont{L}} % Formal language notation
-\providecommand{\NTM}{\ComplexityFont{N}} % Non-deterministic Turing machine
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Basic Mathematical Constants
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\providecommand{\half}{\inmath{\frac{1}{2}}} % One-half constant
-\providecommand{\third}{\inmath{\frac{1}{3}}} % One-third constant
-\providecommand{\quart}{\inmath{\frac{1}{4}}} % One-quarter constant
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Number Sets
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\providecommand{\F}{\inmathbb{F}} % Generic field
-\providecommand{\GF}{\inmathbb{GF}} % Galois field
-\providecommand{\Imag}{\inmathbb{I}} % Imaginary numbers
-\providecommand{\N}{\inmathbb{N}} % Natural numbers
-\providecommand{\Q}{\inmathbb{Q}} % Rational numbers
-\providecommand{\Z}{\inmathbb{Z}} % Integers
-
-\renewcommand{\C}{\inmathbb{C}} % Complex numbers
-\renewcommand{\R}{\inmathbb{R}} % Real numbers
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Mathematical Symbols Used in Graph Theory
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\providecommand{\adj}{\ComplexityFont{adj}} % Adjacency Matrix Representation
-\providecommand{\aut}{\ComplexityFont{aut}} % Graph Automorphism Definition
-\providecommand{\cut}{\ComplexityFont{cut}} % Graph Cut Definition
-\providecommand{\cycle}{\ComplexityFont{cycle}} % Cycle in a Graph
-\providecommand{\deg}{\ComplexityFont{deg}} % Vertex Degree Calculation
-\providecommand{\dist}{\ComplexityFont{dist}} % Distance Between Graph Vertices
-\providecommand{\size}{\ComplexityFont{size}} % Size of the Graph
-\providecommand{\supp}{\ComplexityFont{supp}} % Support of a Graph
-\providecommand{\tree}{\ComplexityFont{tree}} % Tree Structure Representation
-\providecommand{\trunc}{\inmath{\tau}} % Truncation Function Definition
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Basic Mathematical Operations
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\providecommand{\abs}[1]{\inmath{\left|#1\right|}} % Absolute value notation
-\providecommand{\eqdef}{\inmath{\overset{\Delta}{=}}} % Definition notation (defined as)
-\providecommand{\eqq}{\inmath{\overset{\textrm{?}}{=}}} % Question mark equality
-\providecommand{\inq}{\inmath{\overset{\textrm{?}}{\in}}} % Question mark membership
-
-\let\argmax\relax   % Ensure no conflict with existing definitions of arg max
-\let\argmin\relax   % Ensure no conflict with existing definitions of arg min
-\let\gcd\relax      % Ensure no conflict with existing definitions of gcd
-
-\DeclareMathOperator*{\argmax}{\mathrm{arg\,max}} % Argument that maximizes a function
-\DeclareMathOperator*{\argmin}{\mathrm{arg\,min}} % Argument that minimizes a function
-\DeclareMathOperator*{\majority}{\mathrm{majority}} % Majority function
-\DeclareMathOperator*{\lcm}{\mathrm{lcm}} % Least common multiple
-\DeclareMathOperator*{\gcd}{\mathrm{gcd}} % Greatest common divisor
+\providecommand{\bits}{\inmath{\{0,1\}^{\ast}}} % Set of all binary strings (finite length)
+\providecommand{\bitset}{\inmath{\{0,1\}}} % Set of binary digits (0 and 1)
+\providecommand{\bitstar}{\inmath{\{0,1\}^{\star}}} % Bit values with star
+\providecommand{\pmset}{\inmath{\{-1,1\}}} % Set of ±1
+\providecommand{\pmstar}{\inmath{\{-1,1\}^{\star}}} % ±1 with star
+\providecommand{\const}{\inmathsf{const}} % Constant
+\providecommand{\diam}{\inmathsf{diam}} % Diameter
+\providecommand{\restrict}{\mathord{\upharpoonright}} % Restriction operator
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Combinatorial and Permutation Notations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \providecommand{\nCrf}[2]{\inmath{\frac{#1!}{(#1-#2)!#2!}}} % Combinations (factorials)
-\providecommand{\nCr}[2]{{\inmath{#1}\mathrm{C}{#2}}} % Combinations
+\providecommand{\nCr}[2]{{\inmath{#1}\inmathrm{C}{#2}}} % Combinations
 \providecommand{\nPrf}[2]{\inmath{\frac{#1!}{(#1-#2)!}}} % Permutations (factorials)
-\providecommand{\nPr}[2]{\inmath{{#1}\mathrm{P}{#2}}} % Permutations
+\providecommand{\nPr}[2]{\inmath{{#1}\inmathrm{P}{#2}}} % Permutations
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Dirac Notation
+% Asymptotic Notation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand{\ket}[1]{\inmath{|#1\rangle}} % Ket notation
-\providecommand{\bra}[1]{\inmath{\langle #1|}} % Bra notation
-\providecommand{\braket}[2]{\inmath{\langle #1 | #2 \rangle}} % Braket notation
-\providecommand{\braKet}[2]{\inmath{\langle #1 | #2 \rangle}} % Bra-Ket notation
-\providecommand{\ketbra}[2]{\inmath{|#1\rangle \langle #2|}} % Ket-Bra notation
-\providecommand{\proj}[1]{\inmath{|#1\rangle \langle #1|}} % Projection operator
+\providecommand{\bigO}[1]{\inmathcal{O}\left(#1\right)} % Big-O notation
+\providecommand{\bigOmega}[1]{\inmathcal{O}\left(#1\right)} % Big-Omega notation
+\providecommand{\bigTheta}[1]{\inmathcal{O}\left(#1\right)} % Big-Theta notation
+\providecommand{\smallO}[1]{\inmathscr{o}\left(#1\right)} % Little-o notation
+\providecommand{\smallOmega}[1]{\inmath{\omega\left(#1\right)}} % Little-omega notation
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Dirac Notation (Quantum Mechanics)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\ket}[1]{\inmath{\left|#1\right\rangle}} % Ket vector
+\providecommand{\bra}[1]{\inmath{\left\langle #1\right|}} % Bra vector
+\providecommand{\braket}[2]{\inmath{\left\langle #1 \middle| #2 \right\rangle}} % Inner product
+\providecommand{\ketbra}[2]{\inmath{\left|#1\right\rangle\!\left\langle #2\right|}} % Outer product
+\providecommand{\proj}[1]{\inmath{\left|#1\right\rangle\!\left\langle #1\right|}} % Projector
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Set Theory and Operations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Clear any previous definitions for \iff to prevent naming conflicts
-\let\iff\relax % Ensure no conflict with existing definitions of iff
+% Basic logical equivalence
+\providecommand{\iff}{\longleftrightarrow} % Logical if and only if
 
-\DeclareMathOperator{\intersection}{\inmath{\cap}} % Intersection operator
-\DeclareMathOperator{\union}{\ensuremath{\cup}} % Union operator
-
-\providecommand{\iff}{\longleftrightarrow}
-\providecommand{\set}[1]{\inmath{\left\{#1\right\}}} % Set notation
-\providecommand{\paren}[1]{\inmath{\left[#1\right]}} % Parentheses notation
-\providecommand{\floor}[1]{\inmath{\left\lfloor#1\right\rfloor}} % Floor function
-\providecommand{\ceil}[1]{\inmath{\left\lceil#1\right\rceil}} % Ceiling function
+% Set operations
+\providecommand{\cardinality}[1]{\inmath{\left|#1\right|}} % Cardinality of a set
+\providecommand{\emptysetset}{\inmath{\varnothing}} % Empty set symbol
+\providecommand{\emptysetsymbol}{\inmath{\varnothing}} % Empty set
+\providecommand{\inset}{\inmath{\in}} % Element of
+\providecommand{\intersection}{\inmath{\cap}} % Intersection operator
+\providecommand{\notinset}{\inmath{\notin}} % Not element of
+\providecommand{\powerset}[1]{\inmathcal{P}\left(#1\right)} % Power set
+\providecommand{\set}[1]{\inmath{\left\{#1\right\}}} % Set braces
+\providecommand{\setminusop}{\inmath{\setminus}} % Set difference operator
+\providecommand{\subseteqop}{\inmath{\subseteq}} % Subset or equal
+\providecommand{\subsetop}{\inmath{\subset}} % Strict subset
+\providecommand{\supseteqop}{\inmath{\supseteq}} % Superset or equal
+\providecommand{\supsetop}{\inmath{\supset}} % Strict superset
+\providecommand{\union}{\inmath{\cup}} % Union operator
+\providecommand{\universalset}{\inmathcal{U}} % Universal set symbol (commonly used)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Probability and Expectation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Clear any previous definitions for \Pr and \E to prevent naming conflicts
-\let\Pr\relax
-\let\E\relax
-
-% Define the expectation operator, denoted by \E
-\DeclareMathOperator*{\E}{\inmathbb{E}} % Expected value operator
+% Probability and expectation operators
+\DeclareMathOperator*{\Adv}{\inmathsf{Adv}} % Advantage operator
+\DeclareMathOperator*{\B}{\inmathsf{B}} % Bias function
+\DeclareMathOperator*{\Cov}{\inmathrm{Cov}} % Covariance operator
+\DeclareMathOperator*{\E}{\inmathbb{E}} % Expectation operator
+\DeclareMathOperator*{\Event}{\inmathcal{E}} % Event indicator
 \DeclareMathOperator*{\Pr}{\inmathsf{Pr}} % Probability operator
 \DeclareMathOperator*{\Var}{\inmathrm{Var}} % Variance operator
-\DeclareMathOperator*{\Cov}{\inmathrm{Cov}} % Covariance operator
-\providecommand{\Expect}[1]{\E\paren{#1}} % Expectation of a given argument, formatted for clarity
+
+% Common probability and expectation notations
+\providecommand{\AdvOf}[1]{\Adv\brackets{#1}} % Advantage of argument
+\providecommand{\BiasOf}[1]{\Bias\brackets{#1}} % Bias of argument
+\providecommand{\CovOf}[2]{\Cov\brackets{#1, #2}} % Covariance of two arguments
+\providecommand{\Expect}[1]{\E\brackets{#1}} % Expectation of argument
+\providecommand{\Prob}[1]{\Pr\brackets{#1}} % Probability of event
+\providecommand{\VarOf}[1]{\Var\brackets{#1}} % Variance of argument
+
+% Additional useful commands
+\providecommand{\condAdv}[2]{\Adv\brackets{#1 \given #2}} % Conditional advantage
+\providecommand{\condBias}[2]{\Bias\brackets{#1 \given #2}} % Conditional bias
+\providecommand{\condExpect}[2]{\E\brackets{#1 \given #2}} % Conditional expectation
+\providecommand{\condProb}[2]{\Pr\brackets{#1 \given #2}} % Conditional probability
+\providecommand{\given}{\,\middle|\,} % Conditional separator with spacing
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Differential and Partial Derivatives
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand{\dd}{\mathrm{d}} % Differential operator (d for differentiation)
-\providecommand{\ddiff}[2]{\frac{\dd{#1}}{\dd{#2}}} % Differential quotient (total derivative) \frac{d#1}{d#2}
-\providecommand{\pdiff}[2]{\frac{\partial{#1}}{\partial{#2}}} % Partial derivative \frac{\partial #1}{\partial #2}
+\providecommand{\dd}{\inmathrm{d}} % Differential operator (d for differentiation)  
+\providecommand{\ddderiv}[3]{\inmath{\frac{\dd^2 #1}{\dd #2 \dd #3}}} % Second total derivative (mixed)  
+\providecommand{\dderiv}[2]{\inmath{\frac{\dd #1}{\dd #2}}} % Total derivative
+\providecommand{\eval}[2]{\inmath{\left.#1\right|_{#2}}} % Expression evaluated at a point
+\providecommand{\pderiv}[2]{\inmath{\frac{\partial #1}{\partial #2}}} % Partial derivative
+\providecommand{\ppderiv}[3]{\inmath{\frac{\partial^2 #1}{\partial #2 \partial #3}}} % Second-order partial derivative (mixed)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Vector Calculus
+% Vector Calculus Operators
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand{\grad}{\nabla} % Gradient operator
-\providecommand{\divg}{\nabla\cdot} % Divergence operator
+\providecommand{\gradient}{\nabla} % Gradient operator
+\providecommand{\divergence}{\nabla\cdot} % Divergence operator
 \providecommand{\curl}{\nabla\times} % Curl operator
-\providecommand{\lap}{\nabla^2} % Laplacian operator
+\providecommand{\laplacian}{\nabla^2} % Laplacian operator
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Transform Notations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand{\laplace}[1]{\inmathcal{L}\set{#1}} % Laplace transform notation
-\providecommand{\ilaplace}[1]{\inmathcal{L}^{-1}\set{#1}} % Inverse Laplace transform notation
-\providecommand{\fourier}[1]{\inmathcal{F}\set{#1}} % Fourier transform notation
-\providecommand{\ifourier}[1]{\inmathcal{F}^{-1}\set{#1}} % Inverse Fourier transform notation
-\providecommand{\ztransform}[1]{\inmathcal{Z}\set{#1}} % Z-transform notation
-\providecommand{\iztransform}[1]{\inmathcal{Z}^{-1}\set{#1}} % Inverse Z-transform notation
-\providecommand{\radon}[1]{\inmathcal{R}\set{#1}} % Radon transform notation
-\providecommand{\iradon}[1]{\inmathcal{R}^{-1}\set{#1}} % Inverse Radon transform notation
-\providecommand{\wavelet}[1]{\inmathcal{W}\set{#1}} % Wavelet transform notation
-\providecommand{\iwavelet}[1]{\inmathcal{W}^{-1}\set{#1}} % Inverse Wavelet transform notation
+\providecommand{\laplace}[1]{\inmathcal{L}\set{#1}} % Laplace transform  
+\providecommand{\ilaplace}[1]{\inmathcal{L}^{-1}\set{#1}} % Inverse Laplace transform  
+\providecommand{\fourier}[1]{\inmathcal{F}\set{#1}} % Fourier transform  
+\providecommand{\ifourier}[1]{\inmathcal{F}^{-1}\set{#1}} % Inverse Fourier transform  
+\providecommand{\ztransform}[1]{\inmathcal{Z}\set{#1}} % Z-transform  
+\providecommand{\iztransform}[1]{\inmathcal{Z}^{-1}\set{#1}} % Inverse Z-transform  
+\providecommand{\radon}[1]{\inmathcal{R}\set{#1}} % Radon transform  
+\providecommand{\iradon}[1]{\inmathcal{R}^{-1}\set{#1}} % Inverse Radon transform  
+\providecommand{\wavelet}[1]{\inmathcal{W}\set{#1}} % Wavelet transform  
+\providecommand{\iwavelet}[1]{\inmathcal{W}^{-1}\set{#1}} % Inverse Wavelet transform  
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Trigonometric Functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Clear existing definitions for inverse trigonometric functions
-\let\arcsin\relax
-\let\arccos\relax
-\let\arctan\relax
 
 % Define inverse trigonometric functions
 \providecommand{\arcsin}{\sin^{-1}} % Inverse sine
@@ -463,32 +1633,32 @@
 \renewcommand{\j}{\hat{j}} % Unit vector j
 \renewcommand{\k}{\hat{k}} % Unit vector k
 
-\providecommand{\avec}{\asvector{a}} % Vector a
-\providecommand{\bvec}{\asvector{b}} % Vector b
-\providecommand{\cvec}{\asvector{c}} % Vector c
-\providecommand{\dvec}{\asvector{d}} % Vector d
-\providecommand{\evec}{\asvector{e}} % Vector e
-\providecommand{\fvec}{\asvector{f}} % Vector f
-\providecommand{\gvec}{\asvector{g}} % Vector g
-\providecommand{\hvec}{\asvector{h}} % Vector h
-\providecommand{\ivec}{\asvector{i}} % Vector i
-\providecommand{\jvec}{\asvector{j}} % Vector j
-\providecommand{\kvec}{\asvector{k}} % Vector k
-\providecommand{\lvec}{\asvector{l}} % Vector l
-\providecommand{\mvec}{\asvector{m}} % Vector m
-\providecommand{\nvec}{\asvector{n}} % Vector n
-\providecommand{\ovec}{\asvector{o}} % Vector o
-\providecommand{\pvec}{\asvector{p}} % Vector p
-\providecommand{\qvec}{\asvector{q}} % Vector q
-\providecommand{\rvec}{\asvector{r}} % Vector r
-\providecommand{\svec}{\asvector{s}} % Vector s
-\providecommand{\tvec}{\asvector{t}} % Vector t
-\providecommand{\uvec}{\asvector{u}} % Vector u
-\providecommand{\vvec}{\asvector{v}} % Vector v
-\providecommand{\wvec}{\asvector{w}} % Vector w
-\providecommand{\xvec}{\asvector{x}} % Vector x
-\providecommand{\yvec}{\asvector{y}} % Vector y
-\providecommand{\zvec}{\asvector{z}} % Vector z
+\providecommand{\veca}{\asvector{a}} % Vector a
+\providecommand{\vecb}{\asvector{b}} % Vector b
+\providecommand{\vecc}{\asvector{c}} % Vector c
+\providecommand{\vecd}{\asvector{d}} % Vector d
+\providecommand{\vece}{\asvector{e}} % Vector e
+\providecommand{\vecf}{\asvector{f}} % Vector f
+\providecommand{\vecg}{\asvector{g}} % Vector g
+\providecommand{\vech}{\asvector{h}} % Vector h
+\providecommand{\veci}{\asvector{i}} % Vector i
+\providecommand{\vecj}{\asvector{j}} % Vector j
+\providecommand{\veck}{\asvector{k}} % Vector k
+\providecommand{\vecl}{\asvector{l}} % Vector l
+\providecommand{\vecm}{\asvector{m}} % Vector m
+\providecommand{\vecn}{\asvector{n}} % Vector n
+\providecommand{\veco}{\asvector{o}} % Vector o
+\providecommand{\vecp}{\asvector{p}} % Vector p
+\providecommand{\vecq}{\asvector{q}} % Vector q
+\providecommand{\vecr}{\asvector{r}} % Vector r
+\providecommand{\vecs}{\asvector{s}} % Vector s
+\providecommand{\vect}{\asvector{t}} % Vector t
+\providecommand{\vecu}{\asvector{u}} % Vector u
+\providecommand{\vecv}{\asvector{v}} % Vector v
+\providecommand{\vecw}{\asvector{w}} % Vector w
+\providecommand{\vecx}{\asvector{x}} % Vector x
+\providecommand{\vecy}{\asvector{y}} % Vector y
+\providecommand{\vecz}{\asvector{z}} % Vector z
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Boldface Letters
@@ -584,7 +1754,7 @@
 \providecommand{\sfz}{\inmathsf{z}} % Sans Serif letter 'z'
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Upright Letters in Math Mode
+% Upright Letters 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \providecommand{\rmA}{\inmathrm{A}} % Upright letter 'A'
@@ -615,7 +1785,7 @@
 \providecommand{\rmZ}{\inmathrm{Z}} % Upright letter 'Z'
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Boldface Letters in Math Mode
+% Boldface Letters 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \providecommand{\bfA}{\inmathbf{A}} % Boldface letter 'A'
@@ -739,7 +1909,7 @@
 \providecommand{\frakZ}{\inmathfrak{Z}} % Fraktur letter 'Z'
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Upright Sans Serif Letters in Math Mode
+% Upright Sans Serif Letters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \providecommand{\sfA}{\inmathsf{A}} % Sans Serif letter 'A'
@@ -770,105 +1940,204 @@
 \providecommand{\sfZ}{\inmathsf{Z}} % Sans Serif letter 'Z'
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Script Letters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\scrA}{\inmathscr{A}} % Script letter 'A'
+\providecommand{\scrB}{\inmathscr{B}} % Script letter 'B'
+\providecommand{\scrC}{\inmathscr{C}} % Script letter 'C'
+\providecommand{\scrD}{\inmathscr{D}} % Script letter 'D'
+\providecommand{\scrE}{\inmathscr{E}} % Script letter 'E'
+\providecommand{\scrF}{\inmathscr{F}} % Script letter 'F'
+\providecommand{\scrG}{\inmathscr{G}} % Script letter 'G'
+\providecommand{\scrH}{\inmathscr{H}} % Script letter 'H'
+\providecommand{\scrI}{\inmathscr{I}} % Script letter 'I'
+\providecommand{\scrJ}{\inmathscr{J}} % Script letter 'J'
+\providecommand{\scrK}{\inmathscr{K}} % Script letter 'K'
+\providecommand{\scrL}{\inmathscr{L}} % Script letter 'L'
+\providecommand{\scrM}{\inmathscr{M}} % Script letter 'M'
+\providecommand{\scrN}{\inmathscr{N}} % Script letter 'N'
+\providecommand{\scrO}{\inmathscr{O}} % Script letter 'O'
+\providecommand{\scrP}{\inmathscr{P}} % Script letter 'P'
+\providecommand{\scrQ}{\inmathscr{Q}} % Script letter 'Q'
+\providecommand{\scrR}{\inmathscr{R}} % Script letter 'R'
+\providecommand{\scrS}{\inmathscr{S}} % Script letter 'S'
+\providecommand{\scrT}{\inmathscr{T}} % Script letter 'T'
+\providecommand{\scrU}{\inmathscr{U}} % Script letter 'U'
+\providecommand{\scrV}{\inmathscr{V}} % Script letter 'V'
+\providecommand{\scrW}{\inmathscr{W}} % Script letter 'W'
+\providecommand{\scrX}{\inmathscr{X}} % Script letter 'X'
+\providecommand{\scrY}{\inmathscr{Y}} % Script letter 'Y'
+\providecommand{\scrZ}{\inmathscr{Z}} % Script letter 'Z'
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Script Letters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\scra}{\inmathscr{a}} % Script letter 'a'
+\providecommand{\scrb}{\inmathscr{b}} % Script letter 'b'
+\providecommand{\scrc}{\inmathscr{c}} % Script letter 'c'
+\providecommand{\scrd}{\inmathscr{d}} % Script letter 'd'
+\providecommand{\scre}{\inmathscr{e}} % Script letter 'e'
+\providecommand{\scrf}{\inmathscr{f}} % Script letter 'f'
+\providecommand{\scrg}{\inmathscr{g}} % Script letter 'g'
+\providecommand{\scrh}{\inmathscr{h}} % Script letter 'h'
+\providecommand{\scri}{\inmathscr{i}} % Script letter 'i'
+\providecommand{\scrj}{\inmathscr{j}} % Script letter 'j'
+\providecommand{\scrk}{\inmathscr{k}} % Script letter 'k'
+\providecommand{\scrl}{\inmathscr{l}} % Script letter 'l'
+\providecommand{\scrm}{\inmathscr{m}} % Script letter 'm'
+\providecommand{\scrn}{\inmathscr{n}} % Script letter 'n'
+\providecommand{\scro}{\inmathscr{o}} % Script letter 'o'
+\providecommand{\scrp}{\inmathscr{p}} % Script letter 'p'
+\providecommand{\scrq}{\inmathscr{q}} % Script letter 'q'
+\providecommand{\scrr}{\inmathscr{r}} % Script letter 'r'
+\providecommand{\scrs}{\inmathscr{s}} % Script letter 's'
+\providecommand{\scrt}{\inmathscr{t}} % Script letter 't'
+\providecommand{\scru}{\inmathscr{u}} % Script letter 'u'
+\providecommand{\scrv}{\inmathscr{v}} % Script letter 'v'
+\providecommand{\scrw}{\inmathscr{w}} % Script letter 'w'
+\providecommand{\scrx}{\inmathscr{x}} % Script letter 'x'
+\providecommand{\scry}{\inmathscr{y}} % Script letter 'y'
+\providecommand{\scrz}{\inmathscr{z}} % Script letter 'z'
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Latin Abbreviations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand{\aew}{a.e.\xspace} % Almost everywhere
-\providecommand{\aka}{a.k.a.\xspace} % Also known as
-\providecommand{\cf}{cf.\xspace} % Compare
-\providecommand{\eg}{e.g.,\xspace} % For example
-\providecommand{\etal}{et al.\xspace} % And others
-\providecommand{\etc}{etc.\xspace} % Et cetera
-\providecommand{\ie}{i.e.,\xspace} % That is
-\providecommand{\nb}{N.B.\xspace} % Note well
-\providecommand{\qed}{Q.E.D.\xspace} % Quod Erat Demonstrandum
-\providecommand{\st}{s.t.\xspace} % Such that
-\providecommand{\viz}{viz.\xspace} % Namely
-\providecommand{\vs}{vs.\xspace} % Versus
-\providecommand{\wlog}{w.l.o.g.\xspace} % Without loss of generality
-\providecommand{\wrt}{w.r.t.\xspace} % With respect to
+\providecommand{\aew}{a.e.\xspace} % almost everywhere
+\providecommand{\aka}{a.k.a.\xspace} % also known as
+\providecommand{\cf}{cf.\xspace} % compare
+\providecommand{\cfp}{c.f.p.\xspace} % compare for proof
+\providecommand{\eg}{e.g.,\xspace} % for example
+\providecommand{\esp}{esp.\xspace} % especially
+\providecommand{\etal}{et al.\xspace} % et alii (and others)
+\providecommand{\etc}{etc.\xspace} % et cetera
+\providecommand{\exempli}{exempli gratia\xspace} % for example (Latin phrase)
+\providecommand{\id}{id.\xspace} % idem (the same)
+\providecommand{\ie}{i.e.,\xspace} % that is
+\providecommand{\loccit}{loc.\ cit.\xspace} % in the place cited
+\providecommand{\mutatis}{mutatis mutandis\xspace} % with necessary changes
+\providecommand{\nb}{N.B.\xspace} % nota bene (note well)
+\providecommand{\opcit}{op.\ cit.\xspace} % in the work cited
+\providecommand{\passim}{passim\xspace} % here and there
+\providecommand{\qed}{Q.E.D.\xspace} % quod erat demonstrandum
+\providecommand{\qv}{q.v.\xspace} % which see
+\providecommand{\resp}{resp.\xspace} % respectively
+\providecommand{\scil}{scil.\xspace} % scilicet (namely)
+\providecommand{\sensu}{sensu\xspace} % in the sense of
+\providecommand{\sic}{sic\xspace} % thus so (as written)
+\providecommand{\st}{s.t.\xspace} % such that
+\providecommand{\viz}{viz.\xspace} % namely
+\providecommand{\vs}{vs.\xspace} % versus
+\providecommand{\wlog}{w.l.o.g.\xspace} % without loss of generality
+\providecommand{\wrt}{w.r.t.\xspace} % with respect to
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % English Abbreviations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand{\dr}{Dr.\ } % Doctor
-\providecommand{\jr}{Jr.\ } % Junior
-\providecommand{\mrs}{Mrs.\ } % Missis
-\providecommand{\mr}{Mr.\ } % Mister
-\providecommand{\ms}{Ms.\ } % Miss
-\providecommand{\sr}{Sr.\ } % Senior
+\providecommand{\Adm}{Adm.\ } % Admiral
+\providecommand{\Capt}{Capt.\ } % Captain
+\providecommand{\Cmdr}{Cmdr.\ } % Commander
+\providecommand{\Col}{Col.\ } % Colonel
+\providecommand{\Dr}{Dr.\ } % Doctor
+\providecommand{\Fr}{Fr.\ } % Father (priest)
+\providecommand{\Gen}{Gen.\ } % General
+\providecommand{\Gov}{Gov.\ } % Governor
+\providecommand{\Hon}{Hon.\ } % Honorable
+\providecommand{\Jr}{Jr.\ } % Junior
+\providecommand{\Lt}{Lt.\ } % Lieutenant
+\providecommand{\Maj}{Maj.\ } % Major
+\providecommand{\Mr}{Mr.\ } % Mister
+\providecommand{\Mrs}{Mrs.\ } % Missis
+\providecommand{\Ms}{Ms.\ } % Miss
+\providecommand{\Msgr}{Msgr.\ } % Monsignor
+\providecommand{\Prof}{Prof.\ } % Professor
+\providecommand{\Rev}{Rev.\ } % Reverend
+\providecommand{\Sgt}{Sgt.\ } % Sergeant
+\providecommand{\Sr}{Sr.\ } % Senior
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Academic Abbreviations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand{\assocprof}{Assoc.\ \prof} % Associate Professor
-\providecommand{\asstprof}{Asst.\ \prof} % Assistant Professor
-\providecommand{\lect}{Lect.\ } % Lecturer
-\providecommand{\prof}{Prof.\ } % Professor
+\providecommand{\AssocProf}{Assoc.\ Prof.\ } % Associate Professor
+\providecommand{\AsstProf}{Asst.\ Prof.\ } % Assistant Professor
+\providecommand{\Chair}{Chair.\ } % Chairperson
+\providecommand{\Chancellor}{Chanc.\ } % Chancellor
+\providecommand{\Dean}{Dean.\ } % Dean
+\providecommand{\Dir}{Dir.\ } % Director
+\providecommand{\Emeritus}{Emer.\ Prof.\ } % Emeritus Professor
+\providecommand{\Lect}{Lect.\ } % Lecturer
+\providecommand{\Pres}{Pres.\ } % President (academic or institutional)
+\providecommand{\VP}{V.P.\ } % Vice President
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Titles and Honors
+% Degrees and Honors
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand{\ba}{B.A.\xspace} % Bachelor of Arts
-\providecommand{\bsc}{B.Sc.\xspace} % Bachelor of Science
-\providecommand{\eng}{Eng.\xspace} % Engineer
-\providecommand{\jd}{J.D.\xspace} % Doctor of Law
-\providecommand{\ma}{M.A.\xspace} % Master of Arts
-\providecommand{\mba}{M.B.A.\xspace} % Master of Business Administration
-\providecommand{\md}{M.D.\xspace} % Doctor of Medicine
-\providecommand{\msc}{M.Sc.\xspace} % Master of Science
-\providecommand{\phd}{Ph.D.\xspace} % Doctor of Philosophy
+\providecommand{\BA}{B.A.\xspace} % Bachelor of Arts
+\providecommand{\BSc}{B.Sc.\xspace} % Bachelor of Science
+\providecommand{\DDS}{D.D.S.\xspace} % Doctor of Dental Surgery
+\providecommand{\DPhil}{D.Phil.\xspace} % Doctor of Philosophy (Oxford)
+\providecommand{\DVM}{D.V.M.\xspace} % Doctor of Veterinary Medicine
+\providecommand{\EdD}{Ed.D.\xspace} % Doctor of Education
+\providecommand{\Eng}{Eng.\xspace} % Engineer
+\providecommand{\FAIA}{FAIA\xspace} % Fellow, American Institute of Architects
+\providecommand{\JD}{J.D.\xspace} % Juris Doctor
+\providecommand{\LLD}{LL.D.\xspace} % Doctor of Laws
+\providecommand{\MA}{M.A.\xspace} % Master of Arts
+\providecommand{\MBA}{M.B.A.\xspace} % Master of Business Administration
+\providecommand{\MD}{M.D.\xspace} % Doctor of Medicine
+\providecommand{\MSc}{M.Sc.\xspace} % Master of Science
+\providecommand{\PhD}{Ph.D.\xspace} % Doctor of Philosophy
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Time and Date
+% Time and Date Abbreviations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand{\ad}{A.D.\xspace} % Anno Domini
-\providecommand{\am}{a.m.\xspace} % Ante Meridiem
-\providecommand{\bc}{B.C.\xspace} % Before Christ
-\providecommand{\pmtime}{p.m.\xspace} % Post Meridiem
+\providecommand{\AD}{A.D.\xspace} % Anno Domini
+\providecommand{\AM}{a.m.\xspace} % ante meridiem
+\providecommand{\BC}{B.C.\xspace} % Before Christ
+\providecommand{\DOB}{D.O.B.\xspace} % Date of birth
+\providecommand{\ETA}{ETA\xspace} % Estimated time of arrival
+\providecommand{\FYI}{F.Y.I.\xspace} % For your information
+\providecommand{\PM}{p.m.\xspace} % post meridiem
+\providecommand{\TBA}{\textsc{tba}\xspace} % To be announced
+\providecommand{\TBD}{\textsc{tbd}\xspace} % To be determined
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Miscellaneous
+% Miscellaneous Abbreviations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\providecommand{\ap}{A/p\xspace} % Attention
-\providecommand{\comp}{Co.\xspace} % Company
-\providecommand{\deptof}{Dept.\ of\xspace} % Department of
-\providecommand{\dept}{Dept.\xspace} % Department
-\providecommand{\eds}{Eds.\xspace} % Editors
-\providecommand{\ed}{Ed.\xspace} % Editor
-\providecommand{\etcet}{etc.\xspace} % Etcetera
-\providecommand{\fax}{Fax\xspace} % Fax
-\providecommand{\ph}{Ph.\xspace} % Phone
-\providecommand{\rf}{R/F\xspace} % Reference
-\providecommand{\tel}{Tel.\xspace} % Telephone
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Commands for Text Formatting
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Code and URL Formatting
-\providecommand*{\code}[1]{{\ttfamily#1}} % Code formatting
-\providecommand{\urlref}[1]{\texttt{\href{#1}{#1}}} % Hyperlinked URLs
-
-% Text Styles
-\providecommand{\strike}{\bgroup\ULdepth=-.55ex\ULset} % Strike-through text
-\providecommand{\keyword}[1]{\textsf{#1}} % Format for keywords
-
-% Mathematical Formatting
-\providecommand{\cat}[1]{\inmathsf{#1}} % Format for category names
-\mathchardef\mathhyphen="2D % Hyphen in math
-
-% Highlighting and Annotations
-\providecommand{\missing}[1]{{\color{red}#1}} % Highlight missing or problematic text
-\providecommand{\missingcitation}{\code{\small\color{red}<Citation Missing>}} % Format for missing citations
-
-% Term Indexing
-\providecommand{\term}[1]{{#1\index{#1}}} % Italicize and index terms
+\providecommand{\Ap}{A/p\xspace} % Attention please
+\providecommand{\App}{App.\xspace} % Appendix
+\providecommand{\Assoc}{Assoc.\xspace} % Associate
+\providecommand{\Ch}{Ch.\xspace} % Chapter
+\providecommand{\Co}{Co.\xspace} % Company
+\providecommand{\Corp}{Corp.\xspace} % Corporation
+\providecommand{\Dept}{Dept.\xspace} % Department
+\providecommand{\DeptOf}{Dept.\ of\xspace} % Department of
+\providecommand{\Ed}{Ed.\xspace} % Editor
+\providecommand{\Eds}{Eds.\xspace} % Editors
+\providecommand{\Eq}{Eq.\xspace} % Equation
+\providecommand{\Fax}{Fax\xspace} % Fax
+\providecommand{\Fig}{Fig.\xspace} % Figure
+\providecommand{\Inc}{Inc.\xspace} % Incorporated
+\providecommand{\Inst}{Inst.\xspace} % Institute
+\providecommand{\Ltd}{Ltd.\xspace} % Limited
+\providecommand{\Misc}{Misc.\xspace} % Miscellaneous
+\providecommand{\No}{No.\xspace} % Number
+\providecommand{\Ph}{Ph.\xspace} % Phone
+\providecommand{\pp}{pp.\xspace} % Pages
+\providecommand{\Ref}{Ref.\xspace} % Reference
+\providecommand{\Resp}{Resp.\xspace} % Responsibility or respondent
+\providecommand{\RFD}{R/F\xspace} % Reference
+\providecommand{\Sec}{Sec.\xspace} % Section
+\providecommand{\Tel}{Tel.\xspace} % Telephone
+\providecommand{\Univ}{Univ.\xspace} % University
+\providecommand{\Vol}{Vol.\xspace} % Volume
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
