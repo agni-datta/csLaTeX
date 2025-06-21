@@ -48,6 +48,7 @@
 \RequirePackage{etoolbox}                                    % Logic and macro patching
 \RequirePackage{ifpdf}                                       % Detect PDF output mode
 \RequirePackage{iftex}                                       % Detect engine: pdfTeX, XeTeX, LuaTeX
+\RequirePackage{xkeyval}                                     % Key-value parsing
 \RequirePackage{xparse}                                      % Extended command/environment definitions
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -168,13 +169,15 @@
 \RequirePackage{threeparttable}                                % Notes and footnotes in tables
 \RequirePackage{verbatim}                                      % Verbatim environment
 \RequirePackage{wrapfig}                                       % Text wrapping around figures/tables
+\RequirePackage{xhfill}                                        % Horizontal line
 \RequirePackage{xtab}                                          % Page-breaking tables (alt to supertabular)
 \AtBeginDocument{%
     \captionsetup{%
         font={rm},                                             % Roman font
-        labelfont={color=black,rm},                            % Label in black roman
+        labelfont={color=black,sc},                            % Label in black roman
         labelsep=period,                                       % Label ends with period
-        skip=5pt                                               % Space below caption
+        skip=5pt,                                              % Space below caption
+        justification=centering,                               % Center the caption
     }%
 }%
 \captionsetup[table]{position=bottom, skip=5pt}                % Table captions below
@@ -379,9 +382,6 @@
     \vfill
     \clearpage
 }
-
-% Inline math shortcut
-\NewDocumentCommand{\m}{m}{\ensuremath{#1}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Title Formatting
@@ -664,6 +664,7 @@
 
 % Commands for the main document
 \begin{filecontents*}{useful-commands.tex}
+    
     % Highlight color for text and math
     \newcommand{\highlightcolor}{RoyalBlue}
     \newcommand{\sethighlightcolor}[1]{\renewcommand{\highlightcolor}{#1}}
@@ -679,6 +680,9 @@
     % Math small caps and bold italic
     \newcommand{\mathsc}[1]{\textnormal{\textsc{#1}}}
     \newcommand{\mathbi}[1]{\textnormal{\textbf{\textit{#1}}}}
+
+    % Inline math shortcut
+    \NewDocumentCommand{\inmath}{m}{\ensuremath{#1}}
 
     % Hyphen in math
     \mathchardef\mathhyphen="2D
