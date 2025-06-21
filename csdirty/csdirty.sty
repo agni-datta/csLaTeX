@@ -14,18 +14,22 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Boolean flags
+\newif\ifAnonymize      \Anonymizefalse
+\newif\ifComments       \Commentsfalse
+\newif\ifConcmath       \Concmathfalse
 \newif\ifFullVersion    \FullVersionfalse
 \newif\ifShortVersion   \ShortVersionfalse
-\newif\ifComments       \Commentsfalse
-\newif\ifAnonymize      \Anonymizefalse
+\newif\ifSubmission     \Submissionfalse
 
 % User options
-\DeclareOption{comments}{\Commentstrue}                             % Enable comments
-\DeclareOption{nocomments}{\Commentsfalse}                          % Disable comments
-\DeclareOption{fullversion}{\FullVersiontrue\ShortVersionfalse}     % Use full version
-\DeclareOption{shortversion}{\ShortVersiontrue\FullVersionfalse}    % Use short version
-\DeclareOption{preprint}{\ShortVersiontrue\FullVersionfalse}        % Preprint = short version
-\DeclareOption{anonymize}{\Anonymizetrue}                           % Enable anonymization
+\DeclareOption{anonymize}{\Anonymizetrue}                                   % Enable anonymization
+\DeclareOption{comments}{\Commentstrue}                                     % Enable comments
+\DeclareOption{concmath}{\Concmathtrue}                                     % Enable Concmath
+\DeclareOption{fullversion}{\FullVersiontrue\ShortVersionfalse}             % Use full version
+\DeclareOption{nocomments}{\Commentsfalse}                                  % Disable comments
+\DeclareOption{preprint}{\ShortVersionfalse\FullVersiontrue}                % Preprint = full version
+\DeclareOption{shortversion}{\ShortVersiontrue\FullVersionfalse}            % Use short version
+\DeclareOption{submission}{\Submissiontrue\ShortVersiontrue\Anonymizetrue}  % Enable submission mode
 
 % Ignore unknown options
 \DeclareOption*{\relax}
@@ -54,6 +58,7 @@
 \RequirePackage[nottoc]{tocbibind}                           % Add bibliography/lists to TOC (exclude TOC itself)
 \RequirePackage{babel}                                       % Language, hyphenation
 \RequirePackage{pdfpages}                                    % Include external PDFs
+\RequirePackage{refcount}                                    % Reference counting
 \RequirePackage{setspace}                                    % Line spacing control
 \renewcommand{\baselinestretch}{1.125}                       % Set line spacing
 
@@ -67,6 +72,7 @@
 \RequirePackage[normalem]{ulem}                              % Underlining and strikethrough capabilities
 \RequirePackage{emptypage}                                   % No page numbers on empty pages
 \RequirePackage{lipsum}                                      % Dummy text
+\RequirePackage{paralist}                                    % Long List Style environments
 \RequirePackage{pifont}                                      % For using Dingbat fonts
 \RequirePackage{soul}                                        % For text highlighting
 \RequirePackage{xspace}                                      % Intelligent spacing after macros
@@ -80,15 +86,29 @@
 \RequirePackage{amsmath}                                     % Advanced math typesetting
 \RequirePackage{amssymb}                                     % Additional math symbols
 \RequirePackage{amsthm}                                      % Theorem environments
-\RequirePackage{mathrsfs}                                    % Script-style math fonts
+\RequirePackage{bbm}                                         % Blackboard bold math symbols
 \RequirePackage{bm}                                          % Bold math symbols
-\RequirePackage{lmodern}                                     % Modern Latin font
-\RequirePackage{mathrsfs}                                    % Script fonts
 \RequirePackage{mathtools}                                   % Math enhancements
 \RequirePackage{moresize}                                    % More font sizes
 \RequirePackage{nicefrac}                                    % Inline fractions
 \RequirePackage{siunitx}                                     % Units and number formatting
-\RequirePackage[cal=cm,bb=bboldx,scr=dutchcal]{mathalpha}    % Custom math fonts
+\ifConcmath
+    \ifLuaTeX
+        \RequirePackage{concmath-otf}                       % Concmath for LuaTeX
+        \let\mathbfcal\relax                                % Remove clash with amsfonts
+        \let\mathbfscr\relax                                % Remove clash with amsfonts
+    \else
+        \ifXeTeX
+            \RequirePackage{concmath-otf}                   % Concmath for XeTeX
+            \let\mathbfcal\relax                            % Remove clash with amsfonts
+            \let\mathbfscr\relax                            % Remove clash with amsfonts
+        \fi
+        \RequirePackage{lmodern}                            % Modern Latin font
+    \fi
+\else
+    \RequirePackage{lmodern}                                % Modern Latin font
+\fi
+\RequirePackage[cal=cm,bb=bboldx,scr=dutchcal]{mathalpha}   % Custom math fonts
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Hyperlinks & Referencing
@@ -132,7 +152,9 @@
 \RequirePackage{float}                                         % Precise float positioning
 \RequirePackage{framed}                                        % Framed environments (e.g., figures, text)
 \RequirePackage{graphicx}                                      % Image inclusion and scaling
+\RequirePackage{hhline}                                        % Horizontal lines in tables
 \RequirePackage{longtable}                                     % Multi-page tables
+\RequirePackage{makecell}                                      % Line breaks and formatting in cells
 \RequirePackage{makecell}                                      % Line breaks and formatting in cells
 \RequirePackage{multicol}                                      % Multiple text columns
 \RequirePackage{multirow}                                      % Multi-row cells in tables
@@ -144,6 +166,7 @@
 \RequirePackage{tabularray}                                    % Advanced table types and styling
 \RequirePackage{tabularx}                                      % Tables with auto-stretching columns
 \RequirePackage{threeparttable}                                % Notes and footnotes in tables
+\RequirePackage{verbatim}                                      % Verbatim environment
 \RequirePackage{wrapfig}                                       % Text wrapping around figures/tables
 \RequirePackage{xtab}                                          % Page-breaking tables (alt to supertabular)
 \AtBeginDocument{%
@@ -172,13 +195,26 @@
 
 % Itemize: Custom symbols by nesting level
 \setlist[itemize,1]{label=\ensuremath{\bullet}}                % Level 1: bullet
-\setlist[itemize,2]{label=\ensuremath{\circ}}                  % Level 2: open circle
-\setlist[itemize,3]{label=\ensuremath{\textemdash}}            % Level 3: em dash
+\setlist[itemize,2]{label=\ensuremath{\textemdash}}            % Level 2: em dash
+\setlist[itemize,3]{label=\ensuremath{\circ}}                  % Level 3: open circle
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Diagrams and TikZ Graphics
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage{epigraph}                                     % Epigraphs (introductory quotations)
+
+% Epigraph configuration
+\setlength{\epigraphrule}{0.5pt}
+\setlength{\epigraphwidth}{0.65\textwidth}
+\renewcommand{\textflush}{flushright}
+\renewcommand{\epigraphsize}{\small}
+
+% Enhanced epigraph command
+\let\oldepigraph\epigraph
+\renewcommand{\epigraph}[2]{%
+    \oldepigraph{\textsf{#1}}{\smallskip\textsc{#2}}%
+}
+
 \RequirePackage[most]{tcolorbox}                              % Colored and styled boxes
 \RequirePackage[%
     skipabove=10pt,                                           % Vertical space above the frame
@@ -194,27 +230,57 @@
 
 % TikZ libraries for enhanced diagrammatic capability
 \usetikzlibrary{%
-    3d,                                                       % Basic 3D transformations
-    arrows.meta,                                              % Advanced arrow tips
-    automata,                                                 % Finite state machines
-    backgrounds,                                              % Background layers
-    calc,                                                     % Coordinate calculations
-    chains,                                                   % Node chains
-    decorations.markings,                                     % Custom arrow markings
-    decorations.pathmorphing,                                 % Deformable paths
-    decorations.text,                                         % Text along paths
-    fit,                                                      % Node fitting
-    graphs,                                                   % Graph structures
-    hobby,                                                    % Spline curves
-    intersections,                                            % Path intersection detection
-    matrix,                                                   % Matrix layout
-    patterns,                                                 % Fill patterns
-    positioning,                                              % Relative positioning of nodes
-    quotes,                                                   % Quoted edge labels
-    scopes,                                                   % Local scoping
-    shapes.geometric,                                         % Basic geometric shapes
-    shapes.misc,                                              % Additional shapes (e.g., star, cylinder)
-    through,                                                  % Path through points
+    3d,
+    arrows,
+    arrows.meta,
+    automata,
+    babel,
+    backgrounds,
+    bending,
+    calc,
+    calendar,
+    chains,
+    circuits.ee.IEC,
+    circuits.logic.IEC,
+    datavisualization,
+    datavisualization.formats.functions,
+    decorations,
+    decorations.markings,
+    decorations.pathmorphing,
+    decorations.shapes,
+    decorations.text,
+    er,
+    external,
+    fadings,
+    fit,
+    graphs,
+    graphs.standard,
+    hobby,
+    intersections,
+    lindenmayersystems,
+    matrix,
+    mindmap,
+    patterns,
+    patterns.meta,
+    petri,
+    plothandlers,
+    plotmarks,
+    positioning,
+    quotes,
+    scopes,
+    shadows,
+    shapes,
+    shapes.arrows,
+    shapes.callouts,
+    shapes.geometric,
+    shapes.misc,
+    shapes.multipart,
+    shapes.symbols,
+    spy,
+    svg.path,
+    through,
+    tikzmark,
+    trees
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -321,12 +387,12 @@
 % Title Formatting
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage{hep-title}                                   % Lightweight title formatting
-\titlefont{\normalfont\Large\bfseries}                       % Title
+\titlefont{\normalfont\LARGE\bfseries}                       % Title
 \subtitlefont{\normalfont\large\bfseries}                    % Subtitle
 \authorfont{\normalfont\normalsize\scshape}                  % Author
-\affiliationfont{\normalfont\normalsize\scshape}             % Affiliation
+\affiliationfont{\normalfont\small\scshape}                  % Affiliation
 \datefont{\normalfont\small\scshape}                         % Date
-\preprintfont{\normalfont\scshape}                           % Preprint line
+\preprintfont{\normalfont\small\ttfamily\scshape}            % Preprint line
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Adjust Table of Contents spacing
@@ -373,13 +439,186 @@
 
 % Part-level title formatting
 \NewDocumentCommand{\setpartformat}{}{%
-    \titleclass{\part}{top}
-    \titleformat{\part}[display]
-    {\normalfont\RaggedRight\LARGE}
-    {\scshape\partname~{\Huge\thepart}}
-    {1ex}
-    {\scshape\titlerule\vspace{1ex}\Huge}
-    [\vspace{1ex}\titlerule]%
+\titleclass{\part}{top}
+\titleformat{\part}[display]
+{\normalfont\RaggedRight\LARGE}
+{\scshape\partname~{\Huge\thepart}}
+{1ex}
+{\scshape\titlerule\vspace{1ex}\Huge}
+[\vspace{1ex}\titlerule]%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Paragraph formatting
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Flag for punctuation detection
+\newif\ifcsdirty@haspunctuation
+
+% Check whether the second argument is empty (used for punctuation detection)
+\def\csdirty@checkpunctuation#1{%
+    \ifx\csdirty@checkpunctuation#1\csdirty@checkpunctuation
+    \else
+        \csdirty@haspunctuationtrue
+    \fi
+}
+
+% Specific punctuation testers for '.', '?', '!', ':'
+\def\csdirty@checkdot#1.\csdirty@delim#2\csdirty@stop{\csdirty@checkpunctuation{#2}}
+\def\csdirty@checkquestion#1?\csdirty@delim#2\csdirty@stop{\csdirty@checkpunctuation{#2}}
+\def\csdirty@checkexclam#1!\csdirty@delim#2\csdirty@stop{\csdirty@checkpunctuation{#2}}
+\def\csdirty@checkcolon#1:\csdirty@delim#2\csdirty@stop{\csdirty@checkpunctuation{#2}}
+
+% Main interface: Append period unless line ends with '.', '?', '!', or ':'
+\def\csdirty@appendpunctuationifneeded#1{%
+    \csdirty@haspunctuationfalse
+    \csdirty@checkdot#1\csdirty@delim.\csdirty@delim\csdirty@stop
+    \csdirty@checkquestion#1\csdirty@delim?\csdirty@delim\csdirty@stop
+    \csdirty@checkexclam#1\csdirty@delim!\csdirty@delim\csdirty@stop
+    \csdirty@checkcolon#1\csdirty@delim:\csdirty@delim\csdirty@stop
+    #1\ifcsdirty@haspunctuation \else.\fi%
+}
+
+% Skip spaces and implicit paragraphs (blank lines)
+\def\csdirty@ignorewhitespaceandimplicitpars{%
+    \begingroup
+    \catcode13=10 %
+    \@ifnextchar\relax
+    {\endgroup}
+    {\endgroup}%
+}
+
+% Skip spaces, implicit paragraphs, and explicit \par commands
+\def\csdirty@ignoreallpars{%
+    \begingroup
+    \catcode13=10 %
+    \@ifnextchar\par
+    {\endgroup\expandafter\csdirty@ignoreallpars\@gobble}
+    {\endgroup}%
+}
+
+% Section-style paragraph header with automatic punctuation and spacing
+\newcommand{\csdirty@paragraphhead}[1]{%
+    \smallskip
+    \noindent
+    \textbf{\boldmath\ignorespaces\csdirty@appendpunctuationifneeded{#1}}%
+    \hskip 0.9em plus 0.3em minus 0.3em
+    \csdirty@ignorewhitespaceandimplicitpars
+}
+
+\newcommand{\parhead}[1]{\csdirty@paragraphhead{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Nested bar environment
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\long\def\csdirty@customfbox#1#2#3#4#5#6#7#8#9{%
+    \leavevmode
+    \begingroup
+    \setbox\@tempboxa\hbox{%
+        \color@begingroup
+        \kern\fboxsep{#9}\kern\fboxsep
+        \color@endgroup}%
+    \hbox{%
+        \begingroup
+        \@tempdima#4\relax
+        \advance\@tempdima\fboxsep
+        \advance\@tempdima\dp\@tempboxa
+        \expandafter\endgroup
+        \expandafter\lower\the\@tempdima\hbox{%
+            \vbox{%
+                \hrule \@height#3 \@width#7
+                #1%
+                \hbox{%
+                    \vrule \@width#5
+                    \hspace{#8}%
+                    \vbox{%
+                        \vskip\fboxsep
+                        \copy\@tempboxa
+                        \vskip\fboxsep}%
+                    \vrule \@width#6}%
+                #2%
+                \hrule \@height#4\@width#7}%
+        }%
+    }%
+    \endgroup
+}
+
+% Parameters for bar dimensions and spacing
+\newcommand{\csdirty@nestedbar@topbotrulelength}{1em}
+\newcommand{\csdirty@nestedbar@indent}{0.4em}
+
+% FrameCommand helper that sets up side rule and spacing
+\def\csdirty@openframebox#1#2{%
+    \fboxsep=\FrameSep
+    \csdirty@customfbox
+    {}{}% no content above or below
+    {#1}{#2}% top and bottom rule thicknesses
+    \FrameRule\z@% left and right rule thickness
+    \csdirty@nestedbar@topbotrulelength% horizontal rule length
+    \csdirty@nestedbar@indent% indent from vertical rule
+}
+
+% Definition of the nestedbar environment
+\newenvironment{nestedbar}[1][\hsize]{%
+    \@ifundefined{OuterFrameSep}{%
+        \@latex@error{To use nestedbar, update framed.sty to a recent version.}\@ehd}{}%
+    \def\FrameCommand{\csdirty@openframebox\FrameRule\FrameRule}%
+    \def\FirstFrameCommand{\csdirty@openframebox\FrameRule\z@}%
+    \def\MidFrameCommand{\csdirty@openframebox\z@\z@}%
+    \def\LastFrameCommand{\csdirty@openframebox\z@\FrameRule}%
+    \OuterFrameSep=1ex
+    \FrameSep=0pt
+    \MakeFramed{\hsize#1\advance\hsize-\width\FrameRestore}%
+}{%
+    \endMakeFramed
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Protocol box environment
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\NewDocumentEnvironment{protocolbox}{o}
+{%
+    \begin{mdframed}[
+            font=\small,
+            roundcorner=1.5pt,
+            linewidth=0.5pt,
+            skipabove=0.5\baselineskip,
+            skipbelow=0.1\baselineskip,
+            leftmargin=0pt,
+            rightmargin=0pt,
+            innerleftmargin=5pt,
+            innerrightmargin=5pt,
+            innertopmargin=5pt,
+            innerbottommargin=5pt,
+            backgroundcolor=white,
+            linecolor=black
+        ]%
+        \IfNoValueF{#1}{%
+            \noindent\textnormal{\small\textbf{#1}}\par\smallskip
+            \noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}%
+        }%
+        \begin{itemize}[label={--},nosep]%
+            }
+            {%
+        \end{itemize}
+    \end{mdframed}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Wire box environment
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newtcolorbox{wirebox}{%
+    colframe=black,
+    colback=white,
+    sharp corners,
+    boxrule=0.5pt,
+    coltitle=black,
+    colbacktitle=white,
+    boxsep=5pt,
+    top=0pt,
+    bottom=0pt,
+    left=5pt,
+    right=5pt
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -420,12 +659,93 @@
 }%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Useful commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Commands for the main document
+\begin{filecontents*}{useful-commands.tex}
+    % Highlight color for text and math
+    \newcommand{\highlightcolor}{RoyalBlue}
+    \newcommand{\sethighlightcolor}[1]{\renewcommand{\highlightcolor}{#1}}
+
+    % Text and math highlighting
+    \newcommand{\textem}[1]{\textcolor{\highlightcolor}{#1}}
+    \newcommand{\emphtext}[1]{\textcolor{\highlightcolor}{#1}}
+    \newcommand{\emphmath}[1]{\textcolor{\highlightcolor}{\mathrm{#1}}}
+
+    % Code highlighting
+    \newcommand{\code}[1]{{\texttt{#1}}}
+
+    % Math small caps and bold italic
+    \newcommand{\mathsc}[1]{\textnormal{\textsc{#1}}}
+    \newcommand{\mathbi}[1]{\textnormal{\textbf{\textit{#1}}}}
+
+    % Hyphen in math
+    \mathchardef\mathhyphen="2D
+
+    % Put in quotes
+    \newcommand{\putInQuotes}[1]{``#1''}
+
+    % Strike-through text
+    \newcommand{\strike}[1]{\bgroup\ULdepth=-.55ex\ULset\strike{#1}\egroup}
+
+    % Highlight missing or problematic text
+    \newcounter{missingctr}
+    \newcommand{\missinglist}{}
+
+    % Main \missing command
+    \newcommand{\missing}[1]{%
+        \refstepcounter{missingctr}%
+        \label{missing:\themissingctr}%
+        \gappto\missinglist{%
+            \noindent\textcolor{Brown4}{\ensuremath{\star}~\themissingctr~(\textsf{Missing at p.~\pageref{missing:\themissingctr}}):~#1}\par\medskip
+        }%
+        \textcolor{Brown4}{#1}%
+    }
+
+    % Print all collected missing items with page references
+    \newcommand{\printmissing}{%
+        \section*{Missing Content Report}%
+        \missinglist
+    }
+
+    % Format for missing citations
+    \providecommand{\missingcitation}{\textcolor{red}{\code{<Citation Missing>}}}
+
+    % Double-struck Pi symbol for different engines
+    \newcommand{\dsPi}{%
+        \ifluatex
+            \char"213F
+        \else
+            \ifxetex
+                \char"213F
+            \else
+                \Pi
+            \fi
+        \fi
+    }
+
+    % Sans-serif Pi symbol for different engines
+    \newcommand{\sansPi}{%
+        \ifluatex
+            \char"1D765
+        \else
+            \ifxetex
+                \char"1D765
+            \else
+                \Pi
+            \fi
+        \fi
+    }
+\end{filecontents*}
+
+% For use in the main document
+\input{useful-commands.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Upright Greek Letters Setup
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage[italic,LGRgreek]{mathastext} % Enable Greek with LGR encoding, default italic
 \RequirePackage{upgreek} % Load upright Greek letter symbols
-
-\MTgreekfont{CourierOneZeroPitch-TLF} % Set Greek font
 
 % Provide definitions for missing uppercase Greek macros as roman letters, if undefined
 \@ifundefined{Alpha}{\newcommand{\Alpha}{\mathrm{A}}}{}
