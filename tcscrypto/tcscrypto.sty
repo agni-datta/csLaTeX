@@ -1,12 +1,95 @@
-\NeedsTeXFormat{LaTeX2e}                   % Specifies the required LaTeX format
+% tcscrypto.sty
+% A comprehensive LaTeX package for typesetting theoretical computer science and cryptography
+%
+% Author: Agni Datta
+% Email: agnidatta.org@gmail.com
+% Date: 2025-06-26
+% Version: 1.2.0
+%
+% DESCRIPTION:
+% This package provides an extensive collection of macros, environments, and 
+% formatting utilities specifically designed for typesetting theoretical computer 
+% science and cryptography papers, textbooks, and research documents.
+%
+% FEATURES:
+% - Complexity class notation (P, NP, BPP, etc.)
+% - Cryptographic primitives (OWF, PRF, PRG, etc.)
+% - Security notions and definitions
+% - Interactive protocols and proof systems
+% - Mathematical notation for algorithms and protocols
+% - Probability and statistical notation
+% - Finite field and modular arithmetic notation
+% - Adversary and advantage notation
+% - Landau asymptotic notation
+% - Boolean function notation
+% - Vector and matrix notation
+% - Commitment schemes and zero-knowledge proofs
+% - Homomorphic encryption notation
+% - Quantum cryptography notation
+% - Hamming distance and noise notation
+%
+% DEPENDENCIES:
+% - LaTeX2e
+% - complexity package (for complexity class notation)
+% - cryptocode package (for cryptographic primitives and notation)
+% - xspace package (for automatic spacing)
+%
+% USAGE:
+% \usepackage{tcscrypto}
+%
+% EXAMPLES:
+% - \OWF for one-way functions
+% - \PRF for pseudorandom functions
+% - \NP for NP complexity class
+% - \Adv for advantage notation
+% - \Adversary for adversary notation
+% - \indist for indistinguishability
+% - \Commit for commitment schemes
+% - \ZKP for zero-knowledge proofs
+%
+% LICENSE:
+% MIT License
+%
+% Copyright (c) 2025 Agni Datta
+%
+% Permission is hereby granted, free of charge, to any person obtaining a copy
+% of this software and associated documentation files (the "Software"), to deal
+% in the Software without restriction, including without limitation the rights
+% to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+% copies of the Software, and to permit persons to whom the Software is
+% furnished to do so, subject to the following conditions:
+%
+% The above copyright notice and this permission notice shall be included in all
+% copies or substantial portions of the Software.
+%
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+% IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+% FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+% AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+% LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+% OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+% SOFTWARE.
+%
+% CONTRIBUTING:
+% When adding new macros, please follow the existing naming conventions
+% and add appropriate documentation comments.
+%
+% BUG REPORTS:
+% Please report bugs and feature requests to: agnidatta.org@gmail.com
+%
+% ACKNOWLEDGMENTS:
+% This package builds upon the excellent work of the LaTeX community,
+% particularly the complexity and cryptocode packages.
 
-% Package for typesetting theoretical CS and cryptography
+\NeedsTeXFormat{LaTeX2e}
+
 \ProvidesPackage{tcscrypto}[2024/08/07 v1.0 A package for typesetting theoretical CS and cryptography]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Packages for cryptographic and complexity notations
+% Load packages
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage[full,small]{complexity} % Computational complexity theory macros
+
+\RequirePackage[full,small]{complexity}
 \RequirePackage[%
 	n,             % Disable notations
 	operators,     % Enable operators
@@ -24,8 +107,8 @@
 	complexity,    % Enable complexity classes
 	asymptotics,   % Enable asymptotics
 	keys           % Enable keys
-]{cryptocode} % Macros for cryptography
-\RequirePackage{xspace} % Automatically manage spaces after commands
+]{cryptocode}
+\RequirePackage{xspace}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Relax previously defined commands
@@ -105,424 +188,450 @@
 % Font Styles
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\asvector}[1]{\inmath{\vec{#1}}} % Vector notation with an arrow
-\newcommand{\complexityfont}[1]{\inmath{\ComplexityFont{#1}}} % Font style for complexity classes
-\newcommand{\inmathbb}[1]{\inmath{\mathbb{#1}}} % Blackboard Bold for sets and special objects
-\newcommand{\inmathbf}[1]{\inmath{\mathbf{#1}}} % Bold style for vectors and matrices
-\newcommand{\inmathcal}[1]{\inmath{\mathcal{#1}}} % Calligraphic style for script letters
-\newcommand{\inmathfrak}[1]{\inmath{\mathfrak{#1}}} % Fraktur style for algebras and structures
-\newcommand{\inmathrm}[1]{\inmath{\mathrm{#1}}} % Roman style for constants and functions
-\newcommand{\inmathscr}[1]{\inmath{\mathscr{#1}}} % Script style for math symbols
-\newcommand{\inmathsf}[1]{\inmath{\mathsf{#1}}} % Sans-serif style for math symbols
-\newcommand{\inmath}[1]{\ensuremath{#1}} % Ensure the content is formatted as math mode
-\newcommand{\mathfontstyle}[1]{\inmath{\pcalgostyle{#1}}} % Custom style for math expressions
+\newcommand{\tcs@vc}[1]{\tcs@mm{\vec{#1}}} % Vector notation with an arrow
+\newcommand{\tcs@cf}[1]{\tcs@mm{\ComplexityFont{#1}}} % Font style for complexity classes
+\newcommand{\tcs@bb}[1]{\tcs@mm{\mathbb{#1}}} % Blackboard Bold for sets and special objects
+\newcommand{\tcs@bf}[1]{\tcs@mm{\mathbf{#1}}} % Bold style for vectors and matrices
+\newcommand{\tcs@cl}[1]{\tcs@mm{\mathcal{#1}}} % Calligraphic style for script letters
+\newcommand{\tcs@fk}[1]{\tcs@mm{\mathfrak{#1}}} % Fraktur style for algebras and structures
+\newcommand{\tcs@rm}[1]{\tcs@mm{\mathrm{#1}}} % Roman style for constants and functions
+\newcommand{\tcs@sr}[1]{\tcs@mm{\mathscr{#1}}} % Script style for math symbols
+\newcommand{\tcs@sf}[1]{\tcs@mm{\mathsf{#1}}} % Sans-serif style for math symbols
+\newcommand{\tcs@mm}[1]{\ensuremath{#1}} % Ensure the content is formatted as math mode
+\newcommand{\tcs@al}[1]{\tcs@mm{\pcalgostyle{#1}}} % Custom style for math expressions
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Global Font Styles
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\FunctionFont}[1]{\tcs@sf{#1}} % Function font
+\newcommand{\GameFont}[1]{\tcs@sf{#1}} % Game font
+\newcommand{\InputFont}[1]{\tcs@mm{#1}} % Input font
+\newcommand{\ModelFont}[1]{\tcs@bf{#1}} % Model font
+\newcommand{\OracleFont}[1]{\tcs@mm{\textnormal{\textsc{#1}}}} % Oracle font
+\newcommand{\OutputFont}[1]{\tcs@sf{#1}} % Output font
+\newcommand{\ProcedureFont}[1]{\tcs@sf{#1}} % Procedure font
+\newcommand{\SchemeFont}[1]{\tcs@cf{#1}} % Scheme font
+\newcommand{\StateFont}[1]{\tcs@mm{\textnormal{\texttt{#1}}}} % State font
+\newcommand{\VarFont}[1]{\tcs@mm{#1}} % Variable font
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Short Hand Notation of Primitives and Problems
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\ABE}{\ComplexityFont{ABE}} % Attribute-Based Encryption
-\newcommand{\ADEAD}{\ComplexityFont{ADEAD}} % Authenticated Data Encryption Algorithm
-\newcommand{\BBQKD}{\ComplexityFont{BB84}} % BB84 Quantum Key Distribution protocol
-\newcommand{\BDEAD}{\ComplexityFont{BDEAD}} % Blind Data Encryption Algorithm
-\newcommand{\BSS}{\ComplexityFont{BSS}} % Boolean Secret Sharing
-\newcommand{\CDH}{\ComplexityFont{CDH}} % Computational Diffie-Hellman problem
-\newcommand{\DB}{\ComplexityFont{DB}} % Database
-\newcommand{\DDH}{\ComplexityFont{DDH}} % Decisional Diffie-Hellman problem
-\newcommand{\DLD}{\ComplexityFont{DLD}} % Discrete Logarithm Difference
-\newcommand{\DLE}{\ComplexityFont{DLE}} % Discrete Logarithm Equality
-\newcommand{\DLP}{\ComplexityFont{DLP}} % Discrete Logarithm Problem
-\newcommand{\DS}{\ComplexityFont{DS}} % Digital Signature
-\newcommand{\DSS}{\ComplexityFont{DSS}} % Distributed Secret Sharing
-\newcommand{\ECC}{\ComplexityFont{ECC}} % Elliptic Curve Cryptography
-\newcommand{\ECDH}{\ComplexityFont{ECDH}} % Elliptic Curve Diffie-Hellman
-\newcommand{\ECDLP}{\ComplexityFont{ECDLP}} % Elliptic Curve Discrete Logarithm Problem
-\newcommand{\EPR}{\ComplexityFont{EPR}} % Einstein-Podolsky-Rosen pair (quantum entanglement)
-\newcommand{\FC}{\ComplexityFont{FC}} % Functional Commitment
-\newcommand{\FHE}{\ComplexityFont{FHE}} % Fully Homomorphic Encryption
-\newcommand{\FS}{\ComplexityFont{FS}} % Fiat-Shamir Transformation
-\newcommand{\FSS}{\ComplexityFont{FSS}} % Function Secret Sharing
-\newcommand{\HE}{\ComplexityFont{HE}} % Homomorphic Encryption
-\newcommand{\HIBE}{\ComplexityFont{HIBE}} % Hierarchical Identity-Based Encryption
-\newcommand{\HRA}{\ComplexityFont{HRA}} % Homomorphic Random Access
-\newcommand{\HSS}{\ComplexityFont{HSS}} % Homomorphic Secret Sharing
-\newcommand{\IBE}{\ComplexityFont{IBE}} % Identity-Based Encryption
-\newcommand{\IOPP}{\ComplexityFont{IOPP}} % Interactive Oracle Proof of Proximity
-\newcommand{\KEM}{\ComplexityFont{KEM}} % Key Encapsulation Mechanism
-\newcommand{\LPN}{\ComplexityFont{LPN}} % Learning Parity with Noise
-\newcommand{\LWE}{\ComplexityFont{LWE}} % Learning with Errors problem
-\newcommand{\MPC}{\ComplexityFont{MPC}} % Multiparty Computation
-\newcommand{\NIZK}{\ComplexityFont{NIZK}} % Non-Interactive Zero-Knowledge
-\newcommand{\NIZKP}{\ComplexityFont{NIZKP}} % Non-Interactive Zero-Knowledge Proof
-\newcommand{\NIZKPs}{\ComplexityFont{NIZKPs}} % Non-Interactive Zero-Knowledge Proofs (plural)
-\newcommand{\NIZKs}{\ComplexityFont{NIZKs}} % Non-Interactive Zero-Knowledge proofs (plural)
-\newcommand{\NTRU}{\ComplexityFont{NTRU}} % NTRU encryption scheme
-\newcommand{\ORAM}{\ComplexityFont{ORAM}} % Oblivious RAM
-\newcommand{\OT}{\ComplexityFont{OT}} % Oblivious Transfer
-\newcommand{\OTS}{\ComplexityFont{OTS}} % One-Time Signature
-\newcommand{\OWF}{\ComplexityFont{OWF}} % One-Way Function
-\newcommand{\OWP}{\ComplexityFont{OWP}} % One-Way Permutation
-\newcommand{\PC}{\ComplexityFont{PC}} % Polynomial Commitment
-\newcommand{\PCPP}{\ComplexityFont{PCPP}} % Probabilistically Checkable Proof of Proximity
-\newcommand{\PKC}{\ComplexityFont{PKC}} % Public Key Cryptography
-\newcommand{\PKE}{\ComplexityFont{PKE}} % Public Key Encryption
-\newcommand{\PoK}{\ComplexityFont{PoK}} % Proof of Knowledge
-\newcommand{\PoKs}{\ComplexityFont{PoKs}} % Proofs of Knowledge (plural)
-\newcommand{\PoS}{\ComplexityFont{PoS}} % Proof of Space
-\newcommand{\PoW}{\ComplexityFont{PoW}} % Proof of Work
-\newcommand{\PoWs}{\ComplexityFont{PoWs}} % Proofs of Work (plural)
-\newcommand{\PPRF}{\ComplexityFont{PPRF}} % Punctured Pseudorandom function
-\newcommand{\PPT}{\ComplexityFont{PPT}} % Probabilistic Polynomial Time
-\newcommand{\PRF}{\ComplexityFont{PRF}} % Pseudorandom Function
-\newcommand{\PRGs}{\ComplexityFont{PRGs}} % Pseudorandom Generators (plural)
-\newcommand{\PRP}{\ComplexityFont{PRP}} % Pseudorandom Permutation
-\newcommand{\PRPfs}{\ComplexityFont{PRPfs}} % Pseudorandom Permutation (full security, plural)
-\newcommand{\QC}{\ComplexityFont{QC}} % Quantum Computation
-\newcommand{\QEC}{\ComplexityFont{QEC}} % Quantum Error Correction
-\newcommand{\QHE}{\ComplexityFont{QHE}} % Quantum Homomorphic Encryption
-\newcommand{\QKD}{\ComplexityFont{QKD}} % Quantum Key Distribution
-\newcommand{\QNR}{\ComplexityFont{QNR}} % Quadratic non-residue
-\newcommand{\QOT}{\ComplexityFont{QOT}} % Quantum Oblivious Transfer
-\newcommand{\QPRF}{\ComplexityFont{QPRF}} % Quantum Pseudorandom Function
-\newcommand{\QPRG}{\ComplexityFont{QPRG}} % Quantum Pseudorandom Generator
-\newcommand{\QR}{\ComplexityFont{QR}} % Quadratic residue
-\newcommand{\QROM}{\ComplexityFont{QROM}} % Quantum Random Oracle Model
-\newcommand{\QSS}{\ComplexityFont{QSS}} % Quantum Secret Sharing
-\newcommand{\RKA}{\ComplexityFont{RKA}} % Related-Key Attack
-\newcommand{\RLWE}{\ComplexityFont{RLWE}} % Ring Learning With Errors
-\newcommand{\RNG}{\ComplexityFont{RNG}} % Random Number Generator
-\newcommand{\RNGs}{\ComplexityFont{RNGs}} % Random Number Generators (plural)
-\newcommand{\RO}{\ComplexityFont{RO}} % Random Oracle
-\newcommand{\ROM}{\ComplexityFont{ROM}} % Random Oracle Model
-\newcommand{\RPG}{\ComplexityFont{RPG}} % Randomized Polynomial Games
-\newcommand{\RSA}{\ComplexityFont{RSA}} % Rivest-Shamir-Adleman cryptosystem
-\newcommand{\RSS}{\ComplexityFont{RSS}} % Robust Secret Sharing
-\newcommand{\RTP}{\ComplexityFont{RTP}} % Randomized Test Protocols
-\newcommand{\SDH}{\ComplexityFont{SDH}} % Strong Diffie-Hellman problem
-\newcommand{\SFE}{\ComplexityFont{SFE}} % Secure Function Evaluation
-\newcommand{\SIDH}{\ComplexityFont{SIDH}} % Supersingular Isogeny Diffie-Hellman
-\newcommand{\SIKE}{\ComplexityFont{SIKE}} % Supersingular Isogeny Key Encapsulation
-\newcommand{\SIP}{\ComplexityFont{SIP}} % Streaming Interactive Proof
-\newcommand{\SIPs}{\ComplexityFont{SIPs}} % Streaming Interactive Proofs (plural)
-\newcommand{\SIS}{\ComplexityFont{SIS}} % Short Integer Solution problem
-\newcommand{\SKE}{\ComplexityFont{SKE}} % Symmetric-Key Encryption
-\newcommand{\SMPC}{\ComplexityFont{SMPC}} % Secure Multiparty Computation
-\newcommand{\SSS}{\ComplexityFont{SSS}} % Secret Sharing Scheme
-\newcommand{\VC}{\ComplexityFont{VC}} % Vector Commitment
-\newcommand{\VCs}{\ComplexityFont{VCs}} % Vector Commitments (plural)
-\newcommand{\VSS}{\ComplexityFont{VSS}} % Verifiable Secret Sharing
-\newcommand{\ZK}{\ComplexityFont{ZK}} % Zero-Knowledge
-\newcommand{\ZKHVC}{\ComplexityFont{ZKHVC}} % Zero-Knowledge Honest-verifier Computational
-\newcommand{\ZKHVS}{\ComplexityFont{ZKHVS}} % Zero-Knowledge Honest-verifier Statistical
-\newcommand{\ZKP}{\ComplexityFont{ZKP}} % Zero-Knowledge Proof
-\newcommand{\ZKPC}{\ComplexityFont{ZKPC}} % Zero-Knowledge Perfect Completeness
-\newcommand{\ZKPoK}{\ComplexityFont{ZKPoK}} % Zero-Knowledge Proof of Knowledge
-\newcommand{\ZKPoKs}{\ComplexityFont{ZKPoKs}} % Zero-Knowledge Proofs of Knowledge (plural)
-\newcommand{\ZKPs}{\ComplexityFont{ZKPs}} % Zero-Knowledge Proofs (plural)
-\newcommand{\ZKs}{\ComplexityFont{ZKs}} % Zero-Knowledge Proofs (plural)
+\newcommand{\ABE}{\tcs@cf{ABE}} % Attribute-Based Encryption
+\newcommand{\ADEAD}{\tcs@cf{ADEAD}} % Authenticated Data Encryption Algorithm
+\newcommand{\BBQKD}{\tcs@cf{BB84}} % BB84 Quantum Key Distribution protocol
+\newcommand{\BDEAD}{\tcs@cf{BDEAD}} % Blind Data Encryption Algorithm
+\newcommand{\BSS}{\tcs@cf{BSS}} % Boolean Secret Sharing
+\newcommand{\CDH}{\tcs@cf{CDH}} % Computational Diffie-Hellman problem
+\newcommand{\DB}{\tcs@cf{DB}} % Database
+\newcommand{\DDH}{\tcs@cf{DDH}} % Decisional Diffie-Hellman problem
+\newcommand{\DLD}{\tcs@cf{DLD}} % Discrete Logarithm Difference
+\newcommand{\DLE}{\tcs@cf{DLE}} % Discrete Logarithm Equality
+\newcommand{\DLP}{\tcs@cf{DLP}} % Discrete Logarithm Problem
+\newcommand{\DS}{\tcs@cf{DS}} % Digital Signature
+\newcommand{\DSS}{\tcs@cf{DSS}} % Distributed Secret Sharing
+\newcommand{\ECC}{\tcs@cf{ECC}} % Elliptic Curve Cryptography
+\newcommand{\ECDH}{\tcs@cf{ECDH}} % Elliptic Curve Diffie-Hellman
+\newcommand{\ECDLP}{\tcs@cf{ECDLP}} % Elliptic Curve Discrete Logarithm Problem
+\newcommand{\EPR}{\tcs@cf{EPR}} % Einstein-Podolsky-Rosen pair (quantum entanglement)
+\newcommand{\FC}{\tcs@cf{FC}} % Functional Commitment
+\newcommand{\FHE}{\tcs@cf{FHE}} % Fully Homomorphic Encryption
+\newcommand{\FS}{\tcs@cf{FS}} % Fiat-Shamir Transformation
+\newcommand{\FSS}{\tcs@cf{FSS}} % Function Secret Sharing
+\newcommand{\HE}{\tcs@cf{HE}} % Homomorphic Encryption
+\newcommand{\HIBE}{\tcs@cf{HIBE}} % Hierarchical Identity-Based Encryption
+\newcommand{\HRA}{\tcs@cf{HRA}} % Homomorphic Random Access
+\newcommand{\HSS}{\tcs@cf{HSS}} % Homomorphic Secret Sharing
+\newcommand{\IBE}{\tcs@cf{IBE}} % Identity-Based Encryption
+\newcommand{\IOPP}{\tcs@cf{IOPP}} % Interactive Oracle Proof of Proximity
+\newcommand{\KEM}{\tcs@cf{KEM}} % Key Encapsulation Mechanism
+\newcommand{\LPN}{\tcs@cf{LPN}} % Learning Parity with Noise
+\newcommand{\LWE}{\tcs@cf{LWE}} % Learning with Errors problem
+\newcommand{\MPC}{\tcs@cf{MPC}} % Multiparty Computation
+\newcommand{\NIZK}{\tcs@cf{NIZK}} % Non-Interactive Zero-Knowledge
+\newcommand{\NIZKP}{\tcs@cf{NIZKP}} % Non-Interactive Zero-Knowledge Proof
+\newcommand{\NIZKPs}{\tcs@cf{NIZKPs}} % Non-Interactive Zero-Knowledge Proofs (plural)
+\newcommand{\NIZKs}{\tcs@cf{NIZKs}} % Non-Interactive Zero-Knowledge proofs (plural)
+\newcommand{\NTRU}{\tcs@cf{NTRU}} % NTRU encryption scheme
+\newcommand{\ORAM}{\tcs@cf{ORAM}} % Oblivious RAM
+\newcommand{\OT}{\tcs@cf{OT}} % Oblivious Transfer
+\newcommand{\OTS}{\tcs@cf{OTS}} % One-Time Signature
+\newcommand{\OWF}{\tcs@cf{OWF}} % One-Way Function
+\newcommand{\OWP}{\tcs@cf{OWP}} % One-Way Permutation
+\newcommand{\PC}{\tcs@cf{PC}} % Polynomial Commitment
+\newcommand{\PCPP}{\tcs@cf{PCPP}} % Probabilistically Checkable Proof of Proximity
+\newcommand{\PKC}{\tcs@cf{PKC}} % Public Key Cryptography
+\newcommand{\PKE}{\tcs@cf{PKE}} % Public Key Encryption
+\newcommand{\PoK}{\tcs@cf{PoK}} % Proof of Knowledge
+\newcommand{\PoKs}{\tcs@cf{PoKs}} % Proofs of Knowledge (plural)
+\newcommand{\PoS}{\tcs@cf{PoS}} % Proof of Space
+\newcommand{\PoW}{\tcs@cf{PoW}} % Proof of Work
+\newcommand{\PoWs}{\tcs@cf{PoWs}} % Proofs of Work (plural)
+\newcommand{\PPRF}{\tcs@cf{PPRF}} % Punctured Pseudorandom function
+\newcommand{\PPT}{\tcs@cf{PPT}} % Probabilistic Polynomial Time
+\newcommand{\PRF}{\tcs@cf{PRF}} % Pseudorandom Function
+\newcommand{\PRGs}{\tcs@cf{PRGs}} % Pseudorandom Generators (plural)
+\newcommand{\PRP}{\tcs@cf{PRP}} % Pseudorandom Permutation
+\newcommand{\PRPfs}{\tcs@cf{PRPfs}} % Pseudorandom Permutation (full security, plural)
+\newcommand{\QC}{\tcs@cf{QC}} % Quantum Computation
+\newcommand{\QEC}{\tcs@cf{QEC}} % Quantum Error Correction
+\newcommand{\QHE}{\tcs@cf{QHE}} % Quantum Homomorphic Encryption
+\newcommand{\QKD}{\tcs@cf{QKD}} % Quantum Key Distribution
+\newcommand{\QNR}{\tcs@cf{QNR}} % Quadratic non-residue
+\newcommand{\QOT}{\tcs@cf{QOT}} % Quantum Oblivious Transfer
+\newcommand{\QPRF}{\tcs@cf{QPRF}} % Quantum Pseudorandom Function
+\newcommand{\QPRG}{\tcs@cf{QPRG}} % Quantum Pseudorandom Generator
+\newcommand{\QR}{\tcs@cf{QR}} % Quadratic residue
+\newcommand{\QROM}{\tcs@cf{QROM}} % Quantum Random Oracle Model
+\newcommand{\QSS}{\tcs@cf{QSS}} % Quantum Secret Sharing
+\newcommand{\RKA}{\tcs@cf{RKA}} % Related-Key Attack
+\newcommand{\RLWE}{\tcs@cf{RLWE}} % Ring Learning With Errors
+\newcommand{\RNG}{\tcs@cf{RNG}} % Random Number Generator
+\newcommand{\RNGs}{\tcs@cf{RNGs}} % Random Number Generators (plural)
+\newcommand{\RO}{\tcs@cf{RO}} % Random Oracle
+\newcommand{\ROM}{\tcs@cf{ROM}} % Random Oracle Model
+\newcommand{\RPG}{\tcs@cf{RPG}} % Randomized Polynomial Games
+\newcommand{\RSA}{\tcs@cf{RSA}} % Rivest-Shamir-Adleman cryptosystem
+\newcommand{\RSS}{\tcs@cf{RSS}} % Robust Secret Sharing
+\newcommand{\RTP}{\tcs@cf{RTP}} % Randomized Test Protocols
+\newcommand{\SDH}{\tcs@cf{SDH}} % Strong Diffie-Hellman problem
+\newcommand{\SFE}{\tcs@cf{SFE}} % Secure Function Evaluation
+\newcommand{\SIDH}{\tcs@cf{SIDH}} % Supersingular Isogeny Diffie-Hellman
+\newcommand{\SIKE}{\tcs@cf{SIKE}} % Supersingular Isogeny Key Encapsulation
+\newcommand{\SIP}{\tcs@cf{SIP}} % Streaming Interactive Proof
+\newcommand{\SIPs}{\tcs@cf{SIPs}} % Streaming Interactive Proofs (plural)
+\newcommand{\SIS}{\tcs@cf{SIS}} % Short Integer Solution problem
+\newcommand{\SKE}{\tcs@cf{SKE}} % Symmetric-Key Encryption
+\newcommand{\SMPC}{\tcs@cf{SMPC}} % Secure Multiparty Computation
+\newcommand{\SSS}{\tcs@cf{SSS}} % Secret Sharing Scheme
+\newcommand{\VC}{\tcs@cf{VC}} % Vector Commitment
+\newcommand{\VCs}{\tcs@cf{VCs}} % Vector Commitments (plural)
+\newcommand{\VSS}{\tcs@cf{VSS}} % Verifiable Secret Sharing
+\newcommand{\ZK}{\tcs@cf{ZK}} % Zero-Knowledge
+\newcommand{\ZKHVC}{\tcs@cf{ZKHVC}} % Zero-Knowledge Honest-verifier Computational
+\newcommand{\ZKHVS}{\tcs@cf{ZKHVS}} % Zero-Knowledge Honest-verifier Statistical
+\newcommand{\ZKP}{\tcs@cf{ZKP}} % Zero-Knowledge Proof
+\newcommand{\ZKPC}{\tcs@cf{ZKPC}} % Zero-Knowledge Perfect Completeness
+\newcommand{\ZKPoK}{\tcs@cf{ZKPoK}} % Zero-Knowledge Proof of Knowledge
+\newcommand{\ZKPoKs}{\tcs@cf{ZKPoKs}} % Zero-Knowledge Proofs of Knowledge (plural)
+\newcommand{\ZKPs}{\tcs@cf{ZKPs}} % Zero-Knowledge Proofs (plural)
+\newcommand{\ZKs}{\tcs@cf{ZKs}} % Zero-Knowledge Proofs (plural)
 
-\newcommand{\kSDH}{\inmath{k\mathhyphen\SDH}} % k-Strong Diffie-Hellman problem
-\newcommand{\qSDH}{\inmath{q\mathhyphen\SDH}} % q-Strong Diffie-Hellman problem
+\newcommand{\kSDH}{\tcs@mm{k\mathhyphen\SDH}} % k-Strong Diffie-Hellman problem
+\newcommand{\qSDH}{\tcs@mm{q\mathhyphen\SDH}} % q-Strong Diffie-Hellman problem
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Generic Interfaces, Lifecycle, and Core Primitives
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\Abort}{\inmathsf{Abort}} % Abort operation
-\newcommand{\Access}{\inmathsf{Access}} % Access function
-\newcommand{\Accumulate}{\inmathsf{Accumulate}} % Accumulation function
-\newcommand{\Add}{\inmathsf{Add}} % Addition function
-\newcommand{\Adversary}{\inmathsf{A}} % Adversary
-\newcommand{\Auxiliary}{\inmathsf{Aux}} % Auxiliary input
-\newcommand{\Batch}{\inmathsf{Batch}} % Batch processing
-\newcommand{\Bias}{\inmathsf{Bias}} % Bias function
-\newcommand{\Cert}{\inmathsf{Cert}} % Certificate function
-\newcommand{\Certify}{\inmathsf{Certify}} % Certificate function
-\newcommand{\Chal}{\inmathsf{Chal}} % Challenge 
-\newcommand{\Challenge}{\inmathsf{Challenge}} % Challenge function
-\newcommand{\Close}{\inmathsf{Close}} % Close function
-\newcommand{\Codomain}{\inmathsf{Codomain}} % Codomain function
-\newcommand{\Collisions}{\inmathsf{Col}} % Collision function
-\newcommand{\Commit}{\inmathsf{Com}} % Commitment function
-\newcommand{\Compile}{\inmathsf{Compile}} % Compiler function
-\newcommand{\Compose}{\inmathsf{Compose}} % Composition function
-\newcommand{\Compress}{\inmathsf{Compress}} % Compression function
-\newcommand{\CompressFE}{\inmathsf{CompressFE}} % FE compression function
-\newcommand{\Compute}{\inmathsf{Compute}} % Computation function
-\newcommand{\ComputeFE}{\inmathsf{ComputeFE}} % FE computation function
-\newcommand{\Cred}{\inmathsf{Cred}} % Credential function
-\newcommand{\Dec}{\inmathsf{Dec}} % Decryption function
-\newcommand{\Decap}{\inmathsf{Decap}} % Key decapsulation mechanism
-\newcommand{\Decommit}{\inmathsf{Decom}} % Decommitment function
-\newcommand{\Decrypt}{\inmathsf{Dec}} % Decryption function
-\newcommand{\DecryptFE}{\inmathsf{DecFE}} % FE decryption
-\newcommand{\Delete}{\inmathsf{Delete}} % Delete function
-\newcommand{\Domain}{\inmathsf{Domain}} % Domain
-\newcommand{\Easy}{\inmathsf{Easy}} % Easy function
-\newcommand{\Enc}{\inmathsf{Enc}} % Encryption function
-\newcommand{\Encap}{\inmathsf{Encap}} % Key encapsulation mechanism
-\newcommand{\Encrypt}{\inmathsf{Enc}} % Encryption function
-\newcommand{\EncryptFE}{\inmathsf{EncFE}} % FE encryption
-\newcommand{\Environment}{\inmathsf{Env}} % Environment
-\newcommand{\Equivocate}{\inmathsf{Equivocate}} % Equivocate function
-\newcommand{\Eval}{\inmathsf{Eval}} % Homomorphic evaluation
-\newcommand{\Exp}{\inmathsf{Exp}} % Experiment
-\newcommand{\ExpVrfy}{\inmathsf{ExpVrfy}} % ExpVrfy function
-\newcommand{\Ext}{\inmathsf{Ext}} % Extraction function
-\newcommand{\Extract}{\inmathsf{Extract}} % Knowledge extractor
-\newcommand{\ExtractKey}{\inmathsf{ExtractKey}} % Extract key from structure
-\newcommand{\Function}{\inmathsf{Func}} % Function
+\newcommand{\Abort}{\tcs@sf{Abort}} % Abort operation
+\newcommand{\Access}{\tcs@sf{Access}} % Access function
+\newcommand{\Accumulate}{\tcs@sf{Accumulate}} % Accumulation function
+\newcommand{\Add}{\tcs@sf{Add}} % Addition function
+\newcommand{\Adversary}{\tcs@sf{A}} % Adversary
+\newcommand{\Auxiliary}{\tcs@sf{Aux}} % Auxiliary input
+\newcommand{\Batch}{\tcs@sf{Batch}} % Batch processing
+\newcommand{\Bias}{\tcs@sf{Bias}} % Bias function
+\newcommand{\Cert}{\tcs@sf{Cert}} % Certificate function
+\newcommand{\Certify}{\tcs@sf{Certify}} % Certificate function
+\newcommand{\Chal}{\tcs@sf{Chal}} % Challenge 
+\newcommand{\Challenge}{\tcs@sf{Challenge}} % Challenge function
+\newcommand{\Close}{\tcs@sf{Close}} % Close function
+\newcommand{\Codomain}{\tcs@sf{Codomain}} % Codomain function
+\newcommand{\Collisions}{\tcs@sf{Col}} % Collision function
+\newcommand{\Commit}{\tcs@sf{Com}} % Commitment function
+\newcommand{\Compile}{\tcs@sf{Compile}} % Compiler function
+\newcommand{\Compose}{\tcs@sf{Compose}} % Composition function
+\newcommand{\Compress}{\tcs@sf{Compress}} % Compression function
+\newcommand{\CompressFE}{\tcs@sf{CompressFE}} % FE compression function
+\newcommand{\Compute}{\tcs@sf{Compute}} % Computation function
+\newcommand{\ComputeFE}{\tcs@sf{ComputeFE}} % FE computation function
+\newcommand{\Cred}{\tcs@sf{Cred}} % Credential function
+\newcommand{\Dec}{\tcs@sf{Dec}} % Decryption function
+\newcommand{\Decap}{\tcs@sf{Decap}} % Key decapsulation mechanism
+\newcommand{\Decommit}{\tcs@sf{Decom}} % Decommitment function
+\newcommand{\Decrypt}{\tcs@sf{Dec}} % Decryption function
+\newcommand{\DecryptFE}{\tcs@sf{DecFE}} % FE decryption
+\newcommand{\Delete}{\tcs@sf{Delete}} % Delete function
+\newcommand{\Domain}{\tcs@sf{Domain}} % Domain
+\newcommand{\Easy}{\tcs@sf{Easy}} % Easy function
+\newcommand{\Enc}{\tcs@sf{Enc}} % Encryption function
+\newcommand{\Encap}{\tcs@sf{Encap}} % Key encapsulation mechanism
+\newcommand{\Encrypt}{\tcs@sf{Enc}} % Encryption function
+\newcommand{\EncryptFE}{\tcs@sf{EncFE}} % FE encryption
+\newcommand{\Environment}{\tcs@sf{Env}} % Environment
+\newcommand{\Equivocate}{\tcs@sf{Equivocate}} % Equivocate function
+\newcommand{\Eval}{\tcs@sf{Eval}} % Homomorphic evaluation
+\newcommand{\Exp}{\tcs@sf{Exp}} % Experiment
+\newcommand{\ExpVrfy}{\tcs@sf{ExpVrfy}} % ExpVrfy function
+\newcommand{\Ext}{\tcs@sf{Ext}} % Extraction function
+\newcommand{\Extract}{\tcs@sf{Extract}} % Knowledge extractor
+\newcommand{\ExtractKey}{\tcs@sf{ExtractKey}} % Extract key from structure
+\newcommand{\Function}{\tcs@sf{Func}} % Function
 \newcommand{\FunctionKeyGen}{\Function\KeyGen} % Function key generation
-\newcommand{\GenChal}{\inmathsf{GenChal}} % Challenge generation
-\newcommand{\GenCRS}{\inmathsf{GenCRS}} % CRS generation
-\newcommand{\GenKey}{\inmathsf{GenKey}} % Key generation
-\newcommand{\Hard}{\inmathsf{Hard}} % Hard
-\newcommand{\HardEquivocate}{\inmathsf{HardEquivocate}} % Hard equivocate function
-\newcommand{\Hash}{\inmathsf{Hash}} % Hash function
-\newcommand{\Hide}{\inmathsf{Hide}} % Hide function
-\newcommand{\Hint}{\inmathsf{Hint}} % Hint string
-\newcommand{\Ideal}{\inmathsf{Ideal}} % Ideal function
-\newcommand{\Init}{\inmathsf{Init}} % Initialization function
-\newcommand{\Inv}{\inmathsf{Inv}} % Inversion function
-\newcommand{\Issue}{\inmathsf{Issue}} % Issue function
-\newcommand{\Key}{\inmathsf{Key}} % Key symbol
-\newcommand{\KeyGen}{\inmathsf{KeyGen}} % Key generation function
-\newcommand{\KeyGenFE}{\inmathsf{KeyGenFE}} % FE key generation
-\newcommand{\Mac}{\inmathsf{MAC}} % Message authentication code
-\newcommand{\Mem}{\inmathsf{Mem}} % Membership function
-\newcommand{\Membership}{\inmathsf{Mem}} % Membership function
-\newcommand{\Message}{\inmathsf{Message}} % Message
-\newcommand{\Open}{\inmathsf{Open}} % Open function
-\newcommand{\Oracle}{\inmathsf{Oracle}} % Oracle
-\newcommand{\Output}{\inmathsf{Output}} % Output function
-\newcommand{\Parse}{\inmathsf{Parse}} % Parsing function
-\newcommand{\Polarize}{\inmathsf{Polarize}} % Polarization function
-\newcommand{\ProbGen}{\inmathsf{ProbGen}} % Probabilistic generator
-\newcommand{\Prove}{\inmathsf{Prove}} % Proving algorithm
-\newcommand{\Prover}{\inmathsf{Prover}} % Prover
-\newcommand{\Puncture}{\inmathsf{Puncture}} % Puncturing function
-\newcommand{\Query}{\inmathsf{Query}} % Oracle query
-\newcommand{\Question}{\inmathsf{Question}} % Question
-\newcommand{\Randomize}{\inmathsf{Randomize}} % Randomization function
-\newcommand{\Real}{\inmathsf{Real}} % Real-world function or proces
-\newcommand{\Recover}{\inmathsf{Recover}} % Solution recovery
-\newcommand{\RecoverSol}{\inmathsf{RecoverSol}} % Solution recovery
-\newcommand{\Refresh}{\inmathsf{Refresh}} % Refresh function
-\newcommand{\Rerand}{\inmathsf{Rerand}} % Rerandomization function
-\newcommand{\Revoke}{\inmathsf{Revoke}} % Revoke function
-\newcommand{\Reward}{\inmathsf{Reward}} % Reward function
-\newcommand{\Samp}{\inmathsf{Samp}} % Sampling function
-\newcommand{\Sample}{\inmathsf{Sample}} % Sampling function
-\newcommand{\Setup}{\inmathsf{Setup}} % Setup function
-\newcommand{\Sig}{\inmathsf{Sig}} % Signature function
-\newcommand{\Sign}{\inmathsf{Sign}} % Signing algorithm
-\newcommand{\Sim}{\inmathsf{Sim}} % Simulator function
-\newcommand{\Simulate}{\inmathsf{Simulate}} % Simulator algorithm
-\newcommand{\Simulator}{\inmathsf{Sim}} % Simulator
-\newcommand{\SoftCommit}{\inmathsf{SoftCom}} % Soft commitment function
-\newcommand{\SoftOpen}{\inmathsf{SoftOpen}} % Soft commitment opening function
-\newcommand{\Solution}{\inmathsf{Sol}} % Solution
-\newcommand{\State}{\inmathsf{State}} % State function
-\newcommand{\Test}{\inmathsf{Test}} % Test algorithm (e.g., indistinguishability)
-\newcommand{\Transform}{\inmathsf{Transform}} % Transformation function
-\newcommand{\Unhide}{\inmathsf{Unhide}} % Unhide function
-\newcommand{\Update}{\inmathsf{Update}} % Update function
-\newcommand{\UpdateKey}{\inmathsf{UpdateKey}} % Key update function
-\newcommand{\UpdateProof}{\inmathsf{UpdateProof}} % Proof update
-\newcommand{\UpdateWitness}{\inmathsf{UpdateWitness}} % Witness update
-\newcommand{\Ver}{\inmathsf{Ver}} % Verification algorithm
-\newcommand{\Verifier}{\inmathsf{Verifier}} % Verifier
-\newcommand{\Verify}{\inmathsf{Verify}} % Verification algorithm
-\newcommand{\VerifyMac}{\inmathsf{MacVer}} % MAC verification
-\newcommand{\VerifyMem}{\inmathsf{VerifyMem}} % Membership verification
-\newcommand{\VerifyMembership}{\inmathsf{VerifyMem}} % Membership verification
-\newcommand{\VerifyNonMem}{\inmathsf{VerifyNonMem}} % Non-membership verification
-\newcommand{\VerifyNonMembership}{\inmathsf{VerifyNonMem}} % Non-membership verification
-\newcommand{\VerifySig}{\inmathsf{Ver}} % Signature verification
-\newcommand{\Vf}{\inmathsf{Vf}} % Verification function
-\newcommand{\View}{\inmathsf{View}} % View of an interaction
-\newcommand{\Vrfy}{\inmathsf{Vrfy}} % Verification algorithm
-\newcommand{\WitGen}{\inmathsf{WitGen}} % Witness generation function
-\newcommand{\WitUpdate}{\inmathsf{WitUpd}} % Witness update function
+\newcommand{\GenChal}{\tcs@sf{GenChal}} % Challenge generation
+\newcommand{\GenCRS}{\tcs@sf{GenCRS}} % CRS generation
+\newcommand{\GenKey}{\tcs@sf{GenKey}} % Key generation
+\newcommand{\Hard}{\tcs@sf{Hard}} % Hard
+\newcommand{\HardEquivocate}{\tcs@sf{HardEquivocate}} % Hard equivocate function
+\newcommand{\Hash}{\tcs@sf{Hash}} % Hash function
+\newcommand{\Hide}{\tcs@sf{Hide}} % Hide function
+\newcommand{\Hint}{\tcs@sf{Hint}} % Hint string
+\newcommand{\Ideal}{\tcs@sf{Ideal}} % Ideal function
+\newcommand{\Init}{\tcs@sf{Init}} % Initialization function
+\newcommand{\Inv}{\tcs@sf{Inv}} % Inversion function
+\newcommand{\Issue}{\tcs@sf{Issue}} % Issue function
+\newcommand{\Key}{\tcs@sf{Key}} % Key symbol
+\newcommand{\KeyGen}{\tcs@sf{KeyGen}} % Key generation function
+\newcommand{\KeyGenFE}{\tcs@sf{KeyGenFE}} % FE key generation
+\newcommand{\Mac}{\tcs@sf{MAC}} % Message authentication code
+\newcommand{\Mem}{\tcs@sf{Mem}} % Membership function
+\newcommand{\Membership}{\tcs@sf{Mem}} % Membership function
+\newcommand{\Message}{\tcs@sf{Message}} % Message
+\newcommand{\Open}{\tcs@sf{Open}} % Open function
+\newcommand{\Oracle}{\tcs@sf{Oracle}} % Oracle
+\newcommand{\Output}{\tcs@sf{Output}} % Output function
+\newcommand{\Parse}{\tcs@sf{Parse}} % Parsing function
+\newcommand{\Polarize}{\tcs@sf{Polarize}} % Polarization function
+\newcommand{\ProbGen}{\tcs@sf{ProbGen}} % Probabilistic generator
+\newcommand{\Prove}{\tcs@sf{Prove}} % Proving algorithm
+\newcommand{\Prover}{\tcs@sf{Prover}} % Prover
+\newcommand{\Puncture}{\tcs@sf{Puncture}} % Puncturing function
+\newcommand{\Query}{\tcs@sf{Query}} % Oracle query
+\newcommand{\Question}{\tcs@sf{Question}} % Question
+\newcommand{\Randomize}{\tcs@sf{Randomize}} % Randomization function
+\newcommand{\Real}{\tcs@sf{Real}} % Real-world function or proces
+\newcommand{\Recover}{\tcs@sf{Recover}} % Solution recovery
+\newcommand{\RecoverSol}{\tcs@sf{RecoverSol}} % Solution recovery
+\newcommand{\Refresh}{\tcs@sf{Refresh}} % Refresh function
+\newcommand{\Rerand}{\tcs@sf{Rerand}} % Rerandomization function
+\newcommand{\Revoke}{\tcs@sf{Revoke}} % Revoke function
+\newcommand{\Reward}{\tcs@sf{Reward}} % Reward function
+\newcommand{\Samp}{\tcs@sf{Samp}} % Sampling function
+\newcommand{\Sample}{\tcs@sf{Sample}} % Sampling function
+\newcommand{\Setup}{\tcs@sf{Setup}} % Setup function
+\newcommand{\Sig}{\tcs@sf{Sig}} % Signature function
+\newcommand{\Sign}{\tcs@sf{Sign}} % Signing algorithm
+\newcommand{\Sim}{\tcs@sf{Sim}} % Simulator function
+\newcommand{\Simulate}{\tcs@sf{Simulate}} % Simulator algorithm
+\newcommand{\Simulator}{\tcs@sf{Sim}} % Simulator
+\newcommand{\SoftCommit}{\tcs@sf{SoftCom}} % Soft commitment function
+\newcommand{\SoftOpen}{\tcs@sf{SoftOpen}} % Soft commitment opening function
+\newcommand{\Solution}{\tcs@sf{Sol}} % Solution
+\newcommand{\State}{\tcs@sf{State}} % State function
+\newcommand{\Test}{\tcs@sf{Test}} % Test algorithm (e.g., indistinguishability)
+\newcommand{\Transform}{\tcs@sf{Transform}} % Transformation function
+\newcommand{\Unhide}{\tcs@sf{Unhide}} % Unhide function
+\newcommand{\Update}{\tcs@sf{Update}} % Update function
+\newcommand{\UpdateKey}{\tcs@sf{UpdateKey}} % Key update function
+\newcommand{\UpdateProof}{\tcs@sf{UpdateProof}} % Proof update
+\newcommand{\UpdateWitness}{\tcs@sf{UpdateWitness}} % Witness update
+\newcommand{\Ver}{\tcs@sf{Ver}} % Verification algorithm
+\newcommand{\Verifier}{\tcs@sf{Verifier}} % Verifier
+\newcommand{\Verify}{\tcs@sf{Verify}} % Verification algorithm
+\newcommand{\VerifyMac}{\tcs@sf{MacVer}} % MAC verification
+\newcommand{\VerifyMem}{\tcs@sf{VerifyMem}} % Membership verification
+\newcommand{\VerifyMembership}{\tcs@sf{VerifyMem}} % Membership verification
+\newcommand{\VerifyNonMem}{\tcs@sf{VerifyNonMem}} % Non-membership verification
+\newcommand{\VerifyNonMembership}{\tcs@sf{VerifyNonMem}} % Non-membership verification
+\newcommand{\VerifySig}{\tcs@sf{Ver}} % Signature verification
+\newcommand{\Vf}{\tcs@sf{Vf}} % Verification function
+\newcommand{\View}{\tcs@sf{View}} % View of an interaction
+\newcommand{\Vrfy}{\tcs@sf{Vrfy}} % Verification algorithm
+\newcommand{\WitGen}{\tcs@sf{WitGen}} % Witness generation function
+\newcommand{\WitUpdate}{\tcs@sf{WitUpd}} % Witness update function
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Miscellaneous Notations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\sample}{\inmath{\overset{\scriptscriptstyle\$}{\leftarrow}}} % Random sampling notation
+\newcommand{\Game}{\tcs@sf{Game}} % Game symbol
+\newcommand{\interact}[1]{\langle#1\rangle} % Interaction notation (Lazy Use)
+\newcommand{\Interact}[2]{\langle#1,#2\rangle} % Interaction notatio
+\newcommand{\Prot}{\tcs@mm{\Pi}} % Protocol symbol
+\newcommand{\ProtSans}{\tcs@mm{\sansPi}} % Protocol symbol in sans-serif
+\newcommand{\sample}{\tcs@mm{\overset{\scriptscriptstyle\$}{\leftarrow}}} % Random sampling notation
 \newcommand{\tinymath}[1]{{\scriptscriptstyle #1}} % Tiny font command
 
-\newcommand{\Game}{\inmathsf{Game}} % Game symbol
-\newcommand{\interact}[1]{\langle#1\rangle} % Interaction notation (Lazy Use)
-\newcommand{\Interact}[2]{\langle#1,#2\rangle} % Interaction notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Headers
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\@ifundefined{sansPi}{%
-	% \sansPi is undefined, define \Prot to \Pi
-	\newcommand{\Prot}{\inmath{\Pi}}
-}{
-	% \sansPi is defined, define \Prot to \sansPi
-	\newcommand{\Prot}{\inmath{\sansPi}}
-}
+\newcommand{\AssumptionHeader}[1]{\tcs@bf{Assumption}~#1}
+\newcommand{\FunctionHeader}[1]{\tcs@bf{Function}~#1}
+\newcommand{\GameHeader}[1]{\tcs@bf{Game}~#1}
+\newcommand{\InputHeader}[1]{\tcs@bf{Input}~#1}
+\newcommand{\ModelHeader}[1]{\tcs@bf{Model}~#1}
+\newcommand{\OracleHeader}[1]{\tcs@bf{Oracle}~#1}
+\newcommand{\OutputHeader}[1]{\tcs@bf{Output}~#1}
+\newcommand{\ProcedureHeader}[1]{\tcs@bf{Procedure}~#1}
+\newcommand{\ProtocolHeader}[1]{\tcs@bf{Protocol}~#1}
+\newcommand{\SchemeHeader}[1]{\tcs@bf{Scheme}~#1}
+\newcommand{\StateHeader}[1]{\tcs@bf{State}~#1}
+\newcommand{\SubProtocolHeader}[1]{\tcs@bf{Sub-Protocol}~#1}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Symbolic Notation for Cryptographic Inputs, Keys, Identifiers, and Labels
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\acc}{\inmathsf{acc}} % Accumulate
-\newcommand{\accept}{\inmathsf{accept}} % Acceptance
-\newcommand{\accumulate}{\inmathsf{accumulate}} % Accumulate
-\newcommand{\aux}{\inmathsf{aux}} % Auxiliary input
-\newcommand{\bias}{\inmathsf{bias}} % Bias function
-\newcommand{\cert}{\inmathsf{cert}} % Certificate
-\newcommand{\challengebit}{\inmathsf{b}} % Challenge bit
+\newcommand{\acc}{\tcs@sf{acc}} % Accumulate
+\newcommand{\accept}{\tcs@sf{accept}} % Acceptance
+\newcommand{\accumulate}{\tcs@sf{accumulate}} % Accumulate
+\newcommand{\aux}{\tcs@sf{aux}} % Auxiliary input
+\newcommand{\bias}{\tcs@sf{bias}} % Bias function
+\newcommand{\cert}{\tcs@sf{cert}} % Certificate
+\newcommand{\challengebit}{\tcs@sf{b}} % Challenge bit
 \newcommand{\challengebitcheck}{\challengebit^{\star}} % Checked challenge bit
-\newcommand{\commitment}{\inmathsf{c}} % Commitment
-\newcommand{\counter}{\inmathsf{count}} % Count
-\newcommand{\cred}{\inmathsf{cred}} % Credential
-\newcommand{\ct}{\inmathsf{ct}} % Ciphertext
+\newcommand{\commitment}{\tcs@sf{c}} % Commitment
+\newcommand{\counter}{\tcs@sf{count}} % Count
+\newcommand{\cred}{\tcs@sf{cred}} % Credential
+\newcommand{\ct}{\tcs@sf{ct}} % Ciphertext
 \newcommand{\ctx}{\ct} % Ciphertext
-\newcommand{\db}{\inmathsf{db}} % Database
-\newcommand{\decision}{\inmathsf{decision}} % Decision
-\newcommand{\decommitment}{\inmathsf{d}} % Decommitment
-\newcommand{\delete}{\inmathsf{delete}} % Delete
-\newcommand{\digest}{\inmathsf{dgst}} % Digest
-\newcommand{\diO}{\inmathsf{d}\iO} % Differing input iO
-\newcommand{\dk}{\inmathsf{dk}} % Decryption key
-\newcommand{\ek}{\inmathsf{ek}} % Encryption key
-\newcommand{\emptytxt}{\inmathsf{empty}} % Empty
-\newcommand{\event}{\inmathsf{event}} % Event indicator
-\newcommand{\ext}{\inmathsf{Ext}} % Extractor
-\newcommand{\extractor}{\inmathsf{Ext}} % Extractor
-\newcommand{\failure}{\inmathsf{failure}} % Failure
-\newcommand{\flag}{\inmathsf{flag}} % Flag
-\newcommand{\hash}{\inmathsf{h}} % Hash output
-\newcommand{\hashttime}{\inmathsf{ht}} % Time taken to hash
-\newcommand{\hk}{\inmathsf{hk}} % Hash key
-\newcommand{\hold}{\inmathsf{hold}} % Hold
-\newcommand{\id}{\inmathsf{id}} % Identity / identifier
-\newcommand{\iv}{\inmathsf{iv}} % Initialization vector
-\newcommand{\k}{\inmathsf{k}} % Generic key
+\newcommand{\db}{\tcs@sf{db}} % Database
+\newcommand{\decision}{\tcs@sf{decision}} % Decision
+\newcommand{\decommitment}{\tcs@sf{d}} % Decommitment
+\newcommand{\delete}{\tcs@sf{delete}} % Delete
+\newcommand{\digest}{\tcs@sf{dgst}} % Digest
+\newcommand{\diO}{\tcs@sf{d}\iO} % Differing input iO
+\newcommand{\dk}{\tcs@sf{dk}} % Decryption key
+\newcommand{\ek}{\tcs@sf{ek}} % Encryption key
+\newcommand{\emptytxt}{\tcs@sf{empty}} % Empty
+\newcommand{\event}{\tcs@sf{event}} % Event indicator
+\newcommand{\ext}{\tcs@sf{Ext}} % Extractor
+\newcommand{\extractor}{\tcs@sf{Ext}} % Extractor
+\newcommand{\failure}{\tcs@sf{failure}} % Failure
+\newcommand{\flag}{\tcs@sf{flag}} % Flag
+\newcommand{\hash}{\tcs@sf{h}} % Hash output
+\newcommand{\hashttime}{\tcs@sf{ht}} % Time taken to hash
+\newcommand{\hk}{\tcs@sf{hk}} % Hash key
+\newcommand{\hold}{\tcs@sf{hold}} % Hold
+\newcommand{\id}{\tcs@sf{id}} % Identity / identifier
+\newcommand{\iv}{\tcs@sf{iv}} % Initialization vector
+\newcommand{\k}{\tcs@sf{k}} % Generic key
 \newcommand{\keytxt}{\k} % Generic key
-\newcommand{\labelsym}{\inmathsf{lbl}} % Label (e.g., for commitment schemes)
-\newcommand{\lengthblock}{\ell_{\inmathsf{blk}}} % Block length
-\newcommand{\lengthin}{\ell_{\inmathsf{in}}} % Input length
-\newcommand{\lengthkey}{\ell_{\inmathsf{key}}} % Key length
-\newcommand{\lengthout}{\ell_{\inmathsf{out}}} % Output length
-\newcommand{\looptxt}{\inmathsf{loop}} % Loop
-\newcommand{\mac}{\inmathsf{mac}} % Message authentication code
-\newcommand{\mackey}{\inmathsf{mk}} % Message authentication code key
-\newcommand{\meta}{\inmathsf{meta}} % Metadata (e.g., public tag, header info)
-\newcommand{\msg}{\inmathsf{m}} % Message
-\newcommand{\msk}{\inmathsf{msk}} % Master secret key
-\newcommand{\nonce}{\inmathsf{nonce}} % Nonce
-\newcommand{\nulltxt}{\inmathsf{null}} % Null
-\newcommand{\ok}{\inmathsf{ok}} % Obfuscation key
-\newcommand{\out}{\inmathsf{output}} % Output
-\newcommand{\pad}{\inmathsf{pad}} % Padding
-\newcommand{\pk}{\inmathsf{pk}} % Public key
-\newcommand{\priO}{\inmathsf{PR}\iO} % Private input iO
-\newcommand{\prooftxt}{\inmathsf{proof}} % Proof (e.g., in NIZK)
-\newcommand{\prover}{\inmathsf{P}} % Prover
-\newcommand{\pt}{\inmathsf{pt}} % Plaintext
-\newcommand{\qq}{\inmathsf{qq}} % Public query
-\newcommand{\query}{\inmathsf{q}} % Query
-\newcommand{\reject}{\inmathsf{reject}} % Rejection
-\newcommand{\release}{\inmathsf{release}} % Release
-\newcommand{\round}{\inmathsf{round}} % Round
-\newcommand{\salt}{\inmathsf{salt}} % Salt
-\newcommand{\sig}{\inmathsf{sig}} % Signature
-\newcommand{\sigk}{\inmathsf{sigk}} % Signing key
-\newcommand{\sk}{\inmathsf{sk}} % Secret key
-\newcommand{\st}{\inmathsf{st}} % State
-\newcommand{\state}{\inmathsf{state}} % State
-\newcommand{\step}{\inmathsf{step}} % Step
-\newcommand{\succ}{\inmathsf{succ}} % Successor function
-\newcommand{\success}{\inmathsf{success}} % Success
-\newcommand{\tagg}{\inmathsf{tag}} % Tag (for MAC or signature)
-\newcommand{\td}{\inmathsf{td}} % Trapdoor
-\newcommand{\tk}{\inmathsf{tk}} % Token key (e.g., for traitor tracing)
-\newcommand{\transcript}{\inmathsf{trans}} % Transcript of interaction
-\newcommand{\val}{\inmathsf{val}} % Value
-\newcommand{\valuetxt}{\inmathsf{value}} % Value
-\newcommand{\verifier}{\inmathsf{V}} % Verifier
-\newcommand{\vk}{\inmathsf{vk}} % Verification key
+\newcommand{\labelsym}{\tcs@sf{lbl}} % Label (e.g., for commitment schemes)
+\newcommand{\lengthblock}{\ell_{\tcs@sf{blk}}} % Block length
+\newcommand{\lengthin}{\ell_{\tcs@sf{in}}} % Input length
+\newcommand{\lengthkey}{\ell_{\tcs@sf{key}}} % Key length
+\newcommand{\lengthout}{\ell_{\tcs@sf{out}}} % Output length
+\newcommand{\looptxt}{\tcs@sf{loop}} % Loop
+\newcommand{\mac}{\tcs@sf{mac}} % Message authentication code
+\newcommand{\mackey}{\tcs@sf{mk}} % Message authentication code key
+\newcommand{\meta}{\tcs@sf{meta}} % Metadata (e.g., public tag, header info)
+\newcommand{\msg}{\tcs@sf{m}} % Message
+\newcommand{\msk}{\tcs@sf{msk}} % Master secret key
+\newcommand{\nonce}{\tcs@sf{nonce}} % Nonce
+\newcommand{\nulltxt}{\tcs@sf{null}} % Null
+\newcommand{\ok}{\tcs@sf{ok}} % Obfuscation key
+\newcommand{\out}{\tcs@sf{output}} % Output
+\newcommand{\pad}{\tcs@sf{pad}} % Padding
+\newcommand{\pk}{\tcs@sf{pk}} % Public key
+\newcommand{\priO}{\tcs@sf{PR}\iO} % Private input iO
+\newcommand{\prooftxt}{\tcs@sf{proof}} % Proof (e.g., in NIZK)
+\newcommand{\prover}{\tcs@sf{P}} % Prover
+\newcommand{\pt}{\tcs@sf{pt}} % Plaintext
+\newcommand{\qq}{\tcs@sf{qq}} % Public query
+\newcommand{\query}{\tcs@sf{q}} % Query
+\newcommand{\reject}{\tcs@sf{reject}} % Rejection
+\newcommand{\release}{\tcs@sf{release}} % Release
+\newcommand{\reward}{\tcs@sf{reward}} % Reward
+\newcommand{\round}{\tcs@sf{round}} % Round
+\newcommand{\salt}{\tcs@sf{salt}} % Salt
+\newcommand{\sig}{\tcs@sf{sig}} % Signature
+\newcommand{\sigk}{\tcs@sf{sigk}} % Signing key
+\newcommand{\sk}{\tcs@sf{sk}} % Secret key
+\newcommand{\st}{\tcs@sf{st}} % State
+\newcommand{\state}{\tcs@sf{state}} % State
+\newcommand{\step}{\tcs@sf{step}} % Step
+\newcommand{\succ}{\tcs@sf{succ}} % Successor function
+\newcommand{\success}{\tcs@sf{success}} % Success
+\newcommand{\tagg}{\tcs@sf{tag}} % Tag (for MAC or signature)
+\newcommand{\td}{\tcs@sf{td}} % Trapdoor
+\newcommand{\tk}{\tcs@sf{tk}} % Token key (e.g., for traitor tracing)
+\newcommand{\transcript}{\tcs@sf{trans}} % Transcript of interaction
+\newcommand{\val}{\tcs@sf{val}} % Value
+\newcommand{\valuetxt}{\tcs@sf{value}} % Value
+\newcommand{\verifier}{\tcs@sf{V}} % Verifier
+\newcommand{\vk}{\tcs@sf{vk}} % Verification key
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Generic Theoretical Computer Science Notations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\Alphabet}{\inmathsf{\Sigma}} % Alphabet 
-\newcommand{\AlphabetSize}{\inmathsf{\lambda}} % Size of alphabet 
+\newcommand{\Alphabet}{\tcs@sf{\Sigma}} % Alphabet 
+\newcommand{\AlphabetSize}{\tcs@sf{\lambda}} % Size of alphabet 
 \newcommand{\Concat}{\mathbin{\parallel}} % Concatenation operator
 \newcommand{\EmptyString}{\varepsilon} % Empty string
 \newcommand{\Formula}{\varphi} % Boolean formula
 \newcommand{\IndexVar}{\mathbbm{i}} % Index variable
 \newcommand{\InputExplicit}{\mathbbm{y}} % Explicit input
 \newcommand{\InputImplicit}{\mathbbm{x}} % Implicit input
-\newcommand{\Instance}{\inmathsf{x}} % Input instance
-\newcommand{\Language}{\inmathscr{L}} % Language
-\newcommand{\Left}{\inmathsf{L}} % Left symbol (e.g., for tree or string)
+\newcommand{\Instance}{\tcs@sf{x}} % Input instance
+\newcommand{\Language}{\tcs@sr{L}} % Language
+\newcommand{\Left}{\tcs@sf{L}} % Left symbol (e.g., for tree or string)
 \newcommand{\LeftSymb}{\blacktriangleleft} % Black left-pointing triangle symbol
-\newcommand{\Prefix}{\inmathsf{prefix}} % Prefix of a string or sequence
-\newcommand{\Relation}{\inmathcal{R}} % Relation
-\newcommand{\Right}{\inmathsf{R}} % Right symbol (e.g., for tree or string)
+\newcommand{\Prefix}{\tcs@sf{prefix}} % Prefix of a string or sequence
+\newcommand{\Relation}{\tcs@cl{R}} % Relation
+\newcommand{\Right}{\tcs@sf{R}} % Right symbol (e.g., for tree or string)
 \newcommand{\RightSymb}{\blacktriangleright} % Black right-pointing triangle symbol
-\newcommand{\Statement}{\inmathsf{x}} % Statement
-\newcommand{\Suffix}{\inmathsf{suffix}} % Suffix of a string or sequence
+\newcommand{\Statement}{\tcs@sf{x}} % Statement
+\newcommand{\Suffix}{\tcs@sf{suffix}} % Suffix of a string or sequence
 \newcommand{\SymDiff}{\triangle} % Symmetric difference of sets
-\newcommand{\Witness}{\inmathsf{w}} % Witness
+\newcommand{\Witness}{\tcs@sf{w}} % Witness
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Turing Machines
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\TM}{\ComplexityFont{TM}} % Turing machine
-\newcommand{\TMAccept}{\inmathsf{accept}} % Accept state
-\newcommand{\TMEnd}{\inmathsf{end}} % End state
-\newcommand{\TMInput}{\inmathsf{x}} % Input symbol
-\newcommand{\TMOutput}{\inmathsf{y}} % Output symbol
-\newcommand{\TMReject}{\inmathsf{reject}} % Reject state
-\newcommand{\TMStart}{\inmathsf{start}} % Start state
-\newcommand{\TMState}{\inmathsf{q}} % Machine state
-\newcommand{\TMTransition}{\inmathsf{t}} % Transition function
+\newcommand{\TM}{\tcs@cf{TM}} % Turing machine
+\newcommand{\TMAccept}{\tcs@sf{accept}} % Accept state
+\newcommand{\TMEnd}{\tcs@sf{end}} % End state
+\newcommand{\TMInput}{\tcs@sf{x}} % Input symbol
+\newcommand{\TMOutput}{\tcs@sf{y}} % Output symbol
+\newcommand{\TMReject}{\tcs@sf{reject}} % Reject state
+\newcommand{\TMStart}{\tcs@sf{start}} % Start state
+\newcommand{\TMState}{\tcs@sf{q}} % Machine state
+\newcommand{\TMTransition}{\tcs@sf{t}} % Transition function
 
 % Turing Machine Aliases and Models
-\newcommand{\DTM}{\ComplexityFont{DTM}} % Deterministic Turing machine
-\newcommand{\NTM}{\ComplexityFont{NTM}} % Non-deterministic Turing machine
-\newcommand{\PTM}{\ComplexityFont{PTM}} % Probabilistic Turing machine
-\newcommand{\UTM}{\ComplexityFont{UTM}} % Universal Turing machine
-\newcommand{\LTM}{\ComplexityFont{LTM}} % Linear-time Turing machine
-\newcommand{\RTM}{\ComplexityFont{RTM}} % Random-access Turing machine
-\newcommand{\STM}{\ComplexityFont{STM}} % Space-bounded Turing machine
-\newcommand{\TTM}{\ComplexityFont{TTM}} % Time-bounded Turing machine
+\newcommand{\DTM}{\tcs@cf{DTM}} % Deterministic Turing machine
+\newcommand{\NTM}{\tcs@cf{NTM}} % Non-deterministic Turing machine
+\newcommand{\PTM}{\tcs@cf{PTM}} % Probabilistic Turing machine
+\newcommand{\UTM}{\tcs@cf{UTM}} % Universal Turing machine
+\newcommand{\LTM}{\tcs@cf{LTM}} % Linear-time Turing machine
+\newcommand{\RTM}{\tcs@cf{RTM}} % Random-access Turing machine
+\newcommand{\STM}{\tcs@cf{STM}} % Space-bounded Turing machine
+\newcommand{\TTM}{\tcs@cf{TTM}} % Time-bounded Turing machine
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Generic Functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\Func}{\inmathsf{F}} % Generic function symbol
-\newcommand{\FuncDomain}{\inmathsf{X}} % Function domain
+\newcommand{\Func}{\tcs@sf{F}} % Generic function symbol
+\newcommand{\FuncDomain}{\tcs@sf{X}} % Function domain
 \newcommand{\FuncEval}[2]{#1(#2)} % Function evaluation
-\newcommand{\FuncFamily}{\inmathcal{F}} % Alias for function family
-\newcommand{\FuncInput}{\inmathsf{x}} % Generic input to the function
-\newcommand{\FuncName}[1]{\inmathsf{F}_{#1}} % Named function, e.g., \FuncName{1}
-\newcommand{\FuncOutput}{\inmathsf{y}} % Generic output from the function
-\newcommand{\FuncParam}{\inmathsf{p}} % Generic function parameter
-\newcommand{\FuncRange}{\inmathsf{Y}} % Function range
+\newcommand{\FuncFamily}{\tcs@cl{F}} % Alias for function family
+\newcommand{\FuncInput}{\tcs@sf{x}} % Generic input to the function
+\newcommand{\FuncName}[1]{\tcs@sf{F}_{#1}} % Named function, e.g., \FuncName{1}
+\newcommand{\FuncOutput}{\tcs@sf{y}} % Generic output from the function
+\newcommand{\FuncParam}{\tcs@sf{p}} % Generic function parameter
+\newcommand{\FuncRange}{\tcs@sf{Y}} % Function range
 \newcommand{\FuncRestrict}[2]{#1|_{#2}} % Restriction of function #1 to set #2
-\newcommand{\FuncSet}{\inmathcal{F}} % Family of functions
+\newcommand{\FuncSet}{\tcs@cl{F}} % Family of functions
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Advice Complexity Notation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\Advice}{\inmathsf{z}} % Advice string
+\newcommand{\Advice}{\tcs@sf{z}} % Advice string
 \newcommand{\AdviceAt}[1]{\Advice_{#1}} % Advice at length #1
 \newcommand{\AdviceFn}[1]{\AdviceFunction(#1)} % Advice function of #1
-\newcommand{\AdviceFunction}{\inmathsf{a}} % Advice function
-\newcommand{\AdviceLength}{\inmathsf{\ell}} % Length of the advice
+\newcommand{\AdviceFunction}{\tcs@sf{a}} % Advice function
+\newcommand{\AdviceLength}{\tcs@sf{\ell}} % Length of the advice
 \newcommand{\AdviceMachine}{\TM^{\Advice}} % Machine with advice
-\newcommand{\AdviceSet}{\inmathsf{Y}} % Set of possible advice strings
+\newcommand{\AdviceSet}{\tcs@sf{Y}} % Set of possible advice strings
 \newcommand{\BPPwithAdvice}{\BPP/\Advice} % BPP with advice
 \newcommand{\EXPwithAdvice}{\EXP/\Advice} % EXP with advice
 \newcommand{\NPwithAdvice}{\NP/\Advice} % NP with advice
@@ -532,49 +641,49 @@
 % Entropy and Sources
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\AffineSource}{\inmathsf{AffSrc}} % Affine source
-\newcommand{\BlockSource}{\inmathsf{BlockSrc}} % Block source
-\newcommand{\CondEntropy}[2]{\inmathsf{H}(#1 \mid #2)} % Conditional Shannon entropy
-\newcommand{\CondMinEntropy}[2]{\inmathsf{H}_{\infty}(#1 \mid #2)} % Conditional min-entropy
-\newcommand{\Entropy}{\inmathsf{H}} % General entropy function
+\newcommand{\AffineSource}{\tcs@sf{AffSrc}} % Affine source
+\newcommand{\BlockSource}{\tcs@sf{BlockSrc}} % Block source
+\newcommand{\CondEntropy}[2]{\tcs@sf{H}(#1 \mid #2)} % Conditional Shannon entropy
+\newcommand{\CondMinEntropy}[2]{\tcs@sf{H}_{\infty}(#1 \mid #2)} % Conditional min-entropy
+\newcommand{\Entropy}{\tcs@sf{H}} % General entropy function
 \newcommand{\EntropyDeficit}{\delta_{\Entropy}} % Entropy deficit parameter
-\newcommand{\EntropyFunction}{\inmathsf{h}} % Function representing entropy (e.g., Shannon entropy)
-\newcommand{\EntropyLoss}{\inmathsf{loss}} % Entropy loss during extraction
+\newcommand{\EntropyFunction}{\tcs@sf{h}} % Function representing entropy (e.g., Shannon entropy)
+\newcommand{\EntropyLoss}{\tcs@sf{loss}} % Entropy loss during extraction
 \newcommand{\EntropyMachine}{\TM^{\Entropy}} % Turing machine with entropy access
-\newcommand{\EntropyOutput}{\inmathsf{Y}} % Output from an extractor
-\newcommand{\EntropyRate}{\inmathsf{rate}} % Entropy rate
-\newcommand{\EntropySample}{\inmathsf{z}} % A single entropy sample
-\newcommand{\EntropySet}{\inmathsf{Z}} % Set of entropy samples
-\newcommand{\EntropySource}{\inmathsf{X}} % Entropy source (random variable)
-\newcommand{\Extractor}{\inmathsf{Ext}} % Extractor function
-\newcommand{\ExtractorSeed}{\inmathsf{s}} % Seed for extractor
-\newcommand{\MinEntropy}{\inmathsf{H}_{\infty}} % Min-entropy
-\newcommand{\PwithEntropy}{\ComplexityFont{P}/\Entropy} % P with entropy advice
-\newcommand{\SanthaVaziraniSource}{\inmathsf{SVSrc}} % Santha–Vazirani source
-\newcommand{\ShannonEntropy}[1]{\inmathsf{H}(#1)} % Shannon entropy of variable
-\newcommand{\SideInfo}{\inmathsf{Z}} % Side information (e.g., leakage)
+\newcommand{\EntropyOutput}{\tcs@sf{Y}} % Output from an extractor
+\newcommand{\EntropyRate}{\tcs@sf{rate}} % Entropy rate
+\newcommand{\EntropySample}{\tcs@sf{z}} % A single entropy sample
+\newcommand{\EntropySet}{\tcs@sf{Z}} % Set of entropy samples
+\newcommand{\EntropySource}{\tcs@sf{X}} % Entropy source (random variable)
+\newcommand{\Extractor}{\tcs@sf{Ext}} % Extractor function
+\newcommand{\ExtractorSeed}{\tcs@sf{s}} % Seed for extractor
+\newcommand{\MinEntropy}{\tcs@sf{H}_{\infty}} % Min-entropy
+\newcommand{\PwithEntropy}{\tcs@cf{P}/\Entropy} % P with entropy advice
+\newcommand{\SanthaVaziraniSource}{\tcs@sf{SVSrc}} % Santha–Vazirani source
+\newcommand{\ShannonEntropy}[1]{\tcs@sf{H}(#1)} % Shannon entropy of variable
+\newcommand{\SideInfo}{\tcs@sf{Z}} % Side information (e.g., leakage)
 \newcommand{\SourceLength}{n} % Bit-length of source
-\newcommand{\WeakSource}{\inmathsf{W}} % Weak source
+\newcommand{\WeakSource}{\tcs@sf{W}} % Weak source
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Constraint Satisfaction Problems (CSP)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand{\CSPAlphabet}{\Alphabet} % Underlying alphabet (usually finite domain)
-\newcommand{\CSPArity}{\inmath{q}} % Arity of constraints (number of variables per constraint)
-\newcommand{\CSPAssignment}{\inmath{a}} % Assignment to variables
+\newcommand{\CSPArity}{\tcs@mm{q}} % Arity of constraints (number of variables per constraint)
+\newcommand{\CSPAssignment}{\tcs@mm{a}} % Assignment to variables
 \newcommand{\CSPAssignmentVec}{\asvec{\CSPAssignment}} % Full assignment vector
-\newcommand{\CSPConstraint}{\inmath{C}} % A single constraint predicate
-\newcommand{\CSPConstraintFunction}{\inmath{f}} % Constraint function (maps assignments to 0/1)
-\newcommand{\CSPConstraintNum}{\inmath{m}} % Number of constraints
-\newcommand{\CSPConstraintSet}{\inmathcal{C}} % Set of all constraints
+\newcommand{\CSPConstraint}{\tcs@mm{C}} % A single constraint predicate
+\newcommand{\CSPConstraintFunction}{\tcs@mm{f}} % Constraint function (maps assignments to 0/1)
+\newcommand{\CSPConstraintNum}{\tcs@mm{m}} % Number of constraints
+\newcommand{\CSPConstraintSet}{\tcs@cl{C}} % Set of all constraints
 \newcommand{\CSPDomain}{\CSPAlphabet} % Alias for domain
-\newcommand{\CSPInstance}{\inmath{\psi}} % CSP instance
-\newcommand{\CSPLength}{\inmath{\ell}} % Encoding length of the instance (optional)
-\newcommand{\CSPMaxVal}{\inmathsf{opt}} % Optimal value over all assignments
-\newcommand{\CSPVal}{\inmathsf{val}} % Value of an assignment
-\newcommand{\CSPVariables}{\inmath{n}} % Number of variables
-\newcommand{\CSPVarSet}{\inmath{[n]}} % Variable index set
+\newcommand{\CSPInstance}{\tcs@mm{\psi}} % CSP instance
+\newcommand{\CSPLength}{\tcs@mm{\ell}} % Encoding length of the instance (optional)
+\newcommand{\CSPMaxVal}{\tcs@sf{opt}} % Optimal value over all assignments
+\newcommand{\CSPVal}{\tcs@sf{val}} % Value of an assignment
+\newcommand{\CSPVariables}{\tcs@mm{n}} % Number of variables
+\newcommand{\CSPVarSet}{\tcs@mm{[n]}} % Variable index set
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % One-Way Function (OWF)
@@ -614,25 +723,25 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Complexity Classes
-\newcommand{\coNP}{\ComplexityFont{co\textsf{-}NP}} % Complement of NP
-\newcommand{\coRP}{\ComplexityFont{co\textsf{-}RP}} % Complement of RP
-\newcommand{\dIP}{\ComplexityFont{dIP}} % Deterministic Interactive Proofs
-\newcommand{\DRMA}{\ComplexityFont{DRMA}} % Decisional Rational Merlin-Arthur Proofs
-\newcommand{\EXPpoly}{\ComplexityFont{EXP/poly}} % EXP with Polynomial Advice
-\newcommand{\EXPTIME}{\ComplexityFont{EXPTIME}} % Class of Problems Solvable in Exponential Time
-\newcommand{\FRMA}{\ComplexityFont{FRMA}} % Functional Rational Merlin-Arthur Proofs
-\newcommand{\IOP}{\ComplexityFont{IOP}} % Interactive Oracle Proofs
-\newcommand{\MAP}{\ComplexityFont{MAP}} % Merlin-Arthur Proofs of Proximity
-\newcommand{\MRIP}{\ComplexityFont{MRIP}} % Multi-Rational Interactive Proofs
-\newcommand{\MRNIP}{\ComplexityFont{MRNIP}} % Multi-Rational Non-Interactive Proofs
-\newcommand{\NEXPTIME}{\ComplexityFont{NEXPTIME}} % Non-deterministic Exponential Time
-\newcommand{\NIPP}{\ComplexityFont{NIPP}} % Non-Interactive Proofs of Proximity
-\newcommand{\NPpoly}{\ComplexityFont{NP/poly}} % NP with Polynomial Advice
-\newcommand{\PSPACEpoly}{\ComplexityFont{PSPACE/poly}} % PSPACE with Polynomial Advice
-\newcommand{\PTIME}{\ComplexityFont{PTIME}} % Probabilistic Time
-\newcommand{\RIP}{\ComplexityFont{RIP}} % Rational Interactive Proofs
-\newcommand{\RNIP}{\ComplexityFont{RNIP}} % Rational Non-Interactive Proofs
-\newcommand{\SharpP}{\ComplexityFont{\#P}} % Sharp-P class
+\newcommand{\coNP}{\tcs@cf{co\textsf{-}NP}} % Complement of NP
+\newcommand{\coRP}{\tcs@cf{co\textsf{-}RP}} % Complement of RP
+\newcommand{\dIP}{\tcs@cf{dIP}} % Deterministic Interactive Proofs
+\newcommand{\DRMA}{\tcs@cf{DRMA}} % Decisional Rational Merlin-Arthur Proofs
+\newcommand{\EXPpoly}{\tcs@cf{EXP/poly}} % EXP with Polynomial Advice
+\newcommand{\EXPTIME}{\tcs@cf{EXPTIME}} % Class of Problems Solvable in Exponential Time
+\newcommand{\FRMA}{\tcs@cf{FRMA}} % Functional Rational Merlin-Arthur Proofs
+\newcommand{\IOP}{\tcs@cf{IOP}} % Interactive Oracle Proofs
+\newcommand{\MAP}{\tcs@cf{MAP}} % Merlin-Arthur Proofs of Proximity
+\newcommand{\MRIP}{\tcs@cf{MRIP}} % Multi-Rational Interactive Proofs
+\newcommand{\MRNIP}{\tcs@cf{MRNIP}} % Multi-Rational Non-Interactive Proofs
+\newcommand{\NEXPTIME}{\tcs@cf{NEXPTIME}} % Non-deterministic Exponential Time
+\newcommand{\NIPP}{\tcs@cf{NIPP}} % Non-Interactive Proofs of Proximity
+\newcommand{\NPpoly}{\tcs@cf{NP/poly}} % NP with Polynomial Advice
+\newcommand{\PSPACEpoly}{\tcs@cf{PSPACE/poly}} % PSPACE with Polynomial Advice
+\newcommand{\PTIME}{\tcs@cf{PTIME}} % Probabilistic Time
+\newcommand{\RIP}{\tcs@cf{RIP}} % Rational Interactive Proofs
+\newcommand{\RNIP}{\tcs@cf{RNIP}} % Rational Non-Interactive Proofs
+\newcommand{\SharpP}{\tcs@cf{\#P}} % Sharp-P class
 
 % Parametrized Complexity Classes
 \newcommand{\am}[1]{\AM\left(#1\right)} % Arthur-Merlin games
@@ -647,63 +756,63 @@
 \newcommand{\dspace}[1]{\SPACE\left(#1\right)} % Space
 
 % Complexity Measures and Related Notation
-\newcommand{\InputSize}{\inmathsf{n}} % Input size parameter
-\newcommand{\MachineTime}{\inmathcal{T}} % Machine (algorithm) running time
-\newcommand{\OutputSize}{\inmathsf{m}} % Output size parameter
-\newcommand{\QueryComplexity}{\inmathsf{q}} % Query complexity measure
-\newcommand{\RoundComplexity}{\inmathsf{r}} % Number of rounds in an interactive protocol
-\newcommand{\Space}{\inmathsf{s}} % Space complexity measure
-\newcommand{\Time}{\inmathsf{t}} % Time complexity measure
+\newcommand{\InputSize}{\tcs@sf{n}} % Input size parameter
+\newcommand{\MachineTime}{\tcs@cl{T}} % Machine (algorithm) running time
+\newcommand{\OutputSize}{\tcs@sf{m}} % Output size parameter
+\newcommand{\QueryComplexity}{\tcs@sf{q}} % Query complexity measure
+\newcommand{\RoundComplexity}{\tcs@sf{r}} % Number of rounds in an interactive protocol
+\newcommand{\Space}{\tcs@sf{s}} % Space complexity measure
+\newcommand{\Time}{\tcs@sf{t}} % Time complexity measure
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Promise Problems
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand{\GapProblem}[1]{\PromiseGap\textsf{-}#1} % The class of promise problems
-\newcommand{\PromiseClass}[1]{\inmathsf{Promise}\textsf{-}#1} % Specific class of promise problems, e.g., Promise-BPP, Promise-NP
-\newcommand{\PromiseDecider}{\inmathsf{A}} % Algorithm deciding under promise
-\newcommand{\PromiseDomain}{\inmathcal{D}} % Domain of definition of the promise
-\newcommand{\PromiseGap}{\inmathsf{Gap}} % Gap region (undefined behavior)
-\newcommand{\PromiseInst}{\inmathsf{x}} % A generic instance
-\newcommand{\PromiseLang}{\inmathscr{L}} % Promise language
-\newcommand{\PromiseNo}{\inmathsf{N}} % No-instances of the promise problem
-\newcommand{\PromiseProblem}{\inmath{\Pi}} % The class of promise problems
-\newcommand{\PromiseYes}{\inmathsf{Y}} % Yes-instances of the promise problem
+\newcommand{\PromiseClass}[1]{\tcs@sf{Promise}\textsf{-}#1} % Specific class of promise problems, e.g., Promise-BPP, Promise-NP
+\newcommand{\PromiseDecider}{\tcs@sf{A}} % Algorithm deciding under promise
+\newcommand{\PromiseDomain}{\tcs@cl{D}} % Domain of definition of the promise
+\newcommand{\PromiseGap}{\tcs@sf{Gap}} % Gap region (undefined behavior)
+\newcommand{\PromiseInst}{\tcs@sf{x}} % A generic instance
+\newcommand{\PromiseLang}{\tcs@sr{L}} % Promise language
+\newcommand{\PromiseNo}{\tcs@sf{N}} % No-instances of the promise problem
+\newcommand{\PromiseProblem}{\tcs@mm{\Pi}} % The class of promise problems
+\newcommand{\PromiseYes}{\tcs@sf{Y}} % Yes-instances of the promise problem
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Boolean Functions and Parameterized Families
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\Balanced}{\inmathsf{Balance}} % Balanced Boolean functions
-\newcommand{\BooleanDomain}{\inmathbb{B}} % Full set of Boolean functions
+\newcommand{\Balanced}{\tcs@sf{Balance}} % Balanced Boolean functions
+\newcommand{\BooleanDomain}{\tcs@bb{B}} % Full set of Boolean functions
 \newcommand{\BooleanDomainArity}[1]{\BooleanDomain_{#1}} % Boolean functions over #1 bits
-\newcommand{\Dictator}{\inmathsf{Dictator}} % Dictator function
-\newcommand{\Halfspace}{\inmathsf{HS}} % Halfspace functions
-\newcommand{\Junta}{\inmathsf{Junta}} % k-junta function class
-\newcommand{\LinFunc}{\inmathsf{Lin}} % Linear Boolean functions
-\newcommand{\LTF}{\inmathsf{LTF}} % Linear Threshold Function
-\newcommand{\Maj}{\inmathsf{Maj}} % Majority function
-\newcommand{\Monotone}{\inmathsf{Mono}} % Monotone Boolean functions
-\newcommand{\Negation}{\inmathsf{Negt}} % Negation class
-\newcommand{\Parity}{\inmathsf{Parity}} % Parity function
-\newcommand{\Thr}{\inmathsf{Thr}} % General threshold function
-\newcommand{\ThrParam}{\inmath{\theta}} % Threshold parameter for \Thr
-\newcommand{\Tribes}{\inmathsf{Tribes}} % Tribes function
+\newcommand{\Dictator}{\tcs@sf{Dictator}} % Dictator function
+\newcommand{\Halfspace}{\tcs@sf{HS}} % Halfspace functions
+\newcommand{\Junta}{\tcs@sf{Junta}} % k-junta function class
+\newcommand{\LinFunc}{\tcs@sf{Lin}} % Linear Boolean functions
+\newcommand{\LTF}{\tcs@sf{LTF}} % Linear Threshold Function
+\newcommand{\Maj}{\tcs@sf{Maj}} % Majority function
+\newcommand{\Monotone}{\tcs@sf{Mono}} % Monotone Boolean functions
+\newcommand{\Negation}{\tcs@sf{Negt}} % Negation class
+\newcommand{\Parity}{\tcs@sf{Parity}} % Parity function
+\newcommand{\Thr}{\tcs@sf{Thr}} % General threshold function
+\newcommand{\ThrParam}{\tcs@mm{\theta}} % Threshold parameter for \Thr
+\newcommand{\Tribes}{\tcs@sf{Tribes}} % Tribes function
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Exponential Time Hypotheses and Related Assumptions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\AMETH}{\inmathsf{AMETH}} % Arthur-Merlin ETH
-\newcommand{\ETH}{\inmathsf{ETH}} % Exponential Time Hypothesis
-\newcommand{\ETHConst}{\inmath{\epsilon_{\ETH}}} % Lower bound exponent for ETH
-\newcommand{\NSETH}{\inmathsf{NSETH}} % Non-deterministic SETH
-\newcommand{\PCPETH}{\inmathsf{PCPETH}} % ETH under PCP-type assumptions
-\newcommand{\QETH}{\inmathsf{QETH}} % Quantum ETH
-\newcommand{\RETH}{\inmathsf{RETH}} % Randomized ETH
-\newcommand{\RETHConst}{\inmath{\epsilon_{\RETH}}} % Randomized lower bound constant
-\newcommand{\SETH}{\inmathsf{SETH}} % Strong ETH
-\newcommand{\SETHConst}{\inmath{\epsilon_{\SETH}}} % Exponent constant for SETH
+\newcommand{\AMETH}{\tcs@sf{AMETH}} % Arthur-Merlin ETH
+\newcommand{\ETH}{\tcs@sf{ETH}} % Exponential Time Hypothesis
+\newcommand{\ETHConst}{\tcs@mm{\epsilon_{\ETH}}} % Lower bound exponent for ETH
+\newcommand{\NSETH}{\tcs@sf{NSETH}} % Non-deterministic SETH
+\newcommand{\PCPETH}{\tcs@sf{PCPETH}} % ETH under PCP-type assumptions
+\newcommand{\QETH}{\tcs@sf{QETH}} % Quantum ETH
+\newcommand{\RETH}{\tcs@sf{RETH}} % Randomized ETH
+\newcommand{\RETHConst}{\tcs@mm{\epsilon_{\RETH}}} % Randomized lower bound constant
+\newcommand{\SETH}{\tcs@sf{SETH}} % Strong ETH
+\newcommand{\SETHConst}{\tcs@mm{\epsilon_{\SETH}}} % Exponent constant for SETH
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Probabilistically Checkable Proofs (PCP)
@@ -724,7 +833,7 @@
 % Probabilistically Checkable Proofs of Proximity (PCPP)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\PCPPDistanceMeasure}{\inmathsf{d}} % Distance measure (e.g., Hamming distance)
+\newcommand{\PCPPDistanceMeasure}{\tcs@sf{d}} % Distance measure (e.g., Hamming distance)
 \newcommand{\PCPPProof}{\pi_{\PCPP}} % PCPP proof string
 \newcommand{\PCPPProver}{\Prover_{\PCPP}} % PCPP prover
 \newcommand{\PCPPProximityParameter}{\delta} % Proximity parameter in PCPP
@@ -738,102 +847,102 @@
 % Oracles
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\OracleSymb}{\inmathsf{O}} % Oracle symbol (output/query)
+\newcommand{\OracleSymb}{\tcs@sf{O}} % Oracle symbol (output/query)
 \newcommand{\OracleByKeyValuePair}[1]{\left\langle#1\right\rangle} % Oracle query as key-value pair notation
-\newcommand{\OracleAlgorithm}{\inmathsf{A}} % Oracle algorithm
-\newcommand{\OracleFamily}{\inmathbb{O}} % Family of oracles
+\newcommand{\OracleAlgorithm}{\tcs@sf{A}} % Oracle algorithm
+\newcommand{\OracleFamily}{\tcs@bb{O}} % Family of oracles
 \newcommand{\OracleDist}[1]{\OracleFamily_{#1}} % Distribution on oracle family indexed by #1
 \newcommand{\OracleQuery}{\OracleSymb.\Query} % Oracle query variable
 \newcommand{\OracleResponse}{\OracleSymb.\Response} % Oracle response variable
 \newcommand{\OracleTable}{\OracleSymb.\Table} % Oracle internal table/state
-\newcommand{\OracleInput}{\inmathsf{x}} % Oracle input
-\newcommand{\OracleOutput}{\inmathsf{y}} % Oracle output
+\newcommand{\OracleInput}{\tcs@sf{x}} % Oracle input
+\newcommand{\OracleOutput}{\tcs@sf{y}} % Oracle output
 \newcommand{\OracleAccess}{\OracleSymb.\Access} % Oracle access procedure
-\newcommand{\OracleRandomness}{\inmathsf{\varrho}} % Oracle internal randomness
+\newcommand{\OracleRandomness}{\tcs@sf{\varrho}} % Oracle internal randomness
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Tree Notation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\BinarySearchTree}{\inmathsf{BST}} % Binary Search Tree
+\newcommand{\BinarySearchTree}{\tcs@sf{BST}} % Binary Search Tree
 \newcommand{\BST}{\BinarySearchTree} % Binary Search Tree (Short Form)
-\newcommand{\BSTLeftChild}{\BST.\inmathsf{Left}} % BST left child
-\newcommand{\BSTRightChild}{\BST.\inmathsf{Right}} % BST right child
-\newcommand{\BSTRoot}{\BST.\inmathsf{Root}} % BST root
-\newcommand{\MerkleLeaves}{\MT.\inmathsf{Leaves}} % Set of leaves in the Merkle tree
-\newcommand{\MerkleNodeHash}{\MT.\inmathsf{Hash}} % Hash of a Merkle tree node
-\newcommand{\MerklePath}{\MT.\inmathsf{Path}} % Path of nodes in Merkle proof
-\newcommand{\MerkleProof}{\MT.\inmathsf{Proof}} % Merkle proof (authentication path)
-\newcommand{\MerkleRoot}{\MT.\inmathsf{Root}} % Merkle Tree Root
-\newcommand{\MerkleTree}{\inmathsf{MT}} % Merkle Tree structure
-\newcommand{\MerkleVerify}{\MT.\inmathsf{Verify}} % Merkle verification procedure
+\newcommand{\BSTLeftChild}{\BST.\tcs@sf{Left}} % BST left child
+\newcommand{\BSTRightChild}{\BST.\tcs@sf{Right}} % BST right child
+\newcommand{\BSTRoot}{\BST.\tcs@sf{Root}} % BST root
+\newcommand{\MerkleLeaves}{\MT.\tcs@sf{Leaves}} % Set of leaves in the Merkle tree
+\newcommand{\MerkleNodeHash}{\MT.\tcs@sf{Hash}} % Hash of a Merkle tree node
+\newcommand{\MerklePath}{\MT.\tcs@sf{Path}} % Path of nodes in Merkle proof
+\newcommand{\MerkleProof}{\MT.\tcs@sf{Proof}} % Merkle proof (authentication path)
+\newcommand{\MerkleRoot}{\MT.\tcs@sf{Root}} % Merkle Tree Root
+\newcommand{\MerkleTree}{\tcs@sf{MT}} % Merkle Tree structure
+\newcommand{\MerkleVerify}{\MT.\tcs@sf{Verify}} % Merkle verification procedure
 \newcommand{\MT}{\MerkleTree} % Merkle Tree (Short Form)
-\newcommand{\Tree}{\inmathsf{T}} % Tree structure
-\newcommand{\TreeChildren}{\Tree.\inmathsf{Children}} % Children of a node
-\newcommand{\TreeDepth}{\Tree.\inmathsf{Depth}} % Depth of a node in the tree
-\newcommand{\TreeHeight}{\Tree.\inmathsf{Height}} % Height of the tree
-\newcommand{\TreeLeaves}{\Tree.\inmathsf{Leaves}} % Set of leaves
-\newcommand{\TreeNode}{\Tree.\inmathsf{Node}} % Generic tree node
-\newcommand{\TreeParent}{\Tree.\inmathsf{Parent}} % Parent of a node
-\newcommand{\TreePath}{\Tree.\inmathsf{Path}} % Path in the tree
-\newcommand{\TreeRoot}{\Tree.\inmathsf{Root}} % Tree root node
-\newcommand{\TreeSize}{\Tree.\inmathsf{Size}} % Number of nodes in the tree
-\newcommand{\TreeSubtree}{\Tree.\inmathsf{Subtree}} % Subtree rooted at a node
-\newcommand{\TreeValue}{\Tree.\inmathsf{Value}} % Value at a tree node
+\newcommand{\Tree}{\tcs@sf{T}} % Tree structure
+\newcommand{\TreeChildren}{\Tree.\tcs@sf{Children}} % Children of a node
+\newcommand{\TreeDepth}{\Tree.\tcs@sf{Depth}} % Depth of a node in the tree
+\newcommand{\TreeHeight}{\Tree.\tcs@sf{Height}} % Height of the tree
+\newcommand{\TreeLeaves}{\Tree.\tcs@sf{Leaves}} % Set of leaves
+\newcommand{\TreeNode}{\Tree.\tcs@sf{Node}} % Generic tree node
+\newcommand{\TreeParent}{\Tree.\tcs@sf{Parent}} % Parent of a node
+\newcommand{\TreePath}{\Tree.\tcs@sf{Path}} % Path in the tree
+\newcommand{\TreeRoot}{\Tree.\tcs@sf{Root}} % Tree root node
+\newcommand{\TreeSize}{\Tree.\tcs@sf{Size}} % Number of nodes in the tree
+\newcommand{\TreeSubtree}{\Tree.\tcs@sf{Subtree}} % Subtree rooted at a node
+\newcommand{\TreeValue}{\Tree.\tcs@sf{Value}} % Value at a tree node
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Interactive Proofs
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\Algorithm}{\inmathsf{A}} % Algorithm
-\newcommand{\ChallengeEntry}{\inmathsf{c}} % Challenge
-\newcommand{\ChallengeMessage}{\inmathsf{c}} % Challenge message
-\newcommand{\ChallengeResponse}{\inmathsf{(c,r)}} % Challenge-response pair
-\newcommand{\Completeness}{\inmathsf{c}} % Completeness parameter 
-\newcommand{\Crs}{\inmathsf{CRS}} % Common reference string
-\newcommand{\CrsGen}{\inmathsf{CRSGen}} % CRS generation algorithm
-\newcommand{\CrsUpdate}{\inmathsf{CRSUpdate}} % CRS update algorithm
-\newcommand{\Decoder}{\inmathcal{D}} % Decoder
-\newcommand{\Error}{\inmathsf{\varepsilon}} % Error parameter 
-\newcommand{\ErrorAdditiveFunc}{\inmath{\epsilon_2}} % Additive error function 
-\newcommand{\ErrorFunc}{\inmath{\Soundness}} % Error function (soundness) 
-\newcommand{\ErrorMultFunc}{\inmath{\epsilon}} % Multiplicative error function 
-\newcommand{\FixedRandomness}{\inmathsf{Z}} % Fixed randomness 
-\newcommand{\Indexer}{\inmathcal{I}} % Indexer
-\newcommand{\Knowledge}{\inmathsf{\kappa}} % Knowledge parameter 
-\newcommand{\Length}{\inmathsf{l}} % Length parameter 
-\newcommand{\LengthP}{\inmath{\Length_{\Prover}}} % Prover length 
-\newcommand{\LengthV}{\inmath{\Length_{\Verifier}}} % Verifier length 
-\newcommand{\MaliciousProof}{\inmath{\Malicious{\pi}}} % Malicious proof
-\newcommand{\Msg}{\inmathsf{m}} % Message
-\newcommand{\MsgOne}{\inmathsf{a}} % First message on round
-\newcommand{\MsgThree}{\inmathsf{c}} % Third message on round
-\newcommand{\MsgTwo}{\inmathsf{b}} % Second message on round
+\newcommand{\Algorithm}{\tcs@sf{A}} % Algorithm
+\newcommand{\ChallengeEntry}{\tcs@sf{c}} % Challenge
+\newcommand{\ChallengeMessage}{\tcs@sf{c}} % Challenge message
+\newcommand{\ChallengeResponse}{\tcs@sf{(c,r)}} % Challenge-response pair
+\newcommand{\Completeness}{\tcs@sf{c}} % Completeness parameter 
+\newcommand{\Crs}{\tcs@sf{CRS}} % Common reference string
+\newcommand{\CrsGen}{\tcs@sf{CRSGen}} % CRS generation algorithm
+\newcommand{\CrsUpdate}{\tcs@sf{CRSUpdate}} % CRS update algorithm
+\newcommand{\Decoder}{\tcs@cl{D}} % Decoder
+\newcommand{\Error}{\tcs@sf{\varepsilon}} % Error parameter 
+\newcommand{\ErrorAdditiveFunc}{\tcs@mm{\epsilon_2}} % Additive error function 
+\newcommand{\ErrorFunc}{\tcs@mm{\Soundness}} % Error function (soundness) 
+\newcommand{\ErrorMultFunc}{\tcs@mm{\epsilon}} % Multiplicative error function 
+\newcommand{\FixedRandomness}{\tcs@sf{Z}} % Fixed randomness 
+\newcommand{\Indexer}{\tcs@cl{I}} % Indexer
+\newcommand{\Knowledge}{\tcs@sf{\kappa}} % Knowledge parameter 
+\newcommand{\Length}{\tcs@sf{l}} % Length parameter 
+\newcommand{\LengthP}{\tcs@mm{\Length_{\Prover}}} % Prover length 
+\newcommand{\LengthV}{\tcs@mm{\Length_{\Verifier}}} % Verifier length 
+\newcommand{\MaliciousProof}{\tcs@mm{\Malicious{\pi}}} % Malicious proof
+\newcommand{\Msg}{\tcs@sf{m}} % Message
+\newcommand{\MsgOne}{\tcs@sf{a}} % First message on round
+\newcommand{\MsgThree}{\tcs@sf{c}} % Third message on round
+\newcommand{\MsgTwo}{\tcs@sf{b}} % Second message on round
 \newcommand{\NumberOfRounds}{\ell} % Number of rounds
-\newcommand{\Proof}{\inmath{\pi}} % Honest proof
-\newcommand{\ProverMessage}{\inmathsf{m}} % Prover message
-\newcommand{\Proximity}{\inmath{\delta}} % Proximity parameter 
-\newcommand{\Queries}{\inmathsf{q}} % Number of queries 
-\newcommand{\QueriesSet}{\inmathsf{Q}} % Set of queries 
-\newcommand{\QueryIndex}{\inmathsf{j}} % Query index 
-\newcommand{\QueryLocation}{\inmathsf{z}} % Query location 
-\newcommand{\Randomness}{\inmathsf{r}} % Randomness
-\newcommand{\Response}{\inmathsf{r}} % Response
-\newcommand{\ResponseMessage}{\inmathsf{r}} % Response message
-\newcommand{\Robustness}{\inmathsf{\sigma}} % Robustness parameter 
-\newcommand{\Round}{\inmathsf{k}} % Round number 
-\newcommand{\RoundIndex}{\inmathsf{\ell}} % Round index 
-\newcommand{\RoundsQueried}{\inmathsf{q}_{\round}} % Number of rounds queried 
-\newcommand{\Soundness}{\inmathsf{s}} % Soundness parameter 
-\newcommand{\Table}{\inmathsf{T}} % Table
-\newcommand{\TimeD}{\inmathsf{dt}} % Decision time parameter 
-\newcommand{\TimeI}{\inmathsf{it}} % Interaction time parameter 
-\newcommand{\TimeP}{\inmathsf{pt}} % Prover time parameter 
-\newcommand{\TimeV}{\inmathsf{vt}} % Verifier time parameter 
-\newcommand{\TimeVDecision}{\inmathsf{d}} % Verifier decision indicator 
-\newcommand{\Transcript}{\inmath{\tau}} % Transcript
-\newcommand{\VerifierMessage}{\inmathsf{a}} % Verifier message
-\newcommand{\VerifierRandomness}{\inmathsf{\varrho}} % Verifier randomness 
+\newcommand{\Proof}{\tcs@mm{\pi}} % Honest proof
+\newcommand{\ProverMessage}{\tcs@sf{m}} % Prover message
+\newcommand{\Proximity}{\tcs@mm{\delta}} % Proximity parameter 
+\newcommand{\Queries}{\tcs@sf{q}} % Number of queries 
+\newcommand{\QueriesSet}{\tcs@sf{Q}} % Set of queries 
+\newcommand{\QueryIndex}{\tcs@sf{j}} % Query index 
+\newcommand{\QueryLocation}{\tcs@sf{z}} % Query location 
+\newcommand{\Randomness}{\tcs@sf{r}} % Randomness
+\newcommand{\Response}{\tcs@sf{r}} % Response
+\newcommand{\ResponseMessage}{\tcs@sf{r}} % Response message
+\newcommand{\Robustness}{\tcs@sf{\sigma}} % Robustness parameter 
+\newcommand{\Round}{\tcs@sf{k}} % Round number 
+\newcommand{\RoundIndex}{\tcs@sf{\ell}} % Round index 
+\newcommand{\RoundsQueried}{\tcs@sf{q}_{\round}} % Number of rounds queried 
+\newcommand{\Soundness}{\tcs@sf{s}} % Soundness parameter 
+\newcommand{\Table}{\tcs@sf{T}} % Table
+\newcommand{\TimeD}{\tcs@sf{dt}} % Decision time parameter 
+\newcommand{\TimeI}{\tcs@sf{it}} % Interaction time parameter 
+\newcommand{\TimeP}{\tcs@sf{pt}} % Prover time parameter 
+\newcommand{\TimeV}{\tcs@sf{vt}} % Verifier time parameter 
+\newcommand{\TimeVDecision}{\tcs@sf{d}} % Verifier decision indicator 
+\newcommand{\Transcript}{\tcs@mm{\tau}} % Transcript
+\newcommand{\VerifierMessage}{\tcs@sf{a}} % Verifier message
+\newcommand{\VerifierRandomness}{\tcs@sf{\varrho}} % Verifier randomness 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Adversary Notations
@@ -867,42 +976,42 @@
 \newcommand{\ROFunc}{\zeta} % RO function symbol
 \newcommand{\ROGetQueries}[2]{\ROQuery(#1, #2)} % Queries made by #1 on input #2
 \newcommand{\ROInterface}{\left[\ROFunc\right]} % RO interface notation
-\newcommand{\ROOutput}{\inmathsf{o}} % RO output
-\newcommand{\ROQuery}{\inmathsf{q}} % RO query
+\newcommand{\ROOutput}{\tcs@sf{o}} % RO output
+\newcommand{\ROQuery}{\tcs@sf{q}} % RO query
 \newcommand{\ROQueryVar}{t} % RO query variable
-\newcommand{\ROracleKey}{\inmathsf{ROKey}} % Random Oracle key
-\newcommand{\ROResponse}{\inmathsf{r}} % RO response
-\newcommand{\ROSpecialSet}{\inmathsf{set}} % Special symbol related to RO (generic)
-\newcommand{\ROTable}{\inmathsf{T}} % RO table
-\newcommand{\ROUniverse}{\inmathsf{U}} % RO universe
+\newcommand{\ROracleKey}{\tcs@sf{ROKey}} % Random Oracle key
+\newcommand{\ROResponse}{\tcs@sf{r}} % RO response
+\newcommand{\ROSpecialSet}{\tcs@sf{set}} % Special symbol related to RO (generic)
+\newcommand{\ROTable}{\tcs@sf{T}} % RO table
+\newcommand{\ROUniverse}{\tcs@sf{U}} % RO universe
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Argument System (ARG) Notations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\ARGAdaptiveRounds}{\inmathsf{a}} % Adaptive rounds count
-\newcommand{\ARGAdaptiveWidth}{\inmathsf{m}} % Adaptive width
+\newcommand{\ARGAdaptiveRounds}{\tcs@sf{a}} % Adaptive rounds count
+\newcommand{\ARGAdaptiveWidth}{\tcs@sf{m}} % Adaptive width
 \newcommand{\ARGIndexer}{\Indexer} % Indexer algorithm
-\newcommand{\ARGipk}{\inmathsf{ipk}} % Index public key
-\newcommand{\ARGipkLength}{\inmathsf{ipks}} % Index public key size
-\newcommand{\ARGivk}{\inmathsf{ivk}} % Index verification key
-\newcommand{\ARGivkLength}{\inmathsf{ivks}} % Index verification key size
+\newcommand{\ARGipk}{\tcs@sf{ipk}} % Index public key
+\newcommand{\ARGipkLength}{\tcs@sf{ipks}} % Index public key size
+\newcommand{\ARGivk}{\tcs@sf{ivk}} % Index verification key
+\newcommand{\ARGivkLength}{\tcs@sf{ivks}} % Index verification key size
 \newcommand{\ARGKnowledge}{\kappa} % Knowledge parameter
-\newcommand{\ARGLength}{\inmathsf{as}} % Argument size / length
+\newcommand{\ARGLength}{\tcs@sf{as}} % Argument size / length
 \newcommand{\ARGProver}{\Prover} % Prover algorithm
-\newcommand{\ARGQueryI}{\inmathsf{iq}} % Indexer queries
-\newcommand{\ARGQueryP}{\inmathsf{pq}} % Prover queries
-\newcommand{\ARGQuerySize}{\inmathsf{n}} % Query size
-\newcommand{\ARGQueryV}{\inmathsf{vq}} % Verifier queries
-\newcommand{\ARGRound}{\inmathsf{k}} % Round number
-\newcommand{\ARGSoundness}{\inmathsf{\epsilon}} % Soundness error
-\newcommand{\ARGSpaceV}{\inmathsf{sv}} % Verifier space
-\newcommand{\ARGSymbol}{\inmathsf{ARG}} % Argument system symbol
+\newcommand{\ARGQueryI}{\tcs@sf{iq}} % Indexer queries
+\newcommand{\ARGQueryP}{\tcs@sf{pq}} % Prover queries
+\newcommand{\ARGQuerySize}{\tcs@sf{n}} % Query size
+\newcommand{\ARGQueryV}{\tcs@sf{vq}} % Verifier queries
+\newcommand{\ARGRound}{\tcs@sf{k}} % Round number
+\newcommand{\ARGSoundness}{\tcs@sf{\epsilon}} % Soundness error
+\newcommand{\ARGSpaceV}{\tcs@sf{sv}} % Verifier space
+\newcommand{\ARGSymbol}{\tcs@sf{ARG}} % Argument system symbol
 \newcommand{\ARGSystem}{(\ARGIndexer, \ARGProver, \ARGVerifier)} % Full ARG system
 \newcommand{\ARGSystemWI}{(\ARGProver, \ARGVerifier)} % ARG system without indexer
-\newcommand{\ARGTimeI}{\inmathsf{it}} % Indexer time
-\newcommand{\ARGTimeP}{\inmathsf{pt}} % Prover time
-\newcommand{\ARGTimeV}{\inmathsf{vt}} % Verifier time
+\newcommand{\ARGTimeI}{\tcs@sf{it}} % Indexer time
+\newcommand{\ARGTimeP}{\tcs@sf{pt}} % Prover time
+\newcommand{\ARGTimeV}{\tcs@sf{vt}} % Verifier time
 \newcommand{\ARGVerifier}{\Verifier} % Verifier algorithm
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -925,12 +1034,12 @@
 \newcommand{\IOPProof}{\Proof} % Proof in IOP
 \newcommand{\IOPProver}{\Prover_{\IOP}} % Prover in IOP
 \newcommand{\IOPQueries}{\Queries_{\IOP}} % Queries in IOP
-\newcommand{\IOPQueryDistribution}{\inmathcal{D}} % Query distribution in IOP
-\newcommand{\IOPQueryEntropy}{\inmathsf{h}} % Query entropy in IOP
-\newcommand{\IOPQueryLocations}{\inmathcal{I}} % Query locations in IOP
+\newcommand{\IOPQueryDistribution}{\tcs@cl{D}} % Query distribution in IOP
+\newcommand{\IOPQueryEntropy}{\tcs@sf{h}} % Query entropy in IOP
+\newcommand{\IOPQueryLocations}{\tcs@cl{I}} % Query locations in IOP
 \newcommand{\IOPRandomness}{\Randomness_{\IOP}} % Randomness in IOP
-\newcommand{\IOPRandomnessQueryDistribution}{\inmathcal{D}} % Randomness query distribution in IOP
-\newcommand{\IOPRandomnessQueryEntropy}{\inmathsf{h}} % Randomness query entropy in IOP
+\newcommand{\IOPRandomnessQueryDistribution}{\tcs@cl{D}} % Randomness query distribution in IOP
+\newcommand{\IOPRandomnessQueryEntropy}{\tcs@sf{h}} % Randomness query entropy in IOP
 \newcommand{\IOPRound}{\Round_{\IOP}} % Round number in IOP
 \newcommand{\IOPSoundness}{\Soundness_{\IOP}} % Soundness in IOP
 \newcommand{\IOPSystem}{(\IOPProver, \IOPVerifier)} % IOP system (Prover, Verifier)
@@ -948,92 +1057,92 @@
 % Pseudorandom Functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\PRFEval}{\inmathsf{Eval}} % Pseudorandom function evaluation
-\newcommand{\PRFFunction}{\inmathsf{F}} % Pseudorandom function function
-\newcommand{\PRFInput}{\inmathsf{x}} % Pseudorandom function input
+\newcommand{\PRFEval}{\tcs@sf{Eval}} % Pseudorandom function evaluation
+\newcommand{\PRFFunction}{\tcs@sf{F}} % Pseudorandom function function
+\newcommand{\PRFInput}{\tcs@sf{x}} % Pseudorandom function input
 \newcommand{\PRFKey}{\Key} % Pseudorandom function key
-\newcommand{\PRFKeyLengthInput}{\KeyLengthParam_{\inmathsf{in}}} % Pseudorandom function key length
-\newcommand{\PRFKeyLengthOutput}{\KeyLengthParam_{\inmathsf{out}}} % Pseudorandom function key length
-\newcommand{\PRFOutput}{\inmathsf{y}} % Pseudorandom function output
-\newcommand{\PRFOutputSet}{\inmathsf{Y}} % Pseudorandom function output set
-\newcommand{\PRFPuncture}{\inmathsf{Punc}} % Punctured Pseudorandom function
-\newcommand{\PRFQuery}{\inmathsf{q}} % Pseudorandom function query
-\newcommand{\PRFResponse}{\inmathsf{r}} % Pseudorandom function response
-\newcommand{\PRFTable}{\inmathsf{T}} % Pseudorandom function table
-\newcommand{\PuncturedPRFKey}{\inmathsf{k}^{\star}} % Punctured PRF key
-\newcommand{\PuncturedStatement}{\inmathsf{x}^{\star}} % Punctured statement
+\newcommand{\PRFKeyLengthInput}{\KeyLengthParam_{\tcs@sf{in}}} % Pseudorandom function key length
+\newcommand{\PRFKeyLengthOutput}{\KeyLengthParam_{\tcs@sf{out}}} % Pseudorandom function key length
+\newcommand{\PRFOutput}{\tcs@sf{y}} % Pseudorandom function output
+\newcommand{\PRFOutputSet}{\tcs@sf{Y}} % Pseudorandom function output set
+\newcommand{\PRFPuncture}{\tcs@sf{Punc}} % Punctured Pseudorandom function
+\newcommand{\PRFQuery}{\tcs@sf{q}} % Pseudorandom function query
+\newcommand{\PRFResponse}{\tcs@sf{r}} % Pseudorandom function response
+\newcommand{\PRFTable}{\tcs@sf{T}} % Pseudorandom function table
+\newcommand{\PuncturedPRFKey}{\tcs@sf{k}^{\star}} % Punctured PRF key
+\newcommand{\PuncturedStatement}{\tcs@sf{x}^{\star}} % Punctured statement
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Pseudorandom Permutations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand{\PRPEval}{\Eval} % Pseudorandom permutation evaluation
-\newcommand{\PRPFunction}{\inmathsf{F}} % Pseudorandom permutation function
-\newcommand{\PRPInput}{\inmathsf{x}} % Pseudorandom permutation input
-\newcommand{\PRPOutput}{\inmathsf{y}} % Pseudorandom permutation output
-\newcommand{\PRPOutputSet}{\inmathsf{Y}} % Pseudorandom permutation output set
+\newcommand{\PRPFunction}{\tcs@sf{F}} % Pseudorandom permutation function
+\newcommand{\PRPInput}{\tcs@sf{x}} % Pseudorandom permutation input
+\newcommand{\PRPOutput}{\tcs@sf{y}} % Pseudorandom permutation output
+\newcommand{\PRPOutputSet}{\tcs@sf{Y}} % Pseudorandom permutation output set
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Pseudorandom Generators
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand{\PRGError}{\epsilon_{\PRG}} % Advantage or error
-\newcommand{\PRGFunction}{\inmathsf{G}} % PRG function G
-\newcommand{\PRGOutputLength}{\inmathsf{n}_{\PRG}} % Output length
-\newcommand{\PRGRunningTime}{\inmathsf{t}_{\PRG}} % Time bound
+\newcommand{\PRGFunction}{\tcs@sf{G}} % PRG function G
+\newcommand{\PRGOutputLength}{\tcs@sf{n}_{\PRG}} % Output length
+\newcommand{\PRGRunningTime}{\tcs@sf{t}_{\PRG}} % Time bound
 \newcommand{\PRGSeed}{\seed} % Seed input
 \newcommand{\PRGSeedLength}{\ell_{\PRG}} % Seed length
 \newcommand{\PRGStretch}{\stretch} % Output length function or integer
 \newcommand{\PRGSubscript}{{\PRG}} % Tiny subscript PRG
 \newcommand{\PRGTime}{\PRGRunningTime} % Alias for clarity
-\newcommand{\PRGtSize}{\inmathsf{s}_{\PRG}} % Size/security parameter
+\newcommand{\PRGtSize}{\tcs@sf{s}_{\PRG}} % Size/security parameter
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Hash Functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand{\HashAdv}{\Adv^{\Hash}} % Adversarial advantage
-\newcommand{\HashColGame}{\Game^{\HashScript}_{\inmathsf{coll}}} % Collision game
-\newcommand{\HashCollEvent}{\Event_{\inmathsf{col}}} % Collision event
-\newcommand{\HashDigest}{\inmathsf{d}} % Hash digest
-\newcommand{\HashDomain}{\inmathcal{X}} % Input space
+\newcommand{\HashColGame}{\Game^{\HashScript}_{\tcs@sf{coll}}} % Collision game
+\newcommand{\HashCollEvent}{\Event_{\tcs@sf{col}}} % Collision event
+\newcommand{\HashDigest}{\tcs@sf{d}} % Hash digest
+\newcommand{\HashDomain}{\tcs@cl{X}} % Input space
 \newcommand{\HashEval}{\HashScript.\Eval} % Hash evaluation function
 \newcommand{\HashFunction}[1]{\HashScript_{#1}} % Specific hash function H_k
 \newcommand{\HashGen}{\HashScript.\Gen} % Hash key generation algorithm
-\newcommand{\HashInpLenFunc}{\ell_{\inmathsf{in}}} % Input length function
-\newcommand{\HashInput}{\inmathsf{x}} % Input to hash
+\newcommand{\HashInpLenFunc}{\ell_{\tcs@sf{in}}} % Input length function
+\newcommand{\HashInput}{\tcs@sf{x}} % Input to hash
 \newcommand{\HashKey}{\hk} % Hash key (if keyed hash)
-\newcommand{\HashOutLenFunc}{\ell_{\inmathsf{out}}} % Output length function
-\newcommand{\HashOutput}{\inmathsf{y}} % Output of hash
-\newcommand{\HashRange}{\inmathcal{Y}} % Output space
+\newcommand{\HashOutLenFunc}{\ell_{\tcs@sf{out}}} % Output length function
+\newcommand{\HashOutput}{\tcs@sf{y}} % Output of hash
+\newcommand{\HashRange}{\tcs@cl{Y}} % Output space
 \newcommand{\HashScript}{\Hash} % Name of the hash function family
-\newcommand{\HashSet}{\inmathcal{H}} % Family of hash functions
+\newcommand{\HashSet}{\tcs@cl{H}} % Family of hash functions
 \newcommand{\HashTime}{\Time_{\HashScript}} % Time complexity of hash function
-\newcommand{\Universe}{\inmathscr{U}} % Universe
+\newcommand{\Universe}{\tcs@sr{U}} % Universe
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Indistinguishability Obfuscation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\Circuit}{\inmathcal{C}} % Circuit
-\newcommand{\CircuitFamily}{\inmathscr{C}} % Circuit family
+\newcommand{\Circuit}{\tcs@cl{C}} % Circuit
+\newcommand{\CircuitFamily}{\tcs@sr{C}} % Circuit family
 \newcommand{\Ckt}{\Circuit} % Circuit
-\newcommand{\CktSize}{\inmath{\sigma}} % Circuit size
-\newcommand{\Distinguisher}{\inmathbb{D}} % Distinguisher
-\newcommand{\Distribution}{\inmathcal{D}} % Distribution
-\newcommand{\Hybrid}{\inmathsf{Hyb}} % Hybrid
-\newcommand{\iO}{\inmathsf{i}\inmathcal{O}} % Indistinguishability obfuscation
-\newcommand{\Obf}{\inmathsf{Obf}} % Obfuscation
-\newcommand{\Obfuscated}[1]{\inmath{\widehat{#1}}} % Obfuscated program
+\newcommand{\CktSize}{\tcs@mm{\sigma}} % Circuit size
+\newcommand{\Distinguisher}{\tcs@bb{D}} % Distinguisher
+\newcommand{\Distribution}{\tcs@cl{D}} % Distribution
+\newcommand{\Hybrid}{\tcs@sf{Hyb}} % Hybrid
+\newcommand{\iO}{\tcs@sf{i}\tcs@cl{O}} % Indistinguishability obfuscation
+\newcommand{\Obf}{\tcs@sf{Obf}} % Obfuscation
+\newcommand{\Obfuscated}[1]{\tcs@mm{\widehat{#1}}} % Obfuscated program
 \newcommand{\ObfuscatedCkt}{\Obfuscated{\Ckt}} % Obfuscated circuit
 \newcommand{\ObfuscatedProgram}{\Obfuscated{\Program}} % Obfuscated program
-\newcommand{\Program}{\inmath{\Phi}} % Program
+\newcommand{\Program}{\tcs@mm{\Phi}} % Program
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Rerandomizable One-Way Functions (rOWF)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\rOWF}{\ComplexityFont{rOWF}} % Name or symbol for the rOWF family
+\newcommand{\rOWF}{\tcs@cf{rOWF}} % Name or symbol for the rOWF family
 \newcommand{\rOWFCoDomain}{\FuncCoDomain} % Co-domain size or output length for rOWF
 \newcommand{\rOWFDomain}{\FuncDomain} % Domain size or input length for rOWF
 \newcommand{\rOWFGenChal}{\rOWF.\GenChal} % Challenge generation
@@ -1046,9 +1155,9 @@
 % Encryption Spaces
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\CiphertextSpace}{\inmathcal{C}} % Ciphertext space
-\newcommand{\KeySpace}{\inmathcal{K}} % Key space
-\newcommand{\MessageSpace}{\inmathcal{M}} % Message space
+\newcommand{\CiphertextSpace}{\tcs@cl{C}} % Ciphertext space
+\newcommand{\KeySpace}{\tcs@cl{K}} % Key space
+\newcommand{\MessageSpace}{\tcs@cl{M}} % Message space
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Public Key Encryption
@@ -1120,7 +1229,7 @@
 % Commitment Schemes
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\CM}{\ComplexityFont{CM}} % Commitment scheme
+\newcommand{\CM}{\tcs@cf{CM}} % Commitment scheme
 \newcommand{\CMCommit}{\CM.\Commit} % Commitment scheme commitment algorithm
 \newcommand{\CMOpen}{\CM.\Open} % Commitment scheme opening algorithm
 \newcommand{\CMVerify}{\CM.\Verify} % Commitment scheme verification algorithm
@@ -1155,9 +1264,9 @@
 \newcommand{\ChalSetup}{\Chal.\Setup} % Challenge setup
 \newcommand{\ChalSizeFirst}{m_1} % First challenge size parameter
 \newcommand{\ChalSizeSecond}{m_2} % Second challenge size parameter
-\newcommand{\ChalSol}{\inmathsf{x}} % Solution to the challenge
+\newcommand{\ChalSol}{\tcs@sf{x}} % Solution to the challenge
 \newcommand{\ChalSolNew}{\ChalSol^\star} % New solution variant
-\newcommand{\ChalVar}{\inmathsf{y}} % Generic challenge variable
+\newcommand{\ChalVar}{\tcs@sf{y}} % Generic challenge variable
 \newcommand{\ChalVerFirst}{\Chal.\Ver_1} % First verification procedure
 \newcommand{\ChalVerSec}{\Chal.\Ver_2} % Second verification procedure
 
@@ -1165,131 +1274,131 @@
 % Vector and Input Notation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\InputVector}{\inmathbf{x}} % Single input vector 
-\newcommand{\Vect}{\inmath{\mathbbm{x}}} % Main vector 
-\newcommand{\VectorCopy}{\inmath{\mathbbm{x}'}} % Copy of main vector 
-\newcommand{\VirtualVector}{\inmath{\mathbbm{v}}} % Virtual vector 
-\newcommand{\VectorSet}{\inmathbb{X}} % Set of vectors 
-\newcommand{\PartialVec}[2]{\inmath{\vec{#1}_{#2}}} % Partial vector notation 
-\newcommand{\VectorSize}{\inmath{n}} % Length of each vector 
-\newcommand{\NumOfVectors}{\inmath{k}} % Number of input vectors 
-\newcommand{\NumVirtualVectors}{\inmath{m}} % Number of virtual vectors 
-\newcommand{\NumQueriesToVectorCopy}{\inmath{q}} % Query budget on vector copy 
+\newcommand{\InputVector}{\tcs@bf{x}} % Single input vector 
+\newcommand{\Vect}{\tcs@mm{\mathbbm{x}}} % Main vector 
+\newcommand{\VectorCopy}{\tcs@mm{\mathbbm{x}'}} % Copy of main vector 
+\newcommand{\VirtualVector}{\tcs@mm{\mathbbm{v}}} % Virtual vector 
+\newcommand{\VectorSet}{\tcs@bb{X}} % Set of vectors 
+\newcommand{\PartialVec}[2]{\tcs@mm{\vec{#1}_{#2}}} % Partial vector notation 
+\newcommand{\VectorSize}{\tcs@mm{n}} % Length of each vector 
+\newcommand{\NumOfVectors}{\tcs@mm{k}} % Number of input vectors 
+\newcommand{\NumVirtualVectors}{\tcs@mm{m}} % Number of virtual vectors 
+\newcommand{\NumQueriesToVectorCopy}{\tcs@mm{q}} % Query budget on vector copy 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Hamming Metrics and Noise
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\HammingWeight}{\inmathsf{weight}} % Hamming weight function 
-\newcommand{\Weight}{\inmathsf{w}} % Scalar weight 
-\newcommand{\HammingDistance}{\inmath{\Delta}} % Hamming distance 
-\newcommand{\AvgHammingDistance}{\inmath{\Delta_{\inmathsf{avg}}}} % Average Hamming distance 
-\newcommand{\DistanceFromLang}{\inmath{\delta}} % Distance to target language 
-\newcommand{\FractionOfOnesAlpha}{\inmath{\alpha}} % Fraction of ones (α) 
-\newcommand{\FractionOfOnesBeta}{\inmath{\beta}} % Fraction of ones (β) 
-\newcommand{\FractionOnesChangedToZero}{\inmath{\delta_0}} % 1→0 noise 
-\newcommand{\FractionZerosChangedToOnes}{\inmath{\delta_1}} % 0→1 noise 
-\newcommand{\Threshold}{\inmath{\theta}} % Threshold parameter for decision 
+\newcommand{\HammingWeight}{\tcs@sf{weight}} % Hamming weight function 
+\newcommand{\Weight}{\tcs@sf{w}} % Scalar weight 
+\newcommand{\HammingDistance}{\tcs@mm{\Delta}} % Hamming distance 
+\newcommand{\AvgHammingDistance}{\tcs@mm{\Delta_{\tcs@sf{avg}}}} % Average Hamming distance 
+\newcommand{\DistanceFromLang}{\tcs@mm{\delta}} % Distance to target language 
+\newcommand{\FractionOfOnesAlpha}{\tcs@mm{\alpha}} % Fraction of ones (α) 
+\newcommand{\FractionOfOnesBeta}{\tcs@mm{\beta}} % Fraction of ones (β) 
+\newcommand{\FractionOnesChangedToZero}{\tcs@mm{\delta_0}} % 1→0 noise 
+\newcommand{\FractionZerosChangedToOnes}{\tcs@mm{\delta_1}} % 0→1 noise 
+\newcommand{\Threshold}{\tcs@mm{\theta}} % Threshold parameter for decision 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Noise and Bitwise Operations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\ApplyNoise}[2]{\inmath{#1 \oplus #2}} % Application of noise: #1 ⊕ #2
-\newcommand{\CloseVectors}[2]{\inmath{\mathsf{Close}_{#1}(#2)}} % Vectors within distance #1 of #2
-\newcommand{\HammingBall}[2]{\inmath{\mathsf{Ball}_{#1}(#2)}} % Hamming ball of radius #1 around #2
-\newcommand{\HammingInnerProduct}[2]{\inmath{\langle #1, #2 \rangle_{\Field_2}}} % Inner product mod 2
-\newcommand{\IndicatorFunction}[1]{\inmath{\mathbbm{1}\{#1\}}} % Indicator function
-\newcommand{\NoiseMask}{\inmath{\mathbbm{e}}} % Noise vector (mask of bit flips)
-\newcommand{\NoiseSet}{\inmath{\mathcal{E}}} % Set of noise vectors
-\newcommand{\NormalizedHammingDistance}[2]{\inmath{\frac{\HammingDistance(#1,#2)}{\VectorSize}}} % Normalized distance
-\newcommand{\Support}{\inmath{\mathsf{supp}}} % Support of a vector
+\newcommand{\ApplyNoise}[2]{\tcs@mm{#1 \oplus #2}} % Application of noise: #1 ⊕ #2
+\newcommand{\CloseVectors}[2]{\tcs@mm{\mathsf{Close}_{#1}(#2)}} % Vectors within distance #1 of #2
+\newcommand{\HammingBall}[2]{\tcs@mm{\mathsf{Ball}_{#1}(#2)}} % Hamming ball of radius #1 around #2
+\newcommand{\HammingInnerProduct}[2]{\tcs@mm{\langle #1, #2 \rangle_{\Field_2}}} % Inner product mod 2
+\newcommand{\IndicatorFunction}[1]{\tcs@mm{\mathbbm{1}\{#1\}}} % Indicator function
+\newcommand{\NoiseMask}{\tcs@mm{\mathbbm{e}}} % Noise vector (mask of bit flips)
+\newcommand{\NoiseSet}{\tcs@mm{\mathcal{E}}} % Set of noise vectors
+\newcommand{\NormalizedHammingDistance}[2]{\tcs@mm{\frac{\HammingDistance(#1,#2)}{\VectorSize}}} % Normalized distance
+\newcommand{\Support}{\tcs@mm{\mathsf{supp}}} % Support of a vector
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Events
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\EventAbort}{\Event_{\inmathsf{abort}}} % Protocol abort event
-\newcommand{\EventBinding}{\Event_{\inmathsf{bind}}} % Binding event
-\newcommand{\EventCollision}{\Event_{\inmathsf{col}}} % Collision event
-\newcommand{\EventCorrelated}{\Event_{\inmathsf{corr}}} % Correlated event
-\newcommand{\EventExtraction}{\Event_{\inmathsf{extract}}} % Extraction failure event
-\newcommand{\EventForgery}{\Event_{\inmathsf{forge}}} % Forgery event
-\newcommand{\EventLeakage}{\Event_{\inmathsf{leak}}} % Leakage event
-\newcommand{\EventReplay}{\Event_{\inmathsf{replay}}} % Replay attack event
-\newcommand{\EventReset}{\Event_{\inmathsf{reset}}} % Reset attack event
-\newcommand{\EventSimulation}{\Event_{\inmathsf{sim}}} % Simulation failure event
-\newcommand{\EventSoundness}{\Event_{\inmathsf{sound}}} % Soundness failure event
-\newcommand{\EventTimeout}{\Event_{\inmathsf{timeout}}} % Timeout event
+\newcommand{\EventAbort}{\Event_{\tcs@sf{abort}}} % Protocol abort event
+\newcommand{\EventBinding}{\Event_{\tcs@sf{bind}}} % Binding event
+\newcommand{\EventCollision}{\Event_{\tcs@sf{col}}} % Collision event
+\newcommand{\EventCorrelated}{\Event_{\tcs@sf{corr}}} % Correlated event
+\newcommand{\EventExtraction}{\Event_{\tcs@sf{extract}}} % Extraction failure event
+\newcommand{\EventForgery}{\Event_{\tcs@sf{forge}}} % Forgery event
+\newcommand{\EventLeakage}{\Event_{\tcs@sf{leak}}} % Leakage event
+\newcommand{\EventReplay}{\Event_{\tcs@sf{replay}}} % Replay attack event
+\newcommand{\EventReset}{\Event_{\tcs@sf{reset}}} % Reset attack event
+\newcommand{\EventSimulation}{\Event_{\tcs@sf{sim}}} % Simulation failure event
+\newcommand{\EventSoundness}{\Event_{\tcs@sf{sound}}} % Soundness failure event
+\newcommand{\EventTimeout}{\Event_{\tcs@sf{timeout}}} % Timeout event
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Group Notation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\Group}{\inmathbb{G}} % Generic group
-\newcommand{\GroupElem}{\inmath{g}} % Generic group element
-\newcommand{\GroupElemAlt}{\inmath{h}} % Alternate group element
+\newcommand{\Group}{\tcs@bb{G}} % Generic group
+\newcommand{\GroupElem}{\tcs@mm{g}} % Generic group element
+\newcommand{\GroupElemAlt}{\tcs@mm{h}} % Alternate group element
 \newcommand{\GroupElemSet}{\Group} % Group elements set
-\newcommand{\GroupGen}{\inmath{\Group.\Gen}} % Group generator \Group.Gen
-\newcommand{\GroupGenSet}{\inmath{\Group.\G}} % Set of generators \Group.G
+\newcommand{\GroupGen}{\tcs@mm{\Group.\Gen}} % Group generator \Group.Gen
+\newcommand{\GroupGenSet}{\tcs@mm{\Group.\G}} % Set of generators \Group.G
 \newcommand{\GroupInv}[1]{#1^{-1}} % Inverse of group element
-\newcommand{\GroupNeutral}{\inmath{1}} % Group neutral element
-\newcommand{\GroupOp}{\inmath{\cdot}} % Group operation
-\newcommand{\GroupOrder}{\inmath{q}} % Group order
+\newcommand{\GroupNeutral}{\tcs@mm{1}} % Group neutral element
+\newcommand{\GroupOp}{\tcs@mm{\cdot}} % Group operation
+\newcommand{\GroupOrder}{\tcs@mm{q}} % Group order
 \newcommand{\GroupSet}{\Group} % Set notation for group
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Ring Notation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\Ring}{\inmathbb{R}} % Generic ring
-\newcommand{\RingOp}{\inmath{+}} % Ring operation
-\newcommand{\RingMult}{\inmath{\cdot}} % Ring multiplication
-\newcommand{\RingUnit}{\inmath{1}} % Multiplicative identity
+\newcommand{\Ring}{\tcs@bb{R}} % Generic ring
+\newcommand{\RingOp}{\tcs@mm{+}} % Ring operation
+\newcommand{\RingMult}{\tcs@mm{\cdot}} % Ring multiplication
+\newcommand{\RingUnit}{\tcs@mm{1}} % Multiplicative identity
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Field Notation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\Field}{\inmathbb{F}} % Generic field
-\newcommand{\FieldElem}{\inmath{a}} % Field element
-\newcommand{\FieldElemAlt}{\inmath{b}} % Alternate field element
-\newcommand{\FieldElemSet}{\inmath{A}} % Set of field elements
-\newcommand{\FieldGen}{\inmath{\Field.\Gen}} % Generator of field \Field.Gen
-\newcommand{\FieldGenSet}{\inmath{\Field.\G}} % Set of field generators \Field.G
-\newcommand{\FieldOp}{\inmath{\Field.\cdot}} % Field multiplication
-\newcommand{\FieldOrder}{\inmath{\Field.\q}} % Field order
-\newcommand{\GF}{\inmathbb{GF}} % Galois field
+\newcommand{\Field}{\tcs@bb{F}} % Generic field
+\newcommand{\FieldElem}{\tcs@mm{a}} % Field element
+\newcommand{\FieldElemAlt}{\tcs@mm{b}} % Alternate field element
+\newcommand{\FieldElemSet}{\tcs@mm{A}} % Set of field elements
+\newcommand{\FieldGen}{\tcs@mm{\Field.\Gen}} % Generator of field \Field.Gen
+\newcommand{\FieldGenSet}{\tcs@mm{\Field.\G}} % Set of field generators \Field.G
+\newcommand{\FieldOp}{\tcs@mm{\Field.\cdot}} % Field multiplication
+\newcommand{\FieldOrder}{\tcs@mm{\Field.\q}} % Field order
+\newcommand{\GF}{\tcs@bb{GF}} % Galois field
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Pairing Notation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Pairing-Friendly Groups and Elements
-\newcommand{\GroupElemOne}{\inmath{g_1}} % Element in G₁
-\newcommand{\GroupElemTgt}{\inmath{g_T}} % Element in G_T
-\newcommand{\GroupElemTwo}{\inmath{g_2}} % Element in G₂
-\newcommand{\GroupOne}{\inmathbb{G}_1} % Source group G₁
-\newcommand{\GroupOneGen}{\inmath{\GroupOne.\Gen}} % Generator of G₁
-\newcommand{\GroupSym}{\inmathbb{G}} % Symmetric source group
-\newcommand{\GroupSymGen}{\inmath{\GroupSym.\Gen}} % Generator of G (symmetric)
-\newcommand{\GroupTgt}{\inmathbb{G}_T} % Target group G_T
-\newcommand{\GroupTgtGen}{\inmath{\GroupTgt.\Gen}} % Generator of G_T
-\newcommand{\GroupTwo}{\inmathbb{G}_2} % Source group G₂
-\newcommand{\GroupTwoGen}{\inmath{\GroupTwo.\Gen}} % Generator of G₂
+\newcommand{\GroupElemOne}{\tcs@mm{g_1}} % Element in G₁
+\newcommand{\GroupElemTgt}{\tcs@mm{g_T}} % Element in G_T
+\newcommand{\GroupElemTwo}{\tcs@mm{g_2}} % Element in G₂
+\newcommand{\GroupOne}{\tcs@bb{G}_1} % Source group G₁
+\newcommand{\GroupOneGen}{\tcs@mm{\GroupOne.\Gen}} % Generator of G₁
+\newcommand{\GroupSym}{\tcs@bb{G}} % Symmetric source group
+\newcommand{\GroupSymGen}{\tcs@mm{\GroupSym.\Gen}} % Generator of G (symmetric)
+\newcommand{\GroupTgt}{\tcs@bb{G}_T} % Target group G_T
+\newcommand{\GroupTgtGen}{\tcs@mm{\GroupTgt.\Gen}} % Generator of G_T
+\newcommand{\GroupTwo}{\tcs@bb{G}_2} % Source group G₂
+\newcommand{\GroupTwoGen}{\tcs@mm{\GroupTwo.\Gen}} % Generator of G₂
 
 % Bilinear Pairings
-\newcommand{\BilinearMap}{\inmath{\hat{e}}} % Bilinear map
-\newcommand{\Pair}{\inmath{\hat{e}}} % Pairing map
+\newcommand{\BilinearMap}{\tcs@mm{\hat{e}}} % Bilinear map
+\newcommand{\Pair}{\tcs@mm{\hat{e}}} % Pairing map
 \newcommand{\Pairing}{\Pair} % Alias
 \newcommand{\PairingDesc}{\Pair : \GroupOne \times \GroupTwo \to \GroupTgt} % e: G₁ × G₂ → G_T
 \newcommand{\SymmetricPairing}{\Pair : \GroupSym \times \GroupSym \to \GroupTgt} % e: G × G → G_T
 
 % Multilinear Pairings
-\newcommand{\GroupTgtK}[1]{\inmathbb{G}_T^{(#1)}} % G_T^(k): k-th level target group
+\newcommand{\GroupTgtK}[1]{\tcs@bb{G}_T^{(#1)}} % G_T^(k): k-th level target group
 \newcommand{\MultilinearDesc}[2]{\MultiPair_{#1} : \GroupSym^{#1} \to \GroupTgt^{(#2)}} % e_k: G^k → G_T^(#2)
 \newcommand{\MultilinearMap}[1]{\MultiPair_{#1}} % e_k: k-linear map
-\newcommand{\MultiPair}{\inmath{\hat{e}}} % Generic multilinear map
+\newcommand{\MultiPair}{\tcs@mm{\hat{e}}} % Generic multilinear map
 \newcommand{\QuadlinearPairing}{\MultilinearMap{4}} % e₄: 4-linear map
 \newcommand{\TrilinearPairing}{\MultilinearMap{3}} % e₃: trilinear map
 
@@ -1297,245 +1406,245 @@
 % Computational Problems
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\AUT}{\ComplexityFont{AUT}} % Automorphism Problem
-\newcommand{\BIPARTITE}{\ComplexityFont{BIPARTITE}} % Bipartite Graph Problem
-\newcommand{\CEVAL}{\ComplexityFont{CEVAL}} % Circuit Evaluation Problem
-\newcommand{\CSAT}{\ComplexityFont{CSAT}} % Circuit Satisfiability Problem
-\newcommand{\CLIQUE}{\ComplexityFont{CLIQUE}} % Clique Problem
-\newcommand{\CNF}{\ComplexityFont{CNF}} % Conjunctive Normal Form
-\newcommand{\COL}{\ComplexityFont{COL}} % Graph Coloring Problem
-\newcommand{\CYCLE}{\ComplexityFont{CYCLE}} % Cycle Problem in Graphs
-\newcommand{\DNF}{\ComplexityFont{DNF}} % Disjunctive Normal Form
-\newcommand{\FEEDBACKVERTEX}{\ComplexityFont{FEEDBACK\textsf{-}VERTEX\textsf{-}SET}} % Feedback Vertex Set problem
-\newcommand{\FOURCOL}{\ComplexityFont{4COL}} % 4-Colorability Problem
-\newcommand{\GNI}{\ComplexityFont{GNI}} % Graph Non-Isomorphism Problem
-\newcommand{\GRAPHCOLORING}{\ComplexityFont{GRAPH\textsf{-}COLORING}} % Graph Coloring
-\newcommand{\GRAPHISOMORPHISM}{\ComplexityFont{GRAPH\textsf{-}ISOMORPHISM}} % Graph Isomorphism problem
-\newcommand{\HALT}{\ComplexityFont{HALT}} % Halting Problem
-\newcommand{\HAMILTONCYCLE}{\ComplexityFont{HAMILTONIAN\textsf{-}CYCLE}} % Hamiltonian Cycle
-\newcommand{\HAMILTONIAN}{\ComplexityFont{HAMILTONIAN}} % Hamiltonian Path/Cycle Problem
-\newcommand{\INTEGERFACT}{\ComplexityFont{INTEGER\textsf{-}FACT}} % Integer Factorization Problem
-\newcommand{\ISO}{\ComplexityFont{ISO}} % Isomorphism Problem
-\newcommand{\KNAPSACK}{\ComplexityFont{KNAPSACK}} % Knapsack problem
-\newcommand{\LONGESTPATH}{\ComplexityFont{LONGEST\textsf{-}PATH}} % Longest Path problem
-\newcommand{\MAXCUT}{\ComplexityFont{MAXCUT}} % Max Cut problem
-\newcommand{\PARTITION}{\ComplexityFont{PARTITION}} % Partition problem
-\newcommand{\PATH}{\ComplexityFont{PATH}} % Path Problem in Graphs
-\newcommand{\PRIMES}{\ComplexityFont{PRIMES}} % Primality Testing Problem
-\newcommand{\SETCOVER}{\ComplexityFont{SET\textsf{-}COVER}} % Set Cover problem
-\newcommand{\SHARPSAT}{\ComplexityFont{\#SAT}} % Sharp SAT Problem
-\newcommand{\SUBSET}{\ComplexityFont{SUBSET\textsf{-}SUM}} % Subset Sum problem
-\newcommand{\SUMCHECK}{\ComplexityFont{SUMCHECK}} % Sum-Check Problem
-\newcommand{\THREECNF}{\ComplexityFont{3CNF}} % 3-Conjunctive Normal Form
-\newcommand{\THREECOL}{\ComplexityFont{3COL}} % 3-Colorability Problem
-\newcommand{\THREEDM}{\ComplexityFont{3DM}} % 3-Dimensional Matching
-\newcommand{\THREEDNF}{\ComplexityFont{3DNF}} % 3-Disjunctive Normal Form
-\newcommand{\THREESAT}{\ComplexityFont{3SAT}} % 3-SAT Problem
-\newcommand{\TQBF}{\ComplexityFont{TQBF}} % True Quantified Boolean Formula Problem
-\newcommand{\TSP}{\ComplexityFont{TSP}} % Traveling Salesman Problem
-\newcommand{\QBF}{\ComplexityFont{QBF}} % Quantified Boolean Formula Problem
-\newcommand{\UPATH}{\ComplexityFont{UPATH}} % Undirected Path Problem
-\newcommand{\VERTEXCOVER}{\ComplexityFont{VERTEX\textsf{-}COVER}} % Vertex Cover problem
+\newcommand{\AUT}{\tcs@cf{AUT}} % Automorphism Problem
+\newcommand{\BIPARTITE}{\tcs@cf{BIPARTITE}} % Bipartite Graph Problem
+\newcommand{\CEVAL}{\tcs@cf{CEVAL}} % Circuit Evaluation Problem
+\newcommand{\CSAT}{\tcs@cf{CSAT}} % Circuit Satisfiability Problem
+\newcommand{\CLIQUE}{\tcs@cf{CLIQUE}} % Clique Problem
+\newcommand{\CNF}{\tcs@cf{CNF}} % Conjunctive Normal Form
+\newcommand{\COL}{\tcs@cf{COL}} % Graph Coloring Problem
+\newcommand{\CYCLE}{\tcs@cf{CYCLE}} % Cycle Problem in Graphs
+\newcommand{\DNF}{\tcs@cf{DNF}} % Disjunctive Normal Form
+\newcommand{\FEEDBACKVERTEX}{\tcs@cf{FEEDBACK\textsf{-}VERTEX\textsf{-}SET}} % Feedback Vertex Set problem
+\newcommand{\FOURCOL}{\tcs@cf{4COL}} % 4-Colorability Problem
+\newcommand{\GNI}{\tcs@cf{GNI}} % Graph Non-Isomorphism Problem
+\newcommand{\GRAPHCOLORING}{\tcs@cf{GRAPH\textsf{-}COLORING}} % Graph Coloring
+\newcommand{\GRAPHISOMORPHISM}{\tcs@cf{GRAPH\textsf{-}ISOMORPHISM}} % Graph Isomorphism problem
+\newcommand{\HALT}{\tcs@cf{HALT}} % Halting Problem
+\newcommand{\HAMILTONCYCLE}{\tcs@cf{HAMILTONIAN\textsf{-}CYCLE}} % Hamiltonian Cycle
+\newcommand{\HAMILTONIAN}{\tcs@cf{HAMILTONIAN}} % Hamiltonian Path/Cycle Problem
+\newcommand{\INTEGERFACT}{\tcs@cf{INTEGER\textsf{-}FACT}} % Integer Factorization Problem
+\newcommand{\ISO}{\tcs@cf{ISO}} % Isomorphism Problem
+\newcommand{\KNAPSACK}{\tcs@cf{KNAPSACK}} % Knapsack problem
+\newcommand{\LONGESTPATH}{\tcs@cf{LONGEST\textsf{-}PATH}} % Longest Path problem
+\newcommand{\MAXCUT}{\tcs@cf{MAXCUT}} % Max Cut problem
+\newcommand{\PARTITION}{\tcs@cf{PARTITION}} % Partition problem
+\newcommand{\PATH}{\tcs@cf{PATH}} % Path Problem in Graphs
+\newcommand{\PRIMES}{\tcs@cf{PRIMES}} % Primality Testing Problem
+\newcommand{\SETCOVER}{\tcs@cf{SET\textsf{-}COVER}} % Set Cover problem
+\newcommand{\SHARPSAT}{\tcs@cf{\#SAT}} % Sharp SAT Problem
+\newcommand{\SUBSET}{\tcs@cf{SUBSET\textsf{-}SUM}} % Subset Sum problem
+\newcommand{\SUMCHECK}{\tcs@cf{SUMCHECK}} % Sum-Check Problem
+\newcommand{\THREECNF}{\tcs@cf{3CNF}} % 3-Conjunctive Normal Form
+\newcommand{\THREECOL}{\tcs@cf{3COL}} % 3-Colorability Problem
+\newcommand{\THREEDM}{\tcs@cf{3DM}} % 3-Dimensional Matching
+\newcommand{\THREEDNF}{\tcs@cf{3DNF}} % 3-Disjunctive Normal Form
+\newcommand{\THREESAT}{\tcs@cf{3SAT}} % 3-SAT Problem
+\newcommand{\TQBF}{\tcs@cf{TQBF}} % True Quantified Boolean Formula Problem
+\newcommand{\TSP}{\tcs@cf{TSP}} % Traveling Salesman Problem
+\newcommand{\QBF}{\tcs@cf{QBF}} % Quantified Boolean Formula Problem
+\newcommand{\UPATH}{\tcs@cf{UPATH}} % Undirected Path Problem
+\newcommand{\VERTEXCOVER}{\tcs@cf{VERTEX\textsf{-}COVER}} % Vertex Cover problem
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Compiler Construction and Transformations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\AST}{\inmathsf{AST}} % Abstract Syntax Tree
-\newcommand{\Codegen}{\inmathsf{Gen}} % Code generation function\
-\newcommand{\Compiler}{\inmathsf{Comp}} % Compiler transformation function
-\newcommand{\CompilerIn}{\inmathsf{src}} % Source language input
-\newcommand{\CompilerOut}{\inmathsf{tgt}} % Target language output
+\newcommand{\AST}{\tcs@sf{AST}} % Abstract Syntax Tree
+\newcommand{\Codegen}{\tcs@sf{Gen}} % Code generation function\
+\newcommand{\Compiler}{\tcs@sf{Comp}} % Compiler transformation function
+\newcommand{\CompilerIn}{\tcs@sf{src}} % Source language input
+\newcommand{\CompilerOut}{\tcs@sf{tgt}} % Target language output
 \newcommand{\CompilerTrans}{\Compiler(\CompilerIn)} % Transformation result
 \newcommand{\Env}{\rho} % Environment (semantic or runtime)
-\newcommand{\Grammar}{\inmathcal{G}} % Grammar definition
-\newcommand{\IR}{\inmathsf{IR}} % Intermediate Representation
-\newcommand{\Lexer}{\inmathsf{Lex}} % Lexical analyzer
-\newcommand{\NonTerminals}{\inmathsf{NT}} % Non-terminal symbols
-\newcommand{\OptPass}{\inmathsf{Opt}} % Optimization pass
+\newcommand{\Grammar}{\tcs@cl{G}} % Grammar definition
+\newcommand{\IR}{\tcs@sf{IR}} % Intermediate Representation
+\newcommand{\Lexer}{\tcs@sf{Lex}} % Lexical analyzer
+\newcommand{\NonTerminals}{\tcs@sf{NT}} % Non-terminal symbols
+\newcommand{\OptPass}{\tcs@sf{Opt}} % Optimization pass
 \newcommand{\Parser}{\Parse} % Syntax parser
-\newcommand{\ParseTable}{\inmathsf{PT}} % Parse table
-\newcommand{\ProductionRules}{\inmathsf{P}} % Production rules
+\newcommand{\ParseTable}{\tcs@sf{PT}} % Parse table
+\newcommand{\ProductionRules}{\tcs@sf{P}} % Production rules
 \newcommand{\Semantics}{\llbracket \cdot \rrbracket} % Denotational semantics brackets
-\newcommand{\SourceLang}{\inmathcal{L}_S} % Source language
-\newcommand{\StartSymbol}{\inmathsf{S}} % Start symbol
-\newcommand{\SymTable}{\inmathsf{SymTab}} % Symbol table
-\newcommand{\TableSize}{\inmathsf{M}} % Size or dimension of the table
-\newcommand{\TableT}{\inmathsf{T}} % Table T (e.g., parsing or transition table)
-\newcommand{\TargetLang}{\inmathcal{L}_T} % Target language
-\newcommand{\Terminals}{\inmathsf{T}} % Terminal symbols
+\newcommand{\SourceLang}{\tcs@cl{L}_S} % Source language
+\newcommand{\StartSymbol}{\tcs@sf{S}} % Start symbol
+\newcommand{\SymTable}{\tcs@sf{SymTab}} % Symbol table
+\newcommand{\TableSize}{\tcs@sf{M}} % Size or dimension of the table
+\newcommand{\TableT}{\tcs@sf{T}} % Table T (e.g., parsing or transition table)
+\newcommand{\TargetLang}{\tcs@cl{L}_T} % Target language
+\newcommand{\Terminals}{\tcs@sf{T}} % Terminal symbols
 \newcommand{\Token}{\tau} % Generic token
 \newcommand{\Tokens}{\boldsymbol{\tau}} % Token stream
-\newcommand{\Transformation}{\inmathbb{T}} % Transformation function or relation
-\newcommand{\TransFunc}{\inmathbb{T}} % General transformation function
+\newcommand{\Transformation}{\tcs@bb{T}} % Transformation function or relation
+\newcommand{\TransFunc}{\tcs@bb{T}} % General transformation function
 \newcommand{\TypingEnv}{\Gamma} % Typing environment
-\newcommand{\XQueries}{\inmathsf{X}} % Query set or feature vector
+\newcommand{\XQueries}{\tcs@sf{X}} % Query set or feature vector
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Basic Mathematical Constants with values (for reference)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\eighth}{\inmath{\frac{1}{8}}} % 0.125
-\newcommand{\fifth}{\inmath{\frac{1}{5}}} % 0.2
-\newcommand{\half}{\inmath{\frac{1}{2}}} % 0.5
-\newcommand{\onethird}{\inmath{\frac{1}{3}}} % ≈0.3333
-\newcommand{\quart}{\inmath{\frac{1}{4}}} % 0.25
-\newcommand{\sixth}{\inmath{\frac{1}{6}}} % ≈0.1667
-\newcommand{\tenth}{\inmath{\frac{1}{10}}} % 0.1
-\newcommand{\third}{\inmath{\frac{1}{3}}} % ≈0.3333
-\newcommand{\threefourth}{\inmath{\frac{3}{4}}} % ≈0.75
-\newcommand{\twothird}{\inmath{\frac{2}{3}}} % ≈0.66667
+\newcommand{\eighth}{\tcs@mm{\frac{1}{8}}} % 0.125
+\newcommand{\fifth}{\tcs@mm{\frac{1}{5}}} % 0.2
+\newcommand{\half}{\tcs@mm{\frac{1}{2}}} % 0.5
+\newcommand{\onethird}{\tcs@mm{\frac{1}{3}}} % ≈0.3333
+\newcommand{\quart}{\tcs@mm{\frac{1}{4}}} % 0.25
+\newcommand{\sixth}{\tcs@mm{\frac{1}{6}}} % ≈0.1667
+\newcommand{\tenth}{\tcs@mm{\frac{1}{10}}} % 0.1
+\newcommand{\third}{\tcs@mm{\frac{1}{3}}} % ≈0.3333
+\newcommand{\threefourth}{\tcs@mm{\frac{3}{4}}} % ≈0.75
+\newcommand{\twothird}{\tcs@mm{\frac{2}{3}}} % ≈0.66667
 
-\newcommand{\piConst}{\inmath{\pi}} % ≈3.14159
-\newcommand{\eConst}{\inmath{e}} % ≈2.71828
-\newcommand{\phiConst}{\inmath{\varphi}} % ≈1.61803 (Golden ratio)
-\newcommand{\gammaConst}{\inmath{\gamma}} % ≈0.57721 (Euler-Mascheroni constant)
-\newcommand{\tauConst}{\inmath{\tau}} % ≈6.28318 (Tau, 2π)
+\newcommand{\piConst}{\tcs@mm{\pi}} % ≈3.14159
+\newcommand{\eConst}{\tcs@mm{e}} % ≈2.71828
+\newcommand{\phiConst}{\tcs@mm{\varphi}} % ≈1.61803 (Golden ratio)
+\newcommand{\gammaConst}{\tcs@mm{\gamma}} % ≈0.57721 (Euler-Mascheroni constant)
+\newcommand{\tauConst}{\tcs@mm{\tau}} % ≈6.28318 (Tau, 2π)
 
-\newcommand{\infinity}{\inmath{\infty}} % Infinity symbol
-\newcommand{\zero}{\inmath{0}} % Zero
-\newcommand{\one}{\inmath{1}} % One
+\newcommand{\infinity}{\tcs@mm{\infty}} % Infinity symbol
+\newcommand{\zero}{\tcs@mm{0}} % Zero
+\newcommand{\one}{\tcs@mm{1}} % One
 
 % Mathematical constants with approximate values (numeric form)
-\newcommand{\sqrtTwo}{\inmath{\sqrt{2}}} % ≈1.41421
-\newcommand{\sqrtThree}{\inmath{\sqrt{3}}} % ≈1.73205
-\newcommand{\lnTwo}{\inmath{\ln 2}} % ≈0.69315
-\newcommand{\lnTen}{\inmath{\ln 10}} % ≈2.30259
+\newcommand{\sqrtTwo}{\tcs@mm{\sqrt{2}}} % ≈1.41421
+\newcommand{\sqrtThree}{\tcs@mm{\sqrt{3}}} % ≈1.73205
+\newcommand{\lnTwo}{\tcs@mm{\ln 2}} % ≈0.69315
+\newcommand{\lnTen}{\tcs@mm{\ln 10}} % ≈2.30259
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Graph Theory
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Graphs and Graph Sets
-\newcommand{\Graph}{\inmathscr{G}} % Graph
-\newcommand{\GraphSet}{\inmathcal{G}} % Set of Graphs
-\newcommand{\IsomorphicGraph}{\inmathscr{H}} % Isomorphic Graph
-\newcommand{\IsomorphicGraphSet}{\inmathcal{H}} % Set of Isomorphic Graphs
+\newcommand{\Graph}{\tcs@sr{G}} % Graph
+\newcommand{\GraphSet}{\tcs@cl{G}} % Set of Graphs
+\newcommand{\IsomorphicGraph}{\tcs@sr{H}} % Isomorphic Graph
+\newcommand{\IsomorphicGraphSet}{\tcs@cl{H}} % Set of Isomorphic Graphs
 
 % Operators (functions, invariants, graph-theoretic notions)
-\newcommand{\adj}{\inmathsf{adj}} % Adjacency Matrix Representation
-\newcommand{\aut}{\inmathsf{aut}} % Graph Automorphism Function
-\newcommand{\cut}{\inmathsf{cut}} % Graph Cut Definition
-\newcommand{\cycle}{\inmathsf{cycle}} % Cycle in a Graph
-\newcommand{\degree}{\inmathsf{deg}} % Vertex Degree Calculation
-\newcommand{\distance}{\inmathsf{dist}} % Distance Between Graph Vertices
-\newcommand{\iso}{\inmathsf{iso}} % Isomorphism
-\newcommand{\size}{\inmathsf{size}} % Size of the Graph
-\newcommand{\supp}{\inmathsf{supp}} % Support of a Graph
-\newcommand{\tree}{\inmathsf{tree}} % Tree Structure Representation
-\newcommand{\trunc}{\inmathsf{trunc}} % Truncation Function Definition
+\DeclareMathOperator*{\adj}{\tcs@sf{adj}} % Adjacency Matrix Representation
+\DeclareMathOperator*{\aut}{\tcs@sf{aut}} % Graph Automorphism Function
+\DeclareMathOperator*{\cut}{\tcs@sf{cut}} % Graph Cut Definition
+\DeclareMathOperator*{\cycle}{\tcs@sf{cycle}} % Cycle in a Graph
+\DeclareMathOperator*{\degree}{\tcs@sf{deg}} % Vertex Degree Calculation
+\DeclareMathOperator*{\distance}{\tcs@sf{dist}} % Distance Between Graph Vertices
+\DeclareMathOperator*{\iso}{\tcs@sf{iso}} % Isomorphism
+\DeclareMathOperator*{\size}{\tcs@sf{size}} % Size of the Graph
+\DeclareMathOperator*{\supp}{\tcs@sf{supp}} % Support of a Graph
+\DeclareMathOperator*{\tree}{\tcs@sf{tree}} % Tree Structure Representation
+\DeclareMathOperator*{\trunc}{\tcs@sf{trunc}} % Truncation Function Definition
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Number Sets
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\C}{\inmathbb{C}} % Complex numbers
+\newcommand{\C}{\tcs@bb{C}} % Complex numbers
 \newcommand{\F}{\Field} % Generic field
-\newcommand{\I}{\inmathbb{I}} % Imaginary numbers
-\newcommand{\N}{\inmathbb{N}} % Natural numbers
-\newcommand{\Q}{\inmathbb{Q}} % Rational numbers
-\newcommand{\R}{\inmathbb{R}} % Real numbers
-\newcommand{\Z}{\inmathbb{Z}} % Integers
+\newcommand{\I}{\tcs@bb{I}} % Imaginary numbers
+\newcommand{\N}{\tcs@bb{N}} % Natural numbers
+\newcommand{\Q}{\tcs@bb{Q}} % Rational numbers
+\newcommand{\R}{\tcs@bb{R}} % Real numbers
+\newcommand{\Z}{\tcs@bb{Z}} % Integers
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bracket, Delimiter, and Functional Notation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\abs}[1]{\inmath{\left|#1\right|}} % Absolute value
-\newcommand{\angles}[1]{\inmath{\left\langle#1\right\rangle}} % Inner product / angle brackets
-\newcommand{\brackets}[1]{\inmath{\left[#1\right]}} % Square brackets
-\newcommand{\ceil}[1]{\inmath{\left\lceil#1\right\rceil}} % Ceiling function
-\newcommand{\floor}[1]{\inmath{\left\lfloor#1\right\rfloor}} % Floor function
-\newcommand{\norm}[1]{\inmath{\left\lVert#1\right\rVert}} % Norm
-\newcommand{\parens}[1]{\inmath{\left(#1\right)}} % Parentheses
+\newcommand{\abs}[1]{\tcs@mm{\left|#1\right|}} % Absolute value
+\newcommand{\angles}[1]{\tcs@mm{\left\langle#1\right\rangle}} % Inner product / angle brackets
+\newcommand{\brackets}[1]{\tcs@mm{\left[#1\right]}} % Square brackets
+\newcommand{\ceil}[1]{\tcs@mm{\left\lceil#1\right\rceil}} % Ceiling function
+\newcommand{\floor}[1]{\tcs@mm{\left\lfloor#1\right\rfloor}} % Floor function
+\newcommand{\norm}[1]{\tcs@mm{\left\lVert#1\right\rVert}} % Norm
+\newcommand{\parens}[1]{\tcs@mm{\left(#1\right)}} % Parentheses
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Logical, Symbolic, and Bitwise Relations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\defeq}{\inmath{\overset{\Delta}{=}}} % Defined as
-\newcommand{\qeq}{\inmath{\overset{\textrm{?}}{=}}} % Questioned equality
-\newcommand{\qin}{\inmath{\overset{\textrm{?}}{\in}}} % Questioned membership
-\newcommand{\xor}{\inmath{\oplus}} % Exclusive OR (bitwise)
+\DeclareMathOperator*{\defeq}{\tcs@mm{\overset{\Delta}{=}}} % Defined as
+\DeclareMathOperator*{\qeq}{\tcs@mm{\overset{\textrm{?}}{=}}} % Questioned equality
+\DeclareMathOperator*{\qin}{\tcs@mm{\overset{\textrm{?}}{\in}}} % Questioned membership
+\DeclareMathOperator*{\xor}{\tcs@mm{\oplus}} % Exclusive OR (bitwise)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Arithmetic and Extremal Operators
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\DeclareMathOperator*{\argmax}{\inmathrm{arg\,max}} % Argument of maximum
-\DeclareMathOperator*{\argmin}{\inmathrm{arg\,min}} % Argument of minimum
-\DeclareMathOperator*{\gcd}{\inmathrm{gcd}} % Greatest common divisor
-\DeclareMathOperator*{\lcm}{\inmathrm{lcm}} % Least common multiple
-\DeclareMathOperator*{\majority}{\inmathrm{majority}} % Majority function
-\DeclareMathOperator*{\perm}{\inmathrm{perm}} % Permutation function
-\DeclareMathOperator*{\sgn}{\inmathrm{sgn}} % Sign function
-\DeclareMathOperator*{\thresh}{\inmathrm{thr}} % Threshold function
+\DeclareMathOperator*{\argmax}{\tcs@rm{arg\,max}} % Argument of maximum
+\DeclareMathOperator*{\argmin}{\tcs@rm{arg\,min}} % Argument of minimum
+\DeclareMathOperator*{\gcd}{\tcs@rm{gcd}} % Greatest common divisor
+\DeclareMathOperator*{\lcm}{\tcs@rm{lcm}} % Least common multiple
+\DeclareMathOperator*{\majority}{\tcs@rm{majority}} % Majority function
+\DeclareMathOperator*{\perm}{\tcs@rm{perm}} % Permutation function
+\DeclareMathOperator*{\sgn}{\tcs@rm{sgn}} % Sign function
+\DeclareMathOperator*{\thresh}{\tcs@rm{thr}} % Threshold function
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Complexity Classes and Iterated Functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\poly}{\inmathsf{poly}} % Polynomial time
-\newcommand{\polylog}{\inmathsf{polylog}} % Polynomial logarithmic time
-\newcommand{\polyloglog}{\inmathsf{polyloglog}} % Polynomial log-log time
-\newcommand{\loglog}{\inmathrm{loglog}} % Log-log time
-\newcommand{\logloglog}{\inmathrm{logloglog}} % Log-log-log time
+\DeclareMathOperator*{\loglog}{\tcs@rm{loglog}} % Log-log time
+\DeclareMathOperator*{\logloglog}{\tcs@rm{logloglog}} % Log-log-log time
+\DeclareMathOperator*{\logstar}{\log^*} % Iterated logarithm
+\DeclareMathOperator*{\poly}{\tcs@sf{poly}} % Polynomial time
+\DeclareMathOperator*{\polylog}{\tcs@sf{polylog}} % Polynomial logarithmic time
+\DeclareMathOperator*{\polyloglog}{\tcs@sf{polyloglog}} % Polynomial log-log time
 \newcommand{\logiter}[1]{\log^{[#1]}} % Iterated logarithm (parameterized)
-\newcommand{\logstar}{\log^*} % Iterated logarithm
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Boolean Logic Operators (textual)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\AND}{\ComplexityFont{AND}} % Logical AND operation
-\newcommand{\NAND}{\ComplexityFont{NAND}} % Logical NAND operation
-\newcommand{\NOR}{\ComplexityFont{NOR}} % Logical NOR operation
-\newcommand{\NOT}{\ComplexityFont{NOT}} % Logical NOT operation
-\newcommand{\OR}{\ComplexityFont{OR}} % Logical OR operation
-\newcommand{\XNOR}{\ComplexityFont{XNOR}} % Logical XNOR operation
-\newcommand{\XOR}{\ComplexityFont{XOR}} % Logical XOR operation
+\DeclareMathOperator*{\AND}{\tcs@cf{AND}} % Logical AND operation
+\DeclareMathOperator*{\NAND}{\tcs@cf{NAND}} % Logical NAND operation
+\DeclareMathOperator*{\NOR}{\tcs@cf{NOR}} % Logical NOR operation
+\DeclareMathOperator*{\NOT}{\tcs@cf{NOT}} % Logical NOT operation
+\DeclareMathOperator*{\OR}{\tcs@cf{OR}} % Logical OR operation
+\DeclareMathOperator*{\XNOR}{\tcs@cf{XNOR}} % Logical XNOR operation
+\DeclareMathOperator*{\XOR}{\tcs@cf{XOR}} % Logical XOR operation
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Miscellaneous Symbolic and Set Notation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\bits}{\inmath{\{0,1\}^{\ast}}} % Set of all binary strings (finite length)
-\newcommand{\bitset}{\inmath{\{0,1\}}} % Set of binary digits (0 and 1)
-\newcommand{\bitstar}{\inmath{\{0,1\}^{\ast}}} % Bit values with star
-\newcommand{\pmset}{\inmath{\{-1,1\}}} % Set of ±1
-\newcommand{\pmstar}{\inmath{\{-1,1\}^{\ast}}} % ±1 with star
-\newcommand{\const}{\inmathsf{const}} % Constant
-\newcommand{\diam}{\inmathsf{diam}} % Diameter
+\newcommand{\bits}{\tcs@mm{\{0,1\}^{\ast}}} % Set of all binary strings (finite length)
+\newcommand{\bitset}{\tcs@mm{\{0,1\}}} % Set of binary digits (0 and 1)
+\newcommand{\bitstar}{\tcs@mm{\{0,1\}^{\ast}}} % Bit values with star
+\newcommand{\pmset}{\tcs@mm{\{-1,1\}}} % Set of ±1
+\newcommand{\pmstar}{\tcs@mm{\{-1,1\}^{\ast}}} % ±1 with star
+\newcommand{\const}{\tcs@sf{const}} % Constant
+\newcommand{\diam}{\tcs@sf{diam}} % Diameter
 \newcommand{\restrict}{\mathord{\upharpoonright}} % Restriction operator
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Combinatorial and Permutation Notations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\nCrf}[2]{\inmath{\frac{#1!}{(#1-#2)!#2!}}} % Combinations (factorials)
-\newcommand{\nCr}[2]{\inmath{#1\mathrm{C}{#2}}} % Combinations
-\newcommand{\nPrf}[2]{\inmath{\frac{#1!}{(#1-#2)!}}} % Permutations (factorials)
-\newcommand{\nPr}[2]{\inmath{#1\mathrm{P}{#2}}} % Permutations
+\newcommand{\nCrf}[2]{\tcs@mm{\frac{#1!}{(#1-#2)!#2!}}} % Combinations (factorials)
+\newcommand{\nCr}[2]{\tcs@mm{#1\mathrm{C}{#2}}} % Combinations
+\newcommand{\nPrf}[2]{\tcs@mm{\frac{#1!}{(#1-#2)!}}} % Permutations (factorials)
+\newcommand{\nPr}[2]{\tcs@mm{#1\mathrm{P}{#2}}} % Permutations
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Asymptotic Notation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\bigO}[1]{\inmath{\mathcal{O}\left(#1\right)}} % Big-O notation
-\newcommand{\bigOmega}[1]{\inmath{\Omega\left(#1\right)}} % Big-Omega notation
-\newcommand{\bigTheta}[1]{\inmath{\Theta\left(#1\right)}} % Big-Theta notation
-\newcommand{\smallO}[1]{\inmath{\mathscr{o}\left(#1\right)}} % Little-o notation
-\newcommand{\smallOmega}[1]{\inmath{\omega\left(#1\right)}} % Little-omega notation
+\newcommand{\bigO}[1]{\tcs@mm{\mathcal{O}\left(#1\right)}} % Big-O notation
+\newcommand{\bigOmega}[1]{\tcs@mm{\Omega\left(#1\right)}} % Big-Omega notation
+\newcommand{\bigTheta}[1]{\tcs@mm{\Theta\left(#1\right)}} % Big-Theta notation
+\newcommand{\smallO}[1]{\tcs@mm{\mathscr{o}\left(#1\right)}} % Little-o notation
+\newcommand{\smallOmega}[1]{\tcs@mm{\omega\left(#1\right)}} % Little-omega notation
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Dirac Notation (Quantum Mechanics)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\bra}[1]{\inmath{\left\langle #1\right|}} % Bra vector
-\newcommand{\braket}[2]{\inmath{\left\langle #1 \middle| #2 \right\rangle}} % Inner product
-\newcommand{\ket}[1]{\inmath{\left|#1\right\rangle}} % Ket vector
-\newcommand{\ketbra}[2]{\inmath{\left|#1\right\rangle\!\left\langle #2\right|}} % Outer product
-\newcommand{\proj}[1]{\inmath{\left|#1\right\rangle\!\left\langle #1\right|}} % Projector
+\newcommand{\bra}[1]{\tcs@mm{\left\langle #1\right|}} % Bra vector
+\newcommand{\braket}[2]{\tcs@mm{\left\langle #1 \middle| #2 \right\rangle}} % Inner product
+\newcommand{\ket}[1]{\tcs@mm{\left|#1\right\rangle}} % Ket vector
+\newcommand{\ketbra}[2]{\tcs@mm{\left|#1\right\rangle\!\left\langle #2\right|}} % Outer product
+\newcommand{\proj}[1]{\tcs@mm{\left|#1\right\rangle\!\left\langle #1\right|}} % Projector
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Set Theory and Operations
@@ -1545,34 +1654,34 @@
 \newcommand{\iff}{\longleftrightarrow} % Logical if and only if
 
 % Set operations
-\newcommand{\cardinality}[1]{\inmath{\left|#1\right|}} % Cardinality of a set
-\newcommand{\emptysetset}{\inmath{\varnothing}} % Empty set symbol
-\newcommand{\emptysetsymbol}{\inmath{\varnothing}} % Empty set
-\newcommand{\inset}{\inmath{\in}} % Element of
-\newcommand{\intersection}{\inmath{\cap}} % Intersection operator
-\newcommand{\notinset}{\inmath{\notin}} % Not element of
-\newcommand{\powerset}[1]{\inmathcal{P}\left(#1\right)} % Power set
-\newcommand{\set}[1]{\inmath{\left\{#1\right\}}} % Set braces
-\newcommand{\setminusop}{\inmath{\setminus}} % Set difference operator
-\newcommand{\subseteqop}{\inmath{\subseteq}} % Subset or equal
-\newcommand{\subsetop}{\inmath{\subset}} % Strict subset
-\newcommand{\supseteqop}{\inmath{\supseteq}} % Superset or equal
-\newcommand{\supsetop}{\inmath{\supset}} % Strict superset
-\newcommand{\union}{\inmath{\cup}} % Union operator
-\newcommand{\universalset}{\inmathcal{U}} % Universal set symbol (commonly used)
+\newcommand{\cardinality}[1]{\tcs@mm{\left|#1\right|}} % Cardinality of a set
+\newcommand{\emptysetset}{\tcs@mm{\varnothing}} % Empty set symbol
+\newcommand{\emptysetsymbol}{\tcs@mm{\varnothing}} % Empty set
+\newcommand{\inset}{\tcs@mm{\in}} % Element of
+\newcommand{\intersection}{\tcs@mm{\cap}} % Intersection operator
+\newcommand{\notinset}{\tcs@mm{\notin}} % Not element of
+\newcommand{\powerset}[1]{\tcs@cl{P}\left(#1\right)} % Power set
+\newcommand{\set}[1]{\tcs@mm{\left\{#1\right\}}} % Set braces
+\newcommand{\setminusop}{\tcs@mm{\setminus}} % Set difference operator
+\newcommand{\subseteqop}{\tcs@mm{\subseteq}} % Subset or equal
+\newcommand{\subsetop}{\tcs@mm{\subset}} % Strict subset
+\newcommand{\supseteqop}{\tcs@mm{\supseteq}} % Superset or equal
+\newcommand{\supsetop}{\tcs@mm{\supset}} % Strict superset
+\newcommand{\union}{\tcs@mm{\cup}} % Union operator
+\newcommand{\universalset}{\tcs@cl{U}} % Universal set symbol (commonly used)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Probability and Expectation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Probability and expectation operators
-\DeclareMathOperator*{\Adv}{\inmathsf{Adv}} % Advantage operator
-\DeclareMathOperator*{\B}{\inmathsf{B}} % Bias function
-\DeclareMathOperator*{\Cov}{\inmathrm{Cov}} % Covariance operator
-\DeclareMathOperator*{\E}{\inmathbb{E}} % Expectation operator
-\DeclareMathOperator*{\Event}{\inmathcal{E}} % Event indicator
-\DeclareMathOperator*{\Pr}{\inmathsf{Pr}} % Probability operator
-\DeclareMathOperator*{\Var}{\inmathrm{Var}} % Variance operator
+\DeclareMathOperator*{\Adv}{\tcs@sf{Adv}} % Advantage operator
+\DeclareMathOperator*{\B}{\tcs@sf{B}} % Bias function
+\DeclareMathOperator*{\Cov}{\tcs@rm{Cov}} % Covariance operator
+\DeclareMathOperator*{\E}{\tcs@bb{E}} % Expectation operator
+\DeclareMathOperator*{\Event}{\tcs@cl{E}} % Event indicator
+\DeclareMathOperator*{\Pr}{\tcs@sf{Pr}} % Probability operator
+\DeclareMathOperator*{\Var}{\tcs@rm{Var}} % Variance operator
 
 % Common probability and expectation notations
 \newcommand{\AdvOf}[1]{\Adv\brackets{#1}} % Advantage of argument
@@ -1593,12 +1702,12 @@
 % Differential and Partial Derivatives
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\dd}{\inmathrm{d}} % Differential operator (d for differentiation)  
-\newcommand{\ddderiv}[3]{\inmath{\frac{\dd^2 #1}{\dd #2 \dd #3}}} % Second total derivative (mixed)  
-\newcommand{\dderiv}[2]{\inmath{\frac{\dd #1}{\dd #2}}} % Total derivative
-\newcommand{\evalatpt}[2]{\inmath{\left.#1\right|_{#2}}} % Expression evaluated at a point
-\newcommand{\pderiv}[2]{\inmath{\frac{\partial #1}{\partial #2}}} % Partial derivative
-\newcommand{\ppderiv}[3]{\inmath{\frac{\partial^2 #1}{\partial #2 \partial #3}}} % Second-order partial derivative (mixed)
+\newcommand{\dd}{\tcs@rm{d}} % Differential operator (d for differentiation)  
+\newcommand{\ddderiv}[3]{\tcs@mm{\frac{\dd^2 #1}{\dd #2 \dd #3}}} % Second total derivative (mixed)  
+\newcommand{\dderiv}[2]{\tcs@mm{\frac{\dd #1}{\dd #2}}} % Total derivative
+\newcommand{\evalatpt}[2]{\tcs@mm{\left.#1\right|_{#2}}} % Expression evaluated at a point
+\newcommand{\pderiv}[2]{\tcs@mm{\frac{\partial #1}{\partial #2}}} % Partial derivative
+\newcommand{\ppderiv}[3]{\tcs@mm{\frac{\partial^2 #1}{\partial #2 \partial #3}}} % Second-order partial derivative (mixed)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Vector Calculus Operators
@@ -1613,16 +1722,16 @@
 % Transform Notations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\laplace}[1]{\inmathcal{L}\set{#1}} % Laplace transform  
-\newcommand{\ilaplace}[1]{\inmathcal{L}^{-1}\set{#1}} % Inverse Laplace transform  
-\newcommand{\fourier}[1]{\inmathcal{F}\set{#1}} % Fourier transform  
-\newcommand{\ifourier}[1]{\inmathcal{F}^{-1}\set{#1}} % Inverse Fourier transform  
-\newcommand{\ztransform}[1]{\inmathcal{Z}\set{#1}} % Z-transform  
-\newcommand{\iztransform}[1]{\inmathcal{Z}^{-1}\set{#1}} % Inverse Z-transform  
-\newcommand{\radon}[1]{\inmathcal{R}\set{#1}} % Radon transform  
-\newcommand{\iradon}[1]{\inmathcal{R}^{-1}\set{#1}} % Inverse Radon transform  
-\newcommand{\wavelet}[1]{\inmathcal{W}\set{#1}} % Wavelet transform  
-\newcommand{\iwavelet}[1]{\inmathcal{W}^{-1}\set{#1}} % Inverse Wavelet transform  
+\newcommand{\laplace}[1]{\tcs@cl{L}\set{#1}} % Laplace transform  
+\newcommand{\ilaplace}[1]{\tcs@cl{L}^{-1}\set{#1}} % Inverse Laplace transform  
+\newcommand{\fourier}[1]{\tcs@cl{F}\set{#1}} % Fourier transform  
+\newcommand{\ifourier}[1]{\tcs@cl{F}^{-1}\set{#1}} % Inverse Fourier transform  
+\newcommand{\ztransform}[1]{\tcs@cl{Z}\set{#1}} % Z-transform  
+\newcommand{\iztransform}[1]{\tcs@cl{Z}^{-1}\set{#1}} % Inverse Z-transform  
+\newcommand{\radon}[1]{\tcs@cl{R}\set{#1}} % Radon transform  
+\newcommand{\iradon}[1]{\tcs@cl{R}^{-1}\set{#1}} % Inverse Radon transform  
+\newcommand{\wavelet}[1]{\tcs@cl{W}\set{#1}} % Wavelet transform  
+\newcommand{\iwavelet}[1]{\tcs@cl{W}^{-1}\set{#1}} % Inverse Wavelet transform  
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Trigonometric Functions
@@ -1652,373 +1761,373 @@
 \renewcommand{\j}{\hat{j}} % Unit vector j
 \renewcommand{\k}{\hat{k}} % Unit vector k
 
-\newcommand{\veca}{\asvector{a}} % Vector a
-\newcommand{\vecb}{\asvector{b}} % Vector b
-\newcommand{\vecc}{\asvector{c}} % Vector c
-\newcommand{\vecd}{\asvector{d}} % Vector d
-\newcommand{\vece}{\asvector{e}} % Vector e
-\newcommand{\vecf}{\asvector{f}} % Vector f
-\newcommand{\vecg}{\asvector{g}} % Vector g
-\newcommand{\vech}{\asvector{h}} % Vector h
-\newcommand{\veci}{\asvector{i}} % Vector i
-\newcommand{\vecj}{\asvector{j}} % Vector j
-\newcommand{\veck}{\asvector{k}} % Vector k
-\newcommand{\vecl}{\asvector{l}} % Vector l
-\newcommand{\vecm}{\asvector{m}} % Vector m
-\newcommand{\vecn}{\asvector{n}} % Vector n
-\newcommand{\veco}{\asvector{o}} % Vector o
-\newcommand{\vecp}{\asvector{p}} % Vector p
-\newcommand{\vecq}{\asvector{q}} % Vector q
-\newcommand{\vecr}{\asvector{r}} % Vector r
-\newcommand{\vecs}{\asvector{s}} % Vector s
-\newcommand{\vect}{\asvector{t}} % Vector t
-\newcommand{\vecu}{\asvector{u}} % Vector u
-\newcommand{\vecv}{\asvector{v}} % Vector v
-\newcommand{\vecw}{\asvector{w}} % Vector w
-\newcommand{\vecx}{\asvector{x}} % Vector x
-\newcommand{\vecy}{\asvector{y}} % Vector y
-\newcommand{\vecz}{\asvector{z}} % Vector z
+\newcommand{\veca}{\tcs@vc{a}} % Vector a
+\newcommand{\vecb}{\tcs@vc{b}} % Vector b
+\newcommand{\vecc}{\tcs@vc{c}} % Vector c
+\newcommand{\vecd}{\tcs@vc{d}} % Vector d
+\newcommand{\vece}{\tcs@vc{e}} % Vector e
+\newcommand{\vecf}{\tcs@vc{f}} % Vector f
+\newcommand{\vecg}{\tcs@vc{g}} % Vector g
+\newcommand{\vech}{\tcs@vc{h}} % Vector h
+\newcommand{\veci}{\tcs@vc{i}} % Vector i
+\newcommand{\vecj}{\tcs@vc{j}} % Vector j
+\newcommand{\veck}{\tcs@vc{k}} % Vector k
+\newcommand{\vecl}{\tcs@vc{l}} % Vector l
+\newcommand{\vecm}{\tcs@vc{m}} % Vector m
+\newcommand{\vecn}{\tcs@vc{n}} % Vector n
+\newcommand{\veco}{\tcs@vc{o}} % Vector o
+\newcommand{\vecp}{\tcs@vc{p}} % Vector p
+\newcommand{\vecq}{\tcs@vc{q}} % Vector q
+\newcommand{\vecr}{\tcs@vc{r}} % Vector r
+\newcommand{\vecs}{\tcs@vc{s}} % Vector s
+\newcommand{\vect}{\tcs@vc{t}} % Vector t
+\newcommand{\vecu}{\tcs@vc{u}} % Vector u
+\newcommand{\vecv}{\tcs@vc{v}} % Vector v
+\newcommand{\vecw}{\tcs@vc{w}} % Vector w
+\newcommand{\vecx}{\tcs@vc{x}} % Vector x
+\newcommand{\vecy}{\tcs@vc{y}} % Vector y
+\newcommand{\vecz}{\tcs@vc{z}} % Vector z
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Boldface Letters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\bfa}{\inmathbf{a}} % Boldface letter 'a'
-\newcommand{\bfb}{\inmathbf{b}} % Boldface letter 'b'
-\newcommand{\bfc}{\inmathbf{c}} % Boldface letter 'c'
-\newcommand{\bfd}{\inmathbf{d}} % Boldface letter 'd'
-\newcommand{\bfe}{\inmathbf{e}} % Boldface letter 'e'
-\newcommand{\bff}{\inmathbf{f}} % Boldface letter 'f'
-\newcommand{\bfg}{\inmathbf{g}} % Boldface letter 'g'
-\newcommand{\bfh}{\inmathbf{h}} % Boldface letter 'h'
-\newcommand{\bfi}{\inmathbf{i}} % Boldface letter 'i'
-\newcommand{\bfj}{\inmathbf{j}} % Boldface letter 'j'
-\newcommand{\bfk}{\inmathbf{k}} % Boldface letter 'k'
-\newcommand{\bfl}{\inmathbf{l}} % Boldface letter 'l'
-\newcommand{\bfm}{\inmathbf{m}} % Boldface letter 'm'
-\newcommand{\bfn}{\inmathbf{n}} % Boldface letter 'n'
-\newcommand{\bfo}{\inmathbf{o}} % Boldface letter 'o'
-\newcommand{\bfp}{\inmathbf{p}} % Boldface letter 'p'
-\newcommand{\bfq}{\inmathbf{q}} % Boldface letter 'q'
-\newcommand{\bfr}{\inmathbf{r}} % Boldface letter 'r'
-\newcommand{\bfs}{\inmathbf{s}} % Boldface letter 's'
-\newcommand{\bft}{\inmathbf{t}} % Boldface letter 't'
-\newcommand{\bfu}{\inmathbf{u}} % Boldface letter 'u'
-\newcommand{\bfv}{\inmathbf{v}} % Boldface letter 'v'
-\newcommand{\bfw}{\inmathbf{w}} % Boldface letter 'w'
-\newcommand{\bfx}{\inmathbf{x}} % Boldface letter 'x'
-\newcommand{\bfy}{\inmathbf{y}} % Boldface letter 'y'
-\newcommand{\bfz}{\inmathbf{z}} % Boldface letter 'z'
+\newcommand{\bfa}{\tcs@bf{a}} % Boldface letter 'a'
+\newcommand{\bfb}{\tcs@bf{b}} % Boldface letter 'b'
+\newcommand{\bfc}{\tcs@bf{c}} % Boldface letter 'c'
+\newcommand{\bfd}{\tcs@bf{d}} % Boldface letter 'd'
+\newcommand{\bfe}{\tcs@bf{e}} % Boldface letter 'e'
+\newcommand{\bff}{\tcs@bf{f}} % Boldface letter 'f'
+\newcommand{\bfg}{\tcs@bf{g}} % Boldface letter 'g'
+\newcommand{\bfh}{\tcs@bf{h}} % Boldface letter 'h'
+\newcommand{\bfi}{\tcs@bf{i}} % Boldface letter 'i'
+\newcommand{\bfj}{\tcs@bf{j}} % Boldface letter 'j'
+\newcommand{\bfk}{\tcs@bf{k}} % Boldface letter 'k'
+\newcommand{\bfl}{\tcs@bf{l}} % Boldface letter 'l'
+\newcommand{\bfm}{\tcs@bf{m}} % Boldface letter 'm'
+\newcommand{\bfn}{\tcs@bf{n}} % Boldface letter 'n'
+\newcommand{\bfo}{\tcs@bf{o}} % Boldface letter 'o'
+\newcommand{\bfp}{\tcs@bf{p}} % Boldface letter 'p'
+\newcommand{\bfq}{\tcs@bf{q}} % Boldface letter 'q'
+\newcommand{\bfr}{\tcs@bf{r}} % Boldface letter 'r'
+\newcommand{\bfs}{\tcs@bf{s}} % Boldface letter 's'
+\newcommand{\bft}{\tcs@bf{t}} % Boldface letter 't'
+\newcommand{\bfu}{\tcs@bf{u}} % Boldface letter 'u'
+\newcommand{\bfv}{\tcs@bf{v}} % Boldface letter 'v'
+\newcommand{\bfw}{\tcs@bf{w}} % Boldface letter 'w'
+\newcommand{\bfx}{\tcs@bf{x}} % Boldface letter 'x'
+\newcommand{\bfy}{\tcs@bf{y}} % Boldface letter 'y'
+\newcommand{\bfz}{\tcs@bf{z}} % Boldface letter 'z'
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Upright Letters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\rma}{\inmathrm{a}} % Upright letter 'a'
-\newcommand{\rmb}{\inmathrm{b}} % Upright letter 'b'
-\newcommand{\rmc}{\inmathrm{c}} % Upright letter 'c'
-\newcommand{\rmd}{\inmathrm{d}} % Upright letter 'd'
-\newcommand{\rme}{\inmathrm{e}} % Upright letter 'e'
-\newcommand{\rmf}{\inmathrm{f}} % Upright letter 'f'
-\newcommand{\rmg}{\inmathrm{g}} % Upright letter 'g'
-\newcommand{\rmh}{\inmathrm{h}} % Upright letter 'h'
-\newcommand{\rmi}{\inmathrm{i}} % Upright letter 'i'
-\newcommand{\rmj}{\inmathrm{j}} % Upright letter 'j'
-\newcommand{\rmk}{\inmathrm{k}} % Upright letter 'k'
-\newcommand{\rml}{\inmathrm{l}} % Upright letter 'l'
-\newcommand{\rmm}{\inmathrm{m}} % Upright letter 'm'
-\newcommand{\rmn}{\inmathrm{n}} % Upright letter 'n'
-\newcommand{\rmo}{\inmathrm{o}} % Upright letter 'o'
-\newcommand{\rmp}{\inmathrm{p}} % Upright letter 'p'
-\newcommand{\rmq}{\inmathrm{q}} % Upright letter 'q'
-\newcommand{\rmr}{\inmathrm{r}} % Upright letter 'r'
-\newcommand{\rms}{\inmathrm{s}} % Upright letter 's'
-\newcommand{\rmt}{\inmathrm{t}} % Upright letter 't'
-\newcommand{\rmu}{\inmathrm{u}} % Upright letter 'u'
-\newcommand{\rmv}{\inmathrm{v}} % Upright letter 'v'
-\newcommand{\rmw}{\inmathrm{w}} % Upright letter 'w'
-\newcommand{\rmx}{\inmathrm{x}} % Upright letter 'x'
-\newcommand{\rmy}{\inmathrm{y}} % Upright letter 'y'
-\newcommand{\rmz}{\inmathrm{z}} % Upright letter 'z'
+\newcommand{\rma}{\tcs@rm{a}} % Upright letter 'a'
+\newcommand{\rmb}{\tcs@rm{b}} % Upright letter 'b'
+\newcommand{\rmc}{\tcs@rm{c}} % Upright letter 'c'
+\newcommand{\rmd}{\tcs@rm{d}} % Upright letter 'd'
+\newcommand{\rme}{\tcs@rm{e}} % Upright letter 'e'
+\newcommand{\rmf}{\tcs@rm{f}} % Upright letter 'f'
+\newcommand{\rmg}{\tcs@rm{g}} % Upright letter 'g'
+\newcommand{\rmh}{\tcs@rm{h}} % Upright letter 'h'
+\newcommand{\rmi}{\tcs@rm{i}} % Upright letter 'i'
+\newcommand{\rmj}{\tcs@rm{j}} % Upright letter 'j'
+\newcommand{\rmk}{\tcs@rm{k}} % Upright letter 'k'
+\newcommand{\rml}{\tcs@rm{l}} % Upright letter 'l'
+\newcommand{\rmm}{\tcs@rm{m}} % Upright letter 'm'
+\newcommand{\rmn}{\tcs@rm{n}} % Upright letter 'n'
+\newcommand{\rmo}{\tcs@rm{o}} % Upright letter 'o'
+\newcommand{\rmp}{\tcs@rm{p}} % Upright letter 'p'
+\newcommand{\rmq}{\tcs@rm{q}} % Upright letter 'q'
+\newcommand{\rmr}{\tcs@rm{r}} % Upright letter 'r'
+\newcommand{\rms}{\tcs@rm{s}} % Upright letter 's'
+\newcommand{\rmt}{\tcs@rm{t}} % Upright letter 't'
+\newcommand{\rmu}{\tcs@rm{u}} % Upright letter 'u'
+\newcommand{\rmv}{\tcs@rm{v}} % Upright letter 'v'
+\newcommand{\rmw}{\tcs@rm{w}} % Upright letter 'w'
+\newcommand{\rmx}{\tcs@rm{x}} % Upright letter 'x'
+\newcommand{\rmy}{\tcs@rm{y}} % Upright letter 'y'
+\newcommand{\rmz}{\tcs@rm{z}} % Upright letter 'z'
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Sans Serif Letters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\sfa}{\inmathsf{a}} % Sans Serif letter 'a'
-\newcommand{\sfb}{\inmathsf{b}} % Sans Serif letter 'b'
-\newcommand{\sfc}{\inmathsf{c}} % Sans Serif letter 'c'
-\newcommand{\sfd}{\inmathsf{d}} % Sans Serif letter 'd'
-\newcommand{\sfe}{\inmathsf{e}} % Sans Serif letter 'e'
-\newcommand{\sff}{\inmathsf{f}} % Sans Serif letter 'f'
-\newcommand{\sfg}{\inmathsf{g}} % Sans Serif letter 'g'
-\newcommand{\sfh}{\inmathsf{h}} % Sans Serif letter 'h'
-\newcommand{\sfi}{\inmathsf{i}} % Sans Serif letter 'i'
-\newcommand{\sfj}{\inmathsf{j}} % Sans Serif letter 'j'
-\newcommand{\sfk}{\inmathsf{k}} % Sans Serif letter 'k'
-\newcommand{\sfl}{\inmathsf{l}} % Sans Serif letter 'l'
-\newcommand{\sfm}{\inmathsf{m}} % Sans Serif letter 'm'
-\newcommand{\sfn}{\inmathsf{n}} % Sans Serif letter 'n'
-\newcommand{\sfo}{\inmathsf{o}} % Sans Serif letter 'o'
-\newcommand{\sfp}{\inmathsf{p}} % Sans Serif letter 'p'
-\newcommand{\sfq}{\inmathsf{q}} % Sans Serif letter 'q'
-\newcommand{\sfr}{\inmathsf{r}} % Sans Serif letter 'r'
-\newcommand{\sfs}{\inmathsf{s}} % Sans Serif letter 's'
-\newcommand{\sft}{\inmathsf{t}} % Sans Serif letter 't'
-\newcommand{\sfu}{\inmathsf{u}} % Sans Serif letter 'u'
-\newcommand{\sfv}{\inmathsf{v}} % Sans Serif letter 'v'
-\newcommand{\sfw}{\inmathsf{w}} % Sans Serif letter 'w'
-\newcommand{\sfx}{\inmathsf{x}} % Sans Serif letter 'x'
-\newcommand{\sfy}{\inmathsf{y}} % Sans Serif letter 'y'
-\newcommand{\sfz}{\inmathsf{z}} % Sans Serif letter 'z'
+\newcommand{\sfa}{\tcs@sf{a}} % Sans Serif letter 'a'
+\newcommand{\sfb}{\tcs@sf{b}} % Sans Serif letter 'b'
+\newcommand{\sfc}{\tcs@sf{c}} % Sans Serif letter 'c'
+\newcommand{\sfd}{\tcs@sf{d}} % Sans Serif letter 'd'
+\newcommand{\sfe}{\tcs@sf{e}} % Sans Serif letter 'e'
+\newcommand{\sff}{\tcs@sf{f}} % Sans Serif letter 'f'
+\newcommand{\sfg}{\tcs@sf{g}} % Sans Serif letter 'g'
+\newcommand{\sfh}{\tcs@sf{h}} % Sans Serif letter 'h'
+\newcommand{\sfi}{\tcs@sf{i}} % Sans Serif letter 'i'
+\newcommand{\sfj}{\tcs@sf{j}} % Sans Serif letter 'j'
+\newcommand{\sfk}{\tcs@sf{k}} % Sans Serif letter 'k'
+\newcommand{\sfl}{\tcs@sf{l}} % Sans Serif letter 'l'
+\newcommand{\sfm}{\tcs@sf{m}} % Sans Serif letter 'm'
+\newcommand{\sfn}{\tcs@sf{n}} % Sans Serif letter 'n'
+\newcommand{\sfo}{\tcs@sf{o}} % Sans Serif letter 'o'
+\newcommand{\sfp}{\tcs@sf{p}} % Sans Serif letter 'p'
+\newcommand{\sfq}{\tcs@sf{q}} % Sans Serif letter 'q'
+\newcommand{\sfr}{\tcs@sf{r}} % Sans Serif letter 'r'
+\newcommand{\sfs}{\tcs@sf{s}} % Sans Serif letter 's'
+\newcommand{\sft}{\tcs@sf{t}} % Sans Serif letter 't'
+\newcommand{\sfu}{\tcs@sf{u}} % Sans Serif letter 'u'
+\newcommand{\sfv}{\tcs@sf{v}} % Sans Serif letter 'v'
+\newcommand{\sfw}{\tcs@sf{w}} % Sans Serif letter 'w'
+\newcommand{\sfx}{\tcs@sf{x}} % Sans Serif letter 'x'
+\newcommand{\sfy}{\tcs@sf{y}} % Sans Serif letter 'y'
+\newcommand{\sfz}{\tcs@sf{z}} % Sans Serif letter 'z'
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Upright Letters 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\rmA}{\inmathrm{A}} % Upright letter 'A'
-\newcommand{\rmB}{\inmathrm{B}} % Upright letter 'B'
-\newcommand{\rmC}{\inmathrm{C}} % Upright letter 'C'
-\newcommand{\rmD}{\inmathrm{D}} % Upright letter 'D'
-\newcommand{\rmE}{\inmathrm{E}} % Upright letter 'E'
-\newcommand{\rmF}{\inmathrm{F}} % Upright letter 'F'
-\newcommand{\rmG}{\inmathrm{G}} % Upright letter 'G'
-\newcommand{\rmH}{\inmathrm{H}} % Upright letter 'H'
-\newcommand{\rmI}{\inmathrm{I}} % Upright letter 'I'
-\newcommand{\rmJ}{\inmathrm{J}} % Upright letter 'J'
-\newcommand{\rmK}{\inmathrm{K}} % Upright letter 'K'
-\newcommand{\rmL}{\inmathrm{L}} % Upright letter 'L'
-\newcommand{\rmM}{\inmathrm{M}} % Upright letter 'M'
-\newcommand{\rmN}{\inmathrm{N}} % Upright letter 'N'
-\newcommand{\rmO}{\inmathrm{O}} % Upright letter 'O'
-\newcommand{\rmP}{\inmathrm{P}} % Upright letter 'P'
-\newcommand{\rmQ}{\inmathrm{Q}} % Upright letter 'Q'
-\newcommand{\rmR}{\inmathrm{R}} % Upright letter 'R'
-\newcommand{\rmS}{\inmathrm{S}} % Upright letter 'S'
-\newcommand{\rmT}{\inmathrm{T}} % Upright letter 'T'
-\newcommand{\rmU}{\inmathrm{U}} % Upright letter 'U'
-\newcommand{\rmV}{\inmathrm{V}} % Upright letter 'V'
-\newcommand{\rmW}{\inmathrm{W}} % Upright letter 'W'
-\newcommand{\rmX}{\inmathrm{X}} % Upright letter 'X'
-\newcommand{\rmY}{\inmathrm{Y}} % Upright letter 'Y'
-\newcommand{\rmZ}{\inmathrm{Z}} % Upright letter 'Z'
+\newcommand{\rmA}{\tcs@rm{A}} % Upright letter 'A'
+\newcommand{\rmB}{\tcs@rm{B}} % Upright letter 'B'
+\newcommand{\rmC}{\tcs@rm{C}} % Upright letter 'C'
+\newcommand{\rmD}{\tcs@rm{D}} % Upright letter 'D'
+\newcommand{\rmE}{\tcs@rm{E}} % Upright letter 'E'
+\newcommand{\rmF}{\tcs@rm{F}} % Upright letter 'F'
+\newcommand{\rmG}{\tcs@rm{G}} % Upright letter 'G'
+\newcommand{\rmH}{\tcs@rm{H}} % Upright letter 'H'
+\newcommand{\rmI}{\tcs@rm{I}} % Upright letter 'I'
+\newcommand{\rmJ}{\tcs@rm{J}} % Upright letter 'J'
+\newcommand{\rmK}{\tcs@rm{K}} % Upright letter 'K'
+\newcommand{\rmL}{\tcs@rm{L}} % Upright letter 'L'
+\newcommand{\rmM}{\tcs@rm{M}} % Upright letter 'M'
+\newcommand{\rmN}{\tcs@rm{N}} % Upright letter 'N'
+\newcommand{\rmO}{\tcs@rm{O}} % Upright letter 'O'
+\newcommand{\rmP}{\tcs@rm{P}} % Upright letter 'P'
+\newcommand{\rmQ}{\tcs@rm{Q}} % Upright letter 'Q'
+\newcommand{\rmR}{\tcs@rm{R}} % Upright letter 'R'
+\newcommand{\rmS}{\tcs@rm{S}} % Upright letter 'S'
+\newcommand{\rmT}{\tcs@rm{T}} % Upright letter 'T'
+\newcommand{\rmU}{\tcs@rm{U}} % Upright letter 'U'
+\newcommand{\rmV}{\tcs@rm{V}} % Upright letter 'V'
+\newcommand{\rmW}{\tcs@rm{W}} % Upright letter 'W'
+\newcommand{\rmX}{\tcs@rm{X}} % Upright letter 'X'
+\newcommand{\rmY}{\tcs@rm{Y}} % Upright letter 'Y'
+\newcommand{\rmZ}{\tcs@rm{Z}} % Upright letter 'Z'
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Boldface Letters 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\bfA}{\inmathbf{A}} % Boldface letter 'A'
-\newcommand{\bfB}{\inmathbf{B}} % Boldface letter 'B'
-\newcommand{\bfC}{\inmathbf{C}} % Boldface letter 'C'
-\newcommand{\bfD}{\inmathbf{D}} % Boldface letter 'D'
-\newcommand{\bfE}{\inmathbf{E}} % Boldface letter 'E'
-\newcommand{\bfF}{\inmathbf{F}} % Boldface letter 'F'
-\newcommand{\bfG}{\inmathbf{G}} % Boldface letter 'G'
-\newcommand{\bfH}{\inmathbf{H}} % Boldface letter 'H'
-\newcommand{\bfI}{\inmathbf{I}} % Boldface letter 'I'
-\newcommand{\bfJ}{\inmathbf{J}} % Boldface letter 'J'
-\newcommand{\bfK}{\inmathbf{K}} % Boldface letter 'K'
-\newcommand{\bfL}{\inmathbf{L}} % Boldface letter 'L'
-\newcommand{\bfM}{\inmathbf{M}} % Boldface letter 'M'
-\newcommand{\bfN}{\inmathbf{N}} % Boldface letter 'N'
-\newcommand{\bfO}{\inmathbf{O}} % Boldface letter 'O'
-\newcommand{\bfP}{\inmathbf{P}} % Boldface letter 'P'
-\newcommand{\bfQ}{\inmathbf{Q}} % Boldface letter 'Q'
-\newcommand{\bfR}{\inmathbf{R}} % Boldface letter 'R'
-\newcommand{\bfS}{\inmathbf{S}} % Boldface letter 'S'
-\newcommand{\bfT}{\inmathbf{T}} % Boldface letter 'T'
-\newcommand{\bfU}{\inmathbf{U}} % Boldface letter 'U'
-\newcommand{\bfV}{\inmathbf{V}} % Boldface letter 'V'
-\newcommand{\bfW}{\inmathbf{W}} % Boldface letter 'W'
-\newcommand{\bfX}{\inmathbf{X}} % Boldface letter 'X'
-\newcommand{\bfY}{\inmathbf{Y}} % Boldface letter 'Y'
-\newcommand{\bfZ}{\inmathbf{Z}} % Boldface letter 'Z'
+\newcommand{\bfA}{\tcs@bf{A}} % Boldface letter 'A'
+\newcommand{\bfB}{\tcs@bf{B}} % Boldface letter 'B'
+\newcommand{\bfC}{\tcs@bf{C}} % Boldface letter 'C'
+\newcommand{\bfD}{\tcs@bf{D}} % Boldface letter 'D'
+\newcommand{\bfE}{\tcs@bf{E}} % Boldface letter 'E'
+\newcommand{\bfF}{\tcs@bf{F}} % Boldface letter 'F'
+\newcommand{\bfG}{\tcs@bf{G}} % Boldface letter 'G'
+\newcommand{\bfH}{\tcs@bf{H}} % Boldface letter 'H'
+\newcommand{\bfI}{\tcs@bf{I}} % Boldface letter 'I'
+\newcommand{\bfJ}{\tcs@bf{J}} % Boldface letter 'J'
+\newcommand{\bfK}{\tcs@bf{K}} % Boldface letter 'K'
+\newcommand{\bfL}{\tcs@bf{L}} % Boldface letter 'L'
+\newcommand{\bfM}{\tcs@bf{M}} % Boldface letter 'M'
+\newcommand{\bfN}{\tcs@bf{N}} % Boldface letter 'N'
+\newcommand{\bfO}{\tcs@bf{O}} % Boldface letter 'O'
+\newcommand{\bfP}{\tcs@bf{P}} % Boldface letter 'P'
+\newcommand{\bfQ}{\tcs@bf{Q}} % Boldface letter 'Q'
+\newcommand{\bfR}{\tcs@bf{R}} % Boldface letter 'R'
+\newcommand{\bfS}{\tcs@bf{S}} % Boldface letter 'S'
+\newcommand{\bfT}{\tcs@bf{T}} % Boldface letter 'T'
+\newcommand{\bfU}{\tcs@bf{U}} % Boldface letter 'U'
+\newcommand{\bfV}{\tcs@bf{V}} % Boldface letter 'V'
+\newcommand{\bfW}{\tcs@bf{W}} % Boldface letter 'W'
+\newcommand{\bfX}{\tcs@bf{X}} % Boldface letter 'X'
+\newcommand{\bfY}{\tcs@bf{Y}} % Boldface letter 'Y'
+\newcommand{\bfZ}{\tcs@bf{Z}} % Boldface letter 'Z'
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Blackboard Bold Letters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\bbA}{\inmathbb{A}} % Blackboard bold letter 'A'
-\newcommand{\bbB}{\inmathbb{B}} % Blackboard bold letter 'B'
-\newcommand{\bbC}{\inmathbb{C}} % Blackboard bold letter 'C'
-\newcommand{\bbD}{\inmathbb{D}} % Blackboard bold letter 'D'
-\newcommand{\bbE}{\inmathbb{E}} % Blackboard bold letter 'E'
-\newcommand{\bbF}{\inmathbb{F}} % Blackboard bold letter 'F'
-\newcommand{\bbG}{\inmathbb{G}} % Blackboard bold letter 'G'
-\newcommand{\bbH}{\inmathbb{H}} % Blackboard bold letter 'H'
-\newcommand{\bbI}{\inmathbb{I}} % Blackboard bold letter 'I'
-\newcommand{\bbJ}{\inmathbb{J}} % Blackboard bold letter 'J'
-\newcommand{\bbK}{\inmathbb{K}} % Blackboard bold letter 'K'
-\newcommand{\bbL}{\inmathbb{L}} % Blackboard bold letter 'L'
-\newcommand{\bbM}{\inmathbb{M}} % Blackboard bold letter 'M'
-\newcommand{\bbN}{\inmathbb{N}} % Blackboard bold letter 'N'
-\newcommand{\bbO}{\inmathbb{O}} % Blackboard bold letter 'O'
-\newcommand{\bbP}{\inmathbb{P}} % Blackboard bold letter 'P'
-\newcommand{\bbQ}{\inmathbb{Q}} % Blackboard bold letter 'Q'
-\newcommand{\bbR}{\inmathbb{R}} % Blackboard bold letter 'R'
-\newcommand{\bbS}{\inmathbb{S}} % Blackboard bold letter 'S'
-\newcommand{\bbT}{\inmathbb{T}} % Blackboard bold letter 'T'
-\newcommand{\bbU}{\inmathbb{U}} % Blackboard bold letter 'U'
-\newcommand{\bbV}{\inmathbb{V}} % Blackboard bold letter 'V'
-\newcommand{\bbW}{\inmathbb{W}} % Blackboard bold letter 'W'
-\newcommand{\bbX}{\inmathbb{X}} % Blackboard bold letter 'X'
-\newcommand{\bbY}{\inmathbb{Y}} % Blackboard bold letter 'Y'
-\newcommand{\bbZ}{\inmathbb{Z}} % Blackboard bold letter 'Z'
+\newcommand{\bbA}{\tcs@bb{A}} % Blackboard bold letter 'A'
+\newcommand{\bbB}{\tcs@bb{B}} % Blackboard bold letter 'B'
+\newcommand{\bbC}{\tcs@bb{C}} % Blackboard bold letter 'C'
+\newcommand{\bbD}{\tcs@bb{D}} % Blackboard bold letter 'D'
+\newcommand{\bbE}{\tcs@bb{E}} % Blackboard bold letter 'E'
+\newcommand{\bbF}{\tcs@bb{F}} % Blackboard bold letter 'F'
+\newcommand{\bbG}{\tcs@bb{G}} % Blackboard bold letter 'G'
+\newcommand{\bbH}{\tcs@bb{H}} % Blackboard bold letter 'H'
+\newcommand{\bbI}{\tcs@bb{I}} % Blackboard bold letter 'I'
+\newcommand{\bbJ}{\tcs@bb{J}} % Blackboard bold letter 'J'
+\newcommand{\bbK}{\tcs@bb{K}} % Blackboard bold letter 'K'
+\newcommand{\bbL}{\tcs@bb{L}} % Blackboard bold letter 'L'
+\newcommand{\bbM}{\tcs@bb{M}} % Blackboard bold letter 'M'
+\newcommand{\bbN}{\tcs@bb{N}} % Blackboard bold letter 'N'
+\newcommand{\bbO}{\tcs@bb{O}} % Blackboard bold letter 'O'
+\newcommand{\bbP}{\tcs@bb{P}} % Blackboard bold letter 'P'
+\newcommand{\bbQ}{\tcs@bb{Q}} % Blackboard bold letter 'Q'
+\newcommand{\bbR}{\tcs@bb{R}} % Blackboard bold letter 'R'
+\newcommand{\bbS}{\tcs@bb{S}} % Blackboard bold letter 'S'
+\newcommand{\bbT}{\tcs@bb{T}} % Blackboard bold letter 'T'
+\newcommand{\bbU}{\tcs@bb{U}} % Blackboard bold letter 'U'
+\newcommand{\bbV}{\tcs@bb{V}} % Blackboard bold letter 'V'
+\newcommand{\bbW}{\tcs@bb{W}} % Blackboard bold letter 'W'
+\newcommand{\bbX}{\tcs@bb{X}} % Blackboard bold letter 'X'
+\newcommand{\bbY}{\tcs@bb{Y}} % Blackboard bold letter 'Y'
+\newcommand{\bbZ}{\tcs@bb{Z}} % Blackboard bold letter 'Z'
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Calligraphic Letters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\calA}{\inmathcal{A}} % Calligraphic letter 'A'
-\newcommand{\calB}{\inmathcal{B}} % Calligraphic letter 'B'
-\newcommand{\calC}{\inmathcal{C}} % Calligraphic letter 'C'
-\newcommand{\calD}{\inmathcal{D}} % Calligraphic letter 'D'
-\newcommand{\calE}{\inmathcal{E}} % Calligraphic letter 'E'
-\newcommand{\calF}{\inmathcal{F}} % Calligraphic letter 'F'
-\newcommand{\calG}{\inmathcal{G}} % Calligraphic letter 'G'
-\newcommand{\calH}{\inmathcal{H}} % Calligraphic letter 'H'
-\newcommand{\calI}{\inmathcal{I}} % Calligraphic letter 'I'
-\newcommand{\calJ}{\inmathcal{J}} % Calligraphic letter 'J'
-\newcommand{\calK}{\inmathcal{K}} % Calligraphic letter 'K'
-\newcommand{\calL}{\inmathcal{L}} % Calligraphic letter 'L'
-\newcommand{\calM}{\inmathcal{M}} % Calligraphic letter 'M'
-\newcommand{\calN}{\inmathcal{N}} % Calligraphic letter 'N'
-\newcommand{\calO}{\inmathcal{O}} % Calligraphic letter 'O'
-\newcommand{\calP}{\inmathcal{P}} % Calligraphic letter 'P'
-\newcommand{\calQ}{\inmathcal{Q}} % Calligraphic letter 'Q'
-\newcommand{\calR}{\inmathcal{R}} % Calligraphic letter 'R'
-\newcommand{\calS}{\inmathcal{S}} % Calligraphic letter 'S'
-\newcommand{\calT}{\inmathcal{T}} % Calligraphic letter 'T'
-\newcommand{\calU}{\inmathcal{U}} % Calligraphic letter 'U'
-\newcommand{\calV}{\inmathcal{V}} % Calligraphic letter 'V'
-\newcommand{\calW}{\inmathcal{W}} % Calligraphic letter 'W'
-\newcommand{\calX}{\inmathcal{X}} % Calligraphic letter 'X'
-\newcommand{\calY}{\inmathcal{Y}} % Calligraphic letter 'Y'
-\newcommand{\calZ}{\inmathcal{Z}} % Calligraphic letter 'Z'
+\newcommand{\calA}{\tcs@cl{A}} % Calligraphic letter 'A'
+\newcommand{\calB}{\tcs@cl{B}} % Calligraphic letter 'B'
+\newcommand{\calC}{\tcs@cl{C}} % Calligraphic letter 'C'
+\newcommand{\calD}{\tcs@cl{D}} % Calligraphic letter 'D'
+\newcommand{\calE}{\tcs@cl{E}} % Calligraphic letter 'E'
+\newcommand{\calF}{\tcs@cl{F}} % Calligraphic letter 'F'
+\newcommand{\calG}{\tcs@cl{G}} % Calligraphic letter 'G'
+\newcommand{\calH}{\tcs@cl{H}} % Calligraphic letter 'H'
+\newcommand{\calI}{\tcs@cl{I}} % Calligraphic letter 'I'
+\newcommand{\calJ}{\tcs@cl{J}} % Calligraphic letter 'J'
+\newcommand{\calK}{\tcs@cl{K}} % Calligraphic letter 'K'
+\newcommand{\calL}{\tcs@cl{L}} % Calligraphic letter 'L'
+\newcommand{\calM}{\tcs@cl{M}} % Calligraphic letter 'M'
+\newcommand{\calN}{\tcs@cl{N}} % Calligraphic letter 'N'
+\newcommand{\calO}{\tcs@cl{O}} % Calligraphic letter 'O'
+\newcommand{\calP}{\tcs@cl{P}} % Calligraphic letter 'P'
+\newcommand{\calQ}{\tcs@cl{Q}} % Calligraphic letter 'Q'
+\newcommand{\calR}{\tcs@cl{R}} % Calligraphic letter 'R'
+\newcommand{\calS}{\tcs@cl{S}} % Calligraphic letter 'S'
+\newcommand{\calT}{\tcs@cl{T}} % Calligraphic letter 'T'
+\newcommand{\calU}{\tcs@cl{U}} % Calligraphic letter 'U'
+\newcommand{\calV}{\tcs@cl{V}} % Calligraphic letter 'V'
+\newcommand{\calW}{\tcs@cl{W}} % Calligraphic letter 'W'
+\newcommand{\calX}{\tcs@cl{X}} % Calligraphic letter 'X'
+\newcommand{\calY}{\tcs@cl{Y}} % Calligraphic letter 'Y'
+\newcommand{\calZ}{\tcs@cl{Z}} % Calligraphic letter 'Z'
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Fraktur Letters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\frakA}{\inmathfrak{A}} % Fraktur letter 'A'
-\newcommand{\frakB}{\inmathfrak{B}} % Fraktur letter 'B'
-\newcommand{\frakC}{\inmathfrak{C}} % Fraktur letter 'C'
-\newcommand{\frakD}{\inmathfrak{D}} % Fraktur letter 'D'
-\newcommand{\frakE}{\inmathfrak{E}} % Fraktur letter 'E'
-\newcommand{\frakF}{\inmathfrak{F}} % Fraktur letter 'F'
-\newcommand{\frakG}{\inmathfrak{G}} % Fraktur letter 'G'
-\newcommand{\frakH}{\inmathfrak{H}} % Fraktur letter 'H'
-\newcommand{\frakI}{\inmathfrak{I}} % Fraktur letter 'I'
-\newcommand{\frakJ}{\inmathfrak{J}} % Fraktur letter 'J'
-\newcommand{\frakK}{\inmathfrak{K}} % Fraktur letter 'K'
-\newcommand{\frakL}{\inmathfrak{L}} % Fraktur letter 'L'
-\newcommand{\frakM}{\inmathfrak{M}} % Fraktur letter 'M'
-\newcommand{\frakN}{\inmathfrak{N}} % Fraktur letter 'N'
-\newcommand{\frakO}{\inmathfrak{O}} % Fraktur letter 'O'
-\newcommand{\frakP}{\inmathfrak{P}} % Fraktur letter 'P'
-\newcommand{\frakQ}{\inmathfrak{Q}} % Fraktur letter 'Q'
-\newcommand{\frakR}{\inmathfrak{R}} % Fraktur letter 'R'
-\newcommand{\frakS}{\inmathfrak{S}} % Fraktur letter 'S'
-\newcommand{\frakT}{\inmathfrak{T}} % Fraktur letter 'T'
-\newcommand{\frakU}{\inmathfrak{U}} % Fraktur letter 'U'
-\newcommand{\frakV}{\inmathfrak{V}} % Fraktur letter 'V'
-\newcommand{\frakW}{\inmathfrak{W}} % Fraktur letter 'W'
-\newcommand{\frakX}{\inmathfrak{X}} % Fraktur letter 'X'
-\newcommand{\frakY}{\inmathfrak{Y}} % Fraktur letter 'Y'
-\newcommand{\frakZ}{\inmathfrak{Z}} % Fraktur letter 'Z'
+\newcommand{\frakA}{\tcs@fk{A}} % Fraktur letter 'A'
+\newcommand{\frakB}{\tcs@fk{B}} % Fraktur letter 'B'
+\newcommand{\frakC}{\tcs@fk{C}} % Fraktur letter 'C'
+\newcommand{\frakD}{\tcs@fk{D}} % Fraktur letter 'D'
+\newcommand{\frakE}{\tcs@fk{E}} % Fraktur letter 'E'
+\newcommand{\frakF}{\tcs@fk{F}} % Fraktur letter 'F'
+\newcommand{\frakG}{\tcs@fk{G}} % Fraktur letter 'G'
+\newcommand{\frakH}{\tcs@fk{H}} % Fraktur letter 'H'
+\newcommand{\frakI}{\tcs@fk{I}} % Fraktur letter 'I'
+\newcommand{\frakJ}{\tcs@fk{J}} % Fraktur letter 'J'
+\newcommand{\frakK}{\tcs@fk{K}} % Fraktur letter 'K'
+\newcommand{\frakL}{\tcs@fk{L}} % Fraktur letter 'L'
+\newcommand{\frakM}{\tcs@fk{M}} % Fraktur letter 'M'
+\newcommand{\frakN}{\tcs@fk{N}} % Fraktur letter 'N'
+\newcommand{\frakO}{\tcs@fk{O}} % Fraktur letter 'O'
+\newcommand{\frakP}{\tcs@fk{P}} % Fraktur letter 'P'
+\newcommand{\frakQ}{\tcs@fk{Q}} % Fraktur letter 'Q'
+\newcommand{\frakR}{\tcs@fk{R}} % Fraktur letter 'R'
+\newcommand{\frakS}{\tcs@fk{S}} % Fraktur letter 'S'
+\newcommand{\frakT}{\tcs@fk{T}} % Fraktur letter 'T'
+\newcommand{\frakU}{\tcs@fk{U}} % Fraktur letter 'U'
+\newcommand{\frakV}{\tcs@fk{V}} % Fraktur letter 'V'
+\newcommand{\frakW}{\tcs@fk{W}} % Fraktur letter 'W'
+\newcommand{\frakX}{\tcs@fk{X}} % Fraktur letter 'X'
+\newcommand{\frakY}{\tcs@fk{Y}} % Fraktur letter 'Y'
+\newcommand{\frakZ}{\tcs@fk{Z}} % Fraktur letter 'Z'
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Upright Sans Serif Letters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\sfA}{\inmathsf{A}} % Sans Serif letter 'A'
-\newcommand{\sfB}{\inmathsf{B}} % Sans Serif letter 'B'
-\newcommand{\sfC}{\inmathsf{C}} % Sans Serif letter 'C'
-\newcommand{\sfD}{\inmathsf{D}} % Sans Serif letter 'D'
-\newcommand{\sfE}{\inmathsf{E}} % Sans Serif letter 'E'
-\newcommand{\sfF}{\inmathsf{F}} % Sans Serif letter 'F'
-\newcommand{\sfG}{\inmathsf{G}} % Sans Serif letter 'G'
-\newcommand{\sfH}{\inmathsf{H}} % Sans Serif letter 'H'
-\newcommand{\sfI}{\inmathsf{I}} % Sans Serif letter 'I'
-\newcommand{\sfJ}{\inmathsf{J}} % Sans Serif letter 'J'
-\newcommand{\sfK}{\inmathsf{K}} % Sans Serif letter 'K'
-\newcommand{\sfL}{\inmathsf{L}} % Sans Serif letter 'L'
-\newcommand{\sfM}{\inmathsf{M}} % Sans Serif letter 'M'
-\newcommand{\sfN}{\inmathsf{N}} % Sans Serif letter 'N'
-\newcommand{\sfO}{\inmathsf{O}} % Sans Serif letter 'O'
-\newcommand{\sfP}{\inmathsf{P}} % Sans Serif letter 'P'
-\newcommand{\sfQ}{\inmathsf{Q}} % Sans Serif letter 'Q'
-\newcommand{\sfR}{\inmathsf{R}} % Sans Serif letter 'R'
-\newcommand{\sfS}{\inmathsf{S}} % Sans Serif letter 'S'
-\newcommand{\sfT}{\inmathsf{T}} % Sans Serif letter 'T'
-\newcommand{\sfU}{\inmathsf{U}} % Sans Serif letter 'U'
-\newcommand{\sfV}{\inmathsf{V}} % Sans Serif letter 'V'
-\newcommand{\sfW}{\inmathsf{W}} % Sans Serif letter 'W'
-\newcommand{\sfX}{\inmathsf{X}} % Sans Serif letter 'X'
-\newcommand{\sfY}{\inmathsf{Y}} % Sans Serif letter 'Y'
-\newcommand{\sfZ}{\inmathsf{Z}} % Sans Serif letter 'Z'
+\newcommand{\sfA}{\tcs@sf{A}} % Sans Serif letter 'A'
+\newcommand{\sfB}{\tcs@sf{B}} % Sans Serif letter 'B'
+\newcommand{\sfC}{\tcs@sf{C}} % Sans Serif letter 'C'
+\newcommand{\sfD}{\tcs@sf{D}} % Sans Serif letter 'D'
+\newcommand{\sfE}{\tcs@sf{E}} % Sans Serif letter 'E'
+\newcommand{\sfF}{\tcs@sf{F}} % Sans Serif letter 'F'
+\newcommand{\sfG}{\tcs@sf{G}} % Sans Serif letter 'G'
+\newcommand{\sfH}{\tcs@sf{H}} % Sans Serif letter 'H'
+\newcommand{\sfI}{\tcs@sf{I}} % Sans Serif letter 'I'
+\newcommand{\sfJ}{\tcs@sf{J}} % Sans Serif letter 'J'
+\newcommand{\sfK}{\tcs@sf{K}} % Sans Serif letter 'K'
+\newcommand{\sfL}{\tcs@sf{L}} % Sans Serif letter 'L'
+\newcommand{\sfM}{\tcs@sf{M}} % Sans Serif letter 'M'
+\newcommand{\sfN}{\tcs@sf{N}} % Sans Serif letter 'N'
+\newcommand{\sfO}{\tcs@sf{O}} % Sans Serif letter 'O'
+\newcommand{\sfP}{\tcs@sf{P}} % Sans Serif letter 'P'
+\newcommand{\sfQ}{\tcs@sf{Q}} % Sans Serif letter 'Q'
+\newcommand{\sfR}{\tcs@sf{R}} % Sans Serif letter 'R'
+\newcommand{\sfS}{\tcs@sf{S}} % Sans Serif letter 'S'
+\newcommand{\sfT}{\tcs@sf{T}} % Sans Serif letter 'T'
+\newcommand{\sfU}{\tcs@sf{U}} % Sans Serif letter 'U'
+\newcommand{\sfV}{\tcs@sf{V}} % Sans Serif letter 'V'
+\newcommand{\sfW}{\tcs@sf{W}} % Sans Serif letter 'W'
+\newcommand{\sfX}{\tcs@sf{X}} % Sans Serif letter 'X'
+\newcommand{\sfY}{\tcs@sf{Y}} % Sans Serif letter 'Y'
+\newcommand{\sfZ}{\tcs@sf{Z}} % Sans Serif letter 'Z'
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Script Letters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\scrA}{\inmathscr{A}} % Script letter 'A'
-\newcommand{\scrB}{\inmathscr{B}} % Script letter 'B'
-\newcommand{\scrC}{\inmathscr{C}} % Script letter 'C'
-\newcommand{\scrD}{\inmathscr{D}} % Script letter 'D'
-\newcommand{\scrE}{\inmathscr{E}} % Script letter 'E'
-\newcommand{\scrF}{\inmathscr{F}} % Script letter 'F'
-\newcommand{\scrG}{\inmathscr{G}} % Script letter 'G'
-\newcommand{\scrH}{\inmathscr{H}} % Script letter 'H'
-\newcommand{\scrI}{\inmathscr{I}} % Script letter 'I'
-\newcommand{\scrJ}{\inmathscr{J}} % Script letter 'J'
-\newcommand{\scrK}{\inmathscr{K}} % Script letter 'K'
-\newcommand{\scrL}{\inmathscr{L}} % Script letter 'L'
-\newcommand{\scrM}{\inmathscr{M}} % Script letter 'M'
-\newcommand{\scrN}{\inmathscr{N}} % Script letter 'N'
-\newcommand{\scrO}{\inmathscr{O}} % Script letter 'O'
-\newcommand{\scrP}{\inmathscr{P}} % Script letter 'P'
-\newcommand{\scrQ}{\inmathscr{Q}} % Script letter 'Q'
-\newcommand{\scrR}{\inmathscr{R}} % Script letter 'R'
-\newcommand{\scrS}{\inmathscr{S}} % Script letter 'S'
-\newcommand{\scrT}{\inmathscr{T}} % Script letter 'T'
-\newcommand{\scrU}{\inmathscr{U}} % Script letter 'U'
-\newcommand{\scrV}{\inmathscr{V}} % Script letter 'V'
-\newcommand{\scrW}{\inmathscr{W}} % Script letter 'W'
-\newcommand{\scrX}{\inmathscr{X}} % Script letter 'X'
-\newcommand{\scrY}{\inmathscr{Y}} % Script letter 'Y'
-\newcommand{\scrZ}{\inmathscr{Z}} % Script letter 'Z'
+\newcommand{\scrA}{\tcs@sr{A}} % Script letter 'A'
+\newcommand{\scrB}{\tcs@sr{B}} % Script letter 'B'
+\newcommand{\scrC}{\tcs@sr{C}} % Script letter 'C'
+\newcommand{\scrD}{\tcs@sr{D}} % Script letter 'D'
+\newcommand{\scrE}{\tcs@sr{E}} % Script letter 'E'
+\newcommand{\scrF}{\tcs@sr{F}} % Script letter 'F'
+\newcommand{\scrG}{\tcs@sr{G}} % Script letter 'G'
+\newcommand{\scrH}{\tcs@sr{H}} % Script letter 'H'
+\newcommand{\scrI}{\tcs@sr{I}} % Script letter 'I'
+\newcommand{\scrJ}{\tcs@sr{J}} % Script letter 'J'
+\newcommand{\scrK}{\tcs@sr{K}} % Script letter 'K'
+\newcommand{\scrL}{\tcs@sr{L}} % Script letter 'L'
+\newcommand{\scrM}{\tcs@sr{M}} % Script letter 'M'
+\newcommand{\scrN}{\tcs@sr{N}} % Script letter 'N'
+\newcommand{\scrO}{\tcs@sr{O}} % Script letter 'O'
+\newcommand{\scrP}{\tcs@sr{P}} % Script letter 'P'
+\newcommand{\scrQ}{\tcs@sr{Q}} % Script letter 'Q'
+\newcommand{\scrR}{\tcs@sr{R}} % Script letter 'R'
+\newcommand{\scrS}{\tcs@sr{S}} % Script letter 'S'
+\newcommand{\scrT}{\tcs@sr{T}} % Script letter 'T'
+\newcommand{\scrU}{\tcs@sr{U}} % Script letter 'U'
+\newcommand{\scrV}{\tcs@sr{V}} % Script letter 'V'
+\newcommand{\scrW}{\tcs@sr{W}} % Script letter 'W'
+\newcommand{\scrX}{\tcs@sr{X}} % Script letter 'X'
+\newcommand{\scrY}{\tcs@sr{Y}} % Script letter 'Y'
+\newcommand{\scrZ}{\tcs@sr{Z}} % Script letter 'Z'
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Script Letters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\scra}{\inmathscr{a}} % Script letter 'a'
-\newcommand{\scrb}{\inmathscr{b}} % Script letter 'b'
-\newcommand{\scrc}{\inmathscr{c}} % Script letter 'c'
-\newcommand{\scrd}{\inmathscr{d}} % Script letter 'd'
-\newcommand{\scre}{\inmathscr{e}} % Script letter 'e'
-\newcommand{\scrf}{\inmathscr{f}} % Script letter 'f'
-\newcommand{\scrg}{\inmathscr{g}} % Script letter 'g'
-\newcommand{\scrh}{\inmathscr{h}} % Script letter 'h'
-\newcommand{\scri}{\inmathscr{i}} % Script letter 'i'
-\newcommand{\scrj}{\inmathscr{j}} % Script letter 'j'
-\newcommand{\scrk}{\inmathscr{k}} % Script letter 'k'
-\newcommand{\scrl}{\inmathscr{l}} % Script letter 'l'
-\newcommand{\scrm}{\inmathscr{m}} % Script letter 'm'
-\newcommand{\scrn}{\inmathscr{n}} % Script letter 'n'
-\newcommand{\scro}{\inmathscr{o}} % Script letter 'o'
-\newcommand{\scrp}{\inmathscr{p}} % Script letter 'p'
-\newcommand{\scrq}{\inmathscr{q}} % Script letter 'q'
-\newcommand{\scrr}{\inmathscr{r}} % Script letter 'r'
-\newcommand{\scrs}{\inmathscr{s}} % Script letter 's'
-\newcommand{\scrt}{\inmathscr{t}} % Script letter 't'
-\newcommand{\scru}{\inmathscr{u}} % Script letter 'u'
-\newcommand{\scrv}{\inmathscr{v}} % Script letter 'v'
-\newcommand{\scrw}{\inmathscr{w}} % Script letter 'w'
-\newcommand{\scrx}{\inmathscr{x}} % Script letter 'x'
-\newcommand{\scry}{\inmathscr{y}} % Script letter 'y'
-\newcommand{\scrz}{\inmathscr{z}} % Script letter 'z'
+\newcommand{\scra}{\tcs@sr{a}} % Script letter 'a'
+\newcommand{\scrb}{\tcs@sr{b}} % Script letter 'b'
+\newcommand{\scrc}{\tcs@sr{c}} % Script letter 'c'
+\newcommand{\scrd}{\tcs@sr{d}} % Script letter 'd'
+\newcommand{\scre}{\tcs@sr{e}} % Script letter 'e'
+\newcommand{\scrf}{\tcs@sr{f}} % Script letter 'f'
+\newcommand{\scrg}{\tcs@sr{g}} % Script letter 'g'
+\newcommand{\scrh}{\tcs@sr{h}} % Script letter 'h'
+\newcommand{\scri}{\tcs@sr{i}} % Script letter 'i'
+\newcommand{\scrj}{\tcs@sr{j}} % Script letter 'j'
+\newcommand{\scrk}{\tcs@sr{k}} % Script letter 'k'
+\newcommand{\scrl}{\tcs@sr{l}} % Script letter 'l'
+\newcommand{\scrm}{\tcs@sr{m}} % Script letter 'm'
+\newcommand{\scrn}{\tcs@sr{n}} % Script letter 'n'
+\newcommand{\scro}{\tcs@sr{o}} % Script letter 'o'
+\newcommand{\scrp}{\tcs@sr{p}} % Script letter 'p'
+\newcommand{\scrq}{\tcs@sr{q}} % Script letter 'q'
+\newcommand{\scrr}{\tcs@sr{r}} % Script letter 'r'
+\newcommand{\scrs}{\tcs@sr{s}} % Script letter 's'
+\newcommand{\scrt}{\tcs@sr{t}} % Script letter 't'
+\newcommand{\scru}{\tcs@sr{u}} % Script letter 'u'
+\newcommand{\scrv}{\tcs@sr{v}} % Script letter 'v'
+\newcommand{\scrw}{\tcs@sr{w}} % Script letter 'w'
+\newcommand{\scrx}{\tcs@sr{x}} % Script letter 'x'
+\newcommand{\scry}{\tcs@sr{y}} % Script letter 'y'
+\newcommand{\scrz}{\tcs@sr{z}} % Script letter 'z'
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Latin Abbreviations
