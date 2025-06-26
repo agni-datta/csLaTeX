@@ -156,7 +156,6 @@
 \RequirePackage{hhline}                                        % Horizontal lines in tables
 \RequirePackage{longtable}                                     % Multi-page tables
 \RequirePackage{makecell}                                      % Line breaks and formatting in cells
-\RequirePackage{makecell}                                      % Line breaks and formatting in cells
 \RequirePackage{multicol}                                      % Multiple text columns
 \RequirePackage{multirow}                                      % Multi-row cells in tables
 \RequirePackage{pdflscape}                                     % Landscape pages in PDF output
@@ -173,11 +172,11 @@
 \RequirePackage{xtab}                                          % Page-breaking tables (alt to supertabular)
 \AtBeginDocument{%
     \captionsetup{%
-        font={rm},                                             % Roman font
-        labelfont={color=black,sc},                            % Label in black roman
+        font={rm,small},                                       % Roman font
+        labelfont={color=black,sc,small},                      % Label in black roman
         labelsep=period,                                       % Label ends with period
         skip=5pt,                                              % Space below caption
-        justification=justified,                               % Center the caption
+        justification=justified                                % Center the caption
     }%
 }%
 \captionsetup[table]{position=bottom, skip=5pt}                % Table captions below
@@ -364,7 +363,7 @@
 \NewDocumentCommand{\toc}{}{%
     \clearpage
     \vfill
-    \begin{spacing}{1.05}
+    \begin{spacing}{1.00}
         \tableofcontents
     \end{spacing}
     \vfill
@@ -574,54 +573,6 @@
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Protocol box environment
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\NewDocumentEnvironment{protocolbox}{o}
-{%
-    \begin{mdframed}[
-            font=\small,
-            roundcorner=1.5pt,
-            linewidth=0.5pt,
-            skipabove=0.5\baselineskip,
-            skipbelow=0.1\baselineskip,
-            leftmargin=0pt,
-            rightmargin=0pt,
-            innerleftmargin=5pt,
-            innerrightmargin=5pt,
-            innertopmargin=5pt,
-            innerbottommargin=5pt,
-            backgroundcolor=white,
-            linecolor=black
-        ]%
-        \IfNoValueF{#1}{%
-            \noindent\textnormal{\small\textbf{#1}}\par\smallskip
-            \noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}%
-        }%
-        \begin{itemize}[label={--},nosep]%
-            }
-            {%
-        \end{itemize}
-    \end{mdframed}%
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Wire box environment
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newtcolorbox{wirebox}{%
-    colframe=black,
-    colback=white,
-    sharp corners,
-    boxrule=0.5pt,
-    coltitle=black,
-    colbacktitle=white,
-    boxsep=5pt,
-    top=0pt,
-    bottom=0pt,
-    left=5pt,
-    right=5pt
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Simple fancyhdr header setup
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \NewDocumentCommand{\simplefancyheader}{}{%
@@ -664,6 +615,51 @@
 
 % Commands for the main document
 \begin{filecontents*}{useful-commands.tex}
+
+    \@ifpackageloaded{enumitem}{%
+        % Define 'points' list: itemize using "--"
+        \newlist{points}{itemize}{1}
+        \setlist[points]{%
+            label={\textendash},
+            leftmargin=1em,
+            itemsep=1pt,
+            align=left,
+            before=\smallskip,
+            after=\smallskip
+        }
+
+        % Define 'codelist' list: enumerated as [\texttt{1}], [\texttt{2}], ...
+        \newlist{codelist}{enumerate}{1}
+        \setlist[codelist,1]{%
+            label=\textcolor{gray}{\texttt{[\arabic*]}},
+            leftmargin=1em,
+            itemsep=1pt,
+            align=left,
+            before=\smallskip,
+            after=\smallskip
+        }
+
+        % Define 'checkbox' list
+        \newlist{checkbox}{itemize}{1}
+        \setlist[checkbox]{%
+            label=$\square$,
+            leftmargin=1em,
+            align=left
+        }
+        % Define \checked command to switch label for one item
+        \newcommand{\checked}{\item[\checkmark]}
+
+        % Define a rigorous description list for definitions
+        \newlist{deflist}{description}{1}
+        \setlist[deflist]{%
+            labelwidth=0.35\textwidth,
+            labelsep=1em,
+            leftmargin=0.35\textwidth,
+            font=\normalfont\bfseries,
+            style=nextline,
+            itemsep=5pt
+        }
+    }{}
 
     % Highlight color for text and math
     \providecommand{\highlightcolor}{RoyalBlue}
@@ -742,6 +738,108 @@
         \fi
     }
 
+    \@ifpackageloaded{mdframed}{%
+        % Protocol box environment
+        \NewDocumentEnvironment{protocolbox}{o}
+        {%
+            \begin{mdframed}[
+                    font=\small,
+                    roundcorner=1.5pt,
+                    linewidth=0.5pt,
+                    skipabove=0.5\baselineskip,
+                    skipbelow=0.1\baselineskip,
+                    leftmargin=0pt,
+                    rightmargin=0pt,
+                    innerleftmargin=5pt,
+                    innerrightmargin=5pt,
+                    innertopmargin=5pt,
+                    innerbottommargin=5pt,
+                    backgroundcolor=white,
+                    linecolor=black
+                ]%
+                \IfNoValueF{#1}{%
+                    \noindent\textnormal{\small\textbf{#1}}\par\smallskip
+                    \noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}%
+                }%
+                \begin{points}%
+                    }
+                    {%
+                \end{points}
+            \end{mdframed}%
+        }
+
+        % Code list box environment
+        \NewDocumentEnvironment{codelistbox}{o}
+        {%
+            \begin{mdframed}[
+                    font=\small,
+                    roundcorner=1.5pt,
+                    linewidth=0.5pt,
+                    skipabove=0.5\baselineskip,
+                    skipbelow=0.1\baselineskip,
+                    leftmargin=0pt,
+                    rightmargin=0pt,
+                    innerleftmargin=5pt,
+                    innerrightmargin=5pt,
+                    innertopmargin=5pt,
+                    innerbottommargin=5pt,
+                    backgroundcolor=white,
+                    linecolor=black
+                ]%
+                \IfNoValueF{#1}{%
+                    \noindent\textnormal{\small\textbf{#1}}\par\smallskip
+                    \noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}%
+                }%
+                \begin{codelist}%
+                    }
+                    {%
+                \end{codelist}
+            \end{mdframed}%
+        }
+
+        \NewDocumentEnvironment{simplebox}{o}
+        {%
+            \begin{mdframed}[
+                    font=\small,
+                    roundcorner=1.5pt,
+                    linewidth=0.5pt,
+                    skipabove=0.5\baselineskip,
+                    skipbelow=0.1\baselineskip,
+                    leftmargin=0pt,
+                    rightmargin=0pt,
+                    innerleftmargin=5pt,
+                    innerrightmargin=5pt,
+                    innertopmargin=5pt,
+                    innerbottommargin=5pt,
+                    backgroundcolor=white,
+                    linecolor=black
+                ]%
+                \IfNoValueF{#1}{%
+                    \noindent\textnormal{\small\textbf{#1}}\par\smallskip
+                    \noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}%
+                }%
+                }
+                {%
+            \end{mdframed}%
+        }
+    }{}
+
+    \@ifpackageloaded{tcolorbox}{%
+        % Wire box environment
+        \newtcolorbox{wirebox}{%
+            colframe=black,
+            colback=white,
+            sharp corners,
+            boxrule=0.5pt,
+            coltitle=black,
+            colbacktitle=white,
+            boxsep=5pt,
+            top=0pt,
+            bottom=0pt,
+            left=5pt,
+            right=5pt
+        }
+    }{}
 \end{filecontents*}
 
 % For use in the main document
