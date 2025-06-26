@@ -196,7 +196,7 @@
 \DeclareOption{crypto}{\csdirty@LoadCryptotrue}                             % Load Cryptography
 \DeclareOption{epigraph}{\csdirty@LoadEpigraphtrue}                         % Load Epigraphs
 \DeclareOption{full}{\csdirty@LoadFulltrue}                                 % Load Full
-\DeclareOption{fullpage}{\csdirty@LoadFullPagefalse}                        % Load Full Page
+\DeclareOption{fullpage}{\csdirty@LoadFullPagetrue}                        % Load Full Page
 \DeclareOption{nicespacing}{\csdirty@LoadNiceSpacingfalse}                  % Load Nice Spacing
 \DeclareOption{orcidlink}{\csdirty@LoadOrcidlinktrue}                       % Load ORCID link
 \DeclareOption{theorems}{\csdirty@LoadTheoremstrue}                         % Load Theorems
@@ -285,7 +285,7 @@
 % Margin and Spacing
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \ifcsdirty@LoadFullPage
-    \RequirePackage[a4paper, margin=2.0cm]{geometry}         % Page layout
+    \RequirePackage[a4paper, margin=2.5cm]{geometry}         % Page layout
     \typeout{csdirty: Loading full page layout}
 \else
     \RequirePackage[a4paper, margin=3.5cm]{geometry}         % Page layout (default)
@@ -721,39 +721,65 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage{titlesec}                                    % Header title formatting
 
-% Define common font for section-level headings
-\NewDocumentCommand{\commonheadingfont}{}{\normalfont\bfseries}
+% Define section-specific heading fonts and sizes
+\NewDocumentCommand{\partheadingfont}{}{\normalfont\bfseries\huge}
+\NewDocumentCommand{\chapterheadingfont}{}{\normalfont\bfseries\LARGE}
+\NewDocumentCommand{\sectionheadingfont}{}{\normalfont\bfseries\Large}
+\NewDocumentCommand{\subsectionheadingfont}{}{\normalfont\bfseries\large}
+\NewDocumentCommand{\subsubsectionheadingfont}{}{\normalfont\bfseries\normalsize}
+\NewDocumentCommand{\paragraphheadingfont}{}{\normalfont\bfseries\normalsize}
+\NewDocumentCommand{\subparagraphheadingfont}{}{\normalfont\scshape\normalsize}
 
 % Section, subsection, etc. formatting rules
 \NewDocumentCommand{\setsectionformats}{}{%
-    \titleformat{\section}{\commonheadingfont\Large}{\thesection}{10pt}{}%
-    \titleformat{\subsection}{\commonheadingfont\large}{\thesubsection}{10pt}{}%
-    \titleformat{\subsubsection}{\commonheadingfont\large}{\thesubsubsection}{10pt}{}%
-    \titleformat{\paragraph}[runin]{\normalsize\scshape}{\theparagraph}{10pt}{}[.]%
+    \titleformat{\section}
+    {\sectionheadingfont}
+    {\thesection}
+    {10pt}
+    {}%
+    \titleformat{\subsection}
+    {\subsectionheadingfont}
+    {\thesubsection}
+    {10pt}
+    {}%
+    \titleformat{\subsubsection}[runin]
+    {\subsubsectionheadingfont}
+    {\thesubsubsection}
+    {10pt}
+    {}%
+    \titleformat{\paragraph}[runin]
+    {\paragraphheadingfont}
+    {\theparagraph}
+    {10pt}
+    {}[.]%
     \titlespacing*{\paragraph}{0pt}{\medskipamount}{*1}%
-    \titleformat{\subparagraph}[runin]{\normalsize\scshape}{\thesubparagraph}{10pt}{}[.]%
+    \titleformat{\subparagraph}[runin]
+    {\subparagraphheadingfont}
+    {\thesubparagraph}
+    {10pt}
+    {}[.]%
     \titlespacing*{\subparagraph}{0pt}{\medskipamount}{*1}%
 }
 
-% Chapter-level title formatting
+% Chapter-level title formatting (with embedded size and style)
 \NewDocumentCommand{\setchapterformat}{}{%
     \titleformat{\chapter}[display]
-    {\huge}
-    {\filleft\textrm{\textsc{\large\chaptertitlename}~\Huge\thechapter}}
+    {\chapterheadingfont}
+    {\filleft\textnormal{\textsc{\large\chaptertitlename}~\Huge\textsf{\thechapter}}}
     {2ex}
-    {\commonheadingfont\titlerule\vspace{1ex}\filright}
+    {\titlerule\vspace{1ex}\filright}
     [\vspace{1ex}\titlerule]%
 }
 
-% Part-level title formatting
+% Part-level title formatting (with embedded size and style)
 \NewDocumentCommand{\setpartformat}{}{%
-\titleclass{\part}{top}
-\titleformat{\part}[display]
-{\normalfont\RaggedRight\LARGE}
-{\scshape\partname~{\Huge\thepart}}
-{1ex}
-{\scshape\titlerule\vspace{1ex}\Huge}
-[\vspace{1ex}\titlerule]%
+    \titleclass{\part}{top}
+    \titleformat{\part}[display]
+    {\partheadingfont}
+    {\scshape\partname~{\Huge\thepart}}
+    {1ex}
+    {\scshape\titlerule\vspace{1ex}\Huge}
+    [\vspace{1ex}\titlerule]%
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
