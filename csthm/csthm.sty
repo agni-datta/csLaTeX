@@ -212,12 +212,13 @@
 	\declaretheorem[style=thmstyle,name=Conjecture]{conjecture}%
 	\declaretheorem[style=thmstyle,name=Corollary]{corollary}%
 	\declaretheorem[style=thmstyle,name=Fact]{fact}%
+	\declaretheorem[style=thmstyle,name=Folklore]{folklore}%
 	\declaretheorem[style=thmstyle,name=Hypothesis]{hypothesis}%
 	\declaretheorem[style=thmstyle,name=Lemma]{lemma}%
 	\declaretheorem[style=thmstyle,name=Postulate]{postulate}%
 	\declaretheorem[style=thmstyle,name=Property]{property}%
 	\declaretheorem[style=thmstyle,name=Proposition]{proposition}%
-	
+
 	% Unnumbered Theorem-like Environments
 	\declaretheorem[style=thmstyle,unnumbered,name=Theorem*]{theorem*}%
 	\declaretheorem[style=thmstyle,unnumbered,name=Assertion*]{assertion*}%
@@ -228,12 +229,13 @@
 	\declaretheorem[style=thmstyle,unnumbered,name=Conjecture*]{conjecture*}%
 	\declaretheorem[style=thmstyle,unnumbered,name=Corollary*]{corollary*}%
 	\declaretheorem[style=thmstyle,unnumbered,name=Fact*]{fact*}%
+	\declaretheorem[style=thmstyle,unnumbered,name=Folklore*]{folklore*}%
 	\declaretheorem[style=thmstyle,unnumbered,name=Hypothesis*]{hypothesis*}%
 	\declaretheorem[style=thmstyle,unnumbered,name=Lemma*]{lemma*}%
 	\declaretheorem[style=thmstyle,unnumbered,name=Postulate*]{postulate*}%
 	\declaretheorem[style=thmstyle,unnumbered,name=Property*]{property*}%
 	\declaretheorem[style=thmstyle,unnumbered,name=Proposition*]{proposition*}%
-	
+
 	% Definition-like Environments
 	\declaretheorem[style=defstyle,name=Application]{application}%
 	\declaretheorem[style=defstyle,name=Construction]{construction}%
@@ -244,7 +246,7 @@
 	\declaretheorem[style=defstyle,name=Problem]{problem}%
 	\declaretheorem[style=defstyle,name=Protocol]{protocol}%
 	\declaretheorem[style=defstyle,name=Result]{result}%
-	
+
 	% Unnumbered Definition-like Environments
 	\declaretheorem[style=defstyle,unnumbered,name=Application*]{application*}%
 	\declaretheorem[style=defstyle,unnumbered,name=Construction*]{construction*}%
@@ -255,7 +257,7 @@
 	\declaretheorem[style=defstyle,unnumbered,name=Problem*]{problem*}%
 	\declaretheorem[style=defstyle,unnumbered,name=Protocol*]{protocol*}%
 	\declaretheorem[style=defstyle,unnumbered,name=Result*]{result*}%
-	
+
 	% Remark-like Environments
 	\declaretheorem[style=remarkstyle,name=Commentary]{commentary}%
 	\declaretheorem[style=remarkstyle,name=Example]{example}%
@@ -266,7 +268,7 @@
 	\declaretheorem[style=remarkstyle,name=Observation]{observation}%
 	\declaretheorem[style=remarkstyle,name=Question]{question}%
 	\declaretheorem[style=remarkstyle,name=Remark]{remark}%
-	
+
 	% Unnumbered Remark-like Environments
 	\declaretheorem[style=remarkstyle,unnumbered,name=Commentary*]{commentary*}%
 	\declaretheorem[style=remarkstyle,unnumbered,name=Example*]{example*}%
@@ -277,7 +279,7 @@
 	\declaretheorem[style=remarkstyle,unnumbered,name=Observation*]{observation*}%
 	\declaretheorem[style=remarkstyle,unnumbered,name=Question*]{question*}%
 	\declaretheorem[style=remarkstyle,unnumbered,name=Remark*]{remark*}%
-	
+
 	% Highlight-like Environments
 	\declaretheorem[style=hltstyle,name=Guideline]{guideline}%
 	\declaretheorem[style=hltstyle,name=Highlight]{highlight}%
@@ -289,7 +291,7 @@
 	\declaretheorem[style=hltstyle,name=Takeaway]{takeaway}%
 	\declaretheorem[style=hltstyle,name=Tip]{tip}%
 	\declaretheorem[style=hltstyle,name=Warning]{warning}%
-	
+
 	% Unnumbered Highlight-like Environments
 	\declaretheorem[style=hltstyle,unnumbered,name=Guideline*]{guideline*}%
 	\declaretheorem[style=hltstyle,unnumbered,name=Highlight*]{highlight*}%
@@ -301,7 +303,7 @@
 	\declaretheorem[style=hltstyle,unnumbered,name=Takeaway*]{takeaway*}%
 	\declaretheorem[style=hltstyle,unnumbered,name=Tip*]{tip*}%
 	\declaretheorem[style=hltstyle,unnumbered,name=Warning*]{warning*}%
-	
+
 	% Proof Environment
 	\let\proof\relax%
 	\let\endproof\relax%
@@ -342,7 +344,7 @@
 		headfont=\thmheadfont\color{\thmcolor}, notefont=\thmheadfont\color{\thmcolor},%
 		bodyfont=\thmfont, postheadspace=5pt, numberwithin=section,%
 		mdframed={linewidth=2pt, rightline=false, topline=false, bottomline=false,%
-			linecolor=\thmcolor, backgroundcolor=\thmcolor!5},%
+				linecolor=\thmcolor, backgroundcolor=\thmcolor!5},%
 		headpunct={.}%
 	]{thmstyle}%
 	% Definition style
@@ -351,7 +353,7 @@
 		headfont=\defnheadfont\color{\defncolor}, notefont=\defnheadfont\color{\defncolor},%
 		bodyfont=\defnfont, postheadspace=5pt, numberwithin=section,%
 		mdframed={linewidth=2pt, rightline=false, topline=false, bottomline=false,%
-			linecolor=\defncolor, backgroundcolor=\defncolor!5},%
+				linecolor=\defncolor, backgroundcolor=\defncolor!5},%
 		headpunct={.}%
 	]{defstyle}%
 	% Remark style
@@ -360,7 +362,7 @@
 		headfont=\remarkheadfont\color{\remarkcolor}, notefont=\remarkheadfont\color{\remarkcolor},%
 		bodyfont=\remarkfont, postheadspace=5pt, numberwithin=section,%
 		mdframed={linewidth=2pt, rightline=false, topline=false, bottomline=false,%
-			linecolor=\remarkcolor, backgroundcolor=\remarkcolor!5},%
+				linecolor=\remarkcolor, backgroundcolor=\remarkcolor!5},%
 		headpunct={.}%
 	]{remarkstyle}%
 	% Highlight style
@@ -369,7 +371,7 @@
 		headfont=\hltheadfont\color{\hltcolor}, notefont=\hltheadfont\color{\hltcolor},%
 		bodyfont=\hltfont, postheadspace=5pt, numberwithin=section,%
 		mdframed={linewidth=2pt, rightline=false, topline=false, bottomline=false,%
-			linecolor=\hltcolor, backgroundcolor=\hltcolor!5},%
+				linecolor=\hltcolor, backgroundcolor=\hltcolor!5},%
 		headpunct={.}%
 	]{hltstyle}%
 	% Proof style
@@ -601,7 +603,7 @@
 		\renewcommand{\cref}[1]{\Cref{#1}}%
 		% --- Email Link Formatting ---		
 		\providecommand{\email}[1]{\href{mailto:#1}{\texttt{#1}}}%
-		}{%
+	}{%
 		\PackageWarning{csthm}{%
 			The 'cleveref' option was set, but 'hyperref' is not loaded.%
 			Skipping 'cleveref' loading.%
