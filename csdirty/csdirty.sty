@@ -1,44 +1,221 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % csdirty.sty - A LaTeX Package by Agni Datta
-% Consolidates common packages for simplified document preparation.
+% Comprehensive package consolidation for academic and technical document preparation
+%
+% DESCRIPTION:
+% This package provides a unified solution for academic and technical document 
+% preparation by bundling commonly used LaTeX packages and providing convenient 
+% options for version control, anonymization, and feature loading. It is 
+% specifically designed for research papers, technical reports, and academic 
+% submissions that require different versions or anonymization capabilities.
+%
+% USAGE:
+% \usepackage[options]{csdirty}
+%
+% AVAILABLE OPTIONS:
+%
+% VERSION CONTROL OPTIONS:
+%   fullversion    - Load complete document version with all content
+%                    Includes complete author information, affiliations,
+%                    acknowledgments, and supplementary materials.
+%                    Default behavior when no version option is specified.
+%   shortversion   - Load abbreviated document version for conferences
+%                    Excludes appendices, detailed proofs, and supplementary
+%                    content to meet page limits and submission requirements.
+%   preprint       - Alias for fullversion (preprint = full version)
+%                    Specifically for arXiv submissions and preprints where
+%                    complete information is required.
+%
+% COMMENTS AND ANNOTATIONS OPTIONS:
+%   comments       - Enable inline comments and annotations throughout document
+%                    Loads the comment package for collaborative editing and
+%                    review comments. Comments are visible in final output.
+%   nocomments     - Disable comment functionality (default behavior)
+%                    No comment package is loaded, reducing package overhead
+%                    and compilation time.
+%
+% MATH AND TECHNICAL OPTIONS:
+%   concmath       - Enable Concmath package for enhanced mathematical notation
+%                    Provides advanced mathematical typesetting capabilities,
+%                    additional mathematical symbols, and specialized environments
+%                    for complex mathematical expressions.
+%   nomath         - Disable loading of math-related packages
+%                    Reduces package overhead when mathematical content is minimal.
+%                    Note: Basic LaTeX math functionality remains available.
+%
+% FEATURE LOADING OPTIONS:
+%   tikz           - Load comprehensive TikZ package suite for graphics
+%                    Enables creation of vector graphics, flowcharts, diagrams,
+%                    and technical illustrations directly in LaTeX.
+%                    Includes libraries: 3dplot, cd, automata, circuits, 
+%                    decorations, positioning, shapes, and arrows.
+%   appendix       - Load enhanced appendix formatting and management
+%                    Provides improved appendix numbering, cross-referencing,
+%                    and formatting capabilities for supplementary materials.
+%   crypto         - Load cryptography-specific packages and notation
+%                    Includes specialized notation for cryptographic protocols,
+%                    security definitions, algorithms, and cryptographic proofs.
+%                    Essential for papers in cryptography, security, and
+%                    theoretical computer science.
+%   theorems       - Load enhanced theorem environment formatting
+%                    Provides consistent styling and numbering for theorem,
+%                    lemma, proposition, corollary, and proof environments.
+%                    Includes custom theorem styles and cross-referencing.
+%   orcidlink      - Load ORCID link package for author identification
+%                    Enables automatic display of ORCID icons and links
+%                    next to author names for proper academic attribution
+%                    and researcher identification.
+%   epigraph       - Load enhanced epigraph formatting and styling
+%                    Provides customizable epigraph formatting with improved
+%                    typography, spacing control, and citation formatting
+%                    for quotes and attributions.
+%   fullpage       - Load advanced full-page layout and formatting options
+%                    Enables comprehensive page layout capabilities including
+%                    margin adjustments, header/footer customization, and
+%                    advanced document formatting features.
+%   nicespacing    - Load enhanced typography and spacing packages
+%                    Provides improved spacing, line breaks, microtypography,
+%                    and professional document appearance through microtype
+%                    and setspace packages.
+%   full           - Load all available features and packages (comprehensive)
+%                    Enables complete functionality including TikZ, cryptography,
+%                    theorems, ORCID links, epigraphs, appendix support,
+%                    full-page layout, and enhanced spacing. Recommended
+%                    for complete academic documents.
+%
+% ENHANCED FEATURES:
+%   Advanced Graphics     - PGFPlots integration for data visualization and
+%                             function plotting with compatibility mode 1.18.
+%   Colored Content Boxes - tcolorbox integration for styled content boxes
+%                             with customizable colors, borders, and themes.
+%   Framed Environments   - mdframed package for theorem environments and
+%                             framed content with TikZ-based rendering.
+%   Advanced Tables       - tabularray package for complex table types and
+%                             styling with multi-page support and line breaks.
+%   Comprehensive TikZ    - Extensive library support including 3D plotting,
+%                             commutative diagrams, automata, circuits,
+%                             decorations, and positioning.
+%   Full-Page Layout      - Advanced layout capabilities for comprehensive
+%                             document presentation and professional formatting.
+%   Enhanced Typography   - Improved spacing, microtypography, and document
+%                             readability through microtype and setspace.
+%
+% EXAMPLES:
+%   \usepackage{csdirty}                            % Basic usage with defaults
+%   \usepackage[fullversion]{csdirty}               % Full version with all features
+%   \usepackage[shortversion,nocomments]{csdirty}   % Short version, no comments
+%   \usepackage[tikz,crypto]{csdirty}               % With TikZ and crypto
+%   \usepackage[theorems,orcidlink]{csdirty}        % Theorem formatting and ORCID
+%   \usepackage[epigraph,fullpage]{csdirty}         % Epigraphs and full-page layout
+%   \usepackage[nicespacing]{csdirty}               % Enhanced spacing and typography
+%   \usepackage[full]{csdirty}                      % Load all available features
+%
+% DEPENDENCIES:
+% Core dependencies (always loaded):
+% - amsmath, amssymb (mathematical notation)
+% - geometry (page layout)
+% - hyperref (hyperlinks and references)
+%
+% Optional dependencies (loaded based on options):
+% - tikz, tikz-cd, tikz-3dplot (tikz option)
+% - pgfplots (data visualization)
+% - tcolorbox (colored content boxes)
+% - mdframed (framed environments)
+% - comment (comments option)
+% - Various cryptography packages (crypto option)
+% - csthm (theorems option)
+% - orcidlink (orcidlink option)
+% - appendix (appendix option)
+% - epigraph (epigraph option)
+% - Various layout packages (fullpage option)
+% - microtype, setspace (nicespacing option)
+%
+% COMPATIBILITY:
+% Compatible with modern LaTeX distributions (TeX Live 2022+, MiKTeX 23+).
+% Tested with document classes: article, report, book.
+% Requires e-TeX extensions (available in modern LaTeX distributions).
+% 
+% KNOWN ISSUES AND LIMITATIONS:
+% - Version control options may require manual adjustment for complex documents
+% - TikZ graphics may require multiple compilation passes for complex diagrams
+% - PGFPlots compatibility mode 1.18 may need adjustment for newer versions
+% - Full-page layout options may conflict with certain document class settings
+% - Enhanced spacing may affect document layout and require fine-tuning
+% - Some options may increase compilation time and memory usage
+%
+% VERSION: 1.6
+% DATE: 2025/06/26
+% AUTHOR: Agni Datta
+% LICENSE: LaTeX Project Public License 1.3c
+% CONTACT: For issues and feature requests, please email me at agnidatta.org@gmail.com
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\ProvidesPackage{csdirty}[2025/02/10 v1.0 csdirty package]
+\ProvidesPackage{csdirty}[2025/06/26 v1.6 csdirty package]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \makeatletter
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Package Options: Versioning, Comments, and Anonymization
+% Package Options
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Boolean flags
-\newif\ifAnonymize      \Anonymizefalse
-\newif\ifComments       \Commentsfalse
-\newif\ifConcmath       \Concmathfalse
-\newif\ifFullVersion    \FullVersionfalse
-\newif\ifShortVersion   \ShortVersionfalse
-\newif\ifSubmission     \Submissionfalse
+% General Boolean flags
+\newif\ifComments                    \Commentsfalse
+\newif\ifFullVersion                 \FullVersionfalse
+\newif\ifShortVersion                \ShortVersionfalse
 
-% User options
-\DeclareOption{anonymize}{\Anonymizetrue}                                   % Enable anonymization
-\DeclareOption{comments}{\Commentstrue}                                     % Enable comments
-\DeclareOption{concmath}{\Concmathtrue}                                     % Enable Concmath
+% Package-specific Boolean flags
+\newif\ifcsdirty@Concmath            \csdirty@Concmathfalse
+\newif\ifcsdirty@LoadAppendix        \csdirty@LoadAppendixfalse
+\newif\ifcsdirty@LoadCrypto          \csdirty@LoadCryptofalse
+\newif\ifcsdirty@LoadEpigraph        \csdirty@LoadEpigraphfalse
+\newif\ifcsdirty@LoadFull            \csdirty@LoadFulltrue
+\newif\ifcsdirty@LoadFullPage        \csdirty@LoadFullPagefalse
+\newif\ifcsdirty@LoadNiceSpacing     \csdirty@LoadNiceSpacingfalse
+\newif\ifcsdirty@LoadNoMath          \csdirty@LoadNoMathfalse
+\newif\ifcsdirty@LoadOrcidlink       \csdirty@LoadOrcidlinkfalse
+\newif\ifcsdirty@LoadTheorems        \csdirty@LoadTheoremsfalse
+\newif\ifcsdirty@LoadTikz            \csdirty@LoadTikzfalse
+
+% Version control options
 \DeclareOption{fullversion}{\FullVersiontrue\ShortVersionfalse}             % Use full version
-\DeclareOption{nocomments}{\Commentsfalse}                                  % Disable comments
-\DeclareOption{preprint}{\ShortVersionfalse\FullVersiontrue}                % Preprint = full version
 \DeclareOption{shortversion}{\ShortVersiontrue\FullVersionfalse}            % Use short version
-\DeclareOption{submission}{\Submissiontrue\ShortVersiontrue\Anonymizetrue}  % Enable submission mode
+\DeclareOption{preprint}{\ShortVersionfalse\FullVersiontrue}                % Preprint = full version
+
+% Comment and annotation options
+\DeclareOption{comments}{\Commentstrue}                                     % Enable comments
+\DeclareOption{nocomments}{\Commentsfalse}                                  % Disable comments
+
+% Math and technical options
+\DeclareOption{concmath}{\csdirty@Concmathtrue}                             % Enable Concmath
+\DeclareOption{nomath}{\csdirty@LoadNoMathtrue}                             % Disable math packages
+
+% Feature loading options
+\DeclareOption{appendix}{\csdirty@LoadAppendixtrue}                         % Load Appendix
+\DeclareOption{crypto}{\csdirty@LoadCryptotrue}                             % Load Cryptography
+\DeclareOption{epigraph}{\csdirty@LoadEpigraphtrue}                         % Load Epigraphs
+\DeclareOption{full}{\csdirty@LoadFulltrue}                                 % Load Full
+\DeclareOption{fullpage}{\csdirty@LoadFullPagefalse}                        % Load Full Page
+\DeclareOption{nicespacing}{\csdirty@LoadNiceSpacingfalse}                  % Load Nice Spacing
+\DeclareOption{orcidlink}{\csdirty@LoadOrcidlinktrue}                       % Load ORCID link
+\DeclareOption{theorems}{\csdirty@LoadTheoremstrue}                         % Load Theorems
+\DeclareOption{tikz}{\csdirty@LoadTikztrue}                                 % Load TikZ
+
+\ifcsdirty@LoadFull
+    \typeout{csdirty: Loading full version}
+    \csdirty@LoadAppendixtrue
+    \csdirty@LoadCryptotrue
+    \csdirty@LoadEpigraphtrue
+    \csdirty@LoadNiceSpacingtrue
+    \csdirty@LoadOrcidlinktrue
+    \csdirty@LoadTheoremstrue
+    \csdirty@LoadTikztrue
+\fi
 
 % Ignore unknown options
 \DeclareOption*{\relax}
 \ProcessOptions\relax
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Color
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage[x11names, dvipsnames, svgnames]{xcolor}      % Extended color support.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Core Programming and Utility Packages
@@ -52,16 +229,78 @@
 \RequirePackage{xparse}                                      % Extended command/environment definitions
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Engine and Class Compatibility Warnings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ifLuaTeX
+    \typeout{csdirty: rock on! LuaTeX engine detected (this is the good stuff)}
+\else
+    \ifXeTeX
+        \typeout{csdirty: nice! XeTeX engine detected (you're doing it right)}
+    \else
+        \PackageWarning{csdirty}{%
+            oops! pdfTeX engine detected.
+            concrete math option is gonna break on you.
+            maybe try LuaTeX or XeTeX instead? they handle Unicode way better :(
+        }%
+    \fi
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Check for supported document classes
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\@ifclassloaded{article}{%
+    \typeout{csdirty: article class spotted (we got you covered)}
+}{%
+    \@ifclassloaded{report}{%
+        \typeout{csdirty: report class spotted (looking good)}
+    }{%
+        \@ifclassloaded{book}{%
+            \typeout{csdirty: book class spotted (you're all set)}
+        }{%
+            \PackageWarning{csdirty}{%
+                uh oh! unsupported document class detected.
+                this package only plays nice with article, report, or book classes :(
+                your class (\@classload) has not been tested with this package yet.
+                you may encounter issues with the package.
+            }%
+        }%
+    }%
+}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Color
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage[x11names, dvipsnames, svgnames]{xcolor}      % Extended color support.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PDF and Document Structure Control
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage[2.0,objcompress,compress]{bxpdfver}          % PDF version and compression management
-\RequirePackage[a4paper,margin=3cm]{geometry}                % Page layout
 \RequirePackage[nottoc]{tocbibind}                           % Add bibliography/lists to TOC (exclude TOC itself)
 \RequirePackage{babel}                                       % Language, hyphenation
 \RequirePackage{pdfpages}                                    % Include external PDFs
 \RequirePackage{refcount}                                    % Reference counting
-\RequirePackage{setspace}                                    % Line spacing control
-\renewcommand{\baselinestretch}{1.125}                       % Set line spacing
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Margin and Spacing
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ifcsdirty@LoadFullPage
+    \RequirePackage[a4paper, margin=2.0cm]{geometry}         % Page layout
+    \typeout{csdirty: Loading full page layout}
+\else
+    \RequirePackage[a4paper, margin=3.5cm]{geometry}         % Page layout (default)
+    \typeout{csdirty: Loading default page layout}
+\fi
+
+\ifcsdirty@LoadNiceSpacing
+    \RequirePackage{setspace}                                % Line spacing control
+    \typeout{csdirty: Loading nice spacing}
+    \setstretch{1.15}
+\else
+    \RequirePackage{setspace}                                % Line spacing control
+    \typeout{csdirty: Loading default spacing}
+    \setstretch{1.0}
+\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Text, Layout, and Miscellaneous Enhancements
@@ -82,51 +321,103 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Fonts and Math
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage[T1]{fontenc}                                 % Font encoding for proper hyphenation
-\RequirePackage{amsfonts}                                    % AMS fonts (blackboard bold, etc.)
-\RequirePackage{amsmath}                                     % Advanced math typesetting
-\RequirePackage{amssymb}                                     % Additional math symbols
-\RequirePackage{amsthm}                                      % Theorem environments
-\RequirePackage{bbm}                                         % Blackboard bold math symbols
-\RequirePackage{bm}                                          % Bold math symbols
-\RequirePackage{mathtools}                                   % Math enhancements
-\RequirePackage{moresize}                                    % More font sizes
-\RequirePackage{nicefrac}                                    % Inline fractions
-\RequirePackage{siunitx}                                     % Units and number formatting
-\ifConcmath
-    \ifLuaTeX
-        \RequirePackage{concmath-otf}                       % Concmath for LuaTeX
-        \let\mathbfcal\relax                                % Remove clash with amsfonts
-        \let\mathbfscr\relax                                % Remove clash with amsfonts
-    \else
-        \ifXeTeX
-            \RequirePackage{concmath-otf}                   % Concmath for XeTeX
-            \let\mathbfcal\relax                            % Remove clash with amsfonts
-            \let\mathbfscr\relax                            % Remove clash with amsfonts
-        \fi
-        \RequirePackage{lmodern}                            % Modern Latin font
-    \fi
+\ifcsdirty@LoadNoMath
+    \typeout{csdirty: Loading no math packages}
+    \RequirePackage[T1]{fontenc}                            % Font encoding
 \else
-    \RequirePackage{lmodern}                                % Modern Latin font
+    \ifcsdirty@Concmath
+        \typeout{csdirty: Attempting to load concrete math package}
+        \ifLuaTeX
+            \typeout{csdirty: Loading concrete math for LuaTeX}
+            \RequirePackage[T1]{fontenc}                     % Font encoding
+            \AtEndPreamble{%
+                \RequirePackage{concmath-otf}                    % Concrete math for LuaTeX
+                \let\mathbfcal\relax                             % Remove clash with amsfonts
+                \let\mathbfscr\relax                             % Remove clash with amsfonts
+                \RequirePackage[%                                % Custom math fonts
+                    bb=bboldx,                                   % Blackboard bold
+                    cal=cm,                                      % Calligraphic
+                    scr=dutchcal                                 % Script
+                ]{mathalpha}
+            }
+        \else
+            \ifXeTeX
+                \typeout{csdirty: Loading concrete math for XeTeX}
+                \RequirePackage[T1]{fontenc}                     % Font encoding
+                \AtEndPreamble{%
+                    \RequirePackage{concmath-otf}                    % Concrete math for XeTeX
+                    \let\mathbfcal\relax                             % Remove clash with amsfonts
+                    \let\mathbfscr\relax                             % Remove clash with amsfonts
+                    \RequirePackage[%                                % Custom math fonts
+                        bb=bboldx,                                   % Blackboard bold
+                        cal=cm,                                      % Calligraphic
+                        scr=dutchcal                                 % Script
+                    ]{mathalpha}
+                }
+            \else
+                \typeout{csdirty: Concrete math not supported for current engine, falling back to standard math}
+                \RequirePackage[T1]{fontenc}                         % Font encoding
+                \RequirePackage{amsfonts}                            % AMS fonts
+                \RequirePackage{amsmath}                             % Advanced math typesetting
+                \RequirePackage{amssymb}                             % Additional math symbols
+                \RequirePackage{amsthm}                              % Theorem environments
+                \RequirePackage{bbm}                                 % Blackboard bold math symbols
+                \RequirePackage{bm}                                  % Bold math symbols
+                \RequirePackage{mathtools}                           % Math enhancements
+                \RequirePackage{mathrsfs}                            % Math script fonts
+                \RequirePackage{moresize}                            % More font sizes
+                \RequirePackage{nicefrac}                            % Inline fractions
+                \RequirePackage{siunitx}                             % Units and number formatting
+                \RequirePackage{lmodern}                             % Latin Modern fonts
+                \RequirePackage[%                                    % Custom math fonts
+                    bb=bboldx,                                       % Blackboard bold
+                    cal=cm,                                          % Calligraphic
+                    scr=dutchcal                                     % Script
+                ]{mathalpha}
+            \fi
+        \fi
+    \else
+        \typeout{csdirty: Loading standard math packages}
+        \RequirePackage[T1]{fontenc}                         % Font encoding
+        \RequirePackage{amsfonts}                            % AMS fonts
+        \RequirePackage{amsmath}                             % Advanced math typesetting
+        \RequirePackage{amssymb}                             % Additional math symbols
+        \RequirePackage{amsthm}                              % Theorem environments
+        \RequirePackage{bbm}                                 % Blackboard bold math symbols
+        \RequirePackage{bm}                                  % Bold math symbols
+        \RequirePackage{mathtools}                           % Math enhancements
+        \RequirePackage{mathrsfs}                            % Math script fonts
+        \RequirePackage{moresize}                            % More font sizes
+        \RequirePackage{nicefrac}                            % Inline fractions
+        \RequirePackage{siunitx}                             % Units and number formatting
+        \RequirePackage{lmodern}                             % Latin Modern fonts
+        \RequirePackage[%                                    % Custom math fonts
+            bb=bboldx,                                       % Blackboard bold
+            cal=cm,                                          % Calligraphic
+            scr=dutchcal                                     % Script
+        ]{mathalpha}
+    \fi
 \fi
-\RequirePackage[cal=cm,bb=bboldx,scr=dutchcal]{mathalpha}   % Custom math fonts
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Hyperlinks & Referencing
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage{nameref}                                     % Name-based referencing
 \RequirePackage[%
-    frenchlinks=true,                                        % Use small caps for links
-    unicode=true,                                            % Support for Unicode
     bookmarksnumbered=true,                                  % Number PDF bookmarks
     breaklinks=true,                                         % Allow links to break over lines
-    colorlinks=true,                                         % Use colored links
-    linkcolor=RoyalBlue2,                                    % Color for internal links
     citecolor=SlateBlue2,                                    % Color for citations
-    urlcolor=SpringGreen4,                                   % Color for URLs
-    pdfusetitle,                                             % Use document title as PDF title
+    colorlinks=true,                                         % Use colored links
+    frenchlinks=true,                                        % Use small caps for links
+    linkcolor=RoyalBlue2,                                    % Color for internal links
+    pagebackref,                                             % Back-references from bibliography
+    pdfencoding=auto,                                        % Automatic encoding detection
     pdfpagelabels=true,                                      % Correct page labels in PDF
-    pagebackref                                              % Back-references from bibliography
+    pdfpagelayout=SinglePage,                                % Single page view
+    pdfstartview=FitH,                                       % Fit the page to the window
+    pdfusetitle,                                             % Use document title as PDF title
+    unicode=true,                                            % Support for Unicode
+    urlcolor=SpringGreen4                                    % Color for URLs
 ]{hyperref}
 \RequirePackage{xr}                                          % Cross-document references
 % Customize backrefs
@@ -201,22 +492,27 @@
 \setlist[itemize,3]{label=\ensuremath{\circ}}                  % Level 3: open circle
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Epigraphs
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ifcsdirty@LoadEpigraph
+    \RequirePackage{epigraph}                                     % Epigraphs (introductory quotations)
+
+    % Epigraph configuration
+    \setlength{\epigraphrule}{0.5pt}
+    \setlength{\epigraphwidth}{0.65\textwidth}
+    \renewcommand{\textflush}{flushright}
+    \renewcommand{\epigraphsize}{\small}
+
+    % Enhanced epigraph command
+    \let\oldepigraph\epigraph
+    \renewcommand{\epigraph}[2]{%
+        \oldepigraph{\textsf{#1}}{\smallskip\textsc{#2}}%
+    }
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Diagrams and TikZ Graphics
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{epigraph}                                     % Epigraphs (introductory quotations)
-
-% Epigraph configuration
-\setlength{\epigraphrule}{0.5pt}
-\setlength{\epigraphwidth}{0.65\textwidth}
-\renewcommand{\textflush}{flushright}
-\renewcommand{\epigraphsize}{\small}
-
-% Enhanced epigraph command
-\let\oldepigraph\epigraph
-\renewcommand{\epigraph}[2]{%
-    \oldepigraph{\textsf{#1}}{\smallskip\textsc{#2}}%
-}
-
 \RequirePackage[most]{tcolorbox}                              % Colored and styled boxes
 \RequirePackage[%
     skipabove=10pt,                                           % Vertical space above the frame
@@ -224,66 +520,73 @@
     ntheorem,                                                 % Compatibility with theorem environments
     framemethod=Tikz                                          % Use TikZ for frame rendering
 ]{mdframed}                                                   % Framed environments with theorem support
-\RequirePackage{pgfplots}                                     % Function/data plots
-\pgfplotsset{compat=1.18}                                     % PGFPlots compatibility version
-\RequirePackage{tikz}                                         % Core TikZ package
-\RequirePackage{tikz-cd}                                      % Commutative diagrams
-\RequirePackage{tikz-3dplot}                                  % 3D coordinate plotting
 
-% TikZ libraries for enhanced diagrammatic capability
-\usetikzlibrary{%
-    3d,
-    arrows,
-    arrows.meta,
-    automata,
-    babel,
-    backgrounds,
-    bending,
-    calc,
-    calendar,
-    chains,
-    circuits.ee.IEC,
-    circuits.logic.IEC,
-    datavisualization,
-    datavisualization.formats.functions,
-    decorations,
-    decorations.markings,
-    decorations.pathmorphing,
-    decorations.shapes,
-    decorations.text,
-    er,
-    external,
-    fadings,
-    fit,
-    graphs,
-    graphs.standard,
-    hobby,
-    intersections,
-    lindenmayersystems,
-    matrix,
-    mindmap,
-    patterns,
-    patterns.meta,
-    petri,
-    plothandlers,
-    plotmarks,
-    positioning,
-    quotes,
-    scopes,
-    shadows,
-    shapes,
-    shapes.arrows,
-    shapes.callouts,
-    shapes.geometric,
-    shapes.misc,
-    shapes.multipart,
-    shapes.symbols,
-    spy,
-    svg.path,
-    through,
-    tikzmark,
-    trees
-}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TikZ
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ifcsdirty@LoadTikz
+    \typeout{csdirty: Loading TikZ package}
+    \RequirePackage{pgfplots}                                     % Function/data plots
+    \pgfplotsset{compat=1.18}                                     % PGFPlots compatibility version
+    \RequirePackage{tikz}                                         % Core TikZ package
+    \RequirePackage{tikz-cd}                                      % Commutative diagrams
+    \RequirePackage{tikz-3dplot}                                  % 3D coordinate plotting
+
+    % TikZ libraries for enhanced diagrammatic capability
+    \usetikzlibrary{%
+        3d,
+        arrows,
+        arrows.meta,
+        automata,
+        babel,
+        backgrounds,
+        bending,
+        calc,
+        calendar,
+        chains,
+        circuits.ee.IEC,
+        circuits.logic.IEC,
+        datavisualization,
+        datavisualization.formats.functions,
+        decorations,
+        decorations.markings,
+        decorations.pathmorphing,
+        decorations.shapes,
+        decorations.text,
+        er,
+        external,
+        fadings,
+        fit,
+        graphs,
+        graphs.standard,
+        hobby,
+        intersections,
+        lindenmayersystems,
+        matrix,
+        mindmap,
+        patterns,
+        patterns.meta,
+        petri,
+        plothandlers,
+        plotmarks,
+        positioning,
+        quotes,
+        scopes,
+        shadows,
+        shapes,
+        shapes.arrows,
+        shapes.callouts,
+        shapes.geometric,
+        shapes.misc,
+        shapes.multipart,
+        shapes.symbols,
+        spy,
+        svg.path,
+        through,
+        tikzmark,
+        trees
+    }
+\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Appendices
@@ -293,20 +596,24 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Cryptography and Styling
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\IfFileExists{csthm.sty}{\RequirePackage[oldschool]{csthm}}  % Theorem formatting
-{\PackageWarning{csdirty}{Package `csthm` not found.}}%
-\IfFileExists{tcscrypto.sty}{\RequirePackage{tcscrypto}}     % Cryptography macros
-{\PackageWarning{csdirty}{Package `tcscrypto` not found.}}%
-\RequirePackage{orcidlink}                                   % ORCID ID and icon
+\ifcsdirty@LoadTheorems
+    \typeout{csdirty: Loading theorem formatting package}
+    \IfFileExists{csthm.sty}{\RequirePackage[oldschool]{csthm}}{\PackageWarning{csdirty}{Package `csthm` not found.}} % Theorem formatting
+\fi
+
+\ifcsdirty@LoadCrypto
+    \typeout{csdirty: Loading cryptography package}
+    \IfFileExists{tcscrypto.sty}{\RequirePackage{tcscrypto}}{\PackageWarning{csdirty}{Package `tcscrypto` not found.}} % Cryptography macros
+\fi
+
+\ifcsdirty@LoadOrcidlink
+    \typeout{csdirty: Loading ORCID link package}
+    \IfFileExists{orcidlink.sty}{\RequirePackage{orcidlink}}{\PackageWarning{csdirty}{Package `orcidlink` not found.}} % ORCID ID and icon
+\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Versioning, Comments, Acknowledgment, Abstract
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Version switches
-\NewDocumentCommand{\fullversion}{}{\FullVersiontrue\ShortVersionfalse}
-\NewDocumentCommand{\shortversion}{}{\ShortVersiontrue\FullVersionfalse}
-\NewDocumentCommand{\usecomments}{}{\Commentstrue}
 
 % Comment macro: \newcomment{name}{color}{command}
 \NewDocumentCommand{\newcomment}{mmm}{%
@@ -317,22 +624,24 @@
     }%
 }
 
-% Acknowledgment: hidden if anonymized, class-based otherwise
-\ifAnonymize
-    \NewDocumentEnvironment{acknowledgment}{o}{}{}
-\else
-    \NewDocumentEnvironment{acknowledgment}{o}{%
-        \@ifclassloaded{book}{%
-            \IfNoValueTF{#1}{\chapter*{Acknowledgment}}{\chapter*{#1}}%
-        }{%
-            \@ifclassloaded{report}{%
+\AtBeginDocument{%
+    % Acknowledgment: hidden if anonymized, class-based otherwise
+    \ifShortVersion
+        \NewDocumentEnvironment{acknowledgment}{o}{}{}
+    \else
+        \NewDocumentEnvironment{acknowledgment}{o}{%
+            \@ifclassloaded{book}{%
                 \IfNoValueTF{#1}{\chapter*{Acknowledgment}}{\chapter*{#1}}%
             }{%
-                \IfNoValueTF{#1}{\paragraph*{Acknowledgment.}}{\paragraph*{#1}}%
+                \@ifclassloaded{report}{%
+                    \IfNoValueTF{#1}{\chapter*{Acknowledgment}}{\chapter*{#1}}%
+                }{%
+                    \IfNoValueTF{#1}{\paragraph*{Acknowledgment.}}{\paragraph*{#1}}%
+                }%
             }%
-        }%
-    }{}
-\fi
+        }{}
+    \fi
+}
 
 % Abstract: indented with TOC entry
 \@ifclassloaded{book}{%
@@ -413,7 +722,7 @@
 \RequirePackage{titlesec}                                    % Header title formatting
 
 % Define common font for section-level headings
-\newcommand{\commonheadingfont}{\normalfont\bfseries}
+\NewDocumentCommand{\commonheadingfont}{}{\normalfont\bfseries}
 
 % Section, subsection, etc. formatting rules
 \NewDocumentCommand{\setsectionformats}{}{%
@@ -497,7 +806,7 @@
 }
 
 % Section-style paragraph header with automatic punctuation and spacing
-\newcommand{\csdirty@paragraphhead}[1]{%
+\NewDocumentCommand{\csdirty@paragraphhead}{m}{%
     \smallskip
     \noindent
     \textbf{\boldmath\ignorespaces\csdirty@appendpunctuationifneeded{#1}}%
@@ -505,7 +814,7 @@
     \csdirty@ignorewhitespaceandimplicitpars
 }
 
-\newcommand{\parhead}[1]{\csdirty@paragraphhead{#1}}
+\NewDocumentCommand{\parhead}{m}{\csdirty@paragraphhead{#1}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Nested bar environment
