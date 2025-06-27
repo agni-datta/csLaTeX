@@ -728,7 +728,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
 
 % Commands for the main document
-\begin{filecontents*}{useful-commands.tex}
+\newcommand{\usefulcommands}{
 
     \@ifpackageloaded{enumitem}{%
         % Define 'points' list: itemize using "--"
@@ -954,10 +954,9 @@
             right=5pt
         }
     }{}
-\end{filecontents*}
+}
 
-% For use in the main document
-\input{useful-commands.tex}
+\usefulcommands
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Upright Greek Letters Setup Using `upgreek`
