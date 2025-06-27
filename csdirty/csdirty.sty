@@ -3,148 +3,155 @@
 % Comprehensive package consolidation for academic and technical document preparation
 %
 % DESCRIPTION:
-% This package provides a unified solution for academic and technical document 
-% preparation by bundling commonly used LaTeX packages and providing convenient 
-% options for version control, anonymization, and feature loading. It is 
-% specifically designed for research papers, technical reports, and academic 
-% submissions that require different versions or anonymization capabilities.
+% csdirty provides a unified, modern solution for academic and technical document 
+% preparation by bundling commonly used LaTeX packages and offering convenient 
+% options for version control, anonymization, feature loading, and advanced 
+% document utilities. It is designed for research papers, technical reports, 
+% and academic submissions that require flexible versions, anonymization, and 
+% professional typesetting.
 %
 % USAGE:
-% \usepackage[options]{csdirty}
+%   \usepackage[options]{csdirty}
+%   % Example: \usepackage[full,comments,codeblocks]{csdirty}
 %
-% AVAILABLE OPTIONS:
+% AVAILABLE OPTIONS (all options have both positive and negative forms):
 %
 % VERSION CONTROL OPTIONS:
-%   fullversion    - Load complete document version with all content
-%                    Includes complete author information, affiliations,
-%                    acknowledgments, and supplementary materials.
-%                    Default behavior when no version option is specified.
-%   shortversion   - Load abbreviated document version for conferences
-%                    Excludes appendices, detailed proofs, and supplementary
-%                    content to meet page limits and submission requirements.
-%   preprint       - Alias for fullversion (preprint = full version)
-%                    Specifically for arXiv submissions and preprints where
-%                    complete information is required.
+%   fullversion      - Load complete document version with all content
+%                      (author info, affiliations, acknowledgments, appendices, etc.)
+%                      Default if no version option is specified.
+%   nofullversion    - Do not force full version (use shortversion or default).
+%   shortversion     - Load abbreviated version for conferences (excludes appendices, 
+%                      detailed proofs, and supplementary content).
+%   noshortversion   - Do not force short version (use fullversion or default).
+%   preprint         - Alias for fullversion (for arXiv/preprints).
+%   nopreprint       - Do not force preprint mode.
 %
 % COMMENTS AND ANNOTATIONS OPTIONS:
-%   comments       - Enable inline comments and annotations throughout document
-%                    Loads the comment package for collaborative editing and
-%                    review comments. Comments are visible in final output.
-%   nocomments     - Disable comment functionality (default behavior)
-%                    No comment package is loaded, reducing package overhead
-%                    and compilation time.
+%   comments         - Enable inline comments and annotations (loads comment package).
+%   nocomments       - Disable comment functionality (default).
 %
 % MATH AND TECHNICAL OPTIONS:
-%   concmath       - Enable Concmath package for enhanced mathematical notation
-%                    Provides advanced mathematical typesetting capabilities,
-%                    additional mathematical symbols, and specialized environments
-%                    for complex mathematical expressions.
-%   nomath         - Disable loading of math-related packages
-%                    Reduces package overhead when mathematical content is minimal.
-%                    Note: Basic LaTeX math functionality remains available.
+%   concmath         - Enable Concmath package for advanced math typesetting.
+%   noconcmath       - Do not load Concmath package.
+%   math             - Enable loading of math-related packages (default).
+%   nomath           - Disable loading of math-related packages (basic LaTeX math remains).
 %
 % FEATURE LOADING OPTIONS:
-%   tikz           - Load comprehensive TikZ package suite for graphics
-%                    Enables creation of vector graphics, flowcharts, diagrams,
-%                    and technical illustrations directly in LaTeX.
-%                    Includes libraries: 3dplot, cd, automata, circuits, 
-%                    decorations, positioning, shapes, and arrows.
-%   appendix       - Load enhanced appendix formatting and management
-%                    Provides improved appendix numbering, cross-referencing,
-%                    and formatting capabilities for supplementary materials.
-%   crypto         - Load cryptography-specific packages and notation
-%                    Includes specialized notation for cryptographic protocols,
-%                    security definitions, algorithms, and cryptographic proofs.
-%                    Essential for papers in cryptography, security, and
-%                    theoretical computer science.
-%   theorems       - Load enhanced theorem environment formatting
-%                    Provides consistent styling and numbering for theorem,
-%                    lemma, proposition, corollary, and proof environments.
-%                    Includes custom theorem styles and cross-referencing.
-%   orcidlink      - Load ORCID link package for author identification
-%                    Enables automatic display of ORCID icons and links
-%                    next to author names for proper academic attribution
-%                    and researcher identification.
-%   epigraph       - Load enhanced epigraph formatting and styling
-%                    Provides customizable epigraph formatting with improved
-%                    typography, spacing control, and citation formatting
-%                    for quotes and attributions.
-%   fullpage       - Load advanced full-page layout and formatting options
-%                    Enables comprehensive page layout capabilities including
-%                    margin adjustments, header/footer customization, and
-%                    advanced document formatting features.
-%   nicespacing    - Load enhanced typography and spacing packages
-%                    Provides improved spacing, line breaks, microtypography,
-%                    and professional document appearance through microtype
-%                    and setspace packages.
-%   full           - Load all available features and packages (comprehensive)
-%                    Enables complete functionality including TikZ, cryptography,
-%                    theorems, ORCID links, epigraphs, appendix support,
-%                    full-page layout, and enhanced spacing. Recommended
-%                    for complete academic documents.
+%   tikz             - Load comprehensive TikZ package suite for graphics (includes
+%                      3dplot, cd, automata, circuits, decorations, positioning, shapes, arrows).
+%   notikz           - Do not load TikZ or related graphics packages.
+%   appendix         - Enhanced appendix formatting and management.
+%   noappendix       - Do not load appendix enhancements.
+%   crypto           - Cryptography-specific packages and notation (protocols, security definitions, etc.).
+%   nocrypto         - Do not load cryptography packages.
+%   theorems         - Enhanced theorem/proof environment formatting and cross-referencing.
+%   notheorems       - Do not load theorem/proof enhancements.
+%   orcidlink        - ORCID link package for author identification.
+%   noorcidlink      - Do not load ORCID link package.
+%   epigraph         - Enhanced epigraph formatting and styling.
+%   noepigraph       - Do not load epigraph enhancements.
+%   fullpage         - Advanced full-page layout and formatting options.
+%   nofullpage       - Do not load full-page layout options.
+%   nicespacing      - Enhanced typography and spacing (microtype, setspace).
+%   badspacing       - Do not load enhanced spacing/typography.
+%   codeblocks       - Load advanced code and pseudocode environments (minted, listings, algorithm2e).
+%   nocodeblocks     - Do not load code/pseudocode environments.
+%   tabularray       - Load advanced table package for complex tables and multi-page support.
+%   notabularray     - Do not load advanced table package.
+%   full             - Load all available features and packages (recommended for full academic documents).
+%   nofull           - Do not force loading of all features.
+%   usefulcommands   - Load a suite of handy macros for cryptography, math, and general writing.
+%   nousefulcommands - Do not load the handy macro suite.
 %
 % ENHANCED FEATURES:
-%   Advanced Graphics     - PGFPlots integration for data visualization and
-%                             function plotting with compatibility mode 1.18.
-%   Colored Content Boxes - tcolorbox integration for styled content boxes
-%                             with customizable colors, borders, and themes.
-%   Framed Environments   - mdframed package for theorem environments and
-%                             framed content with TikZ-based rendering.
-%   Advanced Tables       - tabularray package for complex table types and
-%                             styling with multi-page support and line breaks.
-%   Comprehensive TikZ    - Extensive library support including 3D plotting,
-%                             commutative diagrams, automata, circuits,
-%                             decorations, and positioning.
-%   Full-Page Layout      - Advanced layout capabilities for comprehensive
-%                             document presentation and professional formatting.
-%   Enhanced Typography   - Improved spacing, microtypography, and document
-%                             readability through microtype and setspace.
+%   - Advanced Graphics: PGFPlots integration for data visualization and function plotting (compatibility mode 1.18).
+%   - Colored Content Boxes: tcolorbox integration for styled content boxes (customizable colors, borders, themes).
+%   - Framed Environments: mdframed for theorem and content boxes with TikZ-based rendering.
+%   - Advanced Tables: tabularray for complex table types, styling, multi-page support, and line breaks.
+%   - Code & Algorithms: codeblocks option loads minted, listings, and algorithm2e for code and pseudocode.
+%   - Comprehensive TikZ: Extensive library support (3D plotting, commutative diagrams, automata, circuits, decorations, positioning).
+%   - Full-Page Layout: Advanced layout for professional document presentation.
+%   - Enhanced Typography: Improved spacing, microtypography, and readability.
+%   - Useful Commands: Loads a suite of handy macros for cryptography, math, and general writing.
 %
 % EXAMPLES:
-%   \usepackage{csdirty}                            % Basic usage with defaults
-%   \usepackage[fullversion]{csdirty}               % Full version with all features
-%   \usepackage[shortversion,nocomments]{csdirty}   % Short version, no comments
-%   \usepackage[tikz,crypto]{csdirty}               % With TikZ and crypto
-%   \usepackage[theorems,orcidlink]{csdirty}        % Theorem formatting and ORCID
-%   \usepackage[epigraph,fullpage]{csdirty}         % Epigraphs and full-page layout
-%   \usepackage[nicespacing]{csdirty}               % Enhanced spacing and typography
-%   \usepackage[full]{csdirty}                      % Load all available features
+%   \usepackage{csdirty}                                   % Basic usage with defaults
+%   \usepackage[fullversion]{csdirty}                      % Full version with all features
+%   \usepackage[shortversion,nocomments]{csdirty}          % Short version, no comments
+%   \usepackage[tikz,crypto]{csdirty}                      % With TikZ and crypto
+%   \usepackage[theorems,orcidlink]{csdirty}               % Theorem formatting and ORCID
+%   \usepackage[epigraph,fullpage]{csdirty}                % Epigraphs and full-page layout
+%   \usepackage[nicespacing]{csdirty}                      % Enhanced spacing and typography
+%   \usepackage[codeblocks]{csdirty}                       % Advanced code and pseudocode environments
+%   \usepackage[tabularray]{csdirty}                       % Advanced tables
+%   \usepackage[full,codeblocks,tabularray]{csdirty}       % All features, code, and advanced tables
+%   \usepackage[notikz,nocodeblocks]{csdirty}              % Exclude TikZ and code environments
+%   \usepackage[noappendix,noepigraph]{csdirty}            % Exclude appendix and epigraph features
+%
+% CODE USAGE EXAMPLES:
+%   % Use a colored content box (tcolorbox)
+%   \begin{tcolorbox}[colback=blue!5!white, colframe=blue!75!black, title=Example Box]
+%   This is a styled content box.
+%   \end{tcolorbox}
+%
+%   % Use a wirebox (if tcolorbox loaded)
+%   \begin{wirebox}
+%   This is a wirebox for highlighting content.
+%   \end{wirebox}
+%
+%   % Use a code block (if codeblocks option enabled)
+%   \begin{minted}{python}
+%   def hello():
+%       print("Hello, world!")
+%   \end{minted}
+%
+%   % Use advanced table (if tabularray option enabled)
+%   \begin{tblr}{
+%     colspec = {Q[l]Q[c]Q[r]},
+%     row{1} = {font=\bfseries}
+%   }
+%   Header 1 & Header 2 & Header 3 \\
+%   Left     & Center   & Right    \\
+%   \end{tblr}
 %
 % DEPENDENCIES:
 % Core dependencies (always loaded):
-% - amsmath, amssymb (mathematical notation)
-% - geometry (page layout)
-% - hyperref (hyperlinks and references)
+%   - amsmath, amssymb (mathematical notation)
+%   - geometry (page layout)
+%   - hyperref (hyperlinks and references)
 %
 % Optional dependencies (loaded based on options):
-% - tikz, tikz-cd, tikz-3dplot (tikz option)
-% - pgfplots (data visualization)
-% - tcolorbox (colored content boxes)
-% - mdframed (framed environments)
-% - comment (comments option)
-% - Various cryptography packages (crypto option)
-% - csthm (theorems option)
-% - orcidlink (orcidlink option)
-% - appendix (appendix option)
-% - epigraph (epigraph option)
-% - Various layout packages (fullpage option)
-% - microtype, setspace (nicespacing option)
+%   - tikz, tikz-cd, tikz-3dplot (tikz option)
+%   - pgfplots (data visualization)
+%   - tcolorbox (colored content boxes)
+%   - mdframed (framed environments)
+%   - comment (comments option)
+%   - minted, listings, algorithm2e (codeblocks option)
+%   - tabularray (tabularray option)
+%   - cryptography packages (crypto option)
+%   - csthm (theorems option)
+%   - orcidlink (orcidlink option)
+%   - appendix (appendix option)
+%   - epigraph (epigraph option)
+%   - layout packages (fullpage option)
+%   - microtype, setspace (nicespacing option)
 %
 % COMPATIBILITY:
-% Compatible with modern LaTeX distributions (TeX Live 2022+, MiKTeX 23+).
-% Tested with document classes: article, report, book.
-% Requires e-TeX extensions (available in modern LaTeX distributions).
+%   - Compatible with modern LaTeX distributions (TeX Live 2022+, MiKTeX 23+).
+%   - Tested with document classes: article, report, book.
+%   - Requires e-TeX extensions (available in modern LaTeX distributions).
 % 
 % KNOWN ISSUES AND LIMITATIONS:
-% - Version control options may require manual adjustment for complex documents
-% - TikZ graphics may require multiple compilation passes for complex diagrams
-% - PGFPlots compatibility mode 1.18 may need adjustment for newer versions
-% - Full-page layout options may conflict with certain document class settings
-% - Enhanced spacing may affect document layout and require fine-tuning
-% - Some options may increase compilation time and memory usage
+%   - Version control options may require manual adjustment for complex documents.
+%   - TikZ graphics may require multiple compilation passes for complex diagrams.
+%   - PGFPlots compatibility mode 1.18 may need adjustment for newer versions.
+%   - Full-page layout options may conflict with certain document class settings.
+%   - Enhanced spacing may affect document layout and require fine-tuning.
+%   - Some options may increase compilation time and memory usage.
 %
-% VERSION: 1.6
-% DATE: 2025/06/26
+% VERSION: 1.7
+% DATE: 2025/07/01
 % AUTHOR: Agni Datta
 % LICENSE: LaTeX Project Public License 1.3c
 % CONTACT: For issues and feature requests, please email me at agnidatta.org@gmail.com
@@ -177,6 +184,7 @@
 \newif\ifcsdirty@LoadOrcidlink       \csdirty@LoadOrcidlinkfalse
 \newif\ifcsdirty@LoadTheorems        \csdirty@LoadTheoremsfalse
 \newif\ifcsdirty@LoadTikz            \csdirty@LoadTikzfalse
+\newif\ifcsdirty@LoadUsefulCommands  \csdirty@LoadUsefulCommandstrue
 
 % Version control options
 \DeclareOption{fullversion}{\FullVersiontrue\ShortVersionfalse}             % Use full version
@@ -193,14 +201,24 @@
 
 % Feature loading options
 \DeclareOption{appendix}{\csdirty@LoadAppendixtrue}                         % Load Appendix
+\DeclareOption{noappendix}{\csdirty@LoadAppendixfalse}                      % Do not load Appendix
 \DeclareOption{crypto}{\csdirty@LoadCryptotrue}                             % Load Cryptography
+\DeclareOption{nocrypto}{\csdirty@LoadCryptofalse}                          % Do not load Cryptography
 \DeclareOption{epigraph}{\csdirty@LoadEpigraphtrue}                         % Load Epigraphs
+\DeclareOption{noepigraph}{\csdirty@LoadEpigraphtrue}                       % Do not load Epigraphs
 \DeclareOption{full}{\csdirty@LoadFulltrue}                                 % Load Full
-\DeclareOption{fullpage}{\csdirty@LoadFullPagetrue}                        % Load Full Page
-\DeclareOption{nicespacing}{\csdirty@LoadNiceSpacingfalse}                  % Load Nice Spacing
+\DeclareOption{fullpage}{\csdirty@LoadFullPagetrue}                         % Load Full Page
+\DeclareOption{nofullpage}{\csdirty@LoadFullPagefalse}                      % Do not load Full Page
+\DeclareOption{nicespacing}{\csdirty@LoadNiceSpacingtrue}                   % Load Nice Spacing
+\DeclareOption{badspacing}{\csdirty@LoadNiceSpacingfalse}                   % Load Bad Spacing
 \DeclareOption{orcidlink}{\csdirty@LoadOrcidlinktrue}                       % Load ORCID link
+\DeclareOption{noorcidlink}{\csdirty@LoadOrcidlinkfalse}                    % Do not load ORCID link
 \DeclareOption{theorems}{\csdirty@LoadTheoremstrue}                         % Load Theorems
+\DeclareOption{notheorems}{\csdirty@LoadTheoremsfalse}                      % Do not load Theorems
 \DeclareOption{tikz}{\csdirty@LoadTikztrue}                                 % Load TikZ
+\DeclareOption{notikz}{\csdirty@LoadTikzfalse}                              % Do not load TikZ
+\DeclareOption{usefulcommands}{\csdirty@LoadUsefulCommandstrue}             % Load Useful Commands
+\DeclareOption{nousefulcommands}{\csdirty@LoadUsefulCommandsfalse}          % Do not load Useful Commands
 
 \ifcsdirty@LoadFull
     \typeout{csdirty: Loading full version}
@@ -211,6 +229,7 @@
     \csdirty@LoadOrcidlinktrue
     \csdirty@LoadTheoremstrue
     \csdirty@LoadTikztrue
+    \csdirty@LoadUsefulCommandstrue
 \fi
 
 % Ignore unknown options
@@ -773,13 +792,13 @@
 
 % Part-level title formatting (with embedded size and style)
 \NewDocumentCommand{\setpartformat}{}{%
-    \titleclass{\part}{top}
-    \titleformat{\part}[display]
-    {\partheadingfont}
-    {\scshape\partname~{\Huge\thepart}}
-    {1ex}
-    {\scshape\titlerule\vspace{1ex}\Huge}
-    [\vspace{1ex}\titlerule]%
+\titleclass{\part}{top}
+\titleformat{\part}[display]
+{\partheadingfont}
+{\scshape\partname~{\Huge\thepart}}
+{1ex}
+{\scshape\titlerule\vspace{1ex}\Huge}
+[\vspace{1ex}\titlerule]%
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -949,7 +968,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Commands for the main document
-\begin{filecontents*}{useful-commands.tex}
+\newcommand{\usefulcommands}{%
 
     \@ifpackageloaded{enumitem}{%
         % Define 'points' list: itemize using "--"
@@ -1175,10 +1194,11 @@
             right=5pt
         }
     }{}
-\end{filecontents*}
+}
 
-% For use in the main document
-\input{useful-commands.tex}
+\ifcsdirty@LoadUsefulCommands
+    \usefulcommands
+\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Upright Greek Letters Setup
