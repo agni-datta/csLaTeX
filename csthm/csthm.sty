@@ -1,34 +1,8 @@
-%%
-%% This is file csthm.sty',
-%% generated with the docstrip utility.
-%%
-%% The original source files were:
-%%
-%% csthm.dtx  (with options: package')
-%%
-%% This is a generated file.
-%%
-%% Copyright (C) 2024 by Agni Datta <agnidatta.org@gmail.com>
-%%
-%% This file may be distributed and/or modified under the conditions of
-%% the LaTeX Project Public License, either version 1.3c of this license
-%% or (at your option) any later version. The latest version of this
-%% license is in:
-%%
-%%    http://www.latex-project.org/lppl.txt
-%%
-%% and version 1.3c or later is part of all distributions of LaTeX
-%% version 2008/05/04 or later.
-%%
-
-\NeedsTeXFormat{LaTeX2e}[1999/12/01]
-\ProvidesPackage{csthm}[2025/02/02 v2.0 Theorem Environments for Computer Science]
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % csthm.sty - Theorem Environments for Computer Science
-% ---------------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Author: Agni Datta <agnidatta.org@gmail.com>
-% Version: 2.0
+% Version: 2.1
 % Date: 2025/02/02
 % License: LaTeX Project Public License v1.3c or later
 %
@@ -44,7 +18,7 @@
 %   - Multiple theorem styles: 'fancy', 'normal', and 'oldschool', selectable via
 %     package options.
 %   - Extensive set of environments: theorem, assertion, assumption, axiom, claim,
-%     conclusion, conjecture, corollary, fact, hypothesis, lemma, postulate,
+%     conclusion, conjecture, corollary, fact, folklore, hypothesis, lemma, postulate,
 %     property, proposition, application, construction, convention, definition,
 %     experiment, notation, problem, protocol, result, commentary, example,
 %     exercise, motivation, notation abuse, note, observation, question, remark,
@@ -56,6 +30,7 @@
 %   - Intelligent cross-referencing with cleveref and hyperref integration.
 %   - Consistent symbol and font usage across environments.
 %   - Dedicated 'case' environment for structured case analysis.
+%   - Enhanced cleveref support with comprehensive environment naming.
 %
 % USAGE:
 %   \usepackage[<style>]{csthm}
@@ -95,19 +70,24 @@
 %   - Styles are set up via \declaretheoremstyle.
 %   - Cleveref names are set for all environments for consistent referencing.
 %   - The package issues warnings for unrecognized options.
+%   - Comprehensive cleveref integration with proper singular/plural forms.
 %
 % NOTES:
 %   - Only one style should be active at a time.
 %   - If no style is selected, the package will output a message but not define environments.
 %   - The proof environment is redefined for consistency with the selected style.
 %   - The package is intended for use in computer science and related technical documents.
+%   - All environments support intelligent cross-referencing via cleveref.
 %
 % SEE ALSO:
 %   - thmtools, amsthm, mdframed, cleveref, xcolor documentation for further customization.
 %
-% ---------------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % End of documentation for csthm.sty
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+\ProvidesPackage{csthm}[2025/02/02 v2.1 Theorem Environments for Computer Science]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Option Definitions
@@ -136,26 +116,34 @@
 % Package Definitions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage{amsmath}       % Advanced math typesetting
-\RequirePackage{amssymb}       % Additional symbols
-\RequirePackage{amsthm}        % Theorem environments
-\RequirePackage{sansmath}      % Sans-serif math font
-\RequirePackage{enumitem}      % Customizable list formatting
-\RequirePackage{thmtools}      % Theorem customization tools
-\RequirePackage[%
-	skipabove=10pt,            % Space above frames
-	skipbelow=10pt,            % Space below frames
-	ntheorem,                  % Integration with theorem environments
-	framemethod=Tikz           % TikZ frame styling
-]{mdframed}                    % Framed environments
-\RequirePackage[x11names, dvipsnames, svgnames]{xcolor} % X11, SVG, and named colors
+\@ifpackageloaded{amsmath}{}{\RequirePackage{amsmath}}       	% Advanced math typesetting
+\@ifpackageloaded{amssymb}{}{\RequirePackage{amssymb}}        	% Additional symbols
+\@ifpackageloaded{amsthm}{}{\RequirePackage{amsthm}}           	% Theorem environments
+\@ifpackageloaded{sansmath}{}{\RequirePackage{sansmath}}       	% Sans-serif math font
+\@ifpackageloaded{enumitem}{}{\RequirePackage{enumitem}}        % Customizable list formatting
+\@ifpackageloaded{thmtools}{}{\RequirePackage{thmtools}}        % Theorem customization tools
+\@ifpackageloaded{mdframed}{%
+	\PassOptionsToPackage{skipabove=10pt,skipbelow=10pt,ntheorem,framemethod=Tikz}{mdframed}%
+}{%
+	\RequirePackage[%
+		skipabove=10pt,            % Space above frames
+		skipbelow=10pt,            % Space below frames
+		ntheorem,                  % Integration with theorem environments
+		framemethod=Tikz           % TikZ frame styling
+	]{mdframed}%
+}
+\@ifpackageloaded{xcolor}{%
+	\PassOptionsToPackage{x11names,dvipsnames,svgnames}{xcolor}%
+}{%
+	\RequirePackage[x11names,dvipsnames,svgnames]{xcolor}%
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Color and Font Definitions for the csthm package
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % --- Accent Color Settings ---
-\providecommand{\accentcolor}{gray}%
+\providecommand{\accentcolor}{black}%
 \providecommand{\setaccentcolor}[1]{\renewcommand{\accentcolor}{#1}}%
 
 % --- Common Font and Symbol ---
@@ -527,6 +515,8 @@
 		\Crefname{corollary}{Corollary}{Corollaries}
 		\crefname{fact}{fact}{facts}
 		\Crefname{fact}{Fact}{Facts}
+		\Crefname{folklore}{folklore}{folklores}
+		\crefname{folklore}{Folklore}{Folklores}
 		\crefname{hypothesis}{hypothesis}{hypotheses}
 		\Crefname{hypothesis}{Hypothesis}{Hypotheses}
 		\crefname{lemma}{lemma}{lemmas}
