@@ -1,0 +1,591 @@
+\documentclass[10pt,letterpaper]{amsart}
+
+% Microtypography and spacing
+\usepackage[USenglish]{babel}
+\usepackage{microtype}
+\usepackage[onehalfspacing]{setspace}
+
+% Geometry
+\usepackage{geometry}
+\geometry{a4paper,margin=2.5cm}
+
+% Essential packages
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+
+% Engine-specific packages (requires XeLaTeX or LuaLaTeX)
+\usepackage{fontspec}
+\usepackage{unicode-math}
+
+% Font configuration
+\usepackage[concrete]{fontsetup}
+\setsansfont{Ysabeau}
+
+% Color and hyperlinks
+\usepackage[x11names,dvipsnames,svgnames]{xcolor}
+\usepackage[colorlinks=true,linkcolor=RoyalBlue4,urlcolor=RoyalBlue4]{hyperref}
+\usepackage{xurl}
+
+% Tables and arrays
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{longtable}
+
+% Enumerate
+\usepackage{enumitem}
+
+\title{The \textsf{csthm} Package: Theorem Environments for Computer Science}
+\author{Agni Datta}
+
+\begin{document}
+
+\begin{abstract}
+	The \textsf{csthm} package delivers a robust and accessible suite of theorem-like environments tailored to the needs of computer science and related technical disciplines. It provides three distinct visual styles, modern (\texttt{fancy}), standard (\texttt{normal}), and traditional (\texttt{oldschool}), each supporting both numbered and unnumbered forms to address diverse formal documentation requirements. Designed for minimal configuration, the package integrates seamlessly with established tools such as \textsf{amsthm}, \textsf{thmtools}, \textsf{mdframed}, and \textsf{cleveref}, facilitating advanced cross-referencing, customizable headers, and polished presentation with minimal user intervention. By balancing flexibility and simplicity, \textsf{csthm} enables efficient creation of well-structured and visually consistent theorem environments without introducing unnecessary complexity, making it particularly suitable for users prioritizing streamlined usage and uniform formatting in technical manuscripts. This release is a major revision, superseding prior versions and benefiting from more extensive testing. Nonetheless, as with any evolving software, ongoing refinement is anticipated. User feedback regarding any issues or bugs is welcome to ensure prompt resolution. While the traditional (\texttt{oldschool}) style remains the most widely adopted, continued improvements are especially needed for the \texttt{fancy} and \texttt{normal} styles.
+\end{abstract}
+
+\maketitle
+
+\clearpage
+\tableofcontents
+\vfill
+\clearpage
+
+\section{Introduction}
+
+\subsection{Motivation}
+
+The \textsf{csthm} package addresses a common need in academic writing within
+computer science and mathematics: the clear and structured presentation of
+formal content such as theorems, definitions, propositions, lemmas, and proofs.
+Standard packages like \textsf{amsthm} and \textsf{ntheorem} offer some level
+of control, but they often require manual configuration for stylistic
+consistency and do not provide fine-grained typographic affordances out of the
+box. \textsf{csthm} fills this gap by offering a complete, visually cohesive
+framework tailored to the stylistic conventions and practical requirements of
+formal theoretical writing. The package was designed with particular attention
+to use cases in theoretical computer science, logic, discrete mathematics, and
+adjacent areas, where a rich structure of environment types, symbolically
+meaningful headers, and clear semantic grouping is both common and expected. By
+offering multiple visual styles and tightly integrated cross-referencing
+support, \textsf{csthm} allows authors to focus on content while maintaining a
+professional and readable formal layout throughout the document.
+
+\subsection{Package Overview}
+
+The \textsf{csthm} package offers a comprehensive and customizable
+infrastructure for typesetting a wide range of formal environments, including
+theorems, corollaries, claims, axioms, principles, conjectures, observations,
+remarks, warnings, and more. It seamlessly integrates into typical \LaTeX\
+workflows, eliminating the need for extensive customization or intricate
+technical configuration. Each environment is visually distinct, featuring a
+unique bullet or marker, and adheres to one of three predefined styles that
+govern font choices, framing, and color usage. Building upon the
+\textsf{amsthm, thmtools} foundation, the package replaces and extends its
+stylistic model, ensuring syntactic consistency across environments while
+maintaining semantic distinction through visual indicators. Additionally, it
+supports per-environment numbering and section-based numbering schemes, and is
+fully compatible with standard packages like \textsf{hyperref} and
+\textsf{cleveref}. Notable features include:
+
+\begin{description}
+	\item[Style Themes] Three selectable themes (\texttt{normal}, \texttt{fancy},
+	      \texttt{oldschool}) that define the visual presentation of all environments.
+	\item[Environment Collection] A complete set of predefined environments, each with
+	      distinct semantic and visual features suitable for various formal content.
+	\item[Customization] User-configurable headers, symbols, and accent colors via simple
+	      commands, requiring no modification of the style file.
+	\item[Cross-Referencing] Full integration with \textsf{cleveref} for automatic,
+	      type-aware cross-references without redundant labels.
+	\item[Numbering Variants] Support for both numbered and unnumbered environments using
+	      the standard asterisk-suffix syntax (e.g., \texttt{theorem*}).
+	\item[Ease of Use] To minimize the setup process, we recommend selecting a style and
+	      loading the package. All functionalities will be immediately accessible.
+\end{description}
+
+The package aims to be declarative, not prescriptive. While it provides a rich
+set of environments and visual forms, it avoids overengineering and encourages
+clarity and brevity in formal exposition.
+
+\subsection{Package Installation}
+
+To begin using the \textsf{csthm} package, you must first ensure that the file
+\texttt{csthm.sty} is correctly installed within your local \TeX\ environment.
+The most straightforward approach is to place this file in the same directory
+as your working document. Alternatively, you may choose to install it globally
+within your \TeX\ distribution's local tree structure, depending on your setup
+and preferences. For most users, it may be convenient to install the package
+via your distribution's package manager (such as \texttt{tlmgr} for \TeX Live
+or \texttt{MiK\TeX\ Console} for MiK\TeX). If you prefer manual installation or
+are working in an environment without package management, you can directly
+obtain the package from CTAN at \url{https://ctan.org/pkg/csthm}.
+
+\subsection{Loading the Package}
+
+Once the package is available to your system, it must be loaded in the document
+preamble using the \verb|\usepackage| command. The \textsf{csthm} package
+provides three distinct visual styles, selectable through an optional argument.
+One of the following lines should be included at the top of your document,
+depending on your desired formatting:
+
+\begin{verbatim}
+\usepackage[fancy]{csthm}     % Modern framed style
+\usepackage[normal]{csthm}    % Standard sans-serif style
+\usepackage[oldschool]{csthm} % Classic bold/scshape style
+\end{verbatim}
+
+Each option presents a unique aesthetic that caters to different presentation
+styles or typographic conventions. We provide a brief overview of the available
+style options below. These options control the visual layout of theorem-like
+environments defined by the package. Each option modifies both the typographic
+appearance and, to some extent, the framing and symbolization.
+
+\begin{itemize}[label={--}]
+	\item\texttt{fancy:} A modern presentation style that uses the \textsf{mdframed} and \textsf{TikZ} packages to produce colored boxes with subtle styling, suited for contemporary documents and slides.
+	\item\texttt{normal:} A clean and conventional format featuring sans-serif fonts and symbolic labels; appropriate for documents where typographic neutrality is desired.
+	\item\texttt{oldschool:} A traditional layout that emphasizes bold headings and small-caps formatting, reminiscent of classic mathematical texts.
+\end{itemize}
+
+\section{Dependencies}
+
+The \textsf{csthm} package internally relies on a small suite of
+well-established \LaTeX\ packages to enable its features and styles. These
+dependencies are standard across most modern \TeX\ distributions and should
+already be present in typical installations. However, it is useful to be aware
+of them, particularly if you encounter compilation errors or are configuring a
+custom setup. The following packages are required:
+
+\begin{itemize}[label={--}]
+	\item \textsf{amsmath}, \textsf{amssymb}, \textsf{amsthm}: These foundational packages are essential for mathematical typesetting. They provide core environments and symbol sets that underpin virtually all mathematical documents written in \LaTeX\. The \textsf{csthm} package builds directly on top of these.
+
+	\item \textsf{sansmath}: This package enables the use of sans-serif fonts in mathematical environments. It is specifically required to render mathematics in stylistic alignment with the \texttt{normal} style option provided by \textsf{csthm}, which opts for a sans-serif aesthetic throughout.
+
+	\item \textsf{enumitem}: For customizing and controlling the layout of lists, \textsf{enumitem} is necessary. Within \textsf{csthm}, it is used to adjust spacing, labeling, and indentation of itemized structures embedded within theorem environments.
+
+	\item \textsf{thmtools}: This package extends the standard theorem infrastructure in \LaTeX\, providing more flexible and powerful ways to define, customize, and manage theorem-like environments. It is used internally to ensure consistency and modularity in how environments behave across different styles.
+
+	\item \textsf{mdframed}: This package is required only when the \texttt{fancy} style is selected. It enables the construction of framed and colored boxes around theorem environments using highly customizable framed layouts. If you do not intend to use the \texttt{fancy} style, this dependency may not be invoked.
+
+	\item \textsf{xcolor}: This package is used to provide enhanced color support. It works in conjunction with \textsf{mdframed} to style the backgrounds, borders, and headings of theorems when using the \texttt{fancy} style.
+
+	\item \textsf{cleveref}: For smart and automatic cross-referencing of theorems, lemmas, and related structures, \textsf{cleveref} is employed. It should be used alongside \textsf{hyperref}, since it depends on hyperlink functionality to resolve and format references correctly in the compiled document.
+
+\end{itemize}
+
+\section{Environment Categories}
+
+The \textsf{csthm} package defines a broad collection of theorem-like
+environments, each equipped with a distinct visual identity. Every environment
+is styled with a unique symbolic prefix or bullet, designed to enhance clarity
+and typographic structure. In general, for each defined environment, both
+numbered and unnumbered variants are available. The unnumbered forms are
+invoked by appending an asterisk (\texttt{\ast}) to the environment name (for
+example, \texttt{theorem}).
+
+\subsection{Complete Environment List}
+
+The environments provided by the package are organized into four primary
+categories. The table below lists all supported environments along with their
+corresponding styles.
+
+\begin{longtable}{>{\ttfamily}l>{\normalfont}p{0.7\textwidth}}
+	\toprule
+	\normalfont\textbf{Environment} & \textbf{Description}                    \\
+	\midrule
+	\endfirsthead
+	\toprule
+	\normalfont\textbf{Environment} & \textbf{Description}                    \\
+	\midrule
+	\endhead
+	\midrule
+	\multicolumn{2}{r}{\textit{continued on next page}}                       \\
+	\endfoot
+	\bottomrule
+	\endlastfoot
+	\multicolumn{2}{l}{\textbf{Theorem-like Environments}}                    \\
+	\midrule
+	theorem                         & Mathematical theorems and major results \\
+	assertion                       & Strong claims requiring proof           \\
+	assumption                      & Foundational assumptions                \\
+	axiom                           & Fundamental principles                  \\
+	claim                           & Statements to be proven                 \\
+	conclusion                      & Final results or outcomes               \\
+	conjecture                      & Unproven but believed statements        \\
+	corollary                       & Direct consequences of theorems         \\
+	fact                            & Established truths                      \\
+	folklore                        & Well-known unattributed results         \\
+	hypothesis                      & Tentative explanations                  \\
+	lemma                           & Auxiliary results                       \\
+	postulate                       & Fundamental assumptions                 \\
+	property                        & Characteristics of objects              \\
+	proposition                     & Mathematical statements                 \\
+	\midrule
+	\multicolumn{2}{l}{\textbf{Definition-like Environments}}                 \\
+	\midrule
+	application                     & Practical applications                  \\
+	construction                    & Step-by-step constructions              \\
+	convention                      & Agreed-upon standards                   \\
+	definition                      & Formal definitions                      \\
+	experiment                      & Experimental procedures                 \\
+	notation                        & Symbolic conventions                    \\
+	problem                         & Problem statements                      \\
+	protocol                        & Algorithmic procedures                  \\
+	result                          & Computational or experimental results   \\
+	\midrule
+	\multicolumn{2}{l}{\textbf{Remark-like Environments}}                     \\
+	\midrule
+	commentary                      & Extended commentary                     \\
+	example                         & Illustrative examples                   \\
+	exercise                        & Practice problems                       \\
+	motivation                      & Motivational discussions                \\
+	notationabuse                   & Notation abuse warnings                 \\
+	note                            & Informal notes                          \\
+	observation                     & Empirical observations                  \\
+	question                        & Open questions                          \\
+	remark                          & General remarks                         \\
+	\midrule
+	\multicolumn{2}{l}{\textbf{Highlight-like Environments}}                  \\
+	\midrule
+	guideline                       & Best practice guidelines                \\
+	highlight                       & Important points                        \\
+	important                       & Critical information                    \\
+	insight                         & Key insights                            \\
+	keypoint                        & Essential points                        \\
+	recall                          & Review material                         \\
+	summary                         & Content summaries                       \\
+	takeaway                        & Main takeaways                          \\
+	tip                             & Helpful tips                            \\
+	warning                         & Important warnings                      \\
+	\midrule
+	\multicolumn{2}{l}{\textbf{Proof Environment}}                            \\
+	\midrule
+	proof                           & Mathematical proofs                     \\
+\end{longtable}
+
+\subsection{Starred Variants}
+
+Every environment has an unnumbered starred variant (e.g., `theorem',
+`definition'). Use it when you desire a header without a numerical designation.
+Please note that cross-references may not function correctly.
+
+\subsection{Special Environments (Case Environment Only)}
+
+As an added utility, the package provides a simple pre-defined environment for
+structured case analysis. This is intended purely as a convenience and can be
+used as follows:
+
+\begin{verbatim}
+\begin{case}
+    \item First case analysis
+    \item Second case analysis
+\end{case}
+\end{verbatim}
+
+This environment is beneficial for presenting succinct, enumerated case
+breakdowns within proofs or definitions. Although it is included for
+completeness, it is anticipated that most users are already familiar with
+defining custom itemized or bullet-style environments tailored to their
+specific stylistic preferences. The inclusion here is intentionally minimal.
+
+\section{Customization}
+
+\subsection{Accent Color}
+
+The \textsf{csthm} package allows for minimal but effective customization,
+primarily through a consistent accent color used across theorem headers,
+symbols, and framed environments (when applicable). To modify this accent
+color, you may use the following command in your document preamble:
+
+\begin{verbatim}
+\setaccentcolor{blue}  % or any xcolor-supported color
+\end{verbatim}
+
+Any color name (theoretically) supported by the \textsf{xcolor} package is
+valid. This color will propagate through the styling of theorem titles and
+visual markers, maintaining a coherent thematic identity throughout your
+document. Changing the color is immediate and requires no additional
+configuration.
+
+\subsection{QED Symbols}
+
+If you wish to adjust the QED symbol displayed at the end of proof
+environments, you can override its definition directly. The default symbol uses
+the selected accent color and is typeset in script style. You may redefine it
+using:
+
+\begin{verbatim}
+\renewcommand{\qedsymbol}{$\color{\accentcolor}\square$}
+\end{verbatim}
+
+This definition ensures that the QED symbol visually matches the rest of the
+document's styled elements. You are free to replace the symbol with any other
+mathematical character or construct, but the default choice emphasizes
+consistency and clarity.
+
+\subsection{Cross-referencing}
+
+When \textsf{hyperref} is loaded, the package automatically loads
+\textsf{cleveref}, enabling intelligent and context-aware cross-referencing
+throughout the document. This integration ensures that references to theorems,
+definitions, proofs, and other environments are formatted consistently and
+include appropriate labels without additional user intervention.
+
+\subsection{Other Hacks}
+
+While \textsf{csthm} is designed to be simple and declarative, ideally allowing
+users to load the package, choose a style, and proceed without friction, the
+underlying \texttt{.sty} file does expose several internal customizations for
+advanced users. These are intentionally undocumented here, as the package is
+not meant to serve as a general-purpose customization toolkit. Its philosophy
+favors minimal user intervention over maximal flexibility.
+
+If you are inclined to experiment with deeper adjustments, such as modifying
+the structure of theorem environments, changing symbol behavior, or redefining
+internal macros, those hooks are available in the source, though no official
+interface is provided. In such cases, it may be more appropriate to use
+lower-level packages like \textsf{thmtools}, \textsf{ntheorem}, or
+\textsf{amsthm} directly, which offer finer-grained control and a broader API
+surface for theorem management.
+
+That said, tweaks like accent color and QED symbol adjustments are intended to
+cover the vast majority of user needs with minimal setup. Any further
+modification is left to the especially astute or curious reader.
+
+\section{Style Examples}
+
+For more thorough guidance and to witness the rendered output across diverse
+environments, users are advised to refer to the official documentation
+available within the \verb|\doc| directory of CTAN. The \textsf{csthm} package
+is meticulously designed to seamlessly integrate formal environments within
+\LaTeX\ documents, facilitating a smooth transition from conventional theorem
+packages. Its user-friendly interface retains familiarity while introducing
+enhanced stylistic control and semantic clarity.
+
+Below is an exemplar displaying the declaration of a \texttt{definition}
+environment, followed by a \texttt{theorem} environment that references the
+former using the \textsf{cleveref} package. This showcases the straightforward
+syntax and integrated cross-referencing capabilities:
+
+\begin{verbatim}
+\begin{definition}[Prime Number]\label{def:prime}
+    A prime number is a natural number greater than $1$ that has no positive divisors
+    other than 1 a nd itself.
+\end{definition}
+\begin{theorem}[Prime Number Theorem]\label{thm:prime-number}
+    If $p$ is a prime as defined in~\cref{def:prime}, then the distribution of primes
+    among the natural numbers follows an asymptotic density given by
+    \[
+        \pi(x) \sim \frac{x}{\log x} \ \text{as } x \to \infty,
+    \]
+    where $\pi(x)$ denotes the prime-counting function.
+\end{theorem}
+\begin{proof}
+    The proof of the Prime Number Theorem involves complex analysis and properties of 
+    the Riemann zeta function; see standard references for full details.
+\end{proof}
+\end{verbatim}
+
+Additional environments follow the same usage pattern. For instance, one may
+define lemmas, corollaries, remarks, or examples simply by invoking the
+corresponding environment with optional titles and labels:
+
+\begin{verbatim}
+\begin{lemma}[Euclid's Lemma]\label{lem:euclid}
+    If a prime divides the product of two integers, it must divide at least one of those
+    integers.
+\end{lemma}
+\begin{corollary}\label{cor:inf-primes}
+    There exist infinitely many primes.
+\end{corollary}
+\begin{remark}
+    This corollary follows immediately from Euclid's classical proof.
+\end{remark}
+\begin{example}
+    The number 2 is the smallest prime number.
+\end{example}
+\end{verbatim}
+
+This structured approach promotes clarity and rigor, ensuring that all formal
+statements are visually distinct and logically connected through precise
+labeling and referencing, thus adhering to the highest standards expected in
+academic and technical writing.
+
+\subsection{Visual Differences}
+
+The \textsf{csthm} package offers three distinctive visual styles, each
+carefully designed to address different presentation contexts and aesthetic
+preferences. These styles provide meaningful visual cues that help readers
+quickly identify the nature of formal content within a document.
+
+\begin{description}
+	\item[Fancy Style] This style incorporates colored left borders alongside subtle
+	      background shading and utilizes sans-serif fonts for headings. It is
+	      particularly suited for modern technical documents and presentations, where a
+	      dynamic and visually engaging layout can enhance comprehension and maintain
+	      reader interest over extended material.
+
+	\item[Normal Style] Prioritizing clarity and simplicity, the normal style applies
+	      symbolic prefixes paired with clean sans-serif fonts. It avoids the use of
+	      color, making it an excellent choice for documents intended for print or
+	      environments where color reproduction may be inconsistent. This style balances
+	      formality and readability without compromising structural clarity.
+
+	\item[Oldschool Style] Reflecting the typographic traditions of classical
+	      mathematical texts, the oldschool style uses boldface and small-caps
+	      formatting. This approach appeals to authors and readers who prefer a more
+	      conventional and time-tested visual presentation, aligning with formal
+	      publications and traditional academic standards.
+\end{description}
+
+\subsection{When to Use Each Style}
+
+Selecting an appropriate style depends on the intended medium, audience, and
+desired visual impact. Understanding the contexts where each style excels
+allows authors to present their work most effectively.
+
+\begin{itemize}[label={--}]
+	\item \textbf{Fancy:} Best suited for modern technical documents, online publications, and presentation slides. The enhanced color and framing elements aid in directing the reader's attention and emphasizing key formal components.
+	\item \textbf{Normal:} Ideal for standard academic papers, theses, or reports, especially when color printing is limited or unavailable. This style ensures that formal content remains visually distinct without relying on color cues.
+	\item \textbf{Oldschool:} Appropriate for formal mathematical treatises, classical journals, and orthodox publications. It upholds conventional typographic standards, providing a familiar and authoritative appearance.
+\end{itemize}
+
+\section{Implementation Notes}
+
+\subsection{Technical Details}
+
+The \textsf{csthm} package leverages the powerful and flexible
+\textsf{thmtools} package to implement all theorem-like environments, making
+extensive use of the \verb|\declaretheorem| command. This approach ensures that
+the environments are defined with precision, consistency, and full
+configurability, allowing for robust customization downstream. In particular,
+the \texttt{fancy} style introduces advanced framed environments which require
+the \textsf{mdframed} package operating on the \textsf{TikZ} backend; this
+dependency enables visually distinctive boxed environments with colored borders
+and subtle background shades. By default, the numbering scheme is configured to
+reset at section boundaries via the \texttt{numberwithin=section} option,
+reflecting common academic conventions and aiding navigation through
+hierarchical document structures. Additionally, the package automates the
+insertion of QED symbols at the end of proof-like environments, reducing the
+need for manual commands and enhancing consistency.
+
+\begin{itemize}[label={--}]
+	\item All theorem-like environments are meticulously implemented using
+	      \textsf{thmtools}' \verb|\declaretheorem| facility to guarantee extensibility
+	      and uniform behavior.
+	\item The \texttt{fancy} style depends critically on \textsf{mdframed} with the
+	      \textsf{TikZ} backend to render modern framed environments with aesthetic
+	      precision.
+	\item Numbering of environments defaults to a section-based scheme
+	      (\texttt{numberwithin=section}) to maintain logical document structure.
+	\item QED symbols are seamlessly inserted at the conclusion of proof environments,
+	      requiring no additional user intervention.
+\end{itemize}
+
+\subsection{Compatibility}
+
+Designed with broad applicability in mind, \textsf{csthm} ensures compatibility
+across a wide array of \LaTeX\ document classes commonly employed in academic
+and technical writing. It integrates smoothly with standard classes such as
+\texttt{article}, \texttt{book}, and \texttt{report}, which form the backbone
+of general-purpose \LaTeX\ documents. Furthermore, it supports AMS document
+classes including \texttt{amsart} and \texttt{amsbook}, which are standard
+choices for rigorous mathematical manuscripts. Although \textsf{csthm} strives
+to coexist peacefully with other theorem-related packages, users should be
+aware that conflicts may occur, especially if multiple packages attempt to
+redefine similar environments; such situations necessitate careful package
+loading order and, in some cases, manual conflict resolution.
+
+\begin{itemize}[label={--}]
+	\item Compatible with all major standard \LaTeX\ document classes: \texttt{article},
+	      \texttt{book}, and \texttt{report}.
+	\item Fully supports AMS classes such as \texttt{amsart} and \texttt{amsbook},
+	      frequently used in mathematical and theoretical computer science writing.
+	\item Potential conflicts with other theorem or styling packages may arise and must
+	      be resolved by adjusting package loading order or disabling overlapping
+	      features.
+\end{itemize}
+
+\section{Troubleshooting}
+
+\subsection{Common Issues}
+
+Despite efforts to streamline usage, users may encounter typical issues when
+deploying the \textsf{csthm} package. Foremost among these is the requirement
+that exactly one style option must be specified at package loading; failure to
+do so or specifying multiple conflicting styles results in errors that prevent
+proper compilation. Color-related problems often trace back to improper loading
+or configuration of the \textsf{xcolor} package, particularly if incompatible
+driver options are selected or omitted. The \texttt{fancy} style, relying on
+\textsf{mdframed} with the \textsf{TikZ} backend, will fail silently or
+generate errors if these dependencies are missing or misconfigured. Reference
+management is another common source of issues; to leverage \textsf{cleveref}
+effectively, the \textsf{hyperref} package must be loaded early in the
+preamble, before other packages that handle theorem environments or
+cross-referencing.
+
+\begin{description}
+	\item[No style specified] The package mandates that exactly one style option be
+	      passed; omitting this or providing multiple styles causes compilation failure.
+	\item[Color issues] Problems with color rendering typically indicate that
+	      \textsf{xcolor} is not loaded correctly, or incompatible driver options are in
+	      use.
+	\item[Frame problems] The \texttt{fancy} style depends on \textsf{mdframed} and
+	      \textsf{TikZ}; verify these are installed and properly loaded to avoid errors.
+	\item[Reference issues] For reliable cross-referencing, load \textsf{hyperref} before
+	      any other packages that interact with references or theorem environments,
+	      ensuring \textsf{cleveref} functions as intended.
+\end{description}
+
+\section{Version History}
+
+This section chronicles the progressive development of the \textsf{csthm}
+package, detailing significant updates, feature additions, and improvements
+that have shaped its current form.
+
+\begin{description}
+	\item[v1.0 (2024/01/01)] Initial release.
+	\item[v1.1 (2024/05/15)] Added support for \textsf{cleveref}.
+	\item[v1.2 (2024/08/31)] Released on CTAN.
+	\item[v1.3 (2025/01/16)] Minor updates:
+	      \begin{itemize}
+		      \item Added starred versions of all environments.
+		      \item Enhanced theorem styling.
+		      \item Added new environments.
+		      \item Improved customization options.
+	      \end{itemize}
+	\item[v2.1 (2025/06/30)] Major overhaul:
+	      \begin{itemize}
+		      \item Comprehensive documentation rewrite and expansion.
+		      \item Refined new style options with improved visual consistency.
+		      \item Enhanced testing and stability.
+		      \item Additional customization commands for advanced users.
+	      \end{itemize}
+\end{description}
+
+\section{License}
+
+This package is released under the terms of the \LaTeX\ Project Public License
+(LPPL), version 1.3c or later. This license ensures that the package remains
+free to use, modify, and distribute under clearly defined conditions that
+protect both authors and users. The full text of the license is available at
+the \LaTeX\ Project's official website:
+\href{http://www.latex-project.org/lppl.txt}{\LaTeX\ Project Public License}.
+
+\section{Contact and Support}
+
+For any issues, suggestions, or general feedback, users are encouraged to
+contact the package maintainer through various channels. Bug reports and
+feature requests can be submitted via the project's GitHub repository, where
+the package is actively maintained and updated. Direct communication through
+email is also fine for personalized support or inquiries (reply times may vary
+and may be longer if you encounter issues with my spam filter). The package is
+distributed on CTAN, providing easy access and version tracking for all users.
+
+\begin{description}
+	\item[Email] \url{agnidatta.org@gmail.com} , for direct correspondence and support.
+	\item[GitHub] \url{https://github.com/agnidatta/csthm} , to report issues or
+	      contribute.
+	\item[CTAN] \url{https://ctan.org/pkg/csthm} , official package distribution and
+	      documentation.
+\end{description}
+
+\end{document}
