@@ -346,9 +346,14 @@
         \typeout{csdirty: Attempting to load concrete math package}
         \ifLuaTeX
             \typeout{csdirty: Loading concrete math for LuaTeX}
-            \RequirePackage[T1]{fontenc}                     % Font encoding
+            \RequirePackage[T1]{fontenc}                         % Font encoding
             \AtEndPreamble{%
-                \RequirePackage{concmath-otf}                    % Concrete math for LuaTeX
+                \RequirePackage{fontspec}                        % Font specification
+                \RequirePackage{unicode-math}                    % Unicode math support
+                \RequirePackage[concrete]{fontsetup}             % Concrete math for XeTeX
+                \setsansfont{ysabeau}[%
+                    RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum}
+                ]%                                               % Sans-serif font
                 \let\mathbfcal\relax                             % Remove clash with amsfonts
                 \let\mathbfscr\relax                             % Remove clash with amsfonts
                 \RequirePackage[%                                % Custom math fonts
@@ -360,9 +365,14 @@
         \else
             \ifXeTeX
                 \typeout{csdirty: Loading concrete math for XeTeX}
-                \RequirePackage[T1]{fontenc}                     % Font encoding
+                \RequirePackage[T1]{fontenc}                         % Font encoding
                 \AtEndPreamble{%
-                    \RequirePackage{concmath-otf}                    % Concrete math for XeTeX
+                    \RequirePackage{fontspec}                        % Font specification
+                    \RequirePackage{unicode-math}                    % Unicode math support
+                    \RequirePackage[concrete]{fontsetup}             % Concrete math for XeTeX
+                    \setsansfont{ysabeau}[%
+                        RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum}
+                    ]%                                               % Sans-serif font
                     \let\mathbfcal\relax                             % Remove clash with amsfonts
                     \let\mathbfscr\relax                             % Remove clash with amsfonts
                     \RequirePackage[%                                % Custom math fonts
