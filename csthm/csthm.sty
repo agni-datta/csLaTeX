@@ -17,20 +17,33 @@
 % FEATURES:
 %   - Multiple theorem styles: 'fancy', 'normal', and 'oldschool', selectable via
 %     package options.
-%   - Extensive set of environments: theorem, assertion, assumption, axiom, claim,
-%     conclusion, conjecture, corollary, fact, folklore, hypothesis, lemma, postulate,
-%     property, proposition, application, construction, convention, definition,
-%     experiment, notation, problem, protocol, result, commentary, example,
-%     exercise, motivation, notation abuse, note, observation, question, remark,
-%     guideline, highlight, important, insight, key point, recall, summary,
-%     takeaway, tip, warning, and proof.
+%   - Extensive set of environments, each with numbered and unnumbered (starred) variants:
+%       * Theorem-like: theorem, assertion, assumption, axiom, claim, conclusion, conjecture,
+%         corollary, fact, folklore, hypothesis, lemma, postulate, property, proposition
+%       * Definition-like: application, construction, convention, definition, experiment,
+%         notation, open problem, problem, protocol, result
+%       * Remark-like: commentary, contribution, example, exercise, motivation, notation abuse,
+%         note, observation, question, remark
+%       * Highlight-like: guideline, highlight, important, insight, key point, recall, summary,
+%         takeaway, tip, warning
+%       * Other: proof, case
+%   - List of all provided environments:
+%       theorem, assertion, assumption, axiom, claim, conclusion, conjecture, corollary, fact,
+%       folklore, hypothesis, lemma, postulate, property, proposition, application, construction,
+%       convention, definition, experiment, notation, openproblem, problem, protocol, result,
+%       commentary, contribution, example, exercise, motivation, notationabuse, note, observation,
+%       question, remark, guideline, highlight, important, insight, keypoint, recall, summary,
+%       takeaway, tip, warning, proof, case
 %   - Numbered and unnumbered (starred) versions for all environments.
 %   - Customizable accent color and font settings.
 %   - Modern framed environments using mdframed and TikZ for the 'fancy' style.
 %   - Intelligent cross-referencing with cleveref and hyperref integration.
 %   - Consistent symbol and font usage across environments.
 %   - Dedicated 'case' environment for structured case analysis.
-%   - Enhanced cleveref support with comprehensive environment naming.
+%   - Enhanced cleveref support with comprehensive environment naming, including
+%     singular and plural forms for all environments.
+%   - Automatic loading of cleveref if hyperref is present, with a warning if
+%     hyperref is not loaded before csthm.
 %
 % USAGE:
 %   \usepackage[<style>]{csthm}
@@ -68,16 +81,21 @@
 %   - Boolean flags control which style is activated.
 %   - All environments are defined via \declaretheorem from thmtools.
 %   - Styles are set up via \declaretheoremstyle.
-%   - Cleveref names are set for all environments for consistent referencing.
+%   - Cleveref names are set for all environments for consistent referencing,
+%     including both singular and plural forms.
 %   - The package issues warnings for unrecognized options.
-%   - Comprehensive cleveref integration with proper singular/plural forms.
+%   - Comprehensive cleveref integration with proper singular/plural forms for
+%     all environments, including highlight-like, remark-like, and definition-like.
+%   - If hyperref is not loaded before csthm, a warning is issued and cleveref
+%     is loaded with a fallback.
 %
 % NOTES:
 %   - Only one style should be active at a time.
 %   - If no style is selected, the package will output a message but not define environments.
 %   - The proof environment is redefined for consistency with the selected style.
 %   - The package is intended for use in computer science and related technical documents.
-%   - All environments support intelligent cross-referencing via cleveref.
+%   - All environments support intelligent cross-referencing via cleveref, with
+%     correct singular and plural names for each environment.
 %
 % SEE ALSO:
 %   - thmtools, amsthm, mdframed, cleveref, xcolor documentation for further customization.
@@ -169,7 +187,7 @@
 \newcommand{\hltsymb}{\ensuremath{\color{\accentcolor}\scriptstyle\square}}%
 
 % --- QED Symbol ---
-\renewcommand{\qedsymbol}{$\scriptstyle\color{\accentcolor}\blacksquare$}%
+\renewcommand{\qedsymbol}{\ensuremath{\color{\accentcolor}\square}}%
 
 % --- Package Reference ---
 \newcommand{\csthmpkg}{\textsf{csthm}}%
@@ -231,6 +249,7 @@
 	\declaretheorem[style=defstyle,name=Definition]{definition}%
 	\declaretheorem[style=defstyle,name=Experiment]{experiment}%
 	\declaretheorem[style=defstyle,name=Notation]{notation}%
+	\declaretheorem[style=defstyle,name=Open Problem]{openproblem}%
 	\declaretheorem[style=defstyle,name=Problem]{problem}%
 	\declaretheorem[style=defstyle,name=Protocol]{protocol}%
 	\declaretheorem[style=defstyle,name=Result]{result}%
@@ -242,12 +261,14 @@
 	\declaretheorem[style=defstyle,unnumbered,name=Definition]{definition*}%
 	\declaretheorem[style=defstyle,unnumbered,name=Experiment]{experiment*}%
 	\declaretheorem[style=defstyle,unnumbered,name=Notation]{notation*}%
+	\declaretheorem[style=defstyle,unnumbered,name=Open Problem]{openproblem*}%
 	\declaretheorem[style=defstyle,unnumbered,name=Problem]{problem*}%
 	\declaretheorem[style=defstyle,unnumbered,name=Protocol]{protocol*}%
 	\declaretheorem[style=defstyle,unnumbered,name=Result]{result*}%
 
 	% Remark-like Environments
 	\declaretheorem[style=remarkstyle,name=Commentary]{commentary}%
+	\declaretheorem[style=remarkstyle,name=Contribution]{contribution}%
 	\declaretheorem[style=remarkstyle,name=Example]{example}%
 	\declaretheorem[style=remarkstyle,name=Exercise]{exercise}%
 	\declaretheorem[style=remarkstyle,name=Motivation]{motivation}%
@@ -259,6 +280,7 @@
 
 	% Unnumbered Remark-like Environments
 	\declaretheorem[style=remarkstyle,unnumbered,name=Commentary]{commentary*}%
+	\declaretheorem[style=remarkstyle,unnumbered,name=Contribution]{contribution*}%
 	\declaretheorem[style=remarkstyle,unnumbered,name=Example]{example*}%
 	\declaretheorem[style=remarkstyle,unnumbered,name=Exercise]{exercise*}%
 	\declaretheorem[style=remarkstyle,unnumbered,name=Motivation]{motivation*}%
@@ -305,7 +327,7 @@
 	% Common settings
 	\renewcommand{\commonthmfont}{\normalfont}%
 	\renewcommand{\commonthmsymb}{\ensuremath{\color{\accentcolor}\lrcorner}}%
-	\renewcommand{\qedsymbol}{\ensuremath{\color{\accentcolor}\scriptstyle\blacksquare}}%
+	\renewcommand{\qedsymbol}{\ensuremath{\color{\accentcolor}\square}}%
 	% Heading fonts
 	\renewcommand{\thmheadfont}{\sffamily}%
 	\renewcommand{\defnheadfont}{\sffamily}%
@@ -322,7 +344,7 @@
 	\renewcommand{\remarksymb}{}%
 	\renewcommand{\hltsymb}{}%
 	% Color definitions
-	\newcommand{\thmcolor}{DeepSkyBlue4}%
+	\newcommand{\thmcolor}{SeaGreen3}%
 	\newcommand{\defncolor}{RoyalBlue4}%
 	\newcommand{\remarkcolor}{Aquamarine4}%
 	\newcommand{\hltcolor}{DeepPink4}%
@@ -378,7 +400,7 @@
 	% Common settings
 	\renewcommand{\commonthmfont}{\sffamily}%
 	\renewcommand{\commonthmsymb}{\ensuremath{\color{\accentcolor}\lrcorner}}%
-	\renewcommand{\qedsymbol}{\ensuremath{\color{\accentcolor}\scriptstyle\blacksquare}}%
+	\renewcommand{\qedsymbol}{\ensuremath{\color{\accentcolor}\square}}%
 	% Heading fonts
 	\renewcommand{\thmheadfont}{\sffamily}%
 	\renewcommand{\defnheadfont}{\sffamily}%
@@ -424,7 +446,7 @@
 	]{hltstyle}%
 	% Proof style
 	\declaretheoremstyle[%
-		headfont=\commonthmfont, notefont=\commonthmfont, bodyfont=\normalfont,%
+		headfont=\scshape, notefont=\commonthmfont, bodyfont=\normalfont,%
 		postheadspace=5pt, numbered=no, headpunct={.}, qed=\qedsymbol%
 	]{proofstyle}%
 	\basicenv%
@@ -436,8 +458,8 @@
 \newcommand*{\oldschoolthm}{%
 	% Common settings
 	\renewcommand{\commonthmfont}{\normalfont}%
-	\renewcommand{\commonthmsymb}{\ensuremath{\color{\accentcolor}\lrcorner}}%
-	\renewcommand{\qedsymbol}{\ensuremath{\color{\accentcolor}\scriptstyle\blacksquare}}%
+	\renewcommand{\commonthmsymb}{}%
+	\renewcommand{\qedsymbol}{\ensuremath{\color{\accentcolor}\square}}%
 	% Heading fonts (old-school)
 	\renewcommand{\thmheadfont}{\bfseries}%
 	\renewcommand{\defnheadfont}{\bfseries}%
@@ -458,28 +480,28 @@
 		spaceabove=\topsep, spacebelow=\topsep,%
 		headfont=\thmheadfont\thmsymb, notefont=\thmheadfont,%
 		bodyfont=\thmfont, postheadspace=5pt, numberwithin=section,%
-		headpunct={.}%
+		qed=\commonthmsymb, headpunct={.}%
 	]{thmstyle}%
 	% Definition style
 	\declaretheoremstyle[%
 		spaceabove=\topsep, spacebelow=\topsep,%
 		headfont=\defnheadfont\defnsymb, notefont=\defnheadfont,%
 		bodyfont=\defnfont, postheadspace=5pt, numberwithin=section,%
-		headpunct={.}%
+		qed=\commonthmsymb, headpunct={.}%
 	]{defstyle}%
 	% Remark style
 	\declaretheoremstyle[%
 		spaceabove=\topsep, spacebelow=\topsep,%
 		headfont=\remarkheadfont\remarksymb, notefont=\remarkheadfont,%
 		bodyfont=\remarkfont, postheadspace=5pt, numberwithin=section,%
-		headpunct={.}%
+		qed=\commonthmsymb, headpunct={.}%
 	]{remarkstyle}%
 	% Highlight style
 	\declaretheoremstyle[%
 		spaceabove=\topsep, spacebelow=\topsep,%
 		headfont=\hltheadfont\hltsymb, notefont=\hltheadfont,%
 		bodyfont=\hltfont, postheadspace=5pt, numberwithin=section,%
-		headpunct={.}%
+		qed=\commonthmsymb, headpunct={.}%
 	]{hltstyle}%
 	% Proof style (italicized)
 	\declaretheoremstyle[%
@@ -494,7 +516,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \AtBeginDocument{%
 	\@ifpackageloaded{hyperref}{%
-		\RequirePackage[capitalize,noabbrev]{cleveref}%
+		\RequirePackage[capitalize,nameinlink,noabbrev]{cleveref}%
 		% --- Cleveref Name Declarations for All Environments ---
 		% Theorem-like
 		\crefname{theorem}{theorem}{theorems}
@@ -540,6 +562,8 @@
 		\Crefname{experiment}{Experiment}{Experiments}
 		\crefname{notation}{notation}{notations}
 		\Crefname{notation}{Notation}{Notations}
+		\crefname{openproblem}{open problem}{open problems}
+		\Crefname{openproblem}{Open Problem}{Open Problems}
 		\crefname{problem}{problem}{problems}
 		\Crefname{problem}{Problem}{Problems}
 		\crefname{protocol}{protocol}{protocols}
@@ -549,6 +573,8 @@
 		% Remark-like
 		\crefname{commentary}{commentary}{commentaries}
 		\Crefname{commentary}{Commentary}{Commentaries}
+		\crefname{contribution}{contribution}{contributions}
+		\Crefname{contribution}{Contribution}{Contributions}
 		\crefname{example}{example}{examples}
 		\Crefname{example}{Example}{Examples}
 		\crefname{exercise}{exercise}{exercises}
@@ -586,17 +612,14 @@
 		\Crefname{tip}{Tip}{Tips}
 		\crefname{warning}{warning}{warnings}
 		\Crefname{warning}{Warning}{Warnings}
-		% Proof
-		\crefname{proof}{proof}{proofs}
-		\Crefname{proof}{Proof}{Proofs}
-		% --- Capitalise References ---				
-		\renewcommand{\cref}[1]{\Cref{#1}}%
 		% --- Email Link Formatting ---		
 		\providecommand{\email}[1]{\href{mailto:#1}{\texttt{#1}}}%
 	}{%
 		\PackageWarning{csthm}{%
-			The 'cleveref' option was set, but 'hyperref' is not loaded.%
-			Skipping 'cleveref' loading.%
+			Look, we're going to try loading 'cleveref' now, but you didn't load 'hyperref' first.
+			Seriously, just load 'hyperref' before 'csthm' like any sane person would.
+			Otherwise, don't come complaining when your references look weird.
+			You're on your own, buddy.
 		}%
 	}%
 }%
