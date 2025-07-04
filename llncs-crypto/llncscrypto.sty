@@ -117,6 +117,7 @@
 \RequirePackage{iftex}                                       % Detect engine: pdfTeX, XeTeX, LuaTeX
 \RequirePackage{xkeyval}                                     % Key-value parsing
 \RequirePackage{xparse}                                      % Extended command/environment definitions
+\RequirePackage{xpatch}                                      % For patching existing macros
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PDF and Document Structure Control
@@ -164,17 +165,20 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage{nameref}                                     % Name-based referencing
 \RequirePackage[%
-    frenchlinks=true,                                        % Use small caps for links
-    unicode=true,                                            % Support for Unicode
     bookmarksnumbered=true,                                  % Number PDF bookmarks
     breaklinks=true,                                         % Allow links to break over lines
-    colorlinks=true,                                         % Use colored links
-    linkcolor=RoyalBlue2,                                    % Color for internal links
     citecolor=SlateBlue2,                                    % Color for citations
-    urlcolor=SpringGreen4,                                   % Color for URLs
-    pdfusetitle,                                             % Use document title as PDF title
+    colorlinks=true,                                         % Use colored links
+    frenchlinks=true,                                        % Use small caps for links
+    linkcolor=RoyalBlue2,                                    % Color for internal links
+    pagebackref,                                             % Back-references from bibliography
+    pdfencoding=auto,                                        % Automatic encoding detection
     pdfpagelabels=true,                                      % Correct page labels in PDF
-    pagebackref                                              % Back-references from bibliography
+    pdfpagelayout=SinglePage,                                % Single page view
+    pdfstartview=FitH,                                       % Fit the page to the window
+    pdfusetitle,                                             % Use document title as PDF title
+    unicode=true,                                            % Support for Unicode
+    urlcolor=SpringGreen4                                    % Color for URLs
 ]{hyperref}
 \RequirePackage{xr}                                          % Cross-document references
 % Customize backrefs
@@ -780,28 +784,28 @@
     \providecommand{\sethighlightcolor}[1]{\renewcommand{\highlightcolor}{##1}}
 
     % Text and math highlighting
-    \providecommand{\textem}[1]{\textcolor{\highlightcolor}{#1}}
-    \providecommand{\emphtext}[1]{\textcolor{\highlightcolor}{#1}}
-    \providecommand{\emphmath}[1]{\textcolor{\highlightcolor}{\mathrm{#1}}}
+    \providecommand{\textem}[1]{\textcolor{\highlightcolor}{##1}}
+    \providecommand{\emphtext}[1]{\textcolor{\highlightcolor}{##1}}
+    \providecommand{\emphmath}[1]{\textcolor{\highlightcolor}{\mathrm{##1}}}
 
     % Code highlighting
-    \providecommand{\code}[1]{\texttt{#1}}
+    \providecommand{\code}[1]{\texttt{##1}}
 
     % Math small caps and bold italic
-    \providecommand{\mathsc}[1]{\textnormal{\textsc{#1}}}
-    \providecommand{\mathbi}[1]{\textnormal{\textbf{\textit{#1}}}}
+    \providecommand{\mathsc}[1]{\textnormal{\textsc{##1}}}
+    \providecommand{\mathbi}[1]{\textnormal{\textbf{\textit{##1}}}}
 
     % Inline math shortcut
-    \providecommand{\inmath}[1]{\ensuremath{#1}}
+    \providecommand{\inmath}[1]{\ensuremath{##1}}
 
     % Hyphen in math
     \mathchardef\mathhyphen="2D
 
     % Put in quotes
-    \providecommand{\putInQuotes}[1]{``#1''}
+    \providecommand{\putInQuotes}[1]{``##1''}
 
     % Strike-through text
-    \providecommand{\strike}[1]{\bgroup\ULdepth=-.55ex\ULset\strike{#1}\egroup}
+    \providecommand{\strike}[1]{\bgroup\ULdepth=-.55ex\ULset\strike{##1}\egroup}
 
     % Highlight missing or problematic text
     \newcounter{missingctr}
@@ -812,9 +816,9 @@
         \refstepcounter{missingctr}%
         \label{missing:\themissingctr}%
         \gappto\missinglist{%
-            \noindent\textcolor{Brown4}{\ensuremath{\star}~\themissingctr~(\textsf{Missing at p.~\pageref{missing:\themissingctr}}):~#1}\par\medskip
+            \noindent\textcolor{Brown4}{\ensuremath{\star}~\themissingctr~(\textsf{Missing at p.~\pageref{missing:\themissingctr}}):~##1}\par\medskip
         }%
-        \textcolor{Brown4}{#1}%
+        \textcolor{Brown4}{##1}%
     }
 
     % Print all collected missing items with page references
@@ -871,8 +875,8 @@
                     backgroundcolor=white,
                     linecolor=black
                 ]%
-                \IfNoValueF{#1}{%
-                    \noindent\textnormal{\small\textbf{#1}}\par\smallskip
+                \IfNoValueF{##1}{%
+                    \noindent\textnormal{\small\textbf{##1}}\par\smallskip
                     \noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}%
                 }%
                 \begin{points}%
@@ -900,8 +904,8 @@
                     backgroundcolor=white,
                     linecolor=black
                 ]%
-                \IfNoValueF{#1}{%
-                    \noindent\textnormal{\small\textbf{#1}}\par\smallskip
+                \IfNoValueF{##1}{%
+                    \noindent\textnormal{\small\textbf{##1}}\par\smallskip
                     \noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}%
                 }%
                 \begin{codelist}%
@@ -928,8 +932,8 @@
                     backgroundcolor=white,
                     linecolor=black
                 ]%
-                \IfNoValueF{#1}{%
-                    \noindent\textnormal{\small\textbf{#1}}\par\smallskip
+                \IfNoValueF{##1}{%
+                    \noindent\textnormal{\small\textbf{##1}}\par\smallskip
                     \noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}%
                 }%
                 }
