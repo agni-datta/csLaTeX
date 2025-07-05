@@ -12,7 +12,7 @@
 %
 % USAGE:
 %   \usepackage[options]{csdirty}
-%   % Example: \usepackage[full,comments,codeblocks]{csdirty}
+%   % Example: \usepackage[full,comments]{csdirty}
 %
 % AVAILABLE OPTIONS (all options have both positive and negative forms):
 %
@@ -20,12 +20,9 @@
 %   fullversion      - Load complete document version with all content
 %                      (author info, affiliations, acknowledgments, appendices, etc.)
 %                      Default if no version option is specified.
-%   nofullversion    - Do not force full version (use shortversion or default).
 %   shortversion     - Load abbreviated version for conferences (excludes appendices, 
 %                      detailed proofs, and supplementary content).
-%   noshortversion   - Do not force short version (use fullversion or default).
 %   preprint         - Alias for fullversion (for arXiv/preprints).
-%   nopreprint       - Do not force preprint mode.
 %
 % COMMENTS AND ANNOTATIONS OPTIONS:
 %   comments         - Enable inline comments and annotations (loads comment package).
@@ -33,8 +30,6 @@
 %
 % MATH AND TECHNICAL OPTIONS:
 %   concmath         - Enable Concmath package for advanced math typesetting.
-%   noconcmath       - Do not load Concmath package.
-%   math             - Enable loading of math-related packages (default).
 %   nomath           - Disable loading of math-related packages (basic LaTeX math remains).
 %
 % FEATURE LOADING OPTIONS:
@@ -53,23 +48,18 @@
 %   noepigraph       - Do not load epigraph enhancements.
 %   fullpage         - Advanced full-page layout and formatting options.
 %   nofullpage       - Do not load full-page layout options.
-%   nicespacing      - Enhanced typography and spacing (microtype, setspace).
-%   badspacing       - Do not load enhanced spacing/typography.
-%   codeblocks       - Load advanced code and pseudocode environments (minted, listings, algorithm2e).
-%   nocodeblocks     - Do not load code/pseudocode environments.
-%   tabularray       - Load advanced table package for complex tables and multi-page support.
-%   notabularray     - Do not load advanced table package.
+%   nicespacing      - Enable enhanced line spacing (1.15 stretch factor).
+%   badspacing       - Use standard line spacing (1.0 stretch factor, default).
 %   full             - Load all available features and packages (recommended for full academic documents).
-%   nofull           - Do not force loading of all features.
 %   usefulcommands   - Load a suite of handy macros for cryptography, math, and general writing.
 %   nousefulcommands - Do not load the handy macro suite.
+%   oldsection       - Use old section symbol formatting (with section symbols).
 %
 % ENHANCED FEATURES:
 %   - Advanced Graphics: PGFPlots integration for data visualization and function plotting (compatibility mode 1.18).
 %   - Colored Content Boxes: tcolorbox integration for styled content boxes (customizable colors, borders, themes).
 %   - Framed Environments: mdframed for theorem and content boxes with TikZ-based rendering.
 %   - Advanced Tables: tabularray for complex table types, styling, multi-page support, and line breaks.
-%   - Code & Algorithms: codeblocks option loads minted, listings, and algorithm2e for code and pseudocode.
 %   - Comprehensive TikZ: Extensive library support (3D plotting, commutative diagrams, automata, circuits, decorations, positioning).
 %   - Full-Page Layout: Advanced layout for professional document presentation.
 %   - Enhanced Typography: Improved spacing, microtypography, and readability.
@@ -82,11 +72,9 @@
 %   \usepackage[tikz,crypto]{csdirty}                      % With TikZ and crypto
 %   \usepackage[theorems,orcidlink]{csdirty}               % Theorem formatting and ORCID
 %   \usepackage[epigraph,fullpage]{csdirty}                % Epigraphs and full-page layout
-%   \usepackage[nicespacing]{csdirty}                      % Enhanced spacing and typography
-%   \usepackage[codeblocks]{csdirty}                       % Advanced code and pseudocode environments
-%   \usepackage[tabularray]{csdirty}                       % Advanced tables
-%   \usepackage[full,codeblocks,tabularray]{csdirty}       % All features, code, and advanced tables
-%   \usepackage[notikz,nocodeblocks]{csdirty}              % Exclude TikZ and code environments
+%   \usepackage[nicespacing]{csdirty}                      % Enhanced line spacing
+%   \usepackage[full]{csdirty}                             % All features
+%   \usepackage[notikz]{csdirty}                           % Exclude TikZ
 %   \usepackage[noappendix,noepigraph]{csdirty}            % Exclude appendix and epigraph features
 %
 % CODE USAGE EXAMPLES:
@@ -100,13 +88,7 @@
 %   This is a wirebox for highlighting content.
 %   \end{wirebox}
 %
-%   % Use a code block (if codeblocks option enabled)
-%   \begin{minted}{python}
-%   def hello():
-%       print("Hello, world!")
-%   \end{minted}
-%
-%   % Use advanced table (if tabularray option enabled)
+%   % Use advanced table (tabularray is always loaded)
 %   \begin{tblr}{
 %     colspec = {Q[l]Q[c]Q[r]},
 %     row{1} = {font=\bfseries}
@@ -120,6 +102,9 @@
 %   - amsmath, amssymb (mathematical notation)
 %   - geometry (page layout)
 %   - hyperref (hyperlinks and references)
+%   - tabularray (advanced tables)
+%   - setspace (line spacing control)
+%   - microtype (enhanced typography)
 %
 % Optional dependencies (loaded based on options):
 %   - tikz, tikz-cd, tikz-3dplot (tikz option)
@@ -127,15 +112,12 @@
 %   - tcolorbox (colored content boxes)
 %   - mdframed (framed environments)
 %   - comment (comments option)
-%   - minted, listings, algorithm2e (codeblocks option)
-%   - tabularray (tabularray option)
 %   - cryptography packages (crypto option)
 %   - csthm (theorems option)
 %   - orcidlink (orcidlink option)
 %   - appendix (appendix option)
 %   - epigraph (epigraph option)
 %   - layout packages (fullpage option)
-%   - microtype, setspace (nicespacing option)
 %
 % COMPATIBILITY:
 %   - Compatible with modern LaTeX distributions (TeX Live 2022+, MiKTeX 23+).
@@ -150,8 +132,8 @@
 %   - Enhanced spacing may affect document layout and require fine-tuning.
 %   - Some options may increase compilation time and memory usage.
 %
-% VERSION: 1.7
-% DATE: 2025/07/01
+% VERSION: 1.6
+% DATE: 2025/06/26
 % AUTHOR: Agni Datta
 % LICENSE: LaTeX Project Public License 1.3c
 % CONTACT: For issues and feature requests, please email me at agnidatta.org@gmail.com
@@ -255,9 +237,7 @@
         \typeout{csdirty: nice! XeTeX engine detected (you're doing it right)}
     \else
         \PackageWarning{csdirty}{%
-            oops! pdfTeX engine detected.
-            concrete math option is gonna break on you.
-            maybe try LuaTeX or XeTeX instead? they handle Unicode way better :(
+            pdfTeX engine detected. Concrete math option requires LuaTeX or XeTeX for full Unicode support.
         }%
     \fi
 \fi
@@ -309,13 +289,10 @@
     \typeout{csdirty: Loading default page layout}
 \fi
 
+\RequirePackage{setspace}
 \ifcsdirty@LoadNiceSpacing
-    \RequirePackage{setspace}                                % Line spacing control
-    \typeout{csdirty: Loading nice spacing}
     \setstretch{1.15}
 \else
-    \RequirePackage{setspace}                                % Line spacing control
-    \typeout{csdirty: Loading default spacing}
     \setstretch{1.0}
 \fi
 
