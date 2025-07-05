@@ -125,7 +125,7 @@
 \DeclareOption{oldschool}{\setbool{oldschool}{true}}
 
 % Handle Unrecognized Options
-\DeclareOption*{\PackageWarning{csbook}{Unrecognized option '\CurrentOption'}}
+\DeclareOption*{\PackageWarning{csthm}{Unrecognized option '\CurrentOption'}}
 
 % Process Options
 \ProcessOptions\relax
@@ -134,11 +134,17 @@
 % Package Definitions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\@ifpackageloaded{amsmath}{}{\RequirePackage{amsmath}}       	% Advanced math typesetting
-\@ifpackageloaded{amssymb}{}{\RequirePackage{amssymb}}        	% Additional symbols
-\@ifpackageloaded{amsthm}{}{\RequirePackage{amsthm}}           	% Theorem environments
-\@ifpackageloaded{sansmath}{}{\RequirePackage{sansmath}}       	% Sans-serif math font
+% Core LaTeX packages
+\@ifpackageloaded{etoolbox}{}{\RequirePackage{etoolbox}}        % Boolean operations
+\@ifpackageloaded{amsmath}{}{\RequirePackage{amsmath}}          % Advanced math typesetting
+\@ifpackageloaded{amssymb}{}{\RequirePackage{amssymb}}          % Additional symbols
+\@ifpackageloaded{amsthm}{}{\RequirePackage{amsthm}}            % Theorem environments
+
+% Font and formatting packages
+\@ifpackageloaded{sansmath}{}{\RequirePackage{sansmath}}        % Sans-serif math font
 \@ifpackageloaded{enumitem}{}{\RequirePackage{enumitem}}        % Customizable list formatting
+
+% Theorem and styling packages
 \@ifpackageloaded{thmtools}{}{\RequirePackage{thmtools}}        % Theorem customization tools
 \@ifpackageloaded{mdframed}{%
 	\PassOptionsToPackage{skipabove=10pt,skipbelow=10pt,ntheorem,framemethod=Tikz}{mdframed}%
@@ -150,11 +156,9 @@
 		framemethod=Tikz           % TikZ frame styling
 	]{mdframed}%
 }
-\@ifpackageloaded{xcolor}{%
-	\PassOptionsToPackage{x11names,dvipsnames,svgnames}{xcolor}%
-}{%
-	\RequirePackage[x11names,dvipsnames,svgnames]{xcolor}%
-}
+
+% Color package
+\RequirePackage[x11names,dvipsnames,svgnames]{xcolor}           % Colors
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Color and Font Definitions for the csthm package
@@ -344,8 +348,8 @@
 	\renewcommand{\remarksymb}{}%
 	\renewcommand{\hltsymb}{}%
 	% Color definitions
-	\newcommand{\thmcolor}{SeaGreen3}%
-	\newcommand{\defncolor}{RoyalBlue4}%
+	\newcommand{\thmcolor}{SeaGreen4}%
+	\newcommand{\defncolor}{RoyalBlue2}%
 	\newcommand{\remarkcolor}{Aquamarine4}%
 	\newcommand{\hltcolor}{DeepPink4}%
 	% Theorem style (with mdframed)
