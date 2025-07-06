@@ -1,3 +1,11 @@
+---
+title: "llncscrypto: Enhanced LaTeX Style Package for LNCS + Cryptography"
+linter-yaml-title-alias: "llncscrypto: Enhanced LaTeX Style Package for LNCS + Cryptography"
+date created: Saturday, July 5th 2025, 00:25:17
+date modified: Sunday, July 6th 2025, 01:42:10
+aliases: "llncscrypto: Enhanced LaTeX Style Package for LNCS + Cryptography"
+---
+
 # llncscrypto: Enhanced LaTeX Style Package for LNCS + Cryptography
 
 > **llncscrypto** extends the LNCS (Lecture Notes in Computer Science) document class with advanced features for cryptography and theoretical computer science papers.

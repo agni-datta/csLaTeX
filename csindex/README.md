@@ -1,3 +1,11 @@
+---
+title: "csindex.ist: Custom MakeIndex Style for LaTeX"
+linter-yaml-title-alias: "csindex.ist: Custom MakeIndex Style for LaTeX"
+date created: Saturday, July 5th 2025, 00:31:42
+date modified: Sunday, July 6th 2025, 01:42:10
+aliases: "csindex.ist: Custom MakeIndex Style for LaTeX"
+---
+
 # csindex.ist: Custom MakeIndex Style for LaTeX
 
 **csindex.ist** is a custom style file for MakeIndex, designed to produce beautiful, modern indexes for LaTeX documents. It provides colored headings, dotfill leaders, and improved formatting for symbols, numbers, and letter groups.
