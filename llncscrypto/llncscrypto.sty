@@ -1,11 +1,13 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% llncscrypto.sty – Enhanced LaTeX Style Package for LNCS + Cryptography
-%% 
+%%
+%% COMPREHENSIVE DOCUMENTATION (v1.2.1, 2025/06/26)
+%% ---------------------------------------------------------------------------------------------------------------
 %% DESCRIPTION:
-%% A comprehensive LaTeX style package that extends the LNCS (Lecture Notes in Computer Science)
-%% document class with advanced features for cryptography and theoretical computer science papers.
-%% This package provides enhanced theorem environments, TikZ graphics support, improved captions,
-%% and specialized tools for cryptographic notation and diagrams.
+%%   llncscrypto is a feature-rich LaTeX style package that extends the LNCS (Lecture Notes in Computer Science)
+%%   document class with advanced tools for cryptography, theoretical computer science, and mathematical writing.
+%%   It is designed for research papers, preprints, and proceedings, providing modern typesetting, robust theorem
+%%   environments, cryptography-specific macros, and seamless integration with TikZ, cleveref, and more.
 %%
 %% AUTHORS:
 %%   Matteo Campanelli (matteo.campanelli@gmail.com)
@@ -13,68 +15,175 @@
 %%
 %% VERSION: 1.2.1
 %% DATE: 2025/06/26
-%% LICENSE: LaTeX Project Public License v1.3c
+%% LICENSE: MIT License
 %%
-%% FEATURES:
-%%   • Enhanced theorem environments with LLNCS-compliant styling
-%%   • Comprehensive TikZ graphics library support
-%%   • Improved caption formatting and positioning
-%%   • Cryptography-specific macros and notation
-%%   • Advanced table and figure handling
-%%   • Smart cross-referencing with cleveref
-%%   • Appendix management tools
+%% ---------------------------------------------------------------------------------------------------------------
+%% KEY FEATURES:
 %%
-%% USAGE:
+%% 1. **Theorem Environments**
+%%    - Enhanced, LLNCS-compliant theorem, lemma, corollary, definition, and remark environments.
+%%    - Many additional environments: assertion, assumption, axiom, claim, conclusion, conjecture, fact, hypothesis,
+%%      postulate, property, proposition, application, construction, convention, experiment, notation, problem, protocol,
+%%      result, commentary, example, exercise, motivation, notation abuse, note, observation, question, guideline,
+%%      highlight, important, insight, keypoint, recall, summary, takeaway, tip, warning.
+%%    - All environments are cross-referenced and compatible with cleveref.
+%%    - Custom proof and claimproof environments, with optional claim counters.
+%%    - Highlight environments for guidelines, tips, warnings, etc.
+%%
+%% 2. **Cryptography-Specific Macros**
+%%    - Loads tcscrypto.sty (if present) for cryptographic notation, protocols, and diagrams.
+%%    - ORCID support for author identification.
+%%    - Protocol box environments for clear presentation of cryptographic protocols.
+%%    - Wirebox and codelistbox for protocol steps and code listings.
+%%    - Double-struck and sans-serif Pi symbols, and other math/crypto notations.
+%%
+%% 3. **TikZ and Graphics**
+%%    - Optionally loads TikZ, pgfplots, tikz-cd, tikz-3dplot, and a comprehensive set of TikZ libraries.
+%%    - Enhanced support for commutative diagrams, 3D plots, and cryptographic figures.
+%%    - tcolorbox and mdframed for custom boxes and framed environments.
+%%
+%% 4. **Captions and Figures**
+%%    - Enhanced caption formatting (optional, via [captions] option).
+%%    - Improved table and figure handling: booktabs, colortbl, subcaption, tabularx, tabularray, longtable, threeparttable, etc.
+%%    - Float placement control, landscape pages, and advanced table/figure environments.
+%%
+%% 5. **Fonts and Math**
+%%    - Modular font selection: Libertinus, Concrete, or default (lmodern/amsfonts/amsmath).
+%%    - Math font and symbol enhancements: mathrsfs, mathtools, bm, siunitx, mathalpha, unicode-math, etc.
+%%    - Upright Greek letter support via upgreek, with robust fallbacks and macro redefinitions for upright/roman forms.
+%%
+%% 6. **Cross-Referencing and Hyperlinks**
+%%    - Smart cross-referencing with cleveref (automatic environment names, section symbols, etc.).
+%%    - Full integration with hyperref: colored links, PDF metadata, backrefs, and fullref macro.
+%%    - External document referencing (xr).
+%%
+%% 7. **Appendix Management**
+%%    - Optional appendix support (via [appendix] option) with page, title, header, and TOC integration.
+%%
+%% 8. **Lists and Custom Environments**
+%%    - Custom list types: points (itemize with dashes), codelist (enumerated code steps), checkbox (with \checked), deflist (definition list).
+%%    - Nested bar and simplebox environments for boxed content.
+%%    - Epigraph support with enhanced formatting.
+%%
+%% 9. **Document Structure and Utilities**
+%%    - Full-page and preprint layout options (fullpage, fancyhdr, setspace).
+%%    - Automatic loading of user settings and commands from settings.tex and commands.tex if present.
+%%    - Paragraph header macros (\parhead) with smart punctuation.
+%%    - Version control macros: \FullVersion, \ShortVersion, \usecomments, \newcomment.
+%%    - Acknowledgment environment with optional title.
+%%    - Missing content tracking and reporting (\missing, \printmissing).
+%%    - Miscellaneous: code highlighting, math small caps, strike-through, putInQuotes, hyphen in math, etc.
+%%
+%% ---------------------------------------------------------------------------------------------------------------
+%% PACKAGE OPTIONS (all optional, can be combined):
+%%   appendix    - Enable appendix management and formatting.
+%%   captions    - Enhanced caption formatting and positioning.
+%%   concrete    - Use Concrete font for preprints.
+%%   crypto      - Load cryptography-specific macros and notation (tcscrypto, orcidlink).
+%%   fullpage    - Enable full-page layout (for preprints).
+%%   libertinus  - Use Libertinus font for preprints.
+%%   nicodemus   - Enable Nicodemus cryptography option.
+%%   theorems    - Enable enhanced theorem environments with LLNCS styling.
+%%   tikz        - Load TikZ and all supported graphics libraries.
+%%
+%% ---------------------------------------------------------------------------------------------------------------
+%% DEPENDENCIES:
+%%   - llncs document class (not loaded by this package)
+%%   - xcolor, etoolbox, xparse, calc, comment, ifpdf, iftex, xkeyval, xpatch (core)
+%%   - TikZ, pgfplots, tikz-cd, tikz-3dplot (if tikz option enabled)
+%%   - tcscrypto, orcidlink (if crypto option enabled)
+%%   - mdframed, tcolorbox (for wirebox and framed environments)
+%%   - upgreek (for upright Greek letters)
+%%   - cleveref, hyperref, xr, caption, booktabs, colortbl, subcaption, tabularx, tabularray, longtable, threeparttable, etc.
+%%
+%% ---------------------------------------------------------------------------------------------------------------
+%% USAGE EXAMPLES:
 %%   \documentclass{llncs}
-%%   \usepackage[captions,tikz,appendix,crypto,theorems]{llncscrypto} % Load options
+%%   \usepackage[captions,tikz,appendix,crypto,theorems]{llncscrypto}
 %%   \begin{document}
 %%     % Your document content here
 %%   \end{document}
 %%
-%% PACKAGE OPTIONS:
-%%   captions  - Enable enhanced caption formatting and positioning
-%%               Default: false
-%%               Note: May not be allowed for final submission for all conferences
+%%   % Custom theorem:
+%%   \begin{theorem}[My Theorem]
+%%     ...
+%%   \end{theorem}
 %%
-%%   tikz      - Load comprehensive TikZ graphics libraries and tools
-%%               Default: false
-%%               Note: Allowed for final submission for all conferences
+%%   % Protocol box:
+%%   \begin{protocolbox}[My Protocol]
+%%     \item Step 1
+%%     \item Step 2
+%%   \end{protocolbox}
 %%
-%%   appendix  - Enable appendix management and formatting
-%%               Default: false
-%%               Note: May not be allowed for final submission for all conferences
+%%   % Wirebox:
+%%   \begin{wirebox}
+%%     ...
+%%   \end{wirebox}
 %%
-%%   crypto    - Load cryptography-specific macros and notation (requires tcscrypto, orcidlink packages)
-%%               Default: false
-%%               Note: Allowed for final submission for all conferences
+%%   % Paragraph header:
+%%   \parhead{Main Idea} This is the main idea.
 %%
-%%   theorems  - Enable enhanced theorem environments with LLNCS styling
-%%               Default: false
-%%               Note: May not be allowed for final submission for all conferences
+%%   % Missing content:
+%%   \missing{Proof to be added}
+%%   ...
+%%   \printmissing
 %%
-%% DEPENDENCIES:
-%%   • llncs document class
-%%   • xcolor, etoolbox, xparse (core utilities)
-%%   • tikz, pgfplots (if tikz option enabled)
-%%   • tcscrypto (if crypto option enabled)
+%% ---------------------------------------------------------------------------------------------------------------
+%% CAVEATS & NOTES:
+%%   - Do not remove or modify package calls unless necessary; use settings.tex/commands.tex for customizations.
+%%   - Theorems and environments are only enabled with theorems option.
+%%   - TikZ libraries are loaded only with tikz option.
+%%   - Crypto macros require tcscrypto.sty to be present.
+%%   - Upright Greek letters are provided with robust fallbacks if upgreek is not available.
+%%   - settings.tex and commands.tex are loaded automatically if present in the document directory.
+%%   - Some features (e.g., fullpage, captions) may not be allowed for final submission to all conferences.
+%%   - For best results, use with a modern TeX engine (pdfLaTeX, XeLaTeX, LuaLaTeX).
+%%   - Some hacks (e.g., claim counters, custom proof environments) may not be compatible with all packages.
+%%   - If you need to add or override anything, do so in settings.tex or commands.tex, not in this file.
 %%
-%% COMPATIBILITY:
-%%   • LaTeX2e
-%%   • pdfLaTeX, XeLaTeX, LuaLaTeX
-%%   • LNCS document class
+%% ---------------------------------------------------------------------------------------------------------------
+%% CUSTOM COMMANDS & ENVIRONMENTS (partial list):
+%%   \parhead{Title}         - Section-style paragraph header with smart punctuation.
+%%   \protocolbox[Title]     - Boxed protocol environment (with points list inside).
+%%   \codelistbox[Title]     - Boxed code list environment (with codelist inside).
+%%   \simplebox[Title]       - Simple boxed environment.
+%%   \wirebox                - tcolorbox-based wirebox for diagrams.
+%%   \checked                - For checked item in checkbox list.
+%%   \fullversion, \shortversion, \usecomments, \newcomment{name}{color}{cmd} - Versioning and comments.
+%%   \missing{desc}, \printmissing - Mark and print missing content.
+%%   \dsPi, \sansPi         - Double-struck and sans-serif Pi symbols.
+%%   \textem, \emphtext, \emphmath, \code, \mathsc, \mathbi, \inmath, \putInQuotes, \strike, etc.
+%%   \fullref{label}         - Combined autoref/nameref hyperlink.
+%%   \acknowledgment[Title]  - Acknowledgment environment.
+%%   \begin{nestedbar} ... \end{nestedbar} - Custom bar environment.
+%%   \begin{deflist} ... \end{deflist}     - Definition list.
+%%   \begin{checkbox} ... \end{checkbox}   - Checkbox list.
+%%   \begin{points} ... \end{points}       - Points list.
+%%   \begin{codelist} ... \end{codelist}   - Codelist.
+%%   \begin{epigraph}{quote}{author}        - Epigraph with formatting.
 %%
-%% NOTES:
-%%   • Do not remove or modify package calls unless absolutely necessary
-%%   • All theorem environments are automatically numbered and cross-referenced
-%%   • TikZ libraries are loaded only when the tikz option is specified
-%%   • Cryptography macros require the tcscrypto package to be installed
+%% ---------------------------------------------------------------------------------------------------------------
+%% HACKS & ADVANCED FEATURES:
+%%   - Smart paragraph header with auto-punctuation (\parhead).
+%%   - Custom claim counters and proof environments for claims.
+%%   - Automatic missing content tracking with page references.
+%%   - Robust upright Greek letter support with fallbacks and macro redefinitions.
+%%   - Automatic user settings/commands loading for easy customization.
+%%   - Modular font logic for preprints (Libertinus/Concrete).
+%%   - Full integration with cleveref and hyperref for smart referencing.
+%%   - Custom list types for points, code, checkboxes, and definitions.
+%%   - Protocol and wirebox environments for cryptographic protocols and diagrams.
+%%   - Enhanced epigraph formatting.
+%%   - All environments and macros are robust to missing dependencies (with warnings).
 %%
+%% ---------------------------------------------------------------------------------------------------------------
 %% CHANGELOG:
-%%   v1.0 (2025/06/26) - Initial release with core functionality
-%%
+%%   v1.2.1 (2025/06/26) - Upright Greek letter support, wirebox/framed environments, auto settings/commands loading
+%%   v1.0   (2025/06/26) - Initial release with core functionality
+%% ---------------------------------------------------------------------------------------------------------------
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\ProvidesPackage{llncscrypto}[2025/06/26 v1.0 llncscrypto package]
+\ProvidesPackage{llncscrypto}[2025/06/26 v1.2.1 llncscrypto package]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \makeatletter
@@ -85,18 +194,27 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Boolean flags
-\newif\ifllncscrypto@loadcaptions \llncscrypto@loadcaptionsfalse
-\newif\ifllncscrypto@loadtikz     \llncscrypto@loadtikzfalse
-\newif\ifllncscrypto@loadappendix \llncscrypto@loadappendixfalse
-\newif\ifllncscrypto@loadcrypto   \llncscrypto@loadcryptofalse
-\newif\ifllncscrypto@modtheorems  \llncscrypto@modtheoremsfalse
+\newif\ifllncscrypto@loadappendix           \llncscrypto@loadappendixfalse
+\newif\ifllncscrypto@loadcaptions           \llncscrypto@loadcaptionsfalse
+\newif\ifllncscrypto@loadcrypto             \llncscrypto@loadcryptofalse
+\newif\ifllncscrypto@loadfullpage           \llncscrypto@loadfullpagefalse
+\newif\ifllncscrypto@loadnicodemus          \llncscrypto@loadnicodemusfalse
+\newif\ifllncscrypto@loadpreprint           \llncscrypto@loadpreprintfalse
+\newif\ifllncscrypto@loadpreprintconcrete   \llncscrypto@loadpreprintconcretefalse
+\newif\ifllncscrypto@loadpreprintlibertinus \llncscrypto@loadpreprintlibertinusfalse
+\newif\ifllncscrypto@loadtikz               \llncscrypto@loadtikzfalse
+\newif\ifllncscrypto@modtheorems            \llncscrypto@modtheoremsfalse
 
 % Load Options
-\DeclareOption{captions}{\llncscrypto@loadcaptionstrue}
-\DeclareOption{tikz}{\llncscrypto@loadtikztrue}
 \DeclareOption{appendix}{\llncscrypto@loadappendixtrue}
+\DeclareOption{captions}{\llncscrypto@loadcaptionstrue}
+\DeclareOption{concrete}{\llncscrypto@loadpreprintconcretetrue}
 \DeclareOption{crypto}{\llncscrypto@loadcryptotrue}
+\DeclareOption{fullpage}{\llncscrypto@loadfullpagetrue}
+\DeclareOption{libertinus}{\llncscrypto@loadpreprintlibertinustrue}
+\DeclareOption{nicodemus}{\llncscrypto@loadnicodemustrue}
 \DeclareOption{theorems}{\llncscrypto@modtheoremstrue}
+\DeclareOption{tikz}{\llncscrypto@loadtikztrue}
 
 % Ignore unknown options
 \DeclareOption*{\relax}
@@ -122,10 +240,48 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PDF and Document Structure Control
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage[2.0,objcompress,compress]{bxpdfver}          % PDF version and compression settings
-\RequirePackage[nottoc]{tocbibind}                           % Add bibliography, list of figures, etc. to TOC (excluding TOC itself)
-\RequirePackage{babel}                                       % Language and hyphenation support
-\RequirePackage{pdfpages}                                    % Include external PDF pages
+\RequirePackage[%
+    2.0,
+    objcompress,
+    compress
+]{bxpdfver} % PDF version and compression settings
+\RequirePackage[nottoc]{tocbibind}                           % Add bibliography, list of figures, etc. to TOC
+\RequirePackage{babel}                                       % Language, hyphenation
+\RequirePackage{pdfpages}                                    % Include external PDFs
+\RequirePackage{refcount}                                    % Reference counting
+\ifllncscrypto@loadfullpage
+    % Load full page and header/footer packages
+    \RequirePackage{fullpage}      % Full page layout
+    \RequirePackage{fancyhdr}      % Custom headers/footers
+    \RequirePackage{setspace}      % Line spacing
+
+    % Set line spacing
+    \setstretch{1.15}
+
+    % Patch \@maketitle to use larger, bold title
+    \xpatchcmd{\@maketitle}
+    {\@title}
+    {\LARGE\normalfont\bfseries\@title\par}
+    {}{}
+
+    % Preprint header macro with optional left/right header text using fancyhdr
+    \NewDocumentCommand{\preprint}{O{}O{}}{%
+    \AtEndPreamble{%
+        \fancypagestyle{preprinthdr}{%
+            \fancyhf{}%
+            \IfValueT{#1}{\fancyhead[L]{\textsc{#1}}}%
+            \IfValueT{#2}{\fancyhead[R]{\textsc{#2}}}%
+            \fancyfoot[C]{\thepage}%
+            \renewcommand{\headrulewidth}{0pt}%
+            \renewcommand{\footrulewidth}{0pt}%
+        }%
+        % Adjust header and text body separation to prevent overlap
+        \setlength{\headheight}{15pt}%
+        \setlength{\headsep}{20pt}%
+        \pagestyle{preprinthdr}%
+    }%
+    }
+\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
 % Text, Layout, and Miscellaneous Enhancements
@@ -133,7 +289,7 @@
 \RequirePackage[autostyle=true, csdisplay=true]{csquotes}    % Automatic quotation marks and smart citations
 \RequirePackage[final]{microtype}                            % Improved justification and hyphenation
 \RequirePackage[full]{textcomp}                              % Additional text symbols (e.g., degree sign)
-\RequirePackage[nocompress]{cite}                            % Citation package for references
+\RequirePackage[sort,nocompress]{cite}                       % Citation package for references
 \RequirePackage[normalem]{ulem}                              % Underlining and strikethrough capabilities
 \RequirePackage{emptypage}                                   % No page numbers on empty pages
 \RequirePackage{lipsum}                                      % Dummy text
@@ -146,19 +302,114 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Fonts and Math
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage[T1]{fontenc}                                 % Font encoding for proper hyphenation
-\RequirePackage{amsfonts}                                    % AMS fonts (blackboard bold, etc.)
-\RequirePackage{amsmath}                                     % Advanced math typesetting
-\RequirePackage{amssymb}                                     % Additional math symbols
-\RequirePackage{mathrsfs}                                    % Script-style math fonts
-\RequirePackage{bm}                                          % Bold math symbols
-\RequirePackage{lmodern}                                     % Modern Latin font
-\RequirePackage{mathrsfs}                                    % Script fonts
-\RequirePackage{mathtools}                                   % Math enhancements
-\RequirePackage{moresize}                                    % More font sizes
-\RequirePackage{nicefrac}                                    % Inline fractions
-\RequirePackage{siunitx}                                     % Units and number formatting
-\RequirePackage[cal=cm,bb=bboldx,scr=dutchcal]{mathalpha}    % Custom math fonts
+
+% Libertine/Libertinus font setup (modular, reusable)
+\newcommand{\llncscrypto@libertine}{%
+    \ifLuaTeX
+        \typeout{llncscrypto: Loading Libertinus setup for LuaTeX}
+        \RequirePackage[T1]{fontenc}
+        \RequirePackage{moresize}
+        \RequirePackage{nicefrac}
+        \RequirePackage{siunitx}
+        \RequirePackage{fontspec}
+        \RequirePackage{unicode-math}
+        \RequirePackage{libertineRoman}
+        \setmainfont[Scale=MatchUppercase]{Linux Libertine O}
+        \setmathfont[Scale=MatchUppercase]{Libertinus Math}
+        \setmonofont[Scale=MatchLowercase]{droidsansmono}
+        \setsansfont[Scale=MatchLowercase]{ysabeau}
+        \let\mathbfcal\relax
+        \let\mathbfscr\relax
+        \RequirePackage{mathrsfs}
+        \RequirePackage[cal=stixplain,bb=bboldx,scr=esstix]{mathalpha}
+    \else
+        \ifXeTeX
+            \typeout{llncscrypto: Loading Libertinus setup for XeTeX}
+            \RequirePackage[T1]{fontenc}
+            \RequirePackage{moresize}
+            \RequirePackage{nicefrac}
+            \RequirePackage{siunitx}
+            \RequirePackage{fontspec}
+            \RequirePackage{unicode-math}
+            \RequirePackage{libertineRoman}
+            \setmainfont[Scale=MatchUppercase]{Linux Libertine O}
+            \setmathfont[Scale=MatchUppercase]{Libertinus Math}
+            \setmonofont[Scale=MatchLowercase]{droidsansmono}
+            \setsansfont[Scale=MatchLowercase]{ysabeau}
+            \let\mathbfcal\relax
+            \let\mathbfscr\relax
+            \RequirePackage{mathrsfs}
+            \RequirePackage[cal=stixplain,bb=bboldx,scr=esstix]{mathalpha}
+        \else
+            \typeout{llncscrypto: Libertine/Libertinus setup not supported for this engine.}
+        \fi
+    \fi
+}
+
+% Concrete math font setup (modular, reusable)
+\newcommand{\llncscrypto@concrete}{%
+    \ifLuaTeX
+        \typeout{llncscrypto: Loading Concrete math for LuaTeX}
+        \RequirePackage[T1]{fontenc}
+        \RequirePackage{moresize}
+        \RequirePackage{nicefrac}
+        \RequirePackage{siunitx}
+        \RequirePackage{fontspec}
+        \RequirePackage{unicode-math}
+        \RequirePackage[concrete]{fontsetup}
+        \let\mathbfcal\relax
+        \let\mathbfscr\relax
+        \RequirePackage{mathrsfs}
+        \RequirePackage[bb=bboldx,cal=cm,scr=esstix]{mathalpha}
+    \else
+        \ifXeTeX
+            \typeout{llncscrypto: Loading Concrete math for XeTeX}
+            \RequirePackage[T1]{fontenc}
+            \RequirePackage{moresize}
+            \RequirePackage{nicefrac}
+            \RequirePackage{siunitx}
+            \RequirePackage{fontspec}
+            \RequirePackage{unicode-math}
+            \RequirePackage[concrete]{fontsetup}
+            \let\mathbfcal\relax
+            \let\mathbfscr\relax
+            \RequirePackage{mathrsfs}
+            \RequirePackage[bb=bboldx,cal=cm,scr=esstix]{mathalpha}
+        \else
+            \typeout{llncscrypto: Concrete math setup not supported for this engine.}
+        \fi
+    \fi
+}
+
+% Default font setup (modular, reusable)
+\newcommand{\llncscrypto@defaultfont}{%
+    \RequirePackage[T1]{fontenc}
+    \RequirePackage{lmodern}
+    \RequirePackage{amsfonts}
+    \RequirePackage{amsmath}
+    \RequirePackage{amssymb}
+    \RequirePackage{mathrsfs}
+    \RequirePackage{bm}
+    \RequirePackage{mathrsfs}
+    \RequirePackage{mathtools}
+    \RequirePackage{moresize}
+    \RequirePackage{nicefrac}
+    \RequirePackage{siunitx}
+    \let\mathbfcal\relax
+    \let\mathbfscr\relax
+    \RequirePackage[cal=stixplain,bb=bboldx,scr=esstix]{mathalpha}
+}
+
+% Font selection logic
+\ifllncscrypto@loadpreprintlibertinus
+    \llncscrypto@libertine
+\else
+    \ifllncscrypto@loadpreprintconcrete
+        \llncscrypto@concrete
+    \else
+        \llncscrypto@defaultfont
+    \fi
+\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Hyperlinks & Referencing
@@ -229,9 +480,10 @@
     \AtBeginDocument{%
         \captionsetup{%
             font={rm},                                             % Roman font
-            labelfont={color=black,rm},                            % Label in black roman
-            labelsep=period,                                       % Label ends with period
+            labelfont={color=black,sc},                            % Label in black roman
+            labelsep=colon,                                        % Label ends with colon
             skip=5pt,                                              % Space below caption
+            belowskip=0pt                                          % Skip below caption
         }%
     }%
     \captionsetup[table]{position=bottom, skip=5pt}                % Table captions below
@@ -245,8 +497,8 @@
 \setlist{nosep}                                                 % Remove extra space between items
 \setlist[enumerate,1]{label=(\arabic*)}                         % Top-level numbered lists
 \setlist[enumerate,2]{label=(\alph*)}                           % Second-level numbered lists
-\setlist[itemize,1]{label=\ensuremath{\color{black!75}\bullet}} % Top-level itemized lists
-\setlist[itemize,2]{label=\ensuremath{\color{black!75}\circ}}   % Second-level itemized lists
+\setlist[itemize,1]{label=\color{black!75}\textendash}          % Top-level itemized lists
+\setlist[itemize,2]{label=\color{black!75}\textbullet}          % Second-level itemized lists
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Diagrams and TikZ Graphics
@@ -352,6 +604,12 @@
 \ifllncscrypto@loadcrypto
     \IfFileExists{tcscrypto.sty}{\RequirePackage{tcscrypto}}       % Cryptography macros
     {\PackageWarning{llncscrypto}{Package `tcscrypto` not found.}} %
+    \RequirePackage{orcidlink}                                     % ORCID ID and Logo
+\fi
+
+\ifllncscrypto@loadnicodemus
+    \IfFileExists{nicodemus.sty}{\RequirePackage{nicodemus}}       % Nicodemus macros
+    {\PackageWarning{llncscrypto}{Package `nicodemus` not found.}} %
     \RequirePackage{orcidlink}                                     % ORCID ID and Logo
 \fi
 
@@ -472,6 +730,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage[capitalize,nameinlink,noabbrev]{cleveref} % Smart referencing with automatic names
 
+% Sectioning names for cleveref
+\crefname{section}{\S}{\S\S}
+\Crefname{section}{\S}{\S\S}
+\crefname{subsection}{\S}{\S\S}
+\Crefname{subsection}{\S}{\S\S}
+\crefname{subsubsection}{\S}{\S\S}
+\Crefname{subsubsection}{\S}{\S\S}
+
 % Declare names for all environments for cref/Cref
 % Theorem-like
 \crefname{theorem}{theorem}{theorems}
@@ -574,7 +840,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Commenting and Version Control Macros
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newif\ifFullVersion    \FullVersionfalse
+\newif\ifFullVersion    \FullVersiontrue
 \newif\ifShortVersion   \ShortVersionfalse
 \newif\ifComments       \Commentsfalse
 \newif\ifAnonymize      \Anonymizefalse
@@ -730,237 +996,230 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Useful commands
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
-
-% Commands for the main document
-\newcommand{\usefulcommands}{
-
-    \@ifpackageloaded{enumitem}{%
-        % Define 'points' list: itemize using "--"
-        \newlist{points}{itemize}{1}
-        \setlist[points]{%
-            label={\textendash},
-            leftmargin=1em,
-            itemsep=1pt,
-            align=left,
-            before=\smallskip,
-            after=\smallskip
-        }
-
-        % Define 'codelist' list: enumerated as [\texttt{1}], [\texttt{2}], ...
-        \newlist{codelist}{enumerate}{1}
-        \setlist[codelist,1]{%
-            label=\textcolor{gray}{\texttt{[\arabic*]}},
-            leftmargin=1em,
-            itemsep=1pt,
-            align=left,
-            before=\smallskip,
-            after=\smallskip
-        }
-
-        % Define 'checkbox' list
-        \newlist{checkbox}{itemize}{1}
-        \setlist[checkbox]{%
-            label=$\square$,
-            leftmargin=1em,
-            align=left
-        }
-        % Define \checked command to switch label for one item
-        \newcommand{\checked}{\item[\checkmark]}
-
-        % Define a rigorous description list for definitions
-        \newlist{deflist}{description}{1}
-        \setlist[deflist]{%
-            labelwidth=0.35\textwidth,
-            labelsep=1em,
-            leftmargin=0.35\textwidth,
-            font=\normalfont\bfseries,
-            style=nextline,
-            itemsep=5pt
-        }
-    }{}
-
-    % Highlight color for text and math
-    \providecommand{\highlightcolor}{RoyalBlue}
-    \providecommand{\sethighlightcolor}[1]{\renewcommand{\highlightcolor}{##1}}
-
-    % Text and math highlighting
-    \providecommand{\textem}[1]{\textcolor{\highlightcolor}{##1}}
-    \providecommand{\emphtext}[1]{\textcolor{\highlightcolor}{##1}}
-    \providecommand{\emphmath}[1]{\textcolor{\highlightcolor}{\mathrm{##1}}}
-
-    % Code highlighting
-    \providecommand{\code}[1]{\texttt{##1}}
-
-    % Math small caps and bold italic
-    \providecommand{\mathsc}[1]{\textnormal{\textsc{##1}}}
-    \providecommand{\mathbi}[1]{\textnormal{\textbf{\textit{##1}}}}
-
-    % Inline math shortcut
-    \providecommand{\inmath}[1]{\ensuremath{##1}}
-
-    % Hyphen in math
-    \mathchardef\mathhyphen="2D
-
-    % Put in quotes
-    \providecommand{\putInQuotes}[1]{``##1''}
-
-    % Strike-through text
-    \providecommand{\strike}[1]{\bgroup\ULdepth=-.55ex\ULset\strike{##1}\egroup}
-
-    % Highlight missing or problematic text
-    \newcounter{missingctr}
-    \providecommand{\missinglist}{}
-
-    % Main \missing command
-    \providecommand{\missing}[1]{%
-        \refstepcounter{missingctr}%
-        \label{missing:\themissingctr}%
-        \gappto\missinglist{%
-            \noindent\textcolor{Brown4}{\ensuremath{\star}~\themissingctr~(\textsf{Missing at p.~\pageref{missing:\themissingctr}}):~##1}\par\medskip
-        }%
-        \textcolor{Brown4}{##1}%
+\@ifpackageloaded{enumitem}{%
+    % Define 'points' list: itemize using "--"
+    \newlist{points}{itemize}{1}
+    \setlist[points]{%
+        label={\textendash},
+        leftmargin=1em,
+        itemsep=1pt,
+        align=left,
+        before=\smallskip,
+        after=\smallskip
     }
 
-    % Print all collected missing items with page references
-    \providecommand{\printmissing}{%
-        \section*{Missing Content Report}%
-        \missinglist
+    % Define 'codelist' list: enumerated as [\texttt{1}], [\texttt{2}], ...
+    \newlist{codelist}{enumerate}{1}
+    \setlist[codelist,1]{%
+        label=\textcolor{gray}{\texttt{[\arabic*]}},
+        leftmargin=1em,
+        itemsep=1pt,
+        align=left,
+        before=\smallskip,
+        after=\smallskip
     }
 
-    % Format for missing citations
-    \providecommand{\missingcitation}{\textcolor{red}{\code{<Citation Missing>}}}
-
-    % Double-struck Pi symbol for different engines
-    \providecommand{\dsPi}{%
-        \ifluatex
-            \char"213F
-        \else
-            \ifxetex
-                \char"213F
-            \else
-                \Pi
-            \fi
-        \fi
+    % Define 'checkbox' list
+    \newlist{checkbox}{itemize}{1}
+    \setlist[checkbox]{%
+        label=$\square$,
+        leftmargin=1em,
+        align=left
     }
+    % Define \checked command to switch label for one item
+    \newcommand{\checked}{\item[\checkmark]}
 
-    % Sans-serif Pi symbol for different engines
-    \providecommand{\sansPi}{%
-        \ifluatex
-            \char"1D765
-        \else
-            \ifxetex
-                \char"1D765
-            \else
-                \Pi
-            \fi
-        \fi
+    % Define a rigorous description list for definitions
+    \newlist{deflist}{description}{1}
+    \setlist[deflist]{%
+        labelwidth=0.35\textwidth,
+        labelsep=1em,
+        leftmargin=0.35\textwidth,
+        font=\normalfont\bfseries,
+        style=nextline,
+        itemsep=5pt
     }
+}{}
 
-    \@ifpackageloaded{mdframed}{%
-        % Protocol box environment
-        \NewDocumentEnvironment{protocolbox}{o}
-        {%
-            \begin{mdframed}[
-                    font=\small,
-                    roundcorner=1.5pt,
-                    linewidth=0.5pt,
-                    skipabove=0.5\baselineskip,
-                    skipbelow=0.1\baselineskip,
-                    leftmargin=0pt,
-                    rightmargin=0pt,
-                    innerleftmargin=5pt,
-                    innerrightmargin=5pt,
-                    innertopmargin=5pt,
-                    innerbottommargin=5pt,
-                    backgroundcolor=white,
-                    linecolor=black
-                ]%
-                \IfNoValueF{##1}{%
-                    \noindent\textnormal{\small\textbf{##1}}\par\smallskip
-                    \noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}%
-                }%
-                \begin{points}%
-                    }
-                    {%
-                \end{points}
-            \end{mdframed}%
-        }
+% Highlight color for text and math
+\providecommand{\highlightcolor}{RoyalBlue}
+\providecommand{\sethighlightcolor}[1]{\renewcommand{\highlightcolor}{#1}}
 
-        % Code list box environment
-        \NewDocumentEnvironment{codelistbox}{o}
-        {%
-            \begin{mdframed}[
-                    font=\small,
-                    roundcorner=1.5pt,
-                    linewidth=0.5pt,
-                    skipabove=0.5\baselineskip,
-                    skipbelow=0.1\baselineskip,
-                    leftmargin=0pt,
-                    rightmargin=0pt,
-                    innerleftmargin=5pt,
-                    innerrightmargin=5pt,
-                    innertopmargin=5pt,
-                    innerbottommargin=5pt,
-                    backgroundcolor=white,
-                    linecolor=black
-                ]%
-                \IfNoValueF{##1}{%
-                    \noindent\textnormal{\small\textbf{##1}}\par\smallskip
-                    \noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}%
-                }%
-                \begin{codelist}%
-                    }
-                    {%
-                \end{codelist}
-            \end{mdframed}%
-        }
+% Text and math highlighting
+\providecommand{\textem}[1]{\textcolor{\highlightcolor}{#1}}
+\providecommand{\emphtext}[1]{\textcolor{\highlightcolor}{#1}}
+\providecommand{\emphmath}[1]{\textcolor{\highlightcolor}{\mathrm{#1}}}
 
-        \NewDocumentEnvironment{simplebox}{o}
-        {%
-            \begin{mdframed}[
-                    font=\small,
-                    roundcorner=1.5pt,
-                    linewidth=0.5pt,
-                    skipabove=0.5\baselineskip,
-                    skipbelow=0.1\baselineskip,
-                    leftmargin=0pt,
-                    rightmargin=0pt,
-                    innerleftmargin=5pt,
-                    innerrightmargin=5pt,
-                    innertopmargin=5pt,
-                    innerbottommargin=5pt,
-                    backgroundcolor=white,
-                    linecolor=black
-                ]%
-                \IfNoValueF{##1}{%
-                    \noindent\textnormal{\small\textbf{##1}}\par\smallskip
-                    \noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}%
-                }%
-                }
-                {%
-            \end{mdframed}%
-        }
-    }{}
+% Code highlighting
+\providecommand{\code}[1]{\texttt{#1}}
 
-    \@ifpackageloaded{tcolorbox}{%
-        % Wire box environment
-        \newtcolorbox{wirebox}{%
-            colframe=black,
-            colback=white,
-            sharp corners,
-            boxrule=0.5pt,
-            coltitle=black,
-            colbacktitle=white,
-            boxsep=5pt,
-            top=0pt,
-            bottom=0pt,
-            left=5pt,
-            right=5pt
-        }
-    }{}
+% Math small caps and bold italic
+\providecommand{\mathsc}[1]{\textnormal{\textsc{#1}}}
+\providecommand{\mathbi}[1]{\textnormal{\textbf{\textit{#1}}}}
+
+% Inline math shortcut
+\providecommand{\inmath}[1]{\ensuremath{#1}}
+
+% Hyphen in math
+\mathchardef\mathhyphen="2D
+
+% Put in quotes
+\providecommand{\putInQuotes}[1]{``#1''}
+
+% Strike-through text
+\providecommand{\strike}[1]{\bgroup\ULdepth=-.55ex\ULset\strike{#1}\egroup}
+
+% Highlight missing or problematic text
+\newcounter{missingctr}
+\providecommand{\missinglist}{}
+
+% Main \missing command
+\providecommand{\missing}[1]{%
+    \refstepcounter{missingctr}%
+    \label{missing:\themissingctr}%
+    \gappto\missinglist{%
+        \noindent\textcolor{Brown4}{\ensuremath{\star}~\themissingctr~(\textsf{Missing at p.~\pageref{missing:\themissingctr}}):~#1}\par\medskip
+    }%
+    \textcolor{Brown4}{#1}%
 }
 
-\usefulcommands
+% Print all collected missing items with page references
+\providecommand{\printmissing}{%
+    \section*{Missing Content Report}%
+    \missinglist
+}
+
+% Format for missing citations
+\providecommand{\missingcitation}{\textcolor{red}{\code{<Citation Missing>}}}
+
+% Double-struck Pi symbol for different engines
+\providecommand{\dsPi}{%
+    \ifluatex
+        \char"213F
+    \else
+        \ifxetex
+            \char"213F
+        \else
+            \Pi
+        \fi
+    \fi
+}
+
+% Sans-serif Pi symbol for different engines
+\providecommand{\sansPi}{%
+    \ifluatex
+        \char"1D765
+    \else
+        \ifxetex
+            \char"1D765
+        \else
+            \Pi
+        \fi
+    \fi
+}
+
+\@ifpackageloaded{mdframed}{%
+    % Protocol box environment
+    \NewDocumentEnvironment{protocolbox}{o}
+    {%
+        \begin{mdframed}[
+                font=\small,
+                roundcorner=1.5pt,
+                linewidth=0.5pt,
+                skipabove=0.5\baselineskip,
+                skipbelow=0.1\baselineskip,
+                leftmargin=0pt,
+                rightmargin=0pt,
+                innerleftmargin=5pt,
+                innerrightmargin=5pt,
+                innertopmargin=5pt,
+                innerbottommargin=5pt,
+                backgroundcolor=white,
+                linecolor=black
+            ]%
+            \IfNoValueF{#1}{%
+                \noindent\textnormal{\small\textbf{#1}}\par\smallskip
+                \noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}%
+            }%
+            \begin{points}%
+                }
+                {%
+            \end{points}
+        \end{mdframed}%
+    }
+
+    % Code list box environment
+    \NewDocumentEnvironment{codelistbox}{o}
+    {%
+        \begin{mdframed}[
+                font=\small,
+                roundcorner=1.5pt,
+                linewidth=0.5pt,
+                skipabove=0.5\baselineskip,
+                skipbelow=0.1\baselineskip,
+                leftmargin=0pt,
+                rightmargin=0pt,
+                innerleftmargin=5pt,
+                innerrightmargin=5pt,
+                innertopmargin=5pt,
+                innerbottommargin=5pt,
+                backgroundcolor=white,
+                linecolor=black
+            ]%
+            \IfNoValueF{#1}{%
+                \noindent\textnormal{\small\textbf{#1}}\par\smallskip
+                \noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}%
+            }%
+            \begin{codelist}%
+                }
+                {%
+            \end{codelist}
+        \end{mdframed}%
+    }
+
+    \NewDocumentEnvironment{simplebox}{o}
+    {%
+        \begin{mdframed}[
+                font=\small,
+                roundcorner=1.5pt,
+                linewidth=0.5pt,
+                skipabove=0.5\baselineskip,
+                skipbelow=0.1\baselineskip,
+                leftmargin=0pt,
+                rightmargin=0pt,
+                innerleftmargin=5pt,
+                innerrightmargin=5pt,
+                innertopmargin=5pt,
+                innerbottommargin=5pt,
+                backgroundcolor=white,
+                linecolor=black
+            ]%
+            \IfNoValueF{#1}{%
+                \noindent\textnormal{\small\textbf{#1}}\par\smallskip
+                \noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}%
+            }%
+            }
+            {%
+        \end{mdframed}%
+    }
+}{}
+
+\@ifpackageloaded{tcolorbox}{%
+    % Wire box environment
+    \newtcolorbox{wirebox}{%
+        colframe=black,
+        colback=white,
+        sharp corners,
+        boxrule=0.5pt,
+        coltitle=black,
+        colbacktitle=white,
+        boxsep=5pt,
+        top=0pt,
+        bottom=0pt,
+        left=5pt,
+        right=5pt
+    }
+}{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Upright Greek Letters Setup Using `upgreek`
