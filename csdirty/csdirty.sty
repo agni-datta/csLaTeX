@@ -1,69 +1,69 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% csdirty.sty - A LaTeX Package by Agni Datta
-% Comprehensive package consolidation for academic and technical document preparation
+% csdirty.sty - A Modern Academic LaTeX Package by Agni Datta
+% Unified package suite for research, technical, and academic documents
 %
 % DESCRIPTION:
-% csdirty provides a unified, modern solution for academic and technical document 
-% preparation by bundling commonly used LaTeX packages and offering convenient 
-% options for version control, anonymization, feature loading, and advanced 
-% document utilities. It is designed for research papers, technical reports, 
-% and academic submissions that require flexible versions, anonymization, and 
-% professional typesetting.
+% csdirty is a comprehensive LaTeX package that streamlines academic and technical
+% document preparation. It consolidates essential and advanced packages, and provides
+% a flexible interface for version control, feature toggling, and professional typesetting.
+% Designed for research papers, technical reports, and academic submissions, csdirty
+% enables rapid switching between full/preprint and short/conference versions, and
+% offers robust support for cryptography, mathematics, graphics, and more.
 %
 % USAGE:
-%   \usepackage[options]{csdirty}
-%   % Example: \usepackage[full,comments]{csdirty}
+%   \usepackage[<options>]{csdirty}
+%   % Example: \usepackage[full,comments,crypto]{csdirty}
 %
 % AVAILABLE OPTIONS (all options have both positive and negative forms):
 %
-% VERSION CONTROL OPTIONS:
-%   fullversion      - Load complete document version with all content
-%                      (author info, affiliations, acknowledgments, appendices, etc.)
-%                      Default if no version option is specified.
-%   shortversion     - Load abbreviated version for conferences (excludes appendices, 
-%                      detailed proofs, and supplementary content).
-%   preprint         - Alias for fullversion (for arXiv/preprints).
+% VERSION CONTROL:
+%   fullversion      - Full document (authors, affiliations, appendices, etc.)
+%   shortversion     - Abbreviated version (no appendices, detailed proofs, etc.)
+%   preprint         - Alias for fullversion (for arXiv/preprints)
 %
-% COMMENTS AND ANNOTATIONS OPTIONS:
-%   comments         - Enable inline comments and annotations (loads comment package).
-%   nocomments       - Disable comment functionality (default).
+% COMMENTS & ANNOTATIONS:
+%   comments         - Enable inline comments/annotations (loads comment package)
+%   nocomments       - Disable comment functionality (default)
 %
-% MATH AND TECHNICAL OPTIONS:
-%   concmath         - Enable Concmath package for advanced math typesetting.
-%   nomath           - Disable loading of math-related packages (basic LaTeX math remains).
+% MATH & FONTS:
+%   concmath         - Use Concmath for advanced math typesetting
+%   nomath           - Disable advanced math packages (basic LaTeX math only)
+%   libertinus       - Use Libertinus/Libertine font family for text/math
+%   nolicertinus     - Do not use Libertinus/Libertine fonts
+%   nicodemus        - Enable Nicodemus cryptography macros
+%   nonicodemus      - Do not load Nicodemus macros
 %
-% FEATURE LOADING OPTIONS:
-%   tikz             - Load comprehensive TikZ package suite for graphics (includes
-%                      3dplot, cd, automata, circuits, decorations, positioning, shapes, arrows).
-%   notikz           - Do not load TikZ or related graphics packages.
-%   appendix         - Enhanced appendix formatting and management.
-%   noappendix       - Do not load appendix enhancements.
-%   crypto           - Cryptography-specific packages and notation (protocols, security definitions, etc.).
-%   nocrypto         - Do not load cryptography packages.
-%   theorems         - Enhanced theorem/proof environment formatting and cross-referencing.
-%   notheorems       - Do not load theorem/proof enhancements.
-%   orcidlink        - ORCID link package for author identification.
-%   noorcidlink      - Do not load ORCID link package.
-%   epigraph         - Enhanced epigraph formatting and styling.
-%   noepigraph       - Do not load epigraph enhancements.
-%   fullpage         - Advanced full-page layout and formatting options.
-%   nofullpage       - Do not load full-page layout options.
-%   nicespacing      - Enable enhanced line spacing (1.15 stretch factor).
-%   badspacing       - Use standard line spacing (1.0 stretch factor, default).
-%   full             - Load all available features and packages (recommended for full academic documents).
-%   usefulcommands   - Load a suite of handy macros for cryptography, math, and general writing.
-%   nousefulcommands - Do not load the handy macro suite.
-%   oldsection       - Use old section symbol formatting (with section symbols).
+% FEATURE LOADING:
+%   tikz             - Load TikZ suite (3dplot, cd, automata, circuits, etc.)
+%   notikz           - Do not load TikZ or related graphics packages
+%   appendix         - Enhanced appendix formatting and management
+%   noappendix       - Do not load appendix enhancements
+%   crypto           - Cryptography packages and notation (protocols, security, etc.)
+%   nocrypto         - Do not load cryptography packages
+%   theorems         - Enhanced theorem/proof environments and cross-referencing
+%   notheorems       - Do not load theorem/proof enhancements
+%   orcidlink        - ORCID link support for author identification
+%   noorcidlink      - Do not load ORCID link package
+%   epigraph         - Enhanced epigraph formatting and styling
+%   noepigraph       - Do not load epigraph enhancements
+%   fullpage         - Advanced full-page layout and formatting
+%   nofullpage       - Do not load full-page layout options
+%   nicespacing      - Enhanced line spacing (1.15 stretch factor)
+%   badspacing       - Standard line spacing (1.0, default)
+%   full             - Load all available features (recommended for full academic docs)
+%   usefulcommands   - Load handy macros for cryptography, math, and writing
+%   nousefulcommands - Do not load the macro suite
+%   oldsection       - Use old section symbol formatting (with section symbols)
 %
 % ENHANCED FEATURES:
-%   - Advanced Graphics: PGFPlots integration for data visualization and function plotting (compatibility mode 1.18).
-%   - Colored Content Boxes: tcolorbox integration for styled content boxes (customizable colors, borders, themes).
-%   - Framed Environments: mdframed for theorem and content boxes with TikZ-based rendering.
-%   - Advanced Tables: tabularray for complex table types, styling, multi-page support, and line breaks.
-%   - Comprehensive TikZ: Extensive library support (3D plotting, commutative diagrams, automata, circuits, decorations, positioning).
-%   - Full-Page Layout: Advanced layout for professional document presentation.
-%   - Enhanced Typography: Improved spacing, microtypography, and readability.
-%   - Useful Commands: Loads a suite of handy macros for cryptography, math, and general writing.
+%   - Advanced Graphics: PGFPlots (compatibility mode 1.18) for data visualization
+%   - Colored Content Boxes: tcolorbox for styled content and wireboxes
+%   - Framed Environments: mdframed for theorem/content boxes with TikZ rendering
+%   - Advanced Tables: tabularray for complex, multi-page, and styled tables
+%   - TikZ Libraries: 3D plotting, commutative diagrams, automata, circuits, decorations, positioning, shapes, arrows
+%   - Full-Page Layout: Professional page geometry and layout
+%   - Enhanced Typography: Improved spacing, microtypography, and readability
+%   - Useful Commands: Macros for cryptography, math, and general writing
 %
 % EXAMPLES:
 %   \usepackage{csdirty}                                   % Basic usage with defaults
@@ -76,19 +76,20 @@
 %   \usepackage[full]{csdirty}                             % All features
 %   \usepackage[notikz]{csdirty}                           % Exclude TikZ
 %   \usepackage[noappendix,noepigraph]{csdirty}            % Exclude appendix and epigraph features
+%   \usepackage[libertinus,concmath,crypto]{csdirty}        % Libertinus font, Concmath, and crypto
 %
 % CODE USAGE EXAMPLES:
-%   % Use a colored content box (tcolorbox)
+%   % Colored content box (tcolorbox)
 %   \begin{tcolorbox}[colback=blue!5!white, colframe=blue!75!black, title=Example Box]
 %   This is a styled content box.
 %   \end{tcolorbox}
 %
-%   % Use a wirebox (if tcolorbox loaded)
+%   % Wirebox (if tcolorbox loaded)
 %   \begin{wirebox}
 %   This is a wirebox for highlighting content.
 %   \end{wirebox}
 %
-%   % Use advanced table (tabularray is always loaded)
+%   % Advanced table (tabularray is always loaded)
 %   \begin{tblr}{
 %     colspec = {Q[l]Q[c]Q[r]},
 %     row{1} = {font=\bfseries}
@@ -118,25 +119,28 @@
 %   - appendix (appendix option)
 %   - epigraph (epigraph option)
 %   - layout packages (fullpage option)
+%   - libertinus, unicode-math, fontspec (libertinus option)
+%   - concmath (concmath option)
+%   - nicodemus (nicodemus option)
 %
 % COMPATIBILITY:
-%   - Compatible with modern LaTeX distributions (TeX Live 2022+, MiKTeX 23+).
-%   - Tested with document classes: article, report, book.
-%   - Requires e-TeX extensions (available in modern LaTeX distributions).
-% 
-% KNOWN ISSUES AND LIMITATIONS:
-%   - Version control options may require manual adjustment for complex documents.
-%   - TikZ graphics may require multiple compilation passes for complex diagrams.
-%   - PGFPlots compatibility mode 1.18 may need adjustment for newer versions.
-%   - Full-page layout options may conflict with certain document class settings.
-%   - Enhanced spacing may affect document layout and require fine-tuning.
-%   - Some options may increase compilation time and memory usage.
+%   - Compatible with modern LaTeX distributions (TeX Live 2022+, MiKTeX 23+)
+%   - Tested with: article, report, book, and other standard classes
+%   - Requires e-TeX extensions (standard in modern LaTeX)
+%
+% KNOWN ISSUES & LIMITATIONS:
+%   - Version control options may require manual adjustment for complex documents
+%   - TikZ graphics may require multiple compilation passes for complex diagrams
+%   - PGFPlots compatibility mode 1.18 may need adjustment for newer versions
+%   - Full-page layout options may conflict with some document class settings
+%   - Enhanced spacing may affect layout and require fine-tuning
+%   - Some options may increase compilation time and memory usage
 %
 % VERSION: 1.6
 % DATE: 2025/06/26
 % AUTHOR: Agni Datta
 % LICENSE: LaTeX Project Public License 1.3c
-% CONTACT: For issues and feature requests, please email me at agnidatta.org@gmail.com
+% CONTACT: agnidatta.org@gmail.com
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ProvidesPackage{csdirty}[2025/06/26 v1.6 csdirty package]
@@ -156,6 +160,8 @@
 
 % Package-specific Boolean flags
 \newif\ifcsdirty@Concmath               \csdirty@Concmathfalse
+\newif\ifcsdirty@Libertinus             \csdirty@Libertinusfalse
+\newif\ifcsdirty@Nicodemus              \csdirty@Nicodemusfalse
 \newif\ifcsdirty@LoadAppendix           \csdirty@LoadAppendixfalse
 \newif\ifcsdirty@LoadCrypto             \csdirty@LoadCryptofalse
 \newif\ifcsdirty@LoadEpigraph           \csdirty@LoadEpigraphfalse
@@ -163,11 +169,11 @@
 \newif\ifcsdirty@LoadFullPage           \csdirty@LoadFullPagefalse
 \newif\ifcsdirty@LoadNiceSpacing        \csdirty@LoadNiceSpacingfalse
 \newif\ifcsdirty@LoadNoMath             \csdirty@LoadNoMathfalse
+\newif\ifcsdirty@LoadOldSectionSymb     \csdirty@LoadOldSectionSymbfalse
 \newif\ifcsdirty@LoadOrcidlink          \csdirty@LoadOrcidlinkfalse
 \newif\ifcsdirty@LoadTheorems           \csdirty@LoadTheoremsfalse
 \newif\ifcsdirty@LoadTikz               \csdirty@LoadTikzfalse
 \newif\ifcsdirty@LoadUsefulCommands     \csdirty@LoadUsefulCommandstrue
-\newif\ifcsdirty@LoadOldSectionSymb     \csdirty@LoadOldSectionSymbfalse
 
 % Version control options
 \DeclareOption{fullversion}{\FullVersiontrue\ShortVersionfalse}             % Use full version
@@ -183,6 +189,8 @@
 \DeclareOption{epigraph}{\csdirty@LoadEpigraphtrue}                         % Load Epigraphs
 \DeclareOption{full}{\csdirty@LoadFulltrue}                                 % Load Full
 \DeclareOption{fullpage}{\csdirty@LoadFullPagetrue}                         % Load Full Page
+\DeclareOption{libertinus}{\csdirty@Libertinustrue}                         % Enable Libertinus/Libertine font
+\DeclareOption{nicodemus}{\csdirty@Nicodemustrue}                           % Enable Nicodemus macros
 \DeclareOption{nicespacing}{\csdirty@LoadNiceSpacingtrue}                   % Load Nice Spacing
 \DeclareOption{noappendix}{\csdirty@LoadAppendixfalse}                      % Do not load Appendix
 \DeclareOption{nocomments}{\Commentsfalse}                                  % Disable comments
@@ -203,7 +211,6 @@
 \ifcsdirty@LoadFull
     \typeout{csdirty: Loading full version}
     \csdirty@LoadAppendixtrue
-    \csdirty@LoadCryptotrue
     \csdirty@LoadEpigraphtrue
     \csdirty@LoadNiceSpacingtrue
     \csdirty@LoadOrcidlinktrue
@@ -315,93 +322,133 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Fonts and Math
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\ifcsdirty@LoadNoMath
-    \typeout{csdirty: Loading no math packages}
-    \RequirePackage[T1]{fontenc}                            % Font encoding
-\else
-    \ifcsdirty@Concmath
-        \typeout{csdirty: Attempting to load concrete math package}
-        \ifLuaTeX
-            \typeout{csdirty: Loading concrete math for LuaTeX}
-            \RequirePackage[T1]{fontenc}                         % Font encoding
-            \AtEndPreamble{%
-                \RequirePackage{fontspec}                        % Font specification
-                \RequirePackage{unicode-math}                    % Unicode math support
-                \RequirePackage[concrete]{fontsetup}             % Concrete math for XeTeX
-                \setsansfont{ysabeau}[%
-                    RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum}
-                ]%                                               % Sans-serif font
-                \let\mathbfcal\relax                             % Remove clash with amsfonts
-                \let\mathbfscr\relax                             % Remove clash with amsfonts
-                \RequirePackage[%                                % Custom math fonts
-                    bb=bboldx,                                   % Blackboard bold
-                    cal=cm,                                      % Calligraphic
-                    scr=dutchcal                                 % Script
-                ]{mathalpha}
-            }
+% Modular font/math loader for csdirty
+
+% No Math Loader
+\newcommand{\csdirty@loadnomath}{%
+    \typeout{csdirty: Loading no math packages}           % Print info to log
+    \RequirePackage[T1]{fontenc}                          % Use T1 font encoding
+}
+
+% Libertinus Math Loader
+\newcommand{\csdirty@loadlibertinus}{%
+    \ifLuaTeX
+        \typeout{csdirty: Loading Libertinus math for LuaTeX}         % Print info to log
+        \RequirePackage[T1]{fontenc}                                  % Use T1 font encoding
+        \RequirePackage{amssymb}                                      % AMS math symbols
+        \RequirePackage{mathtools}                                    % Math tools extension
+        \RequirePackage{moresize}                                     % More font sizes
+        \RequirePackage{nicefrac}                                     % Nice fractions
+        \RequirePackage{siunitx}                                      % SI units
+        \RequirePackage{fontspec}                                     % Font selection for LuaTeX
+        \RequirePackage{unicode-math}                                 % Unicode math support
+        \RequirePackage{libertineRoman}                               % Libertine Roman font
+        \setmainfont[Scale=MatchUppercase]{linuxlibertineo}           % Set main font
+        \setmathfont[Scale=MatchUppercase]{libertinusmath}            % Set math font
+        \setmonofont[Scale=MatchLowercase]{firamono}                  % Set monospaced font
+        \setsansfont[Scale=MatchLowercase]{ysabeau}                   % Set sans-serif font
+        \let\mathbfcal\relax                                          % Avoid conflicts: clear \mathbfcal
+        \let\mathbfscr\relax                                          % Avoid conflicts: clear \mathbfscr
+        \RequirePackage{mathrsfs}                                     % Script math font
+        \RequirePackage[cal=cm,bb=bboldx,scr=esstix]{mathalpha}       % Math alphabets
+    \else
+        \ifXeTeX
+            \typeout{csdirty: Loading Libertinus math for XeTeX}      % Print info to log
+            \RequirePackage[T1]{fontenc}                              % Use T1 font encoding
+            \RequirePackage{amssymb}                                  % AMS math symbols
+            \RequirePackage{mathtools}                                % Math tools extension
+            \RequirePackage{moresize}                                 % More font sizes
+            \RequirePackage{nicefrac}                                 % Nice fractions
+            \RequirePackage{siunitx}                                  % SI units
+            \RequirePackage{fontspec}                                 % Font selection for XeTeX
+            \RequirePackage{unicode-math}                             % Unicode math support
+            \RequirePackage{libertineRoman}                           % Libertine Roman font
+            \setmainfont[Scale=MatchUppercase]{linuxlibertineo}       % Set main font
+            \setmathfont[Scale=MatchUppercase]{libertinusmath}        % Set math font
+            \setmonofont[Scale=MatchLowercase]{firamono}              % Set monospaced font
+            \setsansfont[Scale=MatchLowercase]{ysabeau}               % Set sans-serif font
+            \let\mathbfcal\relax                                      % Avoid conflicts: clear \mathbfcal
+            \let\mathbfscr\relax                                      % Avoid conflicts: clear \mathbfscr
+            \RequirePackage{mathrsfs}                                 % Script math font
+            \RequirePackage[cal=cm,bb=bboldx,scr=esstix]{mathalpha}   % Math alphabets
         \else
-            \ifXeTeX
-                \typeout{csdirty: Loading concrete math for XeTeX}
-                \RequirePackage[T1]{fontenc}                         % Font encoding
-                \AtEndPreamble{%
-                    \RequirePackage{fontspec}                        % Font specification
-                    \RequirePackage{unicode-math}                    % Unicode math support
-                    \RequirePackage[concrete]{fontsetup}             % Concrete math for XeTeX
-                    \setsansfont{ysabeau}[%
-                        RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum}
-                    ]%                                               % Sans-serif font
-                    \let\mathbfcal\relax                             % Remove clash with amsfonts
-                    \let\mathbfscr\relax                             % Remove clash with amsfonts
-                    \RequirePackage[%                                % Custom math fonts
-                        bb=bboldx,                                   % Blackboard bold
-                        cal=cm,                                      % Calligraphic
-                        scr=dutchcal                                 % Script
-                    ]{mathalpha}
-                }
+            \typeout{csdirty: Libertinus math setup not supported for this engine.} % Print info to log
+        \fi
+    \fi
+}
+
+% Concrete Math Loader
+\newcommand{\csdirty@loadconcmath}{%
+    \ifLuaTeX
+        \typeout{csdirty: Loading Concrete math for LuaTeX}           % Print info to log
+        \RequirePackage[T1]{fontenc}                                  % Use T1 font encoding
+        \RequirePackage{amssymb}                                      % AMS math symbols
+        \RequirePackage{mathtools}                                    % Math tools extension
+        \RequirePackage{moresize}                                     % More font sizes
+        \RequirePackage{nicefrac}                                     % Nice fractions
+        \RequirePackage{siunitx}                                      % SI units
+        \RequirePackage{fontspec}                                     % Font selection for LuaTeX
+        \RequirePackage{unicode-math}                                 % Unicode math support
+        \RequirePackage[concrete]{fontsetup}                          % Concrete font setup
+        \let\mathbfcal\relax                                          % Avoid conflicts: clear \mathbfcal
+        \let\mathbfscr\relax                                          % Avoid conflicts: clear \mathbfscr
+        \RequirePackage{mathrsfs}                                     % Script math font
+        \RequirePackage[cal=cm,bb=bboldx,scr=esstix]{mathalpha}       % Math alphabets
+    \else
+        \ifXeTeX
+            \typeout{csdirty: Loading Concrete math for XeTeX}        % Print info to log
+            \RequirePackage[T1]{fontenc}                              % Use T1 font encoding
+            \RequirePackage{amssymb}                                  % AMS math symbols
+            \RequirePackage{mathtools}                                % Math tools extension
+            \RequirePackage{moresize}                                 % More font sizes
+            \RequirePackage{nicefrac}                                 % Nice fractions
+            \RequirePackage{siunitx}                                  % SI units
+            \RequirePackage{fontspec}                                 % Font selection for XeTeX
+            \RequirePackage{unicode-math}                             % Unicode math support
+            \RequirePackage[concrete]{fontsetup}                      % Concrete font setup
+            \let\mathbfcal\relax                                      % Avoid conflicts: clear \mathbfcal
+            \let\mathbfscr\relax                                      % Avoid conflicts: clear \mathbfscr
+            \RequirePackage{mathrsfs}                                 % Script math font
+            \RequirePackage[cal=cm,bb=bboldx,scr=esstix]{mathalpha}   % Math alphabets
+        \else
+            \typeout{csdirty: Concrete math setup not supported for this engine.} % Print info to log
+        \fi
+    \fi
+}
+
+% Standard Math Loader
+\newcommand{\csdirty@loadstdmath}{%
+    \typeout{csdirty: Loading standard math packages}                % Print info to log
+    \RequirePackage[T1]{fontenc}                                     % Use T1 font encoding
+    \RequirePackage{amsfonts}                                        % AMS fonts
+    \RequirePackage{amsmath}                                         % AMS math
+    \RequirePackage{amssymb}                                         % AMS math symbols
+    \RequirePackage{bm}                                              % Bold math symbols
+    \RequirePackage{mathrsfs}                                        % Script math font
+    \RequirePackage{mathtools}                                       % Math tools extension
+    \RequirePackage{moresize}                                        % More font sizes
+    \RequirePackage{nicefrac}                                        % Nice fractions
+    \RequirePackage{siunitx}                                         % SI units
+    \RequirePackage{lmodern}                                         % Latin Modern fonts
+    \RequirePackage[cal=cm,bb=bboldx,scr=esstix]{mathalpha}          % Math alphabets
+}
+
+% Main Loader Switch
+\AtEndPreamble{%
+    \ifcsdirty@LoadNoMath
+        \csdirty@loadnomath
+    \else
+        \ifcsdirty@Libertinus
+            \csdirty@loadlibertinus
+        \else
+            \ifcsdirty@Concmath
+                \csdirty@loadconcmath
             \else
-                \typeout{csdirty: Concrete math not supported for current engine, falling back to standard math}
-                \RequirePackage[T1]{fontenc}                         % Font encoding
-                \RequirePackage{amsfonts}                            % AMS fonts
-                \RequirePackage{amsmath}                             % Advanced math typesetting
-                \RequirePackage{amssymb}                             % Additional math symbols
-                \RequirePackage{amsthm}                              % Theorem environments
-                \RequirePackage{bbm}                                 % Blackboard bold math symbols
-                \RequirePackage{bm}                                  % Bold math symbols
-                \RequirePackage{mathtools}                           % Math enhancements
-                \RequirePackage{mathrsfs}                            % Math script fonts
-                \RequirePackage{moresize}                            % More font sizes
-                \RequirePackage{nicefrac}                            % Inline fractions
-                \RequirePackage{siunitx}                             % Units and number formatting
-                \RequirePackage{lmodern}                             % Latin Modern fonts
-                \RequirePackage[%                                    % Custom math fonts
-                    bb=bboldx,                                       % Blackboard bold
-                    cal=cm,                                          % Calligraphic
-                    scr=dutchcal                                     % Script
-                ]{mathalpha}
+                \csdirty@loadstdmath
             \fi
         \fi
-    \else
-        \typeout{csdirty: Loading standard math packages}
-        \RequirePackage[T1]{fontenc}                         % Font encoding
-        \RequirePackage{amsfonts}                            % AMS fonts
-        \RequirePackage{amsmath}                             % Advanced math typesetting
-        \RequirePackage{amssymb}                             % Additional math symbols
-        \RequirePackage{amsthm}                              % Theorem environments
-        \RequirePackage{bbm}                                 % Blackboard bold math symbols
-        \RequirePackage{bm}                                  % Bold math symbols
-        \RequirePackage{mathtools}                           % Math enhancements
-        \RequirePackage{mathrsfs}                            % Math script fonts
-        \RequirePackage{moresize}                            % More font sizes
-        \RequirePackage{nicefrac}                            % Inline fractions
-        \RequirePackage{siunitx}                             % Units and number formatting
-        \RequirePackage{lmodern}                             % Latin Modern fonts
-        \RequirePackage[%                                    % Custom math fonts
-            bb=bboldx,                                       % Blackboard bold
-            cal=cm,                                          % Calligraphic
-            scr=dutchcal                                     % Script
-        ]{mathalpha}
     \fi
-\fi
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Hyperlinks & Referencing
@@ -613,6 +660,11 @@
 \ifcsdirty@LoadOrcidlink
     \typeout{csdirty: Loading ORCID link package}
     \IfFileExists{orcidlink.sty}{\RequirePackage{orcidlink}}{\PackageWarning{csdirty}{Package `orcidlink` not found.}} % ORCID ID and icon
+\fi
+
+\ifcsdirty@Nicodemus
+    \typeout{csdirty: Loading Nicodemus font package}
+    \IfFileExists{nicodemus.sty}{\RequirePackage{nicodemus}}{\PackageWarning{csdirty}{Package `nicodemus` not found.}} % Nicodemus macros
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -878,6 +930,7 @@
 }
 
 \NewDocumentCommand{\parhead}{m}{\csdirty@paragraphhead{#1}}
+\RenewDocumentCommand{\paragraph}{m}{\parhead{#1}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Nested bar environment
@@ -916,7 +969,7 @@
 
 % Parameters for bar dimensions and spacing
 \newcommand{\csdirty@nestedbar@topbotrulelength}{1em}
-\newcommand{\csdirty@nestedbar@indent}{0.4em}
+\newcommand{\csdirty@nestedbar@indent}{0.5em}
 
 % FrameCommand helper that sets up side rule and spacing
 \def\csdirty@openframebox#1#2{%
@@ -986,8 +1039,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Commands for the main document
-\newcommand{\usefulcommands}{%
-
+\ifcsdirty@LoadUsefulCommands
     \@ifpackageloaded{enumitem}{%
         % Define 'points' list: itemize using "--"
         \newlist{points}{itemize}{1}
@@ -1035,31 +1087,32 @@
 
     % Highlight color for text and math
     \providecommand{\highlightcolor}{RoyalBlue}
-    \providecommand{\sethighlightcolor}[1]{\renewcommand{\highlightcolor}{##1}}
+    \providecommand{\sethighlightcolor}[1]{\renewcommand{\highlightcolor}{#1}}
 
     % Text and math highlighting
-    \providecommand{\textem}[1]{\textcolor{\highlightcolor}{##1}}
-    \providecommand{\emphtext}[1]{\textcolor{\highlightcolor}{##1}}
-    \providecommand{\emphmath}[1]{\textcolor{\highlightcolor}{\mathrm{##1}}}
+    \providecommand{\emphmath}[1]{\textcolor{\highlightcolor}{\mathrm{#1}}}
+    \providecommand{\emphtext}[1]{\textcolor{\highlightcolor}{#1}}
+    \providecommand{\textbi}[1]{\textbf{\textit{#1}}}
+    \providecommand{\textem}[1]{\textcolor{\highlightcolor}{#1}}
 
     % Code highlighting
-    \providecommand{\code}[1]{\texttt{##1}}
+    \providecommand{\code}[1]{\texttt{#1}}
 
     % Math small caps and bold italic
-    \providecommand{\mathsc}[1]{\textnormal{\textsc{##1}}}
-    \providecommand{\mathbi}[1]{\textnormal{\textbf{\textit{##1}}}}
+    \providecommand{\mathsc}[1]{\textnormal{\textsc{#1}}}
+    \providecommand{\mathbi}[1]{\textnormal{\textbf{\textit{#1}}}}
 
     % Inline math shortcut
-    \providecommand{\inmath}[1]{\ensuremath{##1}}
+    \providecommand{\inmath}[1]{\ensuremath{#1}}
 
     % Hyphen in math
     \mathchardef\mathhyphen="2D
 
     % Put in quotes
-    \providecommand{\putInQuotes}[1]{``##1''}
+    \providecommand{\putInQuotes}[1]{``#1''}
 
     % Strike-through text
-    \providecommand{\strike}[1]{\bgroup\ULdepth=-.55ex\ULset\strike{##1}\egroup}
+    \providecommand{\strike}[1]{\bgroup\ULdepth=-.55ex\ULset\strike{#1}\egroup}
 
     % Highlight missing or problematic text
     \newcounter{missingctr}
@@ -1070,9 +1123,9 @@
         \refstepcounter{missingctr}%
         \label{missing:\themissingctr}%
         \gappto\missinglist{%
-            \noindent\textcolor{Brown4}{\ensuremath{\star}~\themissingctr~(\textsf{Missing at p.~\pageref{missing:\themissingctr}}):~##1}\par\medskip
+            \noindent\textcolor{Brown4}{\ensuremath{\star}~\themissingctr~(\textsf{Missing at p.~\pageref{missing:\themissingctr}}):~#1}\par\medskip
         }%
-        \textcolor{Brown4}{##1}%
+        \textcolor{Brown4}{#1}%
     }
 
     % Print all collected missing items with page references
@@ -1129,8 +1182,8 @@
                     backgroundcolor=white,
                     linecolor=black
                 ]%
-                \IfNoValueF{##1}{%
-                    \noindent\textnormal{\small\textbf{##1}}\par\smallskip
+                \IfNoValueF{#1}{%
+                    \noindent\textnormal{\small\textbf{#1}}\par\smallskip
                     \noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}%
                 }%
                 \begin{points}%
@@ -1158,8 +1211,8 @@
                     backgroundcolor=white,
                     linecolor=black
                 ]%
-                \IfNoValueF{##1}{%
-                    \noindent\textnormal{\small\textbf{##1}}\par\smallskip
+                \IfNoValueF{#1}{%
+                    \noindent\textnormal{\small\textbf{#1}}\par\smallskip
                     \noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}%
                 }%
                 \begin{codelist}%
@@ -1186,8 +1239,8 @@
                     backgroundcolor=white,
                     linecolor=black
                 ]%
-                \IfNoValueF{##1}{%
-                    \noindent\textnormal{\small\textbf{##1}}\par\smallskip
+                \IfNoValueF{#1}{%
+                    \noindent\textnormal{\small\textbf{#1}}\par\smallskip
                     \noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}%
                 }%
                 }
@@ -1212,10 +1265,6 @@
             right=5pt
         }
     }{}
-}
-
-\ifcsdirty@LoadUsefulCommands
-    \usefulcommands
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
