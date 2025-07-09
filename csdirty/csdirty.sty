@@ -333,46 +333,84 @@
 % Libertinus Math Loader
 \newcommand{\csdirty@loadlibertinus}{%
     \ifLuaTeX
-        \typeout{csdirty: Loading Libertinus math for LuaTeX}         % Print info to log
-        \RequirePackage[T1]{fontenc}                                  % Use T1 font encoding
-        \RequirePackage{amssymb}                                      % AMS math symbols
-        \RequirePackage{mathtools}                                    % Math tools extension
-        \RequirePackage{moresize}                                     % More font sizes
-        \RequirePackage{nicefrac}                                     % Nice fractions
-        \RequirePackage{siunitx}                                      % SI units
-        \RequirePackage{fontspec}                                     % Font selection for LuaTeX
-        \RequirePackage{unicode-math}                                 % Unicode math support
-        \RequirePackage{libertineRoman}                               % Libertine Roman font
-        \setmainfont[Scale=MatchUppercase]{linuxlibertineo}           % Set main font
-        \setmathfont[Scale=MatchUppercase]{libertinusmath}            % Set math font
-        \setmonofont[Scale=MatchLowercase]{firamono}                  % Set monospaced font
-        \setsansfont[Scale=MatchLowercase]{ysabeau}                   % Set sans-serif font
-        \let\mathbfcal\relax                                          % Avoid conflicts: clear \mathbfcal
-        \let\mathbfscr\relax                                          % Avoid conflicts: clear \mathbfscr
-        \RequirePackage{mathrsfs}                                     % Script math font
-        \RequirePackage[cal=cm,bb=bboldx,scr=esstix]{mathalpha}       % Math alphabets
+        \typeout{csdirty: Loading Libertinus math for LuaTeX}      % Print info to log
+        \RequirePackage[T1]{fontenc}                               % Use T1 font encoding for text
+        \RequirePackage{amssymb}                                   % AMS math symbols
+        \RequirePackage{mathtools}                                 % Math tools extension
+        \RequirePackage{moresize}                                  % More font sizes
+        \RequirePackage{nicefrac}                                  % Nice fractions
+        \RequirePackage{siunitx}                                   % SI units
+        \RequirePackage{fontspec}                                  % Font selection for LuaTeX
+        \RequirePackage{unicode-math}                              % Unicode math support
+        \RequirePackage{libertineRoman}                            % Libertine Roman font (text)
+        % Set main (serif) font
+        \setmainfont[%
+            Scale=MatchUppercase
+        ]{linuxlibertineo}
+        % Set math font
+        \setmathfont[%
+            Scale=MatchUppercase
+        ]{libertinusmath}
+        % Set monospaced font
+        \setmonofont[%
+            Scale=MatchLowercase,
+            SmallCapsFeatures={RawFeature=+smcp},                               % Enable small caps
+            RawFeature={+calt,+case,+dlig,+kern,+liga,+lnum,+mark,+mkmk,+pnum}  % Typographic features
+        ]{notosansmono}
+        % Set sans-serif font
+        \setsansfont[%
+            Scale=MatchLowercase,
+            SmallCapsFeatures={RawFeature=+smcp},                               % Enable small caps
+            RawFeature={+calt,+case,+kern,+liga,+lnum,+mark,+mkmk,+pnum}  % Typographic features
+        ]{ysabeau}
+        % Avoid conflicts with math font packages
+        \let\mathbfcal\relax
+        \let\mathbfscr\relax
+        \RequirePackage{mathrsfs}                                  % Script math font (\mathscr)
+        \RequirePackage[cal=cm,bb=bboldx,scr=esstix]{mathalpha}    % Math alphabets: cal, blackboard bold, script
     \else
         \ifXeTeX
-            \typeout{csdirty: Loading Libertinus math for XeTeX}      % Print info to log
-            \RequirePackage[T1]{fontenc}                              % Use T1 font encoding
-            \RequirePackage{amssymb}                                  % AMS math symbols
-            \RequirePackage{mathtools}                                % Math tools extension
-            \RequirePackage{moresize}                                 % More font sizes
-            \RequirePackage{nicefrac}                                 % Nice fractions
-            \RequirePackage{siunitx}                                  % SI units
-            \RequirePackage{fontspec}                                 % Font selection for XeTeX
-            \RequirePackage{unicode-math}                             % Unicode math support
-            \RequirePackage{libertineRoman}                           % Libertine Roman font
-            \setmainfont[Scale=MatchUppercase]{linuxlibertineo}       % Set main font
-            \setmathfont[Scale=MatchUppercase]{libertinusmath}        % Set math font
-            \setmonofont[Scale=MatchLowercase]{firamono}              % Set monospaced font
-            \setsansfont[Scale=MatchLowercase]{ysabeau}               % Set sans-serif font
-            \let\mathbfcal\relax                                      % Avoid conflicts: clear \mathbfcal
-            \let\mathbfscr\relax                                      % Avoid conflicts: clear \mathbfscr
-            \RequirePackage{mathrsfs}                                 % Script math font
-            \RequirePackage[cal=cm,bb=bboldx,scr=esstix]{mathalpha}   % Math alphabets
+            \typeout{csdirty: Loading Libertinus math for XeTeX}   % Print info to log
+            \RequirePackage[T1]{fontenc}                           % Use T1 font encoding for text
+            \RequirePackage{amssymb}                               % AMS math symbols
+            \RequirePackage{mathtools}                             % Math tools extension
+            \RequirePackage{moresize}                              % More font sizes
+            \RequirePackage{nicefrac}                              % Nice fractions
+            \RequirePackage{siunitx}                               % SI units
+            \RequirePackage{fontspec}                              % Font selection for XeTeX
+            \RequirePackage{unicode-math}                          % Unicode math support
+            \RequirePackage{libertineRoman}                        % Libertine Roman font (text)
+            % Set main (serif) font
+            \setmainfont[%
+                Scale=MatchUppercase,                                               % Scaling Factor
+                SmallCapsFeatures={RawFeature=+smcp},                               % Enable small caps
+                RawFeature={+calt,+case,+dlig,+kern,+liga,+lnum,+mark,+mkmk,+pnum}  % Typographic features
+            ]{linuxlibertineo}
+            % Set math font
+            \setmathfont[%
+                Scale=MatchUppercase,                                               % Scaling Factor
+                SmallCapsFeatures={RawFeature=+smcp},                               % Enable small caps
+                RawFeature={+calt,+case,+dlig,+kern,+liga,+lnum,+mark,+mkmk,+pnum}  % Typographic features
+            ]{libertinusmath}
+            % Set monospaced font
+            \setmonofont[%
+                Scale=MatchLowercase,                                               % Scaling Factor
+                SmallCapsFeatures={RawFeature=+smcp},                               % Enable small caps
+                RawFeature={+calt,+case,+dlig,+kern,+liga,+lnum,+mark,+mkmk,+pnum}  % Typographic features
+            ]{notosansmono}
+            % Set sans-serif font
+            \setsansfont[%
+                Scale=MatchLowercase,                                               % Scaling Factor
+                SmallCapsFeatures={RawFeature=+smcp},                               % Enable small caps
+                RawFeature={+calt,+case,+kern,+liga,+lnum,+mark,+mkmk,+pnum}  % Typographic features
+            ]{ysabeau}
+            % Avoid conflicts with math font packages
+            \let\mathbfcal\relax
+            \let\mathbfscr\relax
+            \RequirePackage{mathrsfs}                              % Script math font (\mathscr)
+            \RequirePackage[cal=cm,bb=bboldx,scr=esstix]{mathalpha}% Math alphabets: cal, blackboard bold, script
         \else
-            \typeout{csdirty: Libertinus math setup not supported for this engine.} % Print info to log
+            \typeout{csdirty: Libertinus math setup not supported for this engine.}
         \fi
     \fi
 }
@@ -471,9 +509,16 @@
     urlcolor=SpringGreen4                                    % Color for URLs
 ]{hyperref}
 \AtBeginDocument{%
-    \RequirePackage[capitalize,nameinlink,noabbrev]{cleveref}% Clever references
+    \RequirePackage[capitalize,nameinlink,noabbrev]{cleveref} % Clever references
+    % Sectioning names for cleveref
+    \crefname{section}{\textsection}{\textsection\textsection}
+    \Crefname{section}{\textsection}{\textsection\textsection}
+    \crefname{subsection}{\textsection}{\textsection\textsection}
+    \Crefname{subsection}{\textsection}{\textsection\textsection}
+    \crefname{subsubsection}{\textsection}{\textsection\textsection}
+    \Crefname{subsubsection}{\textsection}{\textsection\textsection}
 }
-\RequirePackage{xr}                                          % Cross-document references
+\RequirePackage{xr}                                           % Cross-document references
 % Customize backrefs
 \renewcommand*{\backref}[1]{}
 \renewcommand*{\backrefalt}[4]{%
