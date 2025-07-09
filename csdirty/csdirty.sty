@@ -470,6 +470,9 @@
     unicode=true,                                            % Support for Unicode
     urlcolor=SpringGreen4                                    % Color for URLs
 ]{hyperref}
+\AtBeginDocument{%
+    \RequirePackage[capitalize,nameinlink,noabbrev]{cleveref}% Clever references
+}
 \RequirePackage{xr}                                          % Cross-document references
 % Customize backrefs
 \renewcommand*{\backref}[1]{}
