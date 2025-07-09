@@ -289,7 +289,7 @@
 \RequirePackage[autostyle=true, csdisplay=true]{csquotes}    % Automatic quotation marks and smart citations
 \RequirePackage[final]{microtype}                            % Improved justification and hyphenation
 \RequirePackage[full]{textcomp}                              % Additional text symbols (e.g., degree sign)
-\RequirePackage[sort,nocompress]{cite}                       % Citation package for references
+\RequirePackage[nocompress]{cite}                            % Citation package for references
 \RequirePackage[normalem]{ulem}                              % Underlining and strikethrough capabilities
 \RequirePackage{emptypage}                                   % No page numbers on empty pages
 \RequirePackage{lipsum}                                      % Dummy text
@@ -314,9 +314,9 @@
         \RequirePackage{fontspec}
         \RequirePackage{unicode-math}
         \RequirePackage{libertineRoman}
-        \setmainfont[Scale=MatchUppercase]{Linux Libertine O}
-        \setmathfont[Scale=MatchUppercase]{Libertinus Math}
-        \setmonofont[Scale=MatchLowercase]{droidsansmono}
+        \setmainfont[Scale=MatchUppercase]{linuxlibertineo}
+        \setmathfont[Scale=MatchUppercase]{libertinusmath}
+        \setmonofont[Scale=MatchLowercase]{firamono}
         \setsansfont[Scale=MatchLowercase]{ysabeau}
         \let\mathbfcal\relax
         \let\mathbfscr\relax
@@ -332,9 +332,9 @@
             \RequirePackage{fontspec}
             \RequirePackage{unicode-math}
             \RequirePackage{libertineRoman}
-            \setmainfont[Scale=MatchUppercase]{Linux Libertine O}
-            \setmathfont[Scale=MatchUppercase]{Libertinus Math}
-            \setmonofont[Scale=MatchLowercase]{droidsansmono}
+            \setmainfont[Scale=MatchUppercase]{linuxlibertineo}
+            \setmathfont[Scale=MatchUppercase]{libertinusmath}
+            \setmonofont[Scale=MatchLowercase]{firamono}
             \setsansfont[Scale=MatchLowercase]{ysabeau}
             \let\mathbfcal\relax
             \let\mathbfscr\relax
@@ -448,7 +448,6 @@
 \RequirePackage{adjustbox}                                     % Graphic/table boxes: scaling, trimming, framing
 \RequirePackage{array}                                         % Custom column types and alignment
 \RequirePackage{booktabs}                                      % High-quality horizontal rules for tables
-\RequirePackage{caption}                                       % Custom caption formatting
 \RequirePackage{colortbl}                                      % Cell background coloring in tables
 \RequirePackage{dashbox}                                       % Dashed framed boxes
 \RequirePackage{diagbox}                                       % Diagonal split table headers
@@ -478,6 +477,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \ifllncscrypto@loadcaptions
     \AtBeginDocument{%
+        \RequirePackage{caption}                                   % Custom caption formatting
         \captionsetup{%
             font={rm},                                             % Roman font
             labelfont={color=black,sc},                            % Label in black roman
@@ -1293,6 +1293,7 @@
 
 \AtBeginDocument{%
     \IfFileExists{settings.tex}{\input{settings.tex}}{\typeout{"settings.tex" does not exists!}}
+    \IfFileExists{commands.tex}{\input{commands.tex}}{\typeout{"commands.tex" does not exists!}}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
