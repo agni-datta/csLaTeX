@@ -157,103 +157,103 @@
 % Set up line spacing
 \ifthenelse{\equal{\csl@linespacing}{single}}{
 	\renewcommand{\baselinestretch}{1}
-	}{
+}{
 	\ifthenelse{\equal{\csl@linespacing}{onehalf}}{
 		\renewcommand{\baselinestretch}{1.5}
-		}{
+	}{
 		\renewcommand{\baselinestretch}{2}
 	}
-	}
-	
-	% Set up paragraph indentation
-	\ifcsl@parindent
+}
+
+% Set up paragraph indentation
+\ifcsl@parindent
 	\setlength{\parindent}{1em}
-	\else
+\else
 	\setlength{\parindent}{0pt}
-	\fi
-	
-	% Define letter components
-	\newcommand{\letterhead}[1]{
-		\ifcsl@logo
+\fi
+
+% Define letter components
+\newcommand{\letterhead}[1]{
+	\ifcsl@logo
 		\includegraphics[width=3cm]{\csl@logofile}
-		\fi
-		\vspace{1cm}
-		{\Large\textbf{#1}}
-		\vspace{0.5cm}
-	}
-	
-	\newcommand{\letterdate}{
-		\ifcsl@date
+	\fi
+	\vspace{1cm}
+	{\Large\textbf{#1}}
+	\vspace{0.5cm}
+}
+
+\newcommand{\letterdate}{
+	\ifcsl@date
 		\today
-		\fi
-	}
-	
-	\newcommand{\lettersubject}[1]{
-		\ifcsl@subject
+	\fi
+}
+
+\newcommand{\lettersubject}[1]{
+	\ifcsl@subject
 		\textbf{Subject:} #1
 		\vspace{0.5cm}
-		\fi
-	}
-	
-	\newcommand{\lettersalutation}[1]{
-		\csl@salutation\ #1,
-	}
-	
-	\newcommand{\letterclosing}{
-		\vspace{1cm}
-		\csl@closing,
-		\vspace{2cm}
-		\ifcsl@signature
+	\fi
+}
+
+\newcommand{\lettersalutation}[1]{
+	\csl@salutation\ #1,
+}
+
+\newcommand{\letterclosing}{
+	\vspace{1cm}
+	\csl@closing,
+	\vspace{2cm}
+	\ifcsl@signature
 		\includegraphics[width=4cm]{\csl@signaturefile}
-		\fi
-	}
-	
-	% Set up header and footer
-	\ifcsl@header
+	\fi
+}
+
+% Set up header and footer
+\ifcsl@header
 	\pagestyle{fancy}
 	\fancyhead{}
 	\ifthenelse{\equal{\csl@headerpos}{left}}{
 		\fancyhead[L]{\color{cslheader}\textsl{Letter Header}}
-		}{
+	}{
 		\ifthenelse{\equal{\csl@headerpos}{right}}{
 			\fancyhead[R]{\color{cslheader}\textsl{Letter Header}}
-			}{
+		}{
 			\fancyhead[C]{\color{cslheader}\textsl{Letter Header}}
 		}
+	}
+\fi
+
+\ifcsl@footer
+	\pagestyle{fancy}
+	\fancyfoot{}
+	\ifthenelse{\equal{\csl@footerpos}{left}}{
+		\fancyfoot[L]{\color{cslfooter}\textsl{Page \thepage}}
+	}{
+		\ifthenelse{\equal{\csl@footerpos}{right}}{
+			\fancyfoot[R]{\color{cslfooter}\textsl{Page \thepage}}
+		}{
+			\fancyfoot[C]{\color{cslfooter}\textsl{Page \thepage}}
 		}
-		\fi
-		
-		\ifcsl@footer
-		\pagestyle{fancy}
-		\fancyfoot{}
-		\ifthenelse{\equal{\csl@footerpos}{left}}{
-			\fancyfoot[L]{\color{cslfooter}\textsl{Page \thepage}}
-			}{
-			\ifthenelse{\equal{\csl@footerpos}{right}}{
-				\fancyfoot[R]{\color{cslfooter}\textsl{Page \thepage}}
-				}{
-				\fancyfoot[C]{\color{cslfooter}\textsl{Page \thepage}}
-			}
-			}
-			\fi
-			
-			% Define letter environment
-			\newenvironment{csletter}[2]{
-				\letterhead{#1}
-				\letterdate
-				\vspace{1cm}
-				#2
-				\vspace{1cm}
-				}{
-				\letterclosing
-			}
-			
-			% Hyperref setup
-			\hypersetup{
-				colorlinks=true,
-				linkcolor=cslaccent,
-				filecolor=cslaccent,
-				urlcolor=cslaccent,
-			}
-			
-			\endinput
+	}
+\fi
+
+% Define letter environment
+\newenvironment{csletter}[2]{
+	\letterhead{#1}
+	\letterdate
+	\vspace{1cm}
+	#2
+	\vspace{1cm}
+}{
+	\letterclosing
+}
+
+% Hyperref setup
+\hypersetup{
+	colorlinks=true,
+	linkcolor=cslaccent,
+	filecolor=cslaccent,
+	urlcolor=cslaccent,
+}
+
+\endinput

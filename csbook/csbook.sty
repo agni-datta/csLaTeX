@@ -598,41 +598,41 @@
 \AtEndPreamble{%
 	% Part title formatting
 	\titleformat{\part}[display]
-    	{\partfont\RaggedRight}                    % Font and alignment
-    	{\color{accentcolor}\LARGE\partname~\normalfont\thepart} % Title and number format
-    	{0pt}                                      % Space between number and title
-    	{\titlerule\bigskip\Huge#1\vfill}          % Title appearance
-    	\titlespacing*{\part}{0pt}{\fill}{\fill}   % Title spacing
+	{\partfont\RaggedRight}                    % Font and alignment
+	{\color{accentcolor}\LARGE\partname~\normalfont\thepart} % Title and number format
+	{0pt}                                      % Space between number and title
+	{\titlerule\bigskip\Huge#1\vfill}          % Title appearance
+	\titlespacing*{\part}{0pt}{\fill}{\fill}   % Title spacing
 
 	% Chapter title formatting
 	\titleformat{\chapter}[display]
-    	{\chapterfont}                             % Font style
-    	{\RaggedLeft{\rmfamily\scshape\large\chaptertitlename}~\Huge\normalfont\color{accentcolor}\thechapter} % Title and number format
-    	{1ex}                                      % Space between number and title
-    	{\titlerule\vspace{1ex}#1}[\vspace{1ex}\titlerule] % Title appearance and rule
-    	\titlespacing*{\chapter}{0pt}{25pt}{25pt}  % Title spacing
+	{\chapterfont}                             % Font style
+	{\RaggedLeft{\rmfamily\scshape\large\chaptertitlename}~\Huge\normalfont\color{accentcolor}\thechapter} % Title and number format
+	{1ex}                                      % Space between number and title
+	{\titlerule\vspace{1ex}#1}[\vspace{1ex}\titlerule] % Title appearance and rule
+	\titlespacing*{\chapter}{0pt}{25pt}{25pt}  % Title spacing
 
 	% Section title formatting
 	\titleformat{\section}[block]
-    	{\sectionfont}                             % Font style
-    	{\color{accentcolor}\thesection}  % Title and number format
-    	{10pt}                                     % Space between number and title
-    	{#1}[\vspace{5pt}\titlerule]               % Title appearance and rule
-    	\titlespacing*{\section}{0pt}{15pt}{15pt}  % Title spacing
+	{\sectionfont}                             % Font style
+	{\color{accentcolor}\thesection}  % Title and number format
+	{10pt}                                     % Space between number and title
+	{#1}[\vspace{5pt}\titlerule]               % Title appearance and rule
+	\titlespacing*{\section}{0pt}{15pt}{15pt}  % Title spacing
 
 	% Subsection title formatting
 	\titleformat{\subsection}[block]
-    	{\subsectionfont}                          % Font style
-    	{\color{accentcolor}\thesubsection}  % Title and number format
-    	{7.5pt}                                    % Space between number and title
-    	{#1}                                       % Title content
+	{\subsectionfont}                          % Font style
+	{\color{accentcolor}\thesubsection}  % Title and number format
+	{7.5pt}                                    % Space between number and title
+	{#1}                                       % Title content
 
 	% Subsubsection title formatting
 	\titleformat{\subsubsection}[block]
-    	{\subsubsectionfont}                       % Font style
-    	{\color{accentcolor}\thesubsubsection}     % Title and number format
-    	{5pt}                                      % Space between number and title
-    	{#1.}                                      % Title content with period
+	{\subsubsectionfont}                       % Font style
+	{\color{accentcolor}\thesubsubsection}     % Title and number format
+	{5pt}                                      % Space between number and title
+	{#1.}                                      % Title content with period
 
 	% Paragraph and subparagraph formatting
 	\renewcommand{\paragraph}[1]{\noindent\normalfont{\textbf{#1.}}}  % Paragraph format
@@ -683,18 +683,18 @@
 
 % Custom index style
 \begin{filecontents}{csindex.ist}
-quote '+'
-letter_group
-symhead_positive "Symbols"
-numhead_positive "Numbers"
-headings_flag 1
-heading_prefix "\\textcolor{\\accentcolor}{\\large\\textbf{" heading_suffix "}}\n"
-delim_0 "\\dotfill"
-delim_1 "\\dotfill"
-delim_2 "\\dotfill"
-delim_r "\\dotfill"
-preamble "\\begin{theindex}\n\\small\n"
-postamble "\n\\end{theindex}\n"
+	quote '+'
+	letter_group
+	symhead_positive "Symbols"
+	numhead_positive "Numbers"
+	headings_flag 1
+	heading_prefix "\\textcolor{\\accentcolor}{\\large\\textbf{" heading_suffix "}}\n"
+	delim_0 "\\dotfill"
+	delim_1 "\\dotfill"
+	delim_2 "\\dotfill"
+	delim_r "\\dotfill"
+	preamble "\\begin{theindex}\n\\small\n"
+		postamble "\n\\end{theindex}\n"
 \end{filecontents}
 
 % Create the index with the custom style and layout
@@ -744,7 +744,7 @@ postamble "\n\\end{theindex}\n"
 \setabbreviationstyle[acronym]{long-short}  % Acronym style
 \renewcommand{\glsnamefont}[1]{{\normalfont\sffamily\color{accentcolor}#1.}} % Glossary name font
 \renewcommand{\glossarypreamble}{\begin{normalsize}} % Glossary preamble
-\renewcommand{\glossarypostamble}{\end{normalsize}} % Glossary postamble
+		\renewcommand{\glossarypostamble}{\end{normalsize}} % Glossary postamble
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Package for Customizing Lists
@@ -1452,7 +1452,7 @@ postamble "\n\\end{theindex}\n"
 		\crefname{motivation}{motivation}{motivations}%
 		\crefname{note}{note}{notes}%
 		\crefname{observation}{observation}{observations}%
-        \crefname{openproblem}{open problem}{open problems}%
+		\crefname{openproblem}{open problem}{open problems}%
 		\crefname{question}{question}{questions}%
 		\crefname{remark}{remark}{remarks}%
 
@@ -1632,7 +1632,7 @@ postamble "\n\\end{theindex}\n"
 			\normalfont\bfseries\LARGE%   % Title font style
 			\begingroup
 			}%
-	\posttitle{%
+			\posttitle{%
 			\endgroup
 			\vspace{1em} % Space between title and rule
 			\hrule width \textwidth height 1pt % Horizontal rule below title
@@ -1655,7 +1655,7 @@ postamble "\n\\end{theindex}\n"
 		\begin{center}%
 			\normalfont\scshape\large%  % Author font style
 			}%
-	\postauthor{%
+			\postauthor{%
 			\par\vspace{1em} % Space after author name
 			\vspace{1em} % Additional space after author name
 		\end{center}%
@@ -1666,7 +1666,7 @@ postamble "\n\\end{theindex}\n"
 		\begin{center}%
 			\normalfont\small%   % Date font style
 			}%
-	\postdate{%
+			\postdate{%
 			\par\vspace*{2em} % Space after date section
 		\end{center}%
 	}%
@@ -1710,13 +1710,13 @@ postamble "\n\\end{theindex}\n"
 		{\noindent\normalsize By \@author}\par\smallskip % Author information
 		{\noindent\textcopyright~\@date. All Rights Reserved.}\par\small % Copyright symbol and date
 	\end{flushleft}
-    % Push content to the bottom
+	% Push content to the bottom
 	\vspace*{\fill}
 	% Copyright and usage notice
-    \begingroup
-		This is a prepublication manuscript. The contents are subject to revision and may differ from the final published version. This draft is provided for limited distribution for academic, editorial, and peer review purposes only. It should not be considered a final or authoritative edition of the work. All rights to this manuscript, including but not limited to rights of reproduction, distribution, adaptation, and public display, are reserved by the author. No part of this work may be copied, shared, reproduced, stored, or transmitted in any form, including electronic, mechanical, photocopying, or any other means, without explicit prior written permission from the author or authorized publisher.
-        
-        The author grants permission for fair use in academic discourse, including citation, commentary, and critique. However, commercial reproduction, distribution, adaptation, and integration into artificial intelligence or machine learning models are strictly prohibited without formal licensing agreements. This manuscript is provided ``as is'' without warranties, express or implied. The author makes no representations regarding the accuracy, completeness, or suitability of the content for any specific purpose. The author assumes no liability for any reliance on this work before its official publication. For permissions, licensing, or inquiries regarding publication rights, please get in touch with the author directly. Unauthorized use may result in legal action under applicable copyright and intellectual property laws.
+	\begingroup
+	This is a prepublication manuscript. The contents are subject to revision and may differ from the final published version. This draft is provided for limited distribution for academic, editorial, and peer review purposes only. It should not be considered a final or authoritative edition of the work. All rights to this manuscript, including but not limited to rights of reproduction, distribution, adaptation, and public display, are reserved by the author. No part of this work may be copied, shared, reproduced, stored, or transmitted in any form, including electronic, mechanical, photocopying, or any other means, without explicit prior written permission from the author or authorized publisher.
+
+	The author grants permission for fair use in academic discourse, including citation, commentary, and critique. However, commercial reproduction, distribution, adaptation, and integration into artificial intelligence or machine learning models are strictly prohibited without formal licensing agreements. This manuscript is provided ``as is'' without warranties, express or implied. The author makes no representations regarding the accuracy, completeness, or suitability of the content for any specific purpose. The author assumes no liability for any reliance on this work before its official publication. For permissions, licensing, or inquiries regarding publication rights, please get in touch with the author directly. Unauthorized use may result in legal action under applicable copyright and intellectual property laws.
 	\endgroup
 	\endgroup
 	\cleardoublepage % Start a new page

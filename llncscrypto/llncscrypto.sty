@@ -241,46 +241,46 @@
 % PDF and Document Structure Control
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage[%
-    2.0,
-    objcompress,
-    compress
+	2.0,
+	objcompress,
+	compress
 ]{bxpdfver} % PDF version and compression settings
 \RequirePackage[nottoc]{tocbibind}                           % Add bibliography, list of figures, etc. to TOC
 \RequirePackage{babel}                                       % Language, hyphenation
 \RequirePackage{pdfpages}                                    % Include external PDFs
 \RequirePackage{refcount}                                    % Reference counting
 \ifllncscrypto@loadfullpage
-    % Load full page and header/footer packages
-    \RequirePackage{fullpage}      % Full page layout
-    \RequirePackage{fancyhdr}      % Custom headers/footers
-    \RequirePackage{setspace}      % Line spacing
+	% Load full page and header/footer packages
+	\RequirePackage{fullpage}      % Full page layout
+	\RequirePackage{fancyhdr}      % Custom headers/footers
+	\RequirePackage{setspace}      % Line spacing
 
-    % Set line spacing
-    \setstretch{1.15}
+	% Set line spacing
+	\setstretch{1.15}
 
-    % Patch \@maketitle to use larger, bold title
-    \xpatchcmd{\@maketitle}
-    {\@title}
-    {\LARGE\normalfont\bfseries\@title\par}
-    {}{}
+	% Patch \@maketitle to use larger, bold title
+	\xpatchcmd{\@maketitle}
+	{\@title}
+	{\LARGE\normalfont\bfseries\@title\par}
+	{}{}
 
-    % Preprint header macro with optional left/right header text using fancyhdr
-    \NewDocumentCommand{\preprint}{O{}O{}}{%
-    \AtEndPreamble{%
-        \fancypagestyle{preprinthdr}{%
-            \fancyhf{}%
-            \IfValueT{#1}{\fancyhead[L]{\textsc{#1}}}%
-            \IfValueT{#2}{\fancyhead[R]{\textsc{#2}}}%
-            \fancyfoot[C]{\thepage}%
-            \renewcommand{\headrulewidth}{0pt}%
-            \renewcommand{\footrulewidth}{0pt}%
-        }%
-        % Adjust header and text body separation to prevent overlap
-        \setlength{\headheight}{15pt}%
-        \setlength{\headsep}{20pt}%
-        \pagestyle{preprinthdr}%
-    }%
-    }
+	% Preprint header macro with optional left/right header text using fancyhdr
+	\NewDocumentCommand{\preprint}{O{}O{}}{%
+	\AtEndPreamble{%
+		\fancypagestyle{preprinthdr}{%
+			\fancyhf{}%
+			\IfValueT{#1}{\fancyhead[L]{\textsc{#1}}}%
+			\IfValueT{#2}{\fancyhead[R]{\textsc{#2}}}%
+			\fancyfoot[C]{\thepage}%
+			\renewcommand{\headrulewidth}{0pt}%
+			\renewcommand{\footrulewidth}{0pt}%
+		}%
+		% Adjust header and text body separation to prevent overlap
+		\setlength{\headheight}{15pt}%
+		\setlength{\headsep}{20pt}%
+		\pagestyle{preprinthdr}%
+	}%
+	}
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
@@ -305,110 +305,110 @@
 
 % Libertine/Libertinus font setup (modular, reusable)
 \newcommand{\llncscrypto@libertine}{%
-    \ifLuaTeX
-        \typeout{llncscrypto: Loading Libertinus setup for LuaTeX}
-        \RequirePackage[T1]{fontenc}
-        \RequirePackage{moresize}
-        \RequirePackage{nicefrac}
-        \RequirePackage{siunitx}
-        \RequirePackage{fontspec}
-        \RequirePackage{unicode-math}
-        \RequirePackage{libertineRoman}
-        \setmainfont[Scale=MatchUppercase]{linuxlibertineo}
-        \setmathfont[Scale=MatchUppercase]{libertinusmath}
-        \setmonofont[Scale=MatchLowercase]{firamono}
-        \setsansfont[Scale=MatchLowercase]{ysabeau}
-        \let\mathbfcal\relax
-        \let\mathbfscr\relax
-        \RequirePackage{mathrsfs}
-        \RequirePackage[cal=stixplain,bb=bboldx,scr=esstix]{mathalpha}
-    \else
-        \ifXeTeX
-            \typeout{llncscrypto: Loading Libertinus setup for XeTeX}
-            \RequirePackage[T1]{fontenc}
-            \RequirePackage{moresize}
-            \RequirePackage{nicefrac}
-            \RequirePackage{siunitx}
-            \RequirePackage{fontspec}
-            \RequirePackage{unicode-math}
-            \RequirePackage{libertineRoman}
-            \setmainfont[Scale=MatchUppercase]{linuxlibertineo}
-            \setmathfont[Scale=MatchUppercase]{libertinusmath}
-            \setmonofont[Scale=MatchLowercase]{firamono}
-            \setsansfont[Scale=MatchLowercase]{ysabeau}
-            \let\mathbfcal\relax
-            \let\mathbfscr\relax
-            \RequirePackage{mathrsfs}
-            \RequirePackage[cal=stixplain,bb=bboldx,scr=esstix]{mathalpha}
-        \else
-            \typeout{llncscrypto: Libertine/Libertinus setup not supported for this engine.}
-        \fi
-    \fi
+	\ifLuaTeX
+		\typeout{llncscrypto: Loading Libertinus setup for LuaTeX}
+		\RequirePackage[T1]{fontenc}
+		\RequirePackage{moresize}
+		\RequirePackage{nicefrac}
+		\RequirePackage{siunitx}
+		\RequirePackage{fontspec}
+		\RequirePackage{unicode-math}
+		\RequirePackage{libertineRoman}
+		\setmainfont[Scale=MatchUppercase]{linuxlibertineo}
+		\setmathfont[Scale=MatchUppercase]{libertinusmath}
+		\setmonofont[Scale=MatchLowercase]{firamono}
+		\setsansfont[Scale=MatchLowercase]{ysabeau}
+		\let\mathbfcal\relax
+		\let\mathbfscr\relax
+		\RequirePackage{mathrsfs}
+		\RequirePackage[cal=stixplain,bb=bboldx,scr=esstix]{mathalpha}
+	\else
+		\ifXeTeX
+			\typeout{llncscrypto: Loading Libertinus setup for XeTeX}
+			\RequirePackage[T1]{fontenc}
+			\RequirePackage{moresize}
+			\RequirePackage{nicefrac}
+			\RequirePackage{siunitx}
+			\RequirePackage{fontspec}
+			\RequirePackage{unicode-math}
+			\RequirePackage{libertineRoman}
+			\setmainfont[Scale=MatchUppercase]{linuxlibertineo}
+			\setmathfont[Scale=MatchUppercase]{libertinusmath}
+			\setmonofont[Scale=MatchLowercase]{firamono}
+			\setsansfont[Scale=MatchLowercase]{ysabeau}
+			\let\mathbfcal\relax
+			\let\mathbfscr\relax
+			\RequirePackage{mathrsfs}
+			\RequirePackage[cal=stixplain,bb=bboldx,scr=esstix]{mathalpha}
+		\else
+			\typeout{llncscrypto: Libertine/Libertinus setup not supported for this engine.}
+		\fi
+	\fi
 }
 
 % Concrete math font setup (modular, reusable)
 \newcommand{\llncscrypto@concrete}{%
-    \ifLuaTeX
-        \typeout{llncscrypto: Loading Concrete math for LuaTeX}
-        \RequirePackage[T1]{fontenc}
-        \RequirePackage{moresize}
-        \RequirePackage{nicefrac}
-        \RequirePackage{siunitx}
-        \RequirePackage{fontspec}
-        \RequirePackage{unicode-math}
-        \RequirePackage[concrete]{fontsetup}
-        \let\mathbfcal\relax
-        \let\mathbfscr\relax
-        \RequirePackage{mathrsfs}
-        \RequirePackage[bb=bboldx,cal=cm,scr=esstix]{mathalpha}
-    \else
-        \ifXeTeX
-            \typeout{llncscrypto: Loading Concrete math for XeTeX}
-            \RequirePackage[T1]{fontenc}
-            \RequirePackage{moresize}
-            \RequirePackage{nicefrac}
-            \RequirePackage{siunitx}
-            \RequirePackage{fontspec}
-            \RequirePackage{unicode-math}
-            \RequirePackage[concrete]{fontsetup}
-            \let\mathbfcal\relax
-            \let\mathbfscr\relax
-            \RequirePackage{mathrsfs}
-            \RequirePackage[bb=bboldx,cal=cm,scr=esstix]{mathalpha}
-        \else
-            \typeout{llncscrypto: Concrete math setup not supported for this engine.}
-        \fi
-    \fi
+	\ifLuaTeX
+		\typeout{llncscrypto: Loading Concrete math for LuaTeX}
+		\RequirePackage[T1]{fontenc}
+		\RequirePackage{moresize}
+		\RequirePackage{nicefrac}
+		\RequirePackage{siunitx}
+		\RequirePackage{fontspec}
+		\RequirePackage{unicode-math}
+		\RequirePackage[concrete]{fontsetup}
+		\let\mathbfcal\relax
+		\let\mathbfscr\relax
+		\RequirePackage{mathrsfs}
+		\RequirePackage[bb=bboldx,cal=cm,scr=esstix]{mathalpha}
+	\else
+		\ifXeTeX
+			\typeout{llncscrypto: Loading Concrete math for XeTeX}
+			\RequirePackage[T1]{fontenc}
+			\RequirePackage{moresize}
+			\RequirePackage{nicefrac}
+			\RequirePackage{siunitx}
+			\RequirePackage{fontspec}
+			\RequirePackage{unicode-math}
+			\RequirePackage[concrete]{fontsetup}
+			\let\mathbfcal\relax
+			\let\mathbfscr\relax
+			\RequirePackage{mathrsfs}
+			\RequirePackage[bb=bboldx,cal=cm,scr=esstix]{mathalpha}
+		\else
+			\typeout{llncscrypto: Concrete math setup not supported for this engine.}
+		\fi
+	\fi
 }
 
 % Default font setup (modular, reusable)
 \newcommand{\llncscrypto@defaultfont}{%
-    \RequirePackage[T1]{fontenc}
-    \RequirePackage{lmodern}
-    \RequirePackage{amsfonts}
-    \RequirePackage{amsmath}
-    \RequirePackage{amssymb}
-    \RequirePackage{mathrsfs}
-    \RequirePackage{bm}
-    \RequirePackage{mathrsfs}
-    \RequirePackage{mathtools}
-    \RequirePackage{moresize}
-    \RequirePackage{nicefrac}
-    \RequirePackage{siunitx}
-    \let\mathbfcal\relax
-    \let\mathbfscr\relax
-    \RequirePackage[cal=stixplain,bb=bboldx,scr=esstix]{mathalpha}
+	\RequirePackage[T1]{fontenc}
+	\RequirePackage{lmodern}
+	\RequirePackage{amsfonts}
+	\RequirePackage{amsmath}
+	\RequirePackage{amssymb}
+	\RequirePackage{mathrsfs}
+	\RequirePackage{bm}
+	\RequirePackage{mathrsfs}
+	\RequirePackage{mathtools}
+	\RequirePackage{moresize}
+	\RequirePackage{nicefrac}
+	\RequirePackage{siunitx}
+	\let\mathbfcal\relax
+	\let\mathbfscr\relax
+	\RequirePackage[cal=stixplain,bb=bboldx,scr=esstix]{mathalpha}
 }
 
 % Font selection logic
 \ifllncscrypto@loadpreprintlibertinus
-    \llncscrypto@libertine
+	\llncscrypto@libertine
 \else
-    \ifllncscrypto@loadpreprintconcrete
-        \llncscrypto@concrete
-    \else
-        \llncscrypto@defaultfont
-    \fi
+	\ifllncscrypto@loadpreprintconcrete
+		\llncscrypto@concrete
+	\else
+		\llncscrypto@defaultfont
+	\fi
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -416,28 +416,28 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage{nameref}                                     % Name-based referencing
 \RequirePackage[%
-    bookmarksnumbered=true,                                  % Number PDF bookmarks
-    breaklinks=true,                                         % Allow links to break over lines
-    citecolor=SlateBlue2,                                    % Color for citations
-    colorlinks=true,                                         % Use colored links
-    frenchlinks=true,                                        % Use small caps for links
-    linkcolor=RoyalBlue2,                                    % Color for internal links
-    pagebackref,                                             % Back-references from bibliography
-    pdfencoding=auto,                                        % Automatic encoding detection
-    pdfpagelabels=true,                                      % Correct page labels in PDF
-    pdfpagelayout=SinglePage,                                % Single page view
-    pdfstartview=FitH,                                       % Fit the page to the window
-    pdfusetitle,                                             % Use document title as PDF title
-    unicode=true,                                            % Support for Unicode
-    urlcolor=SpringGreen4                                    % Color for URLs
+	bookmarksnumbered=true,                                  % Number PDF bookmarks
+	breaklinks=true,                                         % Allow links to break over lines
+	citecolor=SlateBlue2,                                    % Color for citations
+	colorlinks=true,                                         % Use colored links
+	frenchlinks=true,                                        % Use small caps for links
+	linkcolor=RoyalBlue2,                                    % Color for internal links
+	pagebackref,                                             % Back-references from bibliography
+	pdfencoding=auto,                                        % Automatic encoding detection
+	pdfpagelabels=true,                                      % Correct page labels in PDF
+	pdfpagelayout=SinglePage,                                % Single page view
+	pdfstartview=FitH,                                       % Fit the page to the window
+	pdfusetitle,                                             % Use document title as PDF title
+	unicode=true,                                            % Support for Unicode
+	urlcolor=SpringGreen4                                    % Color for URLs
 ]{hyperref}
 \RequirePackage{xr}                                          % Cross-document references
 % Customize backrefs
 \renewcommand*{\backref}[1]{}
 \renewcommand*{\backrefalt}[4]{%
-    \ifcase #1\or (Cited on p.~#2).%
-    \else (Cited on pp.~#2).%
-    \fi
+	\ifcase #1\or (Cited on p.~#2).%
+	\else (Cited on pp.~#2).%
+	\fi
 }
 % Full reference combining hyperref, autoref, and nameref.
 \newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1}~\nameref*{#1}}}
@@ -476,18 +476,18 @@
 % Captions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \ifllncscrypto@loadcaptions
-    \AtBeginDocument{%
-        \RequirePackage{caption}                                   % Custom caption formatting
-        \captionsetup{%
-            font={rm},                                             % Roman font
-            labelfont={color=black,sc},                            % Label in black roman
-            labelsep=colon,                                        % Label ends with colon
-            skip=5pt,                                              % Space below caption
-            belowskip=0pt                                          % Skip below caption
-        }%
-    }%
-    \captionsetup[table]{position=bottom, skip=5pt}                % Table captions below
-    \captionsetup[figure]{position=bottom, skip=5pt}               % Figure captions below
+	\AtBeginDocument{%
+		\RequirePackage{caption}                                   % Custom caption formatting
+		\captionsetup{%
+			font={rm},                                             % Roman font
+			labelfont={color=black,sc},                            % Label in black roman
+			labelsep=colon,                                        % Label ends with colon
+			skip=5pt,                                              % Space below caption
+			belowskip=0pt                                          % Skip below caption
+		}%
+	}%
+	\captionsetup[table]{position=bottom, skip=5pt}                % Table captions below
+	\captionsetup[figure]{position=bottom, skip=5pt}               % Figure captions below
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -514,215 +514,215 @@
 % Enhanced epigraph command
 \let\oldepigraph\epigraph
 \renewcommand{\epigraph}[2]{%
-    \oldepigraph{\textsf{#1}}{\smallskip\textsc{#2}}%
+	\oldepigraph{\textsf{#1}}{\smallskip\textsc{#2}}%
 }
 
 \RequirePackage[most]{tcolorbox}                              % Colored and styled boxes
 \RequirePackage[%
-    skipabove=10pt,                                           % Vertical space above the frame
-    skipbelow=10pt,                                           % Vertical space below the frame
-    ntheorem,                                                 % Compatibility with theorem environments
-    framemethod=Tikz                                          % Use TikZ for frame rendering
+	skipabove=10pt,                                           % Vertical space above the frame
+	skipbelow=10pt,                                           % Vertical space below the frame
+	ntheorem,                                                 % Compatibility with theorem environments
+	framemethod=Tikz                                          % Use TikZ for frame rendering
 ]{mdframed}                                                   % Framed environments with theorem support
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % TikZ
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \ifllncscrypto@loadtikz
-    \RequirePackage{pgfplots}                                     % Function/data plots
-    \pgfplotsset{compat=1.18}                                     % PGFPlots compatibility version
-    \RequirePackage{tikz}                                         % Core TikZ package
-    \RequirePackage{tikz-cd}                                      % Commutative diagrams
-    \RequirePackage{tikz-3dplot}                                  % 3D coordinate plotting
+	\RequirePackage{pgfplots}                                     % Function/data plots
+	\pgfplotsset{compat=1.18}                                     % PGFPlots compatibility version
+	\RequirePackage{tikz}                                         % Core TikZ package
+	\RequirePackage{tikz-cd}                                      % Commutative diagrams
+	\RequirePackage{tikz-3dplot}                                  % 3D coordinate plotting
 
-    % TikZ libraries for enhanced diagrammatic capability
-    \usetikzlibrary{%
-        3d,
-        arrows,
-        arrows.meta,
-        automata,
-        babel,
-        backgrounds,
-        bending,
-        calc,
-        calendar,
-        chains,
-        circuits.ee.IEC,
-        circuits.logic.IEC,
-        datavisualization,
-        datavisualization.formats.functions,
-        decorations,
-        decorations.markings,
-        decorations.pathmorphing,
-        decorations.shapes,
-        decorations.text,
-        er,
-        external,
-        fadings,
-        fit,
-        graphs,
-        graphs.standard,
-        hobby,
-        intersections,
-        lindenmayersystems,
-        matrix,
-        mindmap,
-        patterns,
-        patterns.meta,
-        petri,
-        plothandlers,
-        plotmarks,
-        positioning,
-        quotes,
-        scopes,
-        shadows,
-        shapes,
-        shapes.arrows,
-        shapes.callouts,
-        shapes.geometric,
-        shapes.misc,
-        shapes.multipart,
-        shapes.symbols,
-        spy,
-        svg.path,
-        through,
-        tikzmark,
-        trees
-    }
+	% TikZ libraries for enhanced diagrammatic capability
+	\usetikzlibrary{%
+		3d,
+		arrows,
+		arrows.meta,
+		automata,
+		babel,
+		backgrounds,
+		bending,
+		calc,
+		calendar,
+		chains,
+		circuits.ee.IEC,
+		circuits.logic.IEC,
+		datavisualization,
+		datavisualization.formats.functions,
+		decorations,
+		decorations.markings,
+		decorations.pathmorphing,
+		decorations.shapes,
+		decorations.text,
+		er,
+		external,
+		fadings,
+		fit,
+		graphs,
+		graphs.standard,
+		hobby,
+		intersections,
+		lindenmayersystems,
+		matrix,
+		mindmap,
+		patterns,
+		patterns.meta,
+		petri,
+		plothandlers,
+		plotmarks,
+		positioning,
+		quotes,
+		scopes,
+		shadows,
+		shapes,
+		shapes.arrows,
+		shapes.callouts,
+		shapes.geometric,
+		shapes.misc,
+		shapes.multipart,
+		shapes.symbols,
+		spy,
+		svg.path,
+		through,
+		tikzmark,
+		trees
+	}
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Appendices
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \ifllncscrypto@loadappendix
-    \RequirePackage[page, title, header, titletoc, toc]{appendix}   % For handling appendices
+	\RequirePackage[page, title, header, titletoc, toc]{appendix}   % For handling appendices
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Cryptography
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \ifllncscrypto@loadcrypto
-    \IfFileExists{tcscrypto.sty}{\RequirePackage{tcscrypto}}       % Cryptography macros
-    {\PackageWarning{llncscrypto}{Package `tcscrypto` not found.}} %
-    \RequirePackage{orcidlink}                                     % ORCID ID and Logo
+	\IfFileExists{tcscrypto.sty}{\RequirePackage{tcscrypto}}       % Cryptography macros
+	{\PackageWarning{llncscrypto}{Package `tcscrypto` not found.}} %
+	\RequirePackage{orcidlink}                                     % ORCID ID and Logo
 \fi
 
 \ifllncscrypto@loadnicodemus
-    \IfFileExists{nicodemus.sty}{\RequirePackage{nicodemus}}       % Nicodemus macros
-    {\PackageWarning{llncscrypto}{Package `nicodemus` not found.}} %
-    \RequirePackage{orcidlink}                                     % ORCID ID and Logo
+	\IfFileExists{nicodemus.sty}{\RequirePackage{nicodemus}}       % Nicodemus macros
+	{\PackageWarning{llncscrypto}{Package `nicodemus` not found.}} %
+	\RequirePackage{orcidlink}                                     % ORCID ID and Logo
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Theorem Environments for LLNCS Style
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \ifllncscrypto@modtheorems
-    \AtBeginDocument{%
-        % Theorem-like environments
-        \@ifundefined{theorem}{}{\let\theorem\relax}
-        \@ifundefined{assertion}{}{\let\assertion\relax}
-        \@ifundefined{assumption}{}{\let\assumption\relax}
-        \@ifundefined{axiom}{}{\let\axiom\relax}
-        \@ifundefined{claim}{}{\let\claim\relax}
-        \@ifundefined{conclusion}{}{\let\conclusion\relax}
-        \@ifundefined{conjecture}{}{\let\conjecture\relax}
-        \@ifundefined{corollary}{}{\let\corollary\relax}
-        \@ifundefined{fact}{}{\let\fact\relax}
-        \@ifundefined{hypothesis}{}{\let\hypothesis\relax}
-        \@ifundefined{lemma}{}{\let\lemma\relax}
-        \@ifundefined{postulate}{}{\let\postulate\relax}
-        \@ifundefined{property}{}{\let\property\relax}
-        \@ifundefined{proposition}{}{\let\proposition\relax}
+	\AtBeginDocument{%
+		% Theorem-like environments
+		\@ifundefined{theorem}{}{\let\theorem\relax}
+		\@ifundefined{assertion}{}{\let\assertion\relax}
+		\@ifundefined{assumption}{}{\let\assumption\relax}
+		\@ifundefined{axiom}{}{\let\axiom\relax}
+		\@ifundefined{claim}{}{\let\claim\relax}
+		\@ifundefined{conclusion}{}{\let\conclusion\relax}
+		\@ifundefined{conjecture}{}{\let\conjecture\relax}
+		\@ifundefined{corollary}{}{\let\corollary\relax}
+		\@ifundefined{fact}{}{\let\fact\relax}
+		\@ifundefined{hypothesis}{}{\let\hypothesis\relax}
+		\@ifundefined{lemma}{}{\let\lemma\relax}
+		\@ifundefined{postulate}{}{\let\postulate\relax}
+		\@ifundefined{property}{}{\let\property\relax}
+		\@ifundefined{proposition}{}{\let\proposition\relax}
 
-        \spnewtheorem{theorem}{Theorem}{\bfseries}{\normalfont}
-        \spnewtheorem{assertion}{Assertion}{\bfseries}{\normalfont}
-        \spnewtheorem{assumption}{Assumption}{\bfseries}{\normalfont}
-        \spnewtheorem{axiom}{Axiom}{\bfseries}{\normalfont}
-        \spnewtheorem{claim}{Claim}{\bfseries}{\normalfont}
-        \spnewtheorem{conclusion}{Conclusion}{\bfseries}{\normalfont}
-        \spnewtheorem{conjecture}{Conjecture}{\bfseries}{\normalfont}
-        \spnewtheorem{corollary}{Corollary}{\bfseries}{\normalfont}
-        \spnewtheorem{fact}{Fact}{\bfseries}{\normalfont}
-        \spnewtheorem{hypothesis}{Hypothesis}{\bfseries}{\normalfont}
-        \spnewtheorem{lemma}{Lemma}{\bfseries}{\normalfont}
-        \spnewtheorem{postulate}{Postulate}{\bfseries}{\normalfont}
-        \spnewtheorem{property}{Property}{\bfseries}{\normalfont}
-        \spnewtheorem{proposition}{Proposition}{\bfseries}{\normalfont}
+		\spnewtheorem{theorem}{Theorem}{\bfseries}{\normalfont}
+		\spnewtheorem{assertion}{Assertion}{\bfseries}{\normalfont}
+		\spnewtheorem{assumption}{Assumption}{\bfseries}{\normalfont}
+		\spnewtheorem{axiom}{Axiom}{\bfseries}{\normalfont}
+		\spnewtheorem{claim}{Claim}{\bfseries}{\normalfont}
+		\spnewtheorem{conclusion}{Conclusion}{\bfseries}{\normalfont}
+		\spnewtheorem{conjecture}{Conjecture}{\bfseries}{\normalfont}
+		\spnewtheorem{corollary}{Corollary}{\bfseries}{\normalfont}
+		\spnewtheorem{fact}{Fact}{\bfseries}{\normalfont}
+		\spnewtheorem{hypothesis}{Hypothesis}{\bfseries}{\normalfont}
+		\spnewtheorem{lemma}{Lemma}{\bfseries}{\normalfont}
+		\spnewtheorem{postulate}{Postulate}{\bfseries}{\normalfont}
+		\spnewtheorem{property}{Property}{\bfseries}{\normalfont}
+		\spnewtheorem{proposition}{Proposition}{\bfseries}{\normalfont}
 
-        % Definition-like
-        \@ifundefined{application}{}{\let\application\relax}
-        \@ifundefined{construction}{}{\let\construction\relax}
-        \@ifundefined{convention}{}{\let\convention\relax}
-        \@ifundefined{definition}{}{\let\definition\relax}
-        \@ifundefined{experiment}{}{\let\experiment\relax}
-        \@ifundefined{notation}{}{\let\notation\relax}
-        \@ifundefined{problem}{}{\let\problem\relax}
-        \@ifundefined{protocol}{}{\let\protocol\relax}
-        \@ifundefined{result}{}{\let\result\relax}
-        \spnewtheorem{application}{Application}{\bfseries}{\normalfont}
-        \spnewtheorem{construction}{Construction}{\bfseries}{\normalfont}
-        \spnewtheorem{convention}{Convention}{\bfseries}{\normalfont}
-        \spnewtheorem{definition}{Definition}{\bfseries}{\normalfont}
-        \spnewtheorem{experiment}{Experiment}{\bfseries}{\normalfont}
-        \spnewtheorem{notation}{Notation}{\bfseries}{\normalfont}
-        \spnewtheorem{problem}{Problem}{\bfseries}{\normalfont}
-        \spnewtheorem{protocol}{Protocol}{\bfseries}{\normalfont}
-        \spnewtheorem{result}{Result}{\bfseries}{\normalfont}
+		% Definition-like
+		\@ifundefined{application}{}{\let\application\relax}
+		\@ifundefined{construction}{}{\let\construction\relax}
+		\@ifundefined{convention}{}{\let\convention\relax}
+		\@ifundefined{definition}{}{\let\definition\relax}
+		\@ifundefined{experiment}{}{\let\experiment\relax}
+		\@ifundefined{notation}{}{\let\notation\relax}
+		\@ifundefined{problem}{}{\let\problem\relax}
+		\@ifundefined{protocol}{}{\let\protocol\relax}
+		\@ifundefined{result}{}{\let\result\relax}
+		\spnewtheorem{application}{Application}{\bfseries}{\normalfont}
+		\spnewtheorem{construction}{Construction}{\bfseries}{\normalfont}
+		\spnewtheorem{convention}{Convention}{\bfseries}{\normalfont}
+		\spnewtheorem{definition}{Definition}{\bfseries}{\normalfont}
+		\spnewtheorem{experiment}{Experiment}{\bfseries}{\normalfont}
+		\spnewtheorem{notation}{Notation}{\bfseries}{\normalfont}
+		\spnewtheorem{problem}{Problem}{\bfseries}{\normalfont}
+		\spnewtheorem{protocol}{Protocol}{\bfseries}{\normalfont}
+		\spnewtheorem{result}{Result}{\bfseries}{\normalfont}
 
-        % Remark-like environments
-        \@ifundefined{commentary}{}{\let\commentary\relax}
-        \@ifundefined{example}{}{\let\example\relax}
-        \@ifundefined{exercise}{}{\let\exercise\relax}
-        \@ifundefined{motivation}{}{\let\motivation\relax}
-        \@ifundefined{notationabuse}{}{\let\notationabuse\relax}
-        \@ifundefined{note}{}{\let\note\relax}
-        \@ifundefined{observation}{}{\let\observation\relax}
-        \@ifundefined{question}{}{\let\question\relax}
-        \@ifundefined{remark}{}{\let\remark\relax}
-        \spnewtheorem{commentary}{Commentary}{\scshape}{\normalfont}
-        \spnewtheorem{example}{Example}{\scshape}{\normalfont}
-        \spnewtheorem{exercise}{Exercise}{\scshape}{\normalfont}
-        \spnewtheorem{motivation}{Motivation}{\scshape}{\normalfont}
-        \spnewtheorem{notationabuse}{Notation Abuse}{\scshape}{\normalfont}
-        \spnewtheorem{note}{Note}{\scshape}{\normalfont}
-        \spnewtheorem{observation}{Observation}{\scshape}{\normalfont}
-        \spnewtheorem{question}{Question}{\scshape}{\normalfont}
-        \spnewtheorem{remark}{Remark}{\scshape}{\normalfont}
+		% Remark-like environments
+		\@ifundefined{commentary}{}{\let\commentary\relax}
+		\@ifundefined{example}{}{\let\example\relax}
+		\@ifundefined{exercise}{}{\let\exercise\relax}
+		\@ifundefined{motivation}{}{\let\motivation\relax}
+		\@ifundefined{notationabuse}{}{\let\notationabuse\relax}
+		\@ifundefined{note}{}{\let\note\relax}
+		\@ifundefined{observation}{}{\let\observation\relax}
+		\@ifundefined{question}{}{\let\question\relax}
+		\@ifundefined{remark}{}{\let\remark\relax}
+		\spnewtheorem{commentary}{Commentary}{\scshape}{\normalfont}
+		\spnewtheorem{example}{Example}{\scshape}{\normalfont}
+		\spnewtheorem{exercise}{Exercise}{\scshape}{\normalfont}
+		\spnewtheorem{motivation}{Motivation}{\scshape}{\normalfont}
+		\spnewtheorem{notationabuse}{Notation Abuse}{\scshape}{\normalfont}
+		\spnewtheorem{note}{Note}{\scshape}{\normalfont}
+		\spnewtheorem{observation}{Observation}{\scshape}{\normalfont}
+		\spnewtheorem{question}{Question}{\scshape}{\normalfont}
+		\spnewtheorem{remark}{Remark}{\scshape}{\normalfont}
 
-        % Highlight environments
-        \@ifundefined{guideline}{}{\let\guideline\relax}
-        \@ifundefined{highlight}{}{\let\highlight\relax}
-        \@ifundefined{important}{}{\let\important\relax}
-        \@ifundefined{insight}{}{\let\insight\relax}
-        \@ifundefined{keypoint}{}{\let\keypoint\relax}
-        \@ifundefined{recall}{}{\let\recall\relax}
-        \@ifundefined{summary}{}{\let\summary\relax}
-        \@ifundefined{takeaway}{}{\let\takeaway\relax}
-        \@ifundefined{tip}{}{\let\tip\relax}
-        \@ifundefined{warning}{}{\let\warning\relax}
-        \spnewtheorem{guideline}{Guideline}{\sffamily}{\normalfont}
-        \spnewtheorem{highlight}{Highlight}{\sffamily}{\normalfont}
-        \spnewtheorem{important}{Important}{\sffamily}{\normalfont}
-        \spnewtheorem{insight}{Insight}{\sffamily}{\normalfont}
-        \spnewtheorem{keypoint}{Key Point}{\sffamily}{\normalfont}
-        \spnewtheorem{recall}{Recall}{\sffamily}{\normalfont}
-        \spnewtheorem{summary}{Summary}{\sffamily}{\normalfont}
-        \spnewtheorem{takeaway}{Takeaway}{\sffamily}{\normalfont}
-        \spnewtheorem{tip}{Tip}{\sffamily}{\normalfont}
-        \spnewtheorem{warning}{Warning}{\sffamily}{\normalfont}
+		% Highlight environments
+		\@ifundefined{guideline}{}{\let\guideline\relax}
+		\@ifundefined{highlight}{}{\let\highlight\relax}
+		\@ifundefined{important}{}{\let\important\relax}
+		\@ifundefined{insight}{}{\let\insight\relax}
+		\@ifundefined{keypoint}{}{\let\keypoint\relax}
+		\@ifundefined{recall}{}{\let\recall\relax}
+		\@ifundefined{summary}{}{\let\summary\relax}
+		\@ifundefined{takeaway}{}{\let\takeaway\relax}
+		\@ifundefined{tip}{}{\let\tip\relax}
+		\@ifundefined{warning}{}{\let\warning\relax}
+		\spnewtheorem{guideline}{Guideline}{\sffamily}{\normalfont}
+		\spnewtheorem{highlight}{Highlight}{\sffamily}{\normalfont}
+		\spnewtheorem{important}{Important}{\sffamily}{\normalfont}
+		\spnewtheorem{insight}{Insight}{\sffamily}{\normalfont}
+		\spnewtheorem{keypoint}{Key Point}{\sffamily}{\normalfont}
+		\spnewtheorem{recall}{Recall}{\sffamily}{\normalfont}
+		\spnewtheorem{summary}{Summary}{\sffamily}{\normalfont}
+		\spnewtheorem{takeaway}{Takeaway}{\sffamily}{\normalfont}
+		\spnewtheorem{tip}{Tip}{\sffamily}{\normalfont}
+		\spnewtheorem{warning}{Warning}{\sffamily}{\normalfont}
 
-        % Redefine proof environment (optional tweak)
-        \let\oldproof\proof
-        \renewenvironment{proof}{\begin{oldproof}}{\qed\end{oldproof}\vspace*{10pt}}
+		% Redefine proof environment (optional tweak)
+		\let\oldproof\proof
+		\renewenvironment{proof}{\begin{oldproof}}{\qed\end{oldproof}\vspace*{10pt}}
 
-        % Custom proof environment for claims
-        \newcommand*{\claimproofname}{Claim}
-        \newenvironment{claimproof}[1][\claimproofname]{\begin{proof}[#1]}{\end{proof}}
+		% Custom proof environment for claims
+		\newcommand*{\claimproofname}{Claim}
+		\newenvironment{claimproof}[1][\claimproofname]{\begin{proof}[#1]}{\end{proof}}
 
-        % Custom claim counter
-        \newcounter{claimcounter}[theorem]
-        \renewenvironment{claim}{\stepcounter{claimcounter}{Claim \theclaimcounter:}}{}
-    }
+		% Custom claim counter
+		\newcounter{claimcounter}[theorem]
+		\renewenvironment{claim}{\stepcounter{claimcounter}{Claim \theclaimcounter:}}{}
+	}
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -850,20 +850,20 @@
 \NewDocumentCommand{\usecomments}{}{\Commentstrue}
 
 \NewDocumentCommand{\newcomment}{mmm}{%
-    \expandafter\NewDocumentCommand\csname#3\endcsname{m}{%
-        \ifComments
-            \noindent\textcolor{#2}{\sffamily##1 -- $\mathsf{#1}$}%
-        \fi
-    }%
+	\expandafter\NewDocumentCommand\csname#3\endcsname{m}{%
+		\ifComments
+			\noindent\textcolor{#2}{\sffamily##1 -- $\mathsf{#1}$}%
+		\fi
+	}%
 }
 
 % Define acknowledgment environment with an optional title.
 \NewDocumentEnvironment{acknowledgment}{o}{%
-    \IfNoValueTF{#1}{%
-        \noindent\textsf{Acknowledgment.}% Default title if not provided
-    }{%
-        \noindent\textsf{#1}% Use custom title if provided
-    }
+	\IfNoValueTF{#1}{%
+		\noindent\textsf{Acknowledgment.}% Default title if not provided
+	}{%
+		\noindent\textsf{#1}% Use custom title if provided
+	}
 }{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -875,10 +875,10 @@
 
 % Check whether the second argument is empty (used for punctuation detection)
 \def\llncscrypto@checkpunctuation#1{%
-    \ifx\llncscrypto@checkpunctuation#1\llncscrypto@checkpunctuation
-    \else
-        \llncscrypto@haspunctuationtrue
-    \fi
+	\ifx\llncscrypto@checkpunctuation#1\llncscrypto@checkpunctuation
+	\else
+		\llncscrypto@haspunctuationtrue
+	\fi
 }
 
 % Specific punctuation testers for '.', '?', '!', ':'
@@ -889,39 +889,39 @@
 
 % Main interface: Append period unless line ends with '.', '?', '!', or ':'
 \def\llncscrypto@appendpunctuationifneeded#1{%
-    \llncscrypto@haspunctuationfalse
-    \llncscrypto@checkdot#1\llncscrypto@delim.\llncscrypto@delim\llncscrypto@stop
-    \llncscrypto@checkquestion#1\llncscrypto@delim?\llncscrypto@delim\llncscrypto@stop
-    \llncscrypto@checkexclam#1\llncscrypto@delim!\llncscrypto@delim\llncscrypto@stop
-    \llncscrypto@checkcolon#1\llncscrypto@delim:\llncscrypto@delim\llncscrypto@stop
-    #1\ifllncscrypto@haspunctuation \else.\fi%
+	\llncscrypto@haspunctuationfalse
+	\llncscrypto@checkdot#1\llncscrypto@delim.\llncscrypto@delim\llncscrypto@stop
+	\llncscrypto@checkquestion#1\llncscrypto@delim?\llncscrypto@delim\llncscrypto@stop
+	\llncscrypto@checkexclam#1\llncscrypto@delim!\llncscrypto@delim\llncscrypto@stop
+	\llncscrypto@checkcolon#1\llncscrypto@delim:\llncscrypto@delim\llncscrypto@stop
+	#1\ifllncscrypto@haspunctuation \else.\fi%
 }
 
 % Skip spaces and implicit paragraphs (blank lines)
 \def\llncscrypto@ignorewhitespaceandimplicitpars{%
-    \begingroup
-    \catcode13=10 %
-    \@ifnextchar\relax
-    {\endgroup}
-    {\endgroup}%
+	\begingroup
+	\catcode13=10 %
+	\@ifnextchar\relax
+	{\endgroup}
+	{\endgroup}%
 }
 
 % Skip spaces, implicit paragraphs, and explicit \par commands
 \def\llncscrypto@ignoreallpars{%
-    \begingroup
-    \catcode13=10 %
-    \@ifnextchar\par
-    {\endgroup\expandafter\llncscrypto@ignoreallpars\@gobble}
-    {\endgroup}%
+	\begingroup
+	\catcode13=10 %
+	\@ifnextchar\par
+	{\endgroup\expandafter\llncscrypto@ignoreallpars\@gobble}
+	{\endgroup}%
 }
 
 % Section-style paragraph header with automatic punctuation and spacing
 \newcommand{\llncscrypto@paragraphhead}[1]{%
-    \smallskip
-    \noindent
-    \textbf{\boldmath\ignorespaces\llncscrypto@appendpunctuationifneeded{#1}}%
-    \hskip 0.9em plus 0.3em minus 0.3em
-    \llncscrypto@ignorewhitespaceandimplicitpars
+	\smallskip
+	\noindent
+	\textbf{\boldmath\ignorespaces\llncscrypto@appendpunctuationifneeded{#1}}%
+	\hskip 0.9em plus 0.3em minus 0.3em
+	\llncscrypto@ignorewhitespaceandimplicitpars
 }
 
 \newcommand{\parhead}[1]{\llncscrypto@paragraphhead{#1}}
@@ -932,35 +932,35 @@
 
 % Custom box construction with vertical rule, top/bottom bars, and optional content
 \long\def\llncscrypto@customfbox#1#2#3#4#5#6#7#8#9{%
-    \leavevmode
-    \begingroup
-    \setbox\@tempboxa\hbox{%
-        \color@begingroup
-        \kern\fboxsep{#9}\kern\fboxsep
-        \color@endgroup}%
-    \hbox{%
-        \begingroup
-        \@tempdima#4\relax
-        \advance\@tempdima\fboxsep
-        \advance\@tempdima\dp\@tempboxa
-        \expandafter\endgroup
-        \expandafter\lower\the\@tempdima\hbox{%
-            \vbox{%
-                \hrule \@height#3 \@width#7
-                #1%
-                \hbox{%
-                    \vrule \@width#5
-                    \hspace{#8}%
-                    \vbox{%
-                        \vskip\fboxsep
-                        \copy\@tempboxa
-                        \vskip\fboxsep}%
-                    \vrule \@width#6}%
-                #2%
-                \hrule \@height#4\@width#7}%
-        }%
-    }%
-    \endgroup
+	\leavevmode
+	\begingroup
+	\setbox\@tempboxa\hbox{%
+		\color@begingroup
+		\kern\fboxsep{#9}\kern\fboxsep
+		\color@endgroup}%
+	\hbox{%
+		\begingroup
+		\@tempdima#4\relax
+		\advance\@tempdima\fboxsep
+		\advance\@tempdima\dp\@tempboxa
+		\expandafter\endgroup
+		\expandafter\lower\the\@tempdima\hbox{%
+			\vbox{%
+				\hrule \@height#3 \@width#7
+				#1%
+				\hbox{%
+					\vrule \@width#5
+					\hspace{#8}%
+					\vbox{%
+						\vskip\fboxsep
+						\copy\@tempboxa
+						\vskip\fboxsep}%
+					\vrule \@width#6}%
+				#2%
+				\hrule \@height#4\@width#7}%
+		}%
+	}%
+	\endgroup
 }
 
 % Parameters for bar dimensions and spacing
@@ -969,76 +969,76 @@
 
 % FrameCommand helper that sets up side rule and spacing
 \def\llncscrypto@openframebox#1#2{%
-    \fboxsep=\FrameSep
-    \llncscrypto@customfbox
-    {}{}% no content above or below
-    {#1}{#2}% top and bottom rule thicknesses
-    \FrameRule\z@% left and right rule thickness
-    \llncscrypto@nestedbar@topbotrulelength% horizontal rule length
-    \llncscrypto@nestedbar@indent% indent from vertical rule
+	\fboxsep=\FrameSep
+	\llncscrypto@customfbox
+	{}{}% no content above or below
+	{#1}{#2}% top and bottom rule thicknesses
+	\FrameRule\z@% left and right rule thickness
+	\llncscrypto@nestedbar@topbotrulelength% horizontal rule length
+	\llncscrypto@nestedbar@indent% indent from vertical rule
 }
 
 % Definition of the nestedbar environment
 \newenvironment{nestedbar}[1][\hsize]{%
-    \@ifundefined{OuterFrameSep}{%
-        \@latex@error{To use nestedbar, update framed.sty to a recent version.}\@ehd}{}%
-    \def\FrameCommand{\llncscrypto@openframebox\FrameRule\FrameRule}%
-    \def\FirstFrameCommand{\llncscrypto@openframebox\FrameRule\z@}%
-    \def\MidFrameCommand{\llncscrypto@openframebox\z@\z@}%
-    \def\LastFrameCommand{\llncscrypto@openframebox\z@\FrameRule}%
-    \OuterFrameSep=1ex
-    \FrameSep=0pt
-    \MakeFramed{\hsize#1\advance\hsize-\width\FrameRestore}%
+	\@ifundefined{OuterFrameSep}{%
+		\@latex@error{To use nestedbar, update framed.sty to a recent version.}\@ehd}{}%
+	\def\FrameCommand{\llncscrypto@openframebox\FrameRule\FrameRule}%
+	\def\FirstFrameCommand{\llncscrypto@openframebox\FrameRule\z@}%
+	\def\MidFrameCommand{\llncscrypto@openframebox\z@\z@}%
+	\def\LastFrameCommand{\llncscrypto@openframebox\z@\FrameRule}%
+	\OuterFrameSep=1ex
+	\FrameSep=0pt
+	\MakeFramed{\hsize#1\advance\hsize-\width\FrameRestore}%
 }{%
-    \endMakeFramed
+	\endMakeFramed
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Useful commands
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
 \@ifpackageloaded{enumitem}{%
-    % Define 'points' list: itemize using "--"
-    \newlist{points}{itemize}{1}
-    \setlist[points]{%
-        label={\textendash},
-        leftmargin=1em,
-        itemsep=1pt,
-        align=left,
-        before=\smallskip,
-        after=\smallskip
-    }
+	% Define 'points' list: itemize using "--"
+	\newlist{points}{itemize}{1}
+	\setlist[points]{%
+		label={\textendash},
+		leftmargin=1em,
+		itemsep=1pt,
+		align=left,
+		before=\smallskip,
+		after=\smallskip
+	}
 
-    % Define 'codelist' list: enumerated as [\texttt{1}], [\texttt{2}], ...
-    \newlist{codelist}{enumerate}{1}
-    \setlist[codelist,1]{%
-        label=\textcolor{gray}{\texttt{[\arabic*]}},
-        leftmargin=1em,
-        itemsep=1pt,
-        align=left,
-        before=\smallskip,
-        after=\smallskip
-    }
+	% Define 'codelist' list: enumerated as [\texttt{1}], [\texttt{2}], ...
+	\newlist{codelist}{enumerate}{1}
+	\setlist[codelist,1]{%
+		label=\textcolor{gray}{\texttt{[\arabic*]}},
+		leftmargin=1em,
+		itemsep=1pt,
+		align=left,
+		before=\smallskip,
+		after=\smallskip
+	}
 
-    % Define 'checkbox' list
-    \newlist{checkbox}{itemize}{1}
-    \setlist[checkbox]{%
-        label=$\square$,
-        leftmargin=1em,
-        align=left
-    }
-    % Define \checked command to switch label for one item
-    \newcommand{\checked}{\item[\checkmark]}
+	% Define 'checkbox' list
+	\newlist{checkbox}{itemize}{1}
+	\setlist[checkbox]{%
+		label=$\square$,
+		leftmargin=1em,
+		align=left
+	}
+	% Define \checked command to switch label for one item
+	\newcommand{\checked}{\item[\checkmark]}
 
-    % Define a rigorous description list for definitions
-    \newlist{deflist}{description}{1}
-    \setlist[deflist]{%
-        labelwidth=0.35\textwidth,
-        labelsep=1em,
-        leftmargin=0.35\textwidth,
-        font=\normalfont\bfseries,
-        style=nextline,
-        itemsep=5pt
-    }
+	% Define a rigorous description list for definitions
+	\newlist{deflist}{description}{1}
+	\setlist[deflist]{%
+		labelwidth=0.35\textwidth,
+		labelsep=1em,
+		leftmargin=0.35\textwidth,
+		font=\normalfont\bfseries,
+		style=nextline,
+		itemsep=5pt
+	}
 }{}
 
 % Highlight color for text and math
@@ -1075,18 +1075,18 @@
 
 % Main \missing command
 \providecommand{\missing}[1]{%
-    \refstepcounter{missingctr}%
-    \label{missing:\themissingctr}%
-    \gappto\missinglist{%
-        \noindent\textcolor{Brown4}{\ensuremath{\star}~\themissingctr~(\textsf{Missing at p.~\pageref{missing:\themissingctr}}):~#1}\par\medskip
-    }%
-    \textcolor{Brown4}{#1}%
+	\refstepcounter{missingctr}%
+	\label{missing:\themissingctr}%
+	\gappto\missinglist{%
+		\noindent\textcolor{Brown4}{\ensuremath{\star}~\themissingctr~(\textsf{Missing at p.~\pageref{missing:\themissingctr}}):~#1}\par\medskip
+	}%
+	\textcolor{Brown4}{#1}%
 }
 
 % Print all collected missing items with page references
 \providecommand{\printmissing}{%
-    \section*{Missing Content Report}%
-    \missinglist
+	\section*{Missing Content Report}%
+	\missinglist
 }
 
 % Format for missing citations
@@ -1094,131 +1094,131 @@
 
 % Double-struck Pi symbol for different engines
 \providecommand{\dsPi}{%
-    \ifluatex
-        \char"213F
-    \else
-        \ifxetex
-            \char"213F
-        \else
-            \Pi
-        \fi
-    \fi
+	\ifluatex
+		\char"213F
+	\else
+		\ifxetex
+			\char"213F
+		\else
+			\Pi
+		\fi
+	\fi
 }
 
 % Sans-serif Pi symbol for different engines
 \providecommand{\sansPi}{%
-    \ifluatex
-        \char"1D765
-    \else
-        \ifxetex
-            \char"1D765
-        \else
-            \Pi
-        \fi
-    \fi
+	\ifluatex
+		\char"1D765
+	\else
+		\ifxetex
+			\char"1D765
+		\else
+			\Pi
+		\fi
+	\fi
 }
 
 \@ifpackageloaded{mdframed}{%
-    % Protocol box environment
-    \NewDocumentEnvironment{protocolbox}{o}
-    {%
-        \begin{mdframed}[
-                font=\small,
-                roundcorner=1.5pt,
-                linewidth=0.5pt,
-                skipabove=0.5\baselineskip,
-                skipbelow=0.1\baselineskip,
-                leftmargin=0pt,
-                rightmargin=0pt,
-                innerleftmargin=5pt,
-                innerrightmargin=5pt,
-                innertopmargin=5pt,
-                innerbottommargin=5pt,
-                backgroundcolor=white,
-                linecolor=black
-            ]%
-            \IfNoValueF{#1}{%
-                \noindent\textnormal{\small\textbf{#1}}\par\smallskip
-                \noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}%
-            }%
-            \begin{points}%
-                }
-                {%
-            \end{points}
-        \end{mdframed}%
-    }
+	% Protocol box environment
+	\NewDocumentEnvironment{protocolbox}{o}
+	{%
+		\begin{mdframed}[
+				font=\small,
+				roundcorner=1.5pt,
+				linewidth=0.5pt,
+				skipabove=0.5\baselineskip,
+				skipbelow=0.1\baselineskip,
+				leftmargin=0pt,
+				rightmargin=0pt,
+				innerleftmargin=5pt,
+				innerrightmargin=5pt,
+				innertopmargin=5pt,
+				innerbottommargin=5pt,
+				backgroundcolor=white,
+				linecolor=black
+			]%
+			\IfNoValueF{#1}{%
+				\noindent\textnormal{\small\textbf{#1}}\par\smallskip
+				\noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}%
+			}%
+			\begin{points}%
+				}
+				{%
+			\end{points}
+		\end{mdframed}%
+	}
 
-    % Code list box environment
-    \NewDocumentEnvironment{codelistbox}{o}
-    {%
-        \begin{mdframed}[
-                font=\small,
-                roundcorner=1.5pt,
-                linewidth=0.5pt,
-                skipabove=0.5\baselineskip,
-                skipbelow=0.1\baselineskip,
-                leftmargin=0pt,
-                rightmargin=0pt,
-                innerleftmargin=5pt,
-                innerrightmargin=5pt,
-                innertopmargin=5pt,
-                innerbottommargin=5pt,
-                backgroundcolor=white,
-                linecolor=black
-            ]%
-            \IfNoValueF{#1}{%
-                \noindent\textnormal{\small\textbf{#1}}\par\smallskip
-                \noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}%
-            }%
-            \begin{codelist}%
-                }
-                {%
-            \end{codelist}
-        \end{mdframed}%
-    }
+	% Code list box environment
+	\NewDocumentEnvironment{codelistbox}{o}
+	{%
+		\begin{mdframed}[
+				font=\small,
+				roundcorner=1.5pt,
+				linewidth=0.5pt,
+				skipabove=0.5\baselineskip,
+				skipbelow=0.1\baselineskip,
+				leftmargin=0pt,
+				rightmargin=0pt,
+				innerleftmargin=5pt,
+				innerrightmargin=5pt,
+				innertopmargin=5pt,
+				innerbottommargin=5pt,
+				backgroundcolor=white,
+				linecolor=black
+			]%
+			\IfNoValueF{#1}{%
+				\noindent\textnormal{\small\textbf{#1}}\par\smallskip
+				\noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}%
+			}%
+			\begin{codelist}%
+				}
+				{%
+			\end{codelist}
+		\end{mdframed}%
+	}
 
-    \NewDocumentEnvironment{simplebox}{o}
-    {%
-        \begin{mdframed}[
-                font=\small,
-                roundcorner=1.5pt,
-                linewidth=0.5pt,
-                skipabove=0.5\baselineskip,
-                skipbelow=0.1\baselineskip,
-                leftmargin=0pt,
-                rightmargin=0pt,
-                innerleftmargin=5pt,
-                innerrightmargin=5pt,
-                innertopmargin=5pt,
-                innerbottommargin=5pt,
-                backgroundcolor=white,
-                linecolor=black
-            ]%
-            \IfNoValueF{#1}{%
-                \noindent\textnormal{\small\textbf{#1}}\par\smallskip
-                \noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}%
-            }%
-            }
-            {%
-        \end{mdframed}%
-    }
+	\NewDocumentEnvironment{simplebox}{o}
+	{%
+		\begin{mdframed}[
+				font=\small,
+				roundcorner=1.5pt,
+				linewidth=0.5pt,
+				skipabove=0.5\baselineskip,
+				skipbelow=0.1\baselineskip,
+				leftmargin=0pt,
+				rightmargin=0pt,
+				innerleftmargin=5pt,
+				innerrightmargin=5pt,
+				innertopmargin=5pt,
+				innerbottommargin=5pt,
+				backgroundcolor=white,
+				linecolor=black
+			]%
+			\IfNoValueF{#1}{%
+				\noindent\textnormal{\small\textbf{#1}}\par\smallskip
+				\noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}%
+			}%
+			}
+			{%
+		\end{mdframed}%
+	}
 }{}
 
 \@ifpackageloaded{tcolorbox}{%
-    % Wire box environment
-    \newtcolorbox{wirebox}{%
-        colframe=black,
-        colback=white,
-        sharp corners,
-        boxrule=0.5pt,
-        coltitle=black,
-        colbacktitle=white,
-        boxsep=5pt,
-        top=0pt,
-        bottom=0pt,
-        left=5pt,
-        right=5pt
-    }
+	% Wire box environment
+	\newtcolorbox{wirebox}{%
+		colframe=black,
+		colback=white,
+		sharp corners,
+		boxrule=0.5pt,
+		coltitle=black,
+		colbacktitle=white,
+		boxsep=5pt,
+		top=0pt,
+		bottom=0pt,
+		left=5pt,
+		right=5pt
+	}
 }{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1292,8 +1292,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \AtBeginDocument{%
-    \IfFileExists{settings.tex}{\input{settings.tex}}{\typeout{"settings.tex" does not exists!}}
-    \IfFileExists{commands.tex}{\input{commands.tex}}{\typeout{"commands.tex" does not exists!}}
+	\IfFileExists{settings.tex}{\input{settings.tex}}{\typeout{"settings.tex" does not exists!}}
+	\IfFileExists{commands.tex}{\input{commands.tex}}{\typeout{"commands.tex" does not exists!}}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

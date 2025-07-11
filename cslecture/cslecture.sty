@@ -111,7 +111,7 @@
 
 % Handle unknown package options by issuing a warning
 \DeclareOption*{%
-    \PackageWarning{\filename}{Unknown option '\CurrentOption'} % Display a warning for any unknown options
+	\PackageWarning{\filename}{Unknown option '\CurrentOption'} % Display a warning for any unknown options
 }
 
 % Process the declared package options
@@ -203,14 +203,14 @@
 
 % Conditionally adjust the layout for ebook format if the 'ebook' option is enabled
 \ifebook
-        % Set up an A5 page layout with smaller margins suited for ebook viewing
-        \geometry{%
-        	a5paper,           % Specifies A5 paper size, commonly used for ebooks
-        	rmargin=1.75cm,    % Set the right margin to 1.75 cm
-        	lmargin=1.75cm,    % Set the left margin to 1.75 cm
-        	tmargin=2.00cm,    % Set the top margin to 2.00 cm
-        	bmargin=1.75cm     % Set the bottom margin to 1.75 cm
-        }
+	% Set up an A5 page layout with smaller margins suited for ebook viewing
+	\geometry{%
+		a5paper,           % Specifies A5 paper size, commonly used for ebooks
+		rmargin=1.75cm,    % Set the right margin to 1.75 cm
+		lmargin=1.75cm,    % Set the left margin to 1.75 cm
+		tmargin=2.00cm,    % Set the top margin to 2.00 cm
+		bmargin=1.75cm     % Set the bottom margin to 1.75 cm
+	}
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -286,12 +286,12 @@
 		bb=bboldx,  % Extended Blackboard bold options for math notation
 		cal=cm      % Classic calligraphic font style for math symbols
 	]{mathalpha}  	% Additional math font styles for diverse notation
-	
+
 	% Set a default font size if \deffontsize is not defined
 	\ifx\deffontsize\undefined
 		\setglobalfontsize{10pt} % Default to 10pt
 	\fi
-	
+
 	% Load the fontsize package
 	\RequirePackage[fontsize=\deffontsize]{fontsize} % Load the fontsize package
 }
@@ -309,10 +309,10 @@
 
 % Section formatting
 \titleformat{\section}[block]%
-        {\Large\sffamily\scshape\color{accentcolor}} % Font and color for section title
-        {\Large\marginsecnumber\thesection} % Section number format
-        {0pt} % Space between number and title
-        {#1\hrule} % Title formatting
+{\Large\sffamily\scshape\color{accentcolor}} % Font and color for section title
+{\Large\marginsecnumber\thesection} % Section number format
+{0pt} % Space between number and title
+{#1\hrule} % Title formatting
 
 \titlespacing*{\section}{0pt}{10pt}{-7.5pt} % Spacing before and after section title
 
@@ -323,10 +323,10 @@
 
 % Subsection formatting
 \titleformat{\subsection}[block]%
-        {\large\sffamily\scshape\color{accentcolor}} % Font and color for subsection title
-        {\large\marginsubsecnumber\thesubsection} % Subsection number format
-        {0pt} % Space between number and title
-        {#1} % Title formatting
+{\large\sffamily\scshape\color{accentcolor}} % Font and color for subsection title
+{\large\marginsubsecnumber\thesubsection} % Subsection number format
+{0pt} % Space between number and title
+{#1} % Title formatting
 
 % Command for margin subsubsection numbering
 \providecommand{\marginsubsubsecnumber}[1]{%
@@ -335,10 +335,10 @@
 
 % Subsubsection formatting
 \titleformat{\subsubsection}[runin]%
-        {\large\sffamily\scshape\color{accentcolor}} % Font and color for subsubsection title
-        {\large\marginsubsubsecnumber\thesubsubsection} % Subsubsection number format
-        {0pt} % Space between number and title
-        {#1.} % Title formatting
+{\large\sffamily\scshape\color{accentcolor}} % Font and color for subsubsection title
+{\large\marginsubsubsecnumber\thesubsubsection} % Subsubsection number format
+{0pt} % Space between number and title
+{#1.} % Title formatting
 
 % Command for margin paragraph numbering
 \providecommand{\marginparnumber}[1]{%
@@ -347,10 +347,10 @@
 
 % Paragraph formatting
 \titleformat{\paragraph}[runin]%
-        {\normalsize\sffamily\color{accentcolor}} % Font and color for paragraph title
-        {\marginparnumber\theparagraph} % Paragraph number format
-        {0pt} % Space between number and title
-        {#1.} % Title formatting
+{\normalsize\sffamily\color{accentcolor}} % Font and color for paragraph title
+{\marginparnumber\theparagraph} % Paragraph number format
+{0pt} % Space between number and title
+{#1.} % Title formatting
 
 \titlespacing*{\paragraph}{0pt}{5pt}{5pt} % Spacing before and after paragraph title
 
@@ -361,10 +361,10 @@
 
 % Subparagraph formatting
 \titleformat{\subparagraph}[runin]%
-        {\normalsize\sffamily\scshape\color{accentcolor}} % Font and color for subparagraph title
-        {\marginsubparnumber\thesubparagraph} % Subparagraph number format
-        {0pt} % Space between number and title
-        {#1.} % Title formatting
+{\normalsize\sffamily\scshape\color{accentcolor}} % Font and color for subparagraph title
+{\marginsubparnumber\thesubparagraph} % Subparagraph number format
+{0pt} % Space between number and title
+{#1.} % Title formatting
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Table of Contents Customization
@@ -422,7 +422,7 @@
 
 \renewcommand{\maketitle}{%
 	\thispagestyle{plain}  % Use plain page style for the title page
-	
+
 	\begin{tboxed}[tikzsetting={draw=accentcolor}, linewidth=0.5pt]
 		\color{accentcolor}\bfseries\Large\bigskip % Title Section
 		\ifx\@title\undefined
@@ -508,7 +508,7 @@
 \newmdenv[%
 	font=\normalfont\small,       % Font for the content
 	frametitlefont=\bfseries,     % Title font style
-        tikzsetting={draw=black},     % Set the border color of the frame to black
+	tikzsetting={draw=black},     % Set the border color of the frame to black
 	backgroundcolor=none,         % Set background to transparent
 	skipabove=10pt,               % Vertical space above the frame
 	skipbelow=10pt,               % Vertical space below the frame
@@ -523,7 +523,7 @@
 \newmdenv[%
 	font=\normalfont\small,       % Font for the content
 	frametitlefont=\bfseries,     % Title font style
-        hidealllines=true,            % Hide all frame lines
+	hidealllines=true,            % Hide all frame lines
 	backgroundcolor={accentcolor!15!white}, % Set a semi-transparent background color
 	skipabove=10pt,               % Vertical space above the frame
 	skipbelow=10pt,               % Vertical space below the frame
@@ -856,10 +856,10 @@
 \providecommand{\textem}[1]{{\bfseries\color{accentcolor}#1}} % Formats emphasized text with bold font in a specified accent color
 \providecommand{\toc}{%
 	\begingroup
-        	\sffamily\scshape % Set font to sans-serif and small caps
-        	\tableofcontents % Creates the table of contents based on sections and subsections
-        	\vfill % Fills the vertical space to push content to the next page
-        	\pagebreak % Forces a page break to start new content on a fresh page
+	\sffamily\scshape % Set font to sans-serif and small caps
+	\tableofcontents % Creates the table of contents based on sections and subsections
+	\vfill % Fills the vertical space to push content to the next page
+	\pagebreak % Forces a page break to start new content on a fresh page
 	\endgroup % Ends the group to revert to previous formatting
 }
 \providecommand{\urlref}[1]{\href{#1}{#1}} % Creates a hyperlink for a given URL
