@@ -1,16 +1,7 @@
----
-title: CHANGELOG
-linter-yaml-title-alias: CHANGELOG
-date created: Friday, July 11th 2025, 18:56:20
-date modified: Friday, July 11th 2025, 19:17:23
-aliases: CHANGELOG
----
-
-# CHANGELOG
-
-- style: lint all.sty files in csLaTeX using latexindent for consistent formatting (Agni Datta, 2025-07-11)
-- chore: update license to LaTeX Project Public License v1.3c for all csLaTeX.sty files (Agni Datta, 2025-07-11)
-- docs: comprehensive and rigorous documentation overhaul for all.sty packages and README in csLaTeX\n\nStandardized and expanded documentation blocks for csbook.sty, csdirty.sty, cslecture.sty, csletter.sty, cspresentations.sty, csthm.sty, llncscrypto.sty, tcscrypto.sty\nUpdated main README.md with detailed package summaries, usage, and references to subpackage READMEs\nEnsured all documentation is up to date, consistent, and follows best practices for LaTeX package repositories (Agni Datta, 2025-07-11)
+- docs(README): Standardize README.md structure, update metadata, and improve clarity. NEI: Unified documentation, improved maintainability, and user experience. (Agni Datta, 2025-07-11)
+- style: lint all .sty files in csLaTeX using latexindent for consistent formatting (Agni Datta, 2025-07-11)
+- chore: update license to LaTeX Project Public License v1.3c for all csLaTeX .sty files (Agni Datta, 2025-07-11)
+- docs: comprehensive and rigorous documentation overhaul for all .sty packages and README in csLaTeX\n\n- Standardized and expanded documentation blocks for csbook.sty, csdirty.sty, cslecture.sty, csletter.sty, cspresentations.sty, csthm.sty, llncscrypto.sty, tcscrypto.sty\n- Updated main README.md with detailed package summaries, usage, and references to subpackage READMEs\n- Ensured all documentation is up to date, consistent, and follows best practices for LaTeX package repositories (Agni Datta, 2025-07-11)
 - Update llncscrypto.sty (Agni Datta, 2025-07-10)
 - Update csdirty.sty (Agni Datta, 2025-07-10)
 - Update csdirty.sty (Agni Datta, 2025-07-09)
@@ -62,7 +53,7 @@ aliases: CHANGELOG
 - Update llncs-crypto.sty (Agni Datta, 2025-06-21)
 - Update csdirty.sty (Agni Datta, 2025-06-21)
 - Updated. (Agni Datta, 2025-06-14)
-- Create.gitignore (Agni Datta, 2025-06-09)
+- Create .gitignore (Agni Datta, 2025-06-09)
 - Update csthm.sty (Agni Datta, 2025-05-29)
 - Create README.md (Agni Datta, 2025-05-29)
 - Update llncs-crypto.sty (Agni Datta, 2025-05-29)
@@ -239,7 +230,7 @@ aliases: CHANGELOG
 - Update csbook.sty (Agni Datta, 2024-08-30)
 - Delete cscode.sty (Agni Datta, 2024-08-29)
 - Update csbook.sty (Agni Datta, 2024-08-29)
-- Merge branch ‘main’ of <https://github.com/agni-datta/csLaTeX> (Agni Datta, 2024-08-29)
+- Merge branch 'main' of https://github.com/agni-datta/csLaTeX (Agni Datta, 2024-08-29)
 - Update cslecture.sty (Agni Datta, 2024-08-29)
 - Update README.md (Agni Datta, 2024-08-28)
 - Update tcscrypto.sty (Agni Datta, 2024-08-27)
