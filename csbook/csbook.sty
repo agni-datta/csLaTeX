@@ -1,12 +1,85 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% csbook Package
-%% Version: 1.0
-%% Date: 2024/05/19
-%% Description: Tools for creating academic books in computer science
-%% Author: Agni Datta
-%% Email: agnidatta.org@gmail.com
-%% Maintainer: Agni Datta
-%% License: MIT
+%% csbook.sty – Tools for Creating Academic Books in Computer Science
+%% -----------------------------------------------------------------------------------------------------------
+%% COMPREHENSIVE DOCUMENTATION (v1.0, 2024/05/19)
+%% -----------------------------------------------------------------------------------------------------------
+%% DESCRIPTION:
+%%   csbook is a LaTeX package designed to streamline the creation of academic books in computer science.
+%%   It provides advanced typesetting tools, customizable environments, and modular options for book-length
+%%   documents, including support for code listings, theorem environments, bibliography management, and more.
+%%   The package is intended for researchers, educators, and students preparing monographs, textbooks, or
+%%   edited volumes in computer science and related fields.
+%%
+%% FEATURES:
+%%   - Modular option system for enabling/disabling features (code listings, comments, fonts, TikZ, etc.)
+%%   - Advanced theorem and proof environments (with csthm integration)
+%%   - Bibliography management (biblatex support)
+%%   - Customizable accent color and section formatting
+%%   - Enhanced PDF management and external file handling
+%%   - Support for XeLaTeX and LuaLaTeX engines
+%%   - Professional page layout, typography, and microtype enhancements
+%%   - Flexible font selection (Fira, Garamond, Kepler, Libertine, etc.)
+%%   - Source code and algorithm environments
+%%   - TikZ and advanced graphics support
+%%   - Appendix and comment management
+%%   - Versioning and print/ebook modes
+%%
+%% OPTIONS (all optional, can be combined):
+%%   biblatex      - Enable biblatex bibliography management
+%%   codelist      - Enable code listing environments
+%%   comments      - Enable inline comments/annotations
+%%   ebook         - Enable ebook-specific layout
+%%   fancythm      - Use fancy theorem environments
+%%   firacode      - Use Fira Code font for code
+%%   firasans      - Use Fira Sans font for sans-serif text
+%%   garamond      - Use Garamond font
+%%   inconsolata   - Use Inconsolata font for code
+%%   kepler        - Use Kepler font
+%%   libertinesans - Use Libertine Sans font
+%%   lmsans        - Use Latin Modern Sans font
+%%   lmserif       - Use Latin Modern Serif font
+%%   normalthm     - Use normal theorem environments
+%%   oldlmserif    - Use old Latin Modern Serif font
+%%   oldschoolthm  - Use oldschool theorem environments
+%%   print         - Enable print-specific layout
+%%   sortedbib     - Enable sorted bibliography
+%%   sourcecode    - Enable source code environments
+%%   sourcesans    - Use Source Sans font
+%%   tikz          - Enable TikZ and advanced graphics
+%%
+%% USAGE:
+%%   \usepackage[<options>]{csbook}
+%%   Example: \usepackage[biblatex,comments,sourcecode]{csbook}
+%%
+%% DEPENDENCIES:
+%%   - calc, comment, etoolbox, iftex, kvoptions, lipsum, xkeyval, xparse, xpatch
+%%   - bxpdfver, pdfpages, pdflscape, ragged2e, xcolor, babel, csquotes, microtype, setspace, textcomp, ulem
+%%   - geometry, fancyhdr, fontenc, amsfonts, amssymb, amsmath, amsthm, thmtools, nicefrac, siunitx, fontspec, unicode-math
+%%   - csthm (optional, for theorem environments)
+%%   - biblatex (optional, for bibliography)
+%%   - tcolorbox, mdframed, tabularray, tikz, pgfplots, etc. (optional, for advanced features)
+%%
+%% COMPATIBILITY:
+%%   - Requires LaTeX2e
+%%   - Compatible with XeLaTeX and LuaLaTeX (not pdfLaTeX)
+%%   - Works with standard book/report/article classes
+%%   - Designed for modern TeX distributions (TeX Live 2022+, MiKTeX 23+)
+%%
+%% AUTHOR: Agni Datta <agnidatta.org@gmail.com>
+%% VERSION: 1.0
+%% DATE: 2024/05/19
+%% LICENSE: MIT License
+%%
+%% EXAMPLE USAGE:
+%%   \documentclass{book}
+%%   \usepackage[biblatex,comments,sourcecode,tikz]{csbook}
+%%   \title{A Modern Computer Science Book}
+%%   \author{Author Name}
+%%   \begin{document}
+%%   \maketitle
+%%   % ...
+%%   \end{document}
+%% -----------------------------------------------------------------------------------------------------------
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % csbook: A LaTeX package for academic book creation in computer science.

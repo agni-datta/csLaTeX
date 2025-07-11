@@ -1,12 +1,60 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% cslecture Package
-%% Version: v1
-%% Date: 2024/04/26
-%% Description: This package provides comprehensive settings and environments tailored for academic lectures and documents in computer science.
-%% Author: Agni Datta
-%% Email: Not provided
-%% Maintainer: Agni Datta
-%% License: Not specified
+%% cslecture.sty – Academic Lecture Package for Computer Science
+%% ----------------------------------------------------------------------------------------------------------
+%% COMPREHENSIVE DOCUMENTATION (v1, 2024/04/26)
+%% ----------------------------------------------------------------------------------------------------------
+%% DESCRIPTION:
+%%   cslecture is a LaTeX package providing comprehensive settings and environments tailored for academic lectures
+%%   and documents in computer science. It offers custom theorem environments, advanced section formatting, and
+%%   seamless integration with bibliography and algorithm packages, making it ideal for lecture notes, course books,
+%%   and academic presentations.
+%%
+%% FEATURES:
+%%   - Custom theorem-like environments with colored styling
+%%   - Advanced section formatting with customizable accent colors
+%%   - Customizable table of contents and bibliography integration
+%%   - Enhanced proof environments with custom QED symbols
+%%   - Support for algorithms, code snippets, and mathematical content
+%%   - Customizable page layout and typography settings
+%%   - Tools for TODO notes and annotations
+%%   - BibLaTeX integration for bibliography management
+%%   - Ebook layout option for digital reading
+%%
+%% OPTIONS (all optional, can be combined):
+%%   biblatex   - Enable BibLaTeX bibliography management
+%%   ebook      - Enable ebook-specific layout and settings
+%%
+%% USAGE:
+%%   \usepackage[<options>]{cslecture}
+%%   Example: \usepackage[biblatex,ebook]{cslecture}
+%%
+%% DEPENDENCIES:
+%%   - ifxetex, ifluatex, calc, etoolbox, xpatch, xparse, xkeyval, kvoptions
+%%   - bxpdfver, comment, pdfpages, pdflscape, ragged2e, xcolor, babel, csquotes, microtype, setspace, textcomp, ulem
+%%   - geometry, fancyhdr, fontenc, amsfonts, amssymb, amsmath, amsthm, thmtools, nicefrac, siunitx, fontspec, unicode-math
+%%   - algorithm2e, tcolorbox, mdframed, tabularray, tikz, pgfplots (optional, for advanced features)
+%%
+%% COMPATIBILITY:
+%%   - Requires LaTeX2e
+%%   - Compatible with XeLaTeX and LuaLaTeX (not pdfLaTeX)
+%%   - Works with standard book/report/article classes
+%%   - Designed for modern TeX distributions (TeX Live 2022+, MiKTeX 23+)
+%%
+%% AUTHOR: Agni Datta
+%% VERSION: v1
+%% DATE: 2024/04/26
+%% LICENSE: Not specified (please specify for clarity)
+%%
+%% EXAMPLE USAGE:
+%%   \documentclass{book}
+%%   \usepackage[biblatex,ebook]{cslecture}
+%%   \title{Lecture Notes in Computer Science}
+%%   \author{Instructor Name}
+%%   \begin{document}
+%%   \maketitle
+%%   % ...
+%%   \end{document}
+%% ----------------------------------------------------------------------------------------------------------
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Introduction:
 %   - The cslecture package offers a suite of tools and settings designed to enhance the creation of computer science lecture notes and academic documents.

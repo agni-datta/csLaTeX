@@ -2,7 +2,7 @@
 title: "csdirty.sty: The Quick & Dirty Package for Academic Writing"
 linter-yaml-title-alias: "csdirty.sty: The Quick & Dirty Package for Academic Writing"
 date created: Wednesday, June 4th 2025, 14:27:03
-date modified: Sunday, July 6th 2025, 01:42:10
+date modified: Friday, July 11th 2025, 18:29:06
 aliases: "csdirty.sty: The Quick & Dirty Package for Academic Writing"
 ---
 

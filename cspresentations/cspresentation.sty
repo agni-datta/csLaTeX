@@ -1,8 +1,58 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Package: cspresentations.sty
-%% Author: Agni Datta
-%% Description: A Beamer theme and configuration for academic presentations
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% cspresentations.sty – Custom Beamer Theme for Academic Presentations
+%% ------------------------------------------------------------------------------------------------
+%% COMPREHENSIVE DOCUMENTATION (v1.1, 2024/12/05)
+%% ------------------------------------------------------------------------------------------------
+%% DESCRIPTION:
+%%   cspresentations is a LaTeX package providing a custom Beamer theme and configuration for academic
+%%   presentations in computer science and related fields. It enhances the visual appeal and clarity of
+%%   slides, offering advanced color theming, block environments, cryptography support, and integration
+%%   with TikZ and PGFPlots for diagrams and data visualization.
+%%
+%% FEATURES:
+%%   - Custom Beamer theme and color scheme (Rochester/Whale)
+%%   - Accent color and block styling for theorems, examples, alerts, etc.
+%%   - Enhanced table of contents, navigation symbols, and section styling
+%%   - Support for cryptography macros (tcscrypto)
+%%   - TikZ and PGFPlots integration for advanced graphics
+%%   - Custom box macros for definitions, questions, and colored content
+%%   - Hyperref integration for colored links
+%%   - Professional typography and microtype enhancements
+%%   - Algorithm2e support for pseudocode
+%%
+%% OPTIONS:
+%%   (No package options; customization is via Beamer and macro settings)
+%%
+%% USAGE:
+%%   \usepackage{cspresentations}
+%%   (Load after \documentclass{beamer} and before \begin{document})
+%%
+%% DEPENDENCIES:
+%%   - amsfonts, amsmath, amssymb, mathtools, adjustbox, fontenc, babel, microtype, textcomp, xspace, xurl, csquotes, ulem, booktabs, graphicx, multimedia
+%%   - beamer, appendixnumberbeamer, comment, algorithm2e, tikz, pgfplots, tcscrypto, mathalpha
+%%
+%% COMPATIBILITY:
+%%   - Requires LaTeX2e
+%%   - Compatible with XeLaTeX, LuaLaTeX, and pdfLaTeX
+%%   - Designed for use with the beamer class
+%%   - Modern TeX distributions (TeX Live 2022+, MiKTeX 23+)
+%%
+%% AUTHOR: Agni Datta
+%% VERSION: 1.1
+%% DATE: 2024/12/05
+%% LICENSE: MIT License
+%%
+%% EXAMPLE USAGE:
+%%   \documentclass{beamer}
+%%   \usepackage{cspresentations}
+%%   \title{My Academic Talk}
+%%   \author{Presenter Name}
+%%   \begin{document}
+%%   \frame{\titlepage}
+%%   % ...
+%%   \end{document}
+%% ------------------------------------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ProvidesPackage{cspresentations}[2024/12/05 v1.1 Custom Beamer Theme]
 
