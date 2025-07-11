@@ -2,7 +2,7 @@
 title: "llncscrypto: Enhanced LaTeX Style Package for LNCS + Cryptography"
 linter-yaml-title-alias: "llncscrypto: Enhanced LaTeX Style Package for LNCS + Cryptography"
 date created: Saturday, July 5th 2025, 00:25:17
-date modified: Friday, July 11th 2025, 18:29:06
+date modified: Friday, July 11th 2025, 19:17:23
 aliases: "llncscrypto: Enhanced LaTeX Style Package for LNCS + Cryptography"
 ---
 
