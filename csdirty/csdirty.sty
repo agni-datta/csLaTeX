@@ -345,21 +345,25 @@
 		\RequirePackage{libertineRoman}                            % Libertine Roman font (text)
 		% Set main (serif) font
 		\setmainfont[%
-			Scale=MatchUppercase
+			Scale=MatchUppercase,                                               % Scaling Factor
+			SmallCapsFeatures={RawFeature=+smcp},                               % Enable small caps
+			RawFeature={+calt,+case,+kern,+liga,+lnum,+mark,+mkmk,+pnum}  		% Typographic features
 		]{linuxlibertineo}
 		% Set math font
 		\setmathfont[%
-			Scale=MatchUppercase
+			Scale=MatchUppercase,                                               % Scaling Factor
+			SmallCapsFeatures={RawFeature=+smcp},                               % Enable small caps
+			RawFeature={+calt,+case,+kern,+liga,+lnum,+mark,+mkmk,+pnum}  		% Typographic features
 		]{libertinusmath}
 		% Set monospaced font
 		\setmonofont[%
-			Scale=MatchLowercase,
+			Scale=MatchLowercase,                                               % Scaling Factor
 			SmallCapsFeatures={RawFeature=+smcp},                               % Enable small caps
 			RawFeature={+calt,+case,+dlig,+kern,+liga,+lnum,+mark,+mkmk,+pnum}  % Typographic features
 		]{notosansmono}
 		% Set sans-serif font
 		\setsansfont[%
-			Scale=MatchLowercase,
+			Scale=MatchLowercase,                                               % Scaling Factor
 			SmallCapsFeatures={RawFeature=+smcp},                               % Enable small caps
 			RawFeature={+calt,+case,+kern,+liga,+lnum,+mark,+mkmk,+pnum}  % Typographic features
 		]{ysabeau}
@@ -384,13 +388,13 @@
 			\setmainfont[%
 				Scale=MatchUppercase,                                               % Scaling Factor
 				SmallCapsFeatures={RawFeature=+smcp},                               % Enable small caps
-				RawFeature={+calt,+case,+dlig,+kern,+liga,+lnum,+mark,+mkmk,+pnum}  % Typographic features
+				RawFeature={+calt,+case,+kern,+liga,+lnum,+mark,+mkmk,+pnum}  		% Typographic features
 			]{linuxlibertineo}
 			% Set math font
 			\setmathfont[%
 				Scale=MatchUppercase,                                               % Scaling Factor
 				SmallCapsFeatures={RawFeature=+smcp},                               % Enable small caps
-				RawFeature={+calt,+case,+dlig,+kern,+liga,+lnum,+mark,+mkmk,+pnum}  % Typographic features
+				RawFeature={+calt,+case,+kern,+liga,+lnum,+mark,+mkmk,+pnum}  		% Typographic features
 			]{libertinusmath}
 			% Set monospaced font
 			\setmonofont[%
