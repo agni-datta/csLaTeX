@@ -308,16 +308,39 @@
 	\ifLuaTeX
 		\typeout{llncscrypto: Loading Libertinus setup for LuaTeX}
 		\RequirePackage[T1]{fontenc}
-		\RequirePackage{moresize}
-		\RequirePackage{nicefrac}
-		\RequirePackage{siunitx}
-		\RequirePackage{fontspec}
-		\RequirePackage{unicode-math}
-		\RequirePackage{libertineRoman}
-		\setmainfont[Scale=MatchUppercase]{linuxlibertineo}
-		\setmathfont[Scale=MatchUppercase]{libertinusmath}
-		\setmonofont[Scale=MatchLowercase]{firamono}
-		\setsansfont[Scale=MatchLowercase]{ysabeau}
+		\RequirePackage{amssymb}                               % AMS math symbols
+		\RequirePackage{mathtools}                             % Math tools extension
+		\RequirePackage{moresize}                              % More font sizes
+		\RequirePackage{nicefrac}                              % Nice fractions
+		\RequirePackage{siunitx}                               % SI units
+		\RequirePackage{fontspec}                              % Font selection for XeTeX
+		\RequirePackage{unicode-math}                          % Unicode math support
+		% Set main (serif) font
+		\setmainfont[%
+			SmallCapsFeatures={RawFeature=+smcp},                               		% Enable small caps
+			RawFeature={+calt,+case,+cpsp,+kern,+liga,+lnum,+mark,+mkmk,+pnum,+ss06},  	% Typographic features
+			ItalicFont = LibertinusSerif-Italic.otf,        							% Italic font
+			BoldFont = LibertinusSerif-Bold.otf,            							% Bold font
+			BoldItalicFont = LibertinusSerif-BoldItalic.otf 							% Bold italic font
+		]{LibertinusSerif-Regular.otf}
+		% Set math font
+		\setmathfont[%
+			AutoFakeBold,
+			Scale=MatchUppercase,                                               % Scaling Factor
+			RawFeature={+calt,+case,+kern,+liga,+lnum,+mark,+mkmk,+pnum}  		% Typographic features
+		]{LibertinusMath-Regular.otf}
+		% Set monospaced font
+		\setmonofont[%
+			Scale=MatchLowercase,                                               % Scaling Factor
+			SmallCapsFeatures={RawFeature=+smcp},                               % Enable small caps
+			RawFeature={+calt,+case,+dlig,+kern,+liga,+lnum,+mark,+mkmk,+pnum}  % Typographic features
+		]{notosansmono}
+		% Set sans-serif font
+		\setsansfont[%
+			Scale=MatchLowercase,                                               % Scaling Factor
+			SmallCapsFeatures={RawFeature=+smcp},                               % Enable small caps
+			RawFeature={+calt,+case,+kern,+liga,+lnum,+mark,+mkmk,+pnum}  		% Typographic features
+		]{ysabeau}
 		\let\mathbfcal\relax
 		\let\mathbfscr\relax
 		\RequirePackage{mathrsfs}
@@ -326,16 +349,40 @@
 		\ifXeTeX
 			\typeout{llncscrypto: Loading Libertinus setup for XeTeX}
 			\RequirePackage[T1]{fontenc}
-			\RequirePackage{moresize}
-			\RequirePackage{nicefrac}
-			\RequirePackage{siunitx}
-			\RequirePackage{fontspec}
-			\RequirePackage{unicode-math}
-			\RequirePackage{libertineRoman}
-			\setmainfont[Scale=MatchUppercase]{linuxlibertineo}
-			\setmathfont[Scale=MatchUppercase]{libertinusmath}
-			\setmonofont[Scale=MatchLowercase]{firamono}
-			\setsansfont[Scale=MatchLowercase]{ysabeau}
+			\RequirePackage{amssymb}                               % AMS math symbols
+			\RequirePackage{mathtools}                             % Math tools extension
+			\RequirePackage{moresize}                              % More font sizes
+			\RequirePackage{nicefrac}                              % Nice fractions
+			\RequirePackage{siunitx}                               % SI units
+			\RequirePackage{fontspec}                              % Font selection for XeTeX
+			\RequirePackage{unicode-math}                          % Unicode math support
+			% Set main (serif) font
+			\setmainfont[%
+				SmallCapsFeatures={RawFeature=+smcp},                               		% Enable small caps
+				RawFeature={+calt,+case,+cpsp,+kern,+liga,+lnum,+mark,+mkmk,+pnum,+ss06},  	% Typographic features
+				ItalicFont = LibertinusSerif-Italic.otf,        							% Italic font
+				BoldFont = LibertinusSerif-Bold.otf,            							% Bold font
+				BoldItalicFont = LibertinusSerif-BoldItalic.otf 							% Bold italic font
+			]{LibertinusSerif-Regular.otf}
+			% Set math font
+			\setmathfont[%
+				AutoFakeBold,
+				Scale=MatchUppercase,                                               % Scaling Factor
+				SmallCapsFeatures={RawFeature=+smcp},                               % Enable small caps
+				RawFeature={+calt,+case,+kern,+liga,+lnum,+mark,+mkmk,+pnum}  		% Typographic features
+			]{LibertinusMath-Regular.otf}
+			% Set monospaced font
+			\setmonofont[%
+				Scale=MatchLowercase,                                               % Scaling Factor
+				SmallCapsFeatures={RawFeature=+smcp},                               % Enable small caps
+				RawFeature={+calt,+case,+dlig,+kern,+liga,+lnum,+mark,+mkmk,+pnum}  % Typographic features
+			]{notosansmono}
+			% Set sans-serif font
+			\setsansfont[%
+				Scale=MatchLowercase,                                               % Scaling Factor
+				SmallCapsFeatures={RawFeature=+smcp},                               % Enable small caps
+				RawFeature={+calt,+case,+kern,+liga,+lnum,+mark,+mkmk,+pnum}  		% Typographic features
+			]{ysabeau}
 			\let\mathbfcal\relax
 			\let\mathbfscr\relax
 			\RequirePackage{mathrsfs}
@@ -602,15 +649,19 @@
 % Cryptography
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \ifllncscrypto@loadcrypto
-	\IfFileExists{tcscrypto.sty}{\RequirePackage{tcscrypto}}       % Cryptography macros
-	{\PackageWarning{llncscrypto}{Package `tcscrypto` not found.}} %
-	\RequirePackage{orcidlink}                                     % ORCID ID and Logo
+	\AtEndPreamble{%
+		\IfFileExists{tcscrypto.sty}{\RequirePackage{tcscrypto}}       % Cryptography macros
+		{\PackageWarning{llncscrypto}{Package `tcscrypto` not found.}} %
+		\RequirePackage{orcidlink}                                     % ORCID ID and Logo
+	}
 \fi
 
 \ifllncscrypto@loadnicodemus
-	\IfFileExists{nicodemus.sty}{\RequirePackage{nicodemus}}       % Nicodemus macros
-	{\PackageWarning{llncscrypto}{Package `nicodemus` not found.}} %
-	\RequirePackage{orcidlink}                                     % ORCID ID and Logo
+	\AtEndPreamble{%
+		\IfFileExists{nicodemus.sty}{\RequirePackage{nicodemus}}       % Nicodemus macros
+		{\PackageWarning{llncscrypto}{Package `nicodemus` not found.}} %
+		\RequirePackage{orcidlink}                                     % ORCID ID and Logo
+	}
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -677,6 +728,7 @@
 		\@ifundefined{notationabuse}{}{\let\notationabuse\relax}
 		\@ifundefined{note}{}{\let\note\relax}
 		\@ifundefined{observation}{}{\let\observation\relax}
+		\@ifundefined{openproblem}{}{\let\openproblem\relax}
 		\@ifundefined{question}{}{\let\question\relax}
 		\@ifundefined{remark}{}{\let\remark\relax}
 		\spnewtheorem{commentary}{Commentary}{\scshape}{\normalfont}
@@ -686,6 +738,7 @@
 		\spnewtheorem{notationabuse}{Notation Abuse}{\scshape}{\normalfont}
 		\spnewtheorem{note}{Note}{\scshape}{\normalfont}
 		\spnewtheorem{observation}{Observation}{\scshape}{\normalfont}
+		\spnewtheorem{openproblem}{Open Problem}{\scshape}{\normalfont}
 		\spnewtheorem{question}{Question}{\scshape}{\normalfont}
 		\spnewtheorem{remark}{Remark}{\scshape}{\normalfont}
 
