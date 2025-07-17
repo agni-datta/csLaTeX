@@ -2,7 +2,7 @@
 title: csLaTeX
 linter-yaml-title-alias: csLaTeX
 date created: Monday, March 25th 2024, 14:13:16
-date modified: Friday, July 11th 2025, 19:17:23
+date modified: Thursday, July 17th 2025, 22:39:59
 aliases: csLaTeX
 ---
 

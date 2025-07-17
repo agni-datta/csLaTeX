@@ -245,7 +245,7 @@
 	objcompress,
 	compress
 ]{bxpdfver} % PDF version and compression settings
-\RequirePackage[nottoc]{tocbibind}                           % Add bibliography, list of figures, etc. to TOC
+\RequirePackage[nottoc,section]{tocbibind}                   % Add bibliography, list of figures, etc. to TOC
 \RequirePackage{babel}                                       % Language, hyphenation
 \RequirePackage{pdfpages}                                    % Include external PDFs
 \RequirePackage{refcount}                                    % Reference counting
@@ -793,7 +793,7 @@
 
 		% Redefine proof environment (optional tweak)
 		\let\oldproof\proof
-		\renewenvironment{proof}{\begin{oldproof}}{\qed\end{oldproof}\vspace*{10pt}}
+		\renewenvironment{proof}{\begin{oldproof}}{\qed\end{oldproof}}
 
 		% Custom proof environment for claims
 		\newcommand*{\claimproofname}{Claim}
