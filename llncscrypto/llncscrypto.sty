@@ -465,10 +465,10 @@
 \RequirePackage[%
 	bookmarksnumbered=true,                                  % Number PDF bookmarks
 	breaklinks=true,                                         % Allow links to break over lines
-	citecolor=SlateBlue2,                                    % Color for citations
+	citecolor=SlateBlue4,                                    % Color for citations
 	colorlinks=true,                                         % Use colored links
 	frenchlinks=true,                                        % Use small caps for links
-	linkcolor=RoyalBlue2,                                    % Color for internal links
+	linkcolor=RoyalBlue4,                                    % Color for internal links
 	pagebackref,                                             % Back-references from bibliography
 	pdfencoding=auto,                                        % Automatic encoding detection
 	pdfpagelabels=true,                                      % Correct page labels in PDF
@@ -526,9 +526,9 @@
 	\AtBeginDocument{%
 		\RequirePackage{caption}                                   % Custom caption formatting
 		\captionsetup{%
-			font={rm},                                             % Roman font
+			font={rm,small},                                       % Roman font
 			labelfont={color=black,sc},                            % Label in black roman
-			labelsep=colon,                                        % Label ends with colon
+			labelsep=period,                                       % Label ends with colon
 			skip=5pt,                                              % Space below caption
 			belowskip=0pt                                          % Skip below caption
 		}%
@@ -542,10 +542,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage{enumitem}                                       % Customizing lists
 \setlist{nosep}                                                 % Remove extra space between items
-\setlist[enumerate,1]{label=(\arabic*)}                         % Top-level numbered lists
-\setlist[enumerate,2]{label=(\alph*)}                           % Second-level numbered lists
-\setlist[itemize,1]{label=\color{black!75}\textendash}          % Top-level itemized lists
-\setlist[itemize,2]{label=\color{black!75}\textbullet}          % Second-level itemized lists
+\setlist[enumerate,1]{label=(\arabic*), leftmargin=2em}         % Top-level numbered lists
+\setlist[enumerate,2]{label=(\alph*), leftmargin=2em}           % Second-level numbered lists (indented)
+\setlist[itemize,1]{label=\textendash, leftmargin=2em}          % Top-level itemized lists (indented)
+\setlist[itemize,2]{label=\textbullet, leftmargin=2em}          % Second-level itemized lists (indented)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Diagrams and TikZ Graphics
@@ -678,69 +678,84 @@
 		\@ifundefined{conclusion}{}{\let\conclusion\relax}
 		\@ifundefined{conjecture}{}{\let\conjecture\relax}
 		\@ifundefined{corollary}{}{\let\corollary\relax}
+		\@ifundefined{criterion}{}{\let\criterion\relax}
 		\@ifundefined{fact}{}{\let\fact\relax}
+		\@ifundefined{folklore}{}{\let\folklore\relax}
 		\@ifundefined{hypothesis}{}{\let\hypothesis\relax}
 		\@ifundefined{lemma}{}{\let\lemma\relax}
+		\@ifundefined{observation}{}{\let\observation\relax}
 		\@ifundefined{postulate}{}{\let\postulate\relax}
 		\@ifundefined{property}{}{\let\property\relax}
 		\@ifundefined{proposition}{}{\let\proposition\relax}
 
-		\spnewtheorem{theorem}{Theorem}{\bfseries}{\normalfont}
-		\spnewtheorem{assertion}{Assertion}{\bfseries}{\normalfont}
-		\spnewtheorem{assumption}{Assumption}{\bfseries}{\normalfont}
-		\spnewtheorem{axiom}{Axiom}{\bfseries}{\normalfont}
-		\spnewtheorem{claim}{Claim}{\bfseries}{\normalfont}
-		\spnewtheorem{conclusion}{Conclusion}{\bfseries}{\normalfont}
-		\spnewtheorem{conjecture}{Conjecture}{\bfseries}{\normalfont}
-		\spnewtheorem{corollary}{Corollary}{\bfseries}{\normalfont}
-		\spnewtheorem{fact}{Fact}{\bfseries}{\normalfont}
-		\spnewtheorem{hypothesis}{Hypothesis}{\bfseries}{\normalfont}
-		\spnewtheorem{lemma}{Lemma}{\bfseries}{\normalfont}
-		\spnewtheorem{postulate}{Postulate}{\bfseries}{\normalfont}
-		\spnewtheorem{property}{Property}{\bfseries}{\normalfont}
-		\spnewtheorem{proposition}{Proposition}{\bfseries}{\normalfont}
+		\spnewtheorem{theorem}{Theorem}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{assertion}{Assertion}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{assumption}{Assumption}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{axiom}{Axiom}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{claim}{Claim}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{conclusion}{Conclusion}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{conjecture}{Conjecture}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{corollary}{Corollary}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{criterion}{Criterion}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{fact}{Fact}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{folklore}{Folklore}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{hypothesis}{Hypothesis}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{lemma}{Lemma}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{observation}{Observation}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{postulate}{Postulate}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{property}{Property}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{proposition}{Proposition}[section]{\bfseries}{\normalfont}
 
-		% Definition-like
+		% Definition-like environments
 		\@ifundefined{application}{}{\let\application\relax}
 		\@ifundefined{construction}{}{\let\construction\relax}
 		\@ifundefined{convention}{}{\let\convention\relax}
 		\@ifundefined{definition}{}{\let\definition\relax}
+		\@ifundefined{example}{}{\let\example\relax}
 		\@ifundefined{experiment}{}{\let\experiment\relax}
-		\@ifundefined{notation}{}{\let\notation\relax}
 		\@ifundefined{problem}{}{\let\problem\relax}
 		\@ifundefined{protocol}{}{\let\protocol\relax}
 		\@ifundefined{result}{}{\let\result\relax}
-		\spnewtheorem{application}{Application}{\bfseries}{\normalfont}
-		\spnewtheorem{construction}{Construction}{\bfseries}{\normalfont}
-		\spnewtheorem{convention}{Convention}{\bfseries}{\normalfont}
-		\spnewtheorem{definition}{Definition}{\bfseries}{\normalfont}
-		\spnewtheorem{experiment}{Experiment}{\bfseries}{\normalfont}
-		\spnewtheorem{notation}{Notation}{\bfseries}{\normalfont}
-		\spnewtheorem{problem}{Problem}{\bfseries}{\normalfont}
-		\spnewtheorem{protocol}{Protocol}{\bfseries}{\normalfont}
-		\spnewtheorem{result}{Result}{\bfseries}{\normalfont}
+		\@ifundefined{solution}{}{\let\solution\relax}
+		\@ifundefined{step}{}{\let\step\relax}
+
+		\spnewtheorem{application}{Application}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{construction}{Construction}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{convention}{Convention}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{definition}{Definition}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{example}{Example}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{experiment}{Experiment}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{problem}{Problem}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{protocol}{Protocol}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{result}{Result}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{solution}{Solution}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{step}{Step}[section]{\bfseries}{\normalfont}
 
 		% Remark-like environments
 		\@ifundefined{commentary}{}{\let\commentary\relax}
-		\@ifundefined{example}{}{\let\example\relax}
+		\@ifundefined{discussion}{}{\let\discussion\relax}
 		\@ifundefined{exercise}{}{\let\exercise\relax}
 		\@ifundefined{motivation}{}{\let\motivation\relax}
+		\@ifundefined{notation}{}{\let\notation\relax}
 		\@ifundefined{notationabuse}{}{\let\notationabuse\relax}
 		\@ifundefined{note}{}{\let\note\relax}
-		\@ifundefined{observation}{}{\let\observation\relax}
 		\@ifundefined{openproblem}{}{\let\openproblem\relax}
+		\@ifundefined{proof}{}{\let\proof\relax}
 		\@ifundefined{question}{}{\let\question\relax}
 		\@ifundefined{remark}{}{\let\remark\relax}
-		\spnewtheorem{commentary}{Commentary}{\scshape}{\normalfont}
-		\spnewtheorem{example}{Example}{\scshape}{\normalfont}
-		\spnewtheorem{exercise}{Exercise}{\scshape}{\normalfont}
-		\spnewtheorem{motivation}{Motivation}{\scshape}{\normalfont}
-		\spnewtheorem{notationabuse}{Notation Abuse}{\scshape}{\normalfont}
-		\spnewtheorem{note}{Note}{\scshape}{\normalfont}
-		\spnewtheorem{observation}{Observation}{\scshape}{\normalfont}
-		\spnewtheorem{openproblem}{Open Problem}{\scshape}{\normalfont}
-		\spnewtheorem{question}{Question}{\scshape}{\normalfont}
-		\spnewtheorem{remark}{Remark}{\scshape}{\normalfont}
+		\@ifundefined{syntax}{}{\let\syntax\relax}
+
+		\spnewtheorem{commentary}{Commentary}[section]{\scshape}{\normalfont}
+		\spnewtheorem{discussion}{Discussion}[section]{\scshape}{\normalfont}
+		\spnewtheorem{exercise}{Exercise}[section]{\scshape}{\normalfont}
+		\spnewtheorem{motivation}{Motivation}[section]{\scshape}{\normalfont}
+		\spnewtheorem{notation}{Notation}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{notationabuse}{Notation Abuse}[section]{\scshape}{\normalfont}
+		\spnewtheorem{note}{Note}[section]{\scshape}{\normalfont}
+		\spnewtheorem{openproblem}{Open Problem}[section]{\scshape}{\normalfont}
+		\spnewtheorem{question}{Question}[section]{\scshape}{\normalfont}
+		\spnewtheorem{remark}{Remark}[section]{\scshape}{\normalfont}
+		\spnewtheorem{syntax}{Syntax}[section]{\scshape}{\normalfont}
 
 		% Highlight environments
 		\@ifundefined{guideline}{}{\let\guideline\relax}
@@ -753,16 +768,28 @@
 		\@ifundefined{takeaway}{}{\let\takeaway\relax}
 		\@ifundefined{tip}{}{\let\tip\relax}
 		\@ifundefined{warning}{}{\let\warning\relax}
-		\spnewtheorem{guideline}{Guideline}{\sffamily}{\normalfont}
-		\spnewtheorem{highlight}{Highlight}{\sffamily}{\normalfont}
-		\spnewtheorem{important}{Important}{\sffamily}{\normalfont}
-		\spnewtheorem{insight}{Insight}{\sffamily}{\normalfont}
-		\spnewtheorem{keypoint}{Key Point}{\sffamily}{\normalfont}
-		\spnewtheorem{recall}{Recall}{\sffamily}{\normalfont}
-		\spnewtheorem{summary}{Summary}{\sffamily}{\normalfont}
-		\spnewtheorem{takeaway}{Takeaway}{\sffamily}{\normalfont}
-		\spnewtheorem{tip}{Tip}{\sffamily}{\normalfont}
-		\spnewtheorem{warning}{Warning}{\sffamily}{\normalfont}
+
+		\spnewtheorem{guideline}{Guideline}[section]{\sffamily}{\normalfont}
+		\spnewtheorem{highlight}{Highlight}[section]{\sffamily}{\normalfont}
+		\spnewtheorem{important}{Important}[section]{\sffamily}{\normalfont}
+		\spnewtheorem{insight}{Insight}[section]{\sffamily}{\normalfont}
+		\spnewtheorem{keypoint}{Key Point}[section]{\sffamily}{\normalfont}
+		\spnewtheorem{recall}{Recall}[section]{\sffamily}{\normalfont}
+		\spnewtheorem{summary}{Summary}[section]{\sffamily}{\normalfont}
+		\spnewtheorem{takeaway}{Takeaway}[section]{\sffamily}{\normalfont}
+		\spnewtheorem{tip}{Tip}[section]{\sffamily}{\normalfont}
+		\spnewtheorem{warning}{Warning}[section]{\sffamily}{\normalfont}
+
+		% Unnumbered enviorments
+		\spnewtheorem*{claim*}{Claim}{\bfseries}{\normalfont}
+		\spnewtheorem*{conjecture*}{Conjecture}{\bfseries}{\normalfont}
+		\spnewtheorem*{corollary*}{Corollary}{\bfseries}{\normalfont}
+		\spnewtheorem*{hypothesis*}{Hypothesis}{\bfseries}{\normalfont}
+		\spnewtheorem*{lemma*}{Lemma}{\bfseries}{\normalfont}
+		\spnewtheorem*{theorem*}{Theorem}{\bfseries}{\normalfont}
+		\spnewtheorem*{openproblem*}{Open Problem}{\scshape}{\normalfont}
+		\spnewtheorem*{proof}{Proof}{\scshape}{\normalfont}
+		\spnewtheorem*{syntax*}{Syntax}{\scshape}{\normalfont}
 
 		% Redefine proof environment (optional tweak)
 		\let\oldproof\proof
@@ -790,6 +817,10 @@
 \Crefname{subsection}{\textsection}{\textsection\textsection}
 \crefname{subsubsection}{\textsection}{\textsection\textsection}
 \Crefname{subsubsection}{\textsection}{\textsection\textsection}
+\crefname{paragraph}{paragraph}{paragraphs}
+\Crefname{paragraph}{Paragraph}{Paragraphs}
+\crefname{subparagraph}{subparagraph}{subparagraphs}
+\Crefname{subparagraph}{Subparagraph}{Subparagraphs}
 
 % Declare names for all environments for cref/Cref
 % Theorem-like
@@ -809,12 +840,18 @@
 \Crefname{conjecture}{Conjecture}{Conjectures}
 \crefname{corollary}{corollary}{corollaries}
 \Crefname{corollary}{Corollary}{Corollaries}
+\crefname{criterion}{criterion}{criteria}
+\Crefname{criterion}{Criterion}{Criteria}
 \crefname{fact}{fact}{facts}
 \Crefname{fact}{Fact}{Facts}
+\crefname{folklore}{folklore}{folklore}
+\Crefname{folklore}{Folklore}{Folklore}
 \crefname{hypothesis}{hypothesis}{hypotheses}
 \Crefname{hypothesis}{Hypothesis}{Hypotheses}
 \crefname{lemma}{lemma}{lemmas}
 \Crefname{lemma}{Lemma}{Lemmas}
+\crefname{observation}{observation}{observations}
+\Crefname{observation}{Observation}{Observations}
 \crefname{postulate}{postulate}{postulates}
 \Crefname{postulate}{Postulate}{Postulates}
 \crefname{property}{property}{properties}
@@ -831,36 +868,44 @@
 \Crefname{convention}{Convention}{Conventions}
 \crefname{definition}{definition}{definitions}
 \Crefname{definition}{Definition}{Definitions}
+\crefname{example}{example}{examples}
+\Crefname{example}{Example}{Examples}
 \crefname{experiment}{experiment}{experiments}
 \Crefname{experiment}{Experiment}{Experiments}
-\crefname{notation}{notation}{notations}
-\Crefname{notation}{Notation}{Notations}
 \crefname{problem}{problem}{problems}
 \Crefname{problem}{Problem}{Problems}
 \crefname{protocol}{protocol}{protocols}
 \Crefname{protocol}{Protocol}{Protocols}
 \crefname{result}{result}{results}
 \Crefname{result}{Result}{Results}
+\crefname{solution}{solution}{solutions}
+\Crefname{solution}{Solution}{Solutions}
+\crefname{step}{step}{steps}
+\Crefname{step}{Step}{Steps}
 
 % Remark-like
 \crefname{commentary}{commentary}{commentaries}
 \Crefname{commentary}{Commentary}{Commentaries}
-\crefname{example}{example}{examples}
-\Crefname{example}{Example}{Examples}
+\crefname{discussion}{discussion}{discussions}
+\Crefname{discussion}{Discussion}{Discussions}
 \crefname{exercise}{exercise}{exercises}
 \Crefname{exercise}{Exercise}{Exercises}
 \crefname{motivation}{motivation}{motivations}
 \Crefname{motivation}{Motivation}{Motivations}
+\crefname{notation}{notation}{notations}
+\Crefname{notation}{Notation}{Notations}
 \crefname{notationabuse}{notation abuse}{notation abuses}
 \Crefname{notationabuse}{Notation Abuse}{Notation Abuses}
 \crefname{note}{note}{notes}
 \Crefname{note}{Note}{Notes}
-\crefname{observation}{observation}{observations}
-\Crefname{observation}{Observation}{Observations}
+\crefname{openproblem}{open problem}{open problems}
+\Crefname{openproblem}{Open Problem}{Open Problems}
 \crefname{question}{question}{questions}
 \Crefname{question}{Question}{Questions}
 \crefname{remark}{remark}{remarks}
 \Crefname{remark}{Remark}{Remarks}
+\crefname{syntax}{syntax}{syntaxes}
+\Crefname{syntax}{Syntax}{Syntaxes}
 
 % Highlight-like
 \crefname{guideline}{guideline}{guidelines}
@@ -913,9 +958,9 @@
 % Define acknowledgment environment with an optional title.
 \NewDocumentEnvironment{acknowledgment}{o}{%
 	\IfNoValueTF{#1}{%
-		\noindent\textsf{Acknowledgment.}% Default title if not provided
+		\noindent\paragraph{Acknowledgment.}% Default title if not provided
 	}{%
-		\noindent\textsf{#1}% Use custom title if provided
+		\noindent\paragraph{#1}% Use custom title if provided
 	}
 }{}
 
