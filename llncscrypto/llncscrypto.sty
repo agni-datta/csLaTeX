@@ -303,151 +303,162 @@
 % Fonts and Math
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Libertine/Libertinus font setup (modular, reusable)
+% Libertine/Libertinus font setup (all engines)
 \newcommand{\llncscrypto@libertine}{%
 	\ifLuaTeX
-		\typeout{llncscrypto: Loading Libertinus setup for LuaTeX}
-		\RequirePackage[T1]{fontenc}
-		\RequirePackage{amssymb}                               % AMS math symbols
-		\RequirePackage{mathtools}                             % Math tools extension
-		\RequirePackage{moresize}                              % More font sizes
-		\RequirePackage{nicefrac}                              % Nice fractions
-		\RequirePackage{siunitx}                               % SI units
-		\RequirePackage{fontspec}                              % Font selection for XeTeX
-		\RequirePackage{unicode-math}                          % Unicode math support
-		% Set main (serif) font
-		\setmainfont[%
-			SmallCapsFeatures={RawFeature=+smcp},                               		% Enable small caps
-			RawFeature={+calt,+case,+cpsp,+kern,+liga,+lnum,+mark,+mkmk,+pnum,+ss06},  	% Typographic features
-			ItalicFont = LibertinusSerif-Italic.otf,        							% Italic font
-			BoldFont = LibertinusSerif-Bold.otf,            							% Bold font
-			BoldItalicFont = LibertinusSerif-BoldItalic.otf 							% Bold italic font
+		% LuaTeX: Libertinus with unicode-math
+		\typeout{llncscrypto: Libertinus setup for LuaTeX}
+		\RequirePackage{amssymb}
+		\RequirePackage{mathtools}
+		\RequirePackage{fontspec}
+		\RequirePackage{lualatex-math}
+		\RequirePackage{moresize}
+		\RequirePackage{nicefrac}
+		\RequirePackage{siunitx}
+		\RequirePackage{unicode-math}
+		\setmainfont[
+			SmallCapsFeatures={RawFeature=+smcp},
+			RawFeature={+calt,+case,+cpsp,+kern,+liga,+lnum,+mark,+mkmk,+pnum,+ss06},
+			ItalicFont = LibertinusSerif-Italic.otf,
+			BoldFont = LibertinusSerif-Bold.otf,
+			BoldItalicFont = LibertinusSerif-BoldItalic.otf
 		]{LibertinusSerif-Regular.otf}
-		% Set math font
-		\setmathfont[%
+		\setmathfont[
 			AutoFakeBold,
-			Scale=MatchUppercase,                                               % Scaling Factor
-			RawFeature={+calt,+case,+kern,+liga,+lnum,+mark,+mkmk,+pnum}  		% Typographic features
+			Scale=MatchUppercase,
+			RawFeature={+calt,+case,+kern,+liga}
 		]{LibertinusMath-Regular.otf}
-		% Set monospaced font
-		\setmonofont[%
-			Scale=MatchLowercase,                                               % Scaling Factor
-			SmallCapsFeatures={RawFeature=+smcp},                               % Enable small caps
-			RawFeature={+calt,+case,+dlig,+kern,+liga,+lnum,+mark,+mkmk,+pnum}  % Typographic features
+		\setmonofont[
+			Scale=MatchLowercase,
+			SmallCapsFeatures={RawFeature=+smcp},
+			RawFeature={+calt,+case,+dlig,+kern,+liga,+lnum,+mark,+mkmk,+pnum}
 		]{notosansmono}
-		% Set sans-serif font
-		\setsansfont[%
-			Scale=MatchLowercase,                                               % Scaling Factor
-			SmallCapsFeatures={RawFeature=+smcp},                               % Enable small caps
-			RawFeature={+calt,+case,+kern,+liga,+lnum,+mark,+mkmk,+pnum}  		% Typographic features
+		\setsansfont[
+			Scale=MatchLowercase,
+			SmallCapsFeatures={RawFeature=+smcp},
+			RawFeature={+calt,+case,+kern,+liga,+lnum,+mark,+mkmk,+pnum}
 		]{ysabeau}
+		% Remove math font clashes
 		\let\mathbfcal\relax
 		\let\mathbfscr\relax
-		\RequirePackage{mathrsfs}
+		\RequirePackage{mathrsfs} % \mathscr
 		\RequirePackage[cal=stixplain,bb=bboldx,scr=esstix]{mathalpha}
 	\else
 		\ifXeTeX
-			\typeout{llncscrypto: Loading Libertinus setup for XeTeX}
-			\RequirePackage[T1]{fontenc}
-			\RequirePackage{amssymb}                               % AMS math symbols
-			\RequirePackage{mathtools}                             % Math tools extension
-			\RequirePackage{moresize}                              % More font sizes
-			\RequirePackage{nicefrac}                              % Nice fractions
-			\RequirePackage{siunitx}                               % SI units
-			\RequirePackage{fontspec}                              % Font selection for XeTeX
-			\RequirePackage{unicode-math}                          % Unicode math support
-			% Set main (serif) font
-			\setmainfont[%
-				SmallCapsFeatures={RawFeature=+smcp},                               		% Enable small caps
-				RawFeature={+calt,+case,+cpsp,+kern,+liga,+lnum,+mark,+mkmk,+pnum,+ss06},  	% Typographic features
-				ItalicFont = LibertinusSerif-Italic.otf,        							% Italic font
-				BoldFont = LibertinusSerif-Bold.otf,            							% Bold font
-				BoldItalicFont = LibertinusSerif-BoldItalic.otf 							% Bold italic font
+			% XeTeX: Libertinus with unicode-math
+			\typeout{llncscrypto: Libertinus setup for XeTeX}
+			\RequirePackage{amssymb}
+			\RequirePackage{mathtools}
+			\RequirePackage{moresize}
+			\RequirePackage{nicefrac}
+			\RequirePackage{siunitx}
+			\RequirePackage{fontspec}
+			\RequirePackage{unicode-math}
+			\setmainfont[
+				SmallCapsFeatures={RawFeature=+smcp},
+				RawFeature={+calt,+case,+cpsp,+kern,+liga,+lnum,+mark,+mkmk,+pnum,+ss06},
+				ItalicFont = LibertinusSerif-Italic.otf,
+				BoldFont = LibertinusSerif-Bold.otf,
+				BoldItalicFont = LibertinusSerif-BoldItalic.otf
 			]{LibertinusSerif-Regular.otf}
-			% Set math font
-			\setmathfont[%
+			\setmathfont[
 				AutoFakeBold,
-				Scale=MatchUppercase,                                               % Scaling Factor
-				SmallCapsFeatures={RawFeature=+smcp},                               % Enable small caps
-				RawFeature={+calt,+case,+kern,+liga,+lnum,+mark,+mkmk,+pnum}  		% Typographic features
+				Scale=MatchUppercase,
+				SmallCapsFeatures={RawFeature=+smcp},
+				RawFeature={+calt,+case,+kern,+liga}
 			]{LibertinusMath-Regular.otf}
-			% Set monospaced font
-			\setmonofont[%
-				Scale=MatchLowercase,                                               % Scaling Factor
-				SmallCapsFeatures={RawFeature=+smcp},                               % Enable small caps
-				RawFeature={+calt,+case,+dlig,+kern,+liga,+lnum,+mark,+mkmk,+pnum}  % Typographic features
-			]{notosansmono}
-			% Set sans-serif font
-			\setsansfont[%
-				Scale=MatchLowercase,                                               % Scaling Factor
-				SmallCapsFeatures={RawFeature=+smcp},                               % Enable small caps
-				RawFeature={+calt,+case,+kern,+liga,+lnum,+mark,+mkmk,+pnum}  		% Typographic features
-			]{ysabeau}
+			\setmonofont[
+				Scale=MatchLowercase,
+				SmallCapsFeatures={RawFeature=+smcp},
+				RawFeature={+calt,+case,+dlig,+kern,+liga,+lnum,+mark,+mkmk,+pnum}
+			]{inconsolata}
+			\setsansfont[
+				Scale=MatchLowercase,
+				SmallCapsFeatures={RawFeature=+smcp},
+				RawFeature={+calt,+case,+kern,+liga,+lnum,+mark,+mkmk,+pnum}
+			]{Ysabeau}
+			% Remove math font clashes
 			\let\mathbfcal\relax
 			\let\mathbfscr\relax
-			\RequirePackage{mathrsfs}
+			\RequirePackage{mathrsfs} % \mathscr
 			\RequirePackage[cal=stixplain,bb=bboldx,scr=esstix]{mathalpha}
 		\else
-			\typeout{llncscrypto: Libertine/Libertinus setup not supported for this engine.}
+			% pdfLaTeX or other: fallback to Type1 Libertine and newtxmath
+			\typeout{llncscrypto: Libertine/Libertinus OTF not supported for this engine.}
+			\RequirePackage[T1]{fontenc}
+			\RequirePackage{amssymb}
+			\RequirePackage{mathtools}
+			\RequirePackage{moresize}
+			\RequirePackage{nicefrac}
+			\RequirePackage{siunitx}
+			\RequirePackage{libertineRoman}
+			\RequirePackage{AnonymousPro}
+			\RequirePackage{ysabeau}
+			\RequirePackage[libertine]{newtxmath}
+			\RequirePackage[bb=bboldx,cal=cm,scr=esstix]{mathalpha}
 		\fi
 	\fi
 }
 
-% Concrete math font setup (modular, reusable)
+% Concrete math font setup (all engines)
 \newcommand{\llncscrypto@concrete}{%
 	\ifLuaTeX
-		\typeout{llncscrypto: Loading Concrete math for LuaTeX}
-		\RequirePackage[T1]{fontenc}
+		% LuaTeX: Concrete math with unicode-math
+		\typeout{llncscrypto: Concrete math for LuaTeX}
+		\RequirePackage{fontspec}
+		\RequirePackage{lualatex-math}
 		\RequirePackage{moresize}
 		\RequirePackage{nicefrac}
 		\RequirePackage{siunitx}
-		\RequirePackage{fontspec}
 		\RequirePackage{unicode-math}
 		\RequirePackage[concrete]{fontsetup}
+		% Remove math font clashes
 		\let\mathbfcal\relax
 		\let\mathbfscr\relax
 		\RequirePackage{mathrsfs}
 		\RequirePackage[bb=bboldx,cal=cm,scr=esstix]{mathalpha}
 	\else
 		\ifXeTeX
-			\typeout{llncscrypto: Loading Concrete math for XeTeX}
-			\RequirePackage[T1]{fontenc}
+			% XeTeX: Concrete math with unicode-math
+			\typeout{llncscrypto: Concrete math for XeTeX}
+			\RequirePackage{fontspec}
 			\RequirePackage{moresize}
 			\RequirePackage{nicefrac}
 			\RequirePackage{siunitx}
-			\RequirePackage{fontspec}
 			\RequirePackage{unicode-math}
 			\RequirePackage[concrete]{fontsetup}
+			% Remove math font clashes
 			\let\mathbfcal\relax
 			\let\mathbfscr\relax
 			\RequirePackage{mathrsfs}
 			\RequirePackage[bb=bboldx,cal=cm,scr=esstix]{mathalpha}
 		\else
-			\typeout{llncscrypto: Concrete math setup not supported for this engine.}
+			% pdfLaTeX or other: not supported
+			\typeout{llncscrypto: Concrete math not supported for this engine.}
 		\fi
 	\fi
 }
 
-% Default font setup (modular, reusable)
+% Default font setup (pdfLaTeX fallback)
 \newcommand{\llncscrypto@defaultfont}{%
-	\RequirePackage[T1]{fontenc}
-	\RequirePackage{lmodern}
-	\RequirePackage{amsfonts}
-	\RequirePackage{amsmath}
-	\RequirePackage{amssymb}
-	\RequirePackage{mathrsfs}
-	\RequirePackage{bm}
-	\RequirePackage{mathrsfs}
-	\RequirePackage{mathtools}
-	\RequirePackage{moresize}
-	\RequirePackage{nicefrac}
-	\RequirePackage{siunitx}
+	\RequirePackage[T1]{fontenc}           % 8-bit font encoding
+	\RequirePackage{lmodern}               % Latin Modern font
+	\RequirePackage{amsfonts}              % AMS fonts
+	\RequirePackage{amsmath}               % AMS math
+	\RequirePackage{amssymb}               % AMS symbols
+	\RequirePackage{mathrsfs}              % Script math
+	\RequirePackage{bm}                    % Bold math
+	\RequirePackage{mathtools}             % Math tools
+	\RequirePackage{moresize}              % Extra font sizes
+	\RequirePackage{nicefrac}              % Slanted fractions
+	\RequirePackage{siunitx}               % SI units
+	% Remove math font clashes
 	\let\mathbfcal\relax
 	\let\mathbfscr\relax
 	\RequirePackage[cal=cm,bb=bboldx,scr=esstix]{mathalpha}
 }
 
-% Font selection logic
+% Font selection logic: choose Libertinus, Concrete, or fallback
 \ifllncscrypto@loadpreprintlibertinus
 	\llncscrypto@libertine
 \else
