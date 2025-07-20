@@ -433,7 +433,6 @@
 		% LuaTeX: Concrete math with unicode-math
 		\typeout{llncscrypto: Concrete math for LuaTeX}
 		\RequirePackage{fontspec}
-		\RequirePackage{lualatex-math}
 		\RequirePackage{moresize}
 		\RequirePackage{nicefrac}
 		\RequirePackage{siunitx}
@@ -479,6 +478,15 @@
 	\RequirePackage{moresize}              % Extra font sizes
 	\RequirePackage{nicefrac}              % Slanted fractions
 	\RequirePackage{siunitx}               % SI units
+	\ifLuaTeX
+		\RequirePackage{fontspec}		   % Unicode-font support
+		\RequirePackage{unicode-math}	   % Unicode-math support
+	\else
+		\ifXeTeX
+			\RequirePackage{fontspec}
+			\RequirePackage{unicode-math}  % Unicode-math symmbols
+		\fi
+	\fi
 	% Remove math font clashes
 	\let\mathbfcal\relax
 	\let\mathbfscr\relax
