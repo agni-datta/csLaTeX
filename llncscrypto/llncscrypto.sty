@@ -1,13 +1,13 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% llncscrypto.sty – Enhanced LaTeX Style Package for LNCS + Cryptography
+%% llncscrypto.sty — Comprehensive LaTeX Style for LNCS and Cryptography
 %%
-%% COMPREHENSIVE DOCUMENTATION (v1.2.1, 2025/06/26)
+%% FORMAL PACKAGE DOCUMENTATION (v1.2.1, 2025/06/26)
 %% ---------------------------------------------------------------------------------------------------------------
 %% DESCRIPTION:
-%%   llncscrypto is a feature-rich LaTeX style package that extends the LNCS (Lecture Notes in Computer Science)
-%%   document class with advanced tools for cryptography, theoretical computer science, and mathematical writing.
-%%   It is designed for research papers, preprints, and proceedings, providing modern typesetting, robust theorem
-%%   environments, cryptography-specific macros, and seamless integration with TikZ, cleveref, and more.
+%%   The llncscrypto package is an advanced LaTeX style extension for the LNCS (Lecture Notes in Computer Science)
+%%   document class, tailored for cryptography, theoretical computer science, and mathematical research writing.
+%%   It provides modern typesetting, robust theorem and proof environments, cryptography-specific macros,
+%%   advanced figure/table handling, and seamless integration with TikZ, cleveref, hyperref, and more.
 %%
 %% AUTHORS:
 %%   Matteo Campanelli (matteo.campanelli@gmail.com)
@@ -18,83 +18,87 @@
 %% LICENSE: LaTeX Project Public License v1.3c
 %%
 %% ---------------------------------------------------------------------------------------------------------------
-%% KEY FEATURES:
+%% MAJOR FEATURES:
 %%
-%% 1. **Theorem Environments**
-%%    - Enhanced, LLNCS-compliant theorem, lemma, corollary, definition, and remark environments.
-%%    - Many additional environments: assertion, assumption, axiom, claim, conclusion, conjecture, fact, hypothesis,
-%%      postulate, property, proposition, application, construction, convention, experiment, notation, problem, protocol,
-%%      result, commentary, example, exercise, motivation, notation abuse, note, observation, question, guideline,
-%%      highlight, important, insight, keypoint, recall, summary, takeaway, tip, warning.
+%% 1. Theorem and Proof Environments
+%%    - LLNCS-compliant theorem, lemma, corollary, definition, and remark environments.
+%%    - Extensive additional environments: assertion, assumption, axiom, claim, conclusion, conjecture, fact,
+%%      hypothesis, postulate, property, proposition, application, construction, convention, experiment, notation,
+%%      problem, protocol, result, commentary, example, exercise, motivation, notation abuse, note, observation,
+%%      question, guideline, highlight, important, insight, keypoint, recall, summary, takeaway, tip, warning.
 %%    - All environments are cross-referenced and compatible with cleveref.
-%%    - Custom proof and claimproof environments, with optional claim counters.
-%%    - Highlight environments for guidelines, tips, warnings, etc.
+%%    - Custom proof and claimproof environments, with optional claim counters and support for subproofs.
+%%    - Highlight and callout environments for guidelines, tips, warnings, etc.
 %%
-%% 2. **Cryptography-Specific Macros**
-%%    - Loads tcscrypto.sty (if present) for cryptographic notation, protocols, and diagrams.
+%% 2. Cryptography-Specific Macros and Environments
+%%    - Loads tcscrypto.sty (if present) for cryptographic notation, protocol diagrams, and advanced math macros.
 %%    - ORCID support for author identification.
-%%    - Protocol box environments for clear presentation of cryptographic protocols.
+%%    - Protocol box environments (\protocolbox, \codelistbox) for clear presentation of cryptographic protocols and code.
 %%    - Wirebox and codelistbox for protocol steps and code listings.
-%%    - Double-struck and sans-serif Pi symbols, and other math/crypto notations.
+%%    - Double-struck and sans-serif Pi symbols (\dsPi, \sansPi), and other math/crypto notations.
+%%    - Nicodemus cryptography option for alternative notation.
 %%
-%% 3. **TikZ and Graphics**
+%% 3. Graphics and TikZ Integration
 %%    - Optionally loads TikZ, pgfplots, tikz-cd, tikz-3dplot, and a comprehensive set of TikZ libraries.
-%%    - Enhanced support for commutative diagrams, 3D plots, and cryptographic figures.
-%%    - tcolorbox and mdframed for custom boxes and framed environments.
+%%    - Enhanced support for commutative diagrams, 3D plots, cryptographic figures, and custom graphics.
+%%    - tcolorbox and mdframed for custom boxes, wireboxes, and framed environments.
 %%
-%% 4. **Captions and Figures**
-%%    - Enhanced caption formatting (optional, via [captions] option).
-%%    - Improved table and figure handling: booktabs, colortbl, subcaption, tabularx, tabularray, longtable, threeparttable, etc.
+%% 4. Captions, Figures, and Tables
+%%    - Enhanced caption formatting and positioning (optional, via [captions] option).
+%%    - Advanced table and figure handling: booktabs, colortbl, subcaption, tabularx, tabularray, longtable, threeparttable, etc.
 %%    - Float placement control, landscape pages, and advanced table/figure environments.
 %%
-%% 5. **Fonts and Math**
+%% 5. Fonts and Mathematical Typesetting
 %%    - Modular font selection: Libertinus, Concrete, or default (lmodern/amsfonts/amsmath).
 %%    - Math font and symbol enhancements: mathrsfs, mathtools, bm, siunitx, mathalpha, unicode-math, etc.
 %%    - Upright Greek letter support via upgreek, with robust fallbacks and macro redefinitions for upright/roman forms.
+%%    - Math small caps, bold italic, and other advanced math font macros.
 %%
-%% 6. **Cross-Referencing and Hyperlinks**
+%% 6. Cross-Referencing and Hyperlinks
 %%    - Smart cross-referencing with cleveref (automatic environment names, section symbols, etc.).
-%%    - Full integration with hyperref: colored links, PDF metadata, backrefs, and fullref macro.
+%%    - Full integration with hyperref: colored links, PDF metadata, backrefs, and the \fullref macro.
 %%    - External document referencing (xr).
 %%
-%% 7. **Appendix Management**
+%% 7. Appendix Management
 %%    - Optional appendix support (via [appendix] option) with page, title, header, and TOC integration.
 %%
-%% 8. **Lists and Custom Environments**
+%% 8. Custom Lists and Boxed Environments
 %%    - Custom list types: points (itemize with dashes), codelist (enumerated code steps), checkbox (with \checked), deflist (definition list).
 %%    - Nested bar and simplebox environments for boxed content.
 %%    - Epigraph support with enhanced formatting.
 %%
-%% 9. **Document Structure and Utilities**
+%% 9. Document Structure and Utilities
 %%    - Full-page and preprint layout options (fullpage, fancyhdr, setspace).
 %%    - Automatic loading of user settings and commands from settings.tex and commands.tex if present.
-%%    - Paragraph header macros (\parhead) with smart punctuation.
-%%    - Version control macros: \FullVersion, \ShortVersion, \usecomments, \newcomment.
+%%    - Paragraph header macros (\parhead) with smart punctuation and auto-colon.
+%%    - Version control macros: \fullversion, \shortversion, \usecomments, \newcomment.
 %%    - Acknowledgment environment with optional title.
-%%    - Missing content tracking and reporting (\missing, \printmissing).
+%%    - Missing content tracking and reporting (\missing, \printmissing), with page references.
 %%    - Miscellaneous: code highlighting, math small caps, strike-through, putInQuotes, hyphen in math, etc.
 %%
 %% ---------------------------------------------------------------------------------------------------------------
 %% PACKAGE OPTIONS (all optional, can be combined):
-%%   appendix    - Enable appendix management and formatting.
-%%   captions    - Enhanced caption formatting and positioning.
-%%   concrete    - Use Concrete font for preprints.
-%%   crypto      - Load cryptography-specific macros and notation (tcscrypto, orcidlink).
-%%   fullpage    - Enable full-page layout (for preprints).
-%%   libertinus  - Use Libertinus font for preprints.
-%%   nicodemus   - Enable Nicodemus cryptography option.
-%%   theorems    - Enable enhanced theorem environments with LLNCS styling.
-%%   tikz        - Load TikZ and all supported graphics libraries.
+%%   appendix      - Enable appendix management and formatting.
+%%   captions      - Enhanced caption formatting and positioning.
+%%   concrete      - Use Concrete font for preprints.
+%%   crypto        - Load cryptography-specific macros and notation (tcscrypto, orcidlink).
+%%   fullpage      - Enable full-page layout (for preprints).
+%%   greeksymb     - (internal) Control upright Greek letter modifications.
+%%   libertinus    - Use Libertinus font for preprints.
+%%   nicodemus     - Enable Nicodemus cryptography option.
+%%   theorems      - Enable enhanced theorem environments with LLNCS styling.
+%%   tikz          - Load TikZ and all supported graphics libraries.
 %%
 %% ---------------------------------------------------------------------------------------------------------------
 %% DEPENDENCIES:
 %%   - llncs document class (not loaded by this package)
-%%   - xcolor, etoolbox, xparse, calc, comment, ifpdf, iftex, xkeyval, xpatch (core)
-%%   - TikZ, pgfplots, tikz-cd, tikz-3dplot (if tikz option enabled)
-%%   - tcscrypto, orcidlink (if crypto option enabled)
-%%   - mdframed, tcolorbox (for wirebox and framed environments)
-%%   - upgreek (for upright Greek letters)
-%%   - cleveref, hyperref, xr, caption, booktabs, colortbl, subcaption, tabularx, tabularray, longtable, threeparttable, etc.
+%%   - Core: xcolor, etoolbox, xparse, calc, comment, ifpdf, iftex, xkeyval, xpatch
+%%   - Graphics: TikZ, pgfplots, tikz-cd, tikz-3dplot (if tikz option enabled)
+%%   - Crypto: tcscrypto, orcidlink (if crypto option enabled)
+%%   - Framed boxes: mdframed, tcolorbox
+%%   - Math: upgreek, mathrsfs, mathtools, bm, siunitx, mathalpha, unicode-math
+%%   - Referencing: cleveref, hyperref, xr
+%%   - Tables/Figures: caption, booktabs, colortbl, subcaption, tabularx, tabularray, longtable, threeparttable
 %%
 %% ---------------------------------------------------------------------------------------------------------------
 %% USAGE EXAMPLES:
@@ -128,6 +132,20 @@
 %%   ...
 %%   \printmissing
 %%
+%%   % Versioning and comments:
+%%   \fullversion ... \shortversion ... \usecomments ... \newcomment{Reviewer}{red}{rv}
+%%
+%%   % Custom lists and boxes:
+%%   \begin{points} ... \end{points}
+%%   \begin{codelist} ... \end{codelist}
+%%   \begin{checkbox} ... \end{checkbox}
+%%   \begin{deflist} ... \end{deflist}
+%%   \begin{nestedbar} ... \end{nestedbar}
+%%   \begin{simplebox}[Title] ... \end{simplebox}
+%%
+%%   % Epigraph:
+%%   \begin{epigraph}{Quote text}{Author}
+%%
 %% ---------------------------------------------------------------------------------------------------------------
 %% CAVEATS & NOTES:
 %%   - Do not remove or modify package calls unless necessary; use settings.tex/commands.tex for customizations.
@@ -140,46 +158,53 @@
 %%   - For best results, use with a modern TeX engine (pdfLaTeX, XeLaTeX, LuaLaTeX).
 %%   - Some hacks (e.g., claim counters, custom proof environments) may not be compatible with all packages.
 %%   - If you need to add or override anything, do so in settings.tex or commands.tex, not in this file.
+%%   - The package is robust to missing dependencies and will issue warnings if features are unavailable.
 %%
 %% ---------------------------------------------------------------------------------------------------------------
 %% CUSTOM COMMANDS & ENVIRONMENTS (partial list):
-%%   \parhead{Title}         - Section-style paragraph header with smart punctuation.
-%%   \protocolbox[Title]     - Boxed protocol environment (with points list inside).
-%%   \codelistbox[Title]     - Boxed code list environment (with codelist inside).
-%%   \simplebox[Title]       - Simple boxed environment.
-%%   \wirebox                - tcolorbox-based wirebox for diagrams.
-%%   \checked                - For checked item in checkbox list.
-%%   \fullversion, \shortversion, \usecomments, \newcomment{name}{color}{cmd} - Versioning and comments.
-%%   \missing{desc}, \printmissing - Mark and print missing content.
-%%   \dsPi, \sansPi         - Double-struck and sans-serif Pi symbols.
-%%   \textem, \emphtext, \emphmath, \code, \mathsc, \mathbi, \inmath, \putInQuotes, \strike, etc.
-%%   \fullref{label}         - Combined autoref/nameref hyperlink.
-%%   \acknowledgment[Title]  - Acknowledgment environment.
-%%   \begin{nestedbar} ... \end{nestedbar} - Custom bar environment.
-%%   \begin{deflist} ... \end{deflist}     - Definition list.
-%%   \begin{checkbox} ... \end{checkbox}   - Checkbox list.
-%%   \begin{points} ... \end{points}       - Points list.
-%%   \begin{codelist} ... \end{codelist}   - Codelist.
-%%   \begin{epigraph}{quote}{author}        - Epigraph with formatting.
+%%   \parhead{Title}                - Section-style paragraph header with smart punctuation.
+%%   \protocolbox[Title]            - Boxed protocol environment (with points list inside).
+%%   \codelistbox[Title]            - Boxed code list environment (with codelist inside).
+%%   \simplebox[Title]              - Simple boxed environment.
+%%   \wirebox                       - tcolorbox-based wirebox for diagrams.
+%%   \checked                       - For checked item in checkbox list.
+%%   \fullversion, \shortversion    - Versioning environments for full/short versions.
+%%   \usecomments, \newcomment      - Enable and define custom comment macros.
+%%   \missing{desc}, \printmissing  - Mark and print missing content with page references.
+%%   \dsPi, \sansPi                 - Double-struck and sans-serif Pi symbols.
+%%   \textem, \emphtext, \emphmath  - Emphasized text and math macros.
+%%   \code, \mathsc, \mathbi        - Code font, math small caps, math bold italic.
+%%   \inmath, \putInQuotes, \strike - Inline math, quoted text, strike-through.
+%%   \fullref{label}                - Combined autoref/nameref hyperlink.
+%%   \acknowledgment[Title]         - Acknowledgment environment.
+%%   \begin{nestedbar} ... \end{nestedbar}   - Custom bar environment.
+%%   \begin{deflist} ... \end{deflist}       - Definition list.
+%%   \begin{checkbox} ... \end{checkbox}     - Checkbox list.
+%%   \begin{points} ... \end{points}         - Points list.
+%%   \begin{codelist} ... \end{codelist}     - Codelist.
+%%   \begin{epigraph}{quote}{author}         - Epigraph with formatting.
 %%
 %% ---------------------------------------------------------------------------------------------------------------
-%% HACKS & ADVANCED FEATURES:
+%% HACKS, ADVANCED FEATURES, AND INTERNALS:
 %%   - Smart paragraph header with auto-punctuation (\parhead).
-%%   - Custom claim counters and proof environments for claims.
-%%   - Automatic missing content tracking with page references.
-%%   - Robust upright Greek letter support with fallbacks and macro redefinitions.
-%%   - Automatic user settings/commands loading for easy customization.
+%%   - Custom claim counters and proof environments for claims, including subproofs.
+%%   - Automatic missing content tracking with page references and summary printing.
+%%   - Robust upright Greek letter support with fallbacks and macro redefinitions for upright/roman forms.
+%%   - Automatic user settings/commands loading for easy customization (settings.tex, commands.tex).
 %%   - Modular font logic for preprints (Libertinus/Concrete).
-%%   - Full integration with cleveref and hyperref for smart referencing.
+%%   - Full integration with cleveref and hyperref for smart referencing and PDF metadata.
 %%   - Custom list types for points, code, checkboxes, and definitions.
 %%   - Protocol and wirebox environments for cryptographic protocols and diagrams.
 %%   - Enhanced epigraph formatting.
 %%   - All environments and macros are robust to missing dependencies (with warnings).
+%%   - Option to control upright Greek symbol modifications (greeksymb).
+%%   - Internal option flags for fine-grained feature control.
 %%
 %% ---------------------------------------------------------------------------------------------------------------
 %% CHANGELOG:
-%%   v1.2.1 (2025/06/26) - Upright Greek letter support, wirebox/framed environments, auto settings/commands loading
-%%   v1.0   (2025/06/26) - Initial release with core functionality
+%%   v1.2.1 (2025/06/26) — Upright Greek letter support, wirebox/framed environments, auto settings/commands loading,
+%%                         improved missing content tracking, robust option handling, and documentation updates.
+%%   v1.0   (2025/06/26) — Initial release with core functionality.
 %% ---------------------------------------------------------------------------------------------------------------
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -203,6 +228,7 @@
 \newif\ifllncscrypto@loadpreprintconcrete   \llncscrypto@loadpreprintconcretefalse
 \newif\ifllncscrypto@loadpreprintlibertinus \llncscrypto@loadpreprintlibertinusfalse
 \newif\ifllncscrypto@loadtikz               \llncscrypto@loadtikzfalse
+\newif\ifllncscrypto@modgreeksymbs          \llncscrypto@modgreeksymbsfalse
 \newif\ifllncscrypto@modtheorems            \llncscrypto@modtheoremsfalse
 
 % Load Options
@@ -213,6 +239,7 @@
 \DeclareOption{fullpage}{\llncscrypto@loadfullpagetrue}
 \DeclareOption{libertinus}{\llncscrypto@loadpreprintlibertinustrue}
 \DeclareOption{nicodemus}{\llncscrypto@loadnicodemustrue}
+\DeclareOption{greeksymb}{\llncscrypto@modgreeksymbsfalse}
 \DeclareOption{theorems}{\llncscrypto@modtheoremstrue}
 \DeclareOption{tikz}{\llncscrypto@loadtikztrue}
 
@@ -476,10 +503,10 @@
 \RequirePackage[%
 	bookmarksnumbered=true,                                  % Number PDF bookmarks
 	breaklinks=true,                                         % Allow links to break over lines
-	citecolor=SlateBlue4,                                    % Color for citations
+	citecolor=DodgerBlue3,                                   % Color for citations
 	colorlinks=true,                                         % Use colored links
 	frenchlinks=true,                                        % Use small caps for links
-	linkcolor=RoyalBlue4,                                    % Color for internal links
+	linkcolor=RoyalBlue3,                                    % Color for internal links
 	pagebackref,                                             % Back-references from bibliography
 	pdfencoding=auto,                                        % Automatic encoding detection
 	pdfpagelabels=true,                                      % Correct page labels in PDF
@@ -487,7 +514,7 @@
 	pdfstartview=FitH,                                       % Fit the page to the window
 	pdfusetitle,                                             % Use document title as PDF title
 	unicode=true,                                            % Support for Unicode
-	urlcolor=SpringGreen4                                    % Color for URLs
+	urlcolor=Turquoise4                                      % Color for URLs
 ]{hyperref}
 \RequirePackage{xr}                                          % Cross-document references
 % Customize backrefs
@@ -1333,65 +1360,67 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Upright Greek Letters Setup Using `upgreek`
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{upgreek} % Load upright Greek letter symbols
+\ifllncscrypto@modgreeksymbs
+	\RequirePackage{upgreek} % Load upright Greek letter symbols
 
-% Provide definitions for missing uppercase Greek macros as roman letters, if undefined
-\@ifundefined{Alpha}{\newcommand{\Alpha}{\mathrm{A}}}{}
-\@ifundefined{Beta}{\newcommand{\Beta}{\mathrm{B}}}{}
-\@ifundefined{Chi}{\newcommand{\Chi}{\mathrm{X}}}{}
-\@ifundefined{Epsilon}{\newcommand{\Epsilon}{\mathrm{E}}}{}
-\@ifundefined{Eta}{\newcommand{\Eta}{\mathrm{H}}}{}
-\@ifundefined{Iota}{\newcommand{\Iota}{\mathrm{I}}}{}
-\@ifundefined{Kappa}{\newcommand{\Kappa}{\mathrm{K}}}{}
-\@ifundefined{Mu}{\newcommand{\Mu}{\mathrm{M}}}{}
-\@ifundefined{Nu}{\newcommand{\Nu}{\mathrm{N}}}{}
-\@ifundefined{Omicron}{\newcommand{\Omicron}{\mathrm{O}}}{}
-\@ifundefined{Rho}{\newcommand{\Rho}{\mathrm{R}}}{}
-\@ifundefined{Tau}{\newcommand{\Tau}{\mathrm{T}}}{}
-\@ifundefined{Zeta}{\newcommand{\Zeta}{\mathrm{Z}}}{}
-\@ifundefined{omicron}{\newcommand{\omicron}{\mathrm{o}}}{}
+	% Provide definitions for missing uppercase Greek macros as roman letters, if undefined
+	\@ifundefined{Alpha}{\newcommand{\Alpha}{\mathrm{A}}}{}
+	\@ifundefined{Beta}{\newcommand{\Beta}{\mathrm{B}}}{}
+	\@ifundefined{Chi}{\newcommand{\Chi}{\mathrm{X}}}{}
+	\@ifundefined{Epsilon}{\newcommand{\Epsilon}{\mathrm{E}}}{}
+	\@ifundefined{Eta}{\newcommand{\Eta}{\mathrm{H}}}{}
+	\@ifundefined{Iota}{\newcommand{\Iota}{\mathrm{I}}}{}
+	\@ifundefined{Kappa}{\newcommand{\Kappa}{\mathrm{K}}}{}
+	\@ifundefined{Mu}{\newcommand{\Mu}{\mathrm{M}}}{}
+	\@ifundefined{Nu}{\newcommand{\Nu}{\mathrm{N}}}{}
+	\@ifundefined{Omicron}{\newcommand{\Omicron}{\mathrm{O}}}{}
+	\@ifundefined{Rho}{\newcommand{\Rho}{\mathrm{R}}}{}
+	\@ifundefined{Tau}{\newcommand{\Tau}{\mathrm{T}}}{}
+	\@ifundefined{Zeta}{\newcommand{\Zeta}{\mathrm{Z}}}{}
+	\@ifundefined{omicron}{\newcommand{\omicron}{\mathrm{o}}}{}
 
-% Fallbacks for upright forms from `upgreek`, if undefined
-\@ifundefined{Upalpha}{\newcommand{\Upalpha}{\mathrm{A}}}{}
-\@ifundefined{Upbeta}{\newcommand{\Upbeta}{\mathrm{B}}}{}
-\@ifundefined{Upchi}{\newcommand{\Upchi}{\mathrm{X}}}{}
-\@ifundefined{Upepsilon}{\newcommand{\Upepsilon}{\mathrm{E}}}{}
-\@ifundefined{Upeta}{\newcommand{\Upeta}{\mathrm{H}}}{}
-\@ifundefined{Upiota}{\newcommand{\Upiota}{\mathrm{I}}}{}
-\@ifundefined{Upkappa}{\newcommand{\Upkappa}{\mathrm{K}}}{}
-\@ifundefined{Upmu}{\newcommand{\Upmu}{\mathrm{M}}}{}
-\@ifundefined{Upnu}{\newcommand{\Upnu}{\mathrm{N}}}{}
-\@ifundefined{Upomicron}{\newcommand{\Upomicron}{\mathrm{O}}}{}
-\@ifundefined{Uprho}{\newcommand{\Uprho}{\mathrm{R}}}{}
-\@ifundefined{Uptau}{\newcommand{\Uptau}{\mathrm{T}}}{}
-\@ifundefined{Upzeta}{\newcommand{\Upzeta}{\mathrm{Z}}}{}
-\@ifundefined{upomicron}{\newcommand{\upomicron}{\mathrm{o}}}{}
+	% Fallbacks for upright forms from `upgreek`, if undefined
+	\@ifundefined{Upalpha}{\newcommand{\Upalpha}{\mathrm{A}}}{}
+	\@ifundefined{Upbeta}{\newcommand{\Upbeta}{\mathrm{B}}}{}
+	\@ifundefined{Upchi}{\newcommand{\Upchi}{\mathrm{X}}}{}
+	\@ifundefined{Upepsilon}{\newcommand{\Upepsilon}{\mathrm{E}}}{}
+	\@ifundefined{Upeta}{\newcommand{\Upeta}{\mathrm{H}}}{}
+	\@ifundefined{Upiota}{\newcommand{\Upiota}{\mathrm{I}}}{}
+	\@ifundefined{Upkappa}{\newcommand{\Upkappa}{\mathrm{K}}}{}
+	\@ifundefined{Upmu}{\newcommand{\Upmu}{\mathrm{M}}}{}
+	\@ifundefined{Upnu}{\newcommand{\Upnu}{\mathrm{N}}}{}
+	\@ifundefined{Upomicron}{\newcommand{\Upomicron}{\mathrm{O}}}{}
+	\@ifundefined{Uprho}{\newcommand{\Uprho}{\mathrm{R}}}{}
+	\@ifundefined{Uptau}{\newcommand{\Uptau}{\mathrm{T}}}{}
+	\@ifundefined{Upzeta}{\newcommand{\Upzeta}{\mathrm{Z}}}{}
+	\@ifundefined{upomicron}{\newcommand{\upomicron}{\mathrm{o}}}{}
 
-% If available, overwrite standard Greek macros with their upright versions
-\@ifundefined{Upalpha}{}{\renewcommand{\Alpha}{\Upalpha}}
-\@ifundefined{Upbeta}{}{\renewcommand{\Beta}{\Upbeta}}
-\@ifundefined{Upchi}{}{\renewcommand{\Chi}{\Upchi}}
-\@ifundefined{Updelta}{}{\renewcommand{\Delta}{\Updelta}}
-\@ifundefined{Upepsilon}{}{\renewcommand{\Epsilon}{\Upepsilon}}
-\@ifundefined{Upeta}{}{\renewcommand{\Eta}{\Upeta}}
-\@ifundefined{Upgamma}{}{\renewcommand{\Gamma}{\Upgamma}}
-\@ifundefined{Upiota}{}{\renewcommand{\Iota}{\Upiota}}
-\@ifundefined{Upkappa}{}{\renewcommand{\Kappa}{\Upkappa}}
-\@ifundefined{Uplambda}{}{\renewcommand{\Lambda}{\Uplambda}}
-\@ifundefined{Upmu}{}{\renewcommand{\Mu}{\Upmu}}
-\@ifundefined{Upnu}{}{\renewcommand{\Nu}{\Upnu}}
-\@ifundefined{Upomega}{}{\renewcommand{\Omega}{\Upomega}}
-\@ifundefined{Upomicron}{}{\renewcommand{\Omicron}{\Upomicron}}
-\@ifundefined{Upphi}{}{\renewcommand{\Phi}{\Upphi}}
-\@ifundefined{Uppi}{}{\renewcommand{\Pi}{\Uppi}}
-\@ifundefined{Uppsi}{}{\renewcommand{\Psi}{\Uppsi}}
-\@ifundefined{Uprho}{}{\renewcommand{\Rho}{\Uprho}}
-\@ifundefined{Upsigma}{}{\renewcommand{\Sigma}{\Upsigma}}
-\@ifundefined{Uptau}{}{\renewcommand{\Tau}{\Uptau}}
-\@ifundefined{Uptheta}{}{\renewcommand{\Theta}{\Uptheta}}
-\@ifundefined{Upupsilon}{}{\renewcommand{\Upsilon}{\Upupsilon}}
-\@ifundefined{Upxi}{}{\renewcommand{\Xi}{\Upxi}}
-\@ifundefined{Upzeta}{}{\renewcommand{\Zeta}{\Upzeta}}
+	% If available, overwrite standard Greek macros with their upright versions
+	\@ifundefined{Upalpha}{}{\renewcommand{\Alpha}{\Upalpha}}
+	\@ifundefined{Upbeta}{}{\renewcommand{\Beta}{\Upbeta}}
+	\@ifundefined{Upchi}{}{\renewcommand{\Chi}{\Upchi}}
+	\@ifundefined{Updelta}{}{\renewcommand{\Delta}{\Updelta}}
+	\@ifundefined{Upepsilon}{}{\renewcommand{\Epsilon}{\Upepsilon}}
+	\@ifundefined{Upeta}{}{\renewcommand{\Eta}{\Upeta}}
+	\@ifundefined{Upgamma}{}{\renewcommand{\Gamma}{\Upgamma}}
+	\@ifundefined{Upiota}{}{\renewcommand{\Iota}{\Upiota}}
+	\@ifundefined{Upkappa}{}{\renewcommand{\Kappa}{\Upkappa}}
+	\@ifundefined{Uplambda}{}{\renewcommand{\Lambda}{\Uplambda}}
+	\@ifundefined{Upmu}{}{\renewcommand{\Mu}{\Upmu}}
+	\@ifundefined{Upnu}{}{\renewcommand{\Nu}{\Upnu}}
+	\@ifundefined{Upomega}{}{\renewcommand{\Omega}{\Upomega}}
+	\@ifundefined{Upomicron}{}{\renewcommand{\Omicron}{\Upomicron}}
+	\@ifundefined{Upphi}{}{\renewcommand{\Phi}{\Upphi}}
+	\@ifundefined{Uppi}{}{\renewcommand{\Pi}{\Uppi}}
+	\@ifundefined{Uppsi}{}{\renewcommand{\Psi}{\Uppsi}}
+	\@ifundefined{Uprho}{}{\renewcommand{\Rho}{\Uprho}}
+	\@ifundefined{Upsigma}{}{\renewcommand{\Sigma}{\Upsigma}}
+	\@ifundefined{Uptau}{}{\renewcommand{\Tau}{\Uptau}}
+	\@ifundefined{Uptheta}{}{\renewcommand{\Theta}{\Uptheta}}
+	\@ifundefined{Upupsilon}{}{\renewcommand{\Upsilon}{\Upupsilon}}
+	\@ifundefined{Upxi}{}{\renewcommand{\Xi}{\Upxi}}
+	\@ifundefined{Upzeta}{}{\renewcommand{\Zeta}{\Upzeta}}
+\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % NOTE: You do not need to modify this preamble. It is fully set up and ready. %
