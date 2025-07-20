@@ -303,8 +303,8 @@
 			\renewcommand{\footrulewidth}{0pt}%
 		}%
 		% Adjust header and text body separation to prevent overlap
-		\setlength{\headheight}{15pt}%
-		\setlength{\headsep}{20pt}%
+		\setlength{\headheight}{1em}%
+		\setlength{\headsep}{1em}%
 		\pagestyle{preprinthdr}%
 	}%
 	}
@@ -352,8 +352,7 @@
 		]{LibertinusSerif-Regular.otf}
 		\setmathfont[
 			AutoFakeBold,
-			Scale=MatchUppercase,
-			RawFeature={+calt,+case,+kern,+liga}
+			Scale=MatchUppercase
 		]{LibertinusMath-Regular.otf}
 		\setmonofont[
 			Scale=MatchLowercase,
@@ -391,8 +390,7 @@
 			\setmathfont[
 				AutoFakeBold,
 				Scale=MatchUppercase,
-				SmallCapsFeatures={RawFeature=+smcp},
-				RawFeature={+calt,+case,+kern,+liga}
+				SmallCapsFeatures={RawFeature=+smcp}
 			]{LibertinusMath-Regular.otf}
 			\setmonofont[
 				Scale=MatchLowercase,
@@ -483,7 +481,7 @@
 		\RequirePackage{unicode-math}	   % Unicode-math support
 	\else
 		\ifXeTeX
-			\RequirePackage{fontspec}
+			\RequirePackage{fontspec}	   % Unicode-font support
 			\RequirePackage{unicode-math}  % Unicode-math symmbols
 		\fi
 	\fi
