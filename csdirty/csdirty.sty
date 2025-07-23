@@ -231,13 +231,13 @@
 % Package-specific Boolean flags
 \newif\ifcsdirty@Concmath               \csdirty@Concmathfalse
 \newif\ifcsdirty@Libertinus             \csdirty@Libertinusfalse
-\newif\ifcsdirty@LoadNicodemus          \csdirty@LoadNicodemustrue
 \newif\ifcsdirty@LoadAppendix           \csdirty@LoadAppendixfalse
 \newif\ifcsdirty@LoadCrypto             \csdirty@LoadCryptofalse
 \newif\ifcsdirty@LoadEpigraph           \csdirty@LoadEpigraphfalse
 \newif\ifcsdirty@LoadFull               \csdirty@LoadFulltrue
 \newif\ifcsdirty@LoadFullPage           \csdirty@LoadFullPagefalse
 \newif\ifcsdirty@LoadNiceSpacing        \csdirty@LoadNiceSpacingfalse
+\newif\ifcsdirty@LoadNicodemus          \csdirty@LoadNicodemusfalse
 \newif\ifcsdirty@LoadNoMath             \csdirty@LoadNoMathfalse
 \newif\ifcsdirty@LoadOldSectionSymb     \csdirty@LoadOldSectionSymbfalse
 \newif\ifcsdirty@LoadOrcidlink          \csdirty@LoadOrcidlinkfalse
@@ -532,6 +532,30 @@
 	\fi
 }
 
+% Latin Modern Math Loader
+\newcommand{\csdirty@loadlatinmodern}{%
+	\typeout{csdirty: Loading Latin Modern math} % Print info to log
+	\RequirePackage{fontspec}
+	\RequirePackage{unicode-math}
+	\setmainfont[%
+		ItalicFont = NewCM10-BookItalic.otf, 		% Italic font
+		SmallCapsFont = NewCM10-Book.otf, 			% Small caps font
+		SmallCapsFeatures = {RawFeature=+smcp}, 	% Small caps
+		BoldFont = NewCM10-Bold.otf, 				% Bold font
+		BoldItalicFont = NewCM10-BoldItalic.otf, 	% Bold italic font
+		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Typographic features
+	]{NewCM10-Book.otf} 							% Regular text font
+	\setmathfont{NewCMMath-Book.otf} % Math font
+	\setsansfont[%
+		ItalicFont = NewCMSans10-Oblique.otf, 		% Italic sans font
+		SmallCapsFont = NewCMSans10-Book.otf, 		% Small caps font
+		SmallCapsFeatures = {RawFeature=+smcp}, 	% Small caps
+		BoldFont = NewCMSans10-Bold.otf, 			% Bold sans font
+		BoldItalicFont = NewCMSans10-BoldOblique.otf, % Bold-italic sans font
+		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum} % Typographic features
+	]{NewCMSans10-Book.otf} % Sans-serif font
+}
+
 % Standard Math Loader
 \newcommand{\csdirty@loadstdmath}{%
 	\typeout{csdirty: Loading standard math packages}                % Print info to log
@@ -539,25 +563,24 @@
 	\RequirePackage{lmodern}               % Latin Modern font
 	\RequirePackage{amsfonts}              % AMS fonts
 	\RequirePackage{amsmath}               % AMS math
-	\RequirePackage{amssymb}               % AMS symbols
-	\RequirePackage{mathrsfs}              % Script math
-	\RequirePackage{bm}                    % Bold math
-	\RequirePackage{mathtools}             % Math tools
 	\RequirePackage{moresize}              % Extra font sizes
 	\RequirePackage{nicefrac}              % Slanted fractions
 	\RequirePackage{siunitx}               % SI units
 	\ifLuaTeX
-		\RequirePackage{fontspec}		   % Unicode-font support
-		\RequirePackage{unicode-math}	   % Unicode-math support
+		\csdirty@loadlatinmodern		% Better latin modern
 	\else
 		\ifXeTeX
-			\RequirePackage{fontspec}	   % Unicode-font support
-			\RequirePackage{unicode-math}  % Unicode-math symmbols
+			\csdirty@loadlatinmodern	% Better latin modern
+		\else
+			\RequirePackage{amssymb}    % AMS symbols
+			\RequirePackage{bm}         % Bold math
+			\RequirePackage{mathtools}  % Math tools
 		\fi
 	\fi
 	% Remove math font clashes
 	\let\mathbfcal\relax
 	\let\mathbfscr\relax
+	\RequirePackage{mathrsfs}              % Script math
 	\RequirePackage[cal=cm,bb=bboldx,scr=esstix]{mathalpha}
 }
 
