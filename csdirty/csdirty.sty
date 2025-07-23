@@ -1,84 +1,133 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% csdirty.sty - A Modern Academic LaTeX Package by Agni Datta
-% Unified package suite for research, technical, and academic documents
+% csdirty.sty — Comprehensive Academic LaTeX Package
+% Author: Agni Datta
+% Version: 1.6 (2025/06/26)
+% License: LaTeX Project Public License v1.3c
+% Contact: agnidatta.org@gmail.com
 %
-% DESCRIPTION:
-% csdirty is a comprehensive LaTeX package that streamlines academic and technical
-% document preparation. It consolidates essential and advanced packages, and provides
-% a flexible interface for version control, feature toggling, and professional typesetting.
-% Designed for research papers, technical reports, and academic submissions, csdirty
-% enables rapid switching between full/preprint and short/conference versions, and
-% offers robust support for cryptography, mathematics, graphics, and more.
+% OVERVIEW
+% ----------------------------------------------------------------------------
+% csdirty is a modern, modular LaTeX package designed to streamline the
+% preparation of academic, technical, and research documents. It provides
+% unified access to a curated suite of essential and advanced packages,
+% robust version control, feature toggling, and professional typesetting
+% enhancements. csdirty is suitable for research papers, technical reports,
+% theses, and conference submissions, and is compatible with all major
+% LaTeX engines and standard document classes.
 %
-% USAGE:
+% KEY FEATURES
+% ----------------------------------------------------------------------------
+% - Unified loading and configuration of core and advanced LaTeX packages.
+% - Flexible version control: easily switch between full/preprint and
+%   short/conference versions.
+% - Fine-grained feature toggling for graphics, cryptography, theorems,
+%   typography, and more.
+% - Modern mathematics and font support, including Libertinus and Concmath.
+% - Advanced table, figure, and content box environments.
+% - Enhanced support for cryptography, protocols, and upright Greek symbols.
+% - Professional title, section, and TOC formatting.
+% - Robust support for comments, annotations, and author identification.
+% - Comprehensive macro suite for cryptography, mathematics, and writing.
+%
+% USAGE
+% ----------------------------------------------------------------------------
 %   \usepackage[<options>]{csdirty}
 %   % Example: \usepackage[full,comments,crypto]{csdirty}
 %
-% AVAILABLE OPTIONS (all options have both positive and negative forms):
-%
+% OPTIONS (all options have both positive and negative forms)
+% ----------------------------------------------------------------------------
 % VERSION CONTROL:
-%   fullversion      - Full document (authors, affiliations, appendices, etc.)
-%   shortversion     - Abbreviated version (no appendices, detailed proofs, etc.)
-%   preprint         - Alias for fullversion (for arXiv/preprints)
+%   fullversion        — Full document (authors, affiliations, appendices, etc.)
+%   shortversion       — Abbreviated version (no appendices, detailed proofs, etc.)
+%   preprint           — Alias for fullversion (for arXiv/preprints)
 %
 % COMMENTS & ANNOTATIONS:
-%   comments         - Enable inline comments/annotations (loads comment package)
-%   nocomments       - Disable comment functionality (default)
+%   comments           — Enable inline comments/annotations (loads comment package)
+%   nocomments         — Disable comment functionality (default)
 %
-% MATH & FONTS:
-%   concmath         - Use Concmath for advanced math typesetting
-%   nomath           - Disable advanced math packages (basic LaTeX math only)
-%   libertinus       - Use Libertinus/Libertine font family for text/math
-%   nolicertinus     - Do not use Libertinus/Libertine fonts
-%   nicodemus        - Enable Nicodemus cryptography macros
-%   nonicodemus      - Do not load Nicodemus macros
+% MATHEMATICS & FONTS:
+%   concmath           — Use Concmath for advanced math typesetting
+%   noconcmath         — Do not use Concmath
+%   libertinus         — Use Libertinus/Libertine font family for text/math
+%   nolicertinus       — Do not use Libertinus/Libertine fonts
+%   nomath             — Disable advanced math packages (basic LaTeX math only)
+%   modgreeksymbs      — Use upright Greek symbols (via upgreek)
+%   nicodemus          — Enable Nicodemus cryptography macros
+%   nonicodemus        — Do not load Nicodemus macros
 %
 % FEATURE LOADING:
-%   tikz             - Load TikZ suite (3dplot, cd, automata, circuits, etc.)
-%   notikz           - Do not load TikZ or related graphics packages
-%   appendix         - Enhanced appendix formatting and management
-%   noappendix       - Do not load appendix enhancements
-%   crypto           - Cryptography packages and notation (protocols, security, etc.)
-%   nocrypto         - Do not load cryptography packages
-%   theorems         - Enhanced theorem/proof environments and cross-referencing
-%   notheorems       - Do not load theorem/proof enhancements
-%   orcidlink        - ORCID link support for author identification
-%   noorcidlink      - Do not load ORCID link package
-%   epigraph         - Enhanced epigraph formatting and styling
-%   noepigraph       - Do not load epigraph enhancements
-%   fullpage         - Advanced full-page layout and formatting
-%   nofullpage       - Do not load full-page layout options
-%   nicespacing      - Enhanced line spacing (1.15 stretch factor)
-%   badspacing       - Standard line spacing (1.0, default)
-%   full             - Load all available features (recommended for full academic docs)
-%   usefulcommands   - Load handy macros for cryptography, math, and writing
-%   nousefulcommands - Do not load the macro suite
-%   oldsection       - Use old section symbol formatting (with section symbols)
+%   tikz               — Load TikZ suite (3dplot, cd, automata, circuits, etc.)
+%   notikz             — Do not load TikZ or related graphics packages
+%   appendix           — Enhanced appendix formatting and management
+%   noappendix         — Do not load appendix enhancements
+%   crypto             — Cryptography packages and notation (protocols, security, etc.)
+%   nocrypto           — Do not load cryptography packages
+%   theorems           — Enhanced theorem/proof environments and cross-referencing
+%   notheorems         — Do not load theorem/proof enhancements
+%   orcidlink          — ORCID link support for author identification
+%   noorcidlink        — Do not load ORCID link package
+%   epigraph           — Enhanced epigraph formatting and styling
+%   noepigraph         — Do not load epigraph enhancements
+%   fullpage           — Advanced full-page layout and formatting
+%   nofullpage         — Do not load full-page layout options
+%   nicespacing        — Enhanced line spacing (1.15 stretch factor)
+%   badspacing         — Standard line spacing (1.0, default)
+%   full               — Load all available features (recommended for full academic docs)
+%   usefulcommands     — Load handy macros for cryptography, math, and writing
+%   nousefulcommands   — Do not load the macro suite
+%   oldsection         — Use legacy section symbol formatting (with section symbols)
 %
-% ENHANCED FEATURES:
-%   - Advanced Graphics: PGFPlots (compatibility mode 1.18) for data visualization
-%   - Colored Content Boxes: tcolorbox for styled content and wireboxes
-%   - Framed Environments: mdframed for theorem/content boxes with TikZ rendering
-%   - Advanced Tables: tabularray for complex, multi-page, and styled tables
-%   - TikZ Libraries: 3D plotting, commutative diagrams, automata, circuits, decorations, positioning, shapes, arrows
-%   - Full-Page Layout: Professional page geometry and layout
-%   - Enhanced Typography: Improved spacing, microtypography, and readability
-%   - Useful Commands: Macros for cryptography, math, and general writing
+% ENHANCED ENVIRONMENTS & MACROS
+% ----------------------------------------------------------------------------
+% - Advanced Graphics: PGFPlots (compatibility mode 1.18) for data visualization.
+% - TikZ Libraries: 3D plotting, commutative diagrams, automata, circuits, logic, decorations, shapes, arrows, and more.
+% - Colored Content Boxes: tcolorbox for styled content and wireboxes.
+% - Framed Environments: mdframed for protocol, code list, and simple content boxes.
+% - Advanced Tables: tabularray for complex, multi-page, and styled tables; tabularx, xtab, longtable, threeparttable, makecell, multicol, multirow.
+% - Protocol and Code List Environments: \begin{protocolbox}, \begin{codelistbox}, \begin{simplebox}.
+% - Wirebox Environment: \begin{wirebox} (if tcolorbox loaded).
+% - Enhanced Title and Section Formatting: Customizable fonts and spacing for title, subtitle, author, affiliation, date, and preprint lines.
+% - Table of Contents Spacing: Fine-tuned via \adjusttocspacing.
+% - Upright Greek Letters: Optionally replaces standard Greek macros with upright forms.
+% - Useful Macros: For cryptography, mathematics, and general writing (if enabled).
 %
-% EXAMPLES:
-%   \usepackage{csdirty}                                   % Basic usage with defaults
-%   \usepackage[fullversion]{csdirty}                      % Full version with all features
-%   \usepackage[shortversion,nocomments]{csdirty}          % Short version, no comments
-%   \usepackage[tikz,crypto]{csdirty}                      % With TikZ and crypto
-%   \usepackage[theorems,orcidlink]{csdirty}               % Theorem formatting and ORCID
-%   \usepackage[epigraph,fullpage]{csdirty}                % Epigraphs and full-page layout
-%   \usepackage[nicespacing]{csdirty}                      % Enhanced line spacing
-%   \usepackage[full]{csdirty}                             % All features
-%   \usepackage[notikz]{csdirty}                           % Exclude TikZ
-%   \usepackage[noappendix,noepigraph]{csdirty}            % Exclude appendix and epigraph features
-%   \usepackage[libertinus,concmath,crypto]{csdirty}        % Libertinus font, Concmath, and crypto
+% USAGE EXAMPLES
+% ----------------------------------------------------------------------------
+%   % Basic usage with defaults
+%   \usepackage{csdirty}
 %
-% CODE USAGE EXAMPLES:
+%   % Full version with all features
+%   \usepackage[fullversion]{csdirty}
+%
+%   % Short version, no comments
+%   \usepackage[shortversion,nocomments]{csdirty}
+%
+%   % With TikZ and cryptography
+%   \usepackage[tikz,crypto]{csdirty}
+%
+%   % Theorem formatting and ORCID
+%   \usepackage[theorems,orcidlink]{csdirty}
+%
+%   % Epigraphs and full-page layout
+%   \usepackage[epigraph,fullpage]{csdirty}
+%
+%   % Enhanced line spacing
+%   \usepackage[nicespacing]{csdirty}
+%
+%   % All features enabled
+%   \usepackage[full]{csdirty}
+%
+%   % Exclude TikZ
+%   \usepackage[notikz]{csdirty}
+%
+%   % Exclude appendix and epigraph features
+%   \usepackage[noappendix,noepigraph]{csdirty}
+%
+%   % Libertinus font, Concmath, and crypto
+%   \usepackage[libertinus,concmath,crypto]{csdirty}
+%
+% ENVIRONMENT USAGE EXAMPLES
+% ----------------------------------------------------------------------------
 %   % Colored content box (tcolorbox)
 %   \begin{tcolorbox}[colback=blue!5!white, colframe=blue!75!black, title=Example Box]
 %   This is a styled content box.
@@ -89,6 +138,12 @@
 %   This is a wirebox for highlighting content.
 %   \end{wirebox}
 %
+%   % Protocol box (if mdframed loaded)
+%   \begin{protocolbox}[Protocol Name]
+%   \item Step 1
+%   \item Step 2
+%   \end{protocolbox}
+%
 %   % Advanced table (tabularray is always loaded)
 %   \begin{tblr}{
 %     colspec = {Q[l]Q[c]Q[r]},
@@ -98,17 +153,20 @@
 %   Left     & Center   & Right    \\
 %   \end{tblr}
 %
-% DEPENDENCIES:
+% DEPENDENCIES
+% ----------------------------------------------------------------------------
 % Core dependencies (always loaded):
 %   - amsmath, amssymb (mathematical notation)
 %   - geometry (page layout)
 %   - hyperref (hyperlinks and references)
-%   - tabularray (advanced tables)
+%   - tabularray, tabularx, xtab, longtable, threeparttable, makecell, multicol, multirow (advanced tables)
 %   - setspace (line spacing control)
 %   - microtype (enhanced typography)
+%   - ragged2e, xhfill (text formatting)
+%   - graphicx, pdflscape, placeins, wrapfig, rotating, subcaption (graphics and floats)
 %
 % Optional dependencies (loaded based on options):
-%   - tikz, tikz-cd, tikz-3dplot (tikz option)
+%   - tikz, tikz-cd, tikz-3dplot, and TikZ libraries (tikz option)
 %   - pgfplots (data visualization)
 %   - tcolorbox (colored content boxes)
 %   - mdframed (framed environments)
@@ -118,29 +176,41 @@
 %   - orcidlink (orcidlink option)
 %   - appendix (appendix option)
 %   - epigraph (epigraph option)
-%   - layout packages (fullpage option)
 %   - libertinus, unicode-math, fontspec (libertinus option)
 %   - concmath (concmath option)
 %   - nicodemus (nicodemus option)
+%   - upgreek (modgreeksymbs option)
+%   - hep-title (title formatting)
+%   - titlesec, tocloft (section and TOC formatting)
 %
-% COMPATIBILITY:
-%   - Compatible with modern LaTeX distributions (TeX Live 2022+, MiKTeX 23+)
-%   - Tested with: article, report, book, and other standard classes
-%   - Requires e-TeX extensions (standard in modern LaTeX)
+% COMPATIBILITY
+% ----------------------------------------------------------------------------
+% - Compatible with modern LaTeX distributions (TeX Live 2022+, MiKTeX 23+)
+% - Tested with: article, report, book, and other standard classes
+% - Requires e-TeX extensions (standard in modern LaTeX)
+% - Supports pdfLaTeX, XeLaTeX, and LuaLaTeX
 %
-% KNOWN ISSUES & LIMITATIONS:
-%   - Version control options may require manual adjustment for complex documents
-%   - TikZ graphics may require multiple compilation passes for complex diagrams
-%   - PGFPlots compatibility mode 1.18 may need adjustment for newer versions
-%   - Full-page layout options may conflict with some document class settings
-%   - Enhanced spacing may affect layout and require fine-tuning
-%   - Some options may increase compilation time and memory usage
+% KNOWN ISSUES & LIMITATIONS
+% ----------------------------------------------------------------------------
+% - Version control options may require manual adjustment for complex documents.
+% - TikZ graphics may require multiple compilation passes for complex diagrams.
+% - PGFPlots compatibility mode 1.18 may need adjustment for newer versions.
+% - Full-page layout options may conflict with some document class settings.
+% - Enhanced spacing may affect layout and require fine-tuning.
+% - Some options may increase compilation time and memory usage.
+% - Some advanced features require specific engines (e.g., fontspec for XeLaTeX/LuaLaTeX).
 %
-% VERSION: 1.6
-% DATE: 2025/06/26
-% AUTHOR: Agni Datta
-% LICENSE: LaTeX Project Public License v1.3c
-% CONTACT: agnidatta.org@gmail.com
+% CHANGELOG (v1.6)
+% ----------------------------------------------------------------------------
+% - Expanded TikZ library support (including logic, circuits, datavisualization, etc.)
+% - Added upright Greek symbol option (modgreeksymbs) with robust fallback logic.
+% - Improved protocol, code list, and simple box environments (mdframed-based).
+% - Enhanced table support: tabularray, tabularx, xtab, longtable, threeparttable, makecell.
+% - Improved title and section formatting (hep-title, titlesec, tocloft).
+% - Added wirebox environment (tcolorbox-based).
+% - Improved macro suite for cryptography and mathematics.
+% - Updated documentation and usage examples.
+%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ProvidesPackage{csdirty}[2025/06/26 v1.6 csdirty package]
@@ -255,19 +325,19 @@
 % Check for supported document classes
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \@ifclassloaded{article}{%
-	\typeout{csdirty: article class spotted (we got you covered)}
+	\typeout{csdirty: Detected document class: article.}
 }{%
 	\@ifclassloaded{report}{%
-		\typeout{csdirty: report class spotted (looking good)}
+		\typeout{csdirty: Detected document class: report.}
 	}{%
 		\@ifclassloaded{book}{%
-			\typeout{csdirty: book class spotted (you're all set)}
+			\typeout{csdirty: Detected document class: book.}
 		}{%
 			\PackageWarning{csdirty}{%
-				uh oh! unsupported document class detected.
-				this package only plays nice with article, report, or book classes :(
-				your class (\@classload) has not been tested with this package yet.
-				you may encounter issues with the package.
+				Unsupported document class detected.
+				This package is officially supported only for the following classes: article, report, or book.
+				Your class (\@classload) has not been tested with this package.
+				Unexpected behavior may occur.
 			}%
 		}%
 	}%
