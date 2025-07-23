@@ -745,14 +745,14 @@
 
 	% Modular dedication environment, only for book or report classes
 	\@ifclassloaded{book}{%
-		\RenewDocumentEnvironment{dedication}{O{}}{%
+		\NewDocumentEnvironment{dedication}{O{}}{%
 			\csdirty@dedicationenvcore{%
 				\csdirty@dedicationenvbody{##1}{##1}
 			}%
 		}{}
 	}{%
 		\@ifclassloaded{report}{%
-			\RenewDocumentEnvironment{dedication}{O{}}{%
+			\NewDocumentEnvironment{dedication}{O{}}{%
 				\csdirty@dedicationenvcore{%
 					\csdirty@dedicationenvbody{##1}{##1}
 				}%
@@ -862,7 +862,7 @@
 	\IfFileExists{orcidlink.sty}{\RequirePackage{orcidlink}}{\PackageWarning{csdirty}{Package `orcidlink` not found.}} % ORCID ID and icon
 \fi
 
-\ifcsdirty@Nicodemus
+\ifcsdirty@LoadNicodemus
 	\typeout{csdirty: Loading Nicodemus font package}
 	\IfFileExists{nicodemus.sty}{\RequirePackage{nicodemus}}{\PackageWarning{csdirty}{Package `nicodemus` not found.}} % Nicodemus macros
 \fi
@@ -936,12 +936,12 @@
 }
 
 % Bibliography 
-\NewDocumentCommand{\printbib}{m}{%
-	\clearpage
+\NewDocumentCommand{\printbib}{O{alphaurl} m}{%
 	\vfill
+	\clearpage
 	\begin{spacing}{1.00}
-		\bibliographystyle{alphaurl}
-		\bibliography{#1}
+		\bibliographystyle{#1}
+		\bibliography{#2}
 	\end{spacing}
 	\vfill
 	\clearpage
@@ -1130,7 +1130,6 @@
 }
 
 \NewDocumentCommand{\parhead}{m}{\csdirty@paragraphhead{#1}}
-\RenewDocumentCommand{\paragraph}{m}{\parhead{#1}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Nested bar environment
