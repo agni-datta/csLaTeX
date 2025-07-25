@@ -2,7 +2,7 @@
 title: "csindex.ist: Custom MakeIndex Style for LaTeX"
 linter-yaml-title-alias: "csindex.ist: Custom MakeIndex Style for LaTeX"
 date created: Saturday, July 5th 2025, 00:31:42
-date modified: Thursday, July 17th 2025, 22:40:00
+date modified: Friday, July 25th 2025, 21:56:08
 aliases: "csindex.ist: Custom MakeIndex Style for LaTeX"
 ---
 
