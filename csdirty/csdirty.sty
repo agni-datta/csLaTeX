@@ -386,10 +386,10 @@
 % Margin and Spacing
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \ifcsdirty@LoadFullPage
-	\RequirePackage[a4paper, margin=1.0in]{geometry}         % Page layout
+	\RequirePackage[margin=2.5cm]{geometry}     	% Page layout
 	\typeout{csdirty: Loading full page layout}
 \else
-	\RequirePackage[a4paper, margin=3.5cm]{geometry}         % Page layout (default)
+	\RequirePackage[margin=3.5cm]{geometry}         % Page layout (default)
 	\typeout{csdirty: Loading default page layout}
 \fi
 
@@ -436,7 +436,7 @@
 		\RequirePackage{moresize}
 		\RequirePackage{nicefrac}
 		\RequirePackage{siunitx}
-		\RequirePackage{unicode-math}
+		\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
 		\setmainfont[
 			SmallCapsFeatures={RawFeature=+smcp},
 			RawFeature={+calt,+case,+cpsp,+kern,+liga,+lnum,+mark,+mkmk,+pnum,+ss06},
@@ -471,7 +471,7 @@
 			\RequirePackage{nicefrac}
 			\RequirePackage{siunitx}
 			\RequirePackage{fontspec}
-			\RequirePackage{unicode-math}
+			\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
 			\setmainfont[
 				SmallCapsFeatures={RawFeature=+smcp},
 				RawFeature={+calt,+case,+cpsp,+kern,+liga,+lnum,+mark,+mkmk,+pnum,+ss06},
@@ -498,7 +498,7 @@
 			\RequirePackage{mathrsfs}
 			\RequirePackage[cal=stixplain,bb=bboldx,scr=esstix]{mathalpha}
 		\else
-			\typeout{csdirty: Libertinus math setup not supported for this engine.}
+			\typeout{csdirty: Libertinus math with nextx supported for this engine.}
 			\RequirePackage[T1]{fontenc}
 			\RequirePackage{amssymb}
 			\RequirePackage{mathtools}
@@ -523,7 +523,7 @@
 		\RequirePackage{moresize}
 		\RequirePackage{nicefrac}
 		\RequirePackage{siunitx}
-		\RequirePackage{unicode-math}
+		\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
 		\RequirePackage[concrete]{fontsetup}
 		\let\mathbfcal\relax
 		\let\mathbfscr\relax
@@ -538,7 +538,7 @@
 			\RequirePackage{moresize}
 			\RequirePackage{nicefrac}
 			\RequirePackage{siunitx}
-			\RequirePackage{unicode-math}
+			\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
 			\RequirePackage[concrete]{fontsetup}
 			\let\mathbfcal\relax
 			\let\mathbfscr\relax
@@ -560,7 +560,7 @@
 		\RequirePackage{moresize}
 		\RequirePackage{nicefrac}
 		\RequirePackage{siunitx}
-		\RequirePackage{unicode-math}
+		\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
 		\setmainfont[
 			SmallCapsFeatures={RawFeature=+smcp},
 			RawFeature={+calt,+case,+cpsp,+kern,+liga,+lnum,+mark,+mkmk,+pnum},
@@ -596,7 +596,7 @@
 			\RequirePackage{nicefrac}
 			\RequirePackage{siunitx}
 			\RequirePackage{fontspec}
-			\RequirePackage{unicode-math}
+			\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
 			\setmainfont[
 				SmallCapsFeatures={RawFeature=+smcp},
 				RawFeature={+calt,+case,+cpsp,+kern,+liga,+lnum,+mark,+mkmk,+pnum},
@@ -631,7 +631,7 @@
 \newcommand{\csdirty@loadlatinmodern}{%
 	\typeout{csdirty: Loading Latin Modern math}
 	\RequirePackage{fontspec}
-	\RequirePackage{unicode-math}
+	\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
 	\setmainfont[
 		ItalicFont = NewCM10-BookItalic.otf,
 		SmallCapsFont = NewCM10-Book.otf,
