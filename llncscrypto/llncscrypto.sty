@@ -342,7 +342,9 @@
 		\RequirePackage{moresize}
 		\RequirePackage{nicefrac}
 		\RequirePackage{siunitx}
-		\RequirePackage{unicode-math}
+		\RequirePackage[%
+			warnings-off={mathtools-colon,mathtools-overbracket}
+		]{unicode-math}
 		\setmainfont[
 			SmallCapsFeatures={RawFeature=+smcp},
 			RawFeature={+calt,+case,+cpsp,+kern,+liga,+lnum,+mark,+mkmk,+pnum,+ss06},
@@ -363,7 +365,7 @@
 			Scale=MatchLowercase,
 			SmallCapsFeatures={RawFeature=+smcp},
 			RawFeature={+calt,+case,+kern,+liga,+lnum,+mark,+mkmk,+pnum}
-		]{ysabeau}
+		]{Ysabeau}
 		% Remove math font clashes
 		\let\mathbfcal\relax
 		\let\mathbfscr\relax
@@ -379,7 +381,9 @@
 			\RequirePackage{nicefrac}
 			\RequirePackage{siunitx}
 			\RequirePackage{fontspec}
-			\RequirePackage{unicode-math}
+			\RequirePackage[%
+				warnings-off={mathtools-colon,mathtools-overbracket}
+			]{unicode-math}
 			\setmainfont[
 				SmallCapsFeatures={RawFeature=+smcp},
 				RawFeature={+calt,+case,+cpsp,+kern,+liga,+lnum,+mark,+mkmk,+pnum,+ss06},
@@ -449,7 +453,9 @@
 			\RequirePackage{moresize}
 			\RequirePackage{nicefrac}
 			\RequirePackage{siunitx}
-			\RequirePackage{unicode-math}
+			\RequirePackage[%
+				warnings-off={mathtools-colon,mathtools-overbracket}
+			]{unicode-math}
 			\RequirePackage[concrete]{fontsetup}
 			% Remove math font clashes
 			\let\mathbfcal\relax
@@ -478,11 +484,15 @@
 	\RequirePackage{siunitx}               % SI units
 	\ifLuaTeX
 		\RequirePackage{fontspec}		   % Unicode-font support
-		\RequirePackage{unicode-math}	   % Unicode-math support
+		\RequirePackage[%
+			warnings-off={mathtools-colon,mathtools-overbracket}
+		]{unicode-math}	   	 % Unicode-math support
 	\else
 		\ifXeTeX
 			\RequirePackage{fontspec}	   % Unicode-font support
-			\RequirePackage{unicode-math}  % Unicode-math symmbols
+			\RequirePackage[%
+				warnings-off={mathtools-colon,mathtools-overbracket}
+			]{unicode-math}  % Unicode-math symmbols
 		\fi
 	\fi
 	% Remove math font clashes
