@@ -1377,65 +1377,66 @@
 % Upright Greek Letters Setup Using `upgreek`
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \ifllncscrypto@modgreeksymbs
-	\RequirePackage{upgreek} % Load upright Greek letter symbols
+	\AtEndPreamble{%
+		\RequirePackage{upgreek} % Load upright Greek letter symbols
+		% Provide definitions for missing uppercase Greek macros as roman letters, if undefined
+		\@ifundefined{Alpha}{\newcommand{\Alpha}{\mathrm{A}}}{}
+		\@ifundefined{Beta}{\newcommand{\Beta}{\mathrm{B}}}{}
+		\@ifundefined{Chi}{\newcommand{\Chi}{\mathrm{X}}}{}
+		\@ifundefined{Epsilon}{\newcommand{\Epsilon}{\mathrm{E}}}{}
+		\@ifundefined{Eta}{\newcommand{\Eta}{\mathrm{H}}}{}
+		\@ifundefined{Iota}{\newcommand{\Iota}{\mathrm{I}}}{}
+		\@ifundefined{Kappa}{\newcommand{\Kappa}{\mathrm{K}}}{}
+		\@ifundefined{Mu}{\newcommand{\Mu}{\mathrm{M}}}{}
+		\@ifundefined{Nu}{\newcommand{\Nu}{\mathrm{N}}}{}
+		\@ifundefined{Omicron}{\newcommand{\Omicron}{\mathrm{O}}}{}
+		\@ifundefined{Rho}{\newcommand{\Rho}{\mathrm{R}}}{}
+		\@ifundefined{Tau}{\newcommand{\Tau}{\mathrm{T}}}{}
+		\@ifundefined{Zeta}{\newcommand{\Zeta}{\mathrm{Z}}}{}
+		\@ifundefined{omicron}{\newcommand{\omicron}{\mathrm{o}}}{}
 
-	% Provide definitions for missing uppercase Greek macros as roman letters, if undefined
-	\@ifundefined{Alpha}{\newcommand{\Alpha}{\mathrm{A}}}{}
-	\@ifundefined{Beta}{\newcommand{\Beta}{\mathrm{B}}}{}
-	\@ifundefined{Chi}{\newcommand{\Chi}{\mathrm{X}}}{}
-	\@ifundefined{Epsilon}{\newcommand{\Epsilon}{\mathrm{E}}}{}
-	\@ifundefined{Eta}{\newcommand{\Eta}{\mathrm{H}}}{}
-	\@ifundefined{Iota}{\newcommand{\Iota}{\mathrm{I}}}{}
-	\@ifundefined{Kappa}{\newcommand{\Kappa}{\mathrm{K}}}{}
-	\@ifundefined{Mu}{\newcommand{\Mu}{\mathrm{M}}}{}
-	\@ifundefined{Nu}{\newcommand{\Nu}{\mathrm{N}}}{}
-	\@ifundefined{Omicron}{\newcommand{\Omicron}{\mathrm{O}}}{}
-	\@ifundefined{Rho}{\newcommand{\Rho}{\mathrm{R}}}{}
-	\@ifundefined{Tau}{\newcommand{\Tau}{\mathrm{T}}}{}
-	\@ifundefined{Zeta}{\newcommand{\Zeta}{\mathrm{Z}}}{}
-	\@ifundefined{omicron}{\newcommand{\omicron}{\mathrm{o}}}{}
+		% Fallbacks for upright forms from `upgreek`, if undefined
+		\@ifundefined{Upalpha}{\newcommand{\Upalpha}{\mathrm{A}}}{}
+		\@ifundefined{Upbeta}{\newcommand{\Upbeta}{\mathrm{B}}}{}
+		\@ifundefined{Upchi}{\newcommand{\Upchi}{\mathrm{X}}}{}
+		\@ifundefined{Upepsilon}{\newcommand{\Upepsilon}{\mathrm{E}}}{}
+		\@ifundefined{Upeta}{\newcommand{\Upeta}{\mathrm{H}}}{}
+		\@ifundefined{Upiota}{\newcommand{\Upiota}{\mathrm{I}}}{}
+		\@ifundefined{Upkappa}{\newcommand{\Upkappa}{\mathrm{K}}}{}
+		\@ifundefined{Upmu}{\newcommand{\Upmu}{\mathrm{M}}}{}
+		\@ifundefined{Upnu}{\newcommand{\Upnu}{\mathrm{N}}}{}
+		\@ifundefined{Upomicron}{\newcommand{\Upomicron}{\mathrm{O}}}{}
+		\@ifundefined{Uprho}{\newcommand{\Uprho}{\mathrm{R}}}{}
+		\@ifundefined{Uptau}{\newcommand{\Uptau}{\mathrm{T}}}{}
+		\@ifundefined{Upzeta}{\newcommand{\Upzeta}{\mathrm{Z}}}{}
+		\@ifundefined{upomicron}{\newcommand{\upomicron}{\mathrm{o}}}{}
 
-	% Fallbacks for upright forms from `upgreek`, if undefined
-	\@ifundefined{Upalpha}{\newcommand{\Upalpha}{\mathrm{A}}}{}
-	\@ifundefined{Upbeta}{\newcommand{\Upbeta}{\mathrm{B}}}{}
-	\@ifundefined{Upchi}{\newcommand{\Upchi}{\mathrm{X}}}{}
-	\@ifundefined{Upepsilon}{\newcommand{\Upepsilon}{\mathrm{E}}}{}
-	\@ifundefined{Upeta}{\newcommand{\Upeta}{\mathrm{H}}}{}
-	\@ifundefined{Upiota}{\newcommand{\Upiota}{\mathrm{I}}}{}
-	\@ifundefined{Upkappa}{\newcommand{\Upkappa}{\mathrm{K}}}{}
-	\@ifundefined{Upmu}{\newcommand{\Upmu}{\mathrm{M}}}{}
-	\@ifundefined{Upnu}{\newcommand{\Upnu}{\mathrm{N}}}{}
-	\@ifundefined{Upomicron}{\newcommand{\Upomicron}{\mathrm{O}}}{}
-	\@ifundefined{Uprho}{\newcommand{\Uprho}{\mathrm{R}}}{}
-	\@ifundefined{Uptau}{\newcommand{\Uptau}{\mathrm{T}}}{}
-	\@ifundefined{Upzeta}{\newcommand{\Upzeta}{\mathrm{Z}}}{}
-	\@ifundefined{upomicron}{\newcommand{\upomicron}{\mathrm{o}}}{}
-
-	% If available, overwrite standard Greek macros with their upright versions
-	\@ifundefined{Upalpha}{}{\renewcommand{\Alpha}{\Upalpha}}
-	\@ifundefined{Upbeta}{}{\renewcommand{\Beta}{\Upbeta}}
-	\@ifundefined{Upchi}{}{\renewcommand{\Chi}{\Upchi}}
-	\@ifundefined{Updelta}{}{\renewcommand{\Delta}{\Updelta}}
-	\@ifundefined{Upepsilon}{}{\renewcommand{\Epsilon}{\Upepsilon}}
-	\@ifundefined{Upeta}{}{\renewcommand{\Eta}{\Upeta}}
-	\@ifundefined{Upgamma}{}{\renewcommand{\Gamma}{\Upgamma}}
-	\@ifundefined{Upiota}{}{\renewcommand{\Iota}{\Upiota}}
-	\@ifundefined{Upkappa}{}{\renewcommand{\Kappa}{\Upkappa}}
-	\@ifundefined{Uplambda}{}{\renewcommand{\Lambda}{\Uplambda}}
-	\@ifundefined{Upmu}{}{\renewcommand{\Mu}{\Upmu}}
-	\@ifundefined{Upnu}{}{\renewcommand{\Nu}{\Upnu}}
-	\@ifundefined{Upomega}{}{\renewcommand{\Omega}{\Upomega}}
-	\@ifundefined{Upomicron}{}{\renewcommand{\Omicron}{\Upomicron}}
-	\@ifundefined{Upphi}{}{\renewcommand{\Phi}{\Upphi}}
-	\@ifundefined{Uppi}{}{\renewcommand{\Pi}{\Uppi}}
-	\@ifundefined{Uppsi}{}{\renewcommand{\Psi}{\Uppsi}}
-	\@ifundefined{Uprho}{}{\renewcommand{\Rho}{\Uprho}}
-	\@ifundefined{Upsigma}{}{\renewcommand{\Sigma}{\Upsigma}}
-	\@ifundefined{Uptau}{}{\renewcommand{\Tau}{\Uptau}}
-	\@ifundefined{Uptheta}{}{\renewcommand{\Theta}{\Uptheta}}
-	\@ifundefined{Upupsilon}{}{\renewcommand{\Upsilon}{\Upupsilon}}
-	\@ifundefined{Upxi}{}{\renewcommand{\Xi}{\Upxi}}
-	\@ifundefined{Upzeta}{}{\renewcommand{\Zeta}{\Upzeta}}
+		% If available, overwrite standard Greek macros with their upright versions
+		\@ifundefined{Upalpha}{}{\renewcommand{\Alpha}{\Upalpha}}
+		\@ifundefined{Upbeta}{}{\renewcommand{\Beta}{\Upbeta}}
+		\@ifundefined{Upchi}{}{\renewcommand{\Chi}{\Upchi}}
+		\@ifundefined{Updelta}{}{\renewcommand{\Delta}{\Updelta}}
+		\@ifundefined{Upepsilon}{}{\renewcommand{\Epsilon}{\Upepsilon}}
+		\@ifundefined{Upeta}{}{\renewcommand{\Eta}{\Upeta}}
+		\@ifundefined{Upgamma}{}{\renewcommand{\Gamma}{\Upgamma}}
+		\@ifundefined{Upiota}{}{\renewcommand{\Iota}{\Upiota}}
+		\@ifundefined{Upkappa}{}{\renewcommand{\Kappa}{\Upkappa}}
+		\@ifundefined{Uplambda}{}{\renewcommand{\Lambda}{\Uplambda}}
+		\@ifundefined{Upmu}{}{\renewcommand{\Mu}{\Upmu}}
+		\@ifundefined{Upnu}{}{\renewcommand{\Nu}{\Upnu}}
+		\@ifundefined{Upomega}{}{\renewcommand{\Omega}{\Upomega}}
+		\@ifundefined{Upomicron}{}{\renewcommand{\Omicron}{\Upomicron}}
+		\@ifundefined{Upphi}{}{\renewcommand{\Phi}{\Upphi}}
+		\@ifundefined{Uppi}{}{\renewcommand{\Pi}{\Uppi}}
+		\@ifundefined{Uppsi}{}{\renewcommand{\Psi}{\Uppsi}}
+		\@ifundefined{Uprho}{}{\renewcommand{\Rho}{\Uprho}}
+		\@ifundefined{Upsigma}{}{\renewcommand{\Sigma}{\Upsigma}}
+		\@ifundefined{Uptau}{}{\renewcommand{\Tau}{\Uptau}}
+		\@ifundefined{Uptheta}{}{\renewcommand{\Theta}{\Uptheta}}
+		\@ifundefined{Upupsilon}{}{\renewcommand{\Upsilon}{\Upupsilon}}
+		\@ifundefined{Upxi}{}{\renewcommand{\Xi}{\Upxi}}
+		\@ifundefined{Upzeta}{}{\renewcommand{\Zeta}{\Upzeta}}
+	}
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
