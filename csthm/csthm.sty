@@ -1,104 +1,135 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% csthm.sty - Theorem Environments for Computer Science
+% csthm.sty — Theorem Environment Suite for Computer Science
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Author: Agni Datta <agnidatta.org@gmail.com>
 % Version: 2.1
 % Date: 2025/02/02
 % License: LaTeX Project Public License v1.3c
 %
-% DESCRIPTION:
-%   The csthm package provides a comprehensive suite of theorem-like environments
-%   tailored for computer science documents. It offers modern, customizable, and
-%   visually distinct styles for theorems, definitions, remarks, and highlights,
-%   supporting both numbered and unnumbered variants. The package is designed to
-%   work seamlessly with amsthm, thmtools, mdframed, and cleveref for advanced
-%   cross-referencing and presentation.
+% ABSTRACT:
+%   The csthm package is an advanced and extensible LaTeX package designed to provide
+%   a rigorous, feature-rich, and visually distinct suite of theorem-like environments
+%   for academic documents in computer science and related disciplines. It aims to
+%   standardize the presentation of formal statements, definitions, remarks, and
+%   pedagogical highlights, while supporting modern typesetting practices and
+%   intelligent cross-referencing.
 %
-% FEATURES:
-%   - Multiple theorem styles: 'fancy', 'normal', and 'oldschool', selectable via
-%     package options.
-%   - Extensive set of environments, each with numbered and unnumbered (starred) variants:
-%       * Theorem-like: theorem, assertion, assumption, axiom, claim, conclusion, conjecture,
-%         corollary, fact, folklore, hypothesis, lemma, postulate, property, proposition
-%       * Definition-like: application, construction, convention, definition, experiment,
-%         notation, open problem, problem, protocol, result
-%       * Remark-like: commentary, contribution, example, exercise, motivation, notation abuse,
-%         note, observation, question, remark
-%       * Highlight-like: guideline, highlight, important, insight, key point, recall, summary,
-%         takeaway, tip, warning
-%       * Other: proof, case
-%   - List of all provided environments:
-%       theorem, assertion, assumption, axiom, claim, conclusion, conjecture, corollary, fact,
-%       folklore, hypothesis, lemma, postulate, property, proposition, application, construction,
-%       convention, definition, experiment, notation, openproblem, problem, protocol, result,
-%       commentary, contribution, example, exercise, motivation, notationabuse, note, observation,
-%       question, remark, guideline, highlight, important, insight, keypoint, recall, summary,
-%       takeaway, tip, warning, proof, case
-%   - Numbered and unnumbered (starred) versions for all environments.
-%   - Customizable accent color and font settings.
-%   - Modern framed environments using mdframed and TikZ for the 'fancy' style.
-%   - Intelligent cross-referencing with cleveref and hyperref integration.
-%   - Consistent symbol and font usage across environments.
-%   - Dedicated 'case' environment for structured case analysis.
-%   - Enhanced cleveref support with comprehensive environment naming, including
-%     singular and plural forms for all environments.
-%   - Automatic loading of cleveref if hyperref is present, with a warning if
-%     hyperref is not loaded before csthm.
+% OVERVIEW OF FEATURES:
+%   • Multiple Theorem Styles:
+%       - 'fancy': Modern, colored, and framed environments utilizing mdframed and TikZ.
+%       - 'normal': Sans-serif environments with accent symbols for clarity.
+%       - 'oldschool': Classic bold/scshape environments for traditional documents.
+%     The style is selected via package options; only one style may be active at a time.
 %
-% USAGE:
-%   \usepackage[<style>]{csthm}
-%     where <style> is one of: fancy, normal, oldschool
-%     (default: no style; user must specify one)
+%   • Extensive Environment Coverage:
+%       - Theorem-like: theorem, assertion, assumption, axiom, claim, conclusion,
+%         conjecture, corollary, fact, folklore, hypothesis, lemma, postulate,
+%         property, proposition.
+%       - Definition-like: application, construction, convention, definition,
+%         experiment, notation, openproblem, problem, protocol, result.
+%       - Remark-like: commentary, contribution, example, exercise, motivation,
+%         notationabuse, note, observation, question, remark.
+%       - Highlight-like: guideline, highlight, important, insight, keypoint,
+%         recall, summary, takeaway, tip, warning.
+%       - Other: proof (redefined for style consistency), case (for structured
+%         case analysis).
+%     Each environment is available in both numbered and unnumbered (starred) forms.
 %
-%   Example:
-%     \usepackage[fancy]{csthm}
+%   • Intelligent Cross-Referencing:
+%       - Seamless integration with cleveref and hyperref for automatic, context-aware
+%         cross-references, including correct singular and plural forms for all
+%         environments.
+%       - Automatic loading of cleveref if hyperref is detected; issues a warning
+%         and attempts fallback if hyperref is not loaded before csthm.
 %
-%   To change the accent color:
-%     \setaccentcolor{<color>}
-%     (where <color> is any color recognized by xcolor)
+%   • Customization:
+%       - Accent color and font settings are user-configurable via \setaccentcolor.
+%       - Consistent symbol and font usage across all environments.
+%       - Modern framed environments (in 'fancy' style) with customizable spacing.
 %
-%   To use the 'case' environment:
-%     \begin{case}
-%       \item ...
-%       \item ...
-%     \end{case}
+%   • Robust Internal Architecture:
+%       - All environments are defined via \declaretheorem from thmtools for
+%         maximum flexibility and compatibility.
+%       - Styles are modularly set up via \declaretheoremstyle.
+%       - Boolean flags control style activation, ensuring mutual exclusivity.
+%       - Comprehensive warnings for unrecognized options and improper usage.
+%
+% USAGE INSTRUCTIONS:
+%   1. Loading the Package:
+%        \usepackage[<style>]{csthm}
+%      where <style> is one of: fancy, normal, oldschool.
+%      If no style is specified, no environments are defined and a message is issued.
+%
+%   2. Example Usage:
+%        \usepackage[fancy]{csthm}
+%
+%   3. Changing the Accent Color:
+%        \setaccentcolor{<color>}
+%      where <color> is any color recognized by the xcolor package.
+%
+%   4. Using the 'case' Environment:
+%        \begin{case}
+%          \item ...
+%          \item ...
+%        \end{case}
+%
+%   5. Cross-Referencing:
+%      Use \cref and \Cref (from cleveref) for intelligent references to all
+%      theorem-like environments. Singular and plural forms are handled automatically.
+%
+%   6. Numbered and Unnumbered Environments:
+%      All environments support starred (unnumbered) forms, e.g., \begin{theorem*}...\end{theorem*}.
 %
 % DEPENDENCIES:
-%   - amsmath, amssymb, amsthm: Mathematical typesetting and theorem support
-%   - sansmath: Sans-serif math fonts
-%   - enumitem: Customizable list environments
-%   - thmtools: Advanced theorem customization
-%   - mdframed: Framed boxes for environments (with TikZ)
-%   - xcolor: Extended color support (X11, SVG, dvipsnames)
-%   - cleveref (optional, auto-loaded if hyperref is present): Smart cross-referencing
+%   - amsmath, amssymb, amsthm: For mathematical typesetting and theorem support.
+%   - sansmath: For sans-serif math fonts (used in 'fancy' and 'normal' styles).
+%   - enumitem: For customizable list environments (used in 'case' and others).
+%   - thmtools: For advanced theorem customization and environment definition.
+%   - mdframed: For framed boxes (required for 'fancy' style; uses TikZ).
+%   - xcolor: For extended color support (X11, SVG, dvipsnames).
+%   - cleveref (optional, auto-loaded if hyperref is present): For smart cross-referencing.
+%   - hyperref (optional, but recommended for best cross-referencing experience).
 %
 % OPTIONS:
-%   - fancy: Modern, colored, framed theorem environments
-%   - normal: Standard sans-serif theorem environments with symbols
-%   - oldschool: Classic bold/scshape theorem environments
+%   - fancy: Activates modern, colored, framed theorem environments.
+%   - normal: Activates standard sans-serif theorem environments with symbols.
+%   - oldschool: Activates classic bold/scshape theorem environments.
 %
-% INTERNALS:
-%   - Boolean flags control which style is activated.
-%   - All environments are defined via \declaretheorem from thmtools.
-%   - Styles are set up via \declaretheoremstyle.
-%   - Cleveref names are set for all environments for consistent referencing,
-%     including both singular and plural forms.
-%   - The package issues warnings for unrecognized options.
-%   - Comprehensive cleveref integration with proper singular/plural forms for
-%     all environments, including highlight-like, remark-like, and definition-like.
-%   - If hyperref is not loaded before csthm, a warning is issued and cleveref
-%     is loaded with a fallback.
+% CAVEATS AND WARNINGS:
+%   • Only one style option may be active at a time. If multiple styles are specified,
+%     the last one processed will take precedence.
+%   • If no style is selected, the package will not define any environments and will
+%     output a message to the log.
+%   • For optimal cross-referencing, load hyperref before csthm. If hyperref is not
+%     loaded, cleveref will be loaded with a warning, and some cross-referencing
+%     features may be degraded.
+%   • The proof environment is redefined for consistency with the selected style.
+%   • The package is intended for use in computer science and related technical
+%     documents; some environments or styles may not be suitable for other disciplines.
+%   • The 'fancy' style requires mdframed and TikZ; compilation will fail if these
+%     are not available.
+%   • The accent color must be a valid color recognized by xcolor; invalid color
+%     names will result in errors.
+%   • The package issues warnings for unrecognized options and improper usage.
 %
-% NOTES:
-%   - Only one style should be active at a time.
-%   - If no style is selected, the package will output a message but not define environments.
-%   - The proof environment is redefined for consistency with the selected style.
-%   - The package is intended for use in computer science and related technical documents.
-%   - All environments support intelligent cross-referencing via cleveref, with
-%     correct singular and plural names for each environment.
+% LIMITATIONS:
+%   • The package does not support simultaneous activation of multiple styles.
+%   • Customization of environment names or numbering schemes beyond what is provided
+%     requires manual intervention or further package extension.
+%   • Some advanced cleveref features (e.g., custom reference formats) may require
+%     additional configuration by the user.
+%   • The package assumes a modern LaTeX distribution with all dependencies available.
 %
-% SEE ALSO:
-%   - thmtools, amsthm, mdframed, cleveref, xcolor documentation for further customization.
+% FURTHER READING AND CUSTOMIZATION:
+%   • For advanced customization, consult the documentation for thmtools, amsthm,
+%     mdframed, cleveref, and xcolor.
+%   • Users may redefine fonts, colors, or symbols by patching the relevant commands
+%     after loading csthm.
+%
+% ACKNOWLEDGEMENTS:
+%   The design and implementation of csthm draw inspiration from the best practices
+%   in mathematical typesetting and the needs of the computer science academic
+%   community. Feedback and contributions are welcome.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % End of documentation for csthm.sty
@@ -110,19 +141,19 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Option Definitions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newbool{fancy}       % Enable fancy theorem formatting
-\newbool{normal}      % Enable standard theorem formatting
-\newbool{oldschool}   % Enable oldschool theorem formatting
+\newif\iffancy       % Enable fancy theorem formatting
+\newif\ifnormal      % Enable standard theorem formatting
+\newif\ifoldschool   % Enable oldschool theorem formatting
 
 % Default Boolean Initialization
-\setbool{fancy}{false}
-\setbool{normal}{false}
-\setbool{oldschool}{false}
+\fancyfalse
+\normalfalse
+\oldschoolfalse
 
 % Option Definitions
-\DeclareOption{fancy}{\setbool{fancy}{true}}
-\DeclareOption{normal}{\setbool{normal}{true}}
-\DeclareOption{oldschool}{\setbool{oldschool}{true}}
+\DeclareOption{fancy}{\fancytrue}
+\DeclareOption{normal}{\normaltrue}
+\DeclareOption{oldschool}{\oldschooltrue}
 
 % Handle Unrecognized Options
 \DeclareOption*{\PackageWarning{csthm}{Unrecognized option '\CurrentOption'}}
@@ -164,43 +195,43 @@
 % Color and Font Definitions for the csthm package
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% --- Accent Color Settings ---
+% Accent Color Settings
 \providecommand{\accentcolor}{black}%
 \providecommand{\setaccentcolor}[1]{\renewcommand{\accentcolor}{#1}}%
 
-% --- Common Font and Symbol ---
+% Common Font and Symbol
 \newcommand{\commonthmfont}{\sffamily}%
 \newcommand{\commonthmsymb}{\ensuremath{\color{\accentcolor}\lrcorner}}%
 
-% --- Heading Fonts ---
+% Heading Fonts
 \newcommand{\thmheadfont}{\sffamily}%
 \newcommand{\defnheadfont}{\sffamily}%
 \newcommand{\remarkheadfont}{\sffamily}%
 \newcommand{\hltheadfont}{\sffamily}%
 
-% --- Body Fonts ---
+% Body Fonts
 \newcommand{\thmfont}{\normalfont}%
 \newcommand{\defnfont}{\normalfont}%
 \newcommand{\remarkfont}{\normalfont}%
 \newcommand{\hltfont}{\normalfont\sffamily}%
 
-% --- Environment Symbols ---
+% Environment Symbols
 \newcommand{\thmsymb}{\ensuremath{\color{\accentcolor}\scriptstyle\blacktriangleright}}%
 \newcommand{\defnsymb}{\ensuremath{\color{\accentcolor}\scriptstyle\blacksquare}}%
 \newcommand{\remarksymb}{\ensuremath{\color{\accentcolor}\scriptstyle\vartriangleright}}%
 \newcommand{\hltsymb}{\ensuremath{\color{\accentcolor}\scriptstyle\square}}%
 
-% --- QED Symbol ---
+% QED Symbol
 \renewcommand{\qedsymbol}{\ensuremath{\color{\accentcolor}\square}}%
 
-% --- Package Reference ---
+% Package Reference
 \newcommand{\csthmpkg}{\textsf{csthm}}%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Case List and Environment Definitions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% --- Case List Definition ---
+% Case List Definition
 \newlist{caseList}{enumerate}{1}% Define a new list type 'caseList'
 \setlist[caseList]{label=\textbf{Case~\arabic*:}, leftmargin=*}% Customize 'caseList' labels
 
@@ -210,7 +241,7 @@
 	\end{caseList}% End 'case' environment
 }
 
-% --- Definition of New Environments (Numbered and Unnumbered) ---
+% Definition of New Environments (Numbered and Unnumbered)
 \newcommand{\basicenv}{%
 	% Theorem-like Environments
 	\declaretheorem[style=thmstyle,name=Theorem]{theorem}%
@@ -521,7 +552,7 @@
 \AtBeginDocument{%
 	\@ifpackageloaded{hyperref}{%
 		\RequirePackage[capitalize,nameinlink,noabbrev]{cleveref}%
-		% --- Cleveref Name Declarations for All Environments ---
+		% Cleveref Name Declarations for All Environments
 		% Theorem-like
 		\Crefname{assertion}{Assertion}{Assertions}
 		\crefname{assertion}{assertion}{assertions}
@@ -616,8 +647,8 @@
 		\crefname{tip}{tip}{tips}
 		\Crefname{warning}{Warning}{Warnings}
 		\crefname{warning}{warning}{warnings}
-		% --- Email Link Formatting ---		
-		\providecommand{\email}[1]{\href{mailto:#1}{\texttt{#1}}}%
+		% Email Link Formatting		
+		\newcommand{\emailid}[1]{\href{mailto:#1}{\texttt{#1}}}%
 	}{%
 		\PackageWarning{csthm}{%
 			Look, we're going to try loading 'cleveref' now, but you didn't load 'hyperref' first.
@@ -631,10 +662,24 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Conditional Theorem Style Setup
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\ifbool{fancy}{\fancythm}{\typeout{Using fancy theorem style.}}%
-\ifbool{normal}{\normalthm}{\typeout{Using normal theorem style.}}%
-\ifbool{oldschool}{\oldschoolthm}{\typeout{Using normal theorem style.}}%
+\iffancy
+	\typeout{Using fancy theorem style.}
+	\fancythm
+\else
+	\ifnormal
+		\typeout{Using normal theorem style.}
+		\normalthm
+	\else
+		\ifoldschool
+			\typeout{Using oldschool theorem style.}
+			\oldschoolthm
+		\else
+			\typeout{No theorem style selected.}
+		\fi
+	\fi
+\fi
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% End of package
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \endinput
-%%
-%% End of file csthm.sty'.

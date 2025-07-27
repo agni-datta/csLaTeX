@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% csdirty.sty — Comprehensive Academic LaTeX Package
+% csdirty.sty — Academic LaTeX Package
 % Author: Agni Datta
 % Version: 1.6 (2025/06/26)
 % License: LaTeX Project Public License v1.3c
@@ -317,6 +317,7 @@
 \fi
 
 % Ignore unknown options
+\DeclareOption*{\PackageWarning{csdirty}{Unknown option '\CurrentOption'}}
 \DeclareOption*{\relax}
 \ProcessOptions\relax
 
@@ -1423,40 +1424,40 @@
 	}{}
 
 	% Highlight color for text and math
-	\providecommand{\highlightcolor}{RoyalBlue}
-	\providecommand{\sethighlightcolor}[1]{\renewcommand{\highlightcolor}{#1}}
+	\newcommand{\highlightcolor}{RoyalBlue}
+	\newcommand{\sethighlightcolor}[1]{\renewcommand{\highlightcolor}{#1}}
 
 	% Text and math highlighting
-	\providecommand{\emphmath}[1]{\textcolor{\highlightcolor}{\mathrm{#1}}}
-	\providecommand{\emphtext}[1]{\textcolor{\highlightcolor}{#1}}
-	\providecommand{\textbi}[1]{\textbf{\textit{#1}}}
-	\providecommand{\textem}[1]{\textcolor{\highlightcolor}{#1}}
+	\newcommand{\emphmath}[1]{\textcolor{\highlightcolor}{\mathrm{#1}}}
+	\newcommand{\emphtext}[1]{\textcolor{\highlightcolor}{#1}}
+	\newcommand{\textbi}[1]{\textbf{\textit{#1}}}
+	\newcommand{\textem}[1]{\textcolor{\highlightcolor}{#1}}
 
 	% Code highlighting
-	\providecommand{\code}[1]{\texttt{#1}}
+	\newcommand{\code}[1]{\texttt{#1}}
 
 	% Math small caps and bold italic
-	\providecommand{\mathsc}[1]{\textnormal{\textsc{#1}}}
-	\providecommand{\mathbi}[1]{\textnormal{\textbf{\textit{#1}}}}
+	\newcommand{\mathsc}[1]{\textnormal{\textsc{#1}}}
+	\newcommand{\mathbi}[1]{\textnormal{\textbf{\textit{#1}}}}
 
 	% Inline math shortcut
-	\providecommand{\inmath}[1]{\ensuremath{#1}}
+	\newcommand{\inmath}[1]{\ensuremath{#1}}
 
 	% Hyphen in math
 	\mathchardef\mathhyphen="2D
 
 	% Put in quotes
-	\providecommand{\putInQuotes}[1]{``#1''}
+	\newcommand{\putInQuotes}[1]{``#1''}
 
 	% Strike-through text
-	\providecommand{\strike}[1]{\bgroup\ULdepth=-.55ex\ULset\strike{#1}\egroup}
+	\newcommand{\strike}[1]{\bgroup\ULdepth=-.55ex\ULset\strike{#1}\egroup}
 
 	% Highlight missing or problematic text
 	\newcounter{missingctr}
-	\providecommand{\missinglist}{}
+	\newcommand{\missinglist}{}
 
 	% Main \missing command
-	\providecommand{\missing}[1]{%
+	\newcommand{\missing}[1]{%
 		\refstepcounter{missingctr}%
 		\label{missing:\themissingctr}%
 		\gappto\missinglist{%
@@ -1468,16 +1469,16 @@
 	}
 
 	% Print all collected missing items with page references
-	\providecommand{\printmissing}{%
+	\newcommand{\printmissing}{%
 		\section*{Missing Content Report}%
 		\missinglist
 	}
 
 	% Format for missing citations
-	\providecommand{\missingcitation}{\textcolor{red}{\code{<Citation Missing>}}}
+	\newcommand{\missingcitation}{\textcolor{red}{\code{<Citation Missing>}}}
 
 	% Double-struck Pi symbol for different engines
-	\providecommand{\dsPi}{%
+	\newcommand{\dsPi}{%
 		\ifluatex
 			\char"213F
 		\else
@@ -1490,7 +1491,7 @@
 	}
 
 	% Sans-serif Pi symbol for different engines
-	\providecommand{\sansPi}{%
+	\newcommand{\sansPi}{%
 		\ifluatex
 			\char"1D765
 		\else
