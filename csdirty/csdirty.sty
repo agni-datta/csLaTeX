@@ -1514,6 +1514,18 @@
 		\fi
 	}
 
+	% bashbox environment: code in a dashed box using adjustbox for width
+	\NewDocumentEnvironment{bashbox}{}{%
+		\begin{adjustbox}{minipage=\textwidth,precode=\dbox}
+			\centering\medskip%
+			\begin{minipage}{0.975\textwidth}
+				\noindent%
+				}{%
+			\end{minipage}
+			\medskip%
+		\end{adjustbox}
+	}
+
 	\@ifpackageloaded{mdframed}{%
 		% Protocol box environment
 		\NewDocumentEnvironment{protocolbox}{o}
