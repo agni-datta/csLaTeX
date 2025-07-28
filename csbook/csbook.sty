@@ -1,174 +1,252 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% csbook.sty: Academic Documentation
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% csbook.sty: Academic Documentation and Modern Book-Style Framework
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Title:        csbook – A Contemporary LaTeX Book-Style Package for Computer Science
-% Version:      2.1 (2025/01/28)
-% Author:       Agni Datta
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Title:   csbook – A Contemporary LaTeX Book-Style Package for Computer
+%          Science
+% Version: 2.1.1 (2025/01/28)
+% Author:  Agni Datta
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 1. Introduction and Rationale
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% The `csbook` package is an advanced LaTeX style file engineered to facilitate
-% the production of professional, modern, and highly legible books, lecture notes,
-% and monographs, with particular emphasis on the requirements of computer science
-% authors. It constitutes a core module of the csLaTeX suite, which is designed to
-% deliver a coherent, extensible, and user-centric toolkit for academic writing.
-
-% The guiding principle of `csbook` is the integration of best practices in
-% typographic design, modularity, and usability. The package is intended for authors
-% who prioritize both aesthetics and functionality, enabling them to concentrate on
-% content rather than low-level formatting. It is especially appropriate for:
+% The `csbook` package is a comprehensive and modular LaTeX style file
+% designed to facilitate the creation of professional, visually appealing,
+% and highly legible books, lecture notes, and monographs, with a
+% particular focus on the needs of computer science and technical authors.
+% As a core component of the csLaTeX suite, `csbook` provides a unified,
+% extensible, and user-oriented toolkit for academic writing, emphasizing
+% both typographic excellence and functional flexibility.
+%
+% The package is guided by principles of best-practice typographic design,
+% modularity, and usability. It is intended for authors who value both
+% aesthetics and efficiency, enabling them to focus on content development
+% rather than low-level formatting. Typical users include:
 %   - University instructors preparing textbooks or lecture notes
 %   - Graduate students composing theses or dissertations
 %   - Researchers authoring monographs or technical reports
-%   - Users seeking a modern alternative to the standard LaTeX book class
+%   - Academics seeking a modern, feature-rich alternative to the standard
+%     LaTeX book class
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 2. Critical Requirements and Warnings
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% **ENGINE REQUIREMENT:** This package explicitly requires either LuaLaTeX or XeLaTeX
-% for proper operation. LuaLaTeX is strongly preferred due to its superior handling
-% of modern font features, Unicode support, and complex typographic requirements.
-% The package will terminate with an error if compiled with pdfLaTeX or other engines.
-
-% **FONT REQUIREMENT:** This package requires explicit font configuration. Users must
+% **ENGINE REQUIREMENT:** The `csbook` package requires compilation with
+% either LuaLaTeX or XeLaTeX. LuaLaTeX is strongly recommended for optimal
+% support of modern font features, Unicode, and advanced typographic
+% requirements. Compilation with pdfLaTeX or other engines is not supported
+% and will result in a fatal error.
+%
+% **FONT REQUIREMENT:** Explicit font configuration is mandatory. Users must
 % either:
-%   (1) Use the `defaultfont` option to load Computer Modern fonts, or
-%   (2) Explicitly configure fonts using the `\csbookfonts{...}` command
-% Failure to do so will result in compilation errors or suboptimal typography.
+%   (1) Enable the `defaultfont` option to load Computer Modern fonts, or
+%   (2) Specify fonts explicitly using the `\csbookfonts{...}` command.
+% Failure to configure fonts will result in compilation errors or degraded
+% typography.
+%
+% **EXTERNAL TOOLS:** Some features (e.g., glossaries, indices) require
+% external tools such as `makeglossaries` and `makeindex` for full
+% functionality.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 3. Feature Overview
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% The `csbook` package offers the following principal features:
-
-% - Modular activation of advanced packages for layout, typography, and code
-% - Modernized sectioning and header formatting with customizable fonts and spacing
-% - Configurable theorem, proof, and definition environments (via csthm)
-% - Enhanced list environments (itemize, enumerate) with improved spacing and
-%   custom labels for each nesting level
-% - Support for colored and framed boxes for examples, theorems, and notes
-%   (utilizing tcolorbox and mdframed)
-% - Optional integration with TikZ for diagrams and PGFPlots for data
-%   visualization, including comprehensive TikZ library support
-% - Epigraphs for chapter or section openings, with customizable appearance
-% - Appendix and advanced table of contents management
-% - Glossary and index support, with integration of external tools
-% - Improved verbatim/code environments for source code listings, including
-%   patching for empty line handling
-% - Abstract and acknowledgment environments with modern formatting
+% The `csbook` package provides the following principal features:
+%
+% - Modular, option-based activation of advanced packages for layout,
+%   typography, code, and graphics
+% - Modernized sectioning and header formatting with customizable fonts,
+%   spacing, and symbols
+% - Configurable theorem, proof, and definition environments (via csthm),
+%   with support for custom theorem styles
+% - Enhanced list environments (itemize, enumerate, description) with
+%   improved spacing, custom labels, and additional list types (e.g.,
+%   codelist, checkbox, deflist)
+% - Support for colored and framed boxes for theorems, examples, notes, and
+%   custom content (via tcolorbox, mdframed, and csLaTeX box macros)
+% - Optional integration with TikZ and PGFPlots for advanced diagrams and
+%   data visualization, including comprehensive TikZ library support
+% - Epigraphs for chapter or section openings, with fully customizable
+%   appearance (width, rule, alignment, font)
+% - Appendix and advanced table of contents management, including
+%   multi-level TOC formatting and spacing adjustments
+% - Glossary and index support, with seamless integration of external tools
+%   and customizable formatting
+% - Enhanced verbatim/code environments for source code listings, including
+%   improved handling of empty lines and optional syntax highlighting
+% - Abstract and acknowledgment environments with modern, typographically
+%   consistent formatting
 % - Consistent bibliography and table of contents formatting, with custom
-%   commands for insertion and style
-% - User-friendly custom commands for common tasks, including colored comments
+%   commands for insertion, style selection, and spacing
+% - User-friendly custom commands for common tasks, including colored
+%   comments, text and math highlighting, and collaborative annotation
 % - Header-level formatting via titlesec, supporting custom section fonts
-% - Full compatibility with the csLaTeX suite and standard LaTeX tools
+%   and flexible heading layouts
+% - Full compatibility with the csLaTeX suite and standard LaTeX tools,
+%   with robust option processing and error handling
+% - Advanced utility macros for text, mathematics, code, lists, and missing
+%   content reporting
+% - Fine-grained control over feature activation, allowing users to enable
+%   only the desired components for efficient compilation
+% - **Copyright Page Support:** Provides a modern, customizable copyright
+%   page environment and commands for academic and professional books.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 4. Usage Instructions
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% To employ `csbook`, place the package in your LaTeX search path and load it in
-% the document preamble as follows:
-
+% To use `csbook`, place the package in your LaTeX search path and load it
+% in the document preamble as follows:
+%
 %   \usepackage[<options>]{csbook}
+%
+% Options allow selective enabling or disabling of specific features. For
+% example:
+%
+%   \usepackage[epigraph,glossaries,niceboxs,theorem,tikz,verbatim,
+%               adjusttoc,indices,hyperref,appendix]{csbook}
+%
+% Options are independent and may be combined arbitrarily. The `full`
+% option enables all major features for maximal functionality. Font
+% configuration is required via either the `defaultfont` option or the
+% `\csbookfonts{...}` command.
 
-% Options permit selective enabling or disabling of specific features as required.
-% For example:
-
-%   \usepackage[epigraph,glossaries,niceboxs,theorem,tikz,verbatim]{csbook}
-
-% Options are independent and may be combined arbitrarily.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 5. Package Options (Organized by Category)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % **Layout and Typography Options:**
-%   nicelayout     – Enhanced page layout with improved margins and headers
-%   nicespacing    – Improved line and paragraph spacing for better readability
-%   oldsection     – Classic section formatting with traditional symbols
-%   adjusttoc      – Advanced table of contents formatting and spacing
-
+%   nicelayout    – Enhanced page layout with improved margins, headers,
+%                   and footers
+%   nicespacing   – Improved line and paragraph spacing for superior
+%                   readability
+%   oldsection    – Classic section formatting with traditional symbols
+%                   and spacing
+%   adjusttoc     – Advanced table of contents formatting, multi-level
+%                   spacing, and custom TOC title
+%
 % **Content Enhancement Options:**
-%   epigraph       – Epigraphs for chapters/sections with customizable appearance
-%   niceboxs       – Modern colored/framed boxes (tcolorbox, mdframed)
-%   theorem        – Theorem/proof/definition environments (csthm)
-%   verbatim       – Enhanced verbatim/code environments with improved formatting
-
+%   epigraph      – Epigraphs for chapters/sections with customizable
+%                   appearance
+%   niceboxs      – Modern colored/framed boxes (tcolorbox, mdframed,
+%                   csLaTeX box macros)
+%   theorem       – Theorem/proof/definition environments (csthm), with
+%                   support for custom theorem styles
+%   verbatim      – Enhanced verbatim/code environments with improved
+%                   formatting and blank line handling
+%   copyrightpage – Modern copyright page environment and commands
+%
 % **Document Structure Options:**
-%   appendix       – Appendix support with proper formatting
-%   glossaries     – Glossary support with external tool integration
-%   indices        – Index support with customizable formatting
-%   hyperref       – Hyperref integration for PDF navigation and bookmarks
-
+%   appendix      – Appendix support with advanced formatting and TOC
+%                   integration
+%   glossaries    – Glossary support with external tool integration and
+%                   custom formatting
+%   indices       – Index support with customizable formatting and
+%                   external tool integration
+%   hyperref      – Hyperref integration for PDF navigation, bookmarks,
+%                   and metadata
+%
 % **Graphics and Visualization Options:**
-%   tikz           – TikZ and PGFPlots for graphics, with comprehensive library support
-
+%   tikz          – TikZ and PGFPlots for graphics, with comprehensive
+%                   TikZ library support and advanced diagramming
+%
 % **Utility Options:**
-%   usefulcommands – Common utility macros (enabled by default)
-%   defaultfont    – Load Computer Modern fonts automatically
-
+%   usefulcommands – Common utility macros for text, math, code, lists,
+%                    and annotation (enabled by default)
+%   defaultfont    – Load Computer Modern fonts automatically (if no
+%                    explicit font configuration is provided)
+%
 % **Convenience Options:**
-%   full           – Enable all major features (hyperref, niceboxs, nicelayout, 
-%                    nicespacing, usefulcommands, verbatim)
+%   full           – Enable all major features (hyperref, niceboxs,
+%                    nicelayout, nicespacing, usefulcommands, verbatim,
+%                    adjusttoc, appendix, glossaries, indices, epigraph,
+%                    theorem, tikz, copyrightpage)
+%
+% **Advanced/Experimental Options:**
+%   (Additional options may be introduced in future versions; consult the
+%   documentation for updates.)
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 6. Principal Advantages
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% - **Modularity:** Only the features explicitly requested are loaded, ensuring a
-%   concise preamble and efficient compilation.
-% - **Modern Aesthetics:** Section headings, lists, and boxes are styled for
-%   clarity and visual appeal, adhering to contemporary typographic standards.
-% - **Code and Math Optimization:** Tailored for documents with substantial code
-%   listings, algorithms, and mathematical notation.
-% - **Extensibility:** Seamlessly integrates with other csLaTeX packages and
-%   standard LaTeX tools.
-% - **Consistency:** Guarantees a uniform appearance across chapters, appendices,
-%   and supplementary material.
+% - **Modularity:** Only explicitly requested features are loaded,
+%   ensuring a concise preamble and efficient compilation.
+% - **Modern Aesthetics:** Section headings, lists, and boxes are styled
+%   for clarity and visual appeal, adhering to contemporary typographic
+%   standards.
+% - **Code and Math Optimization:** Tailored for documents with
+%   substantial code listings, algorithms, and mathematical notation,
+%   including advanced verbatim and math highlighting.
+% - **Extensibility:** Seamless integration with other csLaTeX packages
+%   and standard LaTeX tools, with robust option processing and error
+%   handling.
+% - **Consistency:** Guarantees a uniform appearance across chapters,
+%   appendices, and supplementary material, with customizable sectioning
+%   and environment styles.
+% - **Comprehensive Utility:** Provides a wide array of user-facing
+%   commands, environments, and macros for collaborative writing,
+%   annotation, and content management.
+% - **Copyright Page:** Easily insert a professional copyright page
+%   suitable for academic and professional books, with customizable
+%   fields and layout.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 7. Custom Commands and Environments
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% The package defines a comprehensive suite of user-facing commands and environments.
-% In addition to the principal environments and commands enumerated below, csbook
-% supplies an extensive set of utility macros for text, mathematics, code, lists,
-% and collaborative writing. Refer to the extended list following the main features.
-
+% The package defines an extensive suite of user-facing commands and
+% environments. In addition to the principal environments and commands
+% enumerated below, `csbook` supplies a broad set of utility macros for
+% text, mathematics, code, lists, collaborative writing, and missing
+% content reporting. Refer to the extended list following the main
+% features.
+%
 % - **Section Heading Customization:**
-%     \sectionheadingfont, \subsectionheadingfont, etc. – Redefine heading fonts
+%     \sectionheadingfont, \subsectionheadingfont, etc. – Redefine heading
+%     fonts and styles
 % - **Modern Boxes:**
-%     If `niceboxs` is enabled, environments such as `tcolorbox` and `mdframed`
-%     are available for constructing colored and framed boxes, suitable for
-%     highlighting theorems, examples, or important notes.
+%     If `niceboxs` is enabled, environments such as `tcolorbox`,
+%     `mdframed`, and csLaTeX box macros are available for constructing
+%     colored and framed boxes, suitable for highlighting theorems,
+%     examples, or important notes.
 % - **Epigraphs:**
 %     If `epigraph` is enabled, use \epigraph{<text>}{<author>} to insert
-%     introductory quotations. The appearance is configurable (width, rule,
-%     alignment, font).
+%     introductory quotations. The appearance is fully configurable
+%     (width, rule, alignment, font).
 % - **Acknowledgment:**
 %     \begin{acknowledgment}[<optional title>] ... \end{acknowledgment}
 % - **Abstract:**
 %     \begin{abstract} ... \end{abstract}
+% - **Copyright Page:**
+%     If `copyrightpage` is enabled, use
+%     \begin{copyrightpage}[<options>] ... \end{copyrightpage} to insert
+%     a modern copyright page. Custom fields such as year, publisher,
+%     ISBN, and license can be set via commands:
+%       \copyrightyear{<year>}
+%       \copyrightauthor{<author>}
+%       \copyrightpublisher{<publisher>}
+%       \copyrightisbn{<isbn>}
+%       \copyrightlicense{<license>}
+%     The layout and appearance are fully customizable.
 % - **Table of Contents:**
-%     \toc – Inserts a formatted table of contents with appropriate spacing and page breaks.
+%     \toc – Inserts a formatted table of contents with advanced spacing,
+%     page breaks, and custom title.
 % - **Bibliography:**
-%     \printbib[<style>]{<bibfile>} – Prints the bibliography with the specified
-%     style (default: alphaurl).
+%     \printbib[<style>]{<bibfile>} – Prints the bibliography with the
+%     specified style (default: alphaurl).
 % - **Custom Comments:**
-%     \newcomment{name}{color}{command} – Defines a colored comment macro for
-%     collaborative annotation.
+%     \newcomment{name}{color}{command} – Defines a colored comment macro
+%     for collaborative annotation.
 % - **Enhanced Lists:**
-%     Enumerate and itemize environments are redefined for improved labels and
-%     spacing (e.g., (1), (a), (I) for enumerate; bullet, en dash, open circle
-%     for itemize).
-%     Additional list environments:
+%     Enumerate and itemize environments are redefined for improved
+%     labels and spacing (e.g., (1), (a), (I) for enumerate; bullet, en
+%     dash, open circle for itemize). Additional list environments:
 %       - codelist: enumerate with [1], [2], ... for code steps
 %       - checkbox: itemize with empty box, checkmark, or crossmark
 %       - deflist: description list with bold labels
@@ -177,139 +255,200 @@
 %       - \checkeditem: item with checkmark
 %       - \uncheckeditem: item with crossmark
 % - **Verbatim/Code:**
-%     If `verbatim` is enabled, enhanced verbatim environments are provided,
-%     with improved handling of empty lines and formatting.
+%     If `verbatim` is enabled, enhanced verbatim environments are
+%     provided, with improved handling of empty lines, formatting, and
+%     optional syntax highlighting.
 % - **Appendices:**
-%     If `appendix` is enabled, advanced appendix management is available.
+%     If `appendix` is enabled, advanced appendix management and TOC
+%     integration are available.
 % - **Theorem Environments:**
 %     If `theorem` is enabled, theorem, proof, definition, and related
-%     environments are provided via csthm, with modern styling and numbering.
+%     environments are provided via csthm, with modern styling,
+%     numbering, and support for custom theorem styles.
 % - **TikZ Graphics:**
-%     If `tikz` is enabled, TikZ, PGFPlots, and a comprehensive set of TikZ libraries
-%     are loaded for advanced diagramming and plotting.
-
-% ---------------------------------------------------------------------------
+%     If `tikz` is enabled, TikZ, PGFPlots, and a comprehensive set of
+%     TikZ libraries are loaded for advanced diagramming and plotting.
+% - **Glossaries and Indices:**
+%     If `glossaries` or `indices` are enabled, environments and
+%     commands for glossary and index management are provided, with
+%     support for external tool integration and custom formatting.
+% - **Missing Content Reporting:**
+%     \missing{<description>} – Mark missing content and collect for
+%     reporting
+%     \missinglist – List of all missing items (for reporting)
+%
+% ------------------------------------------------------------------------
 % Additional Utility Commands Provided by csbook:
-% ---------------------------------------------------------------------------
-
+% ------------------------------------------------------------------------
+%
 % -- Text and Math Highlighting:
-%   \emphmath{<math>}      – Emphasize mathematics in highlight color
-%   \emphtext{<text>}      – Emphasize text in highlight color
-%   \textem{<text>}        – Alias for \emphtext
-%   \textbi{<text>}        – Bold italic text
-%   \code{<text>}          – Inline code font (\texttt)
-%   \mathsc{<text>}        – Math small caps (upright)
-%   \mathbi{<text>}        – Math bold italic (upright)
-%   \inmath{<math>}        – Inline math shortcut (\ensuremath)
-%   \putInQuotes{<text>}   – Typeset text in English-style quotation marks
-
+%   \emphmath{<math>}    – Emphasize mathematics in highlight color
+%   \emphtext{<text>}    – Emphasize text in highlight color
+%   \textem{<text>}      – Alias for \emphtext
+%   \textbi{<text>}      – Bold italic text
+%   \code{<text>}        – Inline code font (\texttt)
+%   \mathsc{<text>}      – Math small caps (upright)
+%   \mathbi{<text>}      – Math bold italic (upright)
+%   \inmath{<math>}      – Inline math shortcut (\ensuremath)
+%   \putInQuotes{<text>} – Typeset text in English-style quotation marks
+%
 % -- Math and Symbol Utilities:
-%   \mathhyphen            – Hyphen/minus in math mode
-
+%   \mathhyphen          – Hyphen/minus in math mode
+%
 % -- List and Task Utilities:
-%   \taskitem              – List item with empty box (for checklists)
-%   \checkeditem           – List item with checkmark
-%   \uncheckeditem         – List item with crossmark
-
+%   \taskitem            – List item with empty box (for checklists)
+%   \checkeditem         – List item with checkmark
+%   \uncheckeditem       – List item with crossmark
+%
 % -- Missing Content Reporting:
-%   \missing{<description>} – Mark missing content and collect for reporting
+%   \missing{<description>} – Mark missing content and collect for
+%                            reporting
 %   \missinglist            – List of all missing items (for reporting)
-
+%
 % -- Miscellaneous:
 %   \newcomment{name}{color}{command} – Define a colored comment macro
 %   (e.g., \newcomment{Bob}{blue}{bobnote} yields \bobnote{...})
-
+%
 % -- List Environments (in addition to standard itemize/enumerate):
-%   codelist                – Enumerate with [1], [2], ... for code steps
-%   checkbox                – Itemize with empty box, checkmark, or crossmark
-%   deflist                 – Description list with bold labels
-
+%   codelist      – Enumerate with [1], [2], ... for code steps
+%   checkbox      – Itemize with empty box, checkmark, or crossmark
+%   deflist       – Description list with bold labels
+%
 % -- Section Heading Font Customization:
-%   \sectionheadingfont, \subsectionheadingfont, etc. – Redefine heading fonts
-
+%   \sectionheadingfont, \subsectionheadingfont, etc. – Redefine heading
+%   fonts
+%
 % -- Table of Contents and Bibliography:
-%   \toc                    – Insert formatted table of contents
-%   \printbib[<style>]{<bibfile>} – Print bibliography with specified style
-
+%   \toc          – Insert formatted table of contents
+%   \printbib[<style>]{<bibfile>} – Print bibliography with specified
+%                   style
+%
 % -- Abstract and Acknowledgment Environments:
 %   \begin{abstract}...\end{abstract}
 %   \begin{acknowledgment}[<title>]...\end{acknowledgment}
-
+%
 % -- Epigraphs:
 %   \epigraph{<text>}{<author>} – Insert an epigraph
-
+%
+% -- Copyright Page:
+%   \begin{copyrightpage}[<options>]...\end{copyrightpage}
+%   \copyrightyear{<year>}
+%   \copyrightauthor{<author>}
+%   \copyrightpublisher{<publisher>}
+%   \copyrightisbn{<isbn>}
+%   \copyrightlicense{<license>}
+%
 % -- Enhanced Verbatim/Code Environments:
-%   (if enabled) – Improved verbatim/code with blank line handling
-
+%   (if enabled) – Improved verbatim/code with blank line handling and
+%   optional syntax highlighting
+%
 % -- Theorem/Proof/Definition Environments:
-%   (if enabled) – Modern theorem/proof/definition environments via csthm
-
+%   (if enabled) – Modern theorem/proof/definition environments via
+%   csthm, with support for custom theorem styles
+%
 % -- TikZ/PGFPlots Graphics:
-%   (if enabled) – Comprehensive TikZ and PGFPlots support with libraries
+%   (if enabled) – Comprehensive TikZ and PGFPlots support with
+%   libraries
+%
+% -- Glossaries and Indices:
+%   (if enabled) – Glossary and index environments and commands, with
+%   external tool integration
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 8. Style and Formatting Principles (Comprehensive)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% - **Section Headings:** Modern, bold, and optionally centered section titles
-%   with clear numbering and spacing, customizable via \sectionheadingfont, etc.
-% - **Lists:** Compact, visually distinct list items with minimal vertical spacing.
-%   Enumerate and itemize environments employ custom labels for each nesting level.
-% - **Boxes:** Utilization of `tcolorbox` and `mdframed` for visually appealing
-%   framed environments, supporting theorems, proofs, and examples.
-% - **Epigraphs:** Right-aligned, small-caps author attributions, and adjustable
-%   width and rule.
+% - **Section Headings:** Modern, bold, and optionally centered section
+%   titles with clear numbering and spacing, customizable via
+%   \sectionheadingfont, etc.
+% - **Lists:** Compact, visually distinct list items with minimal
+%   vertical spacing. Enumerate and itemize environments employ custom
+%   labels for each nesting level. Additional list types (codelist,
+%   checkbox, deflist) are provided.
+% - **Boxes:** Utilization of `tcolorbox`, `mdframed`, and csLaTeX box
+%   macros for visually appealing framed environments, supporting
+%   theorems, proofs, examples, and custom content.
+% - **Epigraphs:** Right-aligned, small-caps author attributions, and
+%   adjustable width and rule, with full customization.
 % - **Typography:** Defaults to legible font sizes and line spacing, with
-%   options for further customization.
-% - **Code Listings:** Enhanced verbatim environments for code, with optional
-%   syntax highlighting if used in conjunction with other packages.
-% - **Bibliography and TOC:** Consistent formatting, with spacing and page breaks
-%   to enhance readability.
-% - **Header-level Formatting:** Employs titlesec for flexible section formatting.
+%   options for further customization and explicit font configuration.
+% - **Code Listings:** Enhanced verbatim environments for code, with
+%   improved handling of empty lines and optional syntax highlighting.
+% - **Bibliography and TOC:** Consistent formatting, with advanced
+%   spacing, page breaks, and customizable titles to enhance readability.
+% - **Header-level Formatting:** Employs titlesec for flexible section
+%   formatting and custom heading styles.
+% - **Appendices, Glossaries, Indices:** Advanced management and
+%   formatting, with seamless integration into the document structure and
+%   TOC.
+% - **Collaborative Annotation:** Colored comment macros and missing
+%   content reporting for collaborative writing and review.
+% - **Copyright Page:** Modern copyright page with customizable fields,
+%   layout, and license support.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 9. Limitations and Caveats (Comprehensive)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% - **Engine Requirements:** This package requires LuaLaTeX or XeLaTeX. pdfLaTeX
-%   and other engines are not supported due to font handling limitations.
-% - **Font Configuration:** Users must explicitly configure fonts using either
-%   the `defaultfont` option or the `\csbookfonts{...}` command. Failure to do
-%   so will result in compilation errors.
-% - **Package Interactions:** Although `csbook` is designed for modularity, certain
-%   features (e.g., advanced theorem environments, TikZ) may conflict with
-%   packages that redefine the same environments. Users should test their preamble
-%   when employing additional customizations.
-% - **Language Support:** Multilingual support is not enabled by default; employ
-%   `babel` or `polyglossia` as required.
-% - **Glossaries/Indices:** These features necessitate external tools (e.g.,
-%   `makeglossaries`, `makeindex`) for compilation.
-% - **Backward Compatibility:** Some features may be unavailable in legacy
-%   TeX distributions. Use a recent TeX Live or MiKTeX for full compatibility.
-% - **Customization:** While many aspects are customizable, substantial changes to
-%   sectioning or theorem styles may require patching the package or advanced
-%   LaTeX techniques.
-% - **Theorem Styles:** The theorem environments depend on the presence of
-%   `csthm.sty`. If this file is absent, a warning is issued and the
+% - **Engine Requirements:** This package requires LuaLaTeX or XeLaTeX.
+%   pdfLaTeX and other engines are not supported due to font and Unicode
+%   limitations.
+% - **Font Configuration:** Users must explicitly configure fonts using
+%   either the `defaultfont` option or the `\csbookfonts{...}` command.
+%   Failure to do so will result in compilation errors.
+% - **Package Interactions:** While `csbook` is designed for modularity,
+%   certain features (e.g., advanced theorem environments, TikZ, custom
+%   boxes) may conflict with packages that redefine the same
+%   environments. Users should test their preamble when employing
+%   additional customizations.
+% - **Language Support:** Multilingual support is not enabled by default;
+%   employ `babel` or `polyglossia` as required.
+% - **Glossaries/Indices:** These features require external tools (e.g.,
+%   `makeglossaries`, `makeindex`) for compilation and full
+%   functionality.
+% - **Backward Compatibility:** Some features may be unavailable in
+%   legacy TeX distributions. Use a recent TeX Live or MiKTeX for full
+%   compatibility.
+% - **Customization:** While many aspects are customizable, substantial
+%   changes to sectioning, theorem styles, or box environments may
+%   require patching the package or advanced LaTeX techniques.
+% - **Theorem Styles:** The theorem environments depend on the presence
+%   of `csthm.sty`. If this file is absent, a warning is issued and the
 %   environments are not loaded.
-% - **TikZ/PGFPlots:** The complete set of TikZ libraries is loaded if the `tikz`
-%   option is enabled, which may increase compilation time and memory usage.
-% - **Verbatim Patch:** The patch for verbatim environments suppresses empty lines,
-%   which may affect code listings that rely on blank lines.
+% - **TikZ/PGFPlots:** The complete set of TikZ libraries is loaded if
+%   the `tikz` option is enabled, which may increase compilation time and
+%   memory usage.
+% - **Verbatim Patch:** The patch for verbatim environments suppresses
+%   empty lines, which may affect code listings that rely on blank lines.
+% - **External Tools:** Glossaries and indices require external
+%   compilation steps; consult the documentation for workflow details.
+% - **Copyright Page:** The copyright page feature is enabled only if
+%   the `copyrightpage` option is specified.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 10. Changelog (Comprehensive)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% v2.1.1 (2025/01/28)
+%   - Expanded documentation to reflect new features and options
+%   - Improved glossary and index integration and documentation
+%   - Enhanced support for advanced TOC formatting (adjusttoc)
+%   - Added explicit mention of collaborative annotation and missing
+%     content reporting
+%   - Updated example usage and option lists for completeness
+%   - Improved error handling and option processing robustness
+%   - Added copyright page feature and documentation
+%
 % v2.1 (2025/01/28)
 %   - Reorganized package options for better clarity and logical grouping
 %   - Added explicit engine requirement warnings (LuaLaTeX/XeLaTeX only)
 %   - Added explicit font configuration requirement warnings
 %   - Improved documentation with academic and formal tone
 %   - Fixed option declaration errors and improved option processing
-%   - Enhanced error messages for unsupported engines and missing font configuration
+%   - Enhanced error messages for unsupported engines and missing font
+%     configuration
 %   - Updated version number and documentation structure
-
+%
 % v2.0 (2025/06/28)
 %   - Major refactor for modularity and option-based loading
 %   - Enhanced documentation and code comments
@@ -328,33 +467,42 @@
 %   - Added warning for missing csthm.sty
 %   - Improved bibliography and TOC formatting
 %   - Added support for indices and hyperref integration
-
+%
 % v1.5 (2024/07/15)
 %   - Introduced TikZ/PGFPlots integration
 %   - Enhanced theorem and proof environments
 %   - Improved appendix and glossary support
 %   - Added support for indices and refined list environments
-
+%
 % v1.2 (2024/03/10)
 %   - Added support for collaborative colored comments
 %   - Improved abstract and acknowledgment environments
 %   - Enhanced compatibility with csLaTeX suite
-
+%
 % v1.0 (2023/12/01)
-%   - Initial release with core features: section formatting, lists, boxes,
-%     basic theorem environments, and utility commands
+%   - Initial release with core features: section formatting, lists,
+%     boxes, basic theorem environments, and utility commands
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 11. Example Usage
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % \documentclass{book}
-% \usepackage[epigraph,niceboxs,theorem,verbatim,tikz,glossaries,indices,hyperref]{csbook}
+% \usepackage[epigraph,niceboxs,theorem,verbatim,tikz,glossaries,indices,
+%             hyperref,adjusttoc,appendix,copyrightpage]{csbook}
 %
 % % Font configuration (REQUIRED)
 % \csbookfonts{rm=libertinus,sf=biolinum,tt=sourcecode}
 %
 % \begin{document}
+%
+% \begin{copyrightpage}
+%   \copyrightyear{2025}
+%   \copyrightauthor{Agni Datta}
+%   \copyrightpublisher{csLaTeX Project}
+%   \copyrightisbn{978-1-23456-789-0}
+%   \copyrightlicense{CC-BY-NC 4.0}
+% \end{copyrightpage}
 %
 % \begin{abstract}
 %   This book provides an introduction to modern algorithms...
@@ -384,14 +532,16 @@
 %
 % \end{document}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 12. Support and Further Information
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % For bug reports, feature requests, or contributions, please consult the
-% csLaTeX project repository or contact the maintainer.
+% csLaTeX project repository or contact the maintainer. Comprehensive
+% documentation, option reference, and advanced usage examples are
+% available in the csLaTeX suite documentation and online repository.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ProvidesPackage{csbook}[2025/01/28 v2.1.1 csbook package]
 
@@ -2114,8 +2264,23 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Copyright and License Page Commands
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Usage:
+%   \makecopyrightpage[<author>][<license>]
+%     <author>:   Author name (default: \@author)
+%     <license>:  byncsa (default), by, or allrights
+%
+%   \begin{copyrightpage}[<author>][<license>][<license-link>]
+%     ... (optional additional content) ...
+%   \end{copyrightpage}
+%     <author>:       Author name (default: \@author)
+%     <license>:      byncsa, by, allrights, custom (default: byncsa)
+%     <license-link>: Custom link for license (optional)
+%
+% License text macros:
+%   \ccbyncsalicense          % CC BY-NC-SA 4.0
+%   \ccbylicense              % CC BY 4.0
+%   \allrightsreservedlicense % All Rights Reserved
 
-% Modular CC BY-NC-SA 4.0 License Text (Structured for Open Books)
 \NewDocumentCommand{\ccbyncsalicense}{}{
 	\begin{small}
 		\textbf{CC BY-NC-SA 4.0 License}
@@ -2137,29 +2302,145 @@
 		example, other rights such as publicity, privacy, or moral rights may limit
 		how you use the material.
 		\par\smallskip\noindent
-		For the full license text, visit:
+		For the full license text, visit:\newline
 		\url{https://creativecommons.org/licenses/by-nc-sa/4.0/}
 		\par\bigskip\noindent
-		\textbf{AI Training Restriction:} The contents of this book may not be used,
-		in whole or in part, for training artificial intelligence systems or models,
-		including but not limited to large language models, without explicit written
-		permission from the copyright holder.
+		\textbf{AI Training Restriction:} The contents of this book may not be
+		used, in whole or in part, for training artificial intelligence systems or
+		models, including but not limited to large language models, without
+		explicit written permission from the copyright holder.
 	\end{small}
 }
 
-% Modular Copyright Page Command
-\NewDocumentCommand{\makecopyrightpage}{O{\@title} O{\@author} O{\@date}}{
+\NewDocumentCommand{\ccbylicense}{}{
+	\begin{small}
+		\textbf{CC BY 4.0 License}
+		\par\bigskip\noindent
+		This book is licensed under a Creative Commons Attribution 4.0 International
+		License. You are free to share (copy and redistribute the material in any
+		medium or format) and adapt (remix, transform, and build upon the material)
+		for any purpose, even commercially, provided that you give appropriate
+		credit, provide a link to the license, and indicate if changes were made.
+		\par\smallskip\noindent
+		No additional restrictions may be applied that would legally restrict others
+		from doing anything the license permits.
+		\par\smallskip\noindent
+		For the full license text, visit:\newline
+		\url{https://creativecommons.org/licenses/by/4.0/}
+		\par\bigskip\noindent
+		\textbf{AI Training Restriction:} The contents of this book may not be
+		used, in whole or in part, for training artificial intelligence systems or
+		models, including but not limited to large language models, without
+		explicit written permission from the copyright holder.
+	\end{small}
+}
+
+\NewDocumentCommand{\allrightsreservedlicense}{}{
+	\begin{small}
+		\textbf{All Rights Reserved~\textcopyright}
+		\par\bigskip\noindent
+		All rights reserved. No part of this book may be reproduced, distributed,
+		or transmitted in any form or by any means, including photocopying,
+		recording, or other electronic or mechanical methods, without the prior
+		written permission of the copyright holder, except in the case of brief
+		quotations embodied in critical reviews and certain other noncommercial
+		uses permitted by copyright law.
+		\par\smallskip\noindent
+		\textbf{AI Training Restriction:} The contents of this book may not be
+		used, in whole or in part, for training artificial intelligence systems or
+		models, including but not limited to large language models, without
+		explicit written permission from the copyright holder.
+	\end{small}
+}
+
+\NewDocumentCommand{\makecopyrightpage}{O{\@author} O{byncsa}}{%
+	\@ifundefined{ccbyncsalicense}{%
+		\PackageWarning{csbook}
+		{Command \string\ccbyncsalicense\space is undefined. Please define it for byncsa license pages.}%
+	}{}%
+	\@ifundefined{ccbylicense}{%
+		\PackageWarning{csbook}
+		{Command \string\ccbylicense\space is undefined. Please define it for by license pages.}%
+	}{}%
+	\@ifundefined{allrightsreservedlicense}{%
+		\PackageWarning{csbook}
+		{Command \string\allrightsreservedlicense\space is undefined. Please define it for allrights license pages.}%
+	}{}%
 	\cleardoublepage
 	\pagestyle{empty}
 	\begin{flushleft}
-		{\noindent\normalfont\normalsize\textbf{#1}}\par\medskip
-		{\noindent\normalfont\normalsize By #2}\par\smallskip
-		{\noindent\normalfont\textcopyright~#3.}\par\smallskip
-		{\noindent\small\url{https://creativecommons.org/licenses/by-nc-sa-4.0/}}\par
+		{\noindent\normalfont\normalsize\textbf{\@title}}\par\medskip
+		{\noindent\normalfont\normalsize By #1}\par\smallskip
+		{\noindent\normalfont\textcopyright~\@date.}\par\smallskip
+		\IfStrEqCase{#2}{
+			{byncsa}{\noindent\small\url{https://creativecommons.org/licenses/by-nc-sa/4.0/}\par}
+				{by}{\noindent\small\url{https://creativecommons.org/licenses/by/4.0/}\par}
+				{allrights}{}
+		}[\noindent]
 	\end{flushleft}
 	\vspace*{\fill}
-	\ccbyncsalicense
+	\IfStrEqCase{#2}{
+		{byncsa}{\ifcsname ccbyncsalicense\endcsname\ccbyncsalicense\else\fi}
+			{by}{\ifcsname ccbylicense\endcsname\ccbylicense\else\fi}
+			{allrights}{\ifcsname allrightsreservedlicense\endcsname\allrightsreservedlicense\else\fi}
+	}[\ifcsname ccbyncsalicense\endcsname\ccbyncsalicense\else\fi]
 	\cleardoublepage
+}
+
+\NewDocumentEnvironment{copyrightpage}{O{\@author} O{byncsa} O{}}{%
+	\cleardoublepage
+	\pagestyle{empty}
+	\begin{flushleft}
+		{\noindent\normalfont\normalsize\textbf{\@title}}\par\medskip
+		{\noindent\normalfont\normalsize By #1}\par\smallskip
+		{\noindent\normalfont\textcopyright~\@date.}\par\smallskip
+		\csbook@copyright@printlink{#2}{#3}
+	\end{flushleft}
+	\vspace*{\fill}
+	\csbook@copyright@printlicense{#2}{#3}
+}{%
+	\cleardoublepage
+}
+
+\NewDocumentCommand{\csbook@copyright@printlink}{m m}{%
+	\IfStrEq{#1}{byncsa}{%
+		\IfBlank{#2}
+		{\noindent\small\url{https://creativecommons.org/licenses/by-nc-sa/4.0/}\par}
+		{\noindent\small\url{#2}\par}%
+	}{%
+		\IfStrEq{#1}{by}{%
+			\IfBlank{#2}
+			{\noindent\small\url{https://creativecommons.org/licenses/by/4.0/}\par}
+			{\noindent\small\url{#2}\par}%
+		}{%
+			\IfStrEq{#1}{allrights}{%
+				\IfBlankF{#2}{\noindent\small\url{#2}\par}%
+			}{%
+				\IfStrEq{#1}{custom}{%
+					\IfBlankF{#2}{\noindent\small\url{#2}\par}%
+				}{%
+					\IfBlankF{#2}{\noindent\small\url{#2}\par}%
+				}
+			}
+		}
+	}%
+}
+
+\NewDocumentCommand{\csbook@copyright@printlicense}{m m}{%
+	\IfStrEq{#1}{byncsa}{%
+		\ifcsname ccbyncsalicense\endcsname\ccbyncsalicense\fi
+	}{%
+		\IfStrEq{#1}{by}{%
+			\ifcsname ccbylicense\endcsname\ccbylicense\fi
+		}{%
+			\IfStrEq{#1}{allrights}{%
+				\ifcsname allrightsreservedlicense\endcsname\allrightsreservedlicense\fi
+			}{%
+				\IfStrEq{#1}{custom}{%
+				}{}%
+			}
+		}
+	}%
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
