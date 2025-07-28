@@ -1243,18 +1243,16 @@
 }
 
 % Format for missing citations
-\newcommand{\missingcitation}{\textcolor{Brown4}{
-		\refstepcounter{missingctr}%
-		\label{missing:\themissingctr}%
-		\gappto\missinglist{%
-			\noindent\textcolor{Brown4}{%
-				\ensuremath{\star}~\themissingctr~(\textsf{Missing at p.~\pageref{missing:\themissingctr}}):~#1
-			}\par\medskip
-		}%	
-		\code{<Citation Missing>}
-	}
+\newcommand{\missingcitation}{%
+	\refstepcounter{missingctr}%
+	\label{missing:\themissingctr}%
+	\gappto\missinglist{%
+		\noindent\textcolor{Brown4}{%
+			\ensuremath{\star}~\themissingctr~(\textsf{Missing at p.~\pageref{missing:\themissingctr}}):~\texttt{<Citation Missing>}%
+		}\par\medskip
+	}%
+	\textcolor{Brown4}{\texttt{<Citation Missing>}}%
 }
-
 
 % Double-struck Pi symbol for different engines
 \newcommand{\dsPi}{%
