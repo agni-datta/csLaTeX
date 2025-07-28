@@ -4,7 +4,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Title:        csbook – A Contemporary LaTeX Book-Style Package for Computer Science
-% Version:      2.0 (2025/06/28)
+% Version:      2.1 (2025/01/28)
 % Author:       Agni Datta
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -28,7 +28,22 @@
 %   - Users seeking a modern alternative to the standard LaTeX book class
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% 2. Feature Overview
+% 2. Critical Requirements and Warnings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% **ENGINE REQUIREMENT:** This package explicitly requires either LuaLaTeX or XeLaTeX
+% for proper operation. LuaLaTeX is strongly preferred due to its superior handling
+% of modern font features, Unicode support, and complex typographic requirements.
+% The package will terminate with an error if compiled with pdfLaTeX or other engines.
+
+% **FONT REQUIREMENT:** This package requires explicit font configuration. Users must
+% either:
+%   (1) Use the `defaultfont` option to load Computer Modern fonts, or
+%   (2) Explicitly configure fonts using the `\csbookfonts{...}` command
+% Failure to do so will result in compilation errors or suboptimal typography.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 3. Feature Overview
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % The `csbook` package offers the following principal features:
@@ -55,7 +70,7 @@
 % - Full compatibility with the csLaTeX suite and standard LaTeX tools
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% 3. Usage Instructions
+% 4. Usage Instructions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % To employ `csbook`, place the package in your LaTeX search path and load it in
@@ -71,28 +86,40 @@
 % Options are independent and may be combined arbitrarily.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% 4. Package Options
+% 5. Package Options (Organized by Category)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% The following options govern the activation of features:
+% **Layout and Typography Options:**
+%   nicelayout     – Enhanced page layout with improved margins and headers
+%   nicespacing    – Improved line and paragraph spacing for better readability
+%   oldsection     – Classic section formatting with traditional symbols
+%   adjusttoc      – Advanced table of contents formatting and spacing
 
-%   adjusttoc      – Advanced table of contents formatting
-%   appendix       – Appendix support
-%   epigraph       – Epigraphs for chapters/sections
-%   glossaries     – Glossary support
-%   hyperref       – Hyperref integration for PDF navigation
-%   indices        – Index support
+% **Content Enhancement Options:**
+%   epigraph       – Epigraphs for chapters/sections with customizable appearance
 %   niceboxs       – Modern colored/framed boxes (tcolorbox, mdframed)
-%   nicelayout     – Enhanced page layout and margins
-%   nicespacing    – Improved line and paragraph spacing
-%   oldsection     – Classic section formatting
 %   theorem        – Theorem/proof/definition environments (csthm)
+%   verbatim       – Enhanced verbatim/code environments with improved formatting
+
+% **Document Structure Options:**
+%   appendix       – Appendix support with proper formatting
+%   glossaries     – Glossary support with external tool integration
+%   indices        – Index support with customizable formatting
+%   hyperref       – Hyperref integration for PDF navigation and bookmarks
+
+% **Graphics and Visualization Options:**
 %   tikz           – TikZ and PGFPlots for graphics, with comprehensive library support
+
+% **Utility Options:**
 %   usefulcommands – Common utility macros (enabled by default)
-%   verbatim       – Enhanced verbatim/code environments
+%   defaultfont    – Load Computer Modern fonts automatically
+
+% **Convenience Options:**
+%   full           – Enable all major features (hyperref, niceboxs, nicelayout, 
+%                    nicespacing, usefulcommands, verbatim)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% 5. Principal Advantages
+% 6. Principal Advantages
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % - **Modularity:** Only the features explicitly requested are loaded, ensuring a
@@ -107,7 +134,7 @@
 %   and supplementary material.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% 6. Custom Commands and Environments
+% 7. Custom Commands and Environments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % The package defines a comprehensive suite of user-facing commands and environments.
@@ -221,7 +248,7 @@
 %   (if enabled) – Comprehensive TikZ and PGFPlots support with libraries
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% 7. Style and Formatting Principles (Comprehensive)
+% 8. Style and Formatting Principles (Comprehensive)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % - **Section Headings:** Modern, bold, and optionally centered section titles
@@ -241,16 +268,18 @@
 % - **Header-level Formatting:** Employs titlesec for flexible section formatting.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% 8. Limitations and Caveats (Comprehensive)
+% 9. Limitations and Caveats (Comprehensive)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% - **Engine Requirements:** This package requires LuaLaTeX or XeLaTeX. pdfLaTeX
+%   and other engines are not supported due to font handling limitations.
+% - **Font Configuration:** Users must explicitly configure fonts using either
+%   the `defaultfont` option or the `\csbookfonts{...}` command. Failure to do
+%   so will result in compilation errors.
 % - **Package Interactions:** Although `csbook` is designed for modularity, certain
 %   features (e.g., advanced theorem environments, TikZ) may conflict with
 %   packages that redefine the same environments. Users should test their preamble
 %   when employing additional customizations.
-% - **Font Choices:** The package does not prescribe a specific font family,
-%   allowing users to select their preferred fonts. For optimal results, use with
-%   a modern font package (e.g., `lmodern`, `newtx`, or `mathpazo`).
 % - **Language Support:** Multilingual support is not enabled by default; employ
 %   `babel` or `polyglossia` as required.
 % - **Glossaries/Indices:** These features necessitate external tools (e.g.,
@@ -269,8 +298,17 @@
 %   which may affect code listings that rely on blank lines.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% 9. Changelog (Comprehensive)
+% 10. Changelog (Comprehensive)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% v2.1 (2025/01/28)
+%   - Reorganized package options for better clarity and logical grouping
+%   - Added explicit engine requirement warnings (LuaLaTeX/XeLaTeX only)
+%   - Added explicit font configuration requirement warnings
+%   - Improved documentation with academic and formal tone
+%   - Fixed option declaration errors and improved option processing
+%   - Enhanced error messages for unsupported engines and missing font configuration
+%   - Updated version number and documentation structure
 
 % v2.0 (2025/06/28)
 %   - Major refactor for modularity and option-based loading
@@ -307,11 +345,14 @@
 %     basic theorem environments, and utility commands
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% 10. Example Usage
+% 11. Example Usage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % \documentclass{book}
 % \usepackage[epigraph,niceboxs,theorem,verbatim,tikz,glossaries,indices,hyperref]{csbook}
+%
+% % Font configuration (REQUIRED)
+% \csbookfonts{rm=libertinus,sf=biolinum,tt=sourcecode}
 %
 % \begin{document}
 %
@@ -344,7 +385,7 @@
 % \end{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% 11. Support and Further Information
+% 12. Support and Further Information
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % For bug reports, feature requests, or contributions, please consult the
@@ -352,7 +393,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\ProvidesPackage{csbook}[2025/06/28 v2.0 csbook package]
+\ProvidesPackage{csbook}[2025/01/28 v2.1 csbook package]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \makeatletter
@@ -373,9 +414,10 @@
 \RequirePackage{xparse}                                      % Extended command/environment definitions
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Package Options
+% Package Options (Reorganized and Fixed)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Boolean flags for feature activation
 \newif\ifcsbook@LoadAdjustToC 			\csbook@LoadAdjustToCfalse
 \newif\ifcsbook@LoadAppendix            \csbook@LoadAppendixfalse
 \newif\ifcsbook@LoadDefaultFont         \csbook@LoadDefaultFontfalse
@@ -392,9 +434,9 @@
 \newif\ifcsbook@LoadUsefulCommands      \csbook@LoadUsefulCommandstrue
 \newif\ifcsbook@LoadVerbatim            \csbook@LoadVerbatimfalse
 
-% Declare package options
-\DeclareOption{adjusttoc}{\csbook@LoadAppendixtrue}
-\DeclareOption{appendix}{\csbook@LoadAdjustToCtrue}
+% Declare package options (Fixed option declarations)
+\DeclareOption{adjusttoc}{\csbook@LoadAdjustToCtrue}
+\DeclareOption{appendix}{\csbook@LoadAppendixtrue}
 \DeclareOption{defaultfont}{\csbook@LoadDefaultFonttrue}
 \DeclareOption{epigraph}{\csbook@LoadEpigraphtrue}
 \DeclareOption{glossaries}{\csbook@LoadGlossariestrue}
@@ -408,6 +450,8 @@
 \DeclareOption{tikz}{\csbook@LoadTikZtrue}
 \DeclareOption{usefulcommands}{\csbook@LoadUsefulCommandstrue}
 \DeclareOption{verbatim}{\csbook@LoadVerbatimtrue}
+
+% Convenience option for enabling all major features
 \DeclareOption{full}{%
 	\csbook@LoadHyperreftrue
 	\csbook@LoadNiceBoxstrue
@@ -417,25 +461,26 @@
 	\csbook@LoadVerbatimtrue
 }
 
-% Ignore unknown options
+% Process options and handle unknown ones
 \DeclareOption*{\PackageWarning{csbook}{Unknown option '\CurrentOption'}}
-\DeclareOption*{\relax}
 \ProcessOptions\relax
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Engine and Class Compatibility Warnings
+% Engine Compatibility Check (Enhanced with Clear Warnings)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \ifLuaTeX
 	\typeout{csbook: LuaTeX engine detected. Proceeding with package initialization.}
+	\typeout{csbook: NOTE: LuaLaTeX is the preferred engine for optimal performance.}
 \else
 	\ifXeTeX
 		\typeout{csbook: XeTeX engine detected. Proceeding with package initialization.}
+		\typeout{csbook: NOTE: Consider using LuaLaTeX for better font handling and performance.}
 	\else
-		\typeout{csbook: ERROR: Unsupported engine detected. This package requires LuaTeX or XeTeX.}
 		\PackageError{csbook}{%
 			Unsupported engine detected.%
 		}{%
-			The csbook package requires either LuaTeX or XeTeX for proper operation.%
+			The csbook package requires either LuaLaTeX or XeLaTeX for proper operation.%
+			LuaLaTeX is strongly preferred due to superior font handling and Unicode support.%
 			Please compile your document with LuaLaTeX or XeLaTeX.%
 		}
 	\fi
@@ -464,6 +509,24 @@
 		}%
 	}%
 }%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Font Configuration Warning
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\AtEndPreamble{%
+	\ifcsbook@LoadDefaultFont
+		\typeout{csbook: Default fonts will be loaded automatically.}
+	\else
+		\@ifundefined{csbookfonts@rm}{%
+			\PackageWarning{csbook}{%
+				No font configuration detected.%
+				Please either use the 'defaultfont' option or%
+				explicitly configure fonts using \string\csbookfonts\{...\}.%
+				This may result in compilation errors or suboptimal typography.%
+			}%
+		}{}%
+	\fi
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Color
