@@ -8,6 +8,7 @@ aliases: CHANGELOG
 
 # CHANGELOG
 
+- feat(csbook): Major restructuring and enhancement of csbook.sty package with modular design, improved document structure commands, extensive new environments for academic writing, enhanced font handling, and comprehensive utility commands. NEI: Improved maintainability, better user experience, and expanded functionality for academic document preparation. (Agni Datta, 2025-07-25)
 - docs(README): Standardize README.md structure, update metadata, and improve clarity. NEI: Unified documentation, improved maintainability, and user experience. (Agni Datta, 2025-07-11)
 - style: lint all.sty files in csLaTeX using latexindent for consistent formatting (Agni Datta, 2025-07-11)
 - chore: update license to LaTeX Project Public License v1.3c for all csLaTeX.sty files (Agni Datta, 2025-07-11)
