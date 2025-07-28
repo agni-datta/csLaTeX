@@ -898,15 +898,27 @@
 
 	% Sans-serif Pi symbol for different engines
 	\newcommand{\sansPi}{%
-		\ifluatex
+	\ifluatex
+		\char"1D765
+	\else
+		\ifxetex
 			\char"1D765
 		\else
-			\ifxetex
-				\char"1D765
-			\else
-				\Pi
-			\fi
+			\Pi
 		\fi
+	\fi
+
+
+	% bashbox environment: code in a dashed box using adjustbox for width
+	\NewDocumentEnvironment{bashbox}{}{%
+		\begin{adjustbox}{minipage=\textwidth,precode=\dbox}
+			\centering\medskip%
+			\begin{minipage}{0.975\textwidth}
+				\noindent%
+				}{%
+			\end{minipage}
+			\medskip%
+		\end{adjustbox}
 	}
 
 	\@ifpackageloaded{mdframed}{%
