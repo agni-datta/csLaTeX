@@ -13,7 +13,7 @@
 % 1. Introduction and Rationale
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% The `csbook` package is a comprehensive and modular LaTeX style file
+% The `csbook` package is a comprehensive, modular LaTeX style file
 % designed to facilitate the creation of professional, visually appealing,
 % and highly legible books, lecture notes, and monographs, with a
 % particular focus on the needs of computer science and technical authors.
@@ -73,6 +73,10 @@
 %   data visualization, including comprehensive TikZ library support
 % - Epigraphs for chapter or section openings, with fully customizable
 %   appearance (width, rule, alignment, font)
+% - **Letterine (Dropped Capitals) Support:** Optionally enable decorative
+%   dropped capitals (letterine) at the start of chapters or sections, with
+%   customizable style, font, and color. Provides user commands for manual
+%   or automatic insertion of letterine.
 % - Appendix and advanced table of contents management, including
 %   multi-level TOC formatting and spacing adjustments
 % - Glossary and index support, with seamless integration of external tools
@@ -95,6 +99,20 @@
 %   only the desired components for efficient compilation
 % - **Copyright Page Support:** Provides a modern, customizable copyright
 %   page environment and commands for academic and professional books.
+% - **Missing Content Reporting:** Mark and collect missing content for
+%   collaborative review and reporting.
+% - **Collaborative Colored Comments:** Define custom colored comment macros
+%   for annotation and review.
+% - **Section Heading Font Customization:** Easily redefine heading fonts
+%   and styles for all sectioning levels.
+% - **Advanced List Environments:** Includes codelist, checkbox, and deflist
+%   for specialized list formatting.
+% - **Text and Math Highlighting:** Highlight text and math with custom
+%   colors for emphasis.
+% - **Math and Symbol Utilities:** Includes commands for math hyphens,
+%   small caps, bold italic, and more.
+% - **Enhanced Option Processing:** Robust and user-friendly option handling
+%   with improved error messages and logical grouping.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 4. Usage Instructions
@@ -109,12 +127,16 @@
 % example:
 %
 %   \usepackage[epigraph,glossaries,niceboxs,theorem,tikz,verbatim,
-%               adjusttoc,indices,hyperref,appendix]{csbook}
+%               adjusttoc,indices,hyperref,appendix,letterine]{csbook}
 %
 % Options are independent and may be combined arbitrarily. The `full`
 % option enables all major features for maximal functionality. Font
 % configuration is required via either the `defaultfont` option or the
 % `\csbookfonts{...}` command.
+%
+% For collaborative annotation, missing content reporting, custom
+% comment macros, and letterine (dropped capitals), see the relevant
+% commands in Section 7 below.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 5. Package Options (Organized by Category)
@@ -129,6 +151,10 @@
 %                   and spacing
 %   adjusttoc     – Advanced table of contents formatting, multi-level
 %                   spacing, and custom TOC title
+%   letterine     – Enable decorative dropped capitals (letterine) at the
+%                   start of chapters or sections. Provides commands for
+%                   manual or automatic insertion, with customizable style,
+%                   font, and color.
 %
 % **Content Enhancement Options:**
 %   epigraph      – Epigraphs for chapters/sections with customizable
@@ -157,7 +183,8 @@
 %
 % **Utility Options:**
 %   usefulcommands – Common utility macros for text, math, code, lists,
-%                    and annotation (enabled by default)
+%                    annotation, missing content reporting, and
+%                    collaborative comments (enabled by default)
 %   defaultfont    – Load Computer Modern fonts automatically (if no
 %                    explicit font configuration is provided)
 %
@@ -165,7 +192,7 @@
 %   full           – Enable all major features (hyperref, niceboxs,
 %                    nicelayout, nicespacing, usefulcommands, verbatim,
 %                    adjusttoc, appendix, glossaries, indices, epigraph,
-%                    theorem, tikz, copyrightpage)
+%                    theorem, tikz, copyrightpage, letterine)
 %
 % **Advanced/Experimental Options:**
 %   (Additional options may be introduced in future versions; consult the
@@ -191,10 +218,21 @@
 %   and environment styles.
 % - **Comprehensive Utility:** Provides a wide array of user-facing
 %   commands, environments, and macros for collaborative writing,
-%   annotation, and content management.
+%   annotation, missing content reporting, and content management.
+% - **Collaborative Annotation:** Easily define colored comment macros for
+%   review and collaboration.
+% - **Missing Content Reporting:** Mark and collect missing content for
+%   later review and reporting.
+% - **Section Heading Customization:** Redefine heading fonts and styles
+%   for all sectioning levels.
+% - **Advanced List Environments:** Specialized lists for code, checklists,
+%   and definitions.
 % - **Copyright Page:** Easily insert a professional copyright page
 %   suitable for academic and professional books, with customizable
 %   fields and layout.
+% - **Letterine (Dropped Capitals):** Easily insert decorative dropped
+%   capitals at the start of chapters or sections for a classic or
+%   modern typographic effect. Fully customizable style, font, and color.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 7. Custom Commands and Environments
@@ -203,9 +241,9 @@
 % The package defines an extensive suite of user-facing commands and
 % environments. In addition to the principal environments and commands
 % enumerated below, `csbook` supplies a broad set of utility macros for
-% text, mathematics, code, lists, collaborative writing, and missing
-% content reporting. Refer to the extended list following the main
-% features.
+% text, mathematics, code, lists, collaborative writing, missing content
+% reporting, annotation, and decorative dropped capitals (letterine).
+% Refer to the extended list following the main features.
 %
 % - **Section Heading Customization:**
 %     \sectionheadingfont, \subsectionheadingfont, etc. – Redefine heading
@@ -242,7 +280,7 @@
 %     specified style (default: alphaurl).
 % - **Custom Comments:**
 %     \newcomment{name}{color}{command} – Defines a colored comment macro
-%     for collaborative annotation.
+%     for collaborative annotation and review.
 % - **Enhanced Lists:**
 %     Enumerate and itemize environments are redefined for improved
 %     labels and spacing (e.g., (1), (a), (I) for enumerate; bullet, en
@@ -276,6 +314,16 @@
 %     \missing{<description>} – Mark missing content and collect for
 %     reporting
 %     \missinglist – List of all missing items (for reporting)
+% - **Letterine (Dropped Capitals):**
+%     If `letterine` is enabled, the following commands are available:
+%       - \letterine{<letter>}[<options>] – Insert a decorative dropped
+%         capital at the start of a paragraph, with optional style
+%         customization (e.g., color, font, size, lines dropped).
+%       - \autoletterine – Automatically insert a dropped capital at the
+%         start of each chapter or section (configurable).
+%     The appearance of the letterine can be customized globally or per
+%     use. See the documentation for advanced usage and styling.
+
 %
 % ------------------------------------------------------------------------
 % Additional Utility Commands Provided by csbook:
@@ -304,6 +352,13 @@
 %   \missing{<description>} – Mark missing content and collect for
 %                            reporting
 %   \missinglist            – List of all missing items (for reporting)
+%
+% -- Letterine (Dropped Capitals):
+%   \letterine{<letter>}[<options>] – Insert a decorative dropped capital
+%   at the start of a paragraph. Options include color, font, size, and
+%   number of lines to drop.
+%   \autoletterine – Automatically insert a dropped capital at the start
+%   of each chapter or section (if enabled).
 %
 % -- Miscellaneous:
 %   \newcomment{name}{color}{command} – Define a colored comment macro
@@ -383,8 +438,18 @@
 %   TOC.
 % - **Collaborative Annotation:** Colored comment macros and missing
 %   content reporting for collaborative writing and review.
+% - **Missing Content Reporting:** Mark and collect missing content for
+%   collaborative review and reporting.
+% - **Section Heading Customization:** Easily redefine heading fonts and
+%   styles for all sectioning levels.
+% - **Advanced List Environments:** Specialized lists for code, checklists,
+%   and definitions.
 % - **Copyright Page:** Modern copyright page with customizable fields,
 %   layout, and license support.
+% - **Letterine (Dropped Capitals):** Decorative dropped capitals at the
+%   start of chapters or sections, with customizable style, font, color,
+%   and number of lines dropped. Enhances typographic sophistication and
+%   visual interest.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 9. Limitations and Caveats (Comprehensive)
@@ -398,7 +463,7 @@
 %   Failure to do so will result in compilation errors.
 % - **Package Interactions:** While `csbook` is designed for modularity,
 %   certain features (e.g., advanced theorem environments, TikZ, custom
-%   boxes) may conflict with packages that redefine the same
+%   boxes, letterine) may conflict with packages that redefine the same
 %   environments. Users should test their preamble when employing
 %   additional customizations.
 % - **Language Support:** Multilingual support is not enabled by default;
@@ -410,8 +475,8 @@
 %   legacy TeX distributions. Use a recent TeX Live or MiKTeX for full
 %   compatibility.
 % - **Customization:** While many aspects are customizable, substantial
-%   changes to sectioning, theorem styles, or box environments may
-%   require patching the package or advanced LaTeX techniques.
+%   changes to sectioning, theorem styles, box environments, or letterine
+%   may require patching the package or advanced LaTeX techniques.
 % - **Theorem Styles:** The theorem environments depend on the presence
 %   of `csthm.sty`. If this file is absent, a warning is issued and the
 %   environments are not loaded.
@@ -424,6 +489,13 @@
 %   compilation steps; consult the documentation for workflow details.
 % - **Copyright Page:** The copyright page feature is enabled only if
 %   the `copyrightpage` option is specified.
+% - **Missing Content Reporting:** The missing content reporting feature
+%   is available only if `usefulcommands` is enabled (default).
+% - **Collaborative Comments:** Custom colored comment macros require
+%   `usefulcommands` to be enabled.
+% - **Letterine:** The letterine feature is available only if the
+%   `letterine` option is enabled. Some fonts may not support all
+%   stylistic options for dropped capitals.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 10. Changelog (Comprehensive)
@@ -438,6 +510,13 @@
 %   - Updated example usage and option lists for completeness
 %   - Improved error handling and option processing robustness
 %   - Added copyright page feature and documentation
+%   - Added missing content reporting commands (\missing, \missinglist)
+%   - Added collaborative colored comment macros (\newcomment)
+%   - Added section heading font customization commands
+%   - Added advanced list environments (codelist, checkbox, deflist)
+%   - Added text and math highlighting commands
+%   - Improved documentation for all new features and commands
+%   - **Added letterine (dropped capitals) feature and documentation**
 %
 % v2.1 (2025/01/28)
 %   - Reorganized package options for better clarity and logical grouping
@@ -489,7 +568,7 @@
 
 % \documentclass{book}
 % \usepackage[epigraph,niceboxs,theorem,verbatim,tikz,glossaries,indices,
-%             hyperref,adjusttoc,appendix,copyrightpage]{csbook}
+%             hyperref,adjusttoc,appendix,copyrightpage,letterine]{csbook}
 %
 % % Font configuration (REQUIRED)
 % \csbookfonts{rm=libertinus,sf=biolinum,tt=sourcecode}
@@ -528,7 +607,28 @@
 %   \item Readable
 % \end{itemize}
 %
+% % Example of missing content reporting:
+% \missing{Add more examples to this section}
+%
+% % Example of collaborative colored comment:
+% \newcomment{Alice}{red}{alicenote}
+% \alicenote{Please clarify the definition above.}
+%
+% % Example of advanced list environments:
+% \begin{codelist}
+%   \item Initialize variables
+%   \item Loop over input
+%   \item Return result
+% \end{codelist}
+%
+% % Example of letterine (dropped capital):
+% \letterine{A}[color=blue,lines=3,font=\rmfamily]
+% lgorithms are at the heart of computer science...
+%
 % \printbib{references}
+%
+% % To list all missing content:
+% \missinglist
 %
 % \end{document}
 
@@ -583,6 +683,7 @@
 \newif\ifcsbook@LoadGlossaries          \csbook@LoadGlossariesfalse
 \newif\ifcsbook@LoadHyperref            \csbook@LoadHyperreffalse
 \newif\ifcsbook@LoadIndices             \csbook@LoadIndicesfalse
+\newif\ifcsbook@LoadLettrine            \csbook@LoadLettrinefalse
 \newif\ifcsbook@LoadNiceBoxs            \csbook@LoadNiceBoxsfalse
 \newif\ifcsbook@LoadNiceLayout          \csbook@LoadNiceLayoutfalse
 \newif\ifcsbook@LoadNiceSpacing         \csbook@LoadNiceSpacingfalse
@@ -602,6 +703,7 @@
 \csbook@setoption{nicelayout}{NiceLayout}
 \csbook@setoption{nicespacing}{NiceSpacing}
 \csbook@setoption{oldsection}{OldSection}
+\csbook@setoption{lettrine}{Lettrine}
 
 % Content Enhancement Options
 \csbook@setoption{epigraph}{Epigraph}
@@ -650,7 +752,6 @@
 \ifcsbook@need@calc
 	\RequirePackage{calc}
 \fi
-
 
 % Performance monitoring (optional)
 \newif\ifcsbook@performance@monitoring\csbook@performance@monitoringfalse
@@ -1133,6 +1234,14 @@
 	}
 \fi
 
+% Configure additional math symbol fonts and alphabets
+\AtBeginDocument{%
+	\let\mathbfcal\relax
+	\let\mathbfscr\relax
+	\RequirePackage{mathrsfs}
+	\RequirePackage[cal=cm,bb=bboldx,scr=esstix]{mathalpha}
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Hyperlinks and Cross-Referencing System
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1191,8 +1300,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Core Graphics and Image Handling
-\RequirePackage{graphicx}                                      % Image inclusion and scaling
 \RequirePackage{adjustbox}                                     % Graphic/table boxes: scaling, trimming, framing
+\RequirePackage{graphicx}                                      % Image inclusion and scaling
 
 % Float and Layout Management
 \RequirePackage{float}                                         % Precise float positioning
@@ -1207,19 +1316,17 @@
 \RequirePackage{array}                                         % Custom column types and alignment
 \RequirePackage{booktabs}                                      % High-quality horizontal rules for tables
 \RequirePackage{colortbl}                                      % Cell background coloring in tables
+\RequirePackage{diagbox}                                       % Diagonal split table headers
 \RequirePackage{hhline}                                        % Horizontal lines in tables
 \RequirePackage{longtable}                                     % Multi-page tables
 \RequirePackage{makecell}                                      % Line breaks and formatting in cells
 \RequirePackage{multirow}                                      % Multi-row cells in tables
 \RequirePackage{tabularray}                                    % Advanced table types and styling
 
-% Table Header and Cell Enhancements
-\RequirePackage{diagbox}                                       % Diagonal split table headers
-
 % Framed and Boxed Content
-\RequirePackage{framed}                                        % Framed environments (e.g., figures, text)
-\RequirePackage{fancybox}                                      % Simple framed boxes
 \RequirePackage{dashbox}                                       % Dashed framed boxes
+\RequirePackage{fancybox}                                      % Simple framed boxes
+\RequirePackage{framed}                                        % Framed environments (e.g., figures, text)
 
 % Layout and Orientation
 \RequirePackage{multicol}                                      % Multiple text columns
@@ -1242,6 +1349,35 @@
 }%
 \captionsetup[table]{position=bottom, skip=5pt}                % Table captions below
 \captionsetup[figure]{position=bottom, skip=5pt}               % Figure captions below
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Lettrine and Stylized Opening Commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Example usage in documentation:
+% \stylized{A}{lgebra}{red}
+% \dropcap{A}{lgebra}
+% \customdropcap{A}{lgebra}{3}{blue}
+% \dropcaplines{A}{lgebra}{3}
+\ifcsbook@LoadLettrine
+	\RequirePackage{lettrine} 									% Drop caps and stylized initials
+	% Stylized drop cap: first argument = initial, second = rest of word, third = color
+	\NewDocumentCommand{\stylized}{m m m}{%
+		\lettrine[lines=2, lhang=0.05]{\textcolor{#1}{#2}}{#3}%
+	}
+	% Drop cap with default color (black)
+	\NewDocumentCommand{\dropcap}{m m}{%
+		\lettrine[lines=2, lhang=0.05]{#1}{#2}%
+	}
+	% Drop cap with custom number of lines and color
+	\NewDocumentCommand{\customdropcap}{m m m m}{%
+		\lettrine[lines=#4, lhang=0.05]{\textcolor{#1}{#2}}{#3}%
+	}
+	% Drop cap with custom number of lines, default color (black)
+	\NewDocumentCommand{\dropcaplines}{m m m}{%
+		\lettrine[lines=#3, lhang=0.05]{#1}{#2}%
+	}
+\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Adjust Table of Contents spacing
@@ -1326,7 +1462,7 @@
 		{\sectionheadingfont}
 		{\thesection}
 		{10pt}
-		{}%
+		{\smallskip}[\titlerule\medskip]%
 		\titleformat{\subsection}
 		{\subsectionheadingfont}
 		{\thesubsection}
