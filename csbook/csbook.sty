@@ -2186,51 +2186,13 @@
 % Title and Author Management Package
 \RequirePackage{hep-title}
 
-% Main title formatting commands
-\NewDocumentCommand{\csbook@pretitle}{}{
-	\begin{center}
-		\hrule width \textwidth height 1pt\par
-		\vspace{2em}
-		\normalfont\bfseries\LARGE
-		\begingroup
-		}
-		\NewDocumentCommand{\csbook@posttitle}{}{
-		\endgroup
-		\vspace{1em}
-		\hrule width \textwidth height 1pt
-	\end{center}
-	\vspace{1em}
-}
-
-% Subtitle formatting commands
-\NewDocumentCommand{\csbook@presubtitle}{}{
-	\begin{center}
-		\normalfont\large\itshape
-		}
-		\NewDocumentCommand{\csbook@postsubtitle}{}{
-		\par\vspace{1.5em}
-	\end{center}
-}
-
-% Author formatting commands
-\NewDocumentCommand{\csbook@preauthor}{}{
-	\begin{center}
-		\normalfont\scshape\large
-		}
-		\NewDocumentCommand{\csbook@postauthor}{}{
-		\par\vspace{2em}
-	\end{center}
-}
-
-% Date formatting commands
-\NewDocumentCommand{\csbook@predate}{}{
-	\begin{center}
-		\normalfont\small
-		}
-		\NewDocumentCommand{\csbook@postdate}{}{
-		\par\vspace*{2em}
-	\end{center}
-}
+% Title Formatting
+\titlefont{\normalfont\LARGE\bfseries}                       % Title
+\subtitlefont{\normalfont\large\bfseries}                    % Subtitle
+\authorfont{\normalfont\normalsize\scshape}                  % Author
+\affiliationfont{\normalfont\small\scshape}                  % Affiliation
+\datefont{\normalfont\small\scshape}                         % Date
+\preprintfont{\normalfont\small\ttfamily\scshape}            % Preprint line
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Advanced Title Page Commands
