@@ -2189,7 +2189,7 @@
 % Title Formatting
 \titlefont{\normalfont\LARGE\bfseries}                       % Title
 \subtitlefont{\normalfont\large\bfseries}                    % Subtitle
-\authorfont{\normalfont\normalsize\scshape}                  % Author
+\authorfont{\normalfont\normalsize}                          % Author
 \affiliationfont{\normalfont\small\scshape}                  % Affiliation
 \datefont{\normalfont\small\scshape}                         % Date
 \preprintfont{\normalfont\small\ttfamily\scshape}            % Preprint line
@@ -2198,37 +2198,24 @@
 % Advanced Title Page Commands
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Modular maketitle customization using xparse
-\NewDocumentCommand{\csbook@fancymaketitle}{}{
-	\pretitle{\csbook@pretitle}
-	\posttitle{\csbook@posttitle}
-	\presubtitle{\csbook@presubtitle}
-	\postsubtitle{\csbook@postsubtitle}
-	\preauthor{\csbook@preauthor}
-	\postauthor{\csbook@postauthor}
-	\predate{\csbook@predate}
-	\postdate{\csbook@postdate}
-}
-
-% Apply custom title formatting at the end of the preamble
-\AtEndPreamble{\csbook@fancymaketitle}
-
 % Modular Title Page Command
-\NewDocumentCommand{\printtitlepage}{O{\@title} O{\@author} O{\@date} O{}}{%
+\NewDocumentCommand{\printtitlepage}{O{} O{\huge\sffamily} O{\large\sffamily}}{%
 	\cleardoublepage
 	\begingroup
 	\thispagestyle{empty}
 	\vspace*{\fill}
-	\LARGE\sffamily
 	\begin{flushright}
 		\hrule width \textwidth height 1pt\par
-		\vspace{1em}
-		#1\par
-		\IfNoValueF{#4}{\par\vspace{0.5em}{\large\itshape #4}\par}
-		\vspace{1em}
+		\vspace{2em}
+		{#2\@title}\\[1em]
+		{#3\hep@sub@title}\par
+		\vspace{2em}
 		\hrule width \textwidth height 1pt
+		\vspace*{\fill}
+		\begin{normalsize}
+			#1
+		\end{normalsize}
 	\end{flushright}
-	\vspace*{\fill}
 	\endgroup
 	\clearpage
 }
@@ -2238,7 +2225,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Flag for punctuation detection
-\newif\ifcsbook@has@punctuation
+\newif\ifcsbook@haspunctuation
 
 % Check whether the second argument is empty (used for punctuation detection)
 \def\csbook@checkpunctuation#1{%
@@ -2256,12 +2243,12 @@
 
 % Main interface: Append period unless line ends with '.', '?', '!', or ':'
 \def\csbook@appendpunctuationifneeded#1{%
-	\csbook@has@punctuationfalse
+	\csbook@haspunctuationfalse
 	\csbook@checkdot#1\csbook@delim.\csbook@delim\csbook@stop
 	\csbook@checkquestion#1\csbook@delim?\csbook@delim\csbook@stop
 	\csbook@checkexclam#1\csbook@delim!\csbook@delim\csbook@stop
 	\csbook@checkcolon#1\csbook@delim:\csbook@delim\csbook@stop
-	#1\ifcsbook@has@punctuation \else.\fi%
+	#1\ifcsbook@haspunctuation \else.\fi%
 }
 
 % Skip spaces and implicit paragraphs (blank lines)
