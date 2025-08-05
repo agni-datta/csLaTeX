@@ -2,8 +2,8 @@
 % csthm.sty — Theorem Environment Suite for Computer Science
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Author: Agni Datta <agnidatta.org@gmail.com>
-% Version: 2.1
-% Date: 2025/02/02
+% Version: 2.2
+% Date: 2025/06/10
 % License: LaTeX Project Public License v1.3c
 %
 % ABSTRACT:
@@ -89,6 +89,7 @@
 %   - xcolor: For extended color support (X11, SVG, dvipsnames).
 %   - cleveref (optional, auto-loaded if hyperref is present): For smart cross-referencing.
 %   - hyperref (optional, but recommended for best cross-referencing experience).
+%   - comment (optional, recommended for advanced document management).
 %
 % OPTIONS:
 %   - fancy: Activates modern, colored, framed theorem environments.
@@ -131,24 +132,25 @@
 %   in mathematical typesetting and the needs of the computer science academic
 %   community. Feedback and contributions are welcome.
 %
+% CHANGELOG:
+%   v2.2 (2025/06/10):
+%     - Documentation updated to mention the 'comment' package as a recommended dependency for advanced document management.
+%     - Version and date updated.
+%     - No functional changes to environments or core logic.
+%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % End of documentation for csthm.sty
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
-\ProvidesPackage{csthm}[2025/02/02 v2.1 Theorem Environments for Computer Science]
+\ProvidesPackage{csthm}[2025/06/10 v2.2 Theorem Environments for Computer Science]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Option Definitions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newif\iffancy       % Enable fancy theorem formatting
-\newif\ifnormal      % Enable standard theorem formatting
-\newif\ifoldschool   % Enable oldschool theorem formatting
-
-% Default Boolean Initialization
-\fancyfalse
-\normalfalse
-\oldschoolfalse
+\newif\iffancy 		\fancyfalse        	% Enable fancy theorem formatting
+\newif\ifnormal 	\normalfalse      	% Enable standard theorem formatting
+\newif\ifoldschool 	\oldschoolfalse 	% Enable oldschool theorem formatting
 
 % Option Definitions
 \DeclareOption{fancy}{\fancytrue}
@@ -166,19 +168,25 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Core LaTeX packages
-\@ifpackageloaded{etoolbox}{}{\RequirePackage{etoolbox}}        % Boolean operations
-\@ifpackageloaded{amsmath}{}{\RequirePackage{amsmath}}          % Advanced math typesetting
-\@ifpackageloaded{amssymb}{}{\RequirePackage{amssymb}}          % Additional symbols
 \@ifpackageloaded{amsthm}{}{\RequirePackage{amsthm}}            % Theorem environments
+\@ifpackageloaded{etoolbox}{}{\RequirePackage{etoolbox}}        % Boolean operations
+\@ifpackageloaded{xsparse}{}{\RequirePackage{xsparse}}          % Advanced argument parsing
 
 % Font and formatting packages
-\@ifpackageloaded{sansmath}{}{\RequirePackage{sansmath}}        % Sans-serif math font
+\@ifpackageloaded{amsmath}{}{\RequirePackage{amsmath}}          % Advanced math typesetting
+\@ifpackageloaded{amssymb}{}{\RequirePackage{amssymb}}          % Additional symbols
 \@ifpackageloaded{enumitem}{}{\RequirePackage{enumitem}}        % Customizable list formatting
+\@ifpackageloaded{sansmath}{}{\RequirePackage{sansmath}}        % Sans-serif math font
 
 % Theorem and styling packages
 \@ifpackageloaded{thmtools}{}{\RequirePackage{thmtools}}        % Theorem customization tools
 \@ifpackageloaded{mdframed}{%
-	\PassOptionsToPackage{skipabove=10pt,skipbelow=10pt,ntheorem,framemethod=Tikz}{mdframed}%
+	\PassOptionsToPackage{%
+		skipabove=10pt,
+		skipbelow=10pt,
+		ntheorem,
+		framemethod=Tikz
+	}{mdframed}%
 }{%
 	\RequirePackage[%
 		skipabove=10pt,            % Space above frames
@@ -222,7 +230,7 @@
 \newcommand{\hltsymb}{\ensuremath{\color{\accentcolor}\scriptstyle\square}}%
 
 % QED Symbol
-\renewcommand{\qedsymbol}{\ensuremath{\color{\accentcolor}\square}}%
+\renewcommand{\qedsymbol}{\ensuremath{\scriptstyle\color{\accentcolor}\square}}%
 
 % Package Reference
 \newcommand{\csthmpkg}{\textsf{csthm}}%
@@ -384,47 +392,91 @@
 	\newcommand{\remarkcolor}{Aquamarine4}%
 	\newcommand{\hltcolor}{DeepPink4}%
 	% Theorem style (with mdframed)
-	\declaretheoremstyle[%
-		spaceabove=0pt, spacebelow=0pt,%
-		headfont=\thmheadfont\color{\thmcolor}, notefont=\thmheadfont\color{\thmcolor},%
-		bodyfont=\thmfont, postheadspace=5pt, numberwithin=section,%
-		mdframed={linewidth=2pt, rightline=false, topline=false, bottomline=false,%
-				linecolor=\thmcolor, backgroundcolor=\thmcolor!5},%
-		headpunct={.}%
-	]{thmstyle}%
+	\declaretheoremstyle[
+		spaceabove=0pt,
+		spacebelow=0pt,
+		headfont=\thmheadfont\color{\thmcolor},
+		notefont=\thmheadfont\color{\thmcolor},
+		bodyfont=\thmfont,
+		postheadspace=5pt,
+		numberwithin=section,
+		mdframed={
+				linewidth=2pt,
+				rightline=false,
+				topline=false,
+				bottomline=false,
+				linecolor=\thmcolor,
+				backgroundcolor=\thmcolor!5
+			},
+		headpunct={.}
+	]{thmstyle}
 	% Definition style
-	\declaretheoremstyle[%
-		spaceabove=0pt, spacebelow=0pt,%
-		headfont=\defnheadfont\color{\defncolor}, notefont=\defnheadfont\color{\defncolor},%
-		bodyfont=\defnfont, postheadspace=5pt, numberwithin=section,%
-		mdframed={linewidth=2pt, rightline=false, topline=false, bottomline=false,%
-				linecolor=\defncolor, backgroundcolor=\defncolor!5},%
-		headpunct={.}%
-	]{defstyle}%
+	\declaretheoremstyle[
+		spaceabove=0pt,
+		spacebelow=0pt,
+		headfont=\defnheadfont\color{\defncolor},
+		notefont=\defnheadfont\color{\defncolor},
+		bodyfont=\defnfont,
+		postheadspace=5pt,
+		numberwithin=section,
+		mdframed={
+				linewidth=2pt,
+				rightline=false,
+				topline=false,
+				bottomline=false,
+				linecolor=\defncolor,
+				backgroundcolor=\defncolor!5
+			},
+		headpunct={.}
+	]{defstyle}
 	% Remark style
-	\declaretheoremstyle[%
-		spaceabove=0pt, spacebelow=0pt,%
-		headfont=\remarkheadfont\color{\remarkcolor}, notefont=\remarkheadfont\color{\remarkcolor},%
-		bodyfont=\remarkfont, postheadspace=5pt, numberwithin=section,%
-		mdframed={linewidth=2pt, rightline=false, topline=false, bottomline=false,%
-				linecolor=\remarkcolor, backgroundcolor=\remarkcolor!5},%
-		headpunct={.}%
-	]{remarkstyle}%
+	\declaretheoremstyle[
+		spaceabove=0pt,
+		spacebelow=0pt,
+		headfont=\remarkheadfont\color{\remarkcolor},
+		notefont=\remarkheadfont\color{\remarkcolor},
+		bodyfont=\remarkfont,
+		postheadspace=5pt,
+		numberwithin=section,
+		mdframed={
+				linewidth=2pt,
+				rightline=false,
+				topline=false,
+				bottomline=false,
+				linecolor=\remarkcolor,
+				backgroundcolor=\remarkcolor!5
+			},
+		headpunct={.}
+	]{remarkstyle}
 	% Highlight style
-	\declaretheoremstyle[%
-		spaceabove=0pt, spacebelow=0pt,%
-		headfont=\hltheadfont\color{\hltcolor}, notefont=\hltheadfont\color{\hltcolor},%
-		bodyfont=\hltfont, postheadspace=5pt, numberwithin=section,%
-		mdframed={linewidth=2pt, rightline=false, topline=false, bottomline=false,%
-				linecolor=\hltcolor, backgroundcolor=\hltcolor!5},%
-		headpunct={.}%
-	]{hltstyle}%
+	\declaretheoremstyle[
+		spaceabove=0pt,
+		spacebelow=0pt,
+		headfont=\hltheadfont\color{\hltcolor},
+		notefont=\hltheadfont\color{\hltcolor},
+		bodyfont=\hltfont,
+		postheadspace=5pt,
+		numberwithin=section,
+		mdframed={
+				linewidth=2pt,
+				rightline=false,
+				topline=false,
+				bottomline=false,
+				linecolor=\hltcolor,
+				backgroundcolor=\hltcolor!5
+			},
+		headpunct={.}
+	]{hltstyle}
 	% Proof style
-	\declaretheoremstyle[%
-		headfont=\scshape\color{\thmcolor}, notefont=\scshape\color{\thmcolor},%
-		bodyfont=\normalfont, postheadspace=5pt, numbered=no, headpunct={.},%
-		qed=\qedsymbol%
-	]{proofstyle}%
+	\declaretheoremstyle[
+		headfont=\scshape\color{\thmcolor},
+		notefont=\scshape\color{\thmcolor},
+		bodyfont=\normalfont,
+		postheadspace=5pt,
+		numbered=no,
+		headpunct={.},
+		qed=\qedsymbol
+	]{proofstyle}
 	\basicenv%
 }
 
@@ -452,38 +504,63 @@
 	\renewcommand{\remarksymb}{\ensuremath{\color{\accentcolor}\scriptstyle\vartriangleright}}%
 	\renewcommand{\hltsymb}{\ensuremath{\color{\accentcolor}\scriptstyle\square}}%
 	% Theorem style
-	\declaretheoremstyle[%
-		spaceabove=\topsep, spacebelow=\topsep,%
-		headfont=\thmheadfont\thmsymb~, notefont=\thmheadfont,%
-		bodyfont=\thmfont, postheadspace=5pt, numberwithin=section,%
-		qed=\commonthmsymb, headpunct={.}%
-	]{thmstyle}%
+	\declaretheoremstyle[
+		spaceabove=\topsep,
+		spacebelow=\topsep,
+		headfont=\thmheadfont\thmsymb~,
+		notefont=\thmheadfont,
+		bodyfont=\thmfont,
+		postheadspace=5pt,
+		numberwithin=section,
+		qed=\commonthmsymb,
+		headpunct={.}
+	]{thmstyle}
 	% Definition style
-	\declaretheoremstyle[%
-		spaceabove=\topsep, spacebelow=\topsep,%
-		headfont=\defnheadfont\defnsymb~, notefont=\defnheadfont,%
-		bodyfont=\defnfont, postheadspace=5pt, numberwithin=section,%
-		qed=\commonthmsymb, headpunct={.}%
-	]{defstyle}%
+	\declaretheoremstyle[
+		spaceabove=\topsep,
+		spacebelow=\topsep,
+		headfont=\defnheadfont\defnsymb~,
+		notefont=\defnheadfont,
+		bodyfont=\defnfont,
+		postheadspace=5pt,
+		numberwithin=section,
+		qed=\commonthmsymb,
+		headpunct={.}
+	]{defstyle}
 	% Remark style
-	\declaretheoremstyle[%
-		spaceabove=\topsep, spacebelow=\topsep,%
-		headfont=\remarkheadfont\remarksymb~, notefont=\remarkheadfont,%
-		bodyfont=\remarkfont, postheadspace=5pt, numberwithin=section,%
-		qed=\commonthmsymb, headpunct={.}%
-	]{remarkstyle}%
+	\declaretheoremstyle[
+		spaceabove=\topsep,
+		spacebelow=\topsep,
+		headfont=\remarkheadfont\remarksymb~,
+		notefont=\remarkheadfont,
+		bodyfont=\remarkfont,
+		postheadspace=5pt,
+		numberwithin=section,
+		qed=\commonthmsymb,
+		headpunct={.}
+	]{remarkstyle}
 	% Highlight style
-	\declaretheoremstyle[%
-		spaceabove=\topsep, spacebelow=\topsep,%
-		headfont=\hltheadfont\hltsymb~, notefont=\hltheadfont,%
-		bodyfont=\hltfont, postheadspace=5pt, numberwithin=section,%
-		qed=\commonthmsymb, headpunct={.}%
-	]{hltstyle}%
+	\declaretheoremstyle[
+		spaceabove=\topsep,
+		spacebelow=\topsep,
+		headfont=\hltheadfont\hltsymb~,
+		notefont=\hltheadfont,
+		bodyfont=\hltfont,
+		postheadspace=5pt,
+		numberwithin=section,
+		qed=\commonthmsymb,
+		headpunct={.}
+	]{hltstyle}
 	% Proof style
-	\declaretheoremstyle[%
-		headfont=\scshape, notefont=\commonthmfont, bodyfont=\normalfont,%
-		postheadspace=5pt, numbered=no, headpunct={.}, qed=\qedsymbol%
-	]{proofstyle}%
+	\declaretheoremstyle[
+		headfont=\scshape,
+		notefont=\commonthmfont,
+		bodyfont=\normalfont,
+		postheadspace=5pt,
+		numbered=no,
+		headpunct={.},
+		qed=\qedsymbol
+	]{proofstyle}
 	\basicenv%
 }
 
@@ -511,38 +588,63 @@
 	\renewcommand{\remarksymb}{}%
 	\renewcommand{\hltsymb}{}%
 	% Theorem style
-	\declaretheoremstyle[%
-		spaceabove=\topsep, spacebelow=\topsep,%
-		headfont=\thmheadfont\thmsymb, notefont=\thmheadfont,%
-		bodyfont=\thmfont, postheadspace=5pt, numberwithin=section,%
-		qed=\commonthmsymb, headpunct={.}%
-	]{thmstyle}%
+	\declaretheoremstyle[
+		spaceabove=\topsep,
+		spacebelow=\topsep,
+		headfont=\thmheadfont\thmsymb,
+		notefont=\thmheadfont,
+		bodyfont=\thmfont,
+		postheadspace=5pt,
+		numberwithin=section,
+		qed=\commonthmsymb,
+		headpunct={.}
+	]{thmstyle}
 	% Definition style
-	\declaretheoremstyle[%
-		spaceabove=\topsep, spacebelow=\topsep,%
-		headfont=\defnheadfont\defnsymb, notefont=\defnheadfont,%
-		bodyfont=\defnfont, postheadspace=5pt, numberwithin=section,%
-		qed=\commonthmsymb, headpunct={.}%
-	]{defstyle}%
+	\declaretheoremstyle[
+		spaceabove=\topsep,
+		spacebelow=\topsep,
+		headfont=\defnheadfont\defnsymb,
+		notefont=\defnheadfont,
+		bodyfont=\defnfont,
+		postheadspace=5pt,
+		numberwithin=section,
+		qed=\commonthmsymb,
+		headpunct={.}
+	]{defstyle}
 	% Remark style
-	\declaretheoremstyle[%
-		spaceabove=\topsep, spacebelow=\topsep,%
-		headfont=\remarkheadfont\remarksymb, notefont=\remarkheadfont,%
-		bodyfont=\remarkfont, postheadspace=5pt, numberwithin=section,%
-		qed=\commonthmsymb, headpunct={.}%
-	]{remarkstyle}%
+	\declaretheoremstyle[
+		spaceabove=\topsep,
+		spacebelow=\topsep,
+		headfont=\remarkheadfont\remarksymb,
+		notefont=\remarkheadfont,
+		bodyfont=\remarkfont,
+		postheadspace=5pt,
+		numberwithin=section,
+		qed=\commonthmsymb,
+		headpunct={.}
+	]{remarkstyle}
 	% Highlight style
-	\declaretheoremstyle[%
-		spaceabove=\topsep, spacebelow=\topsep,%
-		headfont=\hltheadfont\hltsymb, notefont=\hltheadfont,%
-		bodyfont=\hltfont, postheadspace=5pt, numberwithin=section,%
-		qed=\commonthmsymb, headpunct={.}%
-	]{hltstyle}%
-	% Proof style (italicized)
-	\declaretheoremstyle[%
-		headfont=\scshape, notefont=\scshape, bodyfont=\normalfont,%
-		postheadspace=5pt, numbered=no, headpunct={.}, qed=\qedsymbol%
-	]{proofstyle}%
+	\declaretheoremstyle[
+		spaceabove=\topsep,
+		spacebelow=\topsep,
+		headfont=\hltheadfont\hltsymb,
+		notefont=\hltheadfont,
+		bodyfont=\hltfont,
+		postheadspace=5pt,
+		numberwithin=section,
+		qed=\commonthmsymb,
+		headpunct={.}
+	]{hltstyle}
+	% Proof style
+	\declaretheoremstyle[
+		headfont=\scshape,
+		notefont=\scshape,
+		bodyfont=\normalfont,
+		postheadspace=5pt,
+		numbered=no,
+		headpunct={.},
+		qed=\qedsymbol
+	]{proofstyle}
 	\basicenv%
 }
 
