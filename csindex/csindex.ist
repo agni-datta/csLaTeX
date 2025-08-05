@@ -1,12 +1,14 @@
-quote '+'
+quote '"'
+level '   '
 letter_group
 symhead_positive "Symbols"
 numhead_positive "Numbers"
 headings_flag 1
-heading_prefix "\\textcolor{\\accentcolor}{\\large\\textbf{" heading_suffix "}}\n"
-delim_0 "\\dotfill"
-delim_1 "\\dotfill"
-delim_2 "\\dotfill"
-delim_r "\\dotfill"
-preamble "\\begin{theindex}\n\\small\n"
+heading_prefix "{\\sffamily\\textbf{"
+heading_suffix "}}\n"
+delim_0 "\\dotfill\\ "
+delim_1 "\\dotfill\\ "
+delim_2 "\\dotfill\\ "
+delim_r "\\dotfill\\ "
+preamble "\\begin{theindex}\n\\small\n\\setlength{\\itemsep}{0.2em}\n"
 postamble "\n\\end{theindex}\n"
