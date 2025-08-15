@@ -1,20 +1,20 @@
 ---
-title: "csthm: Theorem Environments for Computer Science and Mathematics"
-linter-yaml-title-alias: "csthm: Theorem Environments for Computer Science and Mathematics"
+title: README
+linter-yaml-title-alias: README
 date created: Monday, June 16th 2025, 12:58:36
-date modified: Friday, July 25th 2025, 21:56:08
-aliases: "csthm: Theorem Environments for Computer Science and Mathematics"
+date modified: Friday, August 15th 2025, 19:23:53
+aliases: README
 ---
 
-# csthm: Theorem Environments for Computer Science and Mathematics
+## csthm: Theorem Environments for Computer Science and Mathematics
 
 > **csthm** simplifies the creation of formal mathematical and computer science documents by providing professional, consistent theorem environments with minimal setup.
 
-## Overview
+### Overview
 
 **csthm** is a LaTeX package offering a flexible, modern, and easy-to-use collection of theorem-like environments tailored for computer science, mathematics, and related fields. It delivers visually distinct, semantically meaningful, and cross-reference-friendly formal statements with minimal user configuration.
 
-## Features
+### Features
 
 - **Three Visual Styles:** Select from `fancy` (modern), `normal` (standard), or `oldschool` (traditional) styles to suit your document’s tone.
 - **Extensive Environments:** Supports theorems, lemmas, definitions, corollaries, propositions, claims, axioms, conjectures, observations, remarks, warnings, and more.
@@ -24,11 +24,11 @@ aliases: "csthm: Theorem Environments for Computer Science and Mathematics"
 - **Customizable Headers & Styling:** Easily modify environment names, numbering, symbols, and colors.
 - **Professional Typesetting:** Optimized for clarity, readability, and compatibility with Unicode and microtypography.
 
-## Installation
+### Installation
 
 Available on [CTAN](https://ctan.org/pkg/csthm) and included in major TeX distributions.
 
-## Quick Start
+### Quick Start
 
 Add the package to your preamble:
 
@@ -54,17 +54,17 @@ Cross-reference easily:
 As shown in~\cref{thm:main}, ...
 ```
 
-## Documentation
+### Documentation
 
 - See doc/csthm-example.tex for usage examples.
 - Full manual available on the CTAN page.
 
-## Compatibility
+### Compatibility
 
 - Supports XeLaTeX, LuaLaTeX, and pdfLaTeX.
 - Works with common packages like amsthm, thmtools, mdframed, and cleveref.
 - Designed to minimize conflicts and maximize portability.
 
-## Contributing & Support
+### Contributing & Support
 
 Contributions, bug reports, and feature requests are encouraged via the project repository. For inquiries or feedback, contact the maintainer or visit the CTAN page.

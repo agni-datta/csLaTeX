@@ -1,18 +1,18 @@
 ---
-title: csLaTeX
-linter-yaml-title-alias: csLaTeX
+title: README
+linter-yaml-title-alias: README
 date created: Monday, March 25th 2024, 14:13:16
-date modified: Friday, August 1st 2025, 19:44:24
-aliases: csLaTeX
+date modified: Friday, August 15th 2025, 19:23:51
+aliases: README
 ---
 
-# csLaTeX
+## csLaTeX
 
-## Description
+### Description
 
 A curated collection of LaTeX packages and macros tailored for computer science research, teaching, and professional document preparation. Designed to streamline workflow and enhance document quality for researchers, students, and educators.
 
-## Features
+### Features
 
 - Theorem environments (modern, colored, classic)
 - Academic book/report support
@@ -22,7 +22,7 @@ A curated collection of LaTeX packages and macros tailored for computer science 
 - Cryptography macros and notation
 - Professional index style
 
-## Directory Structure
+### Directory Structure
 
 - `csbook.sty`—Academic book tools
 - `csdirty.sty`—Quick & dirty academic writing package
@@ -34,21 +34,21 @@ A curated collection of LaTeX packages and macros tailored for computer science 
 - `tcscrypto.sty`—TCS/crypto macros
 - `csindex.ist`—Index style
 
-## Usage
+### Usage
 
 1. Clone or download this repository
 2. Copy the desired package into your LaTeX project
 3. Import with `\usepackage{csbook}` or similar
 4. See in-file documentation and subpackage READMEs for details
 
-## Contribution
+### Contribution
 
 Contributions are highly encouraged! Please open an issue or submit a pull request for enhancements, bug fixes, or new features.
 
-## License
+### License
 
 This project is licensed under the MIT License -- see the [LICENSE](LICENSE) file for details.
 
-## Contact
+### Contact
 
 Maintained by Agni Datta. For inquiries or feedback, please reach out.

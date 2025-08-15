@@ -1,19 +1,19 @@
 ---
-title: "csdirty.sty: The Quick & Dirty Package for Academic Writing"
-linter-yaml-title-alias: "csdirty.sty: The Quick & Dirty Package for Academic Writing"
+title: README
+linter-yaml-title-alias: README
 date created: Wednesday, June 4th 2025, 14:27:03
-date modified: Friday, July 25th 2025, 21:56:08
-aliases: "csdirty.sty: The Quick & Dirty Package for Academic Writing"
+date modified: Friday, August 15th 2025, 19:23:53
+aliases: README
 ---
 
-# csdirty.sty: The Quick & Dirty Package for Academic Writing
+## csdirty.sty: The Quick & Dirty Package for Academic Writing
 
 **Author:** Agni Datta  
 **Version:** 1.0 (2025/02/10)
 
 ---
 
-## Contents
+### Contents
 
 1. [Overview](#1-overview)
 2. [Package Philosophy and Design Goals](#2-package-philosophy-and-design-goals)
@@ -39,13 +39,13 @@ aliases: "csdirty.sty: The Quick & Dirty Package for Academic Writing"
 
 ---
 
-## 1. Overview
+### 1. Overview
 
 The `csdirty.sty` package is a comprehensive LaTeX style file designed to streamline and standardize document preparation for computer science and technical manuscripts. It consolidates a wide array of commonly used packages, macros, and formatting conventions into a single, robust package, enabling authors to focus on content creation while ensuring typographic consistency, advanced mathematical support, and professional document structure.
 
 ---
 
-## 2. Package Philosophy and Design Goals
+### 2. Package Philosophy and Design Goals
 
 - **Modularity:** Integrates essential LaTeX packages for text, math, graphics, and referencing, reducing boilerplate in document preambles.
 - **Consistency:** Enforces uniform formatting for sections, lists, tables, and figures across document classes (`article`, `report`, `book`).
@@ -55,7 +55,7 @@ The `csdirty.sty` package is a comprehensive LaTeX style file designed to stream
 
 ---
 
-## 3. Package Options and Versioning
+### 3. Package Options and Versioning
 
 `csdirty.sty` defines several boolean flags and user options to control document behavior:
 
@@ -67,7 +67,7 @@ Options are processed via `\DeclareOption` and set corresponding internal flags 
 
 ---
 
-## 4. Core Package Dependencies
+### 4. Core Package Dependencies
 
 The package loads a curated set of LaTeX packages for foundational functionality:
 
@@ -77,7 +77,7 @@ The package loads a curated set of LaTeX packages for foundational functionality
 
 ---
 
-## 5. Document Structure and PDF Management
+### 5. Document Structure and PDF Management
 
 - **PDF Versioning:** Uses `bxpdfver` for PDF/A compliance and object compression.
 - **Geometry:** Sets A4 paper with 3cm margins for optimal readability.
@@ -86,7 +86,7 @@ The package loads a curated set of LaTeX packages for foundational functionality
 
 ---
 
-## 6. Text, Layout, and Miscellaneous Enhancements
+### 6. Text, Layout, and Miscellaneous Enhancements
 
 - **csquotes:** Automatic quotation marks and smart citation integration.
 - **microtype:** Advanced justification and hyphenation for professional typesetting.
@@ -94,7 +94,7 @@ The package loads a curated set of LaTeX packages for foundational functionality
 
 ---
 
-## 7. Fonts and Mathematical Typesetting
+### 7. Fonts and Mathematical Typesetting
 
 - **Font Encoding:** T1 encoding for proper hyphenation and internationalization.
 - **AMS Packages:** `amsfonts`, `amsmath`, `amssymb`, `amsthm` for advanced math environments and symbols.
@@ -102,7 +102,7 @@ The package loads a curated set of LaTeX packages for foundational functionality
 
 ---
 
-## 8. Hyperlinks and Referencing
+### 8. Hyperlinks and Referencing
 
 - **hyperref:** Unicode, colored links, PDF bookmarks, and back-references.
 - **nameref, xr:** Name-based and cross-document referencing.
@@ -111,14 +111,14 @@ The package loads a curated set of LaTeX packages for foundational functionality
 
 ---
 
-## 9. Figures and Tables
+### 9. Figures and Tables
 
 - **adjustbox, array, booktabs, caption, colortbl, dashbox, diagbox, fancybox, float, framed, graphicx, longtable, makecell, multicol, multirow, pdflscape, placeins, ragged2e, rotating, subcaption, tabularray, tabularx, threeparttable, wrapfig, xtab:** Extensive support for advanced table and figure layouts, including multi-page tables, colored cells, landscape pages, and subfigures.
 - **Caption Setup:** Configures caption fonts, label formatting, and positioning for both tables and figures.
 
 ---
 
-## 10. List Customization
+### 10. List Customization
 
 - **enumitem:** Fine-grained control over enumerate and itemize environments.
 - **Global Spacing:** Suppresses vertical spacing between list items.
@@ -126,20 +126,20 @@ The package loads a curated set of LaTeX packages for foundational functionality
 
 ---
 
-## 11. Diagrams and TikZ Graphics
+### 11. Diagrams and TikZ Graphics
 
 - **epigraph, tcolorbox, mdframed, pgfplots, tikz, tikz-cd, tikz-3dplot:** Support for epigraphs, colored boxes, framed environments, data plots, commutative diagrams, and 3D graphics.
 - **TikZ Libraries:** Loads a comprehensive set of libraries for automata, backgrounds, decorations, graphs, matrix layouts, patterns, positioning, and more, enabling sophisticated diagrammatic representations.
 
 ---
 
-## 12. Appendices Handling
+### 12. Appendices Handling
 
 - **appendix:** Provides advanced appendix management, including TOC integration, page breaks, title and header prefixing, and titletoc support.
 
 ---
 
-## 13. Cryptography and Styling Integration
+### 13. Cryptography and Styling Integration
 
 - **csthm:** If available, loads the `csthm` package for theorem environments with the `oldschool` option.
 - **tcscrypto:** Loads cryptography macros if present.
@@ -147,7 +147,7 @@ The package loads a curated set of LaTeX packages for foundational functionality
 
 ---
 
-## 14. Versioning, Comments, and Anonymization
+### 14. Versioning, Comments, and Anonymization
 
 - **Version Switches:** Macros `\fullversion`, `\shortversion`, and `\usecomments` allow dynamic toggling of document state.
 - **Custom Comments:** `\newcomment{name}{color}{command}` defines colored, author-tagged comment macros, visible only if comments are enabled.
@@ -155,21 +155,21 @@ The package loads a curated set of LaTeX packages for foundational functionality
 
 ---
 
-## 15. Document Environments: Abstract and Acknowledgment
+### 15. Document Environments: Abstract and Acknowledgment
 
 - **Abstract:** Redefines the `abstract` environment for both `book` and non-`book` classes. The abstract is typeset in a small, indented quotation with a bold title and is automatically added to the TOC as a section.
 - **Acknowledgment:** The `acknowledgment` environment adapts its formatting based on the document class (`book`, `report`, or `article`) and is hidden if anonymization is enabled.
 
 ---
 
-## 16. Table of Contents and Bibliography Macros
+### 16. Table of Contents and Bibliography Macros
 
 - **\toc:** Custom macro to insert a table of contents with controlled vertical spacing and page breaks.
 - **\printbib{bibfile}:** Macro to print the bibliography using the `alphaurl` style, with vertical spacing and page breaks for visual separation.
 
 ---
 
-## 17. Title and Section Formatting
+### 17. Title and Section Formatting
 
 - **hep-title:** Lightweight package for title formatting.
 - **Font Macros:** Defines `\titlefont`, `\subtitlefont`, `\authorfont`, `\affiliationfont`, `\datefont`, and `\preprintfont` for consistent title block styling.
@@ -178,13 +178,13 @@ The package loads a curated set of LaTeX packages for foundational functionality
 
 ---
 
-## 18. Header and Footer Management
+### 18. Header and Footer Management
 
 - **fancyhdr:** The `\simplefancyheader` macro sets up a simple header/footer scheme with the document title and page number, ensuring a clean and professional appearance.
 
 ---
 
-## 19. Class-Specific Adjustments
+### 19. Class-Specific Adjustments
 
 - **\AtBeginDocument:** Applies class-specific formatting at document start:
   - `article`: Sets section formats.
@@ -193,14 +193,14 @@ The package loads a curated set of LaTeX packages for foundational functionality
 
 ---
 
-## 20. Upright Greek Letters Setup
+### 20. Upright Greek Letters Setup
 
 - **mathastext, upgreek:** Enables upright Greek letters in math mode, with LGR encoding and fallback definitions for missing macros.
 - **Macro Redefinitions:** If upright forms are available, standard Greek macros are overwritten to use upright variants, ensuring typographic consistency in mathematical notation.
 
 ---
 
-## 21. Implementation Notes and Best Practices
+### 21. Implementation Notes and Best Practices
 
 - **Macro Hygiene:** All new commands and environments are defined using `xparse` for robust argument parsing and future compatibility.
 - **Fallbacks and Warnings:** Conditional loading and warnings for optional packages (`csthm`, `tcscrypto`) ensure graceful degradation if dependencies are missing.
@@ -209,7 +209,7 @@ The package loads a curated set of LaTeX packages for foundational functionality
 
 ---
 
-## Example Usage
+### Example Usage
 
 In your LaTeX document preamble:
 
@@ -236,7 +236,7 @@ This paper explores...
 
 ---
 
-## Credits and License
+### Credits and License
 
 - **Author:** Agni Datta
 - **License:** LPPL (LaTeX Project Public License)

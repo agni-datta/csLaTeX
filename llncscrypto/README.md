@@ -1,20 +1,20 @@
 ---
-title: "llncscrypto: Enhanced LaTeX Style Package for LNCS + Cryptography"
-linter-yaml-title-alias: "llncscrypto: Enhanced LaTeX Style Package for LNCS + Cryptography"
+title: README
+linter-yaml-title-alias: README
 date created: Saturday, July 5th 2025, 00:25:17
-date modified: Friday, July 25th 2025, 21:56:08
-aliases: "llncscrypto: Enhanced LaTeX Style Package for LNCS + Cryptography"
+date modified: Friday, August 15th 2025, 19:23:53
+aliases: README
 ---
 
-# llncscrypto: Enhanced LaTeX Style Package for LNCS + Cryptography
+## llncscrypto: Enhanced LaTeX Style Package for LNCS + Cryptography
 
 > **llncscrypto** extends the LNCS (Lecture Notes in Computer Science) document class with advanced features for cryptography and theoretical computer science papers.
 
-## Overview
+### Overview
 
 **llncscrypto** is a comprehensive LaTeX style package that enhances the LNCS document class with specialized tools for cryptography and theoretical computer science research. It provides enhanced theorem environments, TikZ graphics support, improved captions, and specialized tools for cryptographic notation and diagrams.
 
-## Features
+### Features
 
 - **Enhanced Theorem Environments:** LLNCS-compliant styling with advanced theorem, lemma, definition, and proof environments
 - **TikZ Graphics Support:** Comprehensive TikZ graphics library support for diagrams and figures
@@ -25,11 +25,11 @@ aliases: "llncscrypto: Enhanced LaTeX Style Package for LNCS + Cryptography"
 - **Appendix Management:** Tools for managing appendices and supplementary material
 - **PDF Optimization:** Advanced PDF settings for optimal document presentation
 
-## Installation
+### Installation
 
 Available on [CTAN](https://ctan.org/pkg/llncscrypto) and included in major TeX distributions.
 
-## Quick Start
+### Quick Start
 
 ```latex
 \documentclass{llncs}
@@ -52,7 +52,7 @@ Your content here.
 \end{document}
 ```
 
-## Package Options
+### Package Options
 
 - **`captions`** - Enable enhanced caption formatting and positioning
 - **`tikz`** - Load comprehensive TikZ graphics libraries and tools
@@ -60,32 +60,32 @@ Your content here.
 - **`crypto`** - Load cryptography-specific macros and notation
 - **`theorems`** - Enable enhanced theorem environments with LLNCS styling
 
-## Dependencies
+### Dependencies
 
 - **Required:** `llncs` document class, `xcolor`, `etoolbox`, `xparse`
 - **Optional:** `tikz`, `pgfplots` (if tikz option enabled), `tcscrypto` (if crypto option enabled)
 
-## Compatibility
+### Compatibility
 
 - Supports LaTeX2e
 - Works with pdfLaTeX, XeLaTeX, and LuaLaTeX
 - Compatible with LNCS document class
 - Designed for cryptography and theoretical computer science papers
 
-## Documentation
+### Documentation
 
 - See `doc/llncscrypto-example.tex` for usage examples
 - Full manual available on the CTAN page
 
-## Contributing & Support
+### Contributing & Support
 
 Contributions, bug reports, and feature requests are encouraged via the project repository. For inquiries or feedback, contact the maintainers or visit the CTAN page.
 
-## Authors
+### Authors
 
 - **Matteo Campanelli** <matteo.campanelli@gmail.com>
 - **Agni Datta** <agnidatta.org@gmail.com>
 
-## License
+### License
 
 This package is distributed under the LaTeX Project Public License v1.3c.

@@ -1,12 +1,12 @@
 ---
-title: Contribution Guidelines
-linter-yaml-title-alias: Contribution Guidelines
+title: CONTRIBUTION
+linter-yaml-title-alias: CONTRIBUTION
 date created: Friday, May 17th 2024, 16:06:33
-date modified: Friday, July 25th 2025, 21:56:07
-aliases: Contribution Guidelines
+date modified: Friday, August 15th 2025, 19:23:51
+aliases: CONTRIBUTION
 ---
 
-# Contribution Guidelines
+## Contribution Guidelines
 
 We welcome you to contribute to the `csLaTeX` repository! Your input can help enrich the LaTeX experience for computer scientists worldwide. Below are guidelines to ensure a smooth contribution process:
 
@@ -18,7 +18,7 @@ We welcome you to contribute to the `csLaTeX` repository! Your input can help en
 6. **Commit Messages**: Write informative and descriptive commit messages. Clearly communicate the purpose and scope of each commit to facilitate collaboration and code maintenance.
 7. **License**: By contributing to the csLaTeX repository, you agree to license your contributions under the project’s chosen license. Ensure your contributions comply with licensing requirements.
 
-## To contribute
+### To contribute
 
 1. Fork the repository and clone it to your local machine.
 2. Create a new branch for your changes: `git checkout -b my-feature`.
