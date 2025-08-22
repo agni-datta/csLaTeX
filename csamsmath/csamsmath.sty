@@ -157,13 +157,13 @@
     % LuaTeX: Use fontspec and unicode-math for full OpenType support
     \RequirePackage{fontspec}
     \RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
-    % Main serif font: FBB (with OldStandard for italics/small caps)
+    % Main serif font: FBB
     \setmainfont{fbb}[
         Extension             = .otf,
         SmallCapsFeatures     = {RawFeature=+smcp},
         RawFeature            = {+calt,+case,+cpsp,+kern,+liga,+lnum,+mark,+mkmk,+pnum,+ss06},
         UprightFont           = *-Regular,
-        ItalicFont            = OldStandard-Italic,
+        ItalicFont            = *-Italic,
         ItalicFeatures        = {SmallCapsFont = *-Italic},
         SlantedFont           = *-Regular,
         SlantedFeatures       = {FakeSlant=0.2},
@@ -173,7 +173,7 @@
         BoldItalicFeatures    = {RawFeature={embolden=3}, SmallCapsFont = *-Italic},
         BoldSlantedFont       = *-Bold,
         BoldSlantedFeatures   = {FakeSlant=0.2, SmallCapsFont = *-Bold},
-        SmallCapsFont         = OldStandard-Regular,
+        SmallCapsFont         = *-Regular,
         SmallCapsFeatures     = {RawFeature=+smcp},
     ]
     % Math fonts: Garamond-Math, OldStandard-Math, FBB for numerals
@@ -230,20 +230,20 @@
     \let\mathbfcal\relax
     \let\mathbfscr\relax
     \RequirePackage{mathrsfs}
-    \RequirePackage[cal=cm,bb=bboldx,scr=esstix]{mathalpha}
+    \RequirePackage[cal=pxtx,bb=esstix,scr=esstix]{mathalpha}
     \typeout{csamsmath: Libertinus/FBB/Ysabeau/OldStandard setup for LuaTeX}
 \else
     \ifXeTeX
         % XeTeX: Use fontspec and unicode-math for OpenType support
         \RequirePackage{fontspec}
         \RequirePackage{unicode-math}
-        % Main serif font: FBB (with OldStandard for italics/small caps)
+        % Main serif font: FBB
         \setmainfont{fbb}[
             Extension             = .otf,
             SmallCapsFeatures     = {RawFeature=+smcp},
             RawFeature            = {+calt,+case,+cpsp,+kern,+liga,+lnum,+mark,+mkmk,+pnum,+ss06},
             UprightFont           = *-Regular,
-            ItalicFont            = OldStandard-Italic,
+            ItalicFont            = *-Italic,
             ItalicFeatures        = {SmallCapsFont = *-Italic},
             SlantedFont           = *-Regular,
             SlantedFeatures       = {FakeSlant=0.2},
@@ -253,7 +253,7 @@
             BoldItalicFeatures    = {RawFeature={embolden=3}, SmallCapsFont = *-Italic},
             BoldSlantedFont       = *-Bold,
             BoldSlantedFeatures   = {FakeSlant=0.2, SmallCapsFont = *-Bold},
-            SmallCapsFont         = OldStandard-Regular,
+            SmallCapsFont         = *-Regular,
             SmallCapsFeatures     = {RawFeature=+smcp},
         ]
         % Math fonts: Garamond-Math, OldStandard-Math, FBB for numerals
@@ -310,14 +310,14 @@
         \let\mathbfcal\relax
         \let\mathbfscr\relax
         \RequirePackage{mathrsfs}
-        \RequirePackage[cal=cm,bb=bboldx,scr=esstix]{mathalpha}
+        \RequirePackage[cal=pxtx,bb=esstix,scr=esstix]{mathalpha}
         \typeout{csamsmath: Libertinus/FBB/Ysabeau/OldStandard setup for XeTeX}
     \else
         % pdfLaTeX: Use Libertine and Ysabeau with newtxmath for math
         \RequirePackage{libertineRoman}      % Main serif font (Libertine)
         \RequirePackage[lf]{ysabeau}         % Sans-serif font (Ysabeau)
         \RequirePackage[libertine,varbb]{newtxmath} % Math font (newtxmath, matches Libertine)
-        \RequirePackage[bb=bboldx,cal=cm,scr=esstix]{mathalpha} % Math alphabets
+        \RequirePackage[cal=pxtx,bb=esstix,scr=esstix]{mathalpha} % Math alphabets
         \typeout{csamsmath: Libertine/Ysabeau/newtxmath setup for pdfLaTeX}
     \fi
 \fi
