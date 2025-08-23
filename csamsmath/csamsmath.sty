@@ -124,7 +124,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
 % TEXT, LAYOUT, AND MISCELLANEOUS ENHANCEMENTS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Quoting, microtypography, symb ols, citation, and text utilities
+% Quoting, microtypography, symbols, citation, and text utilities
 \RequirePackage[autostyle=true,csdisplay=true]{csquotes} % Smart quotes
 \RequirePackage[final]{microtype}     % Microtypographic enhancements
 \RequirePackage[full]{textcomp}       % Extra text symbols
@@ -207,10 +207,10 @@
         SmallCapsFeatures     = {RawFeature=+smcp},
     ]
     % Sans-serif font: Ysabeau
-    \setsansfont{Ysabeau}[
+    \setsansfont{LibertinusSans}[
         Extension             = .otf,
         RawFeature            = {+calt,+case,+kern,+liga,+lnum,+mark,+mkmk,+pnum},
-        Scale                 = MatchLowercase,
+        Scale                 = MatchUppercase,
         UprightFont           = *-Regular,
         ItalicFont            = *-Italic,
         ItalicFeatures        = {SmallCapsFont = *-Italic},
@@ -288,10 +288,10 @@
             SmallCapsFeatures     = {RawFeature=+smcp},
         ]
         % Sans-serif font: Ysabeau
-        \setsansfont{Ysabeau}[
+        \setsansfont{LibertinusSans}[
             Extension             = .otf,
             RawFeature            = {+calt,+case,+kern,+liga,+lnum,+mark,+mkmk,+pnum},
-            Scale                 = MatchLowercase,
+            Scale                 = MatchUppercase,
             UprightFont           = *-Regular,
             ItalicFont            = *-Italic,
             ItalicFeatures        = {SmallCapsFont = *-Italic},
@@ -310,15 +310,15 @@
         \let\mathbfcal\relax
         \let\mathbfscr\relax
         \RequirePackage{mathrsfs}
-        \RequirePackage[lbtn, supsotf=fbb]{superiors}
+        \RequirePackage[lbtn,supsotf=fbb]{superiors}
         \RequirePackage[cal=pxtx,bb=esstix,scr=esstix]{mathalpha}
         \typeout{csamsmath: Libertinus/FBB/Ysabeau/OldStandard setup for XeTeX}
     \else
-        % pdfLaTeX: Use Libertine and Ysabeau with newtxmath for math
-        \RequirePackage{libertineRoman}      % Main serif font (Libertine)
-        \RequirePackage[lf]{ysabeau}         % Sans-serif font (Ysabeau)
-        \RequirePackage[libertine,varbb]{newtxmath} % Math font (newtxmath, matches Libertine)
-        \RequirePackage[cal=pxtx,bb=esstix,scr=esstix]{mathalpha} % Math alphabets
+        % pdfLaTeX: Use FBB and Biolinum with newtxmath for math
+        \RequirePackage{fbb}
+        \RequirePackage{biolinum}
+        \RequirePackage[libertine,varbb]{newtxmath}
+        \RequirePackage[cal=pxtx,bb=esstix,scr=esstix]{mathalpha}
         \typeout{csamsmath: Libertine/Ysabeau/newtxmath setup for pdfLaTeX}
     \fi
 \fi
@@ -391,8 +391,8 @@
 \setlist[enumerate,3]{label=(\Roman*)}
 
 % Itemize customization by level
-\setlist[itemize,1]{label=\ensuremath{\bullet}}
-\setlist[itemize,2]{label=\ensuremath{\textendash}}
+\setlist[itemize,1]{label=\ensuremath{\text{-}}}
+\setlist[itemize,2]{label=\ensuremath{\bullet}}
 \setlist[itemize,3]{label=\ensuremath{\circ}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
