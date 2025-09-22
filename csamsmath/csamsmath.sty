@@ -1,406 +1,240 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% csamsmath.sty - Comprehensive Academic Math Support Package
+% csamsmath.sty — Comprehensive Academic Math Support Package
 % Author: Agni Datta
-% Version: 1.0
-% Date: 2025-08-20
+% Version: 1.2
+% Date: 2025-09-22
 % License: LaTeX Project Public License v1.3c or later
 %
-% OVERVIEW:
-% csamsmath is an all-in-one package for academic and technical writing,
-% especially in mathematics, physics, computer science, and other STEM fields.
-% It bundles a wide range of features and best practices for professional
-% document typesetting, so you can start writing immediately without worrying
-% about loading dozens of packages or configuring environments.
+% OVERVIEW
+%   All-in-one setup for academic STEM documents. Ships professional
+%   typography, robust math, figures/tables, links, captions, and 50+ coherent
+%   theorem-like environments. Uses thmtools (modern amsthm front-end) for
+%   theorem management and cleveref integration.
 %
-% PHILOSOPHY:
-% The philosophy is simple: write fast, have all the features at once, so you
-% do not need to load everything again and again, and get everything working
-% efficiently and start writing. Just load csamsmath and focus on your content.
+% PHILOSOPHY
+%   Load once, write immediately, avoid boilerplate. Defaults are sensible and
+%   overridable.
 %
-% MAIN FEATURES:
-% - 50+ theorem-like environments with custom styling
-% - Professional typography (Libertine fonts, microtypography)
-% - Advanced table and figure handling (subfigures, booktabs)
-% - Cross-referencing with cleveref
-% - Enhanced mathematical typesetting (AMS packages, mathtools)
-% - Professional caption formatting
-% - Hyperlink configuration with attractive color scheme
-% - Bibliography back-references
-% - Multiple column layouts and text formatting
-% - Boxing and framing environments
+% ENGINES
+%   pdfLaTeX and LuaLaTeX supported. XeLaTeX not required.
 %
-% USAGE:
-% Load the package in your preamble:
-%   \usepackage{csamsmath}
+% FONT OPTIONS
+%   Package options:
+%     [libertine]   — Linux Libertine/Libertinus text + math (default)
+%     [latinmodern] — Latin Modern text; math follows engine (LM Math on LuaLaTeX,
+%                     Computer Modern math on pdfLaTeX)
 %
-% THEOREM ENVIRONMENTS PROVIDED:
-%   Theorem-like (bold, italic): theorem, lemma, proposition, corollary,
-%     conjecture, claim, assertion, hypothesis, criterion, fact, folklore,
-%     observation, postulate, property, axiom, conclusion
-%   Definition-like (bold, upright): definition, example, problem, solution,
-%     construction, convention, application, experiment, protocol, result,
-%     step, notation
-%   Remark-like (small caps, upright): remark, note, commentary, discussion,
-%     exercise, motivation, question, syntax, notationabuse, openproblem
-%   Highlight-like (sans serif, upright): important, warning, tip, guideline,
-%     highlight, insight, keypoint, recall, summary, takeaway
-%   Unnumbered versions available with * suffix for selected environments.
-%
-% DEPENDENCIES:
-% Requires a modern LaTeX installation with:
-%   amsmath, amssymb, mathtools, xcolor, hyperref, cleveref,
-%   graphicx, caption, booktabs, enumitem, microtype, babel, fontenc.
-% Optional fonts: libertineRoman, newtxmath, ysabeau, AnonymousPro.
-%
-% COMPATIBILITY:
-% Compatible with standard document classes (article, report, book).
-% Tested with pdfLaTeX, XeLaTeX, and LuaLaTeX engines.
-%
-% CHANGELOG:
-% v1.0 (2025-08-20) - Initial release with full feature set
+% USAGE
+%   \usepackage[libertine]{csamsmath}
+%   \usepackage[latinmodern]{csamsmath}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{csamsmath}[2025/08/20 v1.0 Scientific Academic Math Support by Agni Datta]
+\ProvidesPackage{csamsmath}[2025/09/22 v1.2 STEM setup (thmtools, font switch)]
 
+% -----------------------------------------------------------------------------
+% OPTIONS
+% -----------------------------------------------------------------------------
+\newif\ifcsam@libertine
+\csam@libertinetrue % default
+\DeclareOption{libertine}{\csam@libertinetrue}
+\DeclareOption{latinmodern}{\csam@libertinefalse}
+\ProcessOptions\relax
+
+% -----------------------------------------------------------------------------
+% INTERNALS
+% -----------------------------------------------------------------------------
 \makeatletter
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% CORE PROGRAMMING AND UTILITY PACKAGES
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% These packages provide core programming, patching, and utility macros
-\RequirePackage{calc}      % Arithmetic with lengths and counters
-\RequirePackage{comment}   % Commenting out blocks of code
-\RequirePackage{etoolbox}  % Robust programming tools (patching, booleans, etc.)
-\RequirePackage{ifpdf}     % Detect pdfTeX
-\RequirePackage{iftex}     % Detect TeX engine (pdfTeX, XeTeX, LuaTeX)
-\RequirePackage{lipsum}    % Dummy text for testing
-\RequirePackage{xkeyval}   % Key-value option processing
-\RequirePackage{xparse}    % Modern command parsing
-\RequirePackage{xpatch}    % Robust command patching
+% Avoid accidental prior amsthm customizations (similar to amsbook undo)
+\expandafter\let\csname ver@amsthm.sty\endcsname\relax
+\let\theoremstyle\relax
+\let\newtheoremstyle\relax
+\let\pushQED\relax
+\let\popQED\relax
+\let\qedhere\relax
+\let\mathqed\relax
+\let\openbox\relax
+\let\proof\relax
+\let\endproof\relax
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% PATCH THE TITLE FORMATTING
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Patch the title to use small caps and large font, not uppercase
-\newcommand*\csamsmath@patchtitle{%
-    \xpatchcmd{\@settitle}
-    {\uppercasenonmath\@title}
-    {\normalfont\scshape\Large}
-    {}{\PatchFailure}
-    \RequirePackage{setspace} % Line spacing control
-    \setstretch{1.15}         % Slightly increased line spacing
-}
-\csamsmath@patchtitle
+% -----------------------------------------------------------------------------
+% CORE UTILITY PACKAGES
+% -----------------------------------------------------------------------------
+\RequirePackage{calc}
+\RequirePackage{comment}
+\RequirePackage{etoolbox}
+\RequirePackage{ifpdf}
+\RequirePackage{iftex}
+\RequirePackage{xkeyval}
+\RequirePackage{xparse}
+\RequirePackage{xpatch}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% -----------------------------------------------------------------------------
 % COLOR MANAGEMENT
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Load xcolor with all major color models for flexible color support
-\RequirePackage[
-    dvipsnames,
-    svgnames,
-    table,
-    x11names
-]{xcolor}
+% -----------------------------------------------------------------------------
+\RequirePackage[dvipsnames,svgnames,table,x11names]{xcolor}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% CORE DOCUMENT STRUCTURE AND PDF MANAGEMENT
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% PDF versioning, page layout, and PDF page inclusion
-\RequirePackage[2.0,objcompress,compress]{bxpdfver} % PDF version and compression
-\RequirePackage{fullpage}    % Reduce page margins
-\RequirePackage{pdfpages}    % Include external PDF pages
-\RequirePackage{refcount}    % Reference counter values
+% -----------------------------------------------------------------------------
+% PDF VERSIONING AND LAYOUT PRIMITIVES
+% -----------------------------------------------------------------------------
+\RequirePackage[2.0,objcompress,compress]{bxpdfver}
+\RequirePackage{fullpage}
+\RequirePackage{pdfpages}
+\RequirePackage{refcount}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% ENCODING, LANGUAGE, AND LOCALIZATION
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Font encoding and language support
-\RequirePackage[T1]{fontenc}         % Modern font encoding
-\RequirePackage[USenglish]{babel}    % US English hyphenation and strings
+% -----------------------------------------------------------------------------
+% LANGUAGE, ENCODING, MICROTYPE
+% -----------------------------------------------------------------------------
+\RequirePackage[T1]{fontenc}
+\RequirePackage[USenglish]{babel}
+\RequirePackage[autostyle=true,csdisplay=true]{csquotes}
+\RequirePackage[final]{microtype}
+\RequirePackage[full]{textcomp}
+\RequirePackage{emptypage}
+\RequirePackage{moresize}
+\RequirePackage{paralist}
+\RequirePackage{pifont}
+\RequirePackage{soul}
+\RequirePackage{xspace}
+\RequirePackage{xurl}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
-% TEXT, LAYOUT, AND MISCELLANEOUS ENHANCEMENTS
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Quoting, microtypography, symbols, citation, and text utilities
-\RequirePackage[autostyle=true,csdisplay=true]{csquotes} % Smart quotes
-\RequirePackage[final]{microtype}     % Microtypographic enhancements
-\RequirePackage[full]{textcomp}       % Extra text symbols
-\RequirePackage[nocompress]{cite}     % Improved citation handling
-\RequirePackage[normalem]{ulem}       % Underlining and emphasis
-\RequirePackage{emptypage}            % Suppress headers/footers on blank pages
-\RequirePackage{moresize}             % More font size commands
-\RequirePackage{paralist}             % Compact lists
-\RequirePackage{pifont}               % Dingbats and symbols
-\RequirePackage{soul}                 % Highlighting and letter spacing
-\RequirePackage{xspace}               % Smart space after macros
-\RequirePackage{xurl}                 % Line-breakable URLs
+% -----------------------------------------------------------------------------
+% MATH CORE
+% -----------------------------------------------------------------------------
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{mathtools}
+\RequirePackage{nicefrac}
+\RequirePackage{siunitx}
+\RequirePackage{mathrsfs}
+\RequirePackage{amsthm}
+\RequirePackage{thmtools}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% TYPOGRAPHY AND FONTS
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Mathematical and text font setup, modularized by engine
-
-% Core math and symbol packages
-\RequirePackage{amsmath}    % Core math environments (align, gather, etc.)
-\RequirePackage{amssymb}    % Extra math symbols (\mathbb, \mathfrak, etc.)
-\RequirePackage{mathtools}  % Math extensions and bug fixes
-\RequirePackage{nicefrac}   % Slanted fractions in text and math
-\RequirePackage{siunitx}    % SI units and number formatting
-\RequirePackage{mathrsfs}   % \mathscr calligraphic script
-
-% Font setup for different engines
+% -----------------------------------------------------------------------------
+% FONTS PER ENGINE WITH OPTION SWITCH
+% -----------------------------------------------------------------------------
 \ifLuaTeX
-    % LuaTeX: Use fontspec and unicode-math for full OpenType support
     \RequirePackage{fontspec}
     \RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
-    % Main serif font: FBB
-    \setmainfont{fbb}[
-        Extension             = .otf,
-        SmallCapsFeatures     = {RawFeature=+smcp},
-        RawFeature            = {+calt,+case,+cpsp,+kern,+liga,+lnum,+mark,+mkmk,+pnum,+ss06},
-        UprightFont           = *-Regular,
-        ItalicFont            = *-Italic,
-        ItalicFeatures        = {SmallCapsFont = *-Italic},
-        SlantedFont           = *-Regular,
-        SlantedFeatures       = {FakeSlant=0.2},
-        BoldFont              = *-Bold,
-        BoldFeatures          = {SmallCapsFont = *-Bold},
-        BoldItalicFont        = *-Italic,
-        BoldItalicFeatures    = {RawFeature={embolden=3}, SmallCapsFont = *-Italic},
-        BoldSlantedFont       = *-Bold,
-        BoldSlantedFeatures   = {FakeSlant=0.2, SmallCapsFont = *-Bold},
-        SmallCapsFont         = *-Regular,
-        SmallCapsFeatures     = {RawFeature=+smcp},
-    ]
-    % Math fonts: Garamond-Math, OldStandard-Math, FBB for numerals
-    \setmathfont{Garamond-Math}[
-        Extension             = .otf,
-        Scale                 = MatchUppercase,
-        AutoFakeBold
-    ]
-    % Monospace font: NotoSansMono
-    \setmonofont{NotoSansMono}[
-        Extension             = .ttf,
-        RawFeature            = {+calt,+case,+kern,+liga,+lnum,+mark,+mkmk,+pnum},
-        Scale                 = MatchLowercase,
-        UprightFont           = *-Regular,
-        ItalicFont            = *-Regular,
-        ItalicFeatures        = {SmallCapsFont = *-Regular},
-        SlantedFont           = *-Regular,
-        SlantedFeatures       = {FakeSlant=0.2},
-        BoldFont              = *-Bold,
-        BoldFeatures          = {SmallCapsFont = *-Bold},
-        BoldItalicFont        = *-Bold,
-        BoldItalicFeatures    = {RawFeature={embolden=3}, SmallCapsFont = *-Regular},
-        BoldSlantedFont       = *-Bold,
-        BoldSlantedFeatures   = {FakeSlant=0.2, SmallCapsFont = *-Bold},
-        SmallCapsFont         = *-Regular,
-        SmallCapsFeatures     = {RawFeature=+smcp},
-    ]
-    % Sans-serif font: Ysabeau
-    \setsansfont{LibertinusSans}[
-        Extension             = .otf,
-        RawFeature            = {+calt,+case,+kern,+liga,+lnum,+mark,+mkmk,+pnum},
-        Scale                 = MatchUppercase,
-        UprightFont           = *-Regular,
-        ItalicFont            = *-Italic,
-        ItalicFeatures        = {SmallCapsFont = *-Italic},
-        SlantedFont           = *-Regular,
-        SlantedFeatures       = {FakeSlant=0.2},
-        BoldFont              = *-Bold,
-        BoldFeatures          = {SmallCapsFont = *-Bold},
-        BoldItalicFont        = *-Italic,
-        BoldItalicFeatures    = {RawFeature={embolden=3}, SmallCapsFont = *-Italic},
-        BoldSlantedFont       = *-Bold,
-        BoldSlantedFeatures   = {FakeSlant=0.2, SmallCapsFont = *-Bold},
-        SmallCapsFont         = *-Regular,
-        SmallCapsFeatures     = {RawFeature=+smcp},
-    ]
-    % Remove math font clashes from unicode-math
-    \let\mathbfcal\relax
-    \let\mathbfscr\relax
-    \RequirePackage{mathrsfs}
-    \RequirePackage[lbtn, supsotf=fbb]{superiors}
-    \RequirePackage[cal=pxtx,bb=esstix,scr=esstix]{mathalpha}
-    \typeout{csamsmath: Libertinus/FBB/Ysabeau/OldStandard setup for LuaTeX}
-\else
-    \ifXeTeX
-        % XeTeX: Use fontspec and unicode-math for OpenType support
-        \RequirePackage{fontspec}
-        \RequirePackage{unicode-math}
-        % Main serif font: FBB
-        \setmainfont{fbb}[
-            Extension             = .otf,
-            SmallCapsFeatures     = {RawFeature=+smcp},
-            RawFeature            = {+calt,+case,+cpsp,+kern,+liga,+lnum,+mark,+mkmk,+pnum,+ss06},
-            UprightFont           = *-Regular,
-            ItalicFont            = *-Italic,
-            ItalicFeatures        = {SmallCapsFont = *-Italic},
-            SlantedFont           = *-Regular,
-            SlantedFeatures       = {FakeSlant=0.2},
-            BoldFont              = *-Bold,
-            BoldFeatures          = {SmallCapsFont = *-Bold},
-            BoldItalicFont        = *-Italic,
-            BoldItalicFeatures    = {RawFeature={embolden=3}, SmallCapsFont = *-Italic},
-            BoldSlantedFont       = *-Bold,
-            BoldSlantedFeatures   = {FakeSlant=0.2, SmallCapsFont = *-Bold},
-            SmallCapsFont         = *-Regular,
-            SmallCapsFeatures     = {RawFeature=+smcp},
+    \ifcsam@libertine
+        % Libertine/Libertinus stack (LuaLaTeX)
+        \setmainfont{Libertinus Serif}[
+            SmallCapsFeatures = {RawFeature=+smcp},
+            RawFeature = {+calt,+case,+cpsp,+kern,+liga,+lnum,+pnum},
         ]
-        % Math fonts: Garamond-Math, OldStandard-Math, FBB for numerals
-        \setmathfont{Garamond-Math}[
-            Extension             = .otf,
-            Scale                 = MatchUppercase,
-            AutoFakeBold
+        \setsansfont{Libertinus Sans}[
+            Scale=MatchLowercase,
+            RawFeature={+calt,+liga,+lnum,+pnum}
         ]
-        \setmathfont{OldStandard-Math}[
-        Extension             = .otf,
-        Scale                 = MatchUppercase,
-        range                 = {up/{Latin,latin,Greek,greek},bfup/{Latin,latin,Greek,greek},it/{Latin,latin,Greek,greek}},
-        AutoFakeBold
+        \setmonofont{Latin Modern Mono}[
+            Scale=MatchLowercase,
+            RawFeature={+calt,+liga,+lnum,+pnum}
         ]
-        % Monospace font: NotoSansMono
-        \setmonofont{NotoSansMono}[
-            Extension             = .ttf,
-            RawFeature            = {+calt,+case,+kern,+liga,+lnum,+mark,+mkmk,+pnum},
-            Scale                 = MatchLowercase,
-            UprightFont           = *-Regular,
-            ItalicFont            = *-Regular,
-            ItalicFeatures        = {SmallCapsFont = *-Regular},
-            SlantedFont           = *-Regular,
-            SlantedFeatures       = {FakeSlant=0.2},
-            BoldFont              = *-Bold,
-            BoldFeatures          = {SmallCapsFont = *-Bold},
-            BoldItalicFont        = *-Bold,
-            BoldItalicFeatures    = {RawFeature={embolden=3}, SmallCapsFont = *-Regular},
-            BoldSlantedFont       = *-Bold,
-            BoldSlantedFeatures   = {FakeSlant=0.2, SmallCapsFont = *-Bold},
-            SmallCapsFont         = *-Regular,
-            SmallCapsFeatures     = {RawFeature=+smcp},
-        ]
-        % Sans-serif font: Ysabeau
-        \setsansfont{LibertinusSans}[
-            Extension             = .otf,
-            RawFeature            = {+calt,+case,+kern,+liga,+lnum,+mark,+mkmk,+pnum},
-            Scale                 = MatchUppercase,
-            UprightFont           = *-Regular,
-            ItalicFont            = *-Italic,
-            ItalicFeatures        = {SmallCapsFont = *-Italic},
-            SlantedFont           = *-Regular,
-            SlantedFeatures       = {FakeSlant=0.2},
-            BoldFont              = *-Bold,
-            BoldFeatures          = {SmallCapsFont = *-Bold},
-            BoldItalicFont        = *-Italic,
-            BoldItalicFeatures    = {RawFeature={embolden=3}, SmallCapsFont = *-Italic},
-            BoldSlantedFont       = *-Bold,
-            BoldSlantedFeatures   = {FakeSlant=0.2, SmallCapsFont = *-Bold},
-            SmallCapsFont         = *-Regular,
-            SmallCapsFeatures     = {RawFeature=+smcp},
-        ]
-        % Remove math font clashes from unicode-math
-        \let\mathbfcal\relax
-        \let\mathbfscr\relax
-        \RequirePackage{mathrsfs}
-        \RequirePackage[lbtn,supsotf=fbb]{superiors}
+        \setmathfont{Libertinus Math}
+        \let\mathbfcal\relax\let\mathbfscr\relax
         \RequirePackage[cal=pxtx,bb=esstix,scr=esstix]{mathalpha}
-        \typeout{csamsmath: Libertinus/FBB/Ysabeau/OldStandard setup for XeTeX}
     \else
-        % pdfLaTeX: Use FBB and Biolinum with newtxmath for math
-        \RequirePackage{fbb}
+        % Latin Modern stack (LuaLaTeX)
+        \setmainfont{Latin Modern Roman}[
+            Ligatures=TeX,
+            SmallCapsFont = Latin Modern Roman Caps,
+            RawFeature   = {+calt,+case,+cpsp,+kern,+liga,+lnum,+pnum}
+        ]
+        \setsansfont{Latin Modern Sans}[Scale=MatchUppercase,Ligatures=TeX]
+        \setmonofont{Latin Modern Mono}[Scale=MatchLowercase,Ligatures=TeX]
+        \setmathfont{Latin Modern Math}
+        \let\mathbfcal\relax\let\mathbfscr\relax
+        \RequirePackage[cal=cm,bb=esstix,scr=esstix]{mathalpha}
+    \fi
+\else
+    % pdfLaTeX
+    \ifcsam@libertine
+        \RequirePackage{libertineRoman}
         \RequirePackage{biolinum}
         \RequirePackage[libertine,varbb]{newtxmath}
         \RequirePackage[cal=pxtx,bb=esstix,scr=esstix]{mathalpha}
-        \typeout{csamsmath: Libertine/Ysabeau/newtxmath setup for pdfLaTeX}
+    \else
+        \RequirePackage{lmodern}
+        % Use Computer Modern math with ams packages
+        \RequirePackage[cal=pxtx,bb=esstix,scr=esstix]{mathalpha}
     \fi
 \fi
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% FIGURES, GRAPHICS, AND VISUAL ELEMENTS
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Core Graphics
-\RequirePackage{graphicx}      % Include graphics
+% -----------------------------------------------------------------------------
+% GRAPHICS, FLOATS, CAPTIONS
+% -----------------------------------------------------------------------------
+\RequirePackage{graphicx}
+\RequirePackage{floatrow}
+\RequirePackage{placeins}
+\RequirePackage{rotating}
+\RequirePackage{pdflscape}
+\RequirePackage{caption}
+\RequirePackage{subcaption}
+\RequirePackage{wrapfig}
+\RequirePackage{adjustbox}
+\RequirePackage{dashbox}
+\RequirePackage{fancybox}
+\RequirePackage{framed}
 
-% Float Management
-\RequirePackage{floatrow}      % Advanced float layouts
-\RequirePackage{placeins}      % Control float placement
-\RequirePackage{rotating}      % Rotated floats
-\RequirePackage{pdflscape}     % Landscape pages
+\AtBeginDocument{%
+    \captionsetup{%
+        font={sf,small},
+        labelfont={color=black,sc,small},
+        labelsep=period,
+        skip=5pt,
+        justification=justified
+    }%
+    \captionsetup[table]{position=bottom, skip=5pt}
+    \captionsetup[figure]{position=bottom, skip=5pt}
+}
 
-% Subfigures and Captions
-\RequirePackage{caption}       % Custom captions
-\RequirePackage{subcaption}    % Subfigures
+% -----------------------------------------------------------------------------
+% TABLE SUITE
+% -----------------------------------------------------------------------------
+\RequirePackage{array}
+\RequirePackage{tabularx}
+\RequirePackage{tabularray}
+\RequirePackage{longtable}
+\RequirePackage{xtab}
+\RequirePackage{booktabs}
+\RequirePackage{hhline}
+\RequirePackage{colortbl}
+\RequirePackage{makecell}
+\RequirePackage{multirow}
+\RequirePackage{diagbox}
+\RequirePackage{threeparttable}
 
-% Text Integration
-\RequirePackage{wrapfig}       % Text-wrapped figures
+% -----------------------------------------------------------------------------
+% TEXT LAYOUT AND RULES
+% -----------------------------------------------------------------------------
+\RequirePackage{multicol}
+\RequirePackage{ragged2e}
+\RequirePackage{verbatim}
+\RequirePackage{xhfill}
 
-% Boxing and Framing
-\RequirePackage{adjustbox}     % Adjustable boxes
-\RequirePackage{dashbox}       % Dashed boxes
-\RequirePackage{fancybox}      % Fancy boxes
-\RequirePackage{framed}        % Framed environments
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% TABLES AND TABULAR ENVIRONMENTS
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Core Table Packages
-\RequirePackage{array}         % Extended tabular
-\RequirePackage{tabularx}      % Tabular with adjustable-width columns
-\RequirePackage{tabularray}    % Modern tabular
-\RequirePackage{longtable}     % Multipage tables
-\RequirePackage{xtab}          % More multipage tables
-
-% Table Formatting
-\RequirePackage{booktabs}      % Professional-quality tables
-\RequirePackage{hhline}        % Custom horizontal lines
-\RequirePackage{colortbl}      % Colored table cells
-\RequirePackage{makecell}      % Line breaks in table cells
-\RequirePackage{multirow}      % Multirow cells
-\RequirePackage{diagbox}       % Diagonal table headers
-
-% Table Annotations
-\RequirePackage{threeparttable}% Table notes
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% TEXT LAYOUT AND STRUCTURE
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{multicol}      % Multiple columns
-\RequirePackage{ragged2e}      % Improved ragged alignment
-\RequirePackage{verbatim}      % Verbatim text
-\RequirePackage{xhfill}        % Custom horizontal rules
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% LIST CUSTOMIZATION
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{enumitem}      % Customizable lists
-
-% Global list formatting
+% -----------------------------------------------------------------------------
+% LISTS
+% -----------------------------------------------------------------------------
+\RequirePackage{enumitem}
 \setlist{nosep}
-
-% Enumerate customization by level
 \setlist[enumerate,1]{label=(\arabic*)}
 \setlist[enumerate,2]{label=(\alph*)}
 \setlist[enumerate,3]{label=(\Roman*)}
-
-% Itemize customization by level
 \setlist[itemize,1]{label=\ensuremath{\text{-}}}
 \setlist[itemize,2]{label=\ensuremath{\bullet}}
 \setlist[itemize,3]{label=\ensuremath{\circ}}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% HYPERLINKS AND CROSS-REFERENCING
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{nameref}       % Named references
-
-% Hyperref Configuration
-\RequirePackage[%
+% -----------------------------------------------------------------------------
+% HYPERLINKS AND XREF
+% -----------------------------------------------------------------------------
+\RequirePackage{nameref}
+\RequirePackage[
     bookmarksnumbered=true,
     breaklinks=true,
     citecolor=DodgerBlue3,
     colorlinks=true,
-    frenchlinks=true,
     linkcolor=RoyalBlue3,
     pagebackref,
     pdfencoding=auto,
@@ -412,104 +246,130 @@
     urlcolor=Turquoise4
 ]{hyperref}
 
-% Cross-document references
-\RequirePackage{xr}            % External document references
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% THEOREM ENVIRONMENTS SETUP
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Modularized theorem style and environment setup
-
-% Custom theorem styles
-\newtheoremstyle{theoremlike}
-{3pt}{3pt}{\normalfont}{}{\bfseries}{.}{.5em}{}
-\newtheoremstyle{definitionlike}
-{3pt}{3pt}{\normalfont}{}{\bfseries}{.}{.5em}{}
-\newtheoremstyle{remarklike}
-{3pt}{3pt}{\normalfont}{}{\scshape}{.}{.5em}{}
-\newtheoremstyle{highlightlike}
-{3pt}{3pt}{\normalfont}{}{\sffamily}{.}{.5em}{}
-
-% Theorem-like environments
-\theoremstyle{theoremlike}
-\newtheorem{theorem}{Theorem}[section]
-\newtheorem{assertion}[theorem]{Assertion}
-\newtheorem{assumption}[theorem]{Assumption}
-\newtheorem{axiom}[theorem]{Axiom}
-\newtheorem{claim}[theorem]{Claim}
-\newtheorem{conclusion}[theorem]{Conclusion}
-\newtheorem{conjecture}[theorem]{Conjecture}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{criterion}[theorem]{Criterion}
-\newtheorem{fact}[theorem]{Fact}
-\newtheorem{folklore}[theorem]{Folklore}
-\newtheorem{hypothesis}[theorem]{Hypothesis}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{observation}[theorem]{Observation}
-\newtheorem{postulate}[theorem]{Postulate}
-\newtheorem{property}[theorem]{Property}
-\newtheorem{proposition}[theorem]{Proposition}
-
-% Definition-like environments
-\theoremstyle{definitionlike}
-\newtheorem{application}[theorem]{Application}
-\newtheorem{construction}[theorem]{Construction}
-\newtheorem{convention}[theorem]{Convention}
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{example}[theorem]{Example}
-\newtheorem{experiment}[theorem]{Experiment}
-\newtheorem{problem}[theorem]{Problem}
-\newtheorem{protocol}[theorem]{Protocol}
-\newtheorem{result}[theorem]{Result}
-\newtheorem{solution}[theorem]{Solution}
-\newtheorem{step}[theorem]{Step}
-\newtheorem{notation}[theorem]{Notation}
-
-% Remark-like environments
-\theoremstyle{remarklike}
-\newtheorem{commentary}[theorem]{Commentary}
-\newtheorem{discussion}[theorem]{Discussion}
-\newtheorem{exercise}[theorem]{Exercise}
-\newtheorem{motivation}[theorem]{Motivation}
-\newtheorem{notationabuse}[theorem]{Notation Abuse}
-\newtheorem{note}[theorem]{Note}
-\newtheorem{openproblem}[theorem]{Open Problem}
-\newtheorem{question}[theorem]{Question}
-\newtheorem{remark}[theorem]{Remark}
-\newtheorem{syntax}[theorem]{Syntax}
-
-% Highlight environments
-\theoremstyle{highlightlike}
-\newtheorem{guideline}[theorem]{Guideline}
-\newtheorem{highlight}[theorem]{Highlight}
-\newtheorem{important}[theorem]{Important}
-\newtheorem{insight}[theorem]{Insight}
-\newtheorem{keypoint}[theorem]{Key Point}
-\newtheorem{recall}[theorem]{Recall}
-\newtheorem{summary}[theorem]{Summary}
-\newtheorem{takeaway}[theorem]{Takeaway}
-\newtheorem{tip}[theorem]{Tip}
-\newtheorem{warning}[theorem]{Warning}
-
-% Unnumbered environments
-\theoremstyle{theoremlike}
-\newtheorem*{claim*}{Claim}
-\newtheorem*{conjecture*}{Conjecture}
-\newtheorem*{corollary*}{Corollary}
-\newtheorem*{hypothesis*}{Hypothesis}
-\newtheorem*{lemma*}{Lemma}
-\newtheorem*{theorem*}{Theorem}
-
-\theoremstyle{remarklike}
-\newtheorem*{openproblem*}{Open Problem}
-\newtheorem*{syntax*}{Syntax}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% CLEVEREF SETUP
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Modularized cleveref setup for cross-referencing
 \RequirePackage[capitalize,nameinlink,noabbrev]{cleveref}
-% Sectioning names
+\RequirePackage{xr}
+
+% -----------------------------------------------------------------------------
+% TITLE PATCH — small caps, large; guard if \@settitle undefined
+% -----------------------------------------------------------------------------
+\newcommand*\csamsmath@patchtitle{%
+    \@ifundefined{@settitle}{}{%
+        \xpatchcmd{\@settitle}{\uppercasenonmath\@title}{\normalfont\scshape\Large}{}{}%
+    }%
+    \RequirePackage{setspace}\setstretch{1.15}%
+}
+\csamsmath@patchtitle
+
+% -----------------------------------------------------------------------------
+% BIBLIOGRAPHY BACK-REF TEXT
+% -----------------------------------------------------------------------------
+\renewcommand*{\backref}[1]{}
+\renewcommand*{\backrefalt}[4]{%
+    \ifcase #1\or (Cited on p.~#2).%
+    \else (Cited on pp.~#2).%
+    \fi
+}
+
+% =============================================================================
+% THEOREM SYSTEM — thmtools + cleveref
+% =============================================================================
+
+\numberwithin{equation}{section}
+
+% Styles
+\declaretheoremstyle[
+    headfont=\bfseries,
+    bodyfont=\itshape,
+    spaceabove=3pt, spacebelow=3pt,
+    headpunct=.,
+    postheadspace=.5em
+]{csam@theoremlike}
+
+\declaretheoremstyle[
+    headfont=\bfseries,
+    bodyfont=\normalfont,
+    spaceabove=3pt, spacebelow=3pt,
+    headpunct=.,
+    postheadspace=.5em
+]{csam@definitionlike}
+
+\declaretheoremstyle[
+    headfont=\scshape,
+    bodyfont=\normalfont,
+    spaceabove=3pt, spacebelow=3pt,
+    headpunct=.,
+    postheadspace=.5em
+]{csam@remarklike}
+
+\declaretheoremstyle[
+    headfont=\sffamily\bfseries,
+    bodyfont=\normalfont,
+    spaceabove=3pt, spacebelow=3pt,
+    headpunct=.,
+    postheadspace=.5em
+]{csam@highlightlike}
+
+% Base counter
+\declaretheorem[name=Theorem,style=csam@theoremlike,numberwithin=section]{theorem}
+
+% Sibling declaration helper
+\newcommand\csam@declaretheoremfamily[2]{%
+    \forcsvlist{\declaretheorem[sibling=theorem,style=#1]}{#2}%
+}
+
+% Theorem-like
+\csam@declaretheoremfamily{csam@theoremlike}{%
+    assertion,assumption,axiom,claim,conclusion,conjecture,corollary,criterion,
+    fact,folklore,hypothesis,lemma,observation,postulate,property,proposition
+}
+
+% Definition-like
+\csam@declaretheoremfamily{csam@definitionlike}{%
+    application,construction,convention,definition,example,experiment,problem,
+    protocol,result,solution,step,notation
+}
+
+% Remark-like
+\csam@declaretheoremfamily{csam@remarklike}{%
+    commentary,discussion,exercise,motivation,notationabuse,note,openproblem,
+    question,remark,syntax
+}
+
+% Highlight-like
+\csam@declaretheoremfamily{csam@highlightlike}{%
+    guideline,highlight,important,insight,keypoint,recall,summary,takeaway,tip,warning
+}
+
+% Unnumbered representatives
+\declaretheorem[name=Theorem,style=csam@theoremlike,numbered=no]{theorem*}
+\declaretheorem[name=Lemma,style=csam@theoremlike,numbered=no]{lemma*}
+\declaretheorem[name=Corollary,style=csam@theoremlike,numbered=no]{corollary*}
+\declaretheorem[name=Hypothesis,style=csam@theoremlike,numbered=no]{hypothesis*}
+\declaretheorem[name=Claim,style=csam@theoremlike,numbered=no]{claim*}
+\declaretheorem[name=Conjecture,style=csam@theoremlike,numbered=no]{conjecture*}
+\declaretheorem[name=Open Problem,style=csam@remarklike,numbered=no]{openproblem*}
+\declaretheorem[name=Syntax,style=csam@remarklike,numbered=no]{syntax*}
+
+% -----------------------------------------------------------------------------
+% CUSTOM PROOF ENVIRONMENT
+% -----------------------------------------------------------------------------
+\let\proof\relax
+\let\endproof\relax
+
+\declaretheoremstyle[
+    headfont=\itshape,
+    bodyfont=\normalfont,
+    spaceabove=5pt, spacebelow=5pt,
+    headpunct={.},
+    postheadspace=0.5em,
+    qed=\ensuremath{\square}
+]{csam@proofstyle}
+
+\declaretheorem[name=Proof,style=csam@proofstyle,numbered=no]{proof}
+
+% -----------------------------------------------------------------------------
+% cleveref names
+% -----------------------------------------------------------------------------
 \crefname{section}{\textsection}{\textsection\textsection}
 \Crefname{section}{\textsection}{\textsection\textsection}
 \crefname{subsection}{\textsection}{\textsection\textsection}
@@ -520,143 +380,74 @@
 \Crefname{paragraph}{Paragraph}{Paragraphs}
 \crefname{subparagraph}{subparagraph}{subparagraphs}
 \Crefname{subparagraph}{Subparagraph}{Subparagraphs}
-% Theorem-like environments
-\crefname{theorem}{theorem}{theorems}
-\Crefname{theorem}{Theorem}{Theorems}
-\crefname{assertion}{assertion}{assertions}
-\Crefname{assertion}{Assertion}{Assertions}
-\crefname{assumption}{assumption}{assumptions}
-\Crefname{assumption}{Assumption}{Assumptions}
-\crefname{axiom}{axiom}{axioms}
-\Crefname{axiom}{Axiom}{Axioms}
-\crefname{claim}{claim}{claims}
-\Crefname{claim}{Claim}{Claims}
-\crefname{conclusion}{conclusion}{conclusions}
-\Crefname{conclusion}{Conclusion}{Conclusions}
-\crefname{conjecture}{conjecture}{conjectures}
-\Crefname{conjecture}{Conjecture}{Conjectures}
-\crefname{corollary}{corollary}{corollaries}
-\Crefname{corollary}{Corollary}{Corollaries}
-\crefname{criterion}{criterion}{criteria}
-\Crefname{criterion}{Criterion}{Criteria}
-\crefname{fact}{fact}{facts}
-\Crefname{fact}{Fact}{Facts}
-\crefname{folklore}{folklore}{folklore}
-\Crefname{folklore}{Folklore}{Folklore}
-\crefname{hypothesis}{hypothesis}{hypotheses}
-\Crefname{hypothesis}{Hypothesis}{Hypotheses}
-\crefname{lemma}{lemma}{lemmas}
-\Crefname{lemma}{Lemma}{Lemmas}
-\crefname{observation}{observation}{observations}
-\Crefname{observation}{Observation}{Observations}
-\crefname{postulate}{postulate}{postulates}
-\Crefname{postulate}{Postulate}{Postulates}
-\crefname{property}{property}{properties}
-\Crefname{property}{Property}{Properties}
-\crefname{proposition}{proposition}{propositions}
-\Crefname{proposition}{Proposition}{Propositions}
-% Definition-like environments
-\crefname{application}{application}{applications}
-\Crefname{application}{Application}{Applications}
-\crefname{construction}{construction}{constructions}
-\Crefname{construction}{Construction}{Constructions}
-\crefname{convention}{convention}{conventions}
-\Crefname{convention}{Convention}{Conventions}
-\crefname{definition}{definition}{definitions}
-\Crefname{definition}{Definition}{Definitions}
-\crefname{example}{example}{examples}
-\Crefname{example}{Example}{Examples}
-\crefname{experiment}{experiment}{experiments}
-\Crefname{experiment}{Experiment}{Experiments}
-\crefname{problem}{problem}{problems}
-\Crefname{problem}{Problem}{Problems}
-\crefname{protocol}{protocol}{protocols}
-\Crefname{protocol}{Protocol}{Protocols}
-\crefname{result}{result}{results}
-\Crefname{result}{Result}{Results}
-\crefname{solution}{solution}{solutions}
-\Crefname{solution}{Solution}{Solutions}
-\crefname{step}{step}{steps}
-\Crefname{step}{Step}{Steps}
-\crefname{notation}{notation}{notations}
-\Crefname{notation}{Notation}{Notations}
-% Remark-like environments
-\crefname{commentary}{commentary}{commentaries}
-\Crefname{commentary}{Commentary}{Commentaries}
-\crefname{discussion}{discussion}{discussions}
-\Crefname{discussion}{Discussion}{Discussions}
-\crefname{exercise}{exercise}{exercises}
-\Crefname{exercise}{Exercise}{Exercises}
-\crefname{motivation}{motivation}{motivations}
-\Crefname{motivation}{Motivation}{Motivations}
-\crefname{notationabuse}{notation abuse}{notation abuses}
-\Crefname{notationabuse}{Notation Abuse}{Notation Abuses}
-\crefname{note}{note}{notes}
-\Crefname{note}{Note}{Notes}
-\crefname{openproblem}{open problem}{open problems}
-\Crefname{openproblem}{Open Problem}{Open Problems}
-\crefname{question}{question}{questions}
-\Crefname{question}{Question}{Questions}
-\crefname{remark}{remark}{remarks}
-\Crefname{remark}{Remark}{Remarks}
-\crefname{syntax}{syntax}{syntaxes}
-\Crefname{syntax}{Syntax}{Syntaxes}
-% Highlight environments
-\crefname{guideline}{guideline}{guidelines}
-\Crefname{guideline}{Guideline}{Guidelines}
-\crefname{highlight}{highlight}{highlights}
-\Crefname{highlight}{Highlight}{Highlights}
-\crefname{important}{important point}{important points}
-\Crefname{important}{Important}{Important Points}
-\crefname{insight}{insight}{insights}
-\Crefname{insight}{Insight}{Insights}
-\crefname{keypoint}{key point}{key points}
-\Crefname{keypoint}{Key Point}{Key Points}
-\crefname{recall}{recall}{recalls}
-\Crefname{recall}{Recall}{Recalls}
-\crefname{summary}{summary}{summaries}
-\Crefname{summary}{Summary}{Summaries}
-\crefname{takeaway}{takeaway}{takeaways}
-\Crefname{takeaway}{Takeaway}{Takeaways}
-\crefname{tip}{tip}{tips}
-\Crefname{tip}{Tips}{Tips}
-\crefname{warning}{warning}{warnings}
-\Crefname{warning}{Warning}{Warnings}
-% Proof environment
-\crefname{proof}{proof}{proofs}
-\Crefname{proof}{Proof}{Proofs}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% CAPTION CONFIGURATION
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Modularized caption setup for figures and tables
-\AtBeginDocument{%
-    \captionsetup{%
-        font={sf,small},
-        labelfont={color=black,sc,small},
-        labelsep=period,
-        skip=5pt,
-        justification=justified
-    }%
-    % Position-specific caption settings
-    \captionsetup[table]{position=bottom, skip=5pt}
-    \captionsetup[figure]{position=bottom, skip=5pt}
+% Helper to bulk-assign names (no automatic uppercasing)
+\newcommand\csam@crefset[3]{%
+    \crefname{#1}{#2}{#3}%
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% BIBLIOGRAPHY BACK-REFERENCES
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Modularized backref setup for bibliography
-\renewcommand*{\backref}[1]{}
-\renewcommand*{\backrefalt}[4]{%
-    \ifcase #1\or (Cited on p.~#2).%
-    \else (Cited on pp.~#2).%
-    \fi
-}
+% Theorem-like block
+\csam@crefset{theorem}{theorem}{theorems}
+\csam@crefset{assertion}{assertion}{assertions}
+\csam@crefset{assumption}{assumption}{assumptions}
+\csam@crefset{axiom}{axiom}{axioms}
+\csam@crefset{claim}{claim}{claims}
+\csam@crefset{conclusion}{conclusion}{conclusions}
+\csam@crefset{conjecture}{conjecture}{conjectures}
+\csam@crefset{corollary}{corollary}{corollaries}
+\csam@crefset{criterion}{criterion}{criteria}
+\csam@crefset{fact}{fact}{facts}
+\csam@crefset{folklore}{folklore}{folklore}
+\csam@crefset{hypothesis}{hypothesis}{hypotheses}
+\csam@crefset{lemma}{lemma}{lemmas}
+\csam@crefset{observation}{observation}{observations}
+\csam@crefset{postulate}{postulate}{postulates}
+\csam@crefset{property}{property}{properties}
+\csam@crefset{proposition}{proposition}{propositions}
 
+% Definition-like block
+\csam@crefset{application}{application}{applications}
+\csam@crefset{construction}{construction}{constructions}
+\csam@crefset{convention}{convention}{conventions}
+\csam@crefset{definition}{definition}{definitions}
+\csam@crefset{example}{example}{examples}
+\csam@crefset{experiment}{experiment}{experiments}
+\csam@crefset{problem}{problem}{problems}
+\csam@crefset{protocol}{protocol}{protocols}
+\csam@crefset{result}{result}{results}
+\csam@crefset{solution}{solution}{solutions}
+\csam@crefset{step}{step}{steps}
+\csam@crefset{notation}{notation}{notations}
+
+% Remark-like block
+\csam@crefset{commentary}{commentary}{commentaries}
+\csam@crefset{discussion}{discussion}{discussions}
+\csam@crefset{exercise}{exercise}{exercises}
+\csam@crefset{motivation}{motivation}{motivations}
+\csam@crefset{notationabuse}{notation abuse}{notation abuses}
+\csam@crefset{note}{note}{notes}
+\csam@crefset{openproblem}{open problem}{open problems}
+\csam@crefset{question}{question}{questions}
+\csam@crefset{remark}{remark}{remarks}
+\csam@crefset{syntax}{syntax}{syntaxes}
+
+% Highlight-like block
+\csam@crefset{guideline}{guideline}{guidelines}
+\csam@crefset{highlight}{highlight}{highlights}
+\csam@crefset{important}{important point}{important points}
+\csam@crefset{insight}{insight}{insights}
+\csam@crefset{keypoint}{key point}{key points}
+\csam@crefset{recall}{recall}{recalls}
+\csam@crefset{summary}{summary}{summaries}
+\csam@crefset{takeaway}{takeaway}{takeaways}
+\csam@crefset{tip}{tip}{tips}
+\csam@crefset{warning}{warning}{warnings}
+
+% Proof
+\csam@crefset{proof}{proof}{proofs}
+
+% =============================================================================
+% FINALS
+% =============================================================================
 \makeatother
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% PACKAGE COMPLETION
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \endinput
