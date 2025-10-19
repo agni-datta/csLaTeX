@@ -387,10 +387,10 @@
 % Margin and Spacing
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \ifcsdirty@LoadFullPage
-	\RequirePackage[margin=2.5cm]{geometry}     	% Page layout
+	\RequirePackage[margin=1in]{geometry}     	% Page layout
 	\typeout{csdirty: Loading full page layout}
 \else
-	\RequirePackage[margin=3.5cm]{geometry}         % Page layout (default)
+	\RequirePackage[margin=3cm]{geometry}         % Page layout (default)
 	\typeout{csdirty: Loading default page layout}
 \fi
 
@@ -620,7 +620,7 @@
 				Scale=MatchLowercase,
 				SmallCapsFeatures={RawFeature=+smcp},
 				RawFeature={+calt,+case,+kern,+liga,+lnum,+mark,+mkmk,+pnum}
-			]{Ysabeau}
+			]{ysabeau}
 			\let\mathbfcal\relax
 			\let\mathbfscr\relax
 			\RequirePackage{mathrsfs}
