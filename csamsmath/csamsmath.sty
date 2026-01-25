@@ -244,7 +244,7 @@
     \ifcsam@palatino
         %% Palatino + Biolinum (LuaLaTeX)
         \setmainfont{TeX Gyre Pagella}[Ligatures=TeX]
-        \setsansfont{Biolinum}[Scale=MatchUppercase,Ligatures=TeX]
+        \setsansfont{Libertinus Sans}[Scale=MatchUppercase,Ligatures=TeX]
         \setmonofont{Latin Modern Mono}[Scale=MatchLowercase,Ligatures=TeX]
         \setmathfont{TeX Gyre Pagella Math}
         \let\mathbfcal\relax\let\mathbfscr\relax
@@ -804,7 +804,7 @@
     \ifcsam@printcoms
         \expandafter\newcommand\csname #1\endcsname[1]{%
             \textcolor{#3}{##1\ \textsc{#2}}%
-            \marginnote{\textcolor{#3}{\Large$\star$}}%
+            \marginnote{\textcolor{#3}{\LARGE$\star$}}%
         }%
     \else
         \expandafter\newcommand\csname #1\endcsname[1]{}%
@@ -819,7 +819,7 @@
 \ifcsam@printcoms
     \providecommand{\missing}[1]{%
         \textcolor{Crimson}{#1}%
-        \marginnote{\textcolor{Crimson}{\Large$\star$}}%
+        \marginnote{\textcolor{Crimson}{\LARGE$\star$}}%
     }
 \else
     \providecommand{\missing}[1]{}
