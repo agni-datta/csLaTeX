@@ -1,51 +1,65 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% csamsmath.sty — Comprehensive Academic Math Support Package
-% Author: Agni Datta
-% Version: 2.1
-% Date: 2026-01-26
+% csamsmath.sty
+%
+% Author:  Agni Datta
+% Version: 2.2 (2026/01/28)
 % License: LaTeX Project Public License v1.3c or later
 %
-% DESCRIPTION
-%   Unified package for academic STEM documents providing professional
-%   typography, robust mathematics, floating elements, hyperlinks, captions,
-%   50+ theorem environments via thmtools integration, and generic annotation
-%   system for multi-author collaboration.
+% --- PHILOSOPHY ---
+% The "cs" in csamsmath stands for "Comprehensive STEM," or "Computer Science,"
+% or maybe just "Can't Stop" (adding more packages to this preamble).
+% Let's be honest: why call it csamsmath when amsmath is already perfect?
+% Because we wanted a name so redundant it makes "PIN number" or "ATM machine"
+% look like efficient communication. It's the "Department of Redundancy
+% Department" of LaTeX packages.
 %
-% SUPPORTED ENGINES
-%   pdfLaTeX, LuaLaTeX (XeLaTeX untested)
+% In all seriousness, csamsmath is a "batteries-included" wrapper designed to
+% eliminate the "preamble-bloat" of modern STEM documents. It handles fonts,
+% theorems, colored annotations, and cross-referencing so you can get back to
+% proving P != NP (or finding where you missed a curly brace).
 %
-% FONT OPTIONS
-%   [latinmodern] — Latin Modern serif; math follows engine (default)
-%   [libertine]   — Libertinus serif/sans + math
-%   [gfsdidot]    — GFS Didot serif + Libertinus sans
-%   [concrete]    — Concrete serif + Concrete sans
-%   [palatino]    — Palatino serif + Biolinum sans + mathpazo
+% --- USAGE ---
+% \usepackage[<options>]{csamsmath}
 %
-% ANNOTATION OPTIONS
-%   [printcoms]   — Enable all annotation commands (default)
-%   [noprintcoms] — Disable annotations for final version
+% Options:
+%   [Font Selection]
+%     latinmodern (default) : Standard LaTeX look, engine-aware.
+%     libertine             : Modern, highly readable serif/sans/math.
+%     gfsdidot              : For that classy, old-school math vibe.
+%     concrete              : Knuth's Concrete Roman (heavy and beautiful).
+%     palatino              : The reliable classic (Palatino + Biolinum).
 %
-% BASIC USAGE
-%   \usepackage{csamsmath}                    % default: latinmodern, printcoms
-%   \usepackage[libertine]{csamsmath}         % libertine fonts, annotations on
-%   \usepackage[noprintcoms]{csamsmath}       % disable annotations
-%   \usepackage[palatino,noprintcoms]{csamsmath} % both options
+%   [Annotation Control]
+%     printcoms (default)   : Show marginalia and author comments.
+%     noprintcoms           : Shhhhh... final version (hides all comments).
 %
-% CUSTOM ANNOTATION COMMANDS
-%   \newguymarker{cmdname}{DisplayName}{Color}
-%   Example: \newguymarker{alice}{Alice}{Purple}
-%   Creates \alice{comment} that shows "comment -- ALICE" in purple with margin star
+% Theorem-like environments:
+%   Provides 50+ predefined environments (theorem, lemma, definition, remark,
+%   example, etc.) with consistent numbering and styling.
 %
-% PREDEFINED ANNOTATION COMMANDS
-%   Author markers: \agni, \priyanshu, \arka, \chethan, \sruthi
-%   Workflow: \TODO, \fixme, \notes, \query
-%   Revisions: \changed, \added, \removed
-%   Special: \missing
+% Annotation Workflow:
+%   Custom markers via \newguymarker{<cmd>}{<label>}{<color>}
+%   Utility: \TODO, \fixme, \notes, \query, \changed, \added, \removed
+%
+% --- UNDER THE HOOD ---
+% 1. The amsthm Reset:
+%    Loading 'thmtools' after other packages often results in "Command \proof
+%    already defined" errors. We violently \relax these commands (lines 125+)
+%    to ensure csamsmath's custom logic takes precedence.
+% 2. Engine Switching:
+%    Uses 'iftex' to branch logic between pdfLaTeX (T1 encoding) and
+%    LuaLaTeX (unicode-math/fontspec).
+% 3. The Annotation Factory:
+%    \newguymarker creates macros that inject color-coded text and
+%    marginal stars (the "Gold Star for Effort" system).
+% 4. Sectional Patching:
+%    We patch \@settitle and \section via titlesec/xpatch to maintain a
+%    unified aesthetic without requiring manual styling in the main document.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{csamsmath}[2026/01/26 v2.1 Refactored STEM package with annotations]
+\ProvidesPackage{csamsmath}[2026/01/28 v2.2 Refactored STEM package with annotations]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % OPTION PROCESSING
@@ -654,12 +668,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage{titlesec}
 
-%% Section: centered, small caps
+%% Section: bold, large
 \titleformat{\section}
 {\normalfont\bfseries\Large}
 {\thesection\ }{5pt}{}
 
-%% Subsection: bold
+%% Subsection: bold, large
 \titleformat{\subsection}
 {\bfseries\large}
 {\thesubsection\ }{7.5pt}{}
@@ -714,153 +728,139 @@
 
 %% Skip spaces and implicit paragraph breaks
 \def\csam@ignorewhitespaceandimplicitpars{%
-    \begingroup
-    \catcode13=10 %
-    \@ifnextchar\relax
+\begingroup
+\catcode13=10 %
+\@ifnextchar\relax
     {\endgroup}
-    {\endgroup}%
-}
+    {\endgroup}}%
 
-%% Skip spaces, implicit paragraphs, and explicit \par
-\def\csam@ignoreallpars{%
+    %% Skip spaces, implicit paragraphs, and explicit \par
+    \def\csam@ignoreallpars{%
     \begingroup
     \catcode13=10 %
     \@ifnextchar\par
-    {\endgroup\expandafter\csam@ignoreallpars\@gobble}
-    {\endgroup}%
-}
+        {\endgroup\expandafter\csam@ignoreallpars\@gobble}
+        {\endgroup}}%
 
-%% Section-style paragraph heading with auto-punctuation and spacing
-\NewDocumentCommand{\csam@paragraphhead}{m}{%
-    \smallskip
-    \noindent
-    \textbf{\boldmath\ignorespaces\csam@appendpunctuationifneeded{#1}}%
-    \hskip 0.9em plus 0.3em minus 0.3em
-    \csam@ignorewhitespaceandimplicitpars
-}
+        %% Section-style paragraph heading with auto-punctuation and spacing
+        \NewDocumentCommand{\csam@paragraphhead}{m}{%
+            \smallskip
+            \noindent
+            \textbf{\boldmath\ignorespaces\csam@appendpunctuationifneeded{#1}}%
+            \hskip 0.9em plus 0.3em minus 0.3em
+            \csam@ignorewhitespaceandimplicitpars
+        }
 
-%% User command
-\NewDocumentCommand{\parhead}{m}{\csam@paragraphhead{#1}}
+        %% User command
+        \NewDocumentCommand{\parhead}{m}{\csam@paragraphhead{#1}}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% BROKEN REFERENCE MARKERS
-% Visually flags undefined citations and references with margin notes
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % BROKEN REFERENCE MARKERS
+        % Visually flags undefined citations and references with margin notes
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% Requires marginnote package
-\RequirePackage{marginnote}
+        %% Requires marginnote package
+        \RequirePackage{marginnote}
 
-%% Define color for markers (if \csam@colorize undefined, use red)
-\providecommand{\csam@colorize}{\color{Firebrick2}}
+        %% Define color for markers (if \csam@colorize undefined, use red)
+        \providecommand{\csam@colorize}{\color{Firebrick2}}
 
-%% Internal marker command
-\newcommand{\csam@brokenrefmark}[1]{%
-    \marginnote[%
-        {\csam@colorize\normalfont\smash{\LARGE$\star$}\ \tiny\sffamily#1}%
-    ]{%
-        {\csam@colorize\normalfont\smash{\LARGE$\star$}\ \tiny\sffamily#1}%
-    }%
-}
+        %% Internal marker command
+        \newcommand{\csam@brokenrefmark}[1]{%
+            \marginnote[%
+                {\csam@colorize\normalfont\smash{\LARGE$\star$}\ \tiny\sffamily#1}%
+            ]{%
+                {\csam@colorize\normalfont\smash{\LARGE$\star$}\ \tiny\sffamily#1}%
+            }%
+        }
 
-%% Toggle for marking undefined references
-\newbool{csam@markundef}
-\booltrue{csam@markundef}
+        %% Toggle for marking undefined references
+        \newbool{csam@markundef}
+        \booltrue{csam@markundef}
 
-%% Hook into undefined citation flag
-\xpretocmd{\G@refundefinedtrue}{%
-    \ifbool{csam@markundef}{%
-        \csam@brokenrefmark{\@ifundefined{@citeb}{}{\@citeb}}%
-    }{}%
-}{}{}
+        %% Hook into undefined citation flag
+        \xpretocmd{\G@refundefinedtrue}{%
+            \ifbool{csam@markundef}{%
+                \csam@brokenrefmark{\@ifundefined{@citeb}{}{\@citeb}}%
+            }{}%
+        }{}{}
 
-%% Patch \@setref to mark broken references
-\let\csam@old@setref=\@setref
-\renewcommand{\@setref}[3]{%
-    \ifx#1\relax \csam@brokenrefmark{#3}\fi%
-    \csam@markundeffalse%
-    \csam@old@setref{#1}{#2}{#3}%
-    \csam@markundeftrue%
-}
+        %% Patch \@setref to mark broken references
+        \let\csam@old@setref=\@setref
+        \renewcommand{\@setref}[3]{%
+            \ifx#1\relax \csam@brokenrefmark{#3}\fi%
+            \csam@markundeffalse%
+            \csam@old@setref{#1}{#2}{#3}%
+            \csam@markundeftrue%
+        }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% ANNOTATION AND COLLABORATION SYSTEM
-% Generic command framework for multi-author annotations with color markers
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % ANNOTATION AND COLLABORATION SYSTEM
+        % Generic command framework for multi-author annotations with color markers
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% REQUIRED PACKAGES FOR ANNOTATION SYSTEM
-\RequirePackage[most]{tcolorbox}
-\RequirePackage[%
-    skipabove=10pt,
-    skipbelow=10pt,
-    ntheorem,
-    framemethod=TikZ
-]{mdframed}
+        % REQUIRED PACKAGES FOR ANNOTATION SYSTEM
+        \RequirePackage[most]{tcolorbox}
+        \RequirePackage[%
+            skipabove=10pt,
+            skipbelow=10pt,
+            ntheorem,
+            framemethod=TikZ
+        ]{mdframed}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% CORE ANNOTATION COMMAND GENERATOR
-% Syntax: \newguymarker{commandname}{displayname}{color}
-% Always uses large star in margin, no bold, small caps preferred
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\NewDocumentCommand{\newguymarker}{m m m}{%
-    \ifcsam@printcoms
-        \expandafter\newcommand\csname #1\endcsname[1]{%
-            \textcolor{#3}{##1\ \textsc{#2}}%
-            \marginnote{\textcolor{#3}{\LARGE$\star$}}%
-        }%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % CORE ANNOTATION COMMAND GENERATOR
+        % Syntax: \newguymarker{commandname}{displayname}{color}
+        % Always uses large star in margin, no bold, small caps preferred
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        \NewDocumentCommand{\newguymarker}{m m m}{%
+            \ifcsam@printcoms
+                \expandafter\newcommand\csname #1\endcsname[1]{%
+                    \textcolor{#3}{##1\ \textsc{#2}}%
+                    \marginnote{\textcolor{#3}{\LARGE$\star$}}%
+                }%
+            \else
+                \expandafter\newcommand\csname #1\endcsname[1]{}%
+            \fi
+        }
+
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % CONTENT AND WORKFLOW ANNOTATIONS
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        \ifcsam@printcoms
+            \providecommand{\missing}[1]{%
+                \textcolor{Crimson}{#1}%
+                \marginnote{\textcolor{Crimson}{\LARGE$\star$}}%
+            }
+        \else
+            \providecommand{\missing}[1]{}
+        \fi
+
+        % Workflow markers
+        \providecommand{\todo}[1]{%
+            \textcolor{Red}{[\textsc{To-do}: #1]}%
+            \marginnote{\textcolor{Red}{\LARGE$\star$}}%
+        }
+        \providecommand{\fixme}[1]{%
+            \textcolor{OrangeRed}{[\textsc{Fix-me}: #1]}%
+            \marginnote{\textcolor{OrangeRed}{\LARGE$\star$}}%
+        }
+        \providecommand{\notes}[1]{%
+            \textcolor{ForestGreen}{[\textsc{Do-note}: #1]}%
+            \marginnote{\textcolor{ForestGreen}{\LARGE$\star$}}%
+        }
+        \providecommand{\query}[1]{%
+            \textcolor{Purple}{[\textsc{q}: #1]}%
+            \marginnote{\textcolor{Purple}{\LARGE$\star$}}%
+        }
     \else
-        \expandafter\newcommand\csname #1\endcsname[1]{}%
+        \providecommand{\todo}[1]{}
+        \providecommand{\fixme}[1]{}
+        \providecommand{\notes}[1]{}
+        \providecommand{\query}[1]{}
     \fi
-}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% SPECIAL ANNOTATION COMMANDS
-% Content markers without author attribution
-% Large star in margin, no bold
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\ifcsam@printcoms
-    \providecommand{\missing}[1]{%
-        \textcolor{Crimson}{#1}%
-        \marginnote{\textcolor{Crimson}{\LARGE$\star$}}%
-    }
-\else
-    \providecommand{\missing}[1]{}
-\fi
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% WORKFLOW ANNOTATION COMMANDS
-% Task tracking and document status markers
-% No bold, small caps labels, large star in margin
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\ifcsam@printcoms
-    \providecommand{\todo}[1]{%
-        \textcolor{Red}{[\textsc{To-do}: #1]}%
-        \marginnote{\textcolor{Red}{\LARGE$\star$}}%
-    }
-    \providecommand{\fixme}[1]{%
-        \textcolor{OrangeRed}{[\textsc{Fix-me}: #1]}%
-        \marginnote{\textcolor{OrangeRed}{\LARGE$\star$}}%
-    }
-    \providecommand{\notes}[1]{%
-        \textcolor{ForestGreen}{[\textsc{Do-note}: #1]}%
-        \marginnote{\textcolor{ForestGreen}{\LARGE$\star$}}%
-    }
-    \providecommand{\query}[1]{%
-        \textcolor{Purple}{[\textsc{q}: #1]}%
-        \marginnote{\textcolor{Purple}{\LARGE$\star$}}%
-    }
-\else
-    \providecommand{\todo}[1]{}
-    \providecommand{\fixme}[1]{}
-    \providecommand{\notes}[1]{}
-    \providecommand{\query}[1]{}
-\fi
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% REVISION TRACKING COMMANDS
-% Visual indicators for document changes
-% Large star in margin, no bold
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\ifcsam@printcoms
+    % Revision tracking
     \providecommand{\changed}[1]{%
         \textcolor{blue}{#1}%
         \marginnote{\textcolor{blue}{\LARGE$\star$}}%
