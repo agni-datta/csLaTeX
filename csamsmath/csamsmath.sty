@@ -1,69 +1,95 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % csamsmath.sty
-%
-% Author:  Agni Datta
-% Version: 2.2 (2026/01/28)
-% License: LaTeX Project Public License v1.3c or later
-%
-% --- PHILOSOPHY ---
-% The "cs" in csamsmath stands for "Comprehensive STEM," or "Computer Science,"
-% or maybe just "Can't Stop" (adding more packages to this preamble).
-% Let's be honest: why call it csamsmath when amsmath is already perfect?
-% Because we wanted a name so redundant it makes "PIN number" or "ATM machine"
-% look like efficient communication. It's the "Department of Redundancy
-% Department" of LaTeX packages.
-%
-% In all seriousness, csamsmath is a "batteries-included" wrapper designed to
-% eliminate the "preamble-bloat" of modern STEM documents. It handles fonts,
-% theorems, colored annotations, and cross-referencing so you can get back to
-% proving P != NP (or finding where you missed a curly brace).
-%
-% --- USAGE ---
-% \usepackage[<options>]{csamsmath}
-%
-% Options:
-%   [Font Selection]
-%     latinmodern (default) : Standard LaTeX look, engine-aware.
-%     libertine             : Modern, highly readable serif/sans/math.
-%     gfsdidot              : For that classy, old-school math vibe.
-%     concrete              : Knuth's Concrete Roman (heavy and beautiful).
-%     palatino              : The reliable classic (Palatino + Biolinum).
-%
-%   [Annotation Control]
-%     printcoms (default)   : Show marginalia and author comments.
-%     noprintcoms           : Shhhhh... final version (hides all comments).
-%
-% Theorem-like environments:
-%   Provides 50+ predefined environments (theorem, lemma, definition, remark,
-%   example, etc.) with consistent numbering and styling.
-%
-% Annotation Workflow:
-%   Custom markers via \newguymarker{<cmd>}{<label>}{<color>}
-%   Utility: \TODO, \fixme, \notes, \query, \changed, \added, \removed
-%
-% --- UNDER THE HOOD ---
-% 1. The amsthm Reset:
-%    Loading 'thmtools' after other packages often results in "Command \proof
-%    already defined" errors. We violently \relax these commands (lines 125+)
-%    to ensure csamsmath's custom logic takes precedence.
-% 2. Engine Switching:
-%    Uses 'iftex' to branch logic between pdfLaTeX (T1 encoding) and
-%    LuaLaTeX (unicode-math/fontspec).
-% 3. The Annotation Factory:
-%    \newguymarker creates macros that inject color-coded text and
-%    marginal stars (the "Gold Star for Effort" system).
-% 4. Sectional Patching:
-%    We patch \@settitle and \section via titlesec/xpatch to maintain a
-%    unified aesthetic without requiring manual styling in the main document.
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Comprehensive STEM Mathematics Package
+% 
+% Copyright (c) 2026 Agni Datta
+% 
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3c
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
 
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{csamsmath}[2026/01/28 v2.2 Refactored STEM package with annotations]
+\ProvidesPackage{csamsmath}[2026/01/29 v2.3 Comprehensive STEM package with annotations]
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PACKAGE OVERVIEW
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% csamsmath provides a unified framework for STEM document preparation,
+% integrating typography, mathematics, theorem environments, and collaborative
+% annotation tools. The package eliminates preamble bloat by bundling
+% commonly-used packages with sensible defaults.
+%
+% KEY FEATURES:
+%   - Engine-aware font configuration (pdfLaTeX/LuaLaTeX)
+%   - 50+ predefined theorem-like environments
+%   - Collaborative annotation system with visual markers
+%   - Automatic broken reference detection
+%   - Consistent cross-referencing with cleveref
+%   - Professional typography with microtype
+%
+% USAGE:
+%   \usepackage[<options>]{csamsmath}
+%
+% OPTIONS:
+%   Font Selection (mutually exclusive):
+%     latinmodern (default) - Computer Modern successor, excellent rendering
+%     libertine             - Modern Libertinus family with superior readability
+%     gfsdidot              - Classical Greek Font Society Didot
+%     concrete              - Knuth's Concrete Roman, distinctive appearance
+%     palatino              - Palatino with harmonious sans-serif pairing
+%
+%   Annotation Control:
+%     printcoms (default)   - Display all collaboration annotations
+%     noprintcoms           - Suppress annotations for final documents
+%
+% THEOREM ENVIRONMENTS:
+%   Numbered (within section): theorem, lemma, corollary, proposition,
+%   definition, example, remark, and 40+ additional environments
+%
+%   Unnumbered variants: theorem*, lemma*, corollary*, etc.
+%
+% ANNOTATION COMMANDS:
+%   \newguymarker{cmd}{label}{color} - Define custom annotation commands
+%   \todo{text}      - Mark incomplete sections
+%   \fixme{text}     - Flag corrections needed
+%   \notes{text}     - Add editorial notes
+%   \query{text}     - Pose questions to collaborators
+%   \changed{text}   - Highlight modifications
+%   \added{text}     - Mark new content
+%   \removed{text}   - Strike through deleted content
+%
+% DEPENDENCIES:
+%   Core: amsmath, amsthm, thmtools, xcolor, hyperref, cleveref
+%   Typography: microtype, fontenc/fontspec (engine-dependent)
+%   Graphics: graphicx, caption, subcaption
+%   Tables: booktabs, array, tabularx
+%
+% TECHNICAL NOTES:
+%   1. Package loads amsthm via thmtools to avoid command conflicts
+%   2. Font loading branches on \ifLuaTeX for optimal engine support
+%   3. Hyperref loaded late with conservative settings
+%   4. Caption formatting deferred to \AtBeginDocument for compatibility
+%
+% AUTHOR: Agni Datta
+% VERSION: 2.3 (2026/01/29)
+% LICENSE: LPPL v1.3c or later
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{etoolbox}
+\RequirePackage{iftex}
+\RequirePackage{xkeyval}
+\RequirePackage{xparse}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % OPTION PROCESSING
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Implements mutually exclusive font options and annotation toggle.
+% Default configuration: latinmodern font, annotations enabled.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \newif\ifcsam@latinmodern
 \newif\ifcsam@libertine
 \newif\ifcsam@gfsdidot
@@ -71,10 +97,11 @@
 \newif\ifcsam@palatino
 \newif\ifcsam@printcoms
 
-%% Default: latinmodern, printcoms enabled
+% Set defaults
 \csam@latinmoderntrue
 \csam@printcomstrue
 
+% Font option declarations
 \DeclareOption{latinmodern}{%
     \csam@latinmoderntrue
     \csam@libertinefalse
@@ -110,21 +137,22 @@
     \csam@concretefalse
     \csam@palatinotrue
 }
-\DeclareOption{printcoms}{%
-    \csam@printcomstrue
-}
-\DeclareOption{noprintcoms}{%
-    \csam@printcomsfalse
-}
+
+% Annotation control
+\DeclareOption{printcoms}{\csam@printcomstrue}
+\DeclareOption{noprintcoms}{\csam@printcomsfalse}
 
 \ProcessOptions\relax
 
 \makeatletter
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% RESET AMSTHM TO AVOID CONFLICTS
-% Clears any prior amsthm definitions before loading thmtools
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% THEOREM SYSTEM RESET
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Clears amsthm definitions to prevent conflicts with thmtools.
+% This allows clean redefinition of theorem styles and proof environment.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \expandafter\let\csname ver@amsthm.sty\endcsname\relax
 \let\theoremstyle\relax
 \let\newtheoremstyle\relax
@@ -136,78 +164,99 @@
 \let\proof\relax
 \let\endproof\relax
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % UTILITY PACKAGES
-% Core infrastructure for package functionality
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Core infrastructure packages for programming, conditionals, and utilities.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \RequirePackage{calc}
 \RequirePackage{comment}
-\RequirePackage{etoolbox}
 \RequirePackage{ifpdf}
-\RequirePackage{iftex}
-\RequirePackage{xkeyval}
-\RequirePackage{xparse}
 \RequirePackage{xpatch}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% COLOR MANAGEMENT
-% Extended color support for all document elements
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% COLOR SUPPORT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Loads xcolor with comprehensive color name collections for annotations
+% and theorem highlighting.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \RequirePackage[dvipsnames,table,x11names]{xcolor}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% PDF AND LAYOUT
-% PDF versioning, compression, geometry, and page management
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PDF CONFIGURATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Sets PDF version, enables compression, and configures page layout.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \RequirePackage[2.0,objcompress,compress]{bxpdfver}
 \RequirePackage[margin=1in]{geometry}
 \RequirePackage{pdfpages}
 \RequirePackage{refcount}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% TYPOGRAPHY AND ENCODING
-% Language, encoding, micro-typography, and text enhancements
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TYPOGRAPHY CORE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Fundamental typography packages for encoding, language support,
+% microtypography, and text enhancements.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \RequirePackage[T1]{fontenc}
 \RequirePackage[USenglish]{babel}
 \RequirePackage[autostyle=true,csdisplay=true]{csquotes}
 \RequirePackage[final]{microtype}
 \RequirePackage[full]{textcomp}
+\RequirePackage[normalem]{ulem}
 \RequirePackage{emptypage}
 \RequirePackage{moresize}
 \RequirePackage{paralist}
 \RequirePackage{pifont}
 \RequirePackage{soul}
-\RequirePackage[normalem]{ulem}
 \RequirePackage{xspace}
 \RequirePackage{xurl}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% MATHEMATICS CORE
-% Foundation for mathematical typesetting
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% MATHEMATICS FOUNDATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Core mathematical typesetting packages. Order matters: amsmath before
+% mathtools, amsthm loaded via thmtools.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
+\RequirePackage{amsthm}
+\RequirePackage{mathrsfs}
 \RequirePackage{mathtools}
 \RequirePackage{nicefrac}
 \RequirePackage{siunitx}
-\RequirePackage{mathrsfs}
-\RequirePackage{amsthm}
 \RequirePackage{thmtools}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % FONT CONFIGURATION
-% Modular font setup based on user option
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Engine-aware font loading with feature-rich OpenType setup for LuaLaTeX
+% and package-based configuration for pdfLaTeX.
+%
+% Font selection affects:
+%   - Text fonts (roman, sans, mono)
+%   - Math fonts and alphabets
+%   - OpenType features (ligatures, numerals, kerning)
+%
+% Design rationale:
+%   - LuaLaTeX: Native Unicode support via fontspec/unicode-math
+%   - pdfLaTeX: Traditional NFSS with specialized math packages
+%   - All configurations include mathalpha for consistent script/calligraphic
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ifLuaTeX
-    %% LuaLaTeX branch
+    % LuaLaTeX font configuration
     \RequirePackage{lmodern}
     \RequirePackage{sansmath}
     \RequirePackage{fontspec}
     \RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
+
     \ifcsam@latinmodern
-        %% Latin Modern (LuaLaTeX)
         \setmainfont{Latin Modern Roman}[
             Ligatures=TeX,
             SmallCapsFont=Latin Modern Roman Caps,
@@ -219,8 +268,8 @@
         \let\mathbfcal\relax\let\mathbfscr\relax
         \RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
     \fi
+
     \ifcsam@libertine
-        %% Libertinus (LuaLaTeX)
         \setmainfont{Libertinus Serif}[
             Scale=MatchUppercase,
             RawFeature={+calt,+liga,+lnum,+pnum}
@@ -240,8 +289,8 @@
         \let\mathbfcal\relax\let\mathbfscr\relax
         \RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
     \fi
+
     \ifcsam@gfsdidot
-        %% GFS Didot + Libertinus Sans (LuaLaTeX)
         \RequirePackage[gfsdidot]{fontsetup}
         \setsansfont{Libertinus Sans}[
             Scale=MatchUppercase,
@@ -250,14 +299,14 @@
         \let\mathbfcal\relax\let\mathbfscr\relax
         \RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
     \fi
+
     \ifcsam@concrete
-        %% Concrete (LuaLaTeX)
         \RequirePackage[concrete]{fontsetup}
         \let\mathbfcal\relax\let\mathbfscr\relax
         \RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
     \fi
+
     \ifcsam@palatino
-        %% Palatino + Biolinum (LuaLaTeX)
         \setmainfont{TeX Gyre Pagella}[Ligatures=TeX]
         \setsansfont{Libertinus Sans}[Scale=MatchUppercase,Ligatures=TeX]
         \setmonofont{Latin Modern Mono}[Scale=MatchLowercase,Ligatures=TeX]
@@ -266,21 +315,20 @@
         \RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
     \fi
 \else
-    %% pdfLaTeX branch
+    % pdfLaTeX font configuration
     \ifcsam@latinmodern
-        %% Latin Modern (pdfLaTeX)
         \RequirePackage{lmodern}
         \RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
     \fi
+
     \ifcsam@libertine
-        %% Libertinus (pdfLaTeX)
         \RequirePackage{lmodern}
         \RequirePackage{libertineRoman}
         \RequirePackage[libertine,varbb]{newtxmath}
         \RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
     \fi
+
     \ifcsam@gfsdidot
-        %% GFS Didot + Libertinus Sans (pdfLaTeX)
         \RequirePackage{lmodern}
         \RequirePackage{libertinust1math}
         \RequirePackage[default]{gfsdidot}
@@ -288,14 +336,14 @@
         \renewcommand{\sfdefault}{LinuxBiolinumT-TLF}
         \RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
     \fi
+
     \ifcsam@concrete
-        %% Concrete (pdfLaTeX)
         \RequirePackage{ccfonts}
         \RequirePackage{concmath}
         \RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
     \fi
+
     \ifcsam@palatino
-        %% Palatino + Biolinum (pdfLaTeX)
         \RequirePackage{biolinum}
         \RequirePackage{tgpagella}
         \RequirePackage[sc]{mathpazo}
@@ -303,24 +351,27 @@
     \fi
 \fi
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% GRAPHICS AND FLOATS
-% Comprehensive float and graphics support
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{graphicx}
-\RequirePackage{floatrow}
-\RequirePackage{placeins}
-\RequirePackage{rotating}
-\RequirePackage{pdflscape}
-\RequirePackage{caption}
-\RequirePackage{subcaption}
-\RequirePackage{wrapfig}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% GRAPHICS AND FLOAT MANAGEMENT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Comprehensive float handling with caption customization, subfigure support,
+% and rotation capabilities.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \RequirePackage{adjustbox}
+\RequirePackage{caption}
 \RequirePackage{dashbox}
 \RequirePackage{fancybox}
+\RequirePackage{floatrow}
 \RequirePackage{framed}
+\RequirePackage{graphicx}
+\RequirePackage{pdflscape}
+\RequirePackage{placeins}
+\RequirePackage{rotating}
+\RequirePackage{subcaption}
+\RequirePackage{wrapfig}
 
-%% Caption styling applied at document start
+% Caption styling deferred to document start for package compatibility
 \AtBeginDocument{%
     \captionsetup{%
         font={sf,small},
@@ -333,36 +384,44 @@
     \captionsetup[figure]{position=bottom,skip=5pt}%
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% TABLE PACKAGES
-% Comprehensive table construction and styling
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TABLE SUPPORT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Comprehensive table construction packages with professional styling via
+% booktabs and advanced layout control.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \RequirePackage{array}
-\RequirePackage{tabularx}
-\RequirePackage{tabularray}
-\RequirePackage{longtable}
-\RequirePackage{xtab}
 \RequirePackage{booktabs}
-\RequirePackage{hhline}
 \RequirePackage{colortbl}
+\RequirePackage{diagbox}
+\RequirePackage{hhline}
+\RequirePackage{longtable}
 \RequirePackage{makecell}
 \RequirePackage{multirow}
-\RequirePackage{diagbox}
+\RequirePackage{tabularray}
+\RequirePackage{tabularx}
 \RequirePackage{threeparttable}
+\RequirePackage{xtab}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % TEXT LAYOUT
-% Multi-column layouts, alignment, verbatim, rules
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Multi-column environments, alignment control, and verbatim text handling.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \RequirePackage{multicol}
 \RequirePackage{ragged2e}
 \RequirePackage{verbatim}
 \RequirePackage{xhfill}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% LIST ENVIRONMENTS
-% Customized enumerate and itemize with enumitem
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% LIST CUSTOMIZATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Configures enumerate and itemize environments with compact spacing and
+% hierarchical label schemes.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \RequirePackage{enumitem}
 \setlist{nosep}
 \setlist[enumerate,1]{label=(\arabic*)}
@@ -372,10 +431,13 @@
 \setlist[itemize,2]{label=\ensuremath{\bullet}}
 \setlist[itemize,3]{label=\ensuremath{\circ}}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% HYPERLINKS AND CROSS-REFERENCES
-% Hyperref configuration and cleveref integration
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% HYPERLINKS AND CROSS-REFERENCING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Configures hyperref with conservative settings and integrates cleveref
+% for intelligent cross-reference formatting.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \RequirePackage{nameref}
 \RequirePackage[
     bookmarksnumbered=true,
@@ -395,10 +457,12 @@
 \RequirePackage[nameinlink,capitalise,noabbrev]{cleveref}
 \RequirePackage{xr}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% TITLE PATCH
-% Adjust title formatting to small caps; apply line spacing
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TITLE FORMATTING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Patches title command to use small caps and sets document line spacing.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \newcommand*\csamsmath@patchtitle{%
     \@ifundefined{@settitle}{}{%
         \xpatchcmd{\@settitle}{\uppercasenonmath\@title}{\normalfont\scshape\Large}{}{}%
@@ -407,10 +471,12 @@
 }
 \csamsmath@patchtitle
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% BIBLIOGRAPHY BACKREF FORMATTING
-% Customizes page back-references in bibliography
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% BIBLIOGRAPHY BACKREFERENCES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Customizes bibliography back-references to show citation locations.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \renewcommand*{\backref}[1]{}
 \renewcommand*{\backrefalt}[4]{%
     \ifcase #1\or (Cited on p.~#2).%
@@ -418,19 +484,28 @@
     \fi
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% THEOREM SYSTEM CONFIGURATION
-% Declares theorem styles and environments via thmtools
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% THEOREM SYSTEM
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Declares theorem styles and environments using thmtools.
+%
+% Organizational structure:
+%   - Base theorem environment numbered within sections
+%   - Related environments share numbering via sibling mechanism
+%   - Four distinct visual styles for semantic grouping
+%   - Unnumbered starred variants for named results
+%
+% Style hierarchy:
+%   1. theoremlike: Bold head for statements requiring proof
+%   2. definitionlike: Bold head for introducing concepts
+%   3. remarklike: Small caps for observations and notes
+%   4. highlightlike: Sans-serif for pedagogical emphasis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% Number equations within sections
+% Number equations within sections
 \numberwithin{equation}{section}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% STYLE DEFINITIONS
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%% Theorem-like style: bold head, normal body
+% Theorem style definitions
 \declaretheoremstyle[%
     headfont=\bfseries,
     notefont=\normalfont\scshape,
@@ -441,7 +516,6 @@
     postheadspace=.5em
 ]{csam@theoremlike}
 
-%% Definition-like style: bold head, normal body
 \declaretheoremstyle[%
     headfont=\bfseries,
     notefont=\normalfont\scshape,
@@ -452,7 +526,6 @@
     postheadspace=.5em
 ]{csam@definitionlike}
 
-%% Remark-like style: small caps head, normal body
 \declaretheoremstyle[%
     headfont=\normalfont\scshape,
     bodyfont=\normalfont,
@@ -462,7 +535,6 @@
     postheadspace=.5em
 ]{csam@remarklike}
 
-%% Highlight-like style: sans-serif bold head, normal body
 \declaretheoremstyle[%
     headfont=\normalfont\sffamily,
     bodyfont=\normalfont,
@@ -472,59 +544,44 @@
     postheadspace=.5em
 ]{csam@highlightlike}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% BASE THEOREM ENVIRONMENT
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Base theorem environment
 \declaretheorem[%
     name=Theorem,
     style=csam@theoremlike,
     numberwithin=section
 ]{theorem}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% HELPER: DECLARE SIBLING ENVIRONMENTS
-%% \csam@declaretheoremfamily{style}{csv-list}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Helper macro for declaring sibling environments
 \newcommand\csam@declaretheoremfamily[2]{%
     \forcsvlist{\declaretheorem[sibling=theorem,style=#1]}{#2}%
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% THEOREM-LIKE ENVIRONMENTS
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Theorem-like environments (require proof)
 \csam@declaretheoremfamily{csam@theoremlike}{%
     assertion,assumption,axiom,claim,conclusion,conjecture,corollary,%
     criterion,fact,folklore,hypothesis,lemma,observation,postulate,%
     property,proposition%
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% DEFINITION-LIKE ENVIRONMENTS
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Definition-like environments (introduce concepts)
 \csam@declaretheoremfamily{csam@definitionlike}{%
     application,construction,convention,definition,example,experiment,%
     problem,protocol,result,solution,step,notation%
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% REMARK-LIKE ENVIRONMENTS
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Remark-like environments (observations and commentary)
 \csam@declaretheoremfamily{csam@remarklike}{%
     commentary,discussion,exercise,motivation,notationabuse,note,%
     openproblem,question,remark,syntax%
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% HIGHLIGHT-LIKE ENVIRONMENTS
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Highlight-like environments (pedagogical emphasis)
 \csam@declaretheoremfamily{csam@highlightlike}{%
     guideline,highlight,important,insight,keypoint,recall,summary,%
     takeaway,tip,warning%
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% UNNUMBERED REPRESENTATIVE ENVIRONMENTS
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Unnumbered theorem variants
 \declaretheorem[name=Theorem,style=csam@theoremlike,numbered=no]{theorem*}
 \declaretheorem[name=Lemma,style=csam@theoremlike,numbered=no]{lemma*}
 \declaretheorem[name=Corollary,style=csam@theoremlike,numbered=no]{corollary*}
@@ -534,10 +591,7 @@
 \declaretheorem[name=Open Problem,style=csam@remarklike,numbered=no]{openproblem*}
 \declaretheorem[name=Syntax,style=csam@remarklike,numbered=no]{syntax*}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% PROOF ENVIRONMENT
-%% Custom proof with QED symbol
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Proof environment with QED symbol
 \let\proof\relax
 \let\endproof\relax
 
@@ -553,12 +607,14 @@
 
 \declaretheorem[name=Proof,style=csam@proofstyle,numbered=no]{proof}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% CLEVEREF NAMES
-% Assigns readable cross-reference labels via loop
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CLEVEREF CONFIGURATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Assigns human-readable names to all cross-reference types.
+% Uses loop macro for efficient bulk assignment.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% Sectional units
+% Sectional units
 \crefname{section}{\textsection}{\textsection\textsection}
 \Crefname{section}{\textsection}{\textsection\textsection}
 \crefname{subsection}{\textsection}{\textsection\textsection}
@@ -570,10 +626,7 @@
 \crefname{subparagraph}{subparagraph}{subparagraphs}
 \Crefname{subparagraph}{Subparagraph}{Subparagraphs}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% HELPER: BULK CREF ASSIGNMENT
-%% \csam@setcrefnames{envname/singular/plural, ...}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Bulk cref name assignment helper
 \newcommand\csam@setcrefnames[1]{%
     \forcsvlist{\csam@setcrefname@single}{#1}%
 }
@@ -584,109 +637,86 @@
     \crefname{#1}{#2}{#3}%
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% THEOREM-LIKE CREF NAMES
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Theorem environment names
 \csam@setcrefnames{%
-    theorem/Theorem/Theorems,%
+    application/Application/Applications,%
     assertion/Assertion/Assertions,%
     assumption/Assumption/Assumptions,%
     axiom/Axiom/Axioms,%
     claim/Claim/Claims,%
+    commentary/Commentary/Commentaries,%
     conclusion/Conclusion/Conclusions,%
     conjecture/Conjecture/Conjectures,%
-    corollary/Corollary/Corollaries,%
-    criterion/Criterion/Criteria,%
-    fact/Fact/Facts,%
-    folklore/Folklore/Folklore,%
-    hypothesis/Hypothesis/Hypotheses,%
-    lemma/Lemma/Lemmas,%
-    observation/Observation/Observations,%
-    postulate/Postulate/Postulates,%
-    property/Property/Properties,%
-    proposition/Proposition/Propositions%
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% DEFINITION-LIKE CREF NAMES
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\csam@setcrefnames{%
-    application/Application/Applications,%
     construction/Construction/Constructions,%
     convention/Convention/Conventions,%
+    corollary/Corollary/Corollaries,%
+    criterion/Criterion/Criteria,%
     definition/Definition/Definitions,%
-    example/Example/Examples,%
-    experiment/Experiment/Experiments,%
-    problem/Problem/Problems,%
-    protocol/Protocol/Protocols,%
-    result/Result/Results,%
-    solution/Solution/Solutions,%
-    step/Step/Steps,%
-    notation/Notation/Notations%
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% REMARK-LIKE CREF NAMES
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\csam@setcrefnames{%
-    commentary/Commentary/Commentaries,%
     discussion/Discussion/Discussions,%
+    example/Example/Examples,%
     exercise/Exercise/Exercises,%
-    motivation/Motivation/Motivations,%
-    notationabuse/Notation abuse/Notation abuses,%
-    note/Note/Notes,%
-    openproblem/Open problem/Open problems,%
-    question/Question/Questions,%
-    remark/Remark/Remarks,%
-    syntax/Syntax/Syntaxes%
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% HIGHLIGHT-LIKE CREF NAMES
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\csam@setcrefnames{%
+    experiment/Experiment/Experiments,%
+    fact/Fact/Facts,%
+    folklore/Folklore/Folklore,%
     guideline/Guideline/Guidelines,%
     highlight/Highlight/Highlights,%
+    hypothesis/Hypothesis/Hypotheses,%
     important/Important point/Important points,%
     insight/Insight/Insights,%
     keypoint/Key point/Key points,%
+    lemma/Lemma/Lemmas,%
+    motivation/Motivation/Motivations,%
+    notation/Notation/Notations,%
+    notationabuse/Notation abuse/Notation abuses,%
+    note/Note/Notes,%
+    observation/Observation/Observations,%
+    openproblem/Open problem/Open problems,%
+    postulate/Postulate/Postulates,%
+    problem/Problem/Problems,%
+    proof/Proof/Proofs
+    property/Property/Properties,%
+    proposition/Proposition/Propositions,%
+    protocol/Protocol/Protocols,%
+    question/Question/Questions,%
     recall/Recall/Recalls,%
+    remark/Remark/Remarks,%
+    result/Result/Results,%
+    solution/Solution/Solutions,%
+    step/Step/Steps,%
     summary/Summary/Summaries,%
+    syntax/Syntax/Syntaxes,%
     takeaway/Takeaway/Takeaways,%
+    theorem/Theorem/Theorems,%
     tip/Tip/Tips,%
-    warning/Warning/Warnings%
+    warning/Warning/Warnings,%
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% PROOF CREF NAME
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\csam@setcrefnames{proof/Proof/Proofs}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % SECTION FORMATTING
-% Customizes the appearance of sectional units
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Customizes sectional unit appearance via titlesec package.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \RequirePackage{titlesec}
 
-%% Section: bold, large
 \titleformat{\section}
 {\normalfont\bfseries\Large}
 {\thesection\ }{5pt}{}
 
-%% Subsection: bold, large
 \titleformat{\subsection}
 {\bfseries\large}
 {\thesubsection\ }{7.5pt}{}
 
-%% Subsubsection: bold, run-in
 \titleformat{\subsubsection}[runin]
 {\bfseries\normalsize}
 {\thesubsubsection.\ }{0.75em}{}[.\ ]
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% TITLE PAGE CONFIGURATION
-% Applies hep-title styling for author and title blocks
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TITLE PAGE STYLING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Applies professional title page formatting via hep-title package.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \RequirePackage{hep-title}
 \titlefont{\bfseries\Large}
 \subtitlefont{\bfseries\large}
@@ -694,15 +724,17 @@
 \authorfont{\normalsize}
 \affiliationfont{\small\scshape}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% PARAGRAPH HEADINGS WITH AUTO-PUNCTUATION
-% Provides \parhead{text} that appends period if missing
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PARAGRAPH HEADINGS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Provides \parhead command for inline paragraph headings with automatic
+% punctuation. Appends period if text doesn't end with . ? ! :
+%
+% Implementation uses delimiter-based parsing to detect trailing punctuation.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% Internal flag for punctuation detection
 \newif\ifcsam@haspunctuation
 
-%% Check if second argument is empty
 \def\csam@checkpunctuation#1{%
     \ifx\csam@checkpunctuation#1\csam@checkpunctuation
     \else
@@ -710,13 +742,11 @@
     \fi
 }
 
-%% Punctuation testers for '.', '?', '!', ':'
 \def\csam@checkdot#1.\csam@delim#2\csam@stop{\csam@checkpunctuation{#2}}
 \def\csam@checkquestion#1?\csam@delim#2\csam@stop{\csam@checkpunctuation{#2}}
 \def\csam@checkexclam#1!\csam@delim#2\csam@stop{\csam@checkpunctuation{#2}}
 \def\csam@checkcolon#1:\csam@delim#2\csam@stop{\csam@checkpunctuation{#2}}
 
-%% Main interface: appends period unless argument ends with '.', '?', '!', ':'
 \def\csam@appendpunctuationifneeded#1{%
     \csam@haspunctuationfalse
     \csam@checkdot#1\csam@delim.\csam@delim\csam@stop
@@ -726,141 +756,158 @@
     #1\ifcsam@haspunctuation \else.\fi%
 }
 
-%% Skip spaces and implicit paragraph breaks
 \def\csam@ignorewhitespaceandimplicitpars{%
-\begingroup
-\catcode13=10 %
-\@ifnextchar\relax
-    {\endgroup}
-    {\endgroup}}%
-
-    %% Skip spaces, implicit paragraphs, and explicit \par
-    \def\csam@ignoreallpars{%
     \begingroup
     \catcode13=10 %
-    \@ifnextchar\par
-        {\endgroup\expandafter\csam@ignoreallpars\@gobble}
-        {\endgroup}}%
+    \@ifnextchar\relax
+    {\endgroup}
+    {\endgroup}%
+}
 
-        %% Section-style paragraph heading with auto-punctuation and spacing
-        \NewDocumentCommand{\csam@paragraphhead}{m}{%
-            \smallskip
-            \noindent
-            \textbf{\boldmath\ignorespaces\csam@appendpunctuationifneeded{#1}}%
-            \hskip 0.9em plus 0.3em minus 0.3em
-            \csam@ignorewhitespaceandimplicitpars
-        }
+\NewDocumentCommand{\csam@paragraphhead}{m}{%
+    \smallskip
+    \noindent
+    \textbf{\boldmath\ignorespaces\csam@appendpunctuationifneeded{#1}}%
+    \hskip 0.9em plus 0.3em minus 0.3em
+    \csam@ignorewhitespaceandimplicitpars
+}
 
-        %% User command
-        \NewDocumentCommand{\parhead}{m}{\csam@paragraphhead{#1}}
+\NewDocumentCommand{\parhead}{m}{\csam@paragraphhead{#1}}
 
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % BROKEN REFERENCE MARKERS
-        % Visually flags undefined citations and references with margin notes
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% BROKEN REFERENCE DETECTION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Adds visual margin markers (colored stars) for undefined citations and
+% references. Aids in document proofreading and debugging.
+%
+% Markers appear in document margins with label text indicating the
+% undefined reference key.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-        %% Requires marginnote package
-        \RequirePackage{marginnote}
+\RequirePackage{marginnote}
 
-        %% Define color for markers (if \csam@colorize undefined, use red)
-        \providecommand{\csam@colorize}{\color{Firebrick2}}
+\providecommand{\csam@colorize}{\color{Firebrick2}}
 
-        %% Internal marker command
-        \newcommand{\csam@brokenrefmark}[1]{%
-            \marginnote[%
-                {\csam@colorize\normalfont\smash{\LARGE$\star$}\ \tiny\sffamily#1}%
-            ]{%
-                {\csam@colorize\normalfont\smash{\LARGE$\star$}\ \tiny\sffamily#1}%
-            }%
-        }
+\newcommand{\csam@brokenrefmark}[1]{%
+    \marginnote[%
+        {\csam@colorize\normalfont\smash{\LARGE$\star$}\ \tiny\sffamily#1}%
+    ]{%
+        {\csam@colorize\normalfont\smash{\LARGE$\star$}\ \tiny\sffamily#1}%
+    }%
+}
 
-        %% Toggle for marking undefined references
-        \newbool{csam@markundef}
-        \booltrue{csam@markundef}
+\newbool{csam@markundef}
+\booltrue{csam@markundef}
 
-        %% Hook into undefined citation flag
-        \xpretocmd{\G@refundefinedtrue}{%
-            \ifbool{csam@markundef}{%
-                \csam@brokenrefmark{\@ifundefined{@citeb}{}{\@citeb}}%
-            }{}%
-        }{}{}
+\xpretocmd{\G@refundefinedtrue}{%
+    \ifbool{csam@markundef}{%
+        \csam@brokenrefmark{\@ifundefined{@citeb}{}{\@citeb}}%
+    }{}%
+}{}{}
 
-        %% Patch \@setref to mark broken references
-        \let\csam@old@setref=\@setref
-        \renewcommand{\@setref}[3]{%
-            \ifx#1\relax \csam@brokenrefmark{#3}\fi%
-            \csam@markundeffalse%
-            \csam@old@setref{#1}{#2}{#3}%
-            \csam@markundeftrue%
-        }
+\let\csam@old@setref=\@setref
+\renewcommand{\@setref}[3]{%
+    \ifx#1\relax \csam@brokenrefmark{#3}\fi%
+    \csam@markundeffalse%
+    \csam@old@setref{#1}{#2}{#3}%
+    \csam@markundeftrue%
+}
 
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % ANNOTATION AND COLLABORATION SYSTEM
-        % Generic command framework for multi-author annotations with color markers
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ANNOTATION SYSTEM
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Provides collaborative annotation framework with visual markers.
+%
+% Core functionality:
+%   - \newguymarker: Creates custom annotation commands
+%   - Predefined workflow commands: \todo, \fixme, \notes, \query
+%   - Revision tracking: \changed, \added, \removed
+%   - Toggle via printcoms/noprintcoms package options
+%
+% Visual design:
+%   - Colored text distinguishes annotation types
+%   - Large star (★) in margin marks annotation locations
+%   - Small caps labels maintain professional appearance
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-        % REQUIRED PACKAGES FOR ANNOTATION SYSTEM
-        \RequirePackage[most]{tcolorbox}
-        \RequirePackage[%
-            skipabove=10pt,
-            skipbelow=10pt,
-            ntheorem,
-            framemethod=TikZ
-        ]{mdframed}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage[%
+    skipabove=10pt,
+    skipbelow=10pt,
+    ntheorem,
+    framemethod=TikZ
+]{mdframed}
 
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % CORE ANNOTATION COMMAND GENERATOR
-        % Syntax: \newguymarker{commandname}{displayname}{color}
-        % Always uses large star in margin, no bold, small caps preferred
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        \NewDocumentCommand{\newguymarker}{m m m}{%
-            \ifcsam@printcoms
-                \expandafter\newcommand\csname #1\endcsname[1]{%
-                    \textcolor{#3}{##1\ \textsc{#2}}%
-                    \marginnote{\textcolor{#3}{\LARGE$\star$}}%
-                }%
-            \else
-                \expandafter\newcommand\csname #1\endcsname[1]{}%
-            \fi
-        }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ANNOTATION COMMAND GENERATOR
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Syntax: \newguymarker{cmdname}{displaylabel}{color}
+%
+% Creates a new annotation command that:
+%   1. Typesets argument text in specified color
+%   2. Adds small caps label
+%   3. Places large star in margin
+%
+% Example:
+%   \newguymarker{alice}{Alice}{Purple}
+%   \alice{Check this citation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % CONTENT AND WORKFLOW ANNOTATIONS
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        \ifcsam@printcoms
-            \providecommand{\missing}[1]{%
-                \textcolor{Crimson}{#1}%
-                \marginnote{\textcolor{Crimson}{\LARGE$\star$}}%
-            }
-        \else
-            \providecommand{\missing}[1]{}
-        \fi
-
-        % Workflow markers
-        \providecommand{\todo}[1]{%
-            \textcolor{Red}{[\textsc{To-do}: #1]}%
-            \marginnote{\textcolor{Red}{\LARGE$\star$}}%
-        }
-        \providecommand{\fixme}[1]{%
-            \textcolor{OrangeRed}{[\textsc{Fix-me}: #1]}%
-            \marginnote{\textcolor{OrangeRed}{\LARGE$\star$}}%
-        }
-        \providecommand{\notes}[1]{%
-            \textcolor{ForestGreen}{[\textsc{Do-note}: #1]}%
-            \marginnote{\textcolor{ForestGreen}{\LARGE$\star$}}%
-        }
-        \providecommand{\query}[1]{%
-            \textcolor{Purple}{[\textsc{q}: #1]}%
-            \marginnote{\textcolor{Purple}{\LARGE$\star$}}%
-        }
+\NewDocumentCommand{\newguymarker}{m m m}{%
+    \ifcsam@printcoms
+        \expandafter\newcommand\csname #1\endcsname[1]{%
+            \textcolor{#3}{##1\ \textsc{#2}}%
+            \marginnote{\textcolor{#3}{\LARGE$\star$}}%
+        }%
     \else
-        \providecommand{\todo}[1]{}
-        \providecommand{\fixme}[1]{}
-        \providecommand{\notes}[1]{}
-        \providecommand{\query}[1]{}
+        \expandafter\newcommand\csname #1\endcsname[1]{}%
     \fi
+}
 
-    % Revision tracking
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% WORKFLOW ANNOTATIONS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Predefined commands for common document workflow tasks.
+% Active only when printcoms option is enabled.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifcsam@printcoms
+    \providecommand{\todo}[1]{%
+        \textcolor{Red}{[\textsc{To-do}: #1]}%
+        \marginnote{\textcolor{Red}{\LARGE$\star$}}%
+    }
+    \providecommand{\fixme}[1]{%
+        \textcolor{OrangeRed}{[\textsc{Fix-me}: #1]}%
+        \marginnote{\textcolor{OrangeRed}{\LARGE$\star$}}%
+    }
+    \providecommand{\missing}[1]{%
+        \textcolor{Crimson}{#1}%
+        \marginnote{\textcolor{Crimson}{\LARGE$\star$}}%
+    }
+    \providecommand{\notes}[1]{%
+        \textcolor{ForestGreen}{[\textsc{Note}: #1]}%
+        \marginnote{\textcolor{ForestGreen}{\LARGE$\star$}}%
+    }
+    \providecommand{\query}[1]{%
+        \textcolor{Purple}{[\textsc{Q}: #1]}%
+        \marginnote{\textcolor{Purple}{\LARGE$\star$}}%
+    }
+\else
+    \providecommand{\fixme}[1]{}
+    \providecommand{\missing}[1]{}
+    \providecommand{\notes}[1]{}
+    \providecommand{\query}[1]{}
+    \providecommand{\todo}[1]{}
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% REVISION TRACKING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Visual indicators for document modifications during collaborative editing.
+% Provides change tracking without external diff tools.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifcsam@printcoms
     \providecommand{\changed}[1]{%
         \textcolor{blue}{#1}%
         \marginnote{\textcolor{blue}{\LARGE$\star$}}%
@@ -879,10 +926,13 @@
     \providecommand{\removed}[1]{}
 \fi
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% DOCUMENT FORMATTING OVERRIDES
-% Customized sectioning and emphasis commands
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% DOCUMENT-LEVEL CUSTOMIZATIONS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Redefines standard LaTeX commands at document start to integrate with
+% package functionality.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \AtBeginDocument{%
     \renewcommand{\paragraph}[1]{\parhead{#1}}%
     \renewcommand{\subparagraph}[1]{\noindent\textsc{#1}}%
@@ -891,3 +941,7 @@
 
 \makeatother
 \endinput
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% END OF PACKAGE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
