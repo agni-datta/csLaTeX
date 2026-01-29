@@ -264,7 +264,7 @@
         ]
         \setsansfont{Latin Modern Sans}[Scale=MatchUppercase,Ligatures=TeX]
         \setmonofont{Latin Modern Mono}[Scale=MatchLowercase,Ligatures=TeX]
-        \setmathfont{Latin Modern Math}
+        \setmathfont{Latin Modern Math}[AutoFakeBold,AutoFakeSlant]
         \let\mathbfcal\relax\let\mathbfscr\relax
         \RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
     \fi
@@ -310,7 +310,7 @@
         \setmainfont{TeX Gyre Pagella}[Ligatures=TeX]
         \setsansfont{Libertinus Sans}[Scale=MatchUppercase,Ligatures=TeX]
         \setmonofont{Latin Modern Mono}[Scale=MatchLowercase,Ligatures=TeX]
-        \setmathfont{TeX Gyre Pagella Math}
+        \setmathfont{TeX Gyre Pagella Math}[AutoFakeBold,AutoFakeSlant]
         \let\mathbfcal\relax\let\mathbfscr\relax
         \RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
     \fi
@@ -323,6 +323,7 @@
 
     \ifcsam@libertine
         \RequirePackage{lmodern}
+        \RequirePackage{biolinum}
         \RequirePackage{libertineRoman}
         \RequirePackage[libertine,varbb]{newtxmath}
         \RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
