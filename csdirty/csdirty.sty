@@ -1,910 +1,798 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% csdirty.sty — Academic LaTeX Package
-% Author: Agni Datta
-% Version: 1.6 (2025/06/26)
-% License: LaTeX Project Public License v1.3c
-% Contact: agnidatta.org@gmail.com
+%% csdirty.sty
+%% Copyright 2025 Agni Datta
 %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% OVERVIEW
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% The csdirty package offers a comprehensive, modular, and extensible LaTeX framework,
-% specifically developed to meet the rigorous standards of academic, technical, and
-% scientific writing. It streamlines the preparation of scholarly documents by integrating
-% access to a curated suite of foundational and advanced LaTeX packages, supporting robust
-% version control, and enabling precise feature customization. The package is suitable for
-% research articles, technical reports, dissertations, and conference proceedings, and is
-% engineered for compatibility with all major LaTeX engines and standard document classes.
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
 %
-% csdirty emphasizes reproducibility, typographic rigor, and workflow efficiency, allowing
-% authors to focus on substantive content while ensuring professional presentation and
-% compliance with academic conventions.
+% This work has the LPPL maintenance status `maintained'.
+% 
+% The Current Maintainer of this work is Agni Datta.
 %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% KEY FEATURES
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% - Unified and conditional loading of essential and advanced LaTeX packages.
-% - Flexible version control: seamless switching between full/preprint and short/conference versions.
-% - Fine-grained toggling of features for graphics, cryptography, theorem environments, typography, and more.
-% - Modern mathematics and font support, including Libertinus, Concmath, and Garamond.
-% - Advanced table, figure, and content box environments, including support for multi-page and styled tables.
-% - Enhanced support for cryptography, protocols, and upright Greek symbols.
-% - Professional title, section, and table of contents formatting, with customizable spacing and fonts.
-% - Robust support for comments, annotations, and author identification (including ORCID integration).
-% - Comprehensive macro suite for cryptography, mathematics, and academic writing.
-% - Enhanced environments for protocols, code listings, wireboxes, and simple content boxes.
-% - Improved compatibility and fallback logic for upright Greek symbols and mathematical fonts.
-% - Support for legacy section symbol formatting and advanced line spacing options.
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% USAGE
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%   \usepackage[<options>]{csdirty}
-%   % Example: \usepackage[full,comments,crypto]{csdirty}
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% OPTIONS (some options have both positive and negative forms)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% VERSION CONTROL:
-%   fullversion        — Full document (authors, affiliations, appendices, etc.)
-%   shortversion       — Abbreviated version (no appendices, detailed proofs, etc.)
-%   preprint           — Alias for fullversion (for arXiv/preprints)
-%
-% COMMENTS & ANNOTATIONS:
-%   comments           — Enable inline comments/annotations (loads comment package)
-%   nocomments         — Disable comment functionality (default)
-%
-% MATHEMATICS & FONTS:
-%   concmath           — Use Concmath for advanced math typesetting
-%   noconcmath         — Do not use Concmath
-%   libertinus         — Use Libertinus/Libertine font family for text/math
-%   nolicertinus       — Do not use Libertinus/Libertine fonts
-%   garamond           — Use Garamond font family for text
-%   nogaramond         — Do not use Garamond fonts
-%   nomath             — Disable advanced math packages (basic LaTeX math only)
-%   modgreeksymbs      — Use upright Greek symbols (via upgreek, with robust fallback)
-%   nicodemus          — Enable Nicodemus cryptography macros
-%   nonicodemus        — Do not load Nicodemus macros
-%
-% FEATURE LOADING:
-%   tikz               — Load TikZ suite (3dplot, cd, automata, circuits, etc.)
-%   notikz             — Do not load TikZ or related graphics packages
-%   appendix           — Enhanced appendix formatting and management
-%   noappendix         — Do not load appendix enhancements
-%   crypto             — Cryptography packages and notation (protocols, security, etc.)
-%   nocrypto           — Do not load cryptography packages
-%   theorems           — Enhanced theorem/proof environments and cross-referencing
-%   notheorems         — Do not load theorem/proof enhancements
-%   orcidlink          — ORCID link support for author identification
-%   noorcidlink        — Do not load ORCID link package
-%   epigraph           — Enhanced epigraph formatting and styling
-%   noepigraph         — Do not load epigraph enhancements
-%   fullpage           — Advanced full-page layout and formatting
-%   nofullpage         — Do not load full-page layout options
-%   nicespacing        — Enhanced line spacing (1.15 stretch factor)
-%   badspacing         — Standard line spacing (1.0, default)
-%   full               — Load all available features (recommended for full academic documents)
-%   usefulcommands     — Load handy macros for cryptography, math, and writing
-%   nousefulcommands   — Do not load the macro suite
-%   oldsection         — Use legacy section symbol formatting (with section symbols)
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% ENHANCED ENVIRONMENTS & MACROS
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% - Advanced Graphics: PGFPlots (compatibility mode 1.18) for data visualization.
-% - TikZ Libraries: 3D plotting, commutative diagrams, automata, circuits, logic, decorations, shapes, arrows, and more.
-% - Colored Content Boxes: tcolorbox for styled content and wireboxes.
-% - Framed Environments: mdframed for protocol, code list, and simple content boxes.
-% - Advanced Tables: tabularray for complex, multi-page, and styled tables; tabularx, xtab, longtable, threeparttable, makecell, multicol, multirow.
-% - Protocol and Code List Environments: \begin{protocolbox}, \begin{codelistbox}, \begin{simplebox}.
-% - Wirebox Environment: \begin{wirebox} (if tcolorbox loaded).
-% - Enhanced Title and Section Formatting: Customizable fonts and spacing for title, subtitle, author, affiliation, date, and preprint lines.
-% - Table of Contents Spacing: Fine-tuned via \adjusttocspacing.
-% - Upright Greek Letters: Optionally replaces standard Greek macros with upright forms, with robust fallback logic.
-% - Useful Macros: For cryptography, mathematics, and general writing (if enabled).
+% This work consists of the file csdirty.sty
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{csdirty}[2025/02/01 v2.0 Modern academic document package]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% USAGE EXAMPLES
+%% Package Description
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%   % Basic usage with defaults
-%   \usepackage{csdirty}
-%
-%   % Full version with all features
-%   \usepackage[fullversion]{csdirty}
-%
-%   % Short version, no comments
-%   \usepackage[shortversion,nocomments]{csdirty}
-%
-%   % With TikZ and cryptography
-%   \usepackage[tikz,crypto]{csdirty}
-%
-%   % Theorem formatting and ORCID
-%   \usepackage[theorems,orcidlink]{csdirty}
-%
-%   % Epigraphs and full-page layout
-%   \usepackage[epigraph,fullpage]{csdirty}
-%
-%   % Enhanced line spacing
-%   \usepackage[nicespacing]{csdirty}
-%
-%   % All features enabled
-%   \usepackage[full]{csdirty}
-%
-%   % Exclude TikZ
-%   \usepackage[notikz]{csdirty}
-%
-%   % Exclude appendix and epigraph features
-%   \usepackage[noappendix,noepigraph]{csdirty}
-%
-%   % Libertinus font, Concmath, and crypto
-%   \usepackage[libertinus,concmath,crypto]{csdirty}
-%
-%   % Garamond font and advanced tables
-%   \usepackage[garamond]{csdirty}
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% ENVIRONMENT USAGE EXAMPLES
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%   % Colored content box (tcolorbox)
-%   \begin{tcolorbox}[colback=blue!5!white, colframe=blue!75!black, title=Example Box]
-%   This is a styled content box.
-%   \end{tcolorbox}
-%
-%   % Wirebox (if tcolorbox loaded)
-%   \begin{wirebox}
-%   This is a wirebox for highlighting content.
-%   \end{wirebox}
-%
-%   % Protocol box (if mdframed loaded)
-%   \begin{protocolbox}[Protocol Name]
-%   \item Step 1
-%   \item Step 2
-%   \end{protocolbox}
-%
-%   % Advanced table (tabularray is always loaded)
-%   \begin{tblr}{
-%     colspec = {Q[l]Q[c]Q[r]},
-%     row{1} = {font=\bfseries}
-%   }
-%   Header 1 & Header 2 & Header 3 \\
-%   Left     & Center   & Right    \\
-%   \end{tblr}
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% DEPENDENCIES
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Core dependencies (always loaded):
-%   - amsmath, amssymb (mathematical notation)
-%   - geometry (page layout)
-%   - hyperref (hyperlinks and references)
-%   - tabularray, tabularx, xtab, longtable, threeparttable, makecell, multicol, multirow (advanced tables)
-%   - setspace (line spacing control)
-%   - microtype (enhanced typography)
-%   - ragged2e, xhfill (text formatting)
-%   - graphicx, pdflscape, placeins, wrapfig, rotating, subcaption (graphics and floats)
-%
-% Optional dependencies (loaded based on options):
-%   - tikz, tikz-cd, tikz-3dplot, and TikZ libraries (tikz option)
-%   - pgfplots (data visualization)
-%   - tcolorbox (colored content boxes)
-%   - mdframed (framed environments)
-%   - comment (comments option)
-%   - cryptography packages (crypto option)
-%   - csthm (theorems option)
-%   - orcidlink (orcidlink option)
-%   - appendix (appendix option)
-%   - epigraph (epigraph option)
-%   - libertinus, unicode-math, fontspec (libertinus option)
-%   - concmath (concmath option)
-%   - garamond (garamond option)
-%   - nicodemus (nicodemus option)
-%   - upgreek (modgreeksymbs option)
-%   - hep-title (title formatting)
-%   - titlesec, tocloft (section and TOC formatting)
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% COMPATIBILITY
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% - Fully compatible with modern LaTeX distributions (TeX Live 2022+, MiKTeX 23+).
-% - Extensively tested with standard document classes: article, report, book, and others.
-% - Requires e-TeX extensions (standard in modern LaTeX).
-% - Supports all major engines: pdfLaTeX, XeLaTeX, and LuaLaTeX.
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% KNOWN ISSUES & LIMITATIONS
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% - Version control options may require manual adjustment for complex or highly customized documents.
-% - TikZ graphics may require multiple compilation passes for complex diagrams.
-% - PGFPlots compatibility mode 1.18 may require adjustment for newer versions.
-% - Full-page layout options may conflict with certain document class settings.
-% - Enhanced spacing and advanced typography may affect layout and require fine-tuning.
-% - Some options may increase compilation time and memory usage.
-% - Certain advanced features (e.g., fontspec, unicode-math) require specific engines (XeLaTeX/LuaLaTeX).
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% CHANGELOG (v1.6)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% - Expanded TikZ library support (including logic, circuits, datavisualization, etc.).
-% - Added upright Greek symbol option (modgreeksymbs) with robust fallback logic.
-% - Improved protocol, code list, and simple box environments (mdframed-based).
-% - Enhanced table support: tabularray, tabularx, xtab, longtable, threeparttable, makecell.
-% - Improved title and section formatting (hep-title, titlesec, tocloft).
-% - Added wirebox environment (tcolorbox-based).
-% - Improved macro suite for cryptography and mathematics.
-% - Added Garamond font support for text.
-% - Updated documentation and usage examples for clarity and completeness.
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\ProvidesPackage{csdirty}[2025/06/26 v1.6 csdirty package]
+% csdirty: A comprehensive package for academic writing with support for
+% multiple font systems, theorems, cryptography notation, and document 
+% formatting. Features include:
+%   - Multiple professional font options (Latin Modern, Libertinus, Concrete, Garamond)
+%   - Integrated theorem environments via csthm
+%   - Cryptography notation support via tcscrypto
+%   - TikZ integration for diagrams
+%   - Customizable document structure and formatting
+%   - Version control for full/short document variants
+%   - ORCID integration for academic publishing
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\makeatletter
+%% Internal Commands and Utilities
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{etoolbox}                     % Programming utilities
+\RequirePackage{iftex}                        % Engine detection
+
+%% Internal conditionals (using \newif pattern)
+\newif\if@csd@comments
+\newif\if@csd@fullversion
+\newif\if@csd@shortversion
+\newif\if@csd@loadappendix
+\newif\if@csd@loadcrypto
+\newif\if@csd@loadepigraph
+\newif\if@csd@loadfull
+\newif\if@csd@loadfullpage
+\newif\if@csd@loadnicespacing
+\newif\if@csd@loadnicodemus
+\newif\if@csd@loadnomath
+\newif\if@csd@loadoldsection
+\newif\if@csd@loadorcid
+\newif\if@csd@loadtheorems
+\newif\if@csd@loadtikz
+\newif\if@csd@loaduseful
+\newif\if@csd@modgreek
+
+%% Set defaults
+\@csd@commentsfalse
+\@csd@fullversionfalse
+\@csd@shortversionfalse
+\@csd@loadappendixfalse
+\@csd@loadcryptofalse
+\@csd@loadepigraphfalse
+\@csd@loadfulltrue
+\@csd@loadfullpagefalse
+\@csd@loadnicespacingfalse
+\@csd@loadnicodemusfalse
+\@csd@loadnomathfalse
+\@csd@loadoldsectionfalse
+\@csd@loadorcidfalse
+\@csd@loadtheoremsfalse
+\@csd@loadtikzfalse
+\@csd@loadusefultrue
+\@csd@modgreekfalse
+
+%% Default values for string options
+\def\csd@font{lmodern}
+\def\csd@margin{3.5cm}
+\def\csd@spacing{1.0}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Package Options - Traditional Interface
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Package Options
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Font selection options
+\DeclareOption{lmodern}{\def\csd@font{lmodern}}
+\DeclareOption{latinmodern}{\def\csd@font{lmodern}}
+\DeclareOption{libertinus}{\def\csd@font{libertinus}}
+\DeclareOption{concrete}{\def\csd@font{concrete}}
+\DeclareOption{garamond}{\def\csd@font{garamond}}
+\DeclareOption{gfsdidot}{\def\csd@font{gfsdidot}}
+\DeclareOption{palatino}{\def\csd@font{palatino}}
 
-% General Boolean flags
-\newif\ifComments                       \Commentsfalse
-\newif\ifFullVersion                    \FullVersionfalse
-\newif\ifShortVersion                   \ShortVersionfalse
+%% Version control options
+\DeclareOption{fullversion}{\@csd@fullversiontrue\@csd@shortversionfalse}
+\DeclareOption{shortversion}{\@csd@shortversiontrue\@csd@fullversionfalse}
+\DeclareOption{preprint}{\@csd@fullversiontrue\@csd@shortversionfalse}
 
-% Package-specific Boolean flags
-\newif\ifcsdirty@Concmath               \csdirty@Concmathfalse
-\newif\ifcsdirty@Garamond               \csdirty@Garamondfalse
-\newif\ifcsdirty@Libertinus             \csdirty@Libertinusfalse
-\newif\ifcsdirty@LoadAppendix           \csdirty@LoadAppendixfalse
-\newif\ifcsdirty@LoadCrypto             \csdirty@LoadCryptofalse
-\newif\ifcsdirty@LoadEpigraph           \csdirty@LoadEpigraphfalse
-\newif\ifcsdirty@LoadFull               \csdirty@LoadFulltrue
-\newif\ifcsdirty@LoadFullPage           \csdirty@LoadFullPagefalse
-\newif\ifcsdirty@LoadNiceSpacing        \csdirty@LoadNiceSpacingfalse
-\newif\ifcsdirty@LoadNicodemus          \csdirty@LoadNicodemusfalse
-\newif\ifcsdirty@LoadNoMath             \csdirty@LoadNoMathfalse
-\newif\ifcsdirty@LoadOldSectionSymb     \csdirty@LoadOldSectionSymbfalse
-\newif\ifcsdirty@LoadOrcidlink          \csdirty@LoadOrcidlinkfalse
-\newif\ifcsdirty@LoadTheorems           \csdirty@LoadTheoremsfalse
-\newif\ifcsdirty@LoadTikz               \csdirty@LoadTikzfalse
-\newif\ifcsdirty@LoadUsefulCommands     \csdirty@LoadUsefulCommandstrue
-\newif\ifcsdirty@ModGreekSymbs          \csdirty@ModGreekSymbsfalse
+%% Feature loading options
+\DeclareOption{appendix}{\@csd@loadappendixtrue}
+\DeclareOption{comments}{\@csd@commentstrue}
+\DeclareOption{crypto}{\@csd@loadcryptotrue}
+\DeclareOption{epigraph}{\@csd@loadepigraphtrue}
+\DeclareOption{full}{\@csd@loadfulltrue}
+\DeclareOption{fullpage}{\@csd@loadfullpagetrue}
+\DeclareOption{nicespacing}{\@csd@loadnicespacingtrue}
+\DeclareOption{nicodemus}{\@csd@loadnicodemustrue}
+\DeclareOption{nomath}{\@csd@loadnomathtrue}
+\DeclareOption{oldsection}{\@csd@loadoldsectiontrue}
+\DeclareOption{orcidlink}{\@csd@loadorcidtrue}
+\DeclareOption{theorems}{\@csd@loadtheoremstrue}
+\DeclareOption{tikz}{\@csd@loadtikztrue}
+\DeclareOption{usefulcommands}{\@csd@loadusefultrue}
+\DeclareOption{modgreeksymbs}{\@csd@modgreektrue}
 
-% Version control options
-\DeclareOption{fullversion}{\FullVersiontrue\ShortVersionfalse}             % Use full version
-\DeclareOption{shortversion}{\ShortVersiontrue\FullVersionfalse}            % Use short version
-\DeclareOption{preprint}{\ShortVersionfalse\FullVersiontrue}                % Preprint = full version
+%% Negation options
+\DeclareOption{noappendix}{\@csd@loadappendixfalse}
+\DeclareOption{nocomments}{\@csd@commentsfalse}
+\DeclareOption{nocrypto}{\@csd@loadcryptofalse}
+\DeclareOption{noepigraph}{\@csd@loadepigraphfalse}
+\DeclareOption{nofullpage}{\@csd@loadfullpagefalse}
+\DeclareOption{noorcidlink}{\@csd@loadorcidfalse}
+\DeclareOption{notheorems}{\@csd@loadtheoremsfalse}
+\DeclareOption{notikz}{\@csd@loadtikzfalse}
+\DeclareOption{nousefulcommands}{\@csd@loadusefulfalse}
 
-% Comment and annotation options
-\DeclareOption{appendix}{\csdirty@LoadAppendixtrue}                         % Load Appendix
-\DeclareOption{badspacing}{\csdirty@LoadNiceSpacingfalse}                   % Load Bad Spacing
-\DeclareOption{comments}{\Commentstrue}                                     % Enable comments
-\DeclareOption{concrete}{\csdirty@Concmathtrue}                             % Enable Concmath
-\DeclareOption{garamond}{\csdirty@Garamondtrue}                             % Enable Garamond font
-\DeclareOption{crypto}{\csdirty@LoadCryptotrue}                             % Load Cryptography
-\DeclareOption{epigraph}{\csdirty@LoadEpigraphtrue}                         % Load Epigraphs
-\DeclareOption{full}{\csdirty@LoadFulltrue}                                 % Load Full
-\DeclareOption{fullpage}{\csdirty@LoadFullPagetrue}                         % Load Full Page
-\DeclareOption{libertinus}{\csdirty@Libertinustrue}                         % Enable Libertinus/Libertine font
-\DeclareOption{modgreeksymbs}{\csdirty@ModGreekSymbstrue}                   % Load modified Greek symbols
-\DeclareOption{nicespacing}{\csdirty@LoadNiceSpacingtrue}                   % Load Nice Spacing
-\DeclareOption{nicodemus}{\csdirty@LoadNicodemustrue}                       % Enable Nicodemus macros
-\DeclareOption{noappendix}{\csdirty@LoadAppendixfalse}                      % Do not load Appendix
-\DeclareOption{nocomments}{\Commentsfalse}                                  % Disable comments
-\DeclareOption{nocrypto}{\csdirty@LoadCryptofalse}                          % Do not load Cryptography
-\DeclareOption{noepigraph}{\csdirty@LoadEpigraphfalse}                      % Do not load Epigraphs
-\DeclareOption{nofullpage}{\csdirty@LoadFullPagefalse}                      % Do not load Full Page
-\DeclareOption{nomath}{\csdirty@LoadNoMathtrue}                             % Disable math packages
-\DeclareOption{noorcidlink}{\csdirty@LoadOrcidlinkfalse}                    % Do not load ORCID link
-\DeclareOption{notheorems}{\csdirty@LoadTheoremsfalse}                      % Do not load Theorems
-\DeclareOption{notikz}{\csdirty@LoadTikzfalse}                              % Do not load TikZ
-\DeclareOption{nousefulcommands}{\csdirty@LoadUsefulCommandsfalse}          % Do not load Useful Commands
-\DeclareOption{oldsection}{\csdirty@LoadOldSectionSymbtrue}                 % Load old section symbol
-\DeclareOption{orcidlink}{\csdirty@LoadOrcidlinktrue}                       % Load ORCID link
-\DeclareOption{theorems}{\csdirty@LoadTheoremstrue}                         % Load Theorems
-\DeclareOption{tikz}{\csdirty@LoadTikztrue}                                 % Load TikZ
-\DeclareOption{usefulcommands}{\csdirty@LoadUsefulCommandstrue}             % Load Useful Commands
-
-\ifcsdirty@LoadFull
-	\typeout{csdirty: Loading full version}
-	\csdirty@LoadAppendixtrue
-	\csdirty@LoadEpigraphtrue
-	\csdirty@LoadNiceSpacingtrue
-	\csdirty@LoadOrcidlinktrue
-	\csdirty@LoadTheoremstrue
-	\csdirty@LoadTikztrue
-	\csdirty@LoadUsefulCommandstrue
+%% Handle 'full' option dependencies
+\if@csd@loadfull
+	\PackageInfo{csdirty}{Loading full version with all features}%
+	\@csd@loadappendixtrue
+	\@csd@loadepigraphtrue
+	\@csd@loadnicespacingtrue
+	\@csd@loadorcidtrue
+	\@csd@loadtheoremstrue
+	\@csd@loadtikztrue
+	\@csd@loadusefultrue
 \fi
 
-% Ignore unknown options
-\DeclareOption*{\PackageWarning{csdirty}{Unknown option '\CurrentOption'}}
-\DeclareOption*{\relax}
+%% Process options
 \ProcessOptions\relax
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Core Programming and Utility Packages
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{calc}                                        % Arithmetic with lengths
-\RequirePackage{comment}                                     % Block comment environment
-\RequirePackage{etoolbox}                                    % Logic and macro patching
-\RequirePackage{ifpdf}                                       % Detect PDF output mode
-\RequirePackage{iftex}                                       % Detect engine: pdfTeX, XeTeX, LuaTeX
-\RequirePackage{xkeyval}                                     % Key-value parsing
-\RequirePackage{xparse}                                      % Extended command/environment definitions
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Engine and Class Compatibility Warnings
+%% Engine Detection and Warnings
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \ifLuaTeX
-	\typeout{csdirty: rock on! LuaTeX engine detected (this is the good stuff)}
+	\PackageInfo{csdirty}{LuaTeX engine detected - full Unicode support enabled}%
 \else
-	\ifXeTeX
-		\typeout{csdirty: nice! XeTeX engine detected (you're doing it right)}
+	\ifPDFTeX
+		\PackageInfo{csdirty}{pdfTeX engine detected - using fallback configurations}%
 	\else
 		\PackageWarning{csdirty}{%
-			pdfTeX engine detected. Concrete math option requires LuaTeX or XeTeX for full Unicode support.
+			Unsupported TeX engine detected.^^J%
+			This package is optimized for LuaTeX with pdfTeX fallback.^^J%
+			Unexpected behavior may occur%
 		}%
 	\fi
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Check for supported document classes
+%% Document Class Detection
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \@ifclassloaded{article}{%
-	\typeout{csdirty: Detected document class: article.}
+	\PackageInfo{csdirty}{Document class: article}%
 }{%
 	\@ifclassloaded{report}{%
-		\typeout{csdirty: Detected document class: report.}
+		\PackageInfo{csdirty}{Document class: report}%
 	}{%
 		\@ifclassloaded{book}{%
-			\typeout{csdirty: Detected document class: book.}
+			\PackageInfo{csdirty}{Document class: book}%
 		}{%
 			\PackageWarning{csdirty}{%
-				Unsupported document class detected.
-				This package is officially supported only for the following classes: article, report, or book.
-				Your class (\@classload) has not been tested with this package.
-				Unexpected behavior may occur.
+				Unsupported document class detected.^^J%
+				This package is tested with: article, report, book.^^J%
+				Current class: \@classoptionslist
 			}%
 		}%
 	}%
-}%
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Color
+%% Core Programming Packages
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage[x11names, dvipsnames, svgnames]{xcolor}      % Extended color support.
+\RequirePackage{calc}                         % Length arithmetic
+\RequirePackage{comment}                      % Block comments
+\RequirePackage{xparse}                       % Extended command definitions
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% PDF and Document Structure Control
+%% Color Support
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage[2.0,objcompress,compress]{bxpdfver}          % PDF version and compression management
-\RequirePackage[nottoc]{tocbibind}                           % Add bibliography/lists to TOC (exclude TOC itself)
-\RequirePackage{babel}                                       % Language, hyphenation
-\RequirePackage{pdfpages}                                    % Include external PDFs
-\RequirePackage{refcount}                                    % Reference counting
+\RequirePackage[x11names,dvipsnames]{xcolor}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Margin and Spacing
+%% PDF and Document Structure
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\ifcsdirty@LoadFullPage
-	\RequirePackage[margin=1in]{geometry}     	% Page layout
-	\typeout{csdirty: Loading full page layout}
+\RequirePackage[2.0,objcompress,compress]{bxpdfver}
+\RequirePackage[nottoc]{tocbibind}
+\RequirePackage{babel}
+\RequirePackage{pdfpages}
+\RequirePackage{refcount}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Page Layout
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\if@csd@loadfullpage
+	\RequirePackage[margin=1in]{geometry}
+	\PackageInfo{csdirty}{Using fullpage layout (1in margins)}%
 \else
-	\RequirePackage[margin=3cm]{geometry}         % Page layout (default)
-	\typeout{csdirty: Loading default page layout}
+	\RequirePackage[margin=\csd@margin]{geometry}
+	\PackageInfo{csdirty}{Using margin: \csd@margin}%
 \fi
 
-\ifcsdirty@LoadNiceSpacing
-	\RequirePackage{setspace}
-	\setstretch{1.15}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Line Spacing
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{setspace}
+\if@csd@loadnicespacing
+	\setstretch{1.15}%
+	\PackageInfo{csdirty}{Using nice spacing (1.15)}%
 \else
-	\RequirePackage{setspace}
-	\setstretch{1.0}
+	\setstretch{\csd@spacing}%
+	\PackageInfo{csdirty}{Using spacing: \csd@spacing}%
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Text, Layout, and Miscellaneous Enhancements
+%% Text Enhancement Packages
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage[autostyle=true, csdisplay=true]{csquotes}    % Automatic quotation marks and smart citations
-\RequirePackage[final]{microtype}                            % Improved justification and hyphenation
-\RequirePackage[full]{textcomp}                              % Additional text symbols (e.g., degree sign)
-\RequirePackage[nocompress]{cite}                            % Citation package for references
-\RequirePackage[normalem]{ulem}                              % Underlining and strikethrough capabilities
-\RequirePackage{emptypage}                                   % No page numbers on empty pages
-\RequirePackage{lipsum}                                      % Dummy text
-\RequirePackage{paralist}                                    % Long List Style environments
-\RequirePackage{pifont}                                      % For using Dingbat fonts
-\RequirePackage{soul}                                        % For text highlighting
-\RequirePackage{xspace}                                      % Intelligent spacing after macros
-\RequirePackage{xurl}                                        % Breakable URLs
+\RequirePackage[autostyle=true,csdisplay=true]{csquotes}
+\RequirePackage[final]{microtype}
+\RequirePackage[full]{textcomp}
+\RequirePackage[nocompress]{cite}
+\RequirePackage[normalem]{ulem}
+\RequirePackage{emptypage}
+\RequirePackage{lipsum}
+\RequirePackage{marginnote}
+\RequirePackage{paralist}
+\RequirePackage{pifont}
+\RequirePackage{soul}
+\RequirePackage{xspace}
+\RequirePackage{xurl}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Fonts and Math
+%% Font Loading System
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Modular font loading system supporting multiple professional typefaces.
+% Each font has separate implementations for LuaTeX (using fontspec/unicode-math)
+% and pdfTeX (using traditional Type1 fonts).
+%
+% Available fonts:
+%   - lmodern    : Latin Modern (default, works with both engines)
+%   - libertinus : Libertinus Serif with math support
+%   - concrete   : Concrete Roman with Euler math (LuaTeX only)
+%   - garamond   : Garamond Libre with Garamond Math (LuaTeX only)
+%   - gfsdidot   : GFS Didot with modern styling (LuaTeX only)
+%   - palatino   : TeX Gyre Pagella with Palatino-style math
+%
+% Font selection is done via the font= key-value option.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\csdirty@loadnomath}{%
-	\typeout{csdirty: Loading no math packages}
-	\RequirePackage[T1]{fontenc}
-}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Font Dispatcher Commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% These commands route to the appropriate engine-specific implementation.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\csdirty@loadlibertinus}{%
+\def\csd@font@lmodern{%
+	\PackageInfo{csdirty}{Loading Latin Modern fonts}%
 	\ifLuaTeX
-		\typeout{csdirty: Loading Libertinus math for LuaTeX}
-		\RequirePackage{lualatex-math}
-		\RequirePackage{amssymb}
-		\RequirePackage{mathtools}
-		\RequirePackage{fontspec}
-		\RequirePackage{moresize}
-		\RequirePackage{nicefrac}
-		\RequirePackage{siunitx}
-		\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
-		\setmainfont[
-			SmallCapsFeatures={RawFeature=+smcp},
-			RawFeature={+calt,+case,+cpsp,+kern,+liga,+lnum,+mark,+mkmk,+pnum,+ss06},
-			ItalicFont = LibertinusSerif-Italic.otf,
-			BoldFont = LibertinusSerif-Bold.otf,
-			BoldItalicFont = LibertinusSerif-BoldItalic.otf
-		]{LibertinusSerif-Regular.otf}
-		\setmathfont[
-			AutoFakeBold,
-			Scale=MatchUppercase
-		]{LibertinusMath-Regular.otf}
-		\setmonofont[
-			Scale=MatchLowercase,
-			SmallCapsFeatures={RawFeature=+smcp},
-			RawFeature={+calt,+case,+dlig,+kern,+liga,+lnum,+mark,+mkmk,+pnum}
-		]{notosansmono}
-		\setsansfont[
-			Scale=MatchLowercase,
-			SmallCapsFeatures={RawFeature=+smcp},
-			RawFeature={+calt,+case,+kern,+liga,+lnum,+mark,+mkmk,+pnum}
-		]{Libertinus Sans}
-		\let\mathbfcal\relax
-		\let\mathbfscr\relax
-		\RequirePackage{mathrsfs}
-		\RequirePackage[cal=stixplain,bb=bboldx,scr=esstix]{mathalpha}
+		\csd@load@lmodern@lua
 	\else
-		\ifXeTeX
-			\typeout{csdirty: Loading Libertinus math for XeTeX}
-			\RequirePackage{amssymb}
-			\RequirePackage{mathtools}
-			\RequirePackage{moresize}
-			\RequirePackage{nicefrac}
-			\RequirePackage{siunitx}
-			\RequirePackage{fontspec}
-			\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
-			\setmainfont[
-				SmallCapsFeatures={RawFeature=+smcp},
-				RawFeature={+calt,+case,+cpsp,+kern,+liga,+lnum,+mark,+mkmk,+pnum,+ss06},
-				ItalicFont = LibertinusSerif-Italic.otf,
-				BoldFont = LibertinusSerif-Bold.otf,
-				BoldItalicFont = LibertinusSerif-BoldItalic.otf
-			]{LibertinusSerif-Regular.otf}
-			\setmathfont[
-				AutoFakeBold,
-				Scale=MatchUppercase
-			]{LibertinusMath-Regular.otf}
-			\setmonofont[
-				Scale=MatchLowercase,
-				SmallCapsFeatures={RawFeature=+smcp},
-				RawFeature={+calt,+case,+dlig,+kern,+liga,+lnum,+mark,+mkmk,+pnum}
-			]{inconsolata}
-			\setsansfont[
-				Scale=MatchLowercase,
-				SmallCapsFeatures={RawFeature=+smcp},
-				RawFeature={+calt,+case,+kern,+liga,+lnum,+mark,+mkmk,+pnum}
-			]{Libertinus Sans}
-			\let\mathbfcal\relax
-			\let\mathbfscr\relax
-			\RequirePackage{mathrsfs}
-			\RequirePackage[cal=stixplain,bb=bboldx,scr=esstix]{mathalpha}
-		\else
-			\typeout{csdirty: Libertinus math with nextx supported for this engine.}
-			\RequirePackage[T1]{fontenc}
-			\RequirePackage{amssymb}
-			\RequirePackage{mathtools}
-			\RequirePackage{moresize}
-			\RequirePackage{nicefrac}
-			\RequirePackage{siunitx}
-			\RequirePackage{libertineRoman}
-			\RequirePackage{AnonymousPro}
-			\RequirePackage{biolinum}
-			\RequirePackage[libertine]{newtxmath}
-			\RequirePackage[bb=bboldx,cal=cm,scr=esstix]{mathalpha}
-		\fi
+		\csd@load@lmodern@pdftex
 	\fi
 }
 
-\newcommand{\csdirty@loadconcmath}{%
+\def\csd@font@libertinus{%
+	\PackageInfo{csdirty}{Loading Libertinus fonts}%
 	\ifLuaTeX
-		\typeout{csdirty: Loading Concrete math for LuaTeX}
-		\RequirePackage{amssymb}
-		\RequirePackage{mathtools}
-		\RequirePackage{fontspec}
-		\RequirePackage{moresize}
-		\RequirePackage{nicefrac}
-		\RequirePackage{siunitx}
-		\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
-		\RequirePackage[concrete]{fontsetup}
-		\let\mathbfcal\relax
-		\let\mathbfscr\relax
-		\RequirePackage{mathrsfs}
-		\RequirePackage[cal=cm,bb=bboldx,scr=esstix]{mathalpha}
+		\let\Game\relax
+		\csd@load@libertinus@lua
 	\else
-		\ifXeTeX
-			\typeout{csdirty: Loading Concrete math for XeTeX}
-			\RequirePackage{amssymb}
-			\RequirePackage{mathtools}
-			\RequirePackage{fontspec}
-			\RequirePackage{moresize}
-			\RequirePackage{nicefrac}
-			\RequirePackage{siunitx}
-			\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
-			\RequirePackage[concrete]{fontsetup}
-			\let\mathbfcal\relax
-			\let\mathbfscr\relax
-			\RequirePackage{mathrsfs}
-			\RequirePackage[bb=bboldx,cal=cm,scr=esstix]{mathalpha}
-		\else
-			\typeout{csdirty: Concrete math setup not supported for this engine.}
-		\fi
+		\csd@load@libertinus@pdftex
 	\fi
 }
 
-\newcommand{\csdirty@loadgaramond}{%
+\def\csd@font@concrete{%
+	\PackageInfo{csdirty}{Loading Concrete fonts}%
 	\ifLuaTeX
-		\typeout{csdirty: Loading Garamond math for LuaTeX}
-		\RequirePackage{lualatex-math}
-		\RequirePackage{amssymb}
-		\RequirePackage{mathtools}
-		\RequirePackage{fontspec}
-		\RequirePackage{moresize}
-		\RequirePackage{nicefrac}
-		\RequirePackage{siunitx}
-		\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
-		\setmainfont[
-			SmallCapsFeatures={RawFeature=+smcp},
-			RawFeature={+calt,+case,+cpsp,+kern,+liga,+lnum,+mark,+mkmk,+pnum},
-			SmallCapsFont = EBGaramond-Medium.otf,
-			BoldFont = GaramondLibre-Bold.otf,
-			ItalicFont = GaramondLibre-Italic.otf,
-			BoldItalicFont = GaramondLibre-BoldItalic.otf
-		]{GaramondLibre-Regular.otf}
-		\setmathfont[
-			AutoFakeBold,
-			StylisticSet = {2,6,7,9},
-			Scale=MatchUppercase
-		]{Garamond-Math.otf}
-		\setmonofont[
-			Scale=MatchLowercase,
-			SmallCapsFeatures={RawFeature=+smcp},
-			RawFeature={+calt,+case,+dlig,+kern,+liga,+lnum,+mark,+mkmk,+pnum}
-		]{notosansmono}
-		\setsansfont[
-			Scale=MatchLowercase,
-			SmallCapsFeatures={RawFeature=+smcp},
-			RawFeature={+calt,+case,+kern,+liga,+lnum,+mark,+mkmk,+pnum}
-		]{ysabeau}
-		\let\mathbfcal\relax
-		\let\mathbfscr\relax
-		\RequirePackage{mathrsfs}
-		\RequirePackage[cal=cm,bb=bboldx,scr=esstix]{mathalpha}
+		\csd@load@concrete@lua
 	\else
-		\ifXeTeX
-			\RequirePackage{amssymb}
-			\RequirePackage{mathtools}
-			\RequirePackage{moresize}
-			\RequirePackage{nicefrac}
-			\RequirePackage{siunitx}
-			\RequirePackage{fontspec}
-			\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
-			\setmainfont[
-				SmallCapsFeatures={RawFeature=+smcp},
-				RawFeature={+calt,+case,+cpsp,+kern,+liga,+lnum,+mark,+mkmk,+pnum},
-				SmallCapsFont = EBGaramond-Medium.otf,
-				BoldFont = GaramondLibre-Bold.otf,
-				ItalicFont = GaramondLibre-Italic.otf,
-				BoldItalicFont = GaramondLibre-BoldItalic.otf
-			]{GaramondLibre-Regular.otf}
-			\setmathfont[
-				AutoFakeBold,
-				StylisticSet = {2,6,7,9},
-				Scale=MatchUppercase
-			]{Garamond-Math.otf}
-			\setmonofont[
-				Scale=MatchLowercase,
-				SmallCapsFeatures={RawFeature=+smcp},
-				RawFeature={+calt,+case,+dlig,+kern,+liga,+lnum,+mark,+mkmk,+pnum}
-			]{inconsolata}
-			\setsansfont[
-				Scale=MatchLowercase,
-				SmallCapsFeatures={RawFeature=+smcp},
-				RawFeature={+calt,+case,+kern,+liga,+lnum,+mark,+mkmk,+pnum}
-			]{ysabeau}
-			\let\mathbfcal\relax
-			\let\mathbfscr\relax
-			\RequirePackage{mathrsfs}
-			\RequirePackage[cal=cm,bb=bboldx,scr=esstix]{mathalpha}
-		\fi
+		\csd@load@concrete@pdftex
 	\fi
 }
 
-\newcommand{\csdirty@loadlatinmodern}{%
-	\typeout{csdirty: Loading Latin Modern math}
-	\RequirePackage{fontspec}
-	\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
-	\setmainfont[
-		ItalicFont = NewCM10-BookItalic.otf,
-		SmallCapsFont = NewCM10-Book.otf,
-		SmallCapsFeatures = {RawFeature=+smcp},
-		BoldFont = NewCM10-Bold.otf,
-		BoldItalicFont = NewCM10-BoldItalic.otf,
-		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum}
-	]{NewCM10-Book.otf}
-	\setmathfont{NewCMMath-Book.otf}
-	\setsansfont[
-		ItalicFont = NewCMSans10-Oblique.otf,
-		SmallCapsFont = NewCMSans10-Book.otf,
-		SmallCapsFeatures = {RawFeature=+smcp},
-		BoldFont = NewCMSans10-Bold.otf,
-		BoldItalicFont = NewCMSans10-BoldOblique.otf,
-		RawFeature = {+calt, +case, +hlig, +kern, +liga, +lnum, +mark, +mkmk, +pnum}
-	]{NewCMSans10-Book.otf}
+\def\csd@font@garamond{%
+	\PackageInfo{csdirty}{Loading Garamond fonts}%
+	\ifLuaTeX
+		\csd@load@garamond@lua
+	\else
+		\PackageError{csdirty}{Garamond font requires LuaTeX}{%
+			The garamond font option is only available with LuaTeX.^^J%
+			Please use lualatex instead of pdflatex%
+		}%
+	\fi
 }
 
-\newcommand{\csdirty@loadstdmath}{%
-	\typeout{csdirty: Loading standard math packages}
-	\RequirePackage[T1]{fontenc}
-	\RequirePackage{lmodern}
-	\RequirePackage{amsfonts}
-	\RequirePackage{amsmath}
-	\RequirePackage{moresize}
-	\RequirePackage{nicefrac}
-	\RequirePackage{siunitx}
+\def\csd@font@gfsdidot{%
+	\PackageInfo{csdirty}{Loading GFS Didot fonts}%
 	\ifLuaTeX
-		\csdirty@loadlatinmodern
+		\csd@load@gfsdidot@lua
 	\else
-		\ifXeTeX
-			\csdirty@loadlatinmodern
-		\else
-			\RequirePackage{amssymb}
-			\RequirePackage{bm}
-			\RequirePackage{mathtools}
-		\fi
+		\csd@load@gfsdidot@pdftex
 	\fi
+}
+
+\def\csd@font@palatino{%
+	\PackageInfo{csdirty}{Loading Palatino fonts}%
+	\ifLuaTeX
+		\csd@load@palatino@lua
+	\else
+		\csd@load@palatino@pdftex
+	\fi
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% LuaTeX Font Configurations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Modern Unicode font setup using fontspec and unicode-math packages.
+% Provides full OpenType feature support and native Unicode math rendering.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Latin Modern - Modern CM-style fonts with extended Unicode coverage
+\def\csd@load@lmodern@lua{%
+	\RequirePackage{fontspec}%
+	\RequirePackage{thmtools}%
+	\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}%
+	\setmainfont{Latin Modern Roman}[
+		Ligatures=TeX,
+		SmallCapsFont=Latin Modern Roman Caps,
+		RawFeature={+calt,+case,+cpsp,+kern,+liga,+lnum,+pnum}
+	]%
+	\setsansfont{Latin Modern Sans}[Scale=MatchUppercase,Ligatures=TeX]%
+	\setmonofont{Latin Modern Mono}[Scale=MatchLowercase,Ligatures=TeX]%
+	\setmathfont{Latin Modern Math}[AutoFakeBold,AutoFakeSlant]%
 	\let\mathbfcal\relax
 	\let\mathbfscr\relax
-	\RequirePackage{mathrsfs}
-	\RequirePackage[cal=cm,bb=bboldx,scr=esstix]{mathalpha}
+	\RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}%
 }
 
-% Select math loader at end of preamble
+%% Libertinus - Classical humanist serif with comprehensive math support
+\def\csd@load@libertinus@lua{%
+	\RequirePackage{fontspec}%
+	\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}%
+	\setmainfont{Libertinus Serif}[
+		Scale=MatchUppercase,
+		RawFeature={+calt,+liga,+lnum,+pnum}
+	]%
+	\setmathfont{Libertinus Math}[
+		Scale=MatchUppercase,
+		RawFeature={+calt,+liga,+lnum,+pnum}
+	]%
+	\setsansfont{Libertinus Sans}[
+		Scale=MatchUppercase,
+		RawFeature={+calt,+liga,+lnum,+pnum}
+	]%
+	\setmonofont{Latin Modern Mono}[
+		Scale=MatchUppercase,
+		RawFeature={+calt,+liga,+lnum,+pnum}
+	]%
+	\let\mathbfcal\relax
+	\let\mathbfscr\relax
+	\RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}%
+}
+
+%% GFS Didot - Neoclassical Greek-inspired serif
+\def\csd@load@gfsdidot@lua{%
+	\RequirePackage[gfsdidot]{fontsetup}%
+	\setsansfont{Libertinus Sans}[
+		Scale=MatchUppercase,
+		RawFeature={+calt,+liga,+lnum,+pnum}
+	]%
+	\let\mathbfcal\relax
+	\let\mathbfscr\relax
+	\RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}%
+}
+
+%% Concrete - Knuth's concrete roman with Euler math
+\def\csd@load@concrete@lua{%
+	\RequirePackage[concrete]{fontsetup}%
+	\let\mathbfcal\relax
+	\let\mathbfscr\relax
+	\RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}%
+}
+
+%% Palatino - TeX Gyre Pagella (Palatino clone) with math
+\def\csd@load@palatino@lua{%
+	\RequirePackage{fontspec}%
+	\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}%
+	\setmainfont{TeX Gyre Pagella}[Ligatures=TeX]%
+	\setsansfont{Libertinus Sans}[Scale=MatchUppercase,Ligatures=TeX]%
+	\setmonofont{Latin Modern Mono}[Scale=MatchLowercase,Ligatures=TeX]%
+	\setmathfont{TeX Gyre Pagella Math}[AutoFakeBold,AutoFakeSlant]%
+	\let\mathbfcal\relax
+	\let\mathbfscr\relax
+	\RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}%
+}
+
+%% Garamond - Classical old-style serif (LuaTeX only)
+\def\csd@load@garamond@lua{%
+	\RequirePackage{lualatex-math}%
+	\RequirePackage{fontspec}%
+	\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}%
+	\setmainfont{GaramondLibre}[
+		Extension=.otf,
+		UprightFont=*-Regular,
+		ItalicFont=*-Italic,
+		BoldFont=*-Bold,
+		BoldItalicFont=*-BoldItalic,
+		SmallCapsFont=EBGaramond-Medium.otf,
+		SmallCapsFeatures={Letters=SmallCaps},
+	]%
+	\setmathfont{Garamond-Math.otf}[
+		AutoFakeBold,
+		StylisticSet={2,6,7,9},
+	]%
+	\setsansfont{Ysabeau}[Scale=MatchLowercase]%
+	\setmonofont{Noto Sans Mono}[Scale=MatchLowercase]%
+	\let\mathbfcal\relax
+	\let\mathbfscr\relax
+	\RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% pdfTeX Font Configurations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Traditional Type1 font setup for pdfTeX compatibility.
+% Uses classic LaTeX font packages with limited OpenType support.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Latin Modern for pdfTeX
+\def\csd@load@lmodern@pdftex{%
+	\RequirePackage[T1]{fontenc}%
+	\RequirePackage{lmodern}%
+	\RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}%
+	\csd@load@common@math@pdftex
+}
+
+%% Libertinus for pdfTeX (using newtxmath)
+\def\csd@load@libertinus@pdftex{%
+	\RequirePackage[T1]{fontenc}%
+	\RequirePackage{lmodern}%
+	\RequirePackage{biolinum}%
+	\RequirePackage{libertineRoman}%
+	\RequirePackage[libertine,varbb]{newtxmath}%
+	\RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}%
+	\csd@load@common@math@pdftex
+}
+
+%% GFS Didot for pdfTeX
+\def\csd@load@gfsdidot@pdftex{%
+	\RequirePackage[T1]{fontenc}%
+	\RequirePackage{lmodern}%
+	\RequirePackage{libertinust1math}%
+	\RequirePackage{gfsdidot}%
+	\RequirePackage{biolinum}%
+	\renewcommand\sfdefault{LinuxBiolinumT-TLF}%
+	\RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}%
+	\csd@load@common@math@pdftex
+}
+
+%% Concrete for pdfTeX (using classic ccfonts)
+\def\csd@load@concrete@pdftex{%
+	\RequirePackage[T1]{fontenc}%
+	\RequirePackage{ccfonts}%
+	\RequirePackage{concmath}%
+	\RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}%
+	\csd@load@common@math@pdftex
+}
+
+%% Palatino for pdfTeX (using mathpazo)
+\def\csd@load@palatino@pdftex{%
+	\RequirePackage[T1]{fontenc}%
+	\RequirePackage{biolinum}%
+	\RequirePackage{tgpagella}%
+	\RequirePackage[sc]{mathpazo}%
+	\RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}%
+	\csd@load@common@math@pdftex
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Common Math Package Loading
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Standard mathematical typesetting packages used across all font configurations.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Common math packages for pdfTeX
+\def\csd@load@common@math@pdftex{%
+	\RequirePackage{amsmath}%
+	\RequirePackage{amssymb}%
+	\RequirePackage{amsthm}%
+	\RequirePackage{bm}%
+	\RequirePackage{mathrsfs}%
+	\RequirePackage{mathtools}%
+	\RequirePackage{moresize}%
+	\RequirePackage{nicefrac}%
+	\RequirePackage{siunitx}%
+	\RequirePackage{thmtools}%
+}
+
+%% No-math option - disables all mathematical typesetting
+\def\csd@load@nomath{%
+	\RequirePackage[T1]{fontenc}%
+	\PackageInfo{csdirty}{Math packages disabled}%
+}
+
+%% Execute font loading at end of preamble
 \AtEndPreamble{%
-	\ifcsdirty@LoadNoMath
-		\csdirty@loadnomath
+	\if@csd@loadnomath
+		\csd@load@nomath
 	\else
-		\ifcsdirty@Libertinus
-			\csdirty@loadlibertinus
-		\else
-			\ifcsdirty@Concmath
-				\csdirty@loadconcmath
-			\else
-				\ifcsdirty@Garamond
-					\csdirty@loadgaramond
-				\else
-					\csdirty@loadstdmath
-				\fi
-			\fi
-		\fi
+		\@nameuse{csd@font@\csd@font}%
 	\fi
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Hyperlinks & Referencing
+%% Hyperlinks and References
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{nameref}                                     % Name-based referencing
-\RequirePackage[%
-	bookmarksnumbered=true,                                  % Number PDF bookmarks
-	breaklinks=true,                                         % Allow links to break over lines
-	citecolor=DodgerBlue3,                                   % Color for citations
-	colorlinks=true,                                         % Use colored links
-	frenchlinks=true,                                        % Use small caps for links
-	linkcolor=RoyalBlue3,                                    % Color for internal links
-	pagebackref,                                             % Back-references from bibliography
-	pdfencoding=auto,                                        % Automatic encoding detection
-	pdfpagelabels=true,                                      % Correct page labels in PDF
-	pdfpagelayout=SinglePage,                                % Single page view
-	pdfstartview=FitH,                                       % Fit the page to the window
-	pdfusetitle,                                             % Use document title as PDF title
-	unicode=true,                                            % Support for Unicode
-	urlcolor=Turquoise4                                      % Color for URLs
+\RequirePackage{nameref}
+\RequirePackage[
+	bookmarksnumbered=true,
+	breaklinks=true,
+	citecolor=MidnightBlue,
+	colorlinks=true,
+	frenchlinks=true,
+	linkcolor=MidnightBlue,
+	pagebackref,
+	pdfencoding=auto,
+	pdfpagelabels=true,
+	pdfpagelayout=SinglePage,
+	pdfstartview=FitH,
+	pdfusetitle,
+	unicode=true,
+	urlcolor=MidnightBlue
 ]{hyperref}
+
 \AtBeginDocument{%
-	\RequirePackage[capitalize,nameinlink,noabbrev]{cleveref} % Clever references
-	% Sectioning names for cleveref
-	\crefname{section}{\textsection}{\textsection\textsection}
-	\Crefname{section}{\textsection}{\textsection\textsection}
-	\crefname{subsection}{\textsection}{\textsection\textsection}
-	\Crefname{subsection}{\textsection}{\textsection\textsection}
-	\crefname{subsubsection}{\textsection}{\textsection\textsection}
-	\Crefname{subsubsection}{\textsection}{\textsection\textsection}
+	\RequirePackage[capitalize,nameinlink,noabbrev]{cleveref}%
+	\crefname{section}{\S}{\S\S}%
+	\Crefname{section}{\S}{\S\S}%
+	\crefname{subsection}{\S}{\S\S}%
+	\Crefname{subsection}{\S}{\S\S}%
+	\crefname{subsubsection}{\S}{\S\S}%
+	\Crefname{subsubsection}{\S}{\S\S}%
 }
-\RequirePackage{xr}                                           % Cross-document references
-% Customize backrefs
-\renewcommand*{\backref}[1]{}
-\renewcommand*{\backrefalt}[4]{%
-	\ifcase #1\or (Cited on p.~#2).%
+
+\RequirePackage{xr}
+
+%% Customize backrefs
+\renewcommand*\backref[1]{}
+\renewcommand*\backrefalt[4]{%
+	\ifcase#1\relax
+	\or (Cited on p.~#2).%
 	\else (Cited on pp.~#2).%
 	\fi
 }
-% Full reference combining hyperref, autoref, and nameref.
-\newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1}~\nameref*{#1}}}
+
+%% Full reference command
+\newcommand*\fullref[1]{\hyperref[{#1}]{\autoref*{#1}~\nameref*{#1}}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Figures and Tables
+%% Figures and Tables
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{adjustbox}                                     % Graphic/table boxes: scaling, trimming, framing
-\RequirePackage{array}                                         % Custom column types and alignment
-\RequirePackage{booktabs}                                      % High-quality horizontal rules for tables
-\RequirePackage{caption}                                       % Custom caption formatting
-\RequirePackage{colortbl}                                      % Cell background coloring in tables
-\RequirePackage{dashbox}                                       % Dashed framed boxes
-\RequirePackage{diagbox}                                       % Diagonal split table headers
-\RequirePackage{fancybox}                                      % Simple framed boxes
-\RequirePackage{float}                                         % Precise float positioning
-\RequirePackage{framed}                                        % Framed environments (e.g., figures, text)
-\RequirePackage{graphicx}                                      % Image inclusion and scaling
-\RequirePackage{hhline}                                        % Horizontal lines in tables
-\RequirePackage{longtable}                                     % Multi-page tables
-\RequirePackage{makecell}                                      % Line breaks and formatting in cells
-\RequirePackage{multicol}                                      % Multiple text columns
-\RequirePackage{multirow}                                      % Multi-row cells in tables
-\RequirePackage{pdflscape}                                     % Landscape pages in PDF output
-\RequirePackage{placeins}                                      % Float placement control (e.g., \FloatBarrier)
-\RequirePackage{ragged2e}                                      % Improved text justification
-\RequirePackage{rotating}                                      % Rotated figures and tables
-\RequirePackage{subcaption}                                    % Subfigures and subtables with captions
-\RequirePackage{tabularray}                                    % Advanced table types and styling
-\RequirePackage{tabularx}                                      % Tables with auto-stretching columns
-\RequirePackage{threeparttable}                                % Notes and footnotes in tables
-\RequirePackage{verbatim}                                      % Verbatim environment
-\RequirePackage{wrapfig}                                       % Text wrapping around figures/tables
-\RequirePackage{xhfill}                                        % Horizontal line
-\RequirePackage{xtab}                                          % Page-breaking tables (alt to supertabular)
+\RequirePackage{adjustbox}
+\RequirePackage{array}
+\RequirePackage{booktabs}
+\RequirePackage{caption}
+\RequirePackage{colortbl}
+\RequirePackage{dashbox}
+\RequirePackage{diagbox}
+\RequirePackage{fancybox}
+\RequirePackage{float}
+\RequirePackage{framed}
+\RequirePackage{graphicx}
+\RequirePackage{hhline}
+\RequirePackage{longtable}
+\RequirePackage{makecell}
+\RequirePackage{multicol}
+\RequirePackage{multirow}
+\RequirePackage{pdflscape}
+\RequirePackage{placeins}
+\RequirePackage{ragged2e}
+\RequirePackage{rotating}
+\RequirePackage{subcaption}
+\RequirePackage{tabularray}
+\RequirePackage{tabularx}
+\RequirePackage{threeparttable}
+\RequirePackage{verbatim}
+\RequirePackage{wrapfig}
+\RequirePackage{xhfill}
+\RequirePackage{xtab}
+
 \AtBeginDocument{%
 	\captionsetup{%
-		font={rm,small},                                       % Roman font
-		labelfont={color=black,sc,small},                      % Label in black roman
-		labelsep=period,                                       % Label ends with period
-		skip=5pt,                                              % Space below caption
-		justification=justified                                % Center the caption
+		font={rm,small},
+		labelfont={color=black,sc,small},
+		labelsep=period,
+		skip=5pt,
+		justification=justified
 	}%
-}%
-\captionsetup[table]{position=bottom, skip=5pt}                % Table captions below
-\captionsetup[figure]{position=bottom, skip=5pt}               % Figure captions below
+	\captionsetup[table]{position=bottom,skip=5pt}%
+	\captionsetup[figure]{position=bottom,skip=5pt}%
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% List Customization
+%% List Customization
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{enumitem}                                      % Precise control over list environments
+\RequirePackage{enumitem}
 
-% Global list spacing
-\setlist{nosep}                                                % Suppress vertical spacing between items
-
-% Enumerate: Custom labels by nesting level
-\setlist[enumerate,1]{label=(\arabic*)}                        % Level 1: (1), (2), ...
-\setlist[enumerate,2]{label=(\alph*)}                          % Level 2: (a), (b), ...
-\setlist[enumerate,3]{label=(\Roman*)}                         % Level 3: (I), (II), ...
-
-% Itemize: Custom symbols by nesting level
-\setlist[itemize,1]{label=\ensuremath{\bullet}}                % Level 1: bullet
-\setlist[itemize,2]{label=\ensuremath{\textendash}}            % Level 2: en dash
-\setlist[itemize,3]{label=\ensuremath{\circ}}                  % Level 3: open circle
+\setlist{nosep}
+\setlist[enumerate,1]{label=(\arabic*)}
+\setlist[enumerate,2]{label=(\alph*)}
+\setlist[enumerate,3]{label=(\Roman*)}
+\setlist[itemize,1]{label=\ensuremath{\bullet}}
+\setlist[itemize,2]{label=\ensuremath{\textendash}}
+\setlist[itemize,3]{label=\ensuremath{\circ}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Epigraphs
+%% Colored Boxes
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\ifcsdirty@LoadEpigraph
-	\RequirePackage{epigraph} % Load epigraph package for introductory quotations
+% Enhanced box environments for structured content presentation.
+% Requires tcolorbox and mdframed packages for advanced styling.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage[most]{tcolorbox}
+\RequirePackage[
+	skipabove=10pt,
+	skipbelow=10pt,
+	ntheorem,
+	framemethod=TikZ
+]{mdframed}
 
-	% Epigraph appearance configuration
-	\setlength{\epigraphrule}{0.5pt}         	% Thickness of the epigraph rule
-	\setlength{\epigraphwidth}{0.65\textwidth} 	% Width of the epigraph block
-	\renewcommand{\textflush}{flushright}      	% Align epigraph text to the right
-	\renewcommand{\epigraphsize}{\small}       	% Set epigraph font size
-
-	% Enhanced epigraph command using xparse
-	\let\oldepigraph\epigraph
-	\RenewDocumentCommand{\epigraph}{mm}{%
-		\oldepigraph{\textsf{#1}}{\smallskip\textsc{#2}}%
-	}
-
-	% Dedication page core (centered, large, on its own page)
-	\NewDocumentCommand{\csdirty@dedicationscore}{m}{%
-		\thispagestyle{plain}%
-		\begin{center}%
-			\vspace*{\fill}%
-			\large #1%
-			\vspace*{\fill}%
-		\end{center}%
-		\cleardoublepage%
-	}
-
-	% Define \generateDedications only for book or report classes
-	\@ifclassloaded{book}{%
-		\NewDocumentCommand{\generateDedications}{m}{\csdirty@dedicationscore{#1}}
-	}{%
-		\@ifclassloaded{report}{%
-			\NewDocumentCommand{\generateDedications}{m}{\csdirty@dedicationscore{#1}}
-		}{}%
-	}
-
-	% Dedication environment core: right-aligned, sffamily, on its own page
-	\NewDocumentCommand{\csdirty@dedicationenvcore}{m}{%
-		\cleardoublepage
-		\thispagestyle{empty}
-		\null\vfill
-		\begin{flushright}
-			\begin{minipage}{0.6\textwidth}
-				\sffamily
-				#1
-			\end{minipage}
-		\end{flushright}
-		\vfill\null
-		\clearpage
-	}
-
-	% Dedication environment body: main text and optional author/attribution
-	\NewDocumentCommand{\csdirty@dedicationenvbody}{mm}{%
-		#1%
-		% If the second argument is not empty, typeset as small caps at the end
-		\IfNoValueF{#2}{%
-			\normalfont\small
-			\par\smallskip\hfill\textsc{#2}%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Annotation Command Generator
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Creates custom annotation commands for collaborative editing.
+% Each annotator gets their own command with distinctive color and label.
+%
+% Syntax: \newguymarker{cmdname}{displaylabel}{color}
+%
+% Creates a new annotation command that:
+%   1. Typesets argument text in specified color
+%   2. Adds small caps label identifier
+%   3. Places large star in margin for visual tracking
+%
+% Example usage:
+%   \newguymarker{alice}{Alice}{Purple}
+%   \alice{Check this citation}
+%
+% Result: Purple text "Check this citation, Alice" with purple star in margin
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\NewDocumentCommand\newguymarker{mmm}{%
+	\if@csd@comments
+		\expandafter\newcommand\csname#1\endcsname[1]{%
+			\textcolor{#3}{##1\ \textsc{#2}}%
+			\marginnote{\textcolor{#3}{\LARGE$\star$}}%
 		}%
-	}
+	\else
+		\expandafter\newcommand\csname#1\endcsname[1]{}%
+	\fi
+}
 
-	% Modular dedication environment, only for book or report classes
-	\@ifclassloaded{book}{%
-		\NewDocumentEnvironment{dedication}{O{}}{%
-			\csdirty@dedicationenvcore{%
-				\csdirty@dedicationenvbody{##1}{##1}
-			}%
-		}{}
-	}{%
-		\@ifclassloaded{report}{%
-			\NewDocumentEnvironment{dedication}{O{}}{%
-				\csdirty@dedicationenvcore{%
-					\csdirty@dedicationenvbody{##1}{##1}
-				}%
-			}{}
-		}{}%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Workflow Annotations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Predefined commands for common document workflow tasks.
+% Active only when the comments option is enabled.
+%
+% Available commands:
+%   \todo{text}    - Red annotations for tasks requiring completion
+%   \fixme{text}   - Orange annotations for items needing correction
+%   \missing{text} - Crimson highlights for incomplete content
+%   \notes{text}   - Green annotations for general notes/observations
+%   \query{text}   - Purple annotations for questions/uncertainties
+%
+% All workflow commands add margin stars for quick visual scanning.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\if@csd@comments
+	\providecommand\todo[1]{%
+		\textcolor{Red}{[\textsc{To-do}: #1]}%
+		\marginnote{\textcolor{Red}{\LARGE$\star$}}%
 	}
+	\providecommand\fixme[1]{%
+		\textcolor{OrangeRed}{[\textsc{Fix-me}: #1]}%
+		\marginnote{\textcolor{OrangeRed}{\LARGE$\star$}}%
+	}
+	\providecommand\missing[1]{%
+		\textcolor{Crimson}{#1}%
+		\marginnote{\textcolor{Crimson}{\LARGE$\star$}}%
+	}
+	\providecommand\notes[1]{%
+		\textcolor{ForestGreen}{[\textsc{Note}: #1]}%
+		\marginnote{\textcolor{ForestGreen}{\LARGE$\star$}}%
+	}
+	\providecommand\query[1]{%
+		\textcolor{Purple}{[\textsc{Q}: #1]}%
+		\marginnote{\textcolor{Purple}{\LARGE$\star$}}%
+	}
+\else
+	% Define empty commands when comments are disabled
+	\providecommand\fixme[1]{}
+	\providecommand\missing[1]{}
+	\providecommand\notes[1]{}
+	\providecommand\query[1]{}
+	\providecommand\todo[1]{}
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Colored Boxes
+%% Revision Tracking
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage[most]{tcolorbox}                              % Colored and styled boxes
-\RequirePackage[%
-	skipabove=1em,                                            % Vertical space above the frame
-	skipbelow=1em,                                            % Vertical space below the frame
-	ntheorem,                                                 % Compatibility with theorem environments
-	framemethod=Tikz                                          % Use TikZ for frame rendering
-]{mdframed}                                                   % Framed environments with theorem support
+% Visual indicators for document modifications during collaborative editing.
+% Provides change tracking without requiring external diff tools.
+%
+% Available commands:
+%   \changed{text} - Blue highlight for modified content
+%   \added{text}   - Green highlight for new additions
+%   \removed{text} - Gray strikethrough for deleted content
+%
+% When comments are disabled, these commands pass through or remove text
+% appropriately to produce a clean final output.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\if@csd@comments
+	\providecommand\changed[1]{%
+		\textcolor{blue}{#1}%
+		\marginnote{\textcolor{blue}{\LARGE$\star$}}%
+	}
+	\providecommand\added[1]{%
+		\textcolor{OliveGreen}{#1}%
+		\marginnote{\textcolor{OliveGreen}{\LARGE$\star$}}%
+	}
+	\providecommand\removed[1]{%
+		\textcolor{Gray}{\sout{#1}}%
+		\marginnote{\textcolor{Gray}{\LARGE$\star$}}%
+	}
+\else
+	% Clean output mode
+	\providecommand\changed[1]{#1}      % Pass through changed text
+	\providecommand\added[1]{#1}        % Pass through added text
+	\providecommand\removed[1]{}        % Remove deleted text entirely
+\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% TikZ
+%% Optional Feature Loading
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\ifcsdirty@LoadTikz
-	\typeout{csdirty: Loading TikZ package}
-	\RequirePackage{pgfplots}                                     % Function/data plots
-	\pgfplotsset{compat=1.18}                                     % PGFPlots compatibility version
-	\RequirePackage{tikz}                                         % Core TikZ package
-	\RequirePackage{tikz-cd}                                      % Commutative diagrams
-	\RequirePackage{tikz-3dplot}                                  % 3D coordinate plotting
 
-	% TikZ libraries for enhanced diagrammatic capability
+%% Epigraphs
+\if@csd@loadepigraph
+	\RequirePackage{epigraph}
+	\setlength\epigraphrule{0.5pt}
+	\setlength\epigraphwidth{0.65\textwidth}
+	\renewcommand\textflush{flushright}
+	\renewcommand\epigraphsize{\small}
+
+	\let\csd@old@epigraph\epigraph
+	\RenewDocumentCommand\epigraph{mm}{%
+		\csd@old@epigraph{\textsf{#1}}{\smallskip\textsc{#2}}%
+	}
+
+	%% Dedication commands (book/report only)
+	\@ifclassloaded{book}{%
+		\NewDocumentCommand\generateDedications{m}{%
+			\clearpage\thispagestyle{plain}%
+			\begin{center}\vspace*{\fill}%
+				\large#1%
+				\vspace*{\fill}\end{center}%
+			\clearpage
+		}%
+	}{}%
+	\@ifclassloaded{report}{%
+		\NewDocumentCommand\generateDedications{m}{%
+			\clearpage\thispagestyle{plain}%
+			\begin{center}\vspace*{\fill}%
+				\large#1%
+				\vspace*{\fill}\end{center}%
+			\clearpage
+		}%
+	}{}%
+\fi
+
+%% TikZ
+\if@csd@loadtikz
+	\RequirePackage{pgfplots}
+	\pgfplotsset{compat=1.18}
+	\RequirePackage{tikz}
+	\RequirePackage{tikz-cd}
+	\RequirePackage{tikz-3dplot}
 	\usetikzlibrary{%
 		3d,
 		arrows,
@@ -958,69 +846,167 @@
 		tikzmark,
 		trees
 	}
+	\PackageInfo{csdirty}{TikZ loaded with common libraries}%
 \fi
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Appendices
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage[page, title, header, titletoc, toc]{appendix} % For handling appendices
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Cryptography and Styling
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\ifcsdirty@LoadTheorems
-	\typeout{csdirty: Loading theorem formatting package}
-	\IfFileExists{csthm.sty}{%
-		\RequirePackage[oldschool]{csthm}
-	}{%
-		\PackageWarning{csdirty}{Package `csthm` not found.}
-	} % Theorem formatting
+%% Appendices
+\if@csd@loadappendix
+	\RequirePackage[page,title,header,titletoc,toc]{appendix}
 \fi
 
-\ifcsdirty@LoadCrypto
-	\typeout{csdirty: Loading cryptography package}
+%% Theorems
+\if@csd@loadtheorems
+	\PackageInfo{csdirty}{Loaded thmtools for theorem environments}%
+	\RequirePackage{amsthm}%
+	\RequirePackage{thmtools}%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	% THEOREM ENVIRONMENT CONFIGURATION
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	% Comprehensive theorem system using thmtools for consistent styling.
+	% Provides four distinct style families:
+	%   1. theoremlike    - Results requiring proof (bold headfont)
+	%   2. definitionlike - Concept introductions (bold headfont)
+	%   3. remarklike     - Observations and commentary (small caps headfont)
+	%   4. highlightlike  - Pedagogical emphasis (sans-serif headfont)
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	% Number equations within sections
+	\numberwithin{equation}{section}
+
+	% Theorem style definitions
+	\declaretheoremstyle[%
+		headfont=\bfseries,
+		notefont=\normalfont\scshape,
+		bodyfont=\normalfont,
+		spaceabove=3pt,
+		spacebelow=3pt,
+		headpunct=.,
+		postheadspace=.5em
+	]{csd@theoremlike}
+
+	\declaretheoremstyle[%
+		headfont=\bfseries,
+		notefont=\normalfont\scshape,
+		bodyfont=\normalfont,
+		spaceabove=3pt,
+		spacebelow=3pt,
+		headpunct=.,
+		postheadspace=.5em
+	]{csd@definitionlike}
+
+	\declaretheoremstyle[%
+		headfont=\normalfont\scshape,
+		bodyfont=\normalfont,
+		spaceabove=3pt,
+		spacebelow=3pt,
+		headpunct=.,
+		postheadspace=.5em
+	]{csd@remarklike}
+
+	\declaretheoremstyle[%
+		headfont=\normalfont\sffamily,
+		bodyfont=\normalfont,
+		spaceabove=3pt,
+		spacebelow=3pt,
+		headpunct=.,
+		postheadspace=.5em
+	]{csd@highlightlike}
+
+	% Base theorem environment
+	\declaretheorem[%
+		name=Theorem,
+		style=csd@theoremlike,
+		numberwithin=section
+	]{theorem}
+
+	% Helper macro for declaring sibling environments
+	\newcommand\csd@declaretheoremfamily[2]{%
+		\forcsvlist{\declaretheorem[sibling=theorem,style=#1]}{#2}%
+	}
+
+	% Theorem-like environments (require proof)
+	\csd@declaretheoremfamily{csd@theoremlike}{%
+		assertion,assumption,axiom,claim,conclusion,conjecture,corollary,%
+		criterion,fact,folklore,hypothesis,lemma,observation,postulate,%
+		property,proposition%
+	}
+
+	% Definition-like environments (introduce concepts)
+	\csd@declaretheoremfamily{csd@definitionlike}{%
+		application,construction,convention,definition,example,experiment,%
+		problem,protocol,result,solution,step,notation%
+	}
+
+	% Remark-like environments (observations and commentary)
+	\csd@declaretheoremfamily{csd@remarklike}{%
+		commentary,discussion,exercise,motivation,notationabuse,note,%
+		openproblem,question,remark,syntax%
+	}
+
+	% Highlight-like environments (pedagogical emphasis)
+	\csd@declaretheoremfamily{csd@highlightlike}{%
+		guideline,highlight,important,insight,keypoint,recall,summary,%
+		takeaway,tip,warning%
+	}
+
+	% Unnumbered theorem variants
+	\declaretheorem[name=Theorem,style=csd@theoremlike,numbered=no]{theorem*}
+	\declaretheorem[name=Lemma,style=csd@theoremlike,numbered=no]{lemma*}
+	\declaretheorem[name=Corollary,style=csd@theoremlike,numbered=no]{corollary*}
+	\declaretheorem[name=Hypothesis,style=csd@theoremlike,numbered=no]{hypothesis*}
+	\declaretheorem[name=Claim,style=csd@theoremlike,numbered=no]{claim*}
+	\declaretheorem[name=Conjecture,style=csd@theoremlike,numbered=no]{conjecture*}
+	\declaretheorem[name=Open Problem,style=csd@remarklike,numbered=no]{openproblem*}
+	\declaretheorem[name=Syntax,style=csd@remarklike,numbered=no]{syntax*}
+
+\fi
+
+%% Cryptography
+\if@csd@loadcrypto
 	\IfFileExists{tcscrypto.sty}{%
-		\RequirePackage{tcscrypto}
+		\RequirePackage{tcscrypto}%
+		\PackageInfo{csdirty}{Loaded tcscrypto package}%
 	}{%
-		\PackageWarning{csdirty}{Package `tcscrypto` not found.}
-	} % Cryptography macros
+		\PackageWarning{csdirty}{Package tcscrypto.sty not found}%
+	}%
 \fi
 
-\ifcsdirty@LoadOrcidlink
-	\typeout{csdirty: Loading ORCID link package}
+%% ORCID
+\if@csd@loadorcid
 	\IfFileExists{orcidlink.sty}{%
-		\RequirePackage{orcidlink}
+		\RequirePackage{orcidlink}%
+		\PackageInfo{csdirty}{Loaded orcidlink package}%
 	}{%
-		\PackageWarning{csdirty}{Package `orcidlink` not found.}
-	} % ORCID ID and icon
+		\PackageWarning{csdirty}{Package orcidlink.sty not found}%
+	}%
 \fi
 
-\ifcsdirty@LoadNicodemus
-	\typeout{csdirty: Loading Nicodemus font package}
+%% Nicodemus
+\if@csd@loadnicodemus
 	\IfFileExists{nicodemus.sty}{%
-		\RequirePackage{nicodemus}
+		\RequirePackage{nicodemus}%
+		\PackageInfo{csdirty}{Loaded nicodemus package}%
 	}{%
-		\PackageWarning{csdirty}{Package `nicodemus` not found.}
-	} % Nicodemus macros
+		\PackageWarning{csdirty}{Package nicodemus.sty not found}%
+	}%
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Versioning, Comments, Acknowledgment, Abstract
+%% Version Control and Comments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Comment macro: \newcomment{name}{color}{command}
-\NewDocumentCommand{\newcomment}{mmm}{%
+%% Comment system
+\NewDocumentCommand\newcomment{mmm}{%
 	\expandafter\NewDocumentCommand\csname#3\endcsname{m}{%
-		\ifComments
+		\if@csd@comments
 			\noindent\textcolor{#2}{\sffamily##1 -- $\mathsf{#1}$}%
 		\fi
 	}%
 }
 
+%% Acknowledgment environment
 \AtBeginDocument{%
-	% Acknowledgment: hidden if anonymized, class-based otherwise
-	\ifShortVersion
-		\NewDocumentEnvironment{acknowledgment}{o}{}{}
+	\if@csd@shortversion
+		\NewDocumentEnvironment{acknowledgment}{o}{}{}%
 	\else
 		\NewDocumentEnvironment{acknowledgment}{o}{%
 			\@ifclassloaded{book}{%
@@ -1032,215 +1018,149 @@
 					\IfNoValueTF{#1}{\paragraph*{Acknowledgment.}}{\paragraph*{#1}}%
 				}%
 			}%
-		}{}
+		}{}%
 	\fi
 }
 
-% Abstract: indented with TOC entry
+%% Abstract environment
 \@ifclassloaded{book}{%
 	\NewDocumentEnvironment{abstract}{}{%
-		\begingroup
-		\quotation
-		\small
+		\begingroup\quotation\small
 		\textbf{\abstractname.\ }%
-		\addcontentsline{toc}{section}{\protect{\abstractname}}%
+		\addcontentsline{toc}{section}{\protect\abstractname}%
 	}{%
-		\endquotation
-		\endgroup
-	}
+		\endquotation\endgroup
+	}%
 }{%
 	\RenewDocumentEnvironment{abstract}{}{%
-		\begingroup
-		\quotation
-		\small
+		\begingroup\quotation\small
 		\textbf{\abstractname.\ }%
-		\addcontentsline{toc}{section}{\protect{\abstractname}}%
+		\addcontentsline{toc}{section}{\protect\abstractname}%
 	}{%
-		\endquotation
-		\endgroup
-	}
+		\endquotation\endgroup
+	}%
 }
 
-% Table of Contents
-\NewDocumentCommand{\toc}{}{%
-	\clearpage
-	\vfill
-	\begin{spacing}{1.00}
+%% Table of contents
+\NewDocumentCommand\toc{}{%
+	\clearpage\vfill
+	\begin{spacing}{1.00}%
 		\tableofcontents
-	\end{spacing}
-	\vfill
-	\clearpage
+	\end{spacing}%
+	\vfill\clearpage
 }
 
-% Bibliography 
-\NewDocumentCommand{\printbib}{O{alphaurl} m}{%
-	\vfill
-	\clearpage
-	\begin{spacing}{1.00}
-		\bibliographystyle{#1}
-		\bibliography{#2}
-	\end{spacing}
-	\vfill
-	\clearpage
+%% Bibliography
+\NewDocumentCommand\printbib{O{alphaurl} m}{%
+	\vfill\clearpage
+	\begin{spacing}{1.00}%
+		\bibliographystyle{#1}%
+		\bibliography{#2}%
+	\end{spacing}%
+	\vfill\clearpage
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Title Formatting
+%% Title Formatting
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{hep-title}                                   % Lightweight title formatting
-\titlefont{\normalfont\LARGE\bfseries}                       % Title
-\subtitlefont{\normalfont\large\bfseries}                    % Subtitle
-\authorfont{\normalfont\normalsize\scshape}                  % Author
-\affiliationfont{\normalfont\small\scshape}                  % Affiliation
-\datefont{\normalfont\small\scshape}                         % Date
-\preprintfont{\normalfont\small\ttfamily\scshape}            % Preprint line
+\RequirePackage{hep-title}
+\titlefont{\normalfont\Huge\raggedright\itshape}
+\subtitlefont{\normalfont\LARGE\raggedright\bfseries}
+\authorfont{\normalfont\large\scshape\raggedright}
+\affiliationfont{\normalfont\small\scshape\raggedright}
+\datefont{\normalfont\normalsize\sffamily\scshape\raggedright}
+\preprintfont{\normalfont\small\scshape}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Adjust Table of Contents spacing
+%% TOC Spacing
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage[titles]{tocloft}                             % TOC title formatting
-\NewDocumentCommand{\adjusttocspacing}{}{%
-	\addtolength{\cftchapnumwidth}{5pt}%
-	\addtolength{\cftsecnumwidth}{3.5pt}%
-	\addtolength{\cftsubsecnumwidth}{3.5pt}%
-	\addtolength{\cftsubsubsecnumwidth}{3.5pt}%
-	\addtolength{\cftsecindent}{5pt}%
-	\addtolength{\cftsubsecindent}{8.5pt}%
-	\addtolength{\cftsubsubsecindent}{12pt}%
+\RequirePackage[titles]{tocloft}
+\NewDocumentCommand\adjusttocspacing{}{%
+	\addtolength\cftchapnumwidth{5pt}%
+	\addtolength\cftsecnumwidth{3.5pt}%
+	\addtolength\cftsubsecnumwidth{3.5pt}%
+	\addtolength\cftsubsubsecnumwidth{3.5pt}%
+	\addtolength\cftsecindent{5pt}%
+	\addtolength\cftsubsecindent{8.5pt}%
+	\addtolength\cftsubsubsecindent{12pt}%
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Header-level formatting
+%% Section Formatting
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{titlesec}                                    % Header title formatting
+\RequirePackage{titlesec}
 
-% Define section-specific heading fonts and sizes
-\NewDocumentCommand{\partheadingfont}{}{\normalfont\bfseries\huge}
-\NewDocumentCommand{\chapterheadingfont}{}{\normalfont\bfseries\LARGE}
-\NewDocumentCommand{\sectionheadingfont}{}{\normalfont\bfseries\Large}
-\NewDocumentCommand{\subsectionheadingfont}{}{\normalfont\bfseries\large}
-\NewDocumentCommand{\subsubsectionheadingfont}{}{\normalfont\bfseries\normalsize}
-\NewDocumentCommand{\paragraphheadingfont}{}{\normalfont\bfseries\normalsize}
-\NewDocumentCommand{\subparagraphheadingfont}{}{\normalfont\scshape\normalsize}
+%% Heading fonts
+\newcommand*\partheadingfont{\normalfont\bfseries\huge}
+\newcommand*\chapterheadingfont{\normalfont\itshape\LARGE}
+\newcommand*\sectionheadingfont{\normalfont\bfseries\Large}
+\newcommand*\subsectionheadingfont{\normalfont\bfseries\large}
+\newcommand*\subsubsectionheadingfont{\normalfont\bfseries\normalsize}
+\newcommand*\paragraphheadingfont{\normalfont\bfseries\normalsize}
+\newcommand*\subparagraphheadingfont{\normalfont\scshape\normalsize}
 
-\ifcsdirty@LoadOldSectionSymb
-	% Ancient Section, subsection, etc. formatting rules
-	\NewDocumentCommand{\setsectionformats}{}{%
-		\titleformat{\section}
-		{\sectionheadingfont}
-		{\textsection\thesection}
-		{10pt}
-		{}%
-		\titleformat{\subsection}
-		{\subsectionheadingfont}
-		{\textsection\textsection\thesubsection}
-		{10pt}
-		{}%
-		\titleformat{\subsubsection}[runin]
-		{\subsubsectionheadingfont}
-		{\textsection\textsection\textsection\thesubsubsection}
-		{10pt}
-		{}%
-		\titleformat{\paragraph}[runin]
-		{\paragraphheadingfont}
-		{\theparagraph}
-		{10pt}
-		{}[.]%
-		\titlespacing*{\paragraph}{0pt}{\medskipamount}{*1}%
-		\titleformat{\subparagraph}[runin]
-		{\subparagraphheadingfont}
-		{\thesubparagraph}
-		{10pt}
-		{}[.]%
-		\titlespacing*{\subparagraph}{0pt}{\medskipamount}{*1}%
-	}
-\else
-	% Section, subsection, etc. formatting rules
-	\NewDocumentCommand{\setsectionformats}{}{%
-		\titleformat{\section}
-		{\sectionheadingfont}
-		{\thesection}
-		{10pt}
-		{}%
-		\titleformat{\subsection}
-		{\subsectionheadingfont}
-		{\thesubsection}
-		{10pt}
-		{}%
-		\titleformat{\subsubsection}[runin]
-		{\subsubsectionheadingfont}
-		{\thesubsubsection}
-		{10pt}
-		{}%
-		\titleformat{\paragraph}[runin]
-		{\paragraphheadingfont}
-		{\theparagraph}
-		{10pt}
-		{}[.]%
-		\titlespacing*{\paragraph}{0pt}{\medskipamount}{*1}%
-		\titleformat{\subparagraph}[runin]
-		{\subparagraphheadingfont}
-		{\thesubparagraph}
-		{10pt}
-		{}[.]%
-		\titlespacing*{\subparagraph}{0pt}{\medskipamount}{*1}%
-	}
-\fi
-
-% Chapter-level title formatting (with embedded size and style)
-\NewDocumentCommand{\setchapterformat}{}{%
-	\titleformat{\chapter}[display]
-	{\chapterheadingfont}
-	{\filleft\textnormal{\textsc{\large\chaptertitlename}~\Huge\textsf{\thechapter}}}
-	{2ex}
-	{\titlerule\vspace{1ex}\filright}
-	[\vspace{1ex}\titlerule]%
-}
-
-% Part-level title formatting (with embedded size and style)
-\NewDocumentCommand{\setpartformat}{}{%
-\titleclass{\part}{top}
-\titleformat{\part}[display]
-{\partheadingfont}
-{\scshape\partname~{\Huge\thepart}}
-{1ex}
-{\scshape\titlerule\vspace{1ex}\Huge}
-[\vspace{1ex}\titlerule]%
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Paragraph formatting
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Flag for punctuation detection
-\newif\ifcsdirty@haspunctuation
-
-% Check whether the second argument is empty (used for punctuation detection)
-\def\csdirty@checkpunctuation#1{%
-	\ifx\csdirty@checkpunctuation#1\csdirty@checkpunctuation
+%% Section format commands
+\newcommand*\setsectionformats{%
+	\if@csd@loadoldsection
+		\titleformat{\section}{\sectionheadingfont}{\S\thesection}{10pt}{}%
+		\titleformat{\subsection}{\subsectionheadingfont}{\S\S\thesubsection}{10pt}{}%
+		\titleformat{\subsubsection}[runin]{\subsubsectionheadingfont}{\S\S\S\thesubsubsection}{10pt}{}%
 	\else
-		\csdirty@haspunctuationtrue
+		\titleformat{\section}{\sectionheadingfont}{\thesection}{10pt}{}%
+		\titleformat{\subsection}{\subsectionheadingfont}{\thesubsection}{10pt}{}%
+		\titleformat{\subsubsection}[runin]{\subsubsectionheadingfont}{\thesubsubsection}{10pt}{}%
+	\fi
+	\titleformat{\paragraph}[runin]{\paragraphheadingfont}{\theparagraph}{10pt}{}[.]%
+	\titlespacing*{\paragraph}{0pt}{\medskipamount}{*1}%
+	\titleformat{\subparagraph}[runin]{\subparagraphheadingfont}{\thesubparagraph}{10pt}{}[.]%
+	\titlespacing*{\subparagraph}{0pt}{\medskipamount}{*1}%
+}
+
+\newcommand*\setchapterformat{%
+	\titleformat{\chapter}[display]{\chapterheadingfont}%
+	{\filleft\textnormal{\textsf{\large\chaptertitlename}~\Huge\textsf{\thechapter}}}%
+	{2ex}{\titlerule\vspace{1ex}\filright}[\vspace{1ex}\titlerule]%
+}
+
+\newcommand*\setpartformat{%
+\titleformat{\part}[display]{\partheadingfont}%
+{\scshape\partname~{\Huge\thepart}}%
+{1ex}{\scshape\titlerule\vspace{1ex}\Huge}[\vspace{1ex}\titlerule]%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PARAGRAPH HEADINGS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Provides \parhead command for inline paragraph headings with automatic
+% punctuation. Appends period if text doesn't end with . ? ! :
+%
+% Implementation uses delimiter-based parsing to detect trailing punctuation.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newif\ifcsd@haspunctuation
+
+\def\csd@checkpunctuation#1{%
+	\ifx\csd@checkpunctuation#1\csd@checkpunctuation
+	\else
+		\csd@haspunctuationtrue
 	\fi
 }
 
-% Specific punctuation testers for '.', '?', '!', ':'
-\def\csdirty@checkdot#1.\csdirty@delim#2\csdirty@stop{\csdirty@checkpunctuation{#2}}
-\def\csdirty@checkquestion#1?\csdirty@delim#2\csdirty@stop{\csdirty@checkpunctuation{#2}}
-\def\csdirty@checkexclam#1!\csdirty@delim#2\csdirty@stop{\csdirty@checkpunctuation{#2}}
-\def\csdirty@checkcolon#1:\csdirty@delim#2\csdirty@stop{\csdirty@checkpunctuation{#2}}
+\def\csd@checkdot#1.\csd@delim#2\csd@stop{\csd@checkpunctuation{#2}}
+\def\csd@checkquestion#1?\csd@delim#2\csd@stop{\csd@checkpunctuation{#2}}
+\def\csd@checkexclam#1!\csd@delim#2\csd@stop{\csd@checkpunctuation{#2}}
+\def\csd@checkcolon#1:\csd@delim#2\csd@stop{\csd@checkpunctuation{#2}}
 
-% Main interface: Append period unless line ends with '.', '?', '!', or ':'
-\def\csdirty@appendpunctuationifneeded#1{%
-	\csdirty@haspunctuationfalse
-	\csdirty@checkdot#1\csdirty@delim.\csdirty@delim\csdirty@stop
-	\csdirty@checkquestion#1\csdirty@delim?\csdirty@delim\csdirty@stop
-	\csdirty@checkexclam#1\csdirty@delim!\csdirty@delim\csdirty@stop
-	\csdirty@checkcolon#1\csdirty@delim:\csdirty@delim\csdirty@stop
-	#1\ifcsdirty@haspunctuation \else.\fi%
+\def\csd@appendpunctuationifneeded#1{%
+	\csd@haspunctuationfalse
+	\csd@checkdot#1\csd@delim.\csd@delim\csd@stop
+	\csd@checkquestion#1\csd@delim?\csd@delim\csd@stop
+	\csd@checkexclam#1\csd@delim!\csd@delim\csd@stop
+	\csd@checkcolon#1\csd@delim:\csd@delim\csd@stop
+	#1\ifcsd@haspunctuation \else.\fi%
 }
 
-% Skip spaces and implicit paragraphs (blank lines)
-\def\csdirty@ignorewhitespaceandimplicitpars{%
+\def\csd@ignorewhitespaceandimplicitpars{%
 	\begingroup
 	\catcode13=10 %
 	\@ifnextchar\relax
@@ -1248,458 +1168,241 @@
 	{\endgroup}%
 }
 
-% Skip spaces, implicit paragraphs, and explicit \par commands
-\def\csdirty@ignoreallpars{%
-	\begingroup
-	\catcode13=10 %
-	\@ifnextchar\par
-	{\endgroup\expandafter\csdirty@ignoreallpars\@gobble}
-	{\endgroup}%
-}
-
-% Section-style paragraph header with automatic punctuation and spacing
-\NewDocumentCommand{\csdirty@paragraphhead}{m}{%
+\NewDocumentCommand{\csd@paragraphhead}{m}{%
 	\smallskip
 	\noindent
-	\textbf{\boldmath\ignorespaces\csdirty@appendpunctuationifneeded{#1}}%
+	\textbf{\boldmath\ignorespaces\csd@appendpunctuationifneeded{#1}}%
 	\hskip 0.9em plus 0.3em minus 0.3em
-	\csdirty@ignorewhitespaceandimplicitpars
+	\csd@ignorewhitespaceandimplicitpars
 }
 
-\NewDocumentCommand{\parhead}{m}{\csdirty@paragraphhead{#1}}
+\NewDocumentCommand{\parhead}{m}{\csd@paragraphhead{#1}}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Nested bar environment
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\long\def\csdirty@customfbox#1#2#3#4#5#6#7#8#9{%
-	\leavevmode
-	\begingroup
-	\setbox\@tempboxa\hbox{%
-		\color@begingroup
-		\kern\fboxsep{#9}\kern\fboxsep
-		\color@endgroup}%
-	\hbox{%
-		\begingroup
-		\@tempdima#4\relax
-		\advance\@tempdima\fboxsep
-		\advance\@tempdima\dp\@tempboxa
-		\expandafter\endgroup
-		\expandafter\lower\the\@tempdima\hbox{%
-			\vbox{%
-				\hrule \@height#3 \@width#7
-				#1%
-				\hbox{%
-					\vrule \@width#5
-					\hspace{#8}%
-					\vbox{%
-						\vskip\fboxsep
-						\copy\@tempboxa
-						\vskip\fboxsep}%
-					\vrule \@width#6}%
-				#2%
-				\hrule \@height#4\@width#7}%
-		}%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% BROKEN REFERENCE DETECTION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Adds visual margin markers (colored stars) for undefined citations and
+% references. Aids in document proofreading and debugging.
+%
+% Markers appear in document margins with label text indicating the
+% undefined reference key.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\providecommand{\csd@colorize}{\color{Firebrick2}}
+
+\newcommand{\csd@brokenrefmark}[1]{%
+	\marginnote[%
+		{\csd@colorize\normalfont\smash{\LARGE$\star$}\ \tiny\sffamily#1}%
+	]{%
+		{\csd@colorize\normalfont\smash{\LARGE$\star$}\ \tiny\sffamily#1}%
 	}%
-	\endgroup
 }
 
-% Parameters for bar dimensions and spacing
-\newcommand{\csdirty@nestedbar@topbotrulelength}{1em}
-\newcommand{\csdirty@nestedbar@indent}{0.5em}
+\newbool{csd@markundef}
+\booltrue{csd@markundef}
 
-% FrameCommand helper that sets up side rule and spacing
-\def\csdirty@openframebox#1#2{%
-	\fboxsep=\FrameSep
-	\csdirty@customfbox
-	{}{}% no content above or below
-	{#1}{#2}% top and bottom rule thicknesses
-	\FrameRule\z@% left and right rule thickness
-	\csdirty@nestedbar@topbotrulelength% horizontal rule length
-	\csdirty@nestedbar@indent% indent from vertical rule
-}
+\xpretocmd{\G@refundefinedtrue}{%
+	\ifbool{csd@markundef}{%
+		\csd@brokenrefmark{\@ifundefined{@citeb}{}{\@citeb}}%
+	}{}%
+}{}{}
 
-% Definition of the nestedbar environment
-\newenvironment{nestedbar}[1][\hsize]{%
-	\@ifundefined{OuterFrameSep}{%
-		\@latex@error{To use nestedbar, update framed.sty to a recent version.}\@ehd}{}%
-	\def\FrameCommand{\csdirty@openframebox\FrameRule\FrameRule}%
-	\def\FirstFrameCommand{\csdirty@openframebox\FrameRule\z@}%
-	\def\MidFrameCommand{\csdirty@openframebox\z@\z@}%
-	\def\LastFrameCommand{\csdirty@openframebox\z@\FrameRule}%
-	\OuterFrameSep=1ex
-	\FrameSep=0pt
-	\MakeFramed{\hsize#1\advance\hsize-\width\FrameRestore}%
-}{%
-	\endMakeFramed
+\let\csd@old@setref=\@setref
+\renewcommand{\@setref}[3]{%
+	\ifx#1\relax \csd@brokenrefmark{#3}\fi%
+	\csd@markundeffalse%
+	\csd@old@setref{#1}{#2}{#3}%
+	\csd@markundeftrue%
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Simple fancyhdr header setup
+%% Useful Commands
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\NewDocumentCommand{\simplefancyheader}{}{%
+\if@csd@loaduseful
+	%% Custom lists
+	\newlist{points}{itemize}{1}
+	\setlist[points]{label=\textendash,leftmargin=1em,itemsep=1pt,before=\smallskip,after=\smallskip}
+
+	\newlist{codelist}{enumerate}{1}
+	\setlist[codelist,1]{label=\textcolor{gray}{\texttt{[\arabic*]}},leftmargin=1em,itemsep=1pt}
+
+	\newlist{checkbox}{itemize}{1}
+	\setlist[checkbox]{label=$\square$,leftmargin=1em}
+	\newcommand*\checked{\item[\checkmark]}
+
+	\newlist{deflist}{description}{1}
+	\setlist[deflist]{labelwidth=0.35\textwidth,labelsep=1em,leftmargin=0.35\textwidth,%
+		font=\normalfont\bfseries,style=nextline,itemsep=5pt}
+
+	%% Text commands
+	\newcommand*\highlightcolor{RoyalBlue}
+	\newcommand*\sethighlightcolor[1]{\renewcommand*\highlightcolor{#1}}
+	\newcommand*\emphmath[1]{\textcolor{\highlightcolor}{\mathrm{#1}}}
+	\newcommand*\emphtext[1]{\textcolor{\highlightcolor}{#1}}
+	\newcommand*\textbi[1]{\textbf{\textit{#1}}}
+	\newcommand*\textem[1]{\textcolor{\highlightcolor}{#1}}
+	\newcommand*\code[1]{\texttt{#1}}
+	\newcommand*\mathsc[1]{\textnormal{\textsc{#1}}}
+	\newcommand*\mathbi[1]{\textnormal{\textbf{\textit{#1}}}}
+	\newcommand*\inmath[1]{\ensuremath{#1}}
+	\mathchardef\mathhyphen="2D
+	\newcommand*\putInQuotes[1]{``#1''}
+	\newcommand*\strike[1]{\bgroup\ULdepth=-.55ex\ULset{#1}\egroup}
+
+	%% Box environments
+	\NewDocumentEnvironment{bashbox}{}{%
+		\begin{adjustbox}{minipage=\textwidth,precode=\dbox}%
+			\centering\medskip
+			\begin{minipage}{0.975\textwidth}\noindent
+				}{%
+			\end{minipage}\medskip
+		\end{adjustbox}%
+	}
+
+	\NewDocumentEnvironment{protocolbox}{o}{%
+		\begin{mdframed}[font=\small,roundcorner=1.5pt,linewidth=0.5pt,%
+				skipabove=0.5\baselineskip,skipbelow=0.1\baselineskip,%
+				innerleftmargin=5pt,innerrightmargin=5pt,innertopmargin=5pt,innerbottommargin=5pt]%
+			\IfNoValueF{#1}{\noindent\textbf{#1}\par\smallskip\hrule height0.4pt\vspace{0.5\baselineskip}}%
+			\begin{points}%
+				}{%
+			\end{points}%
+		\end{mdframed}%
+	}
+
+	\NewDocumentEnvironment{codelistbox}{o}{%
+		\begin{mdframed}[font=\small,roundcorner=1.5pt,linewidth=0.5pt,%
+				skipabove=0.5\baselineskip,skipbelow=0.1\baselineskip,%
+				innerleftmargin=5pt,innerrightmargin=5pt,innertopmargin=5pt,innerbottommargin=5pt]%
+			\IfNoValueF{#1}{\noindent\textbf{#1}\par\smallskip\hrule height0.4pt\vspace{0.5\baselineskip}}%
+			\begin{codelist}%
+				}{%
+			\end{codelist}%
+		\end{mdframed}%
+	}
+
+	\NewDocumentEnvironment{simplebox}{o}{%
+		\begin{mdframed}[font=\small,roundcorner=1.5pt,linewidth=0.5pt,%
+				skipabove=0.5\baselineskip,skipbelow=0.1\baselineskip,%
+				innerleftmargin=5pt,innerrightmargin=5pt,innertopmargin=5pt,innerbottommargin=5pt]%
+			\IfNoValueF{#1}{\noindent\textbf{#1}\par\smallskip\hrule height0.4pt\vspace{0.5\baselineskip}}%
+			}{%
+		\end{mdframed}%
+	}
+
+	\newtcolorbox{wirebox}{%
+		colframe=black,colback=white,sharp corners,boxrule=0.5pt,%
+		coltitle=black,colbacktitle=white,boxsep=5pt,top=0pt,bottom=0pt,left=5pt,right=5pt%
+	}
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Upright Greek Letters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\if@csd@modgreek
+	\RequirePackage{upgreek}
+
+	%% Define missing uppercase macros
+	\providecommand*\Alpha{\mathrm{A}}
+	\providecommand*\Beta{\mathrm{B}}
+	\providecommand*\Chi{\mathrm{X}}
+	\providecommand*\Epsilon{\mathrm{E}}
+	\providecommand*\Eta{\mathrm{H}}
+	\providecommand*\Iota{\mathrm{I}}
+	\providecommand*\Kappa{\mathrm{K}}
+	\providecommand*\Mu{\mathrm{M}}
+	\providecommand*\Nu{\mathrm{N}}
+	\providecommand*\Omicron{\mathrm{O}}
+	\providecommand*\Rho{\mathrm{R}}
+	\providecommand*\Tau{\mathrm{T}}
+	\providecommand*\Zeta{\mathrm{Z}}
+	\providecommand*\omicron{\mathrm{o}}
+
+	%% Override with upright versions if available
+	\@ifundefined{Upalpha}{}{\renewcommand*\Alpha{\Upalpha}}
+	\@ifundefined{Upbeta}{}{\renewcommand*\Beta{\Upbeta}}
+	\@ifundefined{Upchi}{}{\renewcommand*\Chi{\Upchi}}
+	\@ifundefined{Updelta}{}{\renewcommand*\Delta{\Updelta}}
+	\@ifundefined{Upepsilon}{}{\renewcommand*\Epsilon{\Upepsilon}}
+	\@ifundefined{Upeta}{}{\renewcommand*\Eta{\Upeta}}
+	\@ifundefined{Upgamma}{}{\renewcommand*\Gamma{\Upgamma}}
+	\@ifundefined{Upiota}{}{\renewcommand*\Iota{\Upiota}}
+	\@ifundefined{Upkappa}{}{\renewcommand*\Kappa{\Upkappa}}
+	\@ifundefined{Uplambda}{}{\renewcommand*\Lambda{\Uplambda}}
+	\@ifundefined{Upmu}{}{\renewcommand*\Mu{\Upmu}}
+	\@ifundefined{Upnu}{}{\renewcommand*\Nu{\Upnu}}
+	\@ifundefined{Upomega}{}{\renewcommand*\Omega{\Upomega}}
+	\@ifundefined{Upomicron}{}{\renewcommand*\Omicron{\Upomicron}}
+	\@ifundefined{Upphi}{}{\renewcommand*\Phi{\Upphi}}
+	\@ifundefined{Uppi}{}{\renewcommand*\Pi{\Uppi}}
+	\@ifundefined{Uppsi}{}{\renewcommand*\Psi{\Uppsi}}
+	\@ifundefined{Uprho}{}{\renewcommand*\Rho{\Uprho}}
+	\@ifundefined{Upsigma}{}{\renewcommand*\Sigma{\Upsigma}}
+	\@ifundefined{Uptau}{}{\renewcommand*\Tau{\Uptau}}
+	\@ifundefined{Uptheta}{}{\renewcommand*\Theta{\Uptheta}}
+	\@ifundefined{Upupsilon}{}{\renewcommand*\Upsilon{\Upupsilon}}
+	\@ifundefined{Upxi}{}{\renewcommand*\Xi{\Upxi}}
+	\@ifundefined{Upzeta}{}{\renewcommand*\Zeta{\Upzeta}}
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Fancy Headers (Simple Version)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand*\simplefancyheader{%
 	\RequirePackage{fancyhdr}%
 	\pagestyle{fancy}%
 	\fancyhf{}%
 	\fancyhead[LE,RO]{\rmfamily\small\textnormal{\@title}}%
 	\fancyhead[RE,LO]{\rmfamily\small\thepage}%
 	\fancyfoot{}%
-	\setlength{\headheight}{12pt}%
+	\setlength\headheight{12pt}%
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Class-specific adjustments
+%% Class-Specific Setup
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Applies appropriate formatting based on detected document class.
+% Different classes require different heading structures and TOC handling.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \AtBeginDocument{%
 	\@ifclassloaded{article}{%
-		\setsectionformats%
-		\setpartformat%
-	}{}
-
+		\setsectionformats
+		\setpartformat
+	}{}%
 	\@ifclassloaded{report}{%
-		\setpartformat%
-		\setchapterformat%
-		\setsectionformats%
-		\simplefancyheader%
-		\adjusttocspacing%
-	}{}
-
+		\setpartformat
+		\setchapterformat
+		\setsectionformats
+		\simplefancyheader
+		\adjusttocspacing
+	}{}%
 	\@ifclassloaded{book}{%
-		\setpartformat%
-		\setchapterformat%
-		\setsectionformats%
-		\simplefancyheader%
-		\adjusttocspacing%
-	}{}
-}%
+		\setpartformat
+		\setchapterformat
+		\setsectionformats
+		\simplefancyheader
+		\adjusttocspacing
+	}{}%
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Useful commands
+%% Document-Level Customizations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Commands for the main document
-\ifcsdirty@LoadUsefulCommands
-	\@ifpackageloaded{enumitem}{%
-		% Define 'points' list: itemize using "--"
-		\newlist{points}{itemize}{1}
-		\setlist[points]{%
-			label={\textendash},
-			leftmargin=1em,
-			itemsep=1pt,
-			align=left,
-			before=\smallskip,
-			after=\smallskip
-		}
-
-		% Define 'codelist' list: enumerated as [\texttt{1}], [\texttt{2}], ...
-		\newlist{codelist}{enumerate}{1}
-		\setlist[codelist,1]{%
-			label=\textcolor{gray}{\texttt{[\arabic*]}},
-			leftmargin=1em,
-			itemsep=1pt,
-			align=left,
-			before=\smallskip,
-			after=\smallskip
-		}
-
-		% Define 'checkbox' list
-		\newlist{checkbox}{itemize}{1}
-		\setlist[checkbox]{%
-			label=$\square$,
-			leftmargin=1em,
-			align=left
-		}
-		% Define \checked command to switch label for one item
-		\newcommand{\checked}{\item[\checkmark]}
-
-		% Define a rigorous description list for definitions
-		\newlist{deflist}{description}{1}
-		\setlist[deflist]{%
-			labelwidth=0.35\textwidth,
-			labelsep=1em,
-			leftmargin=0.35\textwidth,
-			font=\normalfont\bfseries,
-			style=nextline,
-			itemsep=5pt
-		}
-	}{}
-
-	% Highlight color for text and math
-	\newcommand{\highlightcolor}{RoyalBlue}
-	\newcommand{\sethighlightcolor}[1]{\renewcommand{\highlightcolor}{#1}}
-
-	% Text and math highlighting
-	\newcommand{\emphmath}[1]{\textcolor{\highlightcolor}{\mathrm{#1}}}
-	\newcommand{\emphtext}[1]{\textcolor{\highlightcolor}{#1}}
-	\newcommand{\textbi}[1]{\textbf{\textit{#1}}}
-	\newcommand{\textem}[1]{\textcolor{\highlightcolor}{#1}}
-
-	% Code highlighting
-	\newcommand{\code}[1]{\texttt{#1}}
-
-	% Math small caps and bold italic
-	\newcommand{\mathsc}[1]{\textnormal{\textsc{#1}}}
-	\newcommand{\mathbi}[1]{\textnormal{\textbf{\textit{#1}}}}
-
-	% Inline math shortcut
-	\newcommand{\inmath}[1]{\ensuremath{#1}}
-
-	% Hyphen in math
-	\mathchardef\mathhyphen="2D
-
-	% Put in quotes
-	\newcommand{\putInQuotes}[1]{``#1''}
-
-	% Strike-through text
-	\newcommand{\strike}[1]{\bgroup\ULdepth=-.55ex\ULset\strike{#1}\egroup}
-
-	% Highlight missing or problematic text
-	\newcounter{missingctr}
-	\newcommand{\missinglist}{}
-
-	% Main \missing command
-	\newcommand{\missing}[1]{%
-		\refstepcounter{missingctr}%
-		\label{missing:\themissingctr}%
-		\gappto\missinglist{%
-			\noindent\textcolor{Brown4}{%
-				\ensuremath{\star}~\themissingctr~(\textsf{Missing at p.~\pageref{missing:\themissingctr}}):~#1
-			}\par\medskip
-		}%
-		\textcolor{Brown4}{#1}%
-	}
-
-	% Print all collected missing items with page references
-	\newcommand{\printmissing}{%
-		\section*{Missing Content Report}%
-		\missinglist
-	}
-
-	% Format for missing citations
-	\newcommand{\missingcitation}{\textcolor{Brown4}{
-			\refstepcounter{missingctr}%
-			\label{missing:\themissingctr}%
-			\gappto\missinglist{%
-				\noindent\textcolor{Brown4}{%
-					\ensuremath{\star}~\themissingctr~(\textsf{Missing at p.~\pageref{missing:\themissingctr}}):~##1
-				}\par\medskip
-			}%	
-			\code{<Citation Missing>}
-		}
-	}
-
-
-	% Double-struck Pi symbol for different engines
-	\newcommand{\dsPi}{%
-		\ifluatex
-			\char"213F
-		\else
-			\ifxetex
-				\char"213F
-			\else
-				\Pi
-			\fi
-		\fi
-	}
-
-	% Sans-serif Pi symbol for different engines
-	\newcommand{\sansPi}{%
-		\ifluatex
-			\char"1D765
-		\else
-			\ifxetex
-				\char"1D765
-			\else
-				\Pi
-			\fi
-		\fi
-	}
-
-	% bashbox environment: code in a dashed box using adjustbox for width
-	\NewDocumentEnvironment{bashbox}{}{%
-		\begin{adjustbox}{minipage=\textwidth,precode=\dbox}
-			\centering\medskip%
-			\begin{minipage}{0.975\textwidth}
-				\noindent%
-				}{%
-			\end{minipage}
-			\medskip%
-		\end{adjustbox}
-	}
-
-	\@ifpackageloaded{mdframed}{%
-		% Protocol box environment
-		\NewDocumentEnvironment{protocolbox}{o}
-		{%
-			\begin{mdframed}[
-					font=\small,
-					roundcorner=1.5pt,
-					linewidth=0.5pt,
-					skipabove=0.5\baselineskip,
-					skipbelow=0.1\baselineskip,
-					leftmargin=0pt,
-					rightmargin=0pt,
-					innerleftmargin=5pt,
-					innerrightmargin=5pt,
-					innertopmargin=5pt,
-					innerbottommargin=5pt,
-					backgroundcolor=white,
-					linecolor=black
-				]%
-				\IfNoValueF{#1}{%
-					\noindent\textnormal{\small\textbf{#1}}\par\smallskip
-					\noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}%
-				}%
-				\begin{points}%
-					}
-					{%
-				\end{points}
-			\end{mdframed}%
-		}
-
-		% Code list box environment
-		\NewDocumentEnvironment{codelistbox}{o}
-		{%
-			\begin{mdframed}[
-					font=\small,
-					roundcorner=1.5pt,
-					linewidth=0.5pt,
-					skipabove=0.5\baselineskip,
-					skipbelow=0.1\baselineskip,
-					leftmargin=0pt,
-					rightmargin=0pt,
-					innerleftmargin=5pt,
-					innerrightmargin=5pt,
-					innertopmargin=5pt,
-					innerbottommargin=5pt,
-					backgroundcolor=white,
-					linecolor=black
-				]%
-				\IfNoValueF{#1}{%
-					\noindent\textnormal{\small\textbf{#1}}\par\smallskip
-					\noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}%
-				}%
-				\begin{codelist}%
-					}
-					{%
-				\end{codelist}
-			\end{mdframed}%
-		}
-
-		\NewDocumentEnvironment{simplebox}{o}
-		{%
-			\begin{mdframed}[
-					font=\small,
-					roundcorner=1.5pt,
-					linewidth=0.5pt,
-					skipabove=0.5\baselineskip,
-					skipbelow=0.1\baselineskip,
-					leftmargin=0pt,
-					rightmargin=0pt,
-					innerleftmargin=5pt,
-					innerrightmargin=5pt,
-					innertopmargin=5pt,
-					innerbottommargin=5pt,
-					backgroundcolor=white,
-					linecolor=black
-				]%
-				\IfNoValueF{#1}{%
-					\noindent\textnormal{\small\textbf{#1}}\par\smallskip
-					\noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}%
-				}%
-				}
-				{%
-			\end{mdframed}%
-		}
-	}{}
-
-	\@ifpackageloaded{tcolorbox}{%
-		% Wire box environment
-		\newtcolorbox{wirebox}{%
-			colframe=black,
-			colback=white,
-			sharp corners,
-			boxrule=0.5pt,
-			coltitle=black,
-			colbacktitle=white,
-			boxsep=5pt,
-			top=0pt,
-			bottom=0pt,
-			left=5pt,
-			right=5pt
-		}
-	}{}
-\fi
-
+% Redefines standard LaTeX commands at document start to integrate with
+% package functionality and provide enhanced typographic control.
+%
+% Customizations:
+%   - \paragraph    → Uses \parhead for consistent formatting
+%   - \subparagraph → Small caps styling for hierarchical clarity
+%   - \Pr           → Sans-serif probability operator
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Upright Greek Letters Setup
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\ifcsdirty@ModGreekSymbs
-	\RequirePackage{upgreek} % Load upright Greek letter symbols
+\AtBeginDocument{%
+	% Redefine paragraph to use enhanced paragraph head
+	\renewcommand\paragraph[1]{\parhead{#1}}%
 
-	% Provide definitions for missing uppercase Greek macros as roman letters, if undefined
-	\@ifundefined{Alpha}{\newcommand{\Alpha}{\mathrm{A}}}{}
-	\@ifundefined{Beta}{\newcommand{\Beta}{\mathrm{B}}}{}
-	\@ifundefined{Chi}{\newcommand{\Chi}{\mathrm{X}}}{}
-	\@ifundefined{Epsilon}{\newcommand{\Epsilon}{\mathrm{E}}}{}
-	\@ifundefined{Eta}{\newcommand{\Eta}{\mathrm{H}}}{}
-	\@ifundefined{Iota}{\newcommand{\Iota}{\mathrm{I}}}{}
-	\@ifundefined{Kappa}{\newcommand{\Kappa}{\mathrm{K}}}{}
-	\@ifundefined{Mu}{\newcommand{\Mu}{\mathrm{M}}}{}
-	\@ifundefined{Nu}{\newcommand{\Nu}{\mathrm{N}}}{}
-	\@ifundefined{Omicron}{\newcommand{\Omicron}{\mathrm{O}}}{}
-	\@ifundefined{Rho}{\newcommand{\Rho}{\mathrm{R}}}{}
-	\@ifundefined{Tau}{\newcommand{\Tau}{\mathrm{T}}}{}
-	\@ifundefined{Zeta}{\newcommand{\Zeta}{\mathrm{Z}}}{}
-	\@ifundefined{omicron}{\newcommand{\omicron}{\mathrm{o}}}{}
+	% Mathematical probability operator in sans-serif
+	\renewcommand\Pr{\mathop{\mathsf{Pr}}}%
+}
 
-	% Fallbacks for upright forms from `upgreek`, if undefined
-	\@ifundefined{Upalpha}{\newcommand{\Upalpha}{\mathrm{A}}}{}
-	\@ifundefined{Upbeta}{\newcommand{\Upbeta}{\mathrm{B}}}{}
-	\@ifundefined{Upchi}{\newcommand{\Upchi}{\mathrm{X}}}{}
-	\@ifundefined{Upepsilon}{\newcommand{\Upepsilon}{\mathrm{E}}}{}
-	\@ifundefined{Upeta}{\newcommand{\Upeta}{\mathrm{H}}}{}
-	\@ifundefined{Upiota}{\newcommand{\Upiota}{\mathrm{I}}}{}
-	\@ifundefined{Upkappa}{\newcommand{\Upkappa}{\mathrm{K}}}{}
-	\@ifundefined{Upmu}{\newcommand{\Upmu}{\mathrm{M}}}{}
-	\@ifundefined{Upnu}{\newcommand{\Upnu}{\mathrm{N}}}{}
-	\@ifundefined{Upomicron}{\newcommand{\Upomicron}{\mathrm{O}}}{}
-	\@ifundefined{Uprho}{\newcommand{\Uprho}{\mathrm{R}}}{}
-	\@ifundefined{Uptau}{\newcommand{\Uptau}{\mathrm{T}}}{}
-	\@ifundefined{Upzeta}{\newcommand{\Upzeta}{\mathrm{Z}}}{}
-	\@ifundefined{upomicron}{\newcommand{\upomicron}{\mathrm{o}}}{}
-
-	% If available, overwrite standard Greek macros with their upright versions
-	\@ifundefined{Upalpha}{}{\renewcommand{\Alpha}{\Upalpha}}
-	\@ifundefined{Upbeta}{}{\renewcommand{\Beta}{\Upbeta}}
-	\@ifundefined{Upchi}{}{\renewcommand{\Chi}{\Upchi}}
-	\@ifundefined{Updelta}{}{\renewcommand{\Delta}{\Updelta}}
-	\@ifundefined{Upepsilon}{}{\renewcommand{\Epsilon}{\Upepsilon}}
-	\@ifundefined{Upeta}{}{\renewcommand{\Eta}{\Upeta}}
-	\@ifundefined{Upgamma}{}{\renewcommand{\Gamma}{\Upgamma}}
-	\@ifundefined{Upiota}{}{\renewcommand{\Iota}{\Upiota}}
-	\@ifundefined{Upkappa}{}{\renewcommand{\Kappa}{\Upkappa}}
-	\@ifundefined{Uplambda}{}{\renewcommand{\Lambda}{\Uplambda}}
-	\@ifundefined{Upmu}{}{\renewcommand{\Mu}{\Upmu}}
-	\@ifundefined{Upnu}{}{\renewcommand{\Nu}{\Upnu}}
-	\@ifundefined{Upomega}{}{\renewcommand{\Omega}{\Upomega}}
-	\@ifundefined{Upomicron}{}{\renewcommand{\Omicron}{\Upomicron}}
-	\@ifundefined{Upphi}{}{\renewcommand{\Phi}{\Upphi}}
-	\@ifundefined{Uppi}{}{\renewcommand{\Pi}{\Uppi}}
-	\@ifundefined{Uppsi}{}{\renewcommand{\Psi}{\Uppsi}}
-	\@ifundefined{Uprho}{}{\renewcommand{\Rho}{\Uprho}}
-	\@ifundefined{Upsigma}{}{\renewcommand{\Sigma}{\Upsigma}}
-	\@ifundefined{Uptau}{}{\renewcommand{\Tau}{\Uptau}}
-	\@ifundefined{Uptheta}{}{\renewcommand{\Theta}{\Uptheta}}
-	\@ifundefined{Upupsilon}{}{\renewcommand{\Upsilon}{\Upupsilon}}
-	\@ifundefined{Upxi}{}{\renewcommand{\Xi}{\Upxi}}
-	\@ifundefined{Upzeta}{}{\renewcommand{\Zeta}{\Upzeta}}
-\fi
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\makeatother
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% End of package
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \endinput
+%% End of csdirty.sty
