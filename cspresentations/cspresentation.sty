@@ -1,225 +1,415 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% cspresentations.sty – Custom Beamer Theme for Academic Presentations
-%% ------------------------------------------------------------------------------------------------
-%% COMPREHENSIVE DOCUMENTATION (v1.1, 2024/12/05)
-%% ------------------------------------------------------------------------------------------------
-%% DESCRIPTION:
-%%   cspresentations is a LaTeX package providing a custom Beamer theme and configuration for academic
-%%   presentations in computer science and related fields. It enhances the visual appeal and clarity of
-%%   slides, offering advanced color theming, block environments, cryptography support, and integration
-%%   with TikZ and PGFPlots for diagrams and data visualization.
-%%
-%% FEATURES:
-%%   - Custom Beamer theme and color scheme (Rochester/Whale)
-%%   - Accent color and block styling for theorems, examples, alerts, etc.
-%%   - Enhanced table of contents, navigation symbols, and section styling
-%%   - Support for cryptography macros (tcscrypto)
-%%   - TikZ and PGFPlots integration for advanced graphics
-%%   - Custom box macros for definitions, questions, and colored content
-%%   - Hyperref integration for colored links
-%%   - Professional typography and microtype enhancements
-%%   - Algorithm2e support for pseudocode
-%%
-%% OPTIONS:
-%%   (No package options; customization is via Beamer and macro settings)
-%%
-%% USAGE:
-%%   \usepackage{cspresentations}
-%%   (Load after \documentclass{beamer} and before \begin{document})
-%%
-%% DEPENDENCIES:
-%%   - amsfonts, amsmath, amssymb, mathtools, adjustbox, fontenc, babel, microtype, textcomp, xspace, xurl, csquotes, ulem, booktabs, graphicx, multimedia
-%%   - beamer, appendixnumberbeamer, comment, algorithm2e, tikz, pgfplots, tcscrypto, mathalpha
-%%
-%% COMPATIBILITY:
-%%   - Requires LaTeX2e
-%%   - Compatible with XeLaTeX, LuaLaTeX, and pdfLaTeX
-%%   - Designed for use with the beamer class
-%%   - Modern TeX distributions (TeX Live 2022+, MiKTeX 23+)
-%%
-%% AUTHOR: Agni Datta
-%% VERSION: 1.1
-%% DATE: 2024/12/05
-%% LICENSE: LaTeX Project Public License v1.3c
-%%
-%% EXAMPLE USAGE:
-%%   \documentclass{beamer}
-%%   \usepackage{cspresentations}
-%%   \title{My Academic Talk}
-%%   \author{Presenter Name}
-%%   \begin{document}
-%%   \frame{\titlepage}
-%%   % ...
-%%   \end{document}
-%% ------------------------------------------------------------------------------------------------
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% cspresentations.sty
+% Modern Academic Beamer Theme
+% Version 1.2, 2026-02-15
+% Author: Agni Datta
+% License: LPPL v1.3c
+%
+% Provides a clean, modern alternative to default Beamer aesthetics
+% with enhanced typography, Catppuccin Latte color scheme, and block
+% environments for academic presentations in computer science and mathematics.
 
-\ProvidesPackage{cspresentations}[2024/12/05 v1.1 Custom Beamer Theme]
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{cspresentations}[2026/02/15 v1.2 Modern academic Beamer theme]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Core Packages
+%% Core Mathematics and Typography
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{amsfonts, amsmath, amssymb, mathtools}  % Advanced mathematics
-\RequirePackage{adjustbox}                              % Box size adjustments
-\RequirePackage[T1]{fontenc}                            % Font encoding
-\RequirePackage[english]{babel}                         % Language support
-\RequirePackage{microtype}                              % Font rendering improvements
-\RequirePackage{textcomp}                               % Additional text symbols
-\RequirePackage{xspace}                                 % Spacing after macros
-\RequirePackage{xurl}                                   % Auto-break URLs
-\RequirePackage{csquotes}                               % Enhanced quotation marks
-\RequirePackage{ulem}                                   % Underline improvements
-\RequirePackage{booktabs}                               % Professional table formatting
-\RequirePackage{graphicx}                               % Image inclusion
-\RequirePackage{multimedia}                             % Multimedia embedding
+\RequirePackage{amsfonts}          % AMS mathematical fonts
+\RequirePackage{amsmath}           % AMS mathematical environments
+\RequirePackage{amssymb}           % AMS mathematical symbols
+\RequirePackage{mathtools}         % Extension to amsmath
+\RequirePackage{adjustbox}         % Box dimension adjustments
+\RequirePackage{iftex}             % Engine detection
+\RequirePackage{etoolbox}          % Programming tools
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Beamer and Theme Packages
+%% Font Configuration (Engine-Dependent)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usetheme{Rochester}                                    % Base theme
-\usecolortheme{whale}                                   % Colour theme
-\colorlet{accentcolor}{RoyalBlue1}                      % Define accent colour
+\RequirePackage[full]{textcomp}         % Text companion
+\RequirePackage[lf]{ysabeau}            % Ysabeau for sans-serif
+\RequirePackage[scaled=.9]{FiraMono}    % Fira Mono
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Additional Beamer Options
+%% Additional Typography Packages
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{appendixnumberbeamer}                   % Custom appendix numbering
-\RequirePackage{comment}                                % Multi-line comments
-\RequirePackage{algorithm2e}                            % Pseudocode formatting
+\RequirePackage[english]{babel}         % Language hyphenation
+\RequirePackage{algorithm2e}            % Algorithm typesetting
+\RequirePackage{appendixnumberbeamer}   % Appendix slide numbering
+\RequirePackage{booktabs}               % Publication-quality tables
+\RequirePackage{comment}                % Multi-line comment blocks
+\RequirePackage{csquotes}               % Context-sensitive quotations
+\RequirePackage{graphicx}               % Graphics inclusion
+\RequirePackage{microtype}              % Microtypographic refinements
+\RequirePackage{multimedia}             % Multimedia embedding
+\RequirePackage{ulem}                   % Underlining improvements
+\RequirePackage{xspace}                 % Intelligent spacing
+\RequirePackage{xurl}                   % URL line breaking
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Graphics and Plotting Packages
+%% Graphics and Visualization
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{tikz}                                   % Vector graphics
+\RequirePackage{tikz}              % Programmatic graphics
 \usetikzlibrary{
-	arrows.meta, backgrounds, calc, fit,
-	matrix, mindmap, positioning, shapes, shapes.multipart
-}                                                       % TikZ libraries
-\tikzset{>=latex}                                       % Default arrowhead style
-\RequirePackage{pgfplots}                               % Plotting
-\pgfplotsset{compat=1.18}                               % PGFPlots compatibility
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Cryptography-Specific Packages
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{tcscrypto}                              % Cryptographic proofs
-\RequirePackage[cal=cm, bb=bboldx]{mathalpha}           % Custom math fonts
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Theme Styling and Customisation
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Title and Header Styling
-\setbeamercolor{title}{bg=accentcolor, fg=white}
-\setbeamercolor{author}{fg=accentcolor}
-\setbeamercolor{date}{fg=accentcolor}
-
-% Hyperlink Configuration
-\hypersetup{
-	colorlinks,
-	linkcolor=accentcolor,
-	urlcolor=accentcolor
+	arrows.meta,
+	backgrounds,
+	calc,
+	decorations.pathreplacing,
+	fit,
+	matrix,
+	mindmap,
+	positioning,
+	shadows,
+	shapes,
+	shapes.multipart
 }
+\tikzset{>=latex}                  % Default arrow style
+
+\RequirePackage{pgfplots}          % Data plotting
+\pgfplotsset{compat=1.18}          % Compatibility level
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Specialized Mathematics
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{tcscrypto}         % Cryptographic notation
+\let\mathbfcal\relax
+\let\mathbfscr\relax
+\RequirePackage[cal=cm,bb=bboldx,scr=dutchcal]{mathalpha}  % Math alphabets
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Theme Foundation: Madrid Base
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usetheme{Madrid}                                           % Madrid base theme
+\setbeamertemplate{navigation symbols}{}                    % Remove all navigation
+\RequirePackage[roundcorner=2pt,framemethod=tikz]{mdframed} % Framed environments
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Catppuccin Latte Color Palette
+%% https://github.com/catppuccin/catppuccin
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\definecolor{ctp-rosewater}{RGB}{220,138,120}  % Rosewater
+\definecolor{ctp-flamingo}{RGB}{221,120,120}   % Flamingo
+\definecolor{ctp-pink}{RGB}{234,118,203}       % Pink
+\definecolor{ctp-mauve}{RGB}{136,57,239}       % Mauve
+\definecolor{ctp-red}{RGB}{210,15,57}          % Red
+\definecolor{ctp-maroon}{RGB}{230,69,83}       % Maroon
+\definecolor{ctp-peach}{RGB}{254,100,11}       % Peach
+\definecolor{ctp-yellow}{RGB}{223,142,29}      % Yellow
+\definecolor{ctp-green}{RGB}{64,160,43}        % Green
+\definecolor{ctp-teal}{RGB}{23,146,153}        % Teal
+\definecolor{ctp-sky}{RGB}{4,165,229}          % Sky
+\definecolor{ctp-sapphire}{RGB}{32,159,181}    % Sapphire
+\definecolor{ctp-blue}{RGB}{30,102,245}        % Blue
+\definecolor{ctp-lavender}{RGB}{114,135,253}   % Lavender
+
+% Base colors
+\definecolor{ctp-text}{RGB}{76,79,105}         % Text
+\definecolor{ctp-subtext1}{RGB}{92,95,119}     % Subtext1
+\definecolor{ctp-subtext0}{RGB}{108,111,133}   % Subtext0
+\definecolor{ctp-overlay2}{RGB}{124,127,147}   % Overlay2
+\definecolor{ctp-overlay1}{RGB}{140,143,161}   % Overlay1
+\definecolor{ctp-overlay0}{RGB}{156,160,176}   % Overlay0
+\definecolor{ctp-surface2}{RGB}{172,176,190}   % Surface2
+\definecolor{ctp-surface1}{RGB}{188,192,204}   % Surface1
+\definecolor{ctp-surface0}{RGB}{204,208,218}   % Surface0
+\definecolor{ctp-base}{RGB}{239,241,245}       % Base
+\definecolor{ctp-mantle}{RGB}{230,233,239}     % Mantle
+\definecolor{ctp-crust}{RGB}{220,224,232}      % Crust
+
+% Semantic color mappings
+\colorlet{primary}{ctp-blue}
+\colorlet{secondary}{ctp-green}
+\colorlet{accent}{ctp-mauve}
+\colorlet{warning}{ctp-peach}
+\colorlet{error}{ctp-red}
+\colorlet{textdark}{ctp-text}
+\colorlet{textgray}{ctp-subtext1}
+\colorlet{bglight}{ctp-base}
+\colorlet{bggray}{ctp-surface0}
+
+\colorlet{accentcolor}{primary}   % Backward compatibility
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Madrid Theme Color Customization
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Background and Canvas
-\setbeamercolor{background canvas}{bg=white}
+\setbeamercolor{background canvas}{bg=ctp-base}
+\setbeamercolor{normal text}{fg=ctp-text}
+\setbeamerfont{normal text}{family=\rmfamily}
 
-% Block Styling
-\setbeamertemplate{block begin}[default]
-\setbeamertemplate{block end}[default]
-\setbeamercolor{block title}{bg=accentcolor, fg=white}
-\setbeamercolor{block body}{bg=accentcolor!15, fg=black}
+% Structure colors (Madrid uses these extensively)
+\setbeamercolor{structure}{fg=ctp-blue}
+\setbeamercolor{palette primary}{bg=ctp-blue,fg=ctp-base}
+\setbeamercolor{palette secondary}{bg=ctp-mauve,fg=ctp-base}
+\setbeamercolor{palette tertiary}{bg=ctp-green,fg=ctp-base}
+\setbeamercolor{palette quaternary}{bg=ctp-peach,fg=ctp-base}
 
-% Alert Block Styling
-\setbeamercolor{alertblock title}{bg=FireBrick4, fg=white}
-\setbeamercolor{alertblock body}{bg=FireBrick4!10, fg=black}
+% Sidebar colors (Madrid specific)
+\setbeamercolor{palette sidebar primary}{fg=ctp-blue}
+\setbeamercolor{palette sidebar secondary}{fg=ctp-subtext1}
+\setbeamercolor{palette sidebar tertiary}{fg=ctp-mauve}
+\setbeamercolor{palette sidebar quaternary}{fg=ctp-green}
 
-% Example Block Styling
-\setbeamercolor{exampleblock title}{bg=SlateBlue1, fg=white}
-\setbeamercolor{exampleblock body}{bg=SlateBlue1!10, fg=black}
+% Frame title
+\setbeamercolor{frametitle}{parent=palette primary}
+\setbeamercolor{framesubtitle}{fg=ctp-subtext1}
+\setbeamerfont{frametitle}{size=\LARGE,series=\scshape,family=\sffamily}
+\setbeamerfont{framesubtitle}{size=\small,series=\mdseries,family=\sffamily}
 
-% List Item Styling
-\setbeamertemplate{items}[circle]
+% Title page
+\setbeamercolor{title}{fg=bglight}
+\setbeamercolor{subtitle}{fg=bglight}
+\setbeamercolor{author}{fg=ctp-text}
+\setbeamercolor{date}{fg=ctp-subtext1}
+\setbeamercolor{institute}{fg=ctp-subtext1}
+
+\setbeamerfont{title}{size=\Huge,series=\bfseries,family=\sffamily}
+\setbeamerfont{subtitle}{size=\Large,series=\mdseries,family=\sffamily}
+\setbeamerfont{author}{size=\large,series=\mdseries}
+\setbeamerfont{date}{size=\normalsize}
+\setbeamerfont{institute}{size=\normalsize}
+
+% Headline colors (top bar in Madrid)
+\setbeamercolor{headline}{bg=ctp-blue,fg=ctp-base}
+\setbeamercolor{section in head/foot}{bg=ctp-blue,fg=ctp-base}
+\setbeamercolor{subsection in head/foot}{bg=ctp-mauve,fg=ctp-base}
+
+% Footline colors (bottom bar in Madrid)
+\setbeamercolor{footline}{bg=bglight,fg=ctp-text}
+\setbeamercolor{author in head/foot}{bg=bglight,fg=ctp-text}
+\setbeamercolor{title in head/foot}{bg=bglight,fg=ctp-text}
+\setbeamercolor{date in head/foot}{bg=bglight,fg=ctp-text}
+\setbeamercolor{page number in head/foot}{fg=ctp-blue}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Block Environments (mdframed-based)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Define mdframed styles
+\mdfdefinestyle{blockstyle}{%
+	linecolor=ctp-blue,
+	linewidth=0.5pt,
+	roundcorner=2pt,
+	backgroundcolor=none,
+	leftmargin=0pt,
+	rightmargin=0pt,
+	innerleftmargin=8pt,
+	innerrightmargin=8pt,
+	innertopmargin=8pt,
+	innerbottommargin=8pt,
+	skipabove=\medskipamount,
+	skipbelow=\smallskipamount,
+	frametitlerule=false,
+	frametitlebackgroundcolor=ctp-blue,
+	frametitlefont=\scshape\sffamily\color{ctp-base}
+}
+
+\mdfdefinestyle{alertblockstyle}{%
+	linecolor=ctp-red,
+	linewidth=0.5pt,
+	roundcorner=2pt,
+	backgroundcolor=none,
+	leftmargin=0pt,
+	rightmargin=0pt,
+	innerleftmargin=8pt,
+	innerrightmargin=8pt,
+	innertopmargin=8pt,
+	innerbottommargin=8pt,
+	skipabove=\medskipamount,
+	skipbelow=\smallskipamount,
+	frametitlerule=false,
+	frametitlebackgroundcolor=ctp-red,
+	frametitlefont=\scshape\sffamily\color{ctp-base}
+}
+
+\mdfdefinestyle{exampleblockstyle}{%
+	linecolor=ctp-green,
+	linewidth=0.5pt,
+	roundcorner=2pt,
+	backgroundcolor=none,
+	leftmargin=0pt,
+	rightmargin=0pt,
+	innerleftmargin=8pt,
+	innerrightmargin=8pt,
+	innertopmargin=8pt,
+	innerbottommargin=8pt,
+	skipabove=\medskipamount,
+	skipbelow=\smallskipamount,
+	frametitlerule=false,
+	frametitlebackgroundcolor=ctp-green,
+	frametitlefont=\scshape\sffamily\color{ctp-base}
+}
+
+% Standard block (blue theme)
+\setbeamercolor{block title}{bg=ctp-blue,fg=ctp-base}
+\setbeamercolor{block body}{bg=ctp-surface0,fg=ctp-text}
+\setbeamerfont{block title}{series=\scshape,family=\sffamily}
+
+\setbeamertemplate{block begin}{%
+	\par\vskip\medskipamount%
+	\begin{mdframed}[style=blockstyle,frametitle={\insertblocktitle}]%
+		}
+		\setbeamertemplate{block end}{%
+	\end{mdframed}%
+	\vskip\smallskipamount%
+}
+
+% Alert block (red theme)
+\setbeamercolor{block title alerted}{bg=ctp-red,fg=ctp-base}
+\setbeamercolor{block body alerted}{bg=ctp-surface0,fg=ctp-text}
+
+\setbeamertemplate{block alerted begin}{%
+	\par\vskip\medskipamount%
+	\begin{mdframed}[style=alertblockstyle,frametitle={\insertblocktitle}]%
+		}
+		\setbeamertemplate{block alerted end}{%
+	\end{mdframed}%
+	\vskip\smallskipamount%
+}
+
+% Example block (green theme)
+\setbeamercolor{block title example}{bg=ctp-green,fg=ctp-base}
+\setbeamercolor{block body example}{bg=ctp-surface0,fg=ctp-text}
+
+\setbeamertemplate{block example begin}{%
+	\par\vskip\medskipamount%
+	\begin{mdframed}[style=exampleblockstyle,frametitle={\insertblocktitle}]%
+		}
+		\setbeamertemplate{block example end}{%
+	\end{mdframed}%
+	\vskip\smallskipamount%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% List Item Styling
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setbeamertemplate{itemize items}[circle]
 \setbeamertemplate{enumerate items}[circle]
-\setbeamercolor{item projected}{bg=accentcolor}
-\setbeamercolor{itemize item}{fg=accentcolor}
-\setbeamercolor{itemize subitem}{fg=accentcolor}
-\setbeamercolor{enumerate item}{fg=accentcolor}
-\setbeamercolor{enumerate subitem}{fg=accentcolor}
-\setbeamercolor{enumerate subsubitem}{fg=accentcolor}
 
-% Table of Contents Styling
-\setbeamercolor{section in toc}{fg=accentcolor}
-\setbeamercolor{subsection in toc}{fg=accentcolor}
+\setbeamercolor{itemize item}{fg=ctp-blue}
+\setbeamercolor{itemize subitem}{fg=ctp-mauve}
+\setbeamercolor{itemize subsubitem}{fg=ctp-green}
+\setbeamercolor{enumerate item}{fg=ctp-blue}
+\setbeamercolor{enumerate subitem}{fg=ctp-mauve}
+\setbeamercolor{enumerate subsubitem}{fg=ctp-green}
+\setbeamercolor{item projected}{bg=ctp-blue,fg=ctp-base}
 
-% Section and Subsection Number Styling
-\setbeamercolor{section number projected}{bg=accentcolor}
-\setbeamercolor{subsection number projected}{bg=accentcolor}
-
-% Frame Title Styling
-\setbeamercolor{frametitle}{bg=accentcolor, fg=white}
-
-% Footer and Footnote Styling
-\setbeamercolor{footline}{bg=white, fg=accentcolor}
-\setbeamercolor{footnote}{fg=accentcolor}
-
-% Navigation Symbols
-\setbeamercolor{navigation symbols}{fg=accentcolor}
-%\setbeamertemplate{navigation symbols}{} % Uncomment to disable navigation symbols
-
-% Advanced Element Handling
-\setbeamercovered{highly dynamic}
+\setlength{\leftmargini}{1.2em}
+\setlength{\leftmarginii}{1em}
+\setlength{\leftmarginiii}{0.8em}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Custom Macros
+%% Table of Contents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setbeamercolor{section in toc}{fg=ctp-blue}
+\setbeamercolor{subsection in toc}{fg=ctp-subtext1}
+\setbeamercolor{section number projected}{bg=ctp-blue,fg=ctp-base}
+\setbeamercolor{subsection number projected}{bg=ctp-mauve,fg=ctp-base}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Bibliography Configuration
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setbeamertemplate{bibliography item}[text]
+\setbeamercolor{bibliography entry author}{fg=ctp-text}
+\setbeamercolor{bibliography entry title}{fg=ctp-blue}
+\setbeamercolor{bibliography entry location}{fg=ctp-subtext1}
+\setbeamercolor{bibliography entry note}{fg=ctp-subtext1}
+
+\let\OLDthebibliography\thebibliography
+\renewcommand\thebibliography[1]{%
+	\OLDthebibliography{#1}%
+	\setlength{\parskip}{0pt}%
+	\setlength{\itemsep}{0pt plus 0.3ex}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Section Pages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\AtBeginSection[]{%
+	\begin{frame}[plain,noframenumbering]
+		\vfill
+		\centering
+		{\usebeamerfont{title}\color{ctp-blue}\LARGE\insertsectionhead}
+		\vfill
+	\end{frame}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Advanced Visual Effects
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setbeamercovered{transparent=15}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Hyperlink Configuration
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=ctp-blue,
+	urlcolor=ctp-sapphire,
+	citecolor=ctp-mauve
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Custom Box Macros (mdframed-based)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Redefine \underline to use \uline
+% Redefined underline
 \renewcommand{\underline}[1]{\uline{#1}}
 
-% Custom Box Styles
-\providecommand{\colbox}[1]{%
-	\begin{tcolorbox}[
-			colback=accentcolor!15,
-			colframe=accentcolor!30,
-			boxrule=1pt,
-			arc=2pt,
-			width=4cm,
-			height=3cm,
-			valign=center,
-			halign=center,
-			nobeforeafter
-		]
-		\centering\color{black}{#1}
-	\end{tcolorbox}
+% Colored box (4cm × 3cm)
+\mdfdefinestyle{colboxstyle}{%
+	linecolor=ctp-blue,
+	linewidth=1.5pt,
+	backgroundcolor=ctp-blue!10,
+	userdefinedwidth=4cm,
+	innerleftmargin=5pt,
+	innerrightmargin=5pt,
+	innertopmargin=5pt,
+	innerbottommargin=5pt,
+	align=center
 }
 
-\providecommand{\defbox}[1]{%
-	\begin{tcolorbox}[
-			colback=accentcolor!15,
-			colframe=accentcolor!30,
-			boxrule=1pt,
-			arc=2pt,
-			width=7cm,
-			height=3cm,
-			valign=center,
-			halign=center,
-			nobeforeafter
-		]
-		\centering\color{black}{#1}
-	\end{tcolorbox}
+\newcommand{\colbox}[1]{%
+	\begin{mdframed}[style=colboxstyle]
+		\centering\color{ctp-text}#1
+	\end{mdframed}%
 }
 
-\providecommand{\quesbox}[1]{%
-	\begin{tcolorbox}[
-			colback=accentcolor!15,
-			colframe=accentcolor!30,
-			boxrule=1pt,
-			arc=2pt,
-			valign=center,
-			halign=center,
-			nobeforeafter
-		]
-		\centering\color{black}{#1}
-	\end{tcolorbox}
+% Definition box (7cm × 3cm)
+\mdfdefinestyle{defboxstyle}{%
+	linecolor=ctp-green,
+	linewidth=1.5pt,
+	backgroundcolor=ctp-green!10,
+	userdefinedwidth=7cm,
+	innerleftmargin=5pt,
+	innerrightmargin=5pt,
+	innertopmargin=5pt,
+	innerbottommargin=5pt,
+	align=center
 }
+
+\newcommand{\defbox}[1]{%
+	\begin{mdframed}[style=defboxstyle]
+		\centering\color{ctp-text}#1
+	\end{mdframed}%
+}
+
+% Question box (flexible)
+\mdfdefinestyle{quesboxstyle}{%
+	linecolor=ctp-peach,
+	linewidth=1.5pt,
+	backgroundcolor=ctp-peach!10,
+	innerleftmargin=8pt,
+	innerrightmargin=8pt,
+	innertopmargin=8pt,
+	innerbottommargin=8pt
+}
+
+\newcommand{\quesbox}[1]{%
+	\begin{mdframed}[style=quesboxstyle]
+		\centering\color{ctp-text}#1
+	\end{mdframed}%
+}
+
+\endinput
