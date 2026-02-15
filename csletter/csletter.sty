@@ -1,259 +1,194 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% csletter.sty – Comprehensive and Customizable Letter Package
-%% ------------------------------------------------------------------------------------------------
-%% COMPREHENSIVE DOCUMENTATION (v1.0, 2024/08/31)
-%% ------------------------------------------------------------------------------------------------
-%% DESCRIPTION:
-%%   csletter is a LaTeX package for creating professional, customizable letters. It provides flexible
-%%   options for fonts, colors, margins, headers/footers, logos, signatures, and layout, making it suitable
-%%   for academic, business, and personal correspondence.
-%%
-%% FEATURES:
-%%   - Key-value option system for easy customization
-%%   - Font, color, and margin selection
-%%   - Customizable headers and footers
-%%   - Logo and signature image support
-%%   - Modern and traditional layout options
-%%   - Subject line, salutation, and closing customization
-%%   - Paper size, line spacing, and paragraph indentation options
-%%   - Hyperref integration for clickable links
-%%   - Environment for structured letter writing
-%%
-%% OPTIONS (all optional, can be combined):
-%%   mainfont, sansfont, monofont      - Font selection
-%%   text, accent, header, footer      - Color customization
-%%   topmargin, bottommargin, leftmargin, rightmargin - Margin settings
-%%   header, footer                    - Enable/disable header/footer
-%%   headerpos, footerpos              - Header/footer position (left, center, right)
-%%   logo, logofile                    - Logo image support
-%%   date                              - Show/hide date
-%%   signature, signaturefile          - Signature image support
-%%   modernlayout, traditionallayout   - Layout style
-%%   papersize                         - Paper size (e.g., a4paper)
-%%   linespacing                       - Line spacing (single, onehalf, double)
-%%   parindent                         - Paragraph indentation
-%%   subject                           - Enable subject line
-%%   salutation, closing               - Salutation and closing text
-%%
-%% USAGE:
-%%   \usepackage[mainfont=Calibri,accent=blue,header,logo,signature]{csletter}
-%%   Example: \begin{csletter}{Recipient}{Address} ... \end{csletter}
-%%
-%% DEPENDENCIES:
-%%   - kvoptions, xcolor, geometry, fancyhdr, graphicx, fontspec, tikz, hyperref
-%%
-%% COMPATIBILITY:
-%%   - Requires LaTeX2e
-%%   - Compatible with XeLaTeX and LuaLaTeX (not pdfLaTeX)
-%%   - Designed for modern TeX distributions (TeX Live 2022+, MiKTeX 23+)
-%%
-%% AUTHOR: Agni Datta
-%% VERSION: 1.0
-%% DATE: 2024/08/31
-%% LICENSE: LaTeX Project Public License v1.3c
-%%
-%% EXAMPLE USAGE:
-%%   \documentclass{letter}
-%%   \usepackage[mainfont=Calibri,accent=blue,header,logo,signature]{csletter}
-%%   \begin{document}
-%%   \begin{csletter}{Recipient Name}{Recipient Address}
-%%   Dear Recipient,
-%%   % Letter body
-%%   \end{csletter}
-%%   \end{document}
-%% ------------------------------------------------------------------------------------------------
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{csletter}[2024/08/31 v1.0 Comprehensive and customizable letter package]
+% csletter.sty
+% Customizable Letter Style Package
+% Version 1.1, 2026-02-15
+% Author: Agni Datta
+% License: LPPL v1.3c
+%
+% Provides a clean, configurable interface for professional correspondence
+% using the standard letter class with optional font selection, colors,
+% headers, footers, and signature support.
 
-% Required packages
-\RequirePackage{kvoptions}
-\RequirePackage{xcolor}
-\RequirePackage{geometry}
-\RequirePackage{fancyhdr}
-\RequirePackage{graphicx}
-\RequirePackage{fontspec}
-\RequirePackage{tikz}
-\RequirePackage{hyperref}
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{csletter}[2026/02/15 v1.1 Customizable letter style]
 
-% Setup key-value options
+% Core dependencies
+\RequirePackage[english]{babel}						% Language support
+\RequirePackage{etoolbox}       					% Conditional logic
+\RequirePackage{fancyhdr}       					% Header/footer customization
+\RequirePackage{geometry}       					% Margin control
+\RequirePackage{graphicx}       					% Logo and signature images
+\RequirePackage{iftex}          					% Engine detection
+\RequirePackage{kvoptions}      					% Key-value option parsing
+\RequirePackage[x11names,dvipsnames]{xcolor}        % Color support
+
+% Option setup
 \SetupKeyvalOptions{family=csl,prefix=csl@}
 
-% Font options
-\DeclareStringOption[Calibri]{mainfont}
-\DeclareStringOption[Helvetica]{sansfont}
-\DeclareStringOption[Courier New]{monofont}
-
 % Color options
-\DefineColors{%
-	text=black,
-	accent=blue,
-	header=gray,
-	footer=gray
-}
+\DeclareStringOption[black]{textcolor}
+\DeclareStringOption[blue]{accentcolor}
+\DeclareStringOption[gray]{footercolor}
+\DeclareStringOption[gray]{headercolor}
 
-% Margin options
-\DeclareStringOption[2.5cm]{topmargin}
-\DeclareStringOption[2.5cm]{bottommargin}
-\DeclareStringOption[2.5cm]{leftmargin}
-\DeclareStringOption[2.5cm]{rightmargin}
+% Margin options (cm)
+\DeclareStringOption[2.5]{topmargin}
+\DeclareStringOption[2.5]{bottommargin}
+\DeclareStringOption[2.5]{leftmargin}
+\DeclareStringOption[2.5]{rightmargin}
 
-% Header and footer options
+% Component toggles
 \DeclareBoolOption{header}
 \DeclareBoolOption{footer}
-\DeclareStringOption[left]{headerpos}
-\DeclareStringOption[center]{footerpos}
-
-% Letter components options
-\DeclareBoolOption{logo}
-\DeclareStringOption[]{logofile}
 \DeclareBoolOption{date}
+\DeclareBoolOption{logo}
 \DeclareBoolOption{signature}
-\DeclareStringOption[]{signaturefile}
+
+% Component paths
+\DeclareStringOption[logo.png]{logofile}
+\DeclareStringOption[signature.png]{signaturefile}
 
 % Layout options
-\DeclareBoolOption{modernlayout}
-\DeclareBoolOption{traditionalayout}
-
-% Paper size option
-\DeclareStringOption[a4paper]{papersize}
-
-% Line spacing option
+\DeclareStringOption[left]{headerpos}
+\DeclareStringOption[center]{footerpos}
 \DeclareStringOption[single]{linespacing}
-
-% Paragraph indentation option
-\DeclareBoolOption{parindent}
-
-% Subject line option
-\DeclareBoolOption{subject}
-
-% Salutation and closing options
-\DeclareStringOption[Dear]{salutation}
-\DeclareStringOption[Sincerely]{closing}
 
 % Process options
 \ProcessKeyvalOptions*
 
-% Set up fonts
-\setmainfont{\csl@mainfont}
-\setsansfont{\csl@sansfont}
-\setmonofont{\csl@monofont}
-
-% Set up colors
-\colorlet{csltext}{\csl@text}
-\colorlet{cslaccent}{\csl@accent}
-\colorlet{cslheader}{\csl@header}
-\colorlet{cslfooter}{\csl@footer}
-
-% Set up geometry
-\geometry{
-	top=\csl@topmargin,
-	bottom=\csl@bottommargin,
-	left=\csl@leftmargin,
-	right=\csl@rightmargin,
-	paper=\csl@papersize
-}
-
-% Set up line spacing
-\ifthenelse{\equal{\csl@linespacing}{single}}{
-	\renewcommand{\baselinestretch}{1}
-}{
-	\ifthenelse{\equal{\csl@linespacing}{onehalf}}{
-		\renewcommand{\baselinestretch}{1.5}
-	}{
-		\renewcommand{\baselinestretch}{2}
-	}
-}
-
-% Set up paragraph indentation
-\ifcsl@parindent
-	\setlength{\parindent}{1em}
+% Font configuration (engine-dependent)
+\ifPDFTeX
+	% pdfLaTeX fallback: use standard LaTeX fonts
+	\RequirePackage[T1]{fontenc}
+	\RequirePackage{textcomp}
+	\RequirePackage{ebgaramond}     		% Garamond-like serif
+	\RequirePackage[scaled=.95]{ysabeau}  	% Sans serif
+	\RequirePackage[scaled=.9]{noto-mono}  	% Monospace
 \else
-	\setlength{\parindent}{0pt}
+	% XeLaTeX/LuaLaTeX: modern OpenType fonts
+	\RequirePackage{fontspec}
+	\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
+
+	\setmainfont{GaramondLibre}[
+		Extension=.otf,
+		UprightFont=*-Regular,
+		ItalicFont=*-Italic,
+		BoldFont=*-Bold,
+		BoldItalicFont=*-BoldItalic,
+		SmallCapsFont=EBGaramond-Medium.otf,
+		SmallCapsFeatures={Letters=SmallCaps},
+	]
+
+	\setmathfont{Garamond-Math.otf}[
+		AutoFakeBold,
+		StylisticSet={2,6,7,9},
+	]
+
+	\setsansfont{Ysabeau}[Scale=MatchLowercase]
+	\setmonofont{Noto Sans Mono}[Scale=MatchLowercase]
+
+	\let\mathbfcal\relax
+	\let\mathbfscr\relax
+	\RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
 \fi
 
-% Define letter components
-\newcommand{\letterhead}[1]{
-	\ifcsl@logo
-		\includegraphics[width=3cm]{\csl@logofile}
-	\fi
-	\vspace{1cm}
-	{\Large\textbf{#1}}
-	\vspace{0.5cm}
+% Color definitions
+\definecolor{csltext}{named}{\csl@textcolor}
+\definecolor{cslaccent}{named}{\csl@accentcolor}
+\definecolor{cslheader}{named}{\csl@headercolor}
+\definecolor{cslfooter}{named}{\csl@footercolor}
+
+\color{csltext}
+
+% Geometry setup
+\geometry{
+	top=\csl@topmargin cm,
+	bottom=\csl@bottommargin cm,
+	left=\csl@leftmargin cm,
+	right=\csl@rightmargin cm,
+	headheight=1.25em,
+	heightrounded,
+	a4paper
 }
 
-\newcommand{\letterdate}{
-	\ifcsl@date
-		\today
-	\fi
+% Line spacing (fixed implementation)
+\AtBeginDocument{%
+	\ifdefstring{\csl@linespacing}{onehalf}{%
+		\renewcommand{\baselinestretch}{1.5}%
+		\selectfont
+	}{%
+		\ifdefstring{\csl@linespacing}{double}{%
+			\renewcommand{\baselinestretch}{2.0}%
+			\selectfont
+		}{%
+			\renewcommand{\baselinestretch}{1.0}%
+			\selectfont
+		}%
+	}%
 }
 
-\newcommand{\lettersubject}[1]{
-	\ifcsl@subject
-		\textbf{Subject:} #1
-		\vspace{0.5cm}
-	\fi
-}
+% Paragraph formatting
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.8em}
 
-\newcommand{\lettersalutation}[1]{
-	\csl@salutation\ #1,
-}
-
-\newcommand{\letterclosing}{
-	\vspace{1cm}
-	\csl@closing,
-	\vspace{2cm}
-	\ifcsl@signature
-		\includegraphics[width=4cm]{\csl@signaturefile}
-	\fi
-}
-
-% Set up header and footer
+% Header configuration
 \ifcsl@header
 	\pagestyle{fancy}
-	\fancyhead{}
-	\ifthenelse{\equal{\csl@headerpos}{left}}{
-		\fancyhead[L]{\color{cslheader}\textsl{Letter Header}}
-	}{
-		\ifthenelse{\equal{\csl@headerpos}{right}}{
-			\fancyhead[R]{\color{cslheader}\textsl{Letter Header}}
-		}{
-			\fancyhead[C]{\color{cslheader}\textsl{Letter Header}}
-		}
+	\fancyhf{}
+	\renewcommand{\headrulewidth}{0.4pt}
+	\ifdefstring{\csl@headerpos}{left}{%
+		\fancyhead[L]{\color{cslheader}\slshape\fromname}%
+	}{%
+		\ifdefstring{\csl@headerpos}{right}{%
+			\fancyhead[R]{\color{cslheader}\slshape\fromname}%
+		}{%
+			\fancyhead[C]{\color{cslheader}\slshape\fromname}%
+		}%
 	}
 \fi
 
+% Footer configuration
 \ifcsl@footer
-	\pagestyle{fancy}
-	\fancyfoot{}
-	\ifthenelse{\equal{\csl@footerpos}{left}}{
-		\fancyfoot[L]{\color{cslfooter}\textsl{Page \thepage}}
-	}{
-		\ifthenelse{\equal{\csl@footerpos}{right}}{
-			\fancyfoot[R]{\color{cslfooter}\textsl{Page \thepage}}
-		}{
-			\fancyfoot[C]{\color{cslfooter}\textsl{Page \thepage}}
-		}
+	\ifcsl@header\else\pagestyle{fancy}\fi
+	\renewcommand{\footrulewidth}{0.4pt}
+	\ifdefstring{\csl@footerpos}{left}{%
+		\fancyfoot[L]{\color{cslfooter}\thepage}%
+	}{%
+		\ifdefstring{\csl@footerpos}{right}{%
+			\fancyfoot[R]{\color{cslfooter}\thepage}%
+		}{%
+			\fancyfoot[C]{\color{cslfooter}\thepage}%
+		}%
 	}
 \fi
 
-% Define letter environment
-\newenvironment{csletter}[2]{
-	\letterhead{#1}
-	\letterdate
-	\vspace{1cm}
-	#2
-	\vspace{1cm}
-}{
-	\letterclosing
+% Logo command
+\newcommand{\csllogo}{%
+	\ifcsl@logo
+		\ifdefempty{\csl@logofile}{}{%
+			\includegraphics[height=2cm]{\csl@logofile}%
+			\vspace{1em}%
+		}%
+	\fi
 }
 
-% Hyperref setup
+% Signature command
+\newcommand{\cslsignature}{%
+	\ifcsl@signature
+		\ifdefempty{\csl@signaturefile}{}{%
+			\par\vspace{1em}%
+			\includegraphics[height=3em]{\csl@signaturefile}%
+		}%
+	\fi
+}
+
+% Hyperref setup (loaded last)
+\RequirePackage{hyperref}
 \hypersetup{
 	colorlinks=true,
 	linkcolor=cslaccent,
-	filecolor=cslaccent,
 	urlcolor=cslaccent,
+	citecolor=cslaccent,
+	pdfborder={0 0 0}
 }
 
 \endinput
