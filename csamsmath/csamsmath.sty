@@ -271,7 +271,7 @@
 
     \ifcsam@libertine
         \setmainfont{Libertinus Serif}[
-            Scale=1,
+            Scale=MatchUppercase,
             RawFeature={+calt,+liga,+lnum,+pnum}
         ]
         \setmathfont{Libertinus Math}[
@@ -282,8 +282,8 @@
             Scale=MatchUppercase,
             RawFeature={+calt,+liga,+lnum,+pnum}
         ]
-        \setmonofont{Latin Modern Mono}[
-            Scale=MatchUppercase,
+        \setmonofont{Noto Sans Mono}[
+            Scale=MatchLowercase,
             RawFeature={+calt,+liga,+lnum,+pnum}
         ]
         \let\mathbfcal\relax\let\mathbfscr\relax
@@ -294,6 +294,10 @@
         \RequirePackage[gfsdidot]{fontsetup}
         \setsansfont{Libertinus Sans}[
             Scale=MatchUppercase,
+            RawFeature={+calt,+liga,+lnum,+pnum}
+        ]
+        \setmonofont{Noto Sans Mono}[
+            Scale=MatchLowercase,
             RawFeature={+calt,+liga,+lnum,+pnum}
         ]
         \let\mathbfcal\relax\let\mathbfscr\relax
@@ -309,7 +313,7 @@
     \ifcsam@palatino
         \setmainfont{TeX Gyre Pagella}[Ligatures=TeX]
         \setsansfont{Libertinus Sans}[Scale=MatchUppercase,Ligatures=TeX]
-        \setmonofont{Latin Modern Mono}[Scale=MatchLowercase,Ligatures=TeX]
+        \setmonofont{Noto Sans Mono}[Scale=MatchLowercase,Ligatures=TeX]
         \setmathfont{TeX Gyre Pagella Math}[AutoFakeBold,AutoFakeSlant]
         \let\mathbfcal\relax\let\mathbfscr\relax
         \RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
