@@ -271,7 +271,7 @@
 
     \ifcsam@libertine
         \setmainfont{Libertinus Serif}[
-            Scale=MatchUppercase,
+            Scale=1,
             RawFeature={+calt,+liga,+lnum,+pnum}
         ]
         \setmathfont{Libertinus Math}[
@@ -332,7 +332,7 @@
     \ifcsam@gfsdidot
         \RequirePackage{lmodern}
         \RequirePackage{libertinust1math}
-        \RequirePackage[default]{gfsdidot}
+        \RequirePackage{gfsdidot}
         \RequirePackage{biolinum}
         \renewcommand{\sfdefault}{LinuxBiolinumT-TLF}
         \RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
@@ -773,7 +773,16 @@
     \csam@ignorewhitespaceandimplicitpars
 }
 
+\NewDocumentCommand{\csam@subparagraphhead}{m}{%
+    \smallskip
+    \noindent
+    \textsc{\ignorespaces\csam@appendpunctuationifneeded{#1}}%
+    \hskip 0.9em plus 0.3em minus 0.3em
+    \csam@ignorewhitespaceandimplicitpars
+}
+
 \NewDocumentCommand{\parhead}{m}{\csam@paragraphhead{#1}}
+\NewDocumentCommand{\subparhead}{m}{\csam@subparagraphhead{#1}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % BROKEN REFERENCE DETECTION
