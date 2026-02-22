@@ -370,23 +370,17 @@
 \RequirePackage{floatrow}
 \RequirePackage{framed}
 \RequirePackage{graphicx}
-\RequirePackage{pdflscape}
-\RequirePackage{placeins}
-\RequirePackage{rotating}
 \RequirePackage{subcaption}
-\RequirePackage{wrapfig}
 
 % Caption styling deferred to document start for package compatibility
 \AtBeginDocument{%
     \captionsetup{%
-        font={sf,small},
+        font={rm,small},
         labelfont={color=black,sc,small},
         labelsep=period,
         skip=5pt,
         justification=justified
     }%
-    \captionsetup[table]{position=bottom,skip=5pt}%
-    \captionsetup[figure]{position=bottom,skip=5pt}%
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
