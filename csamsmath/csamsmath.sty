@@ -672,6 +672,7 @@
         %% Libertine Roman (text) + newtxmath (libertine variant) for math.
         %% biolinum provides the sans-serif family.
         \RequirePackage{lmodern}
+        \RequirePackage{AnonymousPro}
         \RequirePackage{biolinum}
         \RequirePackage{libertineRoman}
         \RequirePackage[libertine,varbb]{newtxmath}
@@ -682,9 +683,10 @@
         %% GFS Didot (text) + libertinust1math (math).
         %% lmodern is loaded first to supply any missing glyphs.
         \RequirePackage{lmodern}
-        \RequirePackage{libertinust1math}
-        \RequirePackage{gfsdidot}
+        \RequirePackage{AnonymousPro}
         \RequirePackage{biolinum}
+        \RequirePackage{gfsdidot}
+        \RequirePackage[libertine,varbb]{newtxmath}
         \renewcommand{\sfdefault}{LinuxBiolinumT-TLF}
         \RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
     \fi
@@ -701,6 +703,7 @@
         %% tgpagella: TeX Gyre Pagella (Palatino clone) text fonts.
         %% mathpazo (sc option): Palatino-matched math with small caps.
         %% biolinum: sans-serif companion.
+        \RequirePackage{AnonymousPro}
         \RequirePackage{biolinum}
         \RequirePackage{tgpagella}
         \RequirePackage[sc]{mathpazo}
@@ -708,18 +711,15 @@
     \fi
 
     \ifcsam@kpfonts
-        %% kpfonts (Type 1 version): the original pdfLaTeX-compatible release
-        %% of the Kepler project fonts.
-        %% Options:
-        %%   nosf       Do not replace the sans-serif family; biolinum is
-        %%              loaded explicitly below as the sans companion.
-        %%   noDcommand Do not redefine \D.
-        %% biolinum provides the sans-serif family (Biolinum / Linux Biolinum
-        %% T TLF).  mathalpha provides the calligraphic, blackboard-bold, and
-        %% script alphabets.
-        \RequirePackage[nosf,noDcommand]{kpfonts}
+        %% kpfonts (Type 1 version) breaks in pdfTeX due to my configuration
+        %% hence loading libertine + newtxmath as fallback; if you wish to use
+        %% kpfonts, please use lualatex instead.
+        \RequirePackage{AnonymousPro}
         \RequirePackage{biolinum}
+        \RequirePackage{libertineRoman}
+        \RequirePackage[libertine,varbb]{newtxmath}
         \RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
+        \PackageWarning{csamsmath}{kpfonts is not fully supported in pdfLaTeX due to configuration issues; please use lualatex instead.}
     \fi
 
 \fi
@@ -755,7 +755,7 @@
 \AtBeginDocument{%
     \captionsetup{%
         font={rm,small},%
-        labelfont={color=black,sc,small},%
+        labelfont={sc,small},%
         labelsep=period,%
         skip=5pt,%
         justification=justified%
