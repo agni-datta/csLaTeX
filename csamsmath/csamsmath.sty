@@ -1005,7 +1005,7 @@
 %%%%- Style: theorem-like %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-
 \declaretheoremstyle[%
     headfont=\bfseries,%
-    notefont=\normalfont\scshape,%
+    notefont=\normalfont,%
     bodyfont=\normalfont,%
     spaceabove=3pt,%
     spacebelow=3pt,%
@@ -1016,7 +1016,7 @@
 %%%%- Style: definition-like %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \declaretheoremstyle[%
     headfont=\bfseries,%
-    notefont=\normalfont\scshape,%
+    notefont=\normalfont,%
     bodyfont=\normalfont,%
     spaceabove=3pt,%
     spacebelow=3pt,%
@@ -1251,17 +1251,17 @@
     \fi
 }
 
-\def\csam@checkdot    #1.\csam@delim#2\csam@stop{\csam@checkpunctuation{#2}}
-\def\csam@checkquestion#1?\csam@delim#2\csam@stop{\csam@checkpunctuation{#2}}
-\def\csam@checkexclam  #1!\csam@delim#2\csam@stop{\csam@checkpunctuation{#2}}
-\def\csam@checkcolon   #1:\csam@delim#2\csam@stop{\csam@checkpunctuation{#2}}
+\def\csam@checkdot      #1.\csam@delim#2\csam@stop{\csam@checkpunctuation{#2}}
+\def\csam@checkquestion #1?\csam@delim#2\csam@stop{\csam@checkpunctuation{#2}}
+\def\csam@checkexclam   #1!\csam@delim#2\csam@stop{\csam@checkpunctuation{#2}}
+\def\csam@checkcolon    #1:\csam@delim#2\csam@stop{\csam@checkpunctuation{#2}}
 
 \def\csam@appendpunctuationifneeded#1{%
     \csam@haspunctuationfalse
-    \csam@checkdot    #1\csam@delim.\csam@delim\csam@stop
-    \csam@checkquestion#1\csam@delim?\csam@delim\csam@stop
-    \csam@checkexclam  #1\csam@delim!\csam@delim\csam@stop
-    \csam@checkcolon   #1\csam@delim:\csam@delim\csam@stop
+    \csam@checkdot      #1\csam@delim.\csam@delim\csam@stop
+    \csam@checkquestion #1\csam@delim?\csam@delim\csam@stop
+    \csam@checkexclam   #1\csam@delim!\csam@delim\csam@stop
+    \csam@checkcolon    #1\csam@delim:\csam@delim\csam@stop
     #1\ifcsam@haspunctuation\else.\fi
 }
 
@@ -1513,7 +1513,7 @@
 
 \AtBeginDocument{%
     \renewcommand{\paragraph}[1]{\parhead{#1}}%
-    \renewcommand{\subparagraph}[1]{\noindent\textsc{#1}}%
+    \renewcommand{\subparagraph}[1]{\subparhead{#1}}%
     \renewcommand{\Pr}{\mathop{\mathsf{Pr}}}%
 }
 
