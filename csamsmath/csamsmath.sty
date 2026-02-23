@@ -25,7 +25,7 @@
 
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \ProvidesPackage{csamsmath}%
-[2026/01/29 v2.6 Simple STEM package with annotations]
+[2026/02/24 v2.7 Simple STEM package with annotations]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% PACKAGE OVERVIEW
@@ -70,10 +70,6 @@
 %%                   LuaLaTeX: kpfonts-otf with options nosf, noDcommand,
 %%                   fakedscripts; sans-serif is Libertinus Sans; mono is
 %%                   Noto Sans Mono; mathalpha provides cal/bb/scr.
-%%                   pdfLaTeX: the kpfonts package (Type 1 version) with
-%%                   the same nosf and noDcommand options; biolinum
-%%                   supplies the sans family; mathalpha provides
-%%                   cal/bb/scr.
 %%
 %%   Annotation control:
 %%
@@ -454,7 +450,7 @@
 \RequirePackage[T1]{fontenc}
 \RequirePackage[USenglish]{babel}
 \RequirePackage[autostyle=true,csdisplay=true]{csquotes}
-\RequirePackage[final]{microtype}
+\RequirePackage[final,nopatch,stretch=25]{microtype}
 \RequirePackage[full]{textcomp}
 \RequirePackage[normalem]{ulem}
 \RequirePackage{emptypage}
@@ -719,7 +715,7 @@
         \RequirePackage{libertineRoman}
         \RequirePackage[libertine,varbb]{newtxmath}
         \RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
-        \PackageWarning{csamsmath}{kpfonts is not fully supported in pdfLaTeX due to configuration issues; please use lualatex instead.}
+        \PackageWarning{csamsmath}{kpfonts: use LuaLaTeX instead of pdfLaTeX.}
     \fi
 
 \fi
@@ -1526,6 +1522,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
 %% Change log:
+%%   v2.7  2026/02/24
+%%         - Fixed bug in kpfonts option for pdfLaTeX; occuring due to 
+%%           my configurations of loading other AMS packages.
+%%         - Added a warning message for the kpfonts option for pdfLaTeX.
 %%
 %%   v2.6  2026/01/29
 %%         - Fixed critical TL 2025 compatibility failure: removed the
