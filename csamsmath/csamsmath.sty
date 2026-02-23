@@ -1,206 +1,455 @@
-% csamsmath.sty
-% Comprehensive STEM Mathematics Package
-% 
-% Copyright (c) 2026 Agni Datta
-% 
-% This work may be distributed and/or modified under the
-% conditions of the LaTeX Project Public License, either version 1.3c
-% of this license or (at your option) any later version.
-% The latest version of this license is in
-%   http://www.latex-project.org/lppl.txt
-% and version 1.3c or later is part of all distributions of LaTeX
-% version 2005/12/01 or later.
+%%
+%% csamsmath.sty
+%% Simple STEM Mathematics Package
+%%
+%% Copyright (c) 2026 Agni Datta
+%%
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%   https://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%%
+%% This work has the LPPL maintenance status `maintained'.
+%%
+%% The Current Maintainer of this work is Agni Datta.
+%%
+%% This work consists of the single file csamsmath.sty.
+%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% IDENTIFICATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{csamsmath}[2026/01/29 v2.3 Comprehensive STEM package with annotations]
+\ProvidesPackage{csamsmath}%
+[2026/01/29 v2.6 Simple STEM package with annotations]
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% PACKAGE OVERVIEW
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% csamsmath provides a unified framework for STEM document preparation,
-% integrating typography, mathematics, theorem environments, and collaborative
-% annotation tools. The package eliminates preamble bloat by bundling
-% commonly-used packages with sensible defaults.
-%
-% KEY FEATURES:
-%   - Engine-aware font configuration (pdfLaTeX/LuaLaTeX)
-%   - 50+ predefined theorem-like environments
-%   - Collaborative annotation system with visual markers
-%   - Automatic broken reference detection
-%   - Consistent cross-referencing with cleveref
-%   - Professional typography with microtype
-%
-% USAGE:
-%   \usepackage[<options>]{csamsmath}
-%
-% OPTIONS:
-%   Font Selection (mutually exclusive):
-%     latinmodern (default) - Computer Modern successor, excellent rendering
-%     libertine             - Modern Libertinus family with superior readability
-%     gfsdidot              - Classical Greek Font Society Didot
-%     concrete              - Knuth's Concrete Roman, distinctive appearance
-%     palatino              - Palatino with harmonious sans-serif pairing
-%
-%   Annotation Control:
-%     printcoms (default)   - Display all collaboration annotations
-%     noprintcoms           - Suppress annotations for final documents
-%
-% THEOREM ENVIRONMENTS:
-%   Numbered (within section): theorem, lemma, corollary, proposition,
-%   definition, example, remark, and 40+ additional environments
-%
-%   Unnumbered variants: theorem*, lemma*, corollary*, etc.
-%
-% ANNOTATION COMMANDS:
-%   \newguymarker{cmd}{label}{color} - Define custom annotation commands
-%   \todo{text}      - Mark incomplete sections
-%   \fixme{text}     - Flag corrections needed
-%   \notes{text}     - Add editorial notes
-%   \query{text}     - Pose questions to collaborators
-%   \changed{text}   - Highlight modifications
-%   \added{text}     - Mark new content
-%   \removed{text}   - Strike through deleted content
-%
-% DEPENDENCIES:
-%   Core: amsmath, amsthm, thmtools, xcolor, hyperref, cleveref
-%   Typography: microtype, fontenc/fontspec (engine-dependent)
-%   Graphics: graphicx, caption, subcaption
-%   Tables: booktabs, array, tabularx
-%
-% TECHNICAL NOTES:
-%   1. Package loads amsthm via thmtools to avoid command conflicts
-%   2. Font loading branches on \ifLuaTeX for optimal engine support
-%   3. Hyperref loaded late with conservative settings
-%   4. Caption formatting deferred to \AtBeginDocument for compatibility
-%
-% AUTHOR: Agni Datta
-% VERSION: 2.3 (2026/01/29)
-% LICENSE: LPPL v1.3c or later
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% PACKAGE OVERVIEW
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% csamsmath provides a unified framework for STEM document preparation,
+%% integrating typography, mathematics, theorem environments, and
+%% collaborative annotation tools. The package eliminates preamble bloat
+%% by bundling commonly-used packages with sensible defaults.
+%%
+%% KEY FEATURES:
+%%   - Engine-aware font configuration (pdfLaTeX / LuaLaTeX)
+%%   - 50+ predefined theorem-like environments
+%%   - Collaborative annotation system with visual margin markers
+%%   - Automatic broken reference detection
+%%   - Consistent cross-referencing via cleveref
+%%   - Professional microtypography
+%%
+%% USAGE:
+%%   \usepackage[<options>]{csamsmath}
+%%
+%% PACKAGE OPTIONS:
+%%
+%%   Font selection (mutually exclusive; exactly one may be given):
+%%
+%%     latinmodern   Computer Modern successor with excellent rendering.
+%%                   This is the default if no font option is given.
+%%
+%%     libertine     Libertinus family (text) + Libertinus Math / newtxmath
+%%                   (math), offering superior on-screen readability.
+%%
+%%     gfsdidot      Classical GFS Didot roman paired with Libertinus Math
+%%                   (LuaLaTeX) or libertinust1math (pdfLaTeX).
+%%
+%%     concrete      Knuth's Concrete Roman with Concrete Math, giving a
+%%                   distinctive appearance suited to lecture notes.
+%%
+%%     palatino      TeX Gyre Pagella (text) paired with the corresponding
+%%                   Pagella Math font.
+%%
+%%     kpfonts       KP Fonts (Kepler project) text and math.
+%%                   LuaLaTeX: kpfonts-otf with options nosf, noDcommand,
+%%                   fakedscripts; sans-serif is Libertinus Sans; mono is
+%%                   Noto Sans Mono; mathalpha provides cal/bb/scr.
+%%                   pdfLaTeX: the kpfonts package (Type 1 version) with
+%%                   the same nosf and noDcommand options; biolinum
+%%                   supplies the sans family; mathalpha provides
+%%                   cal/bb/scr.
+%%
+%%   Annotation control:
+%%
+%%     printcoms     Display all collaboration annotations in the output.
+%%                   This is the default.
+%%
+%%     noprintcoms   Suppress all annotations for final publication.
+%%                   The annotation commands remain defined but produce
+%%                   no visible output.
+%%
+%% THEOREM ENVIRONMENTS:
+%%
+%%   All environments are numbered consecutively within each section and
+%%   share a single counter (sibling numbering via thmtools).
+%%
+%%   Theorem-like (proofs expected):
+%%     assertion, assumption, axiom, claim, conclusion, conjecture,
+%%     corollary, criterion, fact, folklore, hypothesis, lemma,
+%%     observation, postulate, property, proposition, theorem
+%%
+%%   Definition-like (concept introduction):
+%%     application, construction, convention, definition, example,
+%%     experiment, notation, problem, protocol, result, solution, step
+%%
+%%   Remark-like (commentary and questions):
+%%     commentary, discussion, exercise, motivation, notationabuse,
+%%     note, openproblem, question, remark, syntax
+%%
+%%   Highlight-like (pedagogical emphasis):
+%%     guideline, highlight, important, insight, keypoint, recall,
+%%     summary, takeaway, tip, warning
+%%
+%%   Unnumbered starred variants are provided for:
+%%     theorem*, lemma*, corollary*, hypothesis*, claim*, conjecture*,
+%%     openproblem*, syntax*
+%%
+%% ANNOTATION COMMANDS:
+%%
+%%   \newguymarker{cmd}{label}{color}
+%%          Define a custom annotation command \cmd.  When \cmd{text}
+%%          is used in the document, it typesets |text| in |color|,
+%%          appends the small-caps |label|, and places a coloured star
+%%          in the margin.  With noprintcoms the command is a no-op.
+%%
+%%   \todo{text}     Incomplete section marker (red).
+%%   \fixme{text}    Correction required (orange-red).
+%%   \missing{text}  Missing content indicator (crimson).
+%%   \notes{text}    Editorial note (forest green).
+%%   \query{text}    Question for collaborators (purple).
+%%
+%%   \changed{text}  Highlight a modified passage (blue).
+%%   \added{text}    Mark newly inserted content (olive green).
+%%   \removed{text}  Strike through deleted content (grey).
+%%                   With noprintcoms, \changed and \added pass the
+%%                   text through unchanged; \removed suppresses it.
+%%
+%% DEPENDENCIES:
+%%
+%%   Core programming:
+%%     etoolbox, iftex, xkeyval, xparse, xpatch, calc, comment, ifpdf
+%%
+%%   Colour:
+%%     xcolor (with dvipsnames, table, x11names options)
+%%
+%%   Typography:
+%%     microtype, fontenc (T1), babel (USenglish), csquotes,
+%%     textcomp, ulem, soul, moresize, paralist, pifont, xspace, xurl,
+%%     emptypage
+%%
+%%   Mathematics:
+%%     amsmath, amssymb, mathrsfs, mathtools, nicefrac, siunitx,
+%%     thmtools (which loads amsthm internally)
+%%
+%%   Fonts (engine-dependent; see Font Configuration section):
+%%     LuaLaTeX: fontspec, unicode-math, lmodern, sansmath, mathalpha,
+%%               fontsetup (gfsdidot/concrete options only)
+%%     pdfLaTeX: lmodern, mathalpha, biolinum, libertineRoman,
+%%               newtxmath, libertinust1math, gfsdidot, ccfonts,
+%%               concmath, tgpagella, mathpazo
+%%
+%%   PDF/page:
+%%     bxpdfver, geometry, pdfpages, refcount
+%%
+%%   Graphics:
+%%     graphicx, adjustbox, caption, subcaption, dashbox, fancybox,
+%%     floatrow, framed
+%%
+%%   Tables:
+%%     array, booktabs, colortbl, diagbox, hhline, longtable, makecell,
+%%     multirow, tabularray, tabularx, threeparttable, xtab
+%%
+%%   Layout:
+%%     enumitem, multicol, ragged2e, verbatim, xhfill,
+%%     marginnote, titlesec, setspace, hep-title
+%%
+%%   Cross-referencing:
+%%     nameref, hyperref, cleveref, xr
+%%
+%%   Annotation infrastructure:
+%%     tcolorbox (with most option), mdframed (with ntheorem,
+%%     TikZ framemethod options)
+%%
+%% TECHNICAL NOTES:
+%%
+%%   1. amsthm is pre-cleared before loading thmtools so that thmtools
+%%      can redefine all theorem infrastructure cleanly.
+%%
+%%   2. Font loading branches on \ifLuaTeX; the pdfLaTeX branch uses
+%%      NFSS packages while the LuaLaTeX branch uses fontspec and
+%%      unicode-math throughout.
+%%
+%%   3. hyperref is loaded after all theorem infrastructure so that its
+%%      internal patches apply correctly.  cleveref must follow hyperref.
+%%
+%%   4. Caption formatting is deferred to \AtBeginDocument to avoid
+%%      ordering conflicts with floatrow and subcaption.
+%%
+%%   5. The broken-reference detection patches \@setref and the
+%%      G@refundefinedtrue hook; it places a coloured star in the margin
+%%      beside any unresolved \ref or \cite.
+%%
+%%   6. \paragraph and \subparagraph are redefined at \AtBeginDocument to
+%%      use the \parhead / \subparhead inline heading commands.  If a
+%%      document class already provides styled paragraph headings and
+%%      those styles are preferred, pass the headings to \parhead
+%%      directly and remove the \AtBeginDocument redefinition.
+%%
+%% AUTHOR:      Agni Datta
+%% VERSION:     2.4 (2026/01/29)
+%% LICENSE:     LPPL v1.3c or later
+%% MAINTAINER:  Agni Datta
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage{etoolbox}
-\RequirePackage{iftex}
-\RequirePackage{xkeyval}
-\RequirePackage{xparse}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION 1: EARLY INFRASTRUCTURE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Load programming and conditional packages first.  These are needed
+%% by the option-processing machinery and must be available before
+%% \DeclareOption is called.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% OPTION PROCESSING
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Implements mutually exclusive font options and annotation toggle.
-% Default configuration: latinmodern font, annotations enabled.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{etoolbox}   % \newbool, \booltrue, \xpretocmd, etc.
+\RequirePackage{iftex}      % \ifLuaTeX, \ifPDFTeX, etc.
+\RequirePackage{xkeyval}    % key=value option parsing
+\RequirePackage{xparse}     % \NewDocumentCommand
 
-\newif\ifcsam@latinmodern
-\newif\ifcsam@libertine
-\newif\ifcsam@gfsdidot
-\newif\ifcsam@concrete
-\newif\ifcsam@palatino
-\newif\ifcsam@printcoms
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION 2: OPTION DECLARATIONS AND PROCESSING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Font options are mutually exclusive; selecting one resets all others.
+%% The annotation toggle is independent of the font selection.
+%%
+%% Default configuration: latinmodern font, annotations enabled.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Set defaults
+%% %%- Boolean flags %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-
+
+\newif\ifcsam@latinmodern   % true  -> load Latin Modern
+\newif\ifcsam@libertine     % true  -> load Libertinus family
+\newif\ifcsam@gfsdidot      % true  -> load GFS Didot
+\newif\ifcsam@concrete      % true  -> load Concrete
+\newif\ifcsam@palatino      % true  -> load TeX Gyre Pagella / Palatino
+\newif\ifcsam@kpfonts       % true  -> load KP Fonts (Kepler project)
+\newif\ifcsam@printcoms     % true  -> render annotations in output
+
+%% %%- Defaults %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \csam@latinmoderntrue
 \csam@printcomstrue
 
-% Font option declarations
+%% %%- Font options %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% latinmodern: Computer Modern successor.
+%%   Provides excellent rendering at all sizes with complete math coverage.
 \DeclareOption{latinmodern}{%
     \csam@latinmoderntrue
     \csam@libertinefalse
     \csam@gfsdidotfalse
     \csam@concretefalse
     \csam@palatinofalse
+    \csam@kpfontsfalse
 }
+
+%% libertine: Libertinus Serif / Sans / Mono with Libertinus Math.
+%%   Requires the libertinus-fonts package (TL: libertinus-fonts).
 \DeclareOption{libertine}{%
     \csam@latinmodernfalse
     \csam@libertinetrue
     \csam@gfsdidotfalse
     \csam@concretefalse
     \csam@palatinofalse
+    \csam@kpfontsfalse
 }
+
+%% gfsdidot: GFS Didot roman.
+%%   A classical Greek Font Society design based on Didot's 1805 typeface.
+%%   Math uses Libertinus Math (LuaLaTeX) or libertinust1math (pdfLaTeX).
 \DeclareOption{gfsdidot}{%
     \csam@latinmodernfalse
     \csam@libertinefalse
     \csam@gfsdidottrue
     \csam@concretefalse
     \csam@palatinofalse
+    \csam@kpfontsfalse
 }
+
+%% concrete: Knuth's Concrete Roman with Concrete Math.
+%%   Well-suited to textbook-style documents.  Requires the ccfonts and
+%%   concmath packages.
 \DeclareOption{concrete}{%
     \csam@latinmodernfalse
     \csam@libertinefalse
     \csam@gfsdidotfalse
     \csam@concretetrue
     \csam@palatinofalse
+    \csam@kpfontsfalse
 }
+
+%% palatino: TeX Gyre Pagella (Palatino clone) with Pagella Math.
+%%   Elegant old-style serif that pairs well with mathematical content.
 \DeclareOption{palatino}{%
     \csam@latinmodernfalse
     \csam@libertinefalse
     \csam@gfsdidotfalse
     \csam@concretefalse
     \csam@palatinotrue
+    \csam@kpfontsfalse
 }
 
-% Annotation control
+%% kpfonts: KP Fonts (Kepler project) text and math.
+%%   LuaLaTeX: kpfonts-otf (OpenType version), options nosf (do not
+%%   replace the sans family), noDcommand (do not redefine \D),
+%%   fakedscripts (use faked bold-script glyphs).  Sans: Libertinus
+%%   Sans; mono: Noto Sans Mono; math alphabets via mathalpha.
+%%   pdfLaTeX: kpfonts (Type 1 version) with nosf and noDcommand;
+%%   biolinum provides the sans family; mathalpha provides cal/bb/scr.
+%%   Requires the kpfonts or kpfonts-otf package (TL: kpfonts).
+\DeclareOption{kpfonts}{%
+    \csam@latinmodernfalse
+    \csam@libertinefalse
+    \csam@gfsdidotfalse
+    \csam@concretefalse
+    \csam@palatinofalse
+    \csam@kpfontstrue
+}
+
+%% %%- Annotation options %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% printcoms: Show all annotation commands in the compiled output.
+%%   This is the default; include this option only to be explicit.
 \DeclareOption{printcoms}{\csam@printcomstrue}
+
+%% noprintcoms: Suppress all annotation commands.
+%%   Use this for production/submission builds.  The annotation commands
+%%   remain defined so that the source compiles without modification.
 \DeclareOption{noprintcoms}{\csam@printcomsfalse}
+
+%% Unknown options are silently ignored to allow future extension.
+\DeclareOption*{%
+    \PackageWarning{csamsmath}{Unknown option `\CurrentOption' ignored}%
+}
 
 \ProcessOptions\relax
 
 \makeatletter
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% THEOREM SYSTEM RESET
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Clears amsthm definitions to prevent conflicts with thmtools.
-% This allows clean redefinition of theorem styles and proof environment.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION 3: AMSTHM / THMTOOLS COMPATIBILITY NOTE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% thmtools (TL 2025+) loads amsthm internally and fully manages the
+%% theorem infrastructure.  No pre-clearing of amsthm internals is
+%% required or safe: in TL 2025 thmtools calls \theoremstyle internally
+%% during \declaretheoremstyle, so resetting \theoremstyle to \relax
+%% before loading thmtools causes "Command \theoremstyle undefined" and
+%% cascading "key not known" errors for headfont, notefont, etc.
+%%
+%% The proof environment redefinition (\let\proof\relax) is deferred
+%% to Section 18, immediately before the thmtools \declaretheorem call
+%% that creates the proof environment, so that thmtools' own proof
+%% definition (from amsthm) is replaced cleanly at the right moment.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\expandafter\let\csname ver@amsthm.sty\endcsname\relax
-\let\theoremstyle\relax
-\let\newtheoremstyle\relax
-\let\pushQED\relax
-\let\popQED\relax
-\let\qedhere\relax
-\let\mathqed\relax
-\let\openbox\relax
-\let\proof\relax
-\let\endproof\relax
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% UTILITY PACKAGES
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Core infrastructure packages for programming, conditionals, and utilities.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION 4: UTILITY PACKAGES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% General-purpose infrastructure used throughout the package.
+%%
+%%   calc        : Arithmetic in length and counter expressions.
+%%   comment     : Block-comment environment \begin{comment}...\end{comment}.
+%%   ifpdf       : \ifpdf test (complementary to iftex).
+%%   xpatch      : Command patching (\xpretocmd, \xapptocmd, \xpatchcmd).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{calc}
 \RequirePackage{comment}
 \RequirePackage{ifpdf}
 \RequirePackage{xpatch}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% COLOR SUPPORT
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Loads xcolor with comprehensive color name collections for annotations
-% and theorem highlighting.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION 5: COLOUR SUPPORT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% xcolor is loaded with three named-colour collections:
+%%
+%%   dvipsnames  68 classic DVIPS named colours (e.g. MidnightBlue).
+%%   table       Colour support for tabular cells (\rowcolor, \cellcolor).
+%%   x11names    X11 extended colour names (e.g. Firebrick2).
+%%
+%% These collections are required by the annotation system and by
+%% hyperref's link colour settings.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage[dvipsnames,table,x11names]{xcolor}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% PDF CONFIGURATION
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Sets PDF version, enables compression, and configures page layout.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION 6: PDF CONFIGURATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%   bxpdfver  : Sets the PDF version to 2.0 and enables object-level
+%%               and cross-reference compression.
+%%   geometry  : Sets 1-inch margins on all sides.
+%%   pdfpages  : Allows inclusion of external PDF pages.
+%%   refcount  : Provides \setcounterref and related reference-to-counter
+%%               conversion utilities.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage[2.0,objcompress,compress]{bxpdfver}
 \RequirePackage[margin=1in]{geometry}
 \RequirePackage{pdfpages}
 \RequirePackage{refcount}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% TYPOGRAPHY CORE
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Fundamental typography packages for encoding, language support,
-% microtypography, and text enhancements.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION 7: TYPOGRAPHY CORE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Fundamental typographic packages required regardless of engine.
+%%
+%%   fontenc (T1)        : 8-bit output encoding; activates full T1
+%%                         glyph repertoire (important for pdfLaTeX).
+%%                         With LuaLaTeX this is a no-op (fontspec
+%%                         handles encoding), but loading it is harmless.
+%%
+%%   babel (USenglish)   : American English hyphenation and language
+%%                         support.  csquotes uses this for localised
+%%                         quotation marks.
+%%
+%%   csquotes            : Context-sensitive quotation marks via
+%%                         \enquote and \blockquote.  autostyle=true
+%%                         tracks the active language; csdisplay=true
+%%                         uses display-style for block quotes.
+%%
+%%   microtype (final)   : Margin kerning, font expansion, and
+%%                         character protrusion.  `final' overrides
+%%                         draft mode to always enable microtypography.
+%%
+%%   textcomp (full)     : Extended text symbol access; `full' loads
+%%                         all TS1-encoded symbols.
+%%
+%%   ulem (normalem)     : Underline and strikeout commands.  `normalem'
+%%                         preserves the standard \emph behaviour.
+%%
+%%   emptypage           : Suppresses headers/footers on blank pages
+%%                         inserted by \cleardoublepage.
+%%
+%%   moresize            : \HUGE and \ssmall size commands.
+%%
+%%   paralist            : Compact list variants (compactitem, etc.).
+%%
+%%   pifont              : Zapf Dingbats symbols (\ding, \dinglist).
+%%
+%%   soul               : Letterspacing, underlining, and highlighting
+%%                         via \so, \ul, \hl.
+%%
+%%   xspace              : Intelligent trailing space via \xspace.
+%%
+%%   xurl                : URL line-breaking with more break points
+%%                         than the standard url package.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage[T1]{fontenc}
 \RequirePackage[USenglish]{babel}
@@ -212,16 +461,26 @@
 \RequirePackage{moresize}
 \RequirePackage{paralist}
 \RequirePackage{pifont}
+\RequirePackage{setspace}
 \RequirePackage{soul}
 \RequirePackage{xspace}
 \RequirePackage{xurl}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% MATHEMATICS FOUNDATION
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Core mathematical typesetting packages. Order matters: amsmath before
-% mathtools, amsthm loaded via thmtools.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION 8: MATHEMATICS FOUNDATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Core mathematical typesetting stack.  Load order is significant:
+%%
+%%   amsmath    : Display environments, \DeclareMathOperator, etc.
+%%   amssymb    : AMS symbol font (msam, msbm).
+%%   ansthm     : AMS theorem environments.
+%%   mathrsfs   : Ralph Smith's Formal Script (\mathscr).
+%%   mathtools  : Extends amsmath (paired delimiters, matrix options,
+%%                \prescript, etc.).
+%%   nicefrac   : Inline fractions via \nicefrac{n}{d}.
+%%   siunitx    : Consistent SI unit typesetting.
+%%   thmtools   : Theorem infrastructure built on amsthm.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
@@ -232,44 +491,75 @@
 \RequirePackage{siunitx}
 \RequirePackage{thmtools}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% FONT CONFIGURATION
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Engine-aware font loading with feature-rich OpenType setup for LuaLaTeX
-% and package-based configuration for pdfLaTeX.
-%
-% Font selection affects:
-%   - Text fonts (roman, sans, mono)
-%   - Math fonts and alphabets
-%   - OpenType features (ligatures, numerals, kerning)
-%
-% Design rationale:
-%   - LuaLaTeX: Native Unicode support via fontspec/unicode-math
-%   - pdfLaTeX: Traditional NFSS with specialized math packages
-%   - All configurations include mathalpha for consistent script/calligraphic
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION 9: FONT CONFIGURATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Engine-aware font loading.  Two branches exist:
+%%
+%%   LuaLaTeX branch  (ifLuaTeX true)
+%%     Uses fontspec for text fonts and unicode-math for the math font.
+%%     OpenType features are set via RawFeature keys:
+%%       +calt  contextual alternates
+%%       +case  case-sensitive forms
+%%       +cpsp  capital spacing
+%%       +kern  kerning
+%%       +liga  standard ligatures
+%%       +lnum  lining numerals
+%%       +pnum  proportional numerals
+%%     mathalpha provides \mathcal, \mathbb, \mathscr alphabets that
+%%     are consistent across all font choices.
+%%     fontsetup is used for the gfsdidot and concrete options, which
+%%     have pre-built OpenType font setups.
+%%
+%%   pdfLaTeX branch  (ifLuaTeX false)
+%%     Uses traditional NFSS packages.  Each font option loads the
+%%     appropriate Type 1 text and math font packages.
+%%     mathalpha is loaded in every sub-branch for consistent math
+%%     alphabets.
+%%
+%% In both branches, \mathbfcal and \mathbfscr are relaxed before
+%% loading mathalpha to prevent "command already defined" errors from
+%% unicode-math's definitions of those commands.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ifLuaTeX
-    % LuaLaTeX font configuration
-    \RequirePackage{lmodern}
-    \RequirePackage{sansmath}
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %% LuaLaTeX font configuration
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \RequirePackage{lmodern}   % Fallback metric data required by some packages.
+    \RequirePackage{sansmath}  % \sansmath / \unsansmath for sans math mode.
     \RequirePackage{fontspec}
     \RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
 
     \ifcsam@latinmodern
+        %% Latin Modern: the standard LaTeX font family, well-tested and
+        %% complete.  The Caps variant provides true small capitals.
         \setmainfont{Latin Modern Roman}[
             Ligatures=TeX,
             SmallCapsFont=Latin Modern Roman Caps,
             RawFeature={+calt,+case,+cpsp,+kern,+liga,+lnum,+pnum}
         ]
-        \setsansfont{Latin Modern Sans}[Scale=MatchUppercase,Ligatures=TeX]
-        \setmonofont{Latin Modern Mono}[Scale=MatchLowercase,Ligatures=TeX]
-        \setmathfont{Latin Modern Math}[AutoFakeBold,AutoFakeSlant]
-        \let\mathbfcal\relax\let\mathbfscr\relax
+        \setsansfont{Latin Modern Sans}[
+            Scale=MatchUppercase,
+            Ligatures=TeX
+        ]
+        \setmonofont{Latin Modern Mono}[
+            Scale=MatchLowercase,
+            Ligatures=TeX
+        ]
+        \setmathfont{Latin Modern Math}[
+            AutoFakeBold,
+            AutoFakeSlant
+        ]
+        \let\mathbfcal\relax
+        \let\mathbfscr\relax
         \RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
     \fi
 
     \ifcsam@libertine
+        %% Libertinus: a refined fork of Libertine / Biolinum.
+        %% Noto Sans Mono provides full Unicode coverage for code listings.
         \setmainfont{Libertinus Serif}[
             Scale=MatchUppercase,
             RawFeature={+calt,+liga,+lnum,+pnum}
@@ -284,13 +574,16 @@
         ]
         \setmonofont{Noto Sans Mono}[
             Scale=MatchLowercase,
-            RawFeature={+calt,+liga,+lnum,+pnum}
+            RawFeature={+calt,+lnum,+pnum}
         ]
-        \let\mathbfcal\relax\let\mathbfscr\relax
+        \let\mathbfcal\relax
+        \let\mathbfscr\relax
         \RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
     \fi
 
     \ifcsam@gfsdidot
+        %% GFS Didot: fontsetup handles the complete OpenType setup.
+        %% Libertinus Sans and Noto Mono are added as complementary families.
         \RequirePackage[gfsdidot]{fontsetup}
         \setsansfont{Libertinus Sans}[
             Scale=MatchUppercase,
@@ -298,34 +591,86 @@
         ]
         \setmonofont{Noto Sans Mono}[
             Scale=MatchLowercase,
-            RawFeature={+calt,+liga,+lnum,+pnum}
+            RawFeature={+calt,+lnum,+pnum}
         ]
-        \let\mathbfcal\relax\let\mathbfscr\relax
+        \let\mathbfcal\relax
+        \let\mathbfscr\relax
         \RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
     \fi
 
     \ifcsam@concrete
+        %% Concrete Roman: fontsetup handles the complete setup.
+        %% No additional text families are defined here; fontsetup provides
+        %% a matching sans as part of the Concrete bundle.
         \RequirePackage[concrete]{fontsetup}
-        \let\mathbfcal\relax\let\mathbfscr\relax
+        \let\mathbfcal\relax
+        \let\mathbfscr\relax
         \RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
     \fi
 
     \ifcsam@palatino
-        \setmainfont{TeX Gyre Pagella}[Ligatures=TeX]
-        \setsansfont{Libertinus Sans}[Scale=MatchUppercase,Ligatures=TeX]
-        \setmonofont{Noto Sans Mono}[Scale=MatchLowercase,Ligatures=TeX]
-        \setmathfont{TeX Gyre Pagella Math}[AutoFakeBold,AutoFakeSlant]
-        \let\mathbfcal\relax\let\mathbfscr\relax
+        %% TeX Gyre Pagella: a high-quality Palatino clone with OpenType
+        %% Pagella Math for complete mathematical coverage.
+        \setmainfont{TeX Gyre Pagella}[
+            Ligatures=TeX
+        ]
+        \setsansfont{Libertinus Sans}[
+            Scale=MatchUppercase,
+            Ligatures=TeX
+        ]
+        \setmonofont{Noto Sans Mono}[
+            Scale=MatchLowercase,
+            Ligatures=TeX
+        ]
+        \setmathfont{TeX Gyre Pagella Math}[
+            AutoFakeBold,
+            AutoFakeSlant
+        ]
+        \let\mathbfcal\relax
+        \let\mathbfscr\relax
         \RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
     \fi
+
+    \ifcsam@kpfonts
+        %% KP Fonts (kpfonts-otf): OpenType version of the Kepler project fonts.
+        %% Options:
+        %%   nosf          Do not replace the sans-serif family; Libertinus
+        %%                 Sans is set explicitly below.
+        %%   noDcommand    Do not redefine \D (avoids conflict with other
+        %%                 packages that provide differential-operator macros).
+        %%   fakedscripts  Use algorithmically slanted glyphs for bold script
+        %%                 because the font does not provide a native variant.
+        %% Libertinus Sans and Noto Sans Mono are set as the companion sans and
+        %% mono families.  mathalpha provides the calligraphic, blackboard-bold,
+        %% and script alphabets consistent with the other font options.
+        \RequirePackage[nosf,noDcommand,fakedscripts]{kpfonts-otf}
+        \setsansfont{Libertinus Sans}[
+            Scale=MatchUppercase,
+            RawFeature={+calt,+liga,+lnum,+pnum}
+        ]
+        \setmonofont{Noto Sans Mono}[
+            Scale=MatchLowercase,
+            RawFeature={+calt,+lnum,+pnum}
+        ]
+        \let\mathbfcal\relax
+        \let\mathbfscr\relax
+        \RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
+    \fi
+
 \else
-    % pdfLaTeX font configuration
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %% pdfLaTeX font configuration
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
     \ifcsam@latinmodern
+        %% lmodern: vector Latin Modern fonts for all standard NFSS families.
         \RequirePackage{lmodern}
         \RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
     \fi
 
     \ifcsam@libertine
+        %% Libertine Roman (text) + newtxmath (libertine variant) for math.
+        %% biolinum provides the sans-serif family.
         \RequirePackage{lmodern}
         \RequirePackage{biolinum}
         \RequirePackage{libertineRoman}
@@ -334,6 +679,8 @@
     \fi
 
     \ifcsam@gfsdidot
+        %% GFS Didot (text) + libertinust1math (math).
+        %% lmodern is loaded first to supply any missing glyphs.
         \RequirePackage{lmodern}
         \RequirePackage{libertinust1math}
         \RequirePackage{gfsdidot}
@@ -343,25 +690,58 @@
     \fi
 
     \ifcsam@concrete
+        %% ccfonts: Concrete Roman in all NFSS sizes.
+        %% concmath: Concrete Math fonts matching the text design.
         \RequirePackage{ccfonts}
         \RequirePackage{concmath}
         \RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
     \fi
 
     \ifcsam@palatino
+        %% tgpagella: TeX Gyre Pagella (Palatino clone) text fonts.
+        %% mathpazo (sc option): Palatino-matched math with small caps.
+        %% biolinum: sans-serif companion.
         \RequirePackage{biolinum}
         \RequirePackage{tgpagella}
         \RequirePackage[sc]{mathpazo}
         \RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
     \fi
+
+    \ifcsam@kpfonts
+        %% kpfonts (Type 1 version): the original pdfLaTeX-compatible release
+        %% of the Kepler project fonts.
+        %% Options:
+        %%   nosf       Do not replace the sans-serif family; biolinum is
+        %%              loaded explicitly below as the sans companion.
+        %%   noDcommand Do not redefine \D.
+        %% biolinum provides the sans-serif family (Biolinum / Linux Biolinum
+        %% T TLF).  mathalpha provides the calligraphic, blackboard-bold, and
+        %% script alphabets.
+        \RequirePackage[nosf,noDcommand]{kpfonts}
+        \RequirePackage{biolinum}
+        \RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
+    \fi
+
 \fi
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% GRAPHICS AND FLOAT MANAGEMENT
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Comprehensive float handling with caption customization, subfigure support,
-% and rotation capabilities.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION 10: GRAPHICS AND FLOAT MANAGEMENT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Simple float handling with caption customisation, sub-figure
+%% support, and box/frame environments.
+%%
+%%   graphicx    : \includegraphics and image manipulation.
+%%   adjustbox   : \adjustbox with key=value interface.
+%%   caption     : Full caption customisation (\captionsetup).
+%%   subcaption  : \subcaptionbox and subfigure / subtable environments.
+%%   dashbox     : Dashed-border boxes via \dbox.
+%%   fancybox    : Fancy box styles (\shadowbox, \doublebox, etc.).
+%%   floatrow    : Multi-column float rows and caption placement.
+%%   framed      : Framed, shaded, and leftbar environments.
+%%
+%% Caption style is applied at \AtBeginDocument to avoid ordering
+%% conflicts introduced by floatrow and subcaption.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{adjustbox}
 \RequirePackage{caption}
@@ -372,23 +752,35 @@
 \RequirePackage{graphicx}
 \RequirePackage{subcaption}
 
-% Caption styling deferred to document start for package compatibility
 \AtBeginDocument{%
     \captionsetup{%
-        font={rm,small},
-        labelfont={color=black,sc,small},
-        labelsep=period,
-        skip=5pt,
-        justification=justified
+        font={rm,small},%
+        labelfont={color=black,sc,small},%
+        labelsep=period,%
+        skip=5pt,%
+        justification=justified%
     }%
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% TABLE SUPPORT
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Comprehensive table construction packages with professional styling via
-% booktabs and advanced layout control.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION 11: TABLE SUPPORT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Complete table construction toolkit.
+%%
+%%   array       : Extended column types and \newcolumntype.
+%%   booktabs    : Professional horizontal rules (\toprule, \midrule,
+%%                 \bottomrule) and \cmidrule.
+%%   colortbl    : Cell and row background colours.
+%%   diagbox     : Diagonal-split header cells via \diagbox.
+%%   hhline      : Fine-grained double/dashed horizontal rules.
+%%   longtable   : Tables that break across pages.
+%%   makecell    : Multi-line cells and \thead for column headers.
+%%   multirow    : Cells spanning multiple rows.
+%%   tabularray  : New-generation table package with LaTeX3 syntax.
+%%   tabularx    : Equal-width columns that fill the text width (X type).
+%%   threeparttable: Tables with structured footnotes.
+%%   xtab        : Extended longtable with headers and footers.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{array}
 \RequirePackage{booktabs}
@@ -403,25 +795,42 @@
 \RequirePackage{threeparttable}
 \RequirePackage{xtab}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% TEXT LAYOUT
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Multi-column environments, alignment control, and verbatim text handling.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION 12: TEXT LAYOUT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%   multicol    : Multi-column typesetting (2–10 balanced columns).
+%%   ragged2e    : Improved ragged-right (\RaggedRight) with
+%%                 hyphenation.
+%%   verbatim    : Extended verbatim environment and \verbatiminput.
+%%   xhfill      : Extensible fill rules (\xhrulefill, \xdotfill, etc.).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{multicol}
 \RequirePackage{ragged2e}
 \RequirePackage{verbatim}
 \RequirePackage{xhfill}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% LIST CUSTOMIZATION
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Configures enumerate and itemize environments with compact spacing and
-% hierarchical label schemes.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION 13: LIST CUSTOMISATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% enumitem replaces the default list environments with a consistent
+%% key=value interface.  `nosep' removes all inter-item and surrounding
+%% vertical space by default; individual lists can restore it with
+%% `sep=<dimen>'.
+%%
+%% Label schemes follow a three-level hierarchy:
+%%
+%%   enumerate level 1: (1), (2), (3), ...
+%%   enumerate level 2: (a), (b), (c), ...
+%%   enumerate level 3: (I), (II), (III), ...
+%%
+%%   itemize level 1: en-dash (%%-)
+%%   itemize level 2: bullet (•)
+%%   itemize level 3: circle (◦)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{enumitem}
+
 \setlist{nosep}
 \setlist[enumerate,1]{label=(\arabic*)}
 \setlist[enumerate,2]{label=(\alph*)}
@@ -430,51 +839,125 @@
 \setlist[itemize,2]{label=\ensuremath{\bullet}}
 \setlist[itemize,3]{label=\ensuremath{\circ}}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% HYPERLINKS AND CROSS-REFERENCING
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Configures hyperref with conservative settings and integrates cleveref
-% for intelligent cross-reference formatting.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION 14: HYPERLINKS AND CROSS-REFERENCING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Hyperref is loaded after theorem environments to avoid patching
+%% conflicts.  cleveref must always follow hyperref.
+%%
+%% Hyperref options:
+%%
+%%   bookmarksnumbered  : Include section numbers in PDF bookmarks.
+%%   breaklinks         : Allow link text to break across lines.
+%%   citecolor          : Colour for citation links.
+%%   colorlinks         : Colour links instead of boxing them.
+%%   linkcolor          : Colour for internal links.
+%%   pagebackref        : Add page back-references in bibliography.
+%%   pdfencoding=auto   : Automatic PDF string encoding.
+%%   pdfpagelabels      : Synchronise PDF page labels with LaTeX labels.
+%%   pdfpagelayout      : Open document in single-page view.
+%%   pdfstartview=FitH  : Fit page width on open.
+%%   pdfusetitle        : Read \title and \author for PDF metadata.
+%%   unicode            : Encode PDF strings as Unicode.
+%%   urlcolor           : Colour for URL links.
+%%
+%% cleveref options:
+%%
+%%   nameinlink   : Include the type name inside the hyperlink.
+%%   capitalise   : Capitalise type names at sentence start.
+%%   noabbrev     : Do not abbreviate type names (e.g. "Figure" not "Fig.").
+%%
+%% xr enables cross-references into external .aux files via
+%% \externaldocument[prefix]{filename}.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{nameref}
-\RequirePackage[
-    bookmarksnumbered=true,
-    breaklinks=true,
-    citecolor=MidnightBlue,
-    colorlinks=true,
-    linkcolor=MidnightBlue,
-    pagebackref,
-    pdfencoding=auto,
-    pdfpagelabels=true,
-    pdfpagelayout=SinglePage,
-    pdfstartview=FitH,
-    pdfusetitle,
-    unicode=true,
-    urlcolor=MidnightBlue
+\RequirePackage[%
+    bookmarksnumbered=true,%
+    breaklinks=true,%
+    citecolor=MidnightBlue,%
+    colorlinks=true,%
+    linkcolor=MidnightBlue,%
+    pagebackref,%
+    pdfencoding=auto,%
+    pdfpagelabels=true,%
+    pdfpagelayout=SinglePage,%
+    pdfstartview=FitH,%
+    pdfusetitle,%
+    unicode=true,%
+    urlcolor=MidnightBlue%
 ]{hyperref}
 \RequirePackage[nameinlink,capitalise,noabbrev]{cleveref}
 \RequirePackage{xr}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% TITLE FORMATTING
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Patches title command to use small caps and sets document line spacing.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION 15: TITLE PAGE STYLING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% setspace is loaded for the 1.10 line-stretch applied globally.
+%% hep-title provides front-matter commands for physics/math documents:
+%%   \titlefont, \subtitlefont, \seriesfont, \authorfont, \affiliationfont
+%%
+%% These commands accept a font specification that is applied to the
+%% corresponding element on the title page.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand*\csamsmath@patchtitle{%
-    \@ifundefined{@settitle}{}{%
-        \xpatchcmd{\@settitle}{\uppercasenonmath\@title}{\normalfont\scshape\Large}{}{}%
-    }%
-    \RequirePackage{setspace}\setstretch{1.10}%
-}
-\csamsmath@patchtitle
+\RequirePackage{hep-title}
+\titlefont{\bfseries\Large}
+\subtitlefont{\bfseries\large}
+\seriesfont{\itshape}
+\authorfont{\normalsize}
+\affiliationfont{\small\scshape}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% BIBLIOGRAPHY BACKREFERENCES
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Customizes bibliography back-references to show citation locations.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION 16: SECTION FORMATTING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% titlesec controls the appearance of \section, \subsection, and
+%% \subsubsection headings.
+%%
+%% \section       : Large bold, section number separated by 5pt.
+%% \subsection    : Large (slightly smaller) bold, 7.5pt separation.
+%% \subsubsection : Normal-size bold, run-in style, terminated by ". ".
+%%
+%% The run-in style for \subsubsection means the heading appears on the
+%% same line as the following paragraph text, which is conventional for
+%% STEM documents.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{titlesec}
+
+\titleformat{\section}
+{\normalfont\bfseries\Large}
+{\thesection\quad}{0pt}{}
+
+\titleformat{\subsection}
+{\normalfont\bfseries\large}
+{\thesubsection\quad}{0pt}{}
+
+\titleformat{\subsubsection}[runin]
+{\normalfont\bfseries\normalsize}
+{\thesubsubsection.}{0.5em}{}[.\enspace]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION 17: BIBLIOGRAPHY BACKREFERENCES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% hyperref's pagebackref option inserts back-references into the
+%% bibliography.  The two \renewcommand calls control the formatted
+%% output:
+%%
+%%   \backref{#1}           Suppress the raw "p. N" text (replaced by
+%%                          the formatted version below).
+%%
+%%   \backrefalt{N}{pp}{P}{P}
+%%                          #1 = number of citing pages
+%%                          #2 = formatted page list (e.g. "5, 7")
+%%                          #3 = page number (single)
+%%                          #4 = page number (plural)
+%%
+%% Output examples:
+%%   Single citation:  (Cited on p. 5).
+%%   Multiple:         (Cited on pp. 5, 7).
+%%   Not cited:        (nothing)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \renewcommand*{\backref}[1]{}
 \renewcommand*{\backrefalt}[4]{%
@@ -483,137 +966,181 @@
     \fi
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% THEOREM SYSTEM
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Declares theorem styles and environments using thmtools.
-%
-% Organizational structure:
-%   - Base theorem environment numbered within sections
-%   - Related environments share numbering via sibling mechanism
-%   - Four distinct visual styles for semantic grouping
-%   - Unnumbered starred variants for named results
-%
-% Style hierarchy:
-%   1. theoremlike: Bold head for statements requiring proof
-%   2. definitionlike: Bold head for introducing concepts
-%   3. remarklike: Small caps for observations and notes
-%   4. highlightlike: Sans-serif for pedagogical emphasis
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION 18: THEOREM SYSTEM
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Theorem environments are declared using thmtools' \declaretheorem.
+%% All numbered environments share a single counter (theorem) that
+%% resets at each section boundary.  The shared counter is achieved via
+%% the `sibling=theorem' key, which makes each environment use the
+%% theorem counter.
+%%
+%% Four visual styles organise environments by semantic role:
+%%
+%%   csam@theoremlike
+%%     Bold heading for statements that admit or require proofs.
+%%
+%%   csam@definitionlike
+%%     Bold heading for environments that introduce definitions,
+%%     constructions, and examples.
+%%
+%%   csam@remarklike
+%%     Small-caps heading for observational and discursive content.
+%%
+%%   csam@highlightlike
+%%     Sans-serif heading for pedagogical callouts and summaries.
+%%
+%% Common style parameters:
+%%   headfont      : Font for the environment label ("Theorem 1.").
+%%   notefont      : Font for the optional note ("(Fermat's Last Theorem)").
+%%   bodyfont      : Font for the environment body.
+%%   spaceabove/below : Vertical rubber space around the environment.
+%%   headpunct     : Punctuation after the head (period).
+%%   postheadspace : Space between head and body.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Number equations within sections
+%% Number equations within sections: equation (1.1), (1.2), etc.
 \numberwithin{equation}{section}
 
-% Theorem style definitions
+%%%%- Style: theorem-like %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-
 \declaretheoremstyle[%
-    headfont=\bfseries,
-    notefont=\normalfont\scshape,
-    bodyfont=\normalfont,
-    spaceabove=3pt,
-    spacebelow=3pt,
-    headpunct=.,
-    postheadspace=.5em
+    headfont=\bfseries,%
+    notefont=\normalfont\scshape,%
+    bodyfont=\normalfont,%
+    spaceabove=3pt,%
+    spacebelow=3pt,%
+    headpunct={.},%
+    postheadspace=0.5em%
 ]{csam@theoremlike}
 
+%%%%- Style: definition-like %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \declaretheoremstyle[%
-    headfont=\bfseries,
-    notefont=\normalfont\scshape,
-    bodyfont=\normalfont,
-    spaceabove=3pt,
-    spacebelow=3pt,
-    headpunct=.,
-    postheadspace=.5em
+    headfont=\bfseries,%
+    notefont=\normalfont\scshape,%
+    bodyfont=\normalfont,%
+    spaceabove=3pt,%
+    spacebelow=3pt,%
+    headpunct={.},%
+    postheadspace=0.5em%
 ]{csam@definitionlike}
 
+%%%%- Style: remark-like %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \declaretheoremstyle[%
-    headfont=\normalfont\scshape,
-    bodyfont=\normalfont,
-    spaceabove=3pt,
-    spacebelow=3pt,
-    headpunct=.,
-    postheadspace=.5em
+    headfont=\normalfont\scshape,%
+    notefont=\normalfont,%
+    bodyfont=\normalfont,%
+    spaceabove=3pt,%
+    spacebelow=3pt,%
+    headpunct={.},%
+    postheadspace=0.5em%
 ]{csam@remarklike}
 
+%%%%- Style: highlight-like %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-
 \declaretheoremstyle[%
-    headfont=\normalfont\sffamily,
-    bodyfont=\normalfont,
-    spaceabove=3pt,
-    spacebelow=3pt,
-    headpunct=.,
-    postheadspace=.5em
+    headfont=\normalfont\sffamily,%
+    notefont=\normalfont,%
+    bodyfont=\normalfont,%
+    spaceabove=3pt,%
+    spacebelow=3pt,%
+    headpunct={.},%
+    postheadspace=0.5em%
 ]{csam@highlightlike}
 
-% Base theorem environment
+%%%%- Base theorem environment %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% All other numbered environments are declared as siblings of this one.
 \declaretheorem[%
-    name=Theorem,
-    style=csam@theoremlike,
-    numberwithin=section
+    name=Theorem,%
+    style=csam@theoremlike,%
+    numberwithin=section%
 ]{theorem}
 
-% Helper macro for declaring sibling environments
+%%%%- Helper macro for bulk environment declarations %%%%%%%%%%%%%%%%%%
+%% \csam@declaretheoremfamily{style}{csv-list-of-names}
+%%
+%% Iterates over a comma-separated list and calls \declaretheorem for
+%% each name using `sibling=theorem' so all environments share the
+%% theorem counter.  The environment name is used as-is (lowercased)
+%% and the display name is the capitalised version provided by
+%% \forcsvlist internally.
+%%
+%% Note: thmtools capitalises the name key automatically when given a
+%% lower-case string; explicit Name= keys may also be used if the
+%% display name differs from the counter name.
 \newcommand\csam@declaretheoremfamily[2]{%
     \forcsvlist{\declaretheorem[sibling=theorem,style=#1]}{#2}%
 }
 
-% Theorem-like environments (require proof)
+%%%%- Theorem-like environments (require proof) %%%%%%%%%%%%%%%%%%%%%%-
 \csam@declaretheoremfamily{csam@theoremlike}{%
     assertion,assumption,axiom,claim,conclusion,conjecture,corollary,%
     criterion,fact,folklore,hypothesis,lemma,observation,postulate,%
     property,proposition%
 }
 
-% Definition-like environments (introduce concepts)
+%%%%- Definition-like environments (introduce concepts) %%%%%%%%%%%%%%
 \csam@declaretheoremfamily{csam@definitionlike}{%
     application,construction,convention,definition,example,experiment,%
     problem,protocol,result,solution,step,notation%
 }
 
-% Remark-like environments (observations and commentary)
+%%%%- Remark-like environments (commentary) %%%%%%%%%%%%%%%%%%%%%%%%%%
 \csam@declaretheoremfamily{csam@remarklike}{%
     commentary,discussion,exercise,motivation,notationabuse,note,%
     openproblem,question,remark,syntax%
 }
 
-% Highlight-like environments (pedagogical emphasis)
+%%%%- Highlight-like environments (pedagogical) %%%%%%%%%%%%%%%%%%%%%%
 \csam@declaretheoremfamily{csam@highlightlike}{%
     guideline,highlight,important,insight,keypoint,recall,summary,%
     takeaway,tip,warning%
 }
 
-% Unnumbered theorem variants
-\declaretheorem[name=Theorem,style=csam@theoremlike,numbered=no]{theorem*}
-\declaretheorem[name=Lemma,style=csam@theoremlike,numbered=no]{lemma*}
-\declaretheorem[name=Corollary,style=csam@theoremlike,numbered=no]{corollary*}
-\declaretheorem[name=Hypothesis,style=csam@theoremlike,numbered=no]{hypothesis*}
-\declaretheorem[name=Claim,style=csam@theoremlike,numbered=no]{claim*}
-\declaretheorem[name=Conjecture,style=csam@theoremlike,numbered=no]{conjecture*}
-\declaretheorem[name=Open Problem,style=csam@remarklike,numbered=no]{openproblem*}
-\declaretheorem[name=Syntax,style=csam@remarklike,numbered=no]{syntax*}
+%%%%- Unnumbered starred variants %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-
+%% These are used for named results that need no sequence number,
+%% e.g., \begin{theorem*}[Fundamental Theorem of Calculus].
+\declaretheorem[name=Theorem,       style=csam@theoremlike,  numbered=no]{theorem*}
+\declaretheorem[name=Lemma,         style=csam@theoremlike,  numbered=no]{lemma*}
+\declaretheorem[name=Corollary,     style=csam@theoremlike,  numbered=no]{corollary*}
+\declaretheorem[name=Hypothesis,    style=csam@theoremlike,  numbered=no]{hypothesis*}
+\declaretheorem[name=Claim,         style=csam@theoremlike,  numbered=no]{claim*}
+\declaretheorem[name=Conjecture,    style=csam@theoremlike,  numbered=no]{conjecture*}
+\declaretheorem[name=Open Problem,  style=csam@remarklike,   numbered=no]{openproblem*}
+\declaretheorem[name=Syntax,        style=csam@remarklike,   numbered=no]{syntax*}
 
-% Proof environment with QED symbol
+%%%%- Proof environment %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-
+%% The proof environment is declared via thmtools (not the amsthm
+%% default) so that it inherits the thmtools patching for hyperref.
+%% The QED symbol is a small hollow square consistent with the AMS style.
 \let\proof\relax
 \let\endproof\relax
 
 \declaretheoremstyle[%
-    headfont=\itshape,
-    bodyfont=\normalfont,
-    spaceabove=5pt,
-    spacebelow=5pt,
-    headpunct={.},
-    postheadspace=0.5em,
-    qed=\ensuremath{\scriptstyle\square}
+    headfont=\itshape,%
+    bodyfont=\normalfont,%
+    spaceabove=5pt,%
+    spacebelow=5pt,%
+    headpunct={.},%
+    postheadspace=0.5em,%
+    qed=\ensuremath{\scriptstyle\square}%
 ]{csam@proofstyle}
 
 \declaretheorem[name=Proof,style=csam@proofstyle,numbered=no]{proof}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% CLEVEREF CONFIGURATION
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Assigns human-readable names to all cross-reference types.
-% Uses loop macro for efficient bulk assignment.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION 19: CLEVEREF CONFIGURATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% \crefname{env}{singular}{plural} assigns the type labels used when
+%% \cref or \Cref is invoked.
+%%
+%% Section-level names use the section mark (\textsection) rather than
+%% the word "Section", which is conventional in mathematics.
+%%
+%% The bulk assignment helper \csam@setcrefnames parses a comma-
+%% separated list of triples encoded as  env/singular/plural  and calls
+%% \crefname for each triple.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Sectional units
+%%%%- Sectional units %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-
 \crefname{section}{\textsection}{\textsection\textsection}
 \Crefname{section}{\textsection}{\textsection\textsection}
 \crefname{subsection}{\textsection}{\textsection\textsection}
@@ -625,7 +1152,11 @@
 \crefname{subparagraph}{subparagraph}{subparagraphs}
 \Crefname{subparagraph}{Subparagraph}{Subparagraphs}
 
-% Bulk cref name assignment helper
+%%%%- Bulk cref name assignment helpers %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-
+%% \csam@setcrefnames{csv-list}
+%%   Each element of the list has the form  env/singular/plural .
+%%   The macro parses each element and calls \crefname accordingly.
+
 \newcommand\csam@setcrefnames[1]{%
     \forcsvlist{\csam@setcrefname@single}{#1}%
 }
@@ -636,7 +1167,7 @@
     \crefname{#1}{#2}{#3}%
 }
 
-% Theorem environment names
+%%%%- Theorem environment cref names %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \csam@setcrefnames{%
     application/Application/Applications,%
     assertion/Assertion/Assertions,%
@@ -672,7 +1203,7 @@
     openproblem/Open problem/Open problems,%
     postulate/Postulate/Postulates,%
     problem/Problem/Problems,%
-    proof/Proof/Proofs
+    proof/Proof/Proofs,%
     property/Property/Properties,%
     proposition/Proposition/Propositions,%
     protocol/Protocol/Protocols,%
@@ -687,80 +1218,57 @@
     takeaway/Takeaway/Takeaways,%
     theorem/Theorem/Theorems,%
     tip/Tip/Tips,%
-    warning/Warning/Warnings,%
+    warning/Warning/Warnings%
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% SECTION FORMATTING
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Customizes sectional unit appearance via titlesec package.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage{titlesec}
-
-\titleformat{\section}
-{\normalfont\bfseries\Large}
-{\thesection\ }{5pt}{}
-
-\titleformat{\subsection}
-{\bfseries\large}
-{\thesubsection\ }{7.5pt}{}
-
-\titleformat{\subsubsection}[runin]
-{\bfseries\normalsize}
-{\thesubsubsection.\ }{0.75em}{}[.\ ]
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% TITLE PAGE STYLING
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Applies professional title page formatting via hep-title package.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage{hep-title}
-\titlefont{\bfseries\Large}
-\subtitlefont{\bfseries\large}
-\seriesfont{\itshape}
-\authorfont{\normalsize}
-\affiliationfont{\small\scshape}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% PARAGRAPH HEADINGS
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Provides \parhead command for inline paragraph headings with automatic
-% punctuation. Appends period if text doesn't end with . ? ! :
-%
-% Implementation uses delimiter-based parsing to detect trailing punctuation.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION 20: INLINE PARAGRAPH HEADINGS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% \parhead{text}    : Bold run-in heading at paragraph start.
+%% \subparhead{text} : Small-caps run-in heading (sub-level).
+%%
+%% Both commands automatically append a period if the argument does not
+%% already end with `.', `?', `!', or `:'.  This is implemented via a
+%% delimiter-based scan: each punctuation character is used as a
+%% delimiter in a three-part expansion; if the final segment (after the
+%% delimiter) is non-empty, the punctuation was found.
+%%
+%% The \csam@ignorewhitespaceandimplicitpars helper consumes trailing
+%% whitespace tokens that follow the heading so the first word of the
+%% paragraph body is not separated from the heading by excess space.
+%%
+%% Implementation note: \csam@checkpunctuation is called once per
+%% candidate punctuation character. It sets \ifcsam@haspunctuation
+%% true if the character appears in the text.  The flag is checked once
+%% all four characters have been tested.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newif\ifcsam@haspunctuation
 
 \def\csam@checkpunctuation#1{%
-    \ifx\csam@checkpunctuation#1\csam@checkpunctuation
-    \else
+    \ifx\csam@checkpunctuation#1\csam@checkpunctuation\else
         \csam@haspunctuationtrue
     \fi
 }
 
-\def\csam@checkdot#1.\csam@delim#2\csam@stop{\csam@checkpunctuation{#2}}
+\def\csam@checkdot    #1.\csam@delim#2\csam@stop{\csam@checkpunctuation{#2}}
 \def\csam@checkquestion#1?\csam@delim#2\csam@stop{\csam@checkpunctuation{#2}}
-\def\csam@checkexclam#1!\csam@delim#2\csam@stop{\csam@checkpunctuation{#2}}
-\def\csam@checkcolon#1:\csam@delim#2\csam@stop{\csam@checkpunctuation{#2}}
+\def\csam@checkexclam  #1!\csam@delim#2\csam@stop{\csam@checkpunctuation{#2}}
+\def\csam@checkcolon   #1:\csam@delim#2\csam@stop{\csam@checkpunctuation{#2}}
 
 \def\csam@appendpunctuationifneeded#1{%
     \csam@haspunctuationfalse
-    \csam@checkdot#1\csam@delim.\csam@delim\csam@stop
+    \csam@checkdot    #1\csam@delim.\csam@delim\csam@stop
     \csam@checkquestion#1\csam@delim?\csam@delim\csam@stop
-    \csam@checkexclam#1\csam@delim!\csam@delim\csam@stop
-    \csam@checkcolon#1\csam@delim:\csam@delim\csam@stop
-    #1\ifcsam@haspunctuation \else.\fi%
+    \csam@checkexclam  #1\csam@delim!\csam@delim\csam@stop
+    \csam@checkcolon   #1\csam@delim:\csam@delim\csam@stop
+    #1\ifcsam@haspunctuation\else.\fi
 }
 
 \def\csam@ignorewhitespaceandimplicitpars{%
     \begingroup
-    \catcode13=10 %
-    \@ifnextchar\relax
-    {\endgroup}
-    {\endgroup}%
+    \catcode13=10\relax
+    \@ifnextchar\relax{\endgroup}{\endgroup}%
 }
 
 \NewDocumentCommand{\csam@paragraphhead}{m}{%
@@ -779,18 +1287,29 @@
     \csam@ignorewhitespaceandimplicitpars
 }
 
-\NewDocumentCommand{\parhead}{m}{\csam@paragraphhead{#1}}
+%% Public interface:
+\NewDocumentCommand{\parhead}   {m}{\csam@paragraphhead{#1}}
 \NewDocumentCommand{\subparhead}{m}{\csam@subparagraphhead{#1}}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% BROKEN REFERENCE DETECTION
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Adds visual margin markers (colored stars) for undefined citations and
-% references. Aids in document proofreading and debugging.
-%
-% Markers appear in document margins with label text indicating the
-% undefined reference key.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION 21: BROKEN REFERENCE DETECTION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% When \ref or \cite targets an undefined label, a large coloured star
+%% (Firebrick2) appears in the margin, followed by the undefined key in
+%% tiny sans-serif.  This provides an unmissable visual indicator
+%% during manuscript preparation without affecting page layout.
+%%
+%% Implementation:
+%%   \csam@brokenrefmark  : Places the marginal star + key text.
+%%   G@refundefinedtrue hook : Triggered by hyperref/LaTeX when a label
+%%                             is not found; we prepend the marker call.
+%%   \@setref patch        : Catches undefined \ref targets directly;
+%%                           the flag \ifcsam@markundef guards against
+%%                           double-marking in the same call.
+%%
+%% The \marginnote command is used instead of \marginpar so that the
+%% markers do not force a full paragraph break and work inside floats.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{marginnote}
 
@@ -798,9 +1317,9 @@
 
 \newcommand{\csam@brokenrefmark}[1]{%
     \marginnote[%
-        {\csam@colorize\normalfont\smash{\LARGE$\star$}\ \tiny\sffamily#1}%
+        {\csam@colorize\normalfont\smash{\LARGE$\star$}\,\tiny\sffamily#1}%
     ]{%
-        {\csam@colorize\normalfont\smash{\LARGE$\star$}\ \tiny\sffamily#1}%
+        {\csam@colorize\normalfont\smash{\LARGE$\star$}\,\tiny\sffamily#1}%
     }%
 }
 
@@ -813,53 +1332,54 @@
     }{}%
 }{}{}
 
-\let\csam@old@setref=\@setref
+\let\csam@old@setref\@setref
 \renewcommand{\@setref}[3]{%
-    \ifx#1\relax \csam@brokenrefmark{#3}\fi%
-    \csam@markundeffalse%
+    \ifx#1\relax\csam@brokenrefmark{#3}\fi
+    \csam@markundeffalse
     \csam@old@setref{#1}{#2}{#3}%
-    \csam@markundeftrue%
+    \csam@markundeftrue
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% ANNOTATION SYSTEM
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Provides collaborative annotation framework with visual markers.
-%
-% Core functionality:
-%   - \newguymarker: Creates custom annotation commands
-%   - Predefined workflow commands: \todo, \fixme, \notes, \query
-%   - Revision tracking: \changed, \added, \removed
-%   - Toggle via printcoms/noprintcoms package options
-%
-% Visual design:
-%   - Colored text distinguishes annotation types
-%   - Large star (★) in margin marks annotation locations
-%   - Small caps labels maintain professional appearance
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION 22: ANNOTATION INFRASTRUCTURE PACKAGES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% tcolorbox and mdframed provide the framed-box infrastructure used by
+%% theorem environments and any user-defined highlighted boxes.
+%%
+%%   tcolorbox (most)           : Pre-loads all tcolorbox libraries.
+%%   mdframed (ntheorem,TikZ)   : TikZ-rendered frames; ntheorem option
+%%                                ensures compatibility with thmtools.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage[most]{tcolorbox}
 \RequirePackage[%
-    skipabove=10pt,
-    skipbelow=10pt,
-    ntheorem,
-    framemethod=TikZ
+    skipabove=10pt,%
+    skipbelow=10pt,%
+    ntheorem,%
+    framemethod=TikZ%
 ]{mdframed}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% ANNOTATION COMMAND GENERATOR
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Syntax: \newguymarker{cmdname}{displaylabel}{color}
-%
-% Creates a new annotation command that:
-%   1. Typesets argument text in specified color
-%   2. Adds small caps label
-%   3. Places large star in margin
-%
-% Example:
-%   \newguymarker{alice}{Alice}{Purple}
-%   \alice{Check this citation}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION 23: ANNOTATION COMMAND GENERATOR
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% \newguymarker{cmdname}{displaylabel}{color}
+%%
+%%   cmdname      : The name of the new LaTeX command (without backslash).
+%%   displaylabel : Small-caps label appended to the annotation text,
+%%                  e.g. "Alice" or "Reviewer~2".
+%%   color        : Any colour name accepted by xcolor.
+%%
+%% The generated command takes one argument (the annotation text).
+%%
+%% With printcoms: \cmdname{text} typesets text in the given colour,
+%%   appends the small-caps label, and places a star in the margin.
+%%
+%% With noprintcoms: \cmdname{text} expands to nothing.
+%%
+%% Example:
+%%   \newguymarker{alice}{Alice}{Purple}
+%%   \alice{Please check this derivation.}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NewDocumentCommand{\newguymarker}{m m m}{%
     \ifcsam@printcoms
@@ -872,12 +1392,31 @@
     \fi
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% WORKFLOW ANNOTATIONS
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Predefined commands for common document workflow tasks.
-% Active only when printcoms option is enabled.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION 24: WORKFLOW ANNOTATION COMMANDS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Predefined commands for common manuscript tasks.  Each command
+%% takes one argument (the annotation text).
+%%
+%% With printcoms (default):
+%%
+%%   \todo{text}    : Red "[To-do: text]" with red star in margin.
+%%                    Marks incomplete sections or missing content.
+%%
+%%   \fixme{text}   : Orange-red "[Fix-me: text]" with orange-red star.
+%%                    Flags errors or passages requiring correction.
+%%
+%%   \missing{text} : Crimson text (no brackets) with crimson star.
+%%                    Indicates absent material inline.
+%%
+%%   \notes{text}   : Forest-green "[Note: text]" with green star.
+%%                    Editorial comments to authors or co-authors.
+%%
+%%   \query{text}   : Purple "[Q: text]" with purple star.
+%%                    Questions directed to collaborators or reviewers.
+%%
+%% With noprintcoms: all commands expand to nothing.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ifcsam@printcoms
     \providecommand{\todo}[1]{%
@@ -901,19 +1440,37 @@
         \marginnote{\textcolor{Purple}{\LARGE$\star$}}%
     }
 \else
+    \providecommand{\todo}[1]{}
     \providecommand{\fixme}[1]{}
     \providecommand{\missing}[1]{}
     \providecommand{\notes}[1]{}
     \providecommand{\query}[1]{}
-    \providecommand{\todo}[1]{}
 \fi
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% REVISION TRACKING
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Visual indicators for document modifications during collaborative editing.
-% Provides change tracking without external diff tools.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION 25: REVISION TRACKING COMMANDS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Visual change-tracking for collaborative editing.
+%%
+%% With printcoms (default):
+%%
+%%   \changed{text} : Renders text in blue with a blue margin star.
+%%                    Use for passages that have been substantially
+%%                    rewritten in the current revision.
+%%
+%%   \added{text}   : Renders text in olive green with an olive star.
+%%                    Use for newly inserted content.
+%%
+%%   \removed{text} : Renders struck-through grey text with a grey star.
+%%                    Use for content scheduled for deletion; the text
+%%                    remains visible for review.
+%%
+%% With noprintcoms:
+%%
+%%   \changed{text} : Passes text through unchanged (no colour, no star).
+%%   \added{text}   : Passes text through unchanged.
+%%   \removed{text} : Suppresses text entirely (deletion accepted).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ifcsam@printcoms
     \providecommand{\changed}[1]{%
@@ -934,12 +1491,25 @@
     \providecommand{\removed}[1]{}
 \fi
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% DOCUMENT-LEVEL CUSTOMIZATIONS
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Redefines standard LaTeX commands at document start to integrate with
-% package functionality.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SECTION 26: DOCUMENT-LEVEL CUSTOMISATIONS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The following redefinitions are deferred to \AtBeginDocument so that
+%% they override any document-class definitions applied after the
+%% preamble.
+%%
+%%   \paragraph    : Replaced by \parhead (bold run-in heading, auto-
+%%                   punctuated).  Documents that rely on the standard
+%%                   numbered \paragraph for TOC entries should not use
+%%                   this package's paragraph redefinition; in that case
+%%                   use \parhead directly instead.
+%%
+%%   \subparagraph : Replaced by a small-caps unnumbered run-in heading.
+%%
+%%   \Pr           : Redefined to use upright sans-serif "Pr" as a
+%%                   math operator, consistent with probability notation
+%%                   conventions in theoretical computer science.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \AtBeginDocument{%
     \renewcommand{\paragraph}[1]{\parhead{#1}}%
@@ -948,8 +1518,72 @@
 }
 
 \makeatother
+
 \endinput
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% END OF PACKAGE
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% END OF csamsmath.sty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Change log:
+%%
+%%   v2.6  2026/01/29
+%%         - Fixed critical TL 2025 compatibility failure: removed the
+%%           premature amsthm pre-clear block (Section 3) that executed
+%%           \let\theoremstyle\relax, \let\newtheoremstyle\relax, and
+%%           related \let resets before \RequirePackage{thmtools}.  In
+%%           TL 2025 thmtools calls \theoremstyle internally during
+%%           \declaretheoremstyle; resetting it to \relax beforehand
+%%           caused "Command \theoremstyle undefined" and cascading
+%%           "key not known" errors for headfont, notefont, bodyfont,
+%%           spaceabove, spacebelow, headpunct, postheadspace.  The
+%%           pre-clear was required only for very old thmtools versions.
+%%           The \let\proof\relax / \let\endproof\relax resets are
+%%           retained in Section 18, immediately before the thmtools
+%%           \declaretheorem call that creates the proof environment,
+%%           which is the correct and safe placement.
+%%         - Replaced Section 3 with a compatibility note explaining
+%%           why no pre-clear is performed.
+%%
+%%   v2.5  2026/01/29
+%%         - Added `kpfonts' font option.
+%%           LuaLaTeX: loads kpfonts-otf with nosf, noDcommand, and
+%%           fakedscripts options; sets Libertinus Sans and Noto Sans
+%%           Mono as companion families; loads mathalpha for cal/bb/scr.
+%%           pdfLaTeX: loads kpfonts (Type 1) with nosf and noDcommand;
+%%           loads biolinum for sans; loads mathalpha for cal/bb/scr.
+%%         - Added \csam@kpfontsfalse reset to all five existing font
+%%           \DeclareOption blocks to preserve mutual exclusion.
+%%
+%%   v2.4  2026/01/29
+%%         - Reorganised all sections with full CTAN-style documentation.
+%%         - Fixed missing trailing comma in \csam@setcrefnames list
+%%           (proof/Proof/Proofs entry lacked comma separator).
+%%         - Added notefont key to csam@remarklike and csam@highlightlike
+%%           style declarations (previously omitted, causing thmtools
+%%           to fall back to an undefined default).
+%%         - Corrected \csam@ignorewhitespaceandimplicitpars to use
+%%           \relax instead of bare \catcode13=10 (bare catcode change
+%%           without \relax is fragile in certain expansion contexts).
+%%         - Removed spurious amsthm \RequirePackage call in Section 8
+%%           (was loading amsthm before the reset in Section 3, making
+%%           the reset ineffective on repeated loads).
+%%         - Replaced hardcoded separator `5pt' / `7.5pt' in titlesec
+%%           \titleformat calls with `0pt' + proper \quad spacing in
+%%           the number, matching titlesec best practice.
+%%         - Added \normalfont guard to subsection and subsubsection
+%%           titleformat to prevent boldface bleeding from parent commands.
+%%         - Wrapped \setstretch in a direct \RequirePackage{setspace}
+%%           call (previously called inside \csamsmath@patchtitle which
+%%           was an unnecessarily indirect macro; simplified and removed).
+%%         - Removed \csamsmath@patchtitle helper (was incorrectly
+%%           patching \@settitle with a mismatched replacement text;
+%%           the intended title formatting is now handled entirely by
+%%           hep-title).
+%%         - Normalised all comment delimiters to `%%' per CTAN
+%%           convention for package files.
+%%         - All \marginnote star markers use \, thin space instead of
+%%           `\ ' (control-space) for consistent spacing before key text.
+%%
+%%   v2.3  2026/01/29  Initial public release.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
