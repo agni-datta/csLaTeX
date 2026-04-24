@@ -1,17 +1,15 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{tcscrypto}[2026/04/13 v3.0 Notations and environments for TCS and Cryptography]
 
-\RequirePackage{iftex}
-
 \RequirePackage{appendix}
 \RequirePackage[full]{complexity}
 
-\providecommand{\algostyle}[1]{\mathsf{#1}}
-\providecommand{\oraclestyle}[1]{\textnormal{\textsc{#1}}}
+\providecommand{\algostyle}[1]{\ensuremath{\mathsf{#1}}}
+\providecommand{\oraclestyle}[1]{\ensuremath{\textnormal{\textsc{#1}}}}
 \providecommand{\probstyle}[1]{\ensuremath{\textnormal{\textsc{#1}}}\xspace}
-\providecommand{\schemestyle}[1]{\mathsf{#1}}
-\providecommand{\setstyle}[1]{\mathcal{#1}}
-\providecommand{\varstyle}[1]{\mathsf{#1}}
+\providecommand{\schemestyle}[1]{\ensuremath{\mathsf{#1}}}
+\providecommand{\setstyle}[1]{\ensuremath{\mathcal{#1}}}
+\providecommand{\varstyle}[1]{\ensuremath{\mathsf{#1}}}
 
 \providecommand{\funcstyle}[1]{\algostyle{#1}}
 \providecommand{\funct}[1]{\funcstyle{#1}}
@@ -133,11 +131,12 @@
 \providecommand{\vs}{vs.\xspace}
 \providecommand{\wrt}{w.r.t.\xspace}
 
+\providecommand{\CC}{\mathbb{C}}
+\providecommand{\GL}{\mathbb{GL}}
 \providecommand{\NN}{\mathbb{N}}
-\providecommand{\ZZ}{\mathbb{Z}}
 \providecommand{\QQ}{\mathbb{Q}}
 \providecommand{\RR}{\mathbb{R}}
-\providecommand{\CC}{\mathbb{C}}
+\providecommand{\ZZ}{\mathbb{Z}}
 \providecommand{\bits}{\{0,1\}}
 \providecommand{\unary}[1]{1^{#1}}
 
@@ -152,6 +151,7 @@
 \providecommand{\GGone}{\mathbb{G}_1}
 \providecommand{\GGtwo}{\mathbb{G}_2}
 
+\providecommand{\eps}{\epsilon}
 \providecommand{\ggen}{g}
 \providecommand{\ggenp}{g_p}
 \providecommand{\ggenq}{g_q}
@@ -195,6 +195,17 @@
 \providecommand{\AND}{\algostyle{AND}}
 \providecommand{\OR}{\algostyle{OR}}
 
+\ExplSyntaxOn
+\NewDocumentCommand{\mbf}{m}
+{
+	\regex_match:nnTF { \A [a-zA-Z0-9] \Z } { #1 }
+	{ \mathbf{#1} }
+	{ \boldsymbol{#1} }
+}
+\ExplSyntaxOff
+
+\renewcommand{\vec}[1]{\mbf{#1}}
+
 \let\Pr\relax
 \let\poly\relax
 \mathchardef\mhyphen="2D
@@ -223,19 +234,27 @@
 	}\,
 }
 
-\DeclareMathOperator*{\eps}{\varepsilon}
+\DeclareMathOperator*{\Pr}{\algostyle{Pr}}
+\DeclareMathOperator*{\StatDist}{\Delta}
+
 \DeclareMathOperator*{\equivdist}{\equiv}
 \DeclareMathOperator*{\getsr}{\sample}
-\DeclareMathOperator*{\GL}{GL}
 \DeclareMathOperator*{\hyph}{\mhyphen}
 \DeclareMathOperator*{\inR}{\in_{\mathrm{R}}}
-\DeclareMathOperator*{\negl}{\algostyle{negl}}
-\DeclareMathOperator*{\ord}{\mathrm{ord}}
-\DeclareMathOperator*{\poly}{\algostyle{poly}}
-\DeclareMathOperator*{\Pr}{\algostyle{Pr}}
 \DeclareMathOperator*{\shouldeq}{\stackrel{\text{!}}{=}}
-\DeclareMathOperator*{\StatDist}{\Delta}
-\DeclareMathOperator*{\supp}{\mathrm{supp}}
+
+\DeclareMathOperator*{\codom}{\algostyle{codom}}
+\DeclareMathOperator*{\dom}{\algostyle{dom}}
+\DeclareMathOperator*{\img}{\algostyle{img}}
+\DeclareMathOperator*{\negl}{\algostyle{negl}}
+\DeclareMathOperator*{\ord}{\algostyle{ord}}
+\DeclareMathOperator*{\poly}{\algostyle{poly}}
+\DeclareMathOperator*{\range}{\algostyle{range}}
+\DeclareMathOperator*{\sol}{\algostyle{sol}}
+\DeclareMathOperator*{\spn}{\algostyle{span}}
+\DeclareMathOperator*{\supp}{\algostyle{supp}}
+\DeclareMathOperator*{\tr}{\algostyle{Tr}}
+\DeclareMathOperator*{\vecop}{\algostyle{vec}}
 
 \providecommand{\Uniform}[1]{\setstyle{U}_{#1}}
 \providecommand{\unif}[1]{\algostyle{U}_{#1}}
@@ -273,7 +292,9 @@
 	DLIN/DLIN,
 	DLP/DLP,
 	GapDH/GapDH,
+	LPN/LPN,
 	LRSW/LRSW,
+	LWE/LWE,
 	RSA/RSA,
 	SD/SD,
 	SXDH/SXDH,
@@ -289,7 +310,7 @@
 \providecommand{\prg}{\algostyle{G}}
 \providecommand{\hash}{\algostyle{H}}
 \providecommand{\Hash}{\algostyle{H}}
-\providecommand{\trapdoor}{\algostyle{T}}
+\providecommand{\trapdoor}{\algostyle{Td}}
 
 \providecommand{\Key}{\algostyle{k}}
 \providecommand{\OWFEval}{\OWFFunction.\funct{Eval}}
@@ -401,15 +422,21 @@
 \providecommand{\ComVerify}{\Com.\funct{Vrfy}}
 
 \cryptoDefineKeyCSV{
-	pk/pk, mpk/mpk, sk/sk, msk/msk, vk/vk, hk/hk, pp/pp,
-	ltpk/ltpk, ltsk/ltsk, sspk/sspk, sssk/sssk
+	epk/epk,
+	esk/esk,
+	hk/hk,
+	kk/kk,
+	ltpk/ltpk,
+	ltsk/ltsk,
+	mpk/mpk,
+	msk/msk,
+	pk/pk,
+	pp/pp,
+	sk/sk,
+	sspk/sspk,
+	sssk/sssk,
+	vk/vk,
 }
-
-\providecommand{\kk}{\algostyle{k}}
-\providecommand{\sspkvar}{\var{sspk}}
-
-\providecommand{\epk}{\algostyle{epk}}
-\providecommand{\esk}{\algostyle{esk}}
 
 \providecommand{\KeyGenLT}{\funct{KeyGenLT}}
 \providecommand{\KeyGenSS}{\funct{KeyGenSS}}
@@ -613,10 +640,11 @@
 	Reveal/Reveal,
 	Send/Send,
 	SessionExpire/SessionExpire,
+	SessionKey/SessionKey,
 	SessionResync/SessionResync,
 	SessionState/SessionState,
 	SessionTranscript/SessionTranscript,
-	Test/Test,
+	Test/Test
 }
 
 \let\SendOracle\oracleSend
@@ -900,12 +928,12 @@
 \newclass{\FHE}{FHE}
 \newclass{\HE}{HE}
 \newclass{\MCSP}{MCSP}
+\newclass{\MinPDT}{MinPDT}
 \newclass{\OT}{OT}
 \newclass{\PPT}{PPT}
 \newclass{\Perm}{Perm}
 \newclass{\iO}{\mathsf{iO}}
 
-\newclass{\LWE}{LWE}
 \newclass{\MLWE}{MLWE}
 \newclass{\MSIS}{MSIS}
 \newclass{\RLWE}{RLWE}
@@ -1025,11 +1053,6 @@
 \newfunc{\FSTranscript}{\FS.Transcript}
 \providecommand{\FSHash}{\FS.Hash}
 
-\newfunc{\dom}{dom}
-\newfunc{\codom}{codom}
-\newfunc{\range}{range}
-\newfunc{\img}{img}
-
 \newfunc{\Dist}{D}
 \newfunc{\aux}{aux}
 \newfunc{\cm}{cm}
@@ -1065,6 +1088,8 @@
 \newfunc{\SuccessorCircuit}{S}
 \newfunc{\Decision}{Decision}
 
+\providecommand{\CktClass}{\mathcal{C}}
+\providecommand{\Property}{\mathcal{P}}
 \providecommand{\Size}{\algostyle{size}}
 \providecommand{\Depth}{\algostyle{depth}}
 \providecommand{\Width}{\algostyle{width}}
@@ -1078,14 +1103,14 @@
 \providecommand{\Neighborhood}{\mathbb{n}}
 \providecommand{\Parent}{\mathscr{p}}
 \providecommand{\Right}{\mathscr{r}}
-\providecommand{\Sink}{\algostyle{sink}}
+\providecommand{\Sink}{\algostyle{snk}}
 \providecommand{\Source}{\algostyle{src}}
 \providecommand{\StartSolution}{\mathbb{s}}
 \providecommand{\Vertex}{\algostyle{V}}
 \providecommand{\degree}{\algostyle{deg}}
 \providecommand{\indegree}{\algostyle{in\textsf{-}deg}}
-\providecommand{\leaf}{\algostyle{leaf}}
-\providecommand{\node}{\algostyle{node}}
+\providecommand{\leaf}{\algostyle{lf}}
+\providecommand{\node}{\algostyle{nd}}
 \providecommand{\outdegree}{\algostyle{out\textsf{-}deg}}
 
 \providecommand{\newscr}[2]{\providecommand{#1}{\mathcal{#2}}}
@@ -1157,7 +1182,11 @@
 \providecommand{\OracleH}{\setstyle{H}}
 \providecommand{\OracleRO}{\setstyle{O}}
 \providecommand{\OracleSim}{\setstyle{O}_{\algostyle{sim}}}
-\providecommand{\bigO}{\setstyle{O}}
+\NewDocumentCommand{\bigO}{d() d[]}{%
+	\setstyle{O}%
+	\IfValueT{#1}{\left(#1\right)}%
+	\IfValueT{#2}{\left[#2\right]}%
+}
 
 \newcal{\Table}{T}
 \newcal{\MessageSpace}{M}
@@ -1192,13 +1221,16 @@
 	InversionProb/Inversion,
 	IterProb/Iterative-Search,
 	KnapsackProb/Knapsack,
+	LPNProb/Learning-Parity-with-Noise,
 	LWEProb/Learning-with-Errors,
 	LeafProb/Leaf,
 	LocalSearchProb/Local-Search,
+	MCSPProb/Minimum-Circuit-Size,
 	MatchingProb/Matching,
 	MaxFlowProb/Max-Flow,
 	MaxSATProb/Max-SAT,
 	MinCutProb/Min-Cut,
+	MinPDTProb/Minimum-Parity-Decision-Tree-Refutation,
 	ModInvProb/Modular-Inverse,
 	MulticollisionProb/Multicollision,
 	NashProb/Nash-Equilibrium,
@@ -1222,7 +1254,7 @@
 	SubsetSumProb/Subset-Sum,
 	VertexCoverProb/Vertex-Cover,
 	WPHProb/Weak-Pigeonhole-Circuit,
-	kSATProb/k-SAT
+	kSATProb/k-SAT,
 }
 
 \ExplSyntaxOn
@@ -1239,3 +1271,4 @@
 }
 \ExplSyntaxOff
 
+\endinput
