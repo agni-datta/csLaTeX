@@ -1,0 +1,346 @@
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{csthm}[2026/04/13 v3.0 Theorem environment suite for theoretical computer science]
+
+\RequirePackage{iftex}
+
+\bool_new:N \gcsthm_fancy_bool
+\bool_new:N \gcsthm_normal_bool
+\bool_new:N \gcsthm_oldschool_bool
+
+\DeclareOption{normal}    { \bool_gset_true:N \gcsthm_normal_bool    }
+\DeclareOption{fancy}     { \bool_gset_true:N \gcsthm_fancy_bool     }
+\DeclareOption{oldschool} { \bool_gset_true:N \gcsthm_oldschool_bool }
+\DeclareOption*
+{ \PackageWarning{csthm}{Unrecognised~option~`\CurrentOption'} }
+\ProcessOptions \relax
+
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{amsthm}
+\RequirePackage{enumitem}
+\RequirePackage{thmtools}
+\RequirePackage[skipabove=6pt, skipbelow=6pt, framemethod=TikZ]{mdframed}
+\RequirePackage[x11names, dvipsnames, svgnames]{xcolor}
+
+\tl_new:N   \gcsthm_accent_tl
+\tl_gset:Nn \gcsthm_accent_tl { black }
+
+\NewDocumentCommand \SetAccentColor { m }
+{ \tl_gset:Nn \gcsthm_accent_tl {#1} }
+\cs_set_eq:NN \setaccentcolor \SetAccentColor
+
+\NewDocumentCommand \CsthmQED     {}
+{ \ensuremath{ \color{\gcsthm_accent_tl} \square   } }
+\NewDocumentCommand \CsthmEndMark {}
+{ \ensuremath{ \color{\gcsthm_accent_tl} \lrcorner } }
+\renewcommand{\qedsymbol}{\CsthmQED}
+
+\newlist{csthm@caselist}{enumerate}{1}
+\setlist[csthm@caselist]{ label = \textbf{Case~\arabic*:} , leftmargin = * }
+
+\NewDocumentEnvironment{case}{O{}}
+{ \begin{csthm@caselist}[#1] }
+{ \end{csthm@caselist}       }
+
+\tl_new:N \lcsthm_cur_style_tl
+\tl_new:N \lcsthm_envkey_tl
+\tl_new:N \lcsthm_envname_tl
+\seq_new:N \lcsthm_pair_seq
+
+\cs_new_protected:Npn \csthm_declare_one:
+{
+    \use:e
+    {
+        \exp_not:N \declaretheorem
+        [
+            style        = \tl_use:N \lcsthm_cur_style_tl ,
+            name         = { \tl_use:N \lcsthm_envname_tl } ,
+            numberwithin = section
+        ]
+        { \tl_use:N \lcsthm_envkey_tl }
+        \exp_not:N \declaretheorem
+        [
+            style      = \tl_use:N \lcsthm_cur_style_tl ,
+            name       = { \tl_use:N \lcsthm_envname_tl } ,
+            unnumbered
+        ]
+        { \tl_use:N \lcsthm_envkey_tl * }
+    }
+}
+
+\cs_new_protected:Npn \csthm_declare_list:nn #1 #2
+{
+    \tl_set:Nn \lcsthm_cur_style_tl {#1}
+    \clist_map_inline:nn {#2}
+    {
+        \seq_set_split:Nnn \lcsthm_pair_seq { / } { ##1 }
+        \tl_set:Nx \lcsthm_envkey_tl  { \seq_item:Nn \lcsthm_pair_seq {1} }
+        \tl_set:Nx \lcsthm_envname_tl { \seq_item:Nn \lcsthm_pair_seq {2} }
+        \csthm_declare_one:
+    }
+}
+
+\cs_new_protected:Npn \csthm_declare_envs:
+{
+    \csthm_declare_list:nn { csthm@thmstyle }
+    {
+        theorem/Theorem,       assertion/Assertion,    assumption/Assumption,
+        axiom/Axiom,           claim/Claim,            conclusion/Conclusion,
+        conjecture/Conjecture, corollary/Corollary,    fact/Fact,
+        folklore/Folklore,     hypothesis/Hypothesis,  lemma/Lemma,
+        postulate/Postulate,   property/Property,      proposition/Proposition
+    }
+    \csthm_declare_list:nn { csthm@defstyle }
+    {
+        application/Application,  construction/Construction,
+        convention/Convention,    definition/Definition,
+        experiment/Experiment,    notation/Notation,
+        openproblem/Open~Problem, problem/Problem,
+        protocol/Protocol,        result/Result
+    }
+    \csthm_declare_list:nn { csthm@remarkstyle }
+    {
+        commentary/Commentary,         contribution/Contribution,
+        example/Example,               exercise/Exercise,
+        motivation/Motivation,         notationabuse/Notation~Abuse,
+        note/Note,                     observation/Observation,
+        question/Question,             remark/Remark
+    }
+    \csthm_declare_list:nn { csthm@hltstyle }
+    {
+        guideline/Guideline,  highlight/Highlight,  important/Important,
+        insight/Insight,      keypoint/Key~Point,   recall/Recall,
+        summary/Summary,      takeaway/Takeaway,    tip/Tip,
+        warning/Warning
+    }
+    \let \proof    \relax
+    \let \endproof \relax
+    \declaretheorem [ style = csthm@proofstyle ] { proof }
+}
+
+\cs_new_protected:Npn \csthm_setup_normal:
+{
+    \mdfdefinestyle { csthm@ruled }
+    {
+        linewidth          = 0.4pt ,
+        topline            = true  ,  bottomline       = true  ,
+        leftline           = false ,  rightline         = false ,
+        innertopmargin     = 6pt   ,  innerbottommargin = 6pt   ,
+        innerleftmargin    = 0pt   ,  innerrightmargin  = 0pt   ,
+        skipabove          = 6pt   ,  skipbelow         = 6pt
+    }
+    \declaretheoremstyle
+    [
+        headfont      = \scshape ,      notefont  = \normalfont ,
+        bodyfont      = \normalfont ,   headpunct = {.} ,
+        spaceabove    = 0pt ,           spacebelow = 0pt ,
+        postheadspace = 0.5em ,
+        mdframed      = { style = csthm@ruled } ,
+        qed           = \CsthmEndMark
+    ]{ csthm@thmstyle }
+    \declaretheoremstyle
+    [
+        headfont      = \scshape ,      notefont  = \normalfont ,
+        bodyfont      = \normalfont ,   headpunct = {.} ,
+        spaceabove    = 0pt ,           spacebelow = 0pt ,
+        postheadspace = 0.5em ,
+        mdframed      = { style = csthm@ruled } ,
+        qed           = \CsthmEndMark
+    ]{ csthm@defstyle }
+    \declaretheoremstyle
+    [
+        headfont      = \scshape ,      notefont  = \normalfont ,
+        bodyfont      = \normalfont ,   headpunct = {.} ,
+        spaceabove    = 0pt ,           spacebelow = 0pt ,
+        postheadspace = 0.5em ,
+        mdframed      = { style = csthm@ruled } ,
+        qed           = \CsthmEndMark
+    ]{ csthm@remarkstyle }
+    \declaretheoremstyle
+    [
+        headfont      = \sffamily ,     notefont  = \normalfont ,
+        bodyfont      = \normalfont\sffamily ,  headpunct = {.} ,
+        spaceabove    = 0pt ,           spacebelow = 0pt ,
+        postheadspace = 0.5em ,
+        mdframed      = { style = csthm@ruled } ,
+        qed           = \CsthmEndMark
+    ]{ csthm@hltstyle }
+    \declaretheoremstyle
+    [
+        headfont      = \scshape ,      notefont  = \normalfont ,
+        bodyfont      = \normalfont ,   headpunct = {.} ,
+        spaceabove    = 0pt ,           spacebelow = 0pt ,
+        postheadspace = 0.5em ,
+        numbered      = no ,
+        qed           = \CsthmQED
+    ]{ csthm@proofstyle }
+    \csthm_declare_envs:
+}
+
+\cs_new_protected:Npn \csthm_setup_fancy:
+{
+    \colorlet { csthm@thmcolor    } { SeaGreen4   }
+    \colorlet { csthm@defcolor    } { RoyalBlue2  }
+    \colorlet { csthm@remarkcolor } { Aquamarine4 }
+    \colorlet { csthm@hltcolor    } { DeepPink4   }
+
+    \cs_new_protected:Npn \csthm_fancystyle:nnn ##1 ##2 ##3
+    {
+        \declaretheoremstyle
+        [
+            headfont      = \sffamily\color{##2} ,
+            notefont      = \sffamily\color{##2} ,
+            bodyfont      = ##3 ,
+            headpunct     = {.} ,
+            spaceabove    = 0pt ,    spacebelow    = 0pt ,
+            postheadspace = 0.5em ,
+            mdframed      =
+                {
+                    linewidth       = 2pt   ,
+                    topline         = false ,  bottomline      = false ,
+                    rightline       = false ,  leftline        = true  ,
+                    linecolor       = ##2   ,
+                    backgroundcolor = ##2!5
+                }
+        ]{ ##1 }
+    }
+    \csthm_fancystyle:nnn { csthm@thmstyle }    { csthm@thmcolor    } { \normalfont }
+    \csthm_fancystyle:nnn { csthm@defstyle }    { csthm@defcolor    } { \normalfont }
+    \csthm_fancystyle:nnn { csthm@remarkstyle } { csthm@remarkcolor } { \normalfont }
+    \csthm_fancystyle:nnn { csthm@hltstyle }    { csthm@hltcolor    } { \normalfont\sffamily }
+    \declaretheoremstyle
+    [
+        headfont      = \scshape\color{csthm@thmcolor} ,
+        bodyfont      = \normalfont ,
+        headpunct     = {.} ,
+        spaceabove    = 0pt ,   spacebelow    = 0pt ,
+        postheadspace = 0.5em ,
+        numbered      = no ,
+        qed           = \CsthmQED
+    ]{ csthm@proofstyle }
+    \csthm_declare_envs:
+}
+
+\cs_new_protected:Npn \csthm_setup_oldschool:
+{
+    \declaretheoremstyle
+    [
+        headfont      = \scshape ,    notefont  = \normalfont ,
+        bodyfont      = \normalfont , headpunct = {.} ,
+        spaceabove    = \topsep ,     spacebelow = \topsep ,
+        postheadspace = 0.5em
+    ]{ csthm@thmstyle }
+    \declaretheoremstyle
+    [
+        headfont      = \scshape ,    notefont  = \normalfont ,
+        bodyfont      = \normalfont , headpunct = {.} ,
+        spaceabove    = \topsep ,     spacebelow = \topsep ,
+        postheadspace = 0.5em ,
+        qed           = \CsthmEndMark
+    ]{ csthm@defstyle }
+    \declaretheoremstyle
+    [
+        headfont      = \scshape ,    notefont  = \normalfont ,
+        bodyfont      = \normalfont , headpunct = {.} ,
+        spaceabove    = \topsep ,     spacebelow = \topsep ,
+        postheadspace = 0.5em ,
+        qed           = \CsthmEndMark
+    ]{ csthm@remarkstyle }
+    \declaretheoremstyle
+    [
+        headfont      = \sffamily ,   notefont  = \normalfont ,
+        bodyfont      = \normalfont\sffamily , headpunct = {.} ,
+        spaceabove    = \topsep ,     spacebelow = \topsep ,
+        postheadspace = 0.5em ,
+        qed           = \CsthmEndMark
+    ]{ csthm@hltstyle }
+    \declaretheoremstyle
+    [
+        headfont      = \scshape ,    bodyfont  = \normalfont ,
+        headpunct     = {.} ,
+        spaceabove    = 0pt ,         spacebelow = 0pt ,
+        postheadspace = 0.5em ,
+        numbered      = no ,
+        qed           = \CsthmQED
+    ]{ csthm@proofstyle }
+    \csthm_declare_envs:
+}
+
+\bool_if:NTF \gcsthm_fancy_bool
+{ \csthm_setup_fancy: }
+{
+    \bool_if:NTF \gcsthm_normal_bool
+    { \csthm_setup_normal: }
+    {
+        \bool_if:NTF \gcsthm_oldschool_bool
+        { \csthm_setup_oldschool: }
+        {
+            \PackageInfo{csthm}
+            { No~style~option~given;~no~theorem~environments~defined. }
+        }
+    }
+}
+
+\AtBeginDocument
+{
+    \@ifpackageloaded{hyperref}
+    {
+        \RequirePackage[capitalize, nameinlink, noabbrev]{cleveref}
+        \crefname{theorem}     {theorem}     {theorems}
+        \crefname{assertion}   {assertion}   {assertions}
+        \crefname{assumption}  {assumption}  {assumptions}
+        \crefname{axiom}       {axiom}       {axioms}
+        \crefname{claim}       {claim}       {claims}
+        \crefname{conclusion}  {conclusion}  {conclusions}
+        \crefname{conjecture}  {conjecture}  {conjectures}
+        \crefname{corollary}   {corollary}   {corollaries}
+        \crefname{fact}        {fact}        {facts}
+        \crefname{folklore}    {folklore}    {folklores}
+        \crefname{hypothesis}  {hypothesis}  {hypotheses}
+        \crefname{lemma}       {lemma}       {lemmas}
+        \crefname{postulate}   {postulate}   {postulates}
+        \crefname{property}    {property}    {properties}
+        \crefname{proposition} {proposition} {propositions}
+        \crefname{application}  {application}  {applications}
+        \crefname{construction} {construction} {constructions}
+        \crefname{convention}   {convention}   {conventions}
+        \crefname{definition}   {definition}   {definitions}
+        \crefname{experiment}   {experiment}   {experiments}
+        \crefname{notation}     {notation}     {notations}
+        \crefname{openproblem}  {open problem} {open problems}
+        \crefname{problem}      {problem}      {problems}
+        \crefname{protocol}     {protocol}     {protocols}
+        \crefname{result}       {result}       {results}
+        \Crefname{openproblem}  {Open Problem} {Open Problems}
+        \crefname{commentary}    {commentary}    {commentaries}
+        \crefname{contribution}  {contribution}  {contributions}
+        \crefname{example}       {example}       {examples}
+        \crefname{exercise}      {exercise}      {exercises}
+        \crefname{motivation}    {motivation}    {motivations}
+        \crefname{notationabuse} {notation abuse}{notation abuses}
+        \crefname{note}          {note}          {notes}
+        \crefname{observation}   {observation}   {observations}
+        \crefname{question}      {question}      {questions}
+        \crefname{remark}        {remark}        {remarks}
+        \Crefname{notationabuse} {Notation Abuse}{Notation Abuses}
+        \crefname{guideline} {guideline}     {guidelines}
+        \crefname{highlight} {highlight}     {highlights}
+        \crefname{important} {important}     {important points}
+        \crefname{insight}   {insight}       {insights}
+        \crefname{keypoint}  {key point}     {key points}
+        \crefname{recall}    {recall}        {recalls}
+        \crefname{summary}   {summary}       {summaries}
+        \crefname{takeaway}  {takeaway}      {takeaways}
+        \crefname{tip}       {tip}           {tips}
+        \crefname{warning}   {warning}       {warnings}
+        \Crefname{important} {Important}     {Important Points}
+        \Crefname{keypoint}  {Key Point}     {Key Points}
+        \NewDocumentCommand \emailid { m } { \href{mailto:#1}{\texttt{#1}} }
+    }
+    {
+        \PackageWarning{csthm}
+        { hyperref~not~detected.~Load~hyperref~before~csthm~for~cleveref~support. }
+    }
+}
+
+\endinput

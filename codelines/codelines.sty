@@ -1,0 +1,143 @@
+\NeedsTeXFormat{LaTeX2e}[2022-06-01]
+\ProvidesPackage{codelines}[2026/04/13 v1.0 Algorithmic listing environment with line numbers]
+
+\RequirePackage{enumitem}
+\RequirePackage{pgffor}
+\RequirePackage{forloop}
+\RequirePackage{xparse}
+\RequirePackage{xcolor}
+
+\NewDocumentCommand{\codelineslinenrformat}{}{\normalfont\footnotesize\ttfamily\color{black!50}}
+\NewDocumentCommand{\codelineslinenrdigits}{}{2}
+\NewDocumentCommand{\codelinesrefprefix}{}{}
+
+\newlength{\codelineslinenrsymbolwidth}
+\settowidth{\codelineslinenrsymbolwidth}{\codelineslinenrformat\texttt{0}}
+
+\newlength{\codelineslinenrwidth}
+\setlength{\codelineslinenrwidth}{\codelineslinenrdigits\codelineslinenrsymbolwidth}
+
+\newlength{\codelineslinenrsep}
+\setlength{\codelineslinenrsep}{0.5\codelineslinenrwidth}
+
+\newlength{\codelinescurrentboxwidth}
+\newlength{\codelinesextraboxwidth}
+
+\newcounter{cl@maxlinenr}
+\newcounter{cl@tempcounter}
+\newcounter{codelineslinenr}
+
+\NewDocumentCommand{\cl@findmax}{m}{%
+    \setcounter{cl@maxlinenr}{0}%
+    \foreach \x in {#1} {%
+            \setcounter{cl@tempcounter}{\x}%
+            \ifnum\value{cl@tempcounter}>\value{cl@maxlinenr}
+                \setcounter{cl@maxlinenr}{\value{cl@tempcounter}}%
+            \fi
+        }%
+}
+
+\AddEnumerateCounter*{\cl@padnum}{\two@digits}{0}
+\NewDocumentCommand{\cl@padnum}{m}{\expandafter\two@digits\csname c@#1\endcsname}
+
+\NewDocumentCommand{\codelinessetlinenr}{m}{%
+    \setcounter{codelineslinenr}{#1}%
+    \foreach \suff in {i,ii,iii,iv,v,vi,vii,viii,ix,x} {%
+            \setcounter{clcode\suff}{#1}%
+        }%
+}
+
+\NewDocumentCommand{\codelinesresetlinenr}{}{%
+    \codelinessetlinenr{0}%
+}
+
+\NewDocumentCommand{\codelinesrightalign}{m}{%
+    \null\hfill{#1\hspace*{\codelinesextraboxwidth}}\null
+}
+
+\NewDocumentCommand{\codelinescenteralign}{m}{%
+    \null\hfill{#1\hfill\hspace*{\codelinesextraboxwidth}}\null
+}
+
+\NewDocumentCommand{\codelinesplus}{}{%
+    \addtolength{\itemindent}{1em}%
+    \addtolength{\labelsep}{1em}%
+}
+
+\NewDocumentCommand{\codelinesminus}{}{%
+    \addtolength{\itemindent}{-1em}%
+    \addtolength{\labelsep}{-1em}%
+}
+
+\NewDocumentCommand{\codelinesbox}{m m}{%
+    \setlength{\codelinescurrentboxwidth}{#1}%
+    \setlength{\codelinesextraboxwidth}{\linewidth}%
+    \addtolength{\codelinesextraboxwidth}{-\codelinescurrentboxwidth}%
+    \parbox[t]{\codelinescurrentboxwidth}{%
+        \hfuzz\textwidth
+        \begin{minipage}[t]{\textwidth}#2\end{minipage}%
+    }%
+}
+
+\setlistdepth{10}
+\newlist{clcode}{enumerate}{10}
+
+\setlist[clcode,1]{
+    topsep        = 0ex,
+    label         = \codelineslinenrformat\cl@padnum*,
+    ref           = \codelinesrefprefix\cl@padnum*,
+    align         = right,
+    leftmargin    = \codelineslinenrwidth+\codelineslinenrsep,
+    itemindent    = !,
+    labelindent   = 0em,
+    labelwidth    = \codelineslinenrwidth,
+    labelsep      = \codelineslinenrsep,
+    before        = \raggedright,
+    listparindent = \parindent,
+    noitemsep
+}
+
+\NewDocumentCommand{\cl@deeplevel}{m m}{%
+    \setlist[clcode,#1]{
+        topsep        = 0ex,
+        label         = \codelineslinenrformat\cl@padnum*,
+        ref           = \codelinesrefprefix\cl@padnum*,
+        align         = right,
+        leftmargin    = \codelineslinenrwidth+\codelineslinenrsep-.53em,
+        itemindent    = 0em,
+        labelindent   = 0em,
+        labelwidth    = \codelineslinenrwidth,
+        labelsep      = #2em+\codelineslinenrsep,
+        before        = \raggedright,
+        listparindent = \parindent,
+        noitemsep
+    }%
+}
+
+\cl@deeplevel{2}{1}
+\cl@deeplevel{3}{2}
+\cl@deeplevel{4}{3}
+\cl@deeplevel{5}{4}
+\cl@deeplevel{6}{5}
+\cl@deeplevel{7}{6}
+\cl@deeplevel{8}{7}
+\cl@deeplevel{9}{8}
+\cl@deeplevel{10}{9}
+
+\NewDocumentEnvironment{codelines}{O{\thecodelineslinenr}}{%
+    \begin{clcode}
+    \cl@findmax{\value{clcodei},\value{clcodeii},\value{clcodeiii},\value{clcodeiv},\value{clcodev},\value{clcodevi},\value{clcodevii},\value{clcodeviii},\value{clcodeix},\value{clcodex},\value{codelineslinenr}}%
+    \foreach \suff in {i,ii,iii,iv,v,vi,vii,viii,ix,x} {%
+            \setcounter{clcode\suff}{\value{cl@maxlinenr}}%
+        }%
+    \addtocounter{clcodei}{-1}%
+}{%
+    \end{clcode}
+    \cl@findmax{\value{clcodei},\value{clcodeii},\value{clcodeiii},\value{clcodeiv},\value{clcodev},\value{clcodevi},\value{clcodevii},\value{clcodeviii},\value{clcodeix},\value{clcodex}}%
+    \foreach \suff in {i,ii,iii,iv,v,vi,vii,viii,ix,x} {%
+            \setcounter{clcode\suff}{\value{cl@maxlinenr}}%
+        }%
+    \setcounter{codelineslinenr}{\value{cl@maxlinenr}+1}%
+}
+
+\endinput

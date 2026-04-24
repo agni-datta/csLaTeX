@@ -1,0 +1,1709 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tcscrypto}[2026/05/02 v3.3 Notations and environments for TCS and Cryptography]
+
+\makeatletter
+
+\newif\if@tcscrypto@emphasis
+\@tcscrypto@emphasisfalse
+\newif\if@tcscrypto@venue
+\@tcscrypto@venuefalse
+\newif\if@tcscrypto@toc
+\@tcscrypto@toctrue
+
+\DeclareOption{noemph}{\@tcscrypto@emphasistrue}
+\DeclareOption{venuestyle}{\@tcscrypto@venuetrue}
+\DeclareOption{notoc}{\@tcscrypto@tocfalse}
+
+\ProcessOptions\relax
+
+\RequirePackage{appendix}
+\RequirePackage{array}
+\RequirePackage[full]{complexity}
+\RequirePackage{derivative}
+\RequirePackage{mdframed}
+\RequirePackage{physics2}
+\RequirePackage{xspace}
+
+\newcommand{\algostyle}[1]{\ensuremath{\mathsf{#1}}}
+\newcommand{\funcstyle}[1]{\algostyle{#1}}
+\newcommand{\keystyle}[1]{\algostyle{#1}}
+\newcommand{\oraclestyle}[1]{\ensuremath{\textnormal{\textsc{#1}}}}
+\newcommand{\probstyle}[1]{\ensuremath{\textnormal{\textsc{#1}}}\xspace}
+\newcommand{\schemestyle}[1]{\ensuremath{\mathsf{#1}}}
+\newcommand{\setstyle}[1]{\ensuremath{\mathcal{#1}}}
+\newcommand{\varstyle}[1]{\ensuremath{\mathsf{#1}}}
+
+\newcommand{\funct}[1]{\funcstyle{#1}}
+\newcommand{\key}[1]{\keystyle{#1}}
+\newcommand{\oracle}[1]{\oraclestyle{#1}}
+\newcommand{\proc}[1]{\funcstyle{#1}}
+\newcommand{\var}[1]{\varstyle{#1}}
+
+\newcommand{\newbb}[2]{\newcommand{#1}{\ensuremath{\mathbb{#2}}}}
+\newcommand{\newcal}[2]{\newcommand{#1}{\ensuremath{\mathcal{#2}}}}
+\newcommand{\newscr}[2]{\newcommand{#1}{\ensuremath{\mathscr{#2}}}}
+
+\ExplSyntaxOn
+
+\cs_new_protected:Npn \__crypto_define_one:nnnn #1#2#3#4
+{
+	\cs_if_free:cT { #1#2 }
+	{ \cs_new:cpn { #1#2 } { \use:c { #4 } { #3 } } }
+}
+
+\cs_new_protected:Npn \__crypto_parse_pair:w #1/#2 \q_stop #3#4
+{ \__crypto_define_one:nnnn { #3 } { #1 } { #2 } { #4 } }
+
+\NewDocumentCommand \cryptoDefineAlgoCSV { m }
+{ \clist_map_inline:nn { #1 } { \__crypto_parse_pair:w ##1 \q_stop { } { algostyle } } }
+
+\NewDocumentCommand \cryptoDefineClassCSV { m }
+{ \clist_map_inline:nn { #1 } { \__crypto_parse_pair:w ##1 \q_stop { } { funcstyle } } }
+
+\NewDocumentCommand \cryptoDefineKeyCSV { m }
+{ \clist_map_inline:nn { #1 } { \__crypto_parse_pair:w ##1 \q_stop { } { keystyle } } }
+
+\NewDocumentCommand \cryptoDefineSchemeCSV { m }
+{ \clist_map_inline:nn { #1 } { \__crypto_parse_pair:w ##1 \q_stop { } { schemestyle } } }
+
+\NewDocumentCommand \cryptoDefineOracleCSV { m }
+{ \clist_map_inline:nn { #1 } { \__crypto_parse_pair:w ##1 \q_stop { oracle } { oraclestyle } } }
+
+\NewDocumentCommand \cryptoDefineProbCSV { m }
+{ \clist_map_inline:nn { #1 } { \__crypto_parse_pair:w ##1 \q_stop { } { probstyle } } }
+
+\NewDocumentCommand{\mbf}{m}
+{
+	\regex_match:nnTF { \A [a-zA-Z0-9] \Z } { #1 }
+	{ \mathbf{#1} }{ \boldsymbol{#1} }
+}
+
+\int_step_inline:nnn { 1 } { 26 }
+{
+	\tl_set:Nx \l_tmpa_tl { \int_to_Alph:n { #1 } }
+	\cs_if_free:cT { adv \l_tmpa_tl } { \cs_new:cpx { adv \l_tmpa_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathsf { \l_tmpa_tl } } } } }
+	\cs_if_free:cT { bb \l_tmpa_tl } { \cs_new:cpx { bb \l_tmpa_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathbb { \l_tmpa_tl } } } } }
+	\cs_if_free:cT { bf \l_tmpa_tl } { \cs_new:cpx { bf \l_tmpa_tl } { \exp_not:N \textbf { \l_tmpa_tl } } }
+	\cs_if_free:cT { cal \l_tmpa_tl } { \cs_new:cpx { cal \l_tmpa_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathcal { \l_tmpa_tl } } } } }
+	\cs_if_free:cT { frak \l_tmpa_tl } { \cs_new:cpx { frak \l_tmpa_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathfrak { \l_tmpa_tl } } } } }
+	\cs_if_free:cT { sf \l_tmpa_tl } { \cs_new:cpx { sf \l_tmpa_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathsf { \l_tmpa_tl } } } } }
+	\cs_if_free:cT { scr \l_tmpa_tl } { \cs_new:cpx { scr \l_tmpa_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathscr { \l_tmpa_tl } } } } }
+}
+
+\ExplSyntaxOff
+
+\if@tcscrypto@emphasis
+	\renewcommand{\emph}[1]{\textsf{#1}}
+\fi
+
+\if@tcscrypto@venue
+	\setlength{\belowcaptionskip}{-15pt}
+	\setlength{\textfloatsep}{10pt plus 1.0pt minus 2.0pt}
+	\renewcommand\appendixname{Supplementary Material}
+	\renewcommand\appendixpagename{Supplementary Material}
+	\crefname{appendix}{Supplementary Material}{Supplementary Materials}
+\fi
+\Crefname{algocf}{Algorithm}{Algorithms}
+
+\if@tcscrypto@toc
+	\setcounter{tocdepth}{2}
+	\@ifpackageloaded{tocbibind}{}{%
+		\RequirePackage[nottoc]{tocbibind}%
+	}
+	\@ifclassloaded{llncs}{%
+		\let\tcscrypto@oldmaketitle\maketitle
+		\def\maketitle{%
+			\let\tcscrypto@oldaddcontentsline\addcontentsline
+			\renewcommand{\addcontentsline}[3]{}%
+			\tcscrypto@oldmaketitle
+			\let\addcontentsline\tcscrypto@oldaddcontentsline
+		}%
+	}{%
+		\@ifpackageloaded{setspace}{}{%
+			\RequirePackage{setspace}%
+		}
+		\newcommand{\toc}{%
+			\begin{spacing}{1.075}
+				\begin{small}
+					\tableofcontents%
+				\end{small}
+			\end{spacing}
+		}
+	}%
+\fi
+
+\newlength{\strutdepth}
+\settodepth{\strutdepth}{\strutbox}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+\newcommand{\mathcolorbox}[2]{\colorbox{#1}{$\displaystyle#2$}}
+\newcommand{\emphbox}[1]{\mathcolorbox{SlateBlue3}{#1}}
+\newcommand{\emphdiff}[1]{{\leavevmode\color{RoyalBlue3}#1}}
+\newcommand{\highlightbox}[1]{\colorbox{Orange!30}{#1}}
+
+\@ifundefined{keywords}{\newcommand{\keywords}[1]{\paragraph{Keywords:}{#1}}}{}
+\@ifundefined{para}{\newcommand{\para}[1]{\subparagraph{#1}}}{}
+\@ifundefined{term}{\newcommand{\term}[1]{\textsf{#1}}}{}
+
+\NewDocumentEnvironment{protocolbox}{o}
+{
+	\begin{mdframed}[
+		font 				= \small,
+		roundcorner 		= 1.5pt,
+		linewidth 			= 0.5pt,
+		skipabove 			= 0.5\baselineskip,
+		skipbelow 			= 0.1\baselineskip,
+		leftmargin 			= 0pt,
+		rightmargin 		= 0pt,
+		innerleftmargin 	= 5pt,
+		innerrightmargin 	= 5pt,
+		innertopmargin 		= 5pt,
+		innerbottommargin 	= 5pt,
+		backgroundcolor 	= white,
+		linecolor 			= black
+	]
+	\IfNoValueF{#1}{
+		\noindent\textnormal{\textbf{#1}}\par\smallskip
+		\noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}
+	}\noindent
+}{
+	\end{mdframed}
+}
+
+\let\E\relax
+\let\Game\relax
+\let\Im\relax
+\let\Pr\relax
+
+\let\adv\relax
+\let\iff\relax
+\let\implies\relax
+\let\lg\relax
+\let\log\relax
+\let\poly\relax
+\let\polylog\relax
+\let\vec\relax
+
+\newcommand{\aew}{a.e.\xspace}
+\newcommand{\aka}{a.k.a.\xspace}
+\newcommand{\cf}{cf.\xspace}
+\newcommand{\eg}{e.g.,\xspace}
+\newcommand{\etal}{et~al.\xspace}
+\newcommand{\etc}{etc.\xspace}
+\newcommand{\ie}{i.e.,\xspace}
+\newcommand{\nb}{N.B.\xspace}
+\newcommand{\viz}{viz.\xspace}
+\newcommand{\vs}{vs.\xspace}
+\newcommand{\wrt}{w.r.t.\xspace}
+
+\newbb{\CC}{C}
+\newbb{\FF}{F}
+\newbb{\GG}{G}
+\newbb{\GL}{GL}
+\newbb{\NN}{N}
+\newbb{\QQ}{Q}
+\newbb{\RR}{R}
+\newbb{\ZZ}{Z}
+
+\newcommand{\ZZp}{\ZZ_{p}}
+\newcommand{\ZZq}{\ZZ_{q}}
+
+\newcommand{\FFp}{\FF_{p}}
+\newcommand{\FFq}{\FF_{q}}
+
+\newcommand{\GGp}{\GG_{p}}
+\newcommand{\GGq}{\GG_{q}}
+\newcommand{\GGt}{\GG_{T}}
+\newcommand{\GT}{\GG_{T}}
+\newcommand{\GGone}{\GG_{1}}
+\newcommand{\GGtwo}{\GG_{2}}
+
+\newcommand{\ggen}{g}
+\newcommand{\ggenp}{g_p}
+\newcommand{\ggenq}{g_q}
+\newcommand{\ggenone}{g_1}
+\newcommand{\ggentwo}{g_2}
+\newcommand{\ggent}{g_T}
+
+\newcommand{\gexp}[2]{#1^{#2}}
+\newcommand{\gmult}[2]{#1 \cdot #2}
+\newcommand{\ginv}[1]{#1^{-1}}
+\newcommand{\gorder}[1]{\abs{#1}}
+\newcommand{\ggenorder}{\gorder{\ggen}}
+
+\newcommand{\pairing}[2]{e\left(#1,\,#2\right)}
+\newcommand{\pairingfunc}{e}
+
+\newcommand{\bits}{\{0,1\}}
+\newcommand{\unary}[1]{1^{#1}}
+\newcommand{\eps}{\epsilon}
+
+\newcommand{\Description}[1]{\left\langle#1\right\rangle}
+
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\inner}[2]{\left\langle#1,\,#2\right\rangle}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\proj}[2]{#1\left[#2\right]}
+\newcommand{\seq}[1]{\left(#1\right)}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\sqbrkt}[1]{\left[#1\right]}
+\newcommand{\tuple}[1]{\left(#1\right)}
+\newcommand{\vspan}[1]{\left(#1\right)}
+
+\NewDocumentCommand{\Exp}{d[]}{
+	\E
+	\IfValueT{#1}{\left[#1\right]}
+}
+\NewDocumentCommand{\Prob}{d[]}{
+	\Pr
+	\IfValueT{#1}{\left[#1\right]}
+}
+
+\NewDocumentCommand{\bigO}{d() d[]}{
+	\setstyle{O}
+	\IfValueT{#1}{\left(#1\right)}
+	\IfValueT{#2}{\left[#2\right]}
+}
+\NewDocumentCommand{\expon}{d() d[]}{
+	\exp
+	\IfValueT{#1}{\left(#1\right)}
+	\IfValueT{#2}{\left[#2\right]}
+}
+\NewDocumentCommand{\logof}{d() d[]}{
+	\log
+	\IfValueT{#1}{\left(#1\right)}
+	\IfValueT{#2}{\left[#2\right]}
+}
+\NewDocumentCommand{\multilinePr}{m m}{
+	\Pr\left[
+		\begin{aligned}
+			#1
+		\end{aligned}
+		\;\middle|\;
+		\begin{aligned}
+			#2
+		\end{aligned}
+		\right]
+}
+
+\DeclareMathOperator*{\E}{\mathbb{E}}
+\DeclareMathOperator*{\Pr}{\algostyle{Pr}}
+
+\newcommand{\vect}[1]{\algostyle{#1}}
+\newcommand{\vec}[1]{\mathbf{#1}}
+
+\mathchardef\mhyphen="2D
+
+\DeclareMathOperator*{\iff}{\longleftrightarrow}
+\DeclareMathOperator*{\implies}{\longrightarrow}
+\DeclareMathOperator*{\logand}{\wedge}
+\DeclareMathOperator*{\lognot}{\neg}
+\DeclareMathOperator*{\logor}{\vee}
+\DeclareMathOperator*{\notimplies}{\not\longrightarrow}
+\DeclareMathOperator*{\op}{\circledast}
+\DeclareMathOperator*{\xor}{\oplus}
+
+\DeclareMathOperator*{\sample}{
+	\,\mathrel{\vbox{\offinterlineskip\ialign{
+				\hfil##\hfil\cr
+				\hspace{0.1em}$\scalebox{0.5}{$\$$}$\cr
+				$\leftarrow$\cr
+			}}}\,}
+\DeclareMathOperator*{\longsample}{
+	\,\mathrel{\vbox{\offinterlineskip\ialign{
+				\hfil##\hfil\cr
+				\hspace{0.1em}$\scalebox{0.5}{$\$$}$\cr
+				$\longleftarrow$\cr
+			}}}\,}
+\DeclareMathOperator*{\getsr}{\sample}
+
+\DeclareMathOperator*{\StatDist}{\Delta}
+\newcommand{\Uniform}[1]{\setstyle{U}_{#1}}
+\newcommand{\unif}[1]{\algostyle{U}_{#1}}
+\newcommand{\approxstat}[1]{\stackrel{#1}{\approx}}
+
+\DeclareMathOperator*{\equivdist}{\equiv}
+\DeclareMathOperator*{\sindist}{\equiv_s}
+\DeclareMathOperator*{\cindist}{\equiv_c}
+\DeclareMathOperator*{\pindist}{\equiv_p}
+
+\DeclareMathOperator*{\hyph}{\mhyphen}
+\DeclareMathOperator*{\inR}{\in_{\mathrm{R}}}
+\DeclareMathOperator*{\shouldeq}{\stackrel{\text{!}}{=}}
+
+\DeclareMathOperator{\Dom}{\algostyle{Dom}}
+\DeclareMathOperator{\Im}{\algostyle{Im}}
+\DeclareMathOperator{\Range}{\algostyle{Range}}
+
+\DeclareMathOperator*{\codom}{\algostyle{codom}}
+\DeclareMathOperator*{\depth}{\algostyle{depth}}
+\DeclareMathOperator*{\dom}{\algostyle{dom}}
+\DeclareMathOperator*{\gates}{\algostyle{gates}}
+\DeclareMathOperator*{\gate}{\algostyle{gate}}
+\DeclareMathOperator*{\img}{\algostyle{img}}
+\DeclareMathOperator*{\lg}{\algostyle{lg}}
+\DeclareMathOperator*{\log}{\algostyle{log}}
+\DeclareMathOperator*{\negl}{\algostyle{negl}}
+\DeclareMathOperator*{\ord}{\algostyle{ord}}
+\DeclareMathOperator*{\polylog}{\algostyle{polylog}}
+\DeclareMathOperator*{\poly}{\algostyle{poly}}
+\DeclareMathOperator*{\range}{\algostyle{range}}
+\DeclareMathOperator*{\size}{\algostyle{size}}
+\DeclareMathOperator*{\sol}{\algostyle{sol}}
+\DeclareMathOperator*{\spn}{\algostyle{span}}
+\DeclareMathOperator*{\supp}{\algostyle{supp}}
+\DeclareMathOperator*{\tr}{\algostyle{Tr}}
+\DeclareMathOperator*{\vars}{\algostyle{vars}}
+\DeclareMathOperator*{\vecop}{\algostyle{vec}}
+\DeclareMathOperator*{\width}{\algostyle{width}}
+\DeclareMathOperator*{\wires}{\algostyle{wires}}
+\DeclareMathOperator*{\wire}{\algostyle{wire}}
+
+\newcommand{\Func}{\sfF}
+\newcommand{\Primes}{\mathsf{Primes}}
+\newcommand{\Protocol}{\Pi}
+\newcommand{\SecParam}{\lambda}
+\newcommand{\comparam}{\kappa}
+\newcommand{\secparamlog}{\log\lambda}
+\newcommand{\secparam}{\lambda}
+\newcommand{\secpar}{\lambda}
+
+\newcommand{\BadEvent}{\overbar{\Event}}
+\newcommand{\Event}{\algostyle{E}}
+\newcommand{\GoodEvent}{\Event{E}}
+
+\cryptoDefineClassCSV{
+	CLS/CLS,
+	EOL/EOL,
+	EOML/EOML,
+	EOPL/EOPL,
+	IPP/IPP,
+	MAP/MAP,
+	PWPP/PWPP,
+	RIP/RIP,
+	RSVL/RSVL,
+	SOPL/SOPL,
+	SUBEXPSPACE/SUBEXPSPACE,
+	SVL/SVL,
+	UEOPL/UEOPL,
+}
+
+\cryptoDefineSchemeCSV{
+	ABE/ABE,
+	AGM/AGM,
+	AHP/AHP,
+	AI/AI,
+	ARG/ARG,
+	BARG/BARG,
+	CI/CI,
+	CIH/CIH,
+	CM/CM,
+	CRHF/CRHF,
+	CRS/CRS,
+	DPF/DPF,
+	DPVW/DPVW,
+	DS/DS,
+	FC/FC,
+	FE/FE,
+	FHE/FHE,
+	FS/FS,
+	FSS/FSS,
+	GGM/GGM,
+	HASH/HASH,
+	HE/HE,
+	HIBE/HIBE,
+	HIS/HIS,
+	HSG/HSG,
+	HSS/HSS,
+	HVZK/HVZK,
+	IBE/IBE,
+	ICM/ICM,
+	IOP/IOP,
+	IVC/IVC,
+	KEM/KEM,
+	LF/LF,
+	LPCP/LPCP,
+	ML/ML,
+	MLFHE/MLFHE,
+	MPC/MPC,
+	MT/MT,
+	NARG/NARG,
+	NIZK/NIZK,
+	NW/NW,
+	OLE/OLE,
+	OPRF/OPRF,
+	OT/OT,
+	OWF/OWF,
+	OWP/OWP,
+	PC/PC,
+	PCG/PCG,
+	PIR/PIR,
+	PKE/PKE,
+	PKFE/PKFE,
+	PPRF/PPRF,
+	PRF/PRF,
+	PRG/PRG,
+	PSI/PSI,
+	QPCP/QPCP,
+	QROM/QROM,
+	RO/RO,
+	ROM/ROM,
+	SIG/SIG,
+	SIR/SIR,
+	SKE/SKE,
+	SKFE/SKFE,
+	SNARG/SNARG,
+	SNARK/SNARK,
+	SPMPC/SPMPC,
+	SRS/SRS,
+	SSB/SSB,
+	TCR/TCR,
+	TDF/TDF,
+	TDP/TDP,
+	UOW/UOW,
+	VC/VC,
+	VDF/VDF,
+	VOLE/VOLE,
+	ZK/ZK,
+}
+
+\cryptoDefineSchemeCSV{
+	cFE/cFE,
+	coSZK/coSZK,
+	diO/diO,
+	iO/iO,
+	ihO/ihO,
+	npROM/npROM,
+	osRO/osRO,
+	osROM/osROM,
+	pROM/pROM,
+	rOWF/rOWF,
+	sRO/sRO,
+	sROM/sROM,
+	zkSNARK/zkSNARK,
+	zkSTARK/zkSTARK,
+}
+
+\cryptoDefineSchemeCSV{
+	ApproxSVP/ApproxSVP,
+	BDD/BDD,
+	BDH/BDH,
+	CDH/CDH,
+	CNF/CNF,
+	CRGapDH/CRGapDH,
+	CVP/CVP,
+	DAG/DAG,
+	DBDH/DBDH,
+	DDH/DDH,
+	DH/DH,
+	DL/DL,
+	DLIN/DLIN,
+	DLP/DLP,
+	DLWE/DLWE,
+	DLog/DLog,
+	DNF/DNF,
+	Dlog/Dlog,
+	GapCVP/GapCVP,
+	GapDH/GapDH,
+	GapSIVP/GapSIVP,
+	GapSVP/GapSVP,
+	IFP/IFP,
+	ISIS/ISIS,
+	LDD/LDD,
+	LPN/LPN,
+	LRSW/LRSW,
+	LWE/LWE,
+	MLWE/MLWE,
+	MSIS/MSIS,
+	NNF/NNF,
+	NTRU/NTRU,
+	PHP/PHP,
+	RLWE/RLWE,
+	RSA/RSA,
+	RSIS/RSIS,
+	SAT/SAT,
+	SD/SD,
+	SDH/SDH,
+	SIS/SIS,
+	SIVP/SIVP,
+	SLWE/SLWE,
+	SVP/SVP,
+	SXDH/SXDH,
+	TAUT/TAUT,
+	UNSAT/UNSAT,
+	UniqueSVP/UniqueSVP,
+	XDH/XDH,
+	coCDH/coCDH,
+	coDDH/coDDH,
+	qBDH/qBDH,
+	qSDH/qSDH,
+	uSVP/uSVP,
+}
+
+\cryptoDefineAlgoCSV{
+	AND/AND,
+	Acc/Acc,
+	Adv/Adv,
+	Bad/Bad,
+	Chal/Chal,
+	Challenger/Ch,
+	ChallengerText/Challenger,
+	Clean/Clean,
+	Coins/Coins,
+	Com/Com,
+	Commit/Commit,
+	Dec/Dec,
+	Decide/Decide,
+	DecideAcc/DecideAcc,
+	Decision/Decision,
+	Decode/Decode,
+	Derive/Derive,
+	Dist/D,
+	Distinguisher/D,
+	Enc/Enc,
+	Encode/Encode,
+	Env/Env,
+	Environment/Z,
+	Equivocate/Equiv,
+	Eval/Eval,
+	EvalPoly/EvalPoly,
+	Exp/Exp,
+	Experiment/Exp,
+	Ext/Ext,
+	ExtFunc/Extract,
+	Extract/Extract,
+	Extractor/Ext,
+	Fake/Fake,
+	Fold/Fold,
+	Functionality/F,
+	GGen/GGen,
+	Gen/Gen,
+	Guess/Guess,
+	Hash/Hash,
+	Hyb/Hybrid,
+	Hybrid/Hybrid,
+	IHO/IHO,
+	Ideal/I,
+	Index/Index,
+	Init/Init,
+	Interp/Interp,
+	Inv/Inv,
+	Inverter/Inv,
+	KDF/KDF,
+	Key/K,
+	KeyDeriv/KeyDeriv,
+	KeyGen/KeyGen,
+	KeyGenLT/KeyGenLT,
+	KeyGenSS/KeyGenSS,
+	Literal/Literal,
+	Majority/Maj,
+	NAND/NAND,
+	NOR/NOR,
+	NOT/NOT,
+	Next/Next,
+	OR/OR,
+	Obf/O,
+	PGen/PGen,
+	Predictor/P,
+	Prog/Prog,
+	ProtocolExec/ProtocolExec,
+	Prove/Prove,
+	Puncture/Puncture,
+	Query/Query,
+	Rand/Rand,
+	RandFunction/R,
+	Real/Real,
+	Reconstruct/Reconstruct,
+	Resp/Resp,
+	RevealRand/RevealRand,
+	Run/Run,
+	Sam/Sam,
+	Sample/Sample,
+	SampleRO/SampleRO,
+	Sampler/Sam,
+	Search/Search,
+	Setup/Setup,
+	Share/Share,
+	Sign/Sign,
+	Sim/Sim,
+	SimFunc/Sim,
+	SimProve/SimProve,
+	SimSetup/SimSetup,
+	Simulator/Sim,
+	Source/Src,
+	Step/Step,
+	Table/T,
+	Tree/Tree,
+	Tribes/Tribes,
+	Update/Updt,
+	Updt/Updt,
+	VBB/VBB,
+	Var/Var,
+	Verify/Vrfy,
+	VerifyAcc/VerifyAcc,
+	View/View,
+	Vrfy/Vrfy,
+	Win/Win,
+	XNOR/XNOR,
+	XOR/XOR,
+}
+
+\cryptoDefineAlgoCSV{
+	APC/APC,
+	CP/CP,
+	CPV/CPV,
+	DAGRes/DAG\textsf{-}Res,
+	DNFF/DNFF,
+	DPLL/DPLL,
+	EF/EF,
+	ExtFrege/ExtFrege,
+	FV/FV,
+	Frege/Frege,
+	HA/HA,
+	IPS/IPS,
+	LJ/LJ,
+	LK/LK,
+	MaxRes/MaxRes,
+	NJ/NJ,
+	NK/NK,
+	NS/NS,
+	PA/PA,
+	PC/PC,
+	PCR/PCR,
+	PV/PV,
+	Res/Res,
+	ResGraph/ResG,
+	ResTree/ResT,
+	SA/SA,
+	SOS/SOS,
+	TreeRes/TreeRes,
+	VNC/VNC,
+	VPV/VPV,
+}
+
+\cryptoDefineAlgoCSV{
+	CheckExpiry/CheckExpiry,
+	CheckSessionState/CheckSessionState,
+	IsFresh/IsFresh,
+	IsFreshEE/IsFreshEE,
+	IsFreshELT/IsFreshELT,
+	IsFreshESS/IsFreshESS,
+	IsFreshLTE/IsFreshLTE,
+	IsFreshLTLT/IsFreshLTLT,
+	IsFreshLTSS/IsFreshLTSS,
+	IsPartner/IsPartner,
+	IsSessionValid/IsSessionValid,
+	Partner/Partner,
+	SetFreshnessType/SetFreshnessType,
+	ValidateMessage/ValidateMessage,
+	ValidateParty/ValidateParty,
+	ValidateSession/ValidateSession,
+	VerifySessionKey/VerifySessionKey,
+	VerifySignature/VerifySignature,
+}
+
+\cryptoDefineProbCSV{
+	BipartiteProb/Bipartite-Matching,
+	BrouwerProb/Brouwer-Fixpoint,
+	CDHProb/CDH,
+	CRTProb/CRT,
+	CVPProb/Closest-Vector,
+	CliqueProb/Clique,
+	CollisionProb/Collision,
+	ColoringProb/Graph-Coloring,
+	CycleProb/Cycle,
+	DDHProb/DDH,
+	DLPProb/DLP,
+	DiscreteLogProb/Discrete-Logarithm,
+	EOLProb/End-of-Line,
+	EOMLProb/End-of-Metered-Line,
+	FactoringProb/Factoring,
+	GapCVPProb/Gap-CVP,
+	GapSVPProb/Gap-SVP,
+	HamiltonianCycleProb/Hamiltonian-Cycle,
+	HamiltonianPathProb/Hamiltonian-Path,
+	IndependentSetProb/Independent-Set,
+	InversionProb/Inversion,
+	IterProb/Iterative-Search,
+	KnapsackProb/Knapsack,
+	LPNProb/Learning-Parity-with-Noise,
+	LWEProb/Learning-with-Errors,
+	LeafProb/Leaf,
+	LocalSearchProb/Local-Search,
+	MCSPProb/Minimum-Circuit-Size,
+	MatchingProb/Matching,
+	MaxFlowProb/Max-Flow,
+	MaxSATProb/Max-SAT,
+	MinCutProb/Min-Cut,
+	MinPDTProb/Minimum-Parity-Decision-Tree-Refutation,
+	ModInvProb/Modular-Inverse,
+	MulticollisionProb/Multicollision,
+	NashProb/Nash-Equilibrium,
+	PHProb/Pigeonhole-Circuit,
+	PathFindingProb/Path-Finding,
+	PreimageProb/Preimage,
+	QRAProb/Quadratic-Residuosity,
+	QRProb/Quadratic-Residue,
+	RSAProb/RSA,
+	RSVLProb/Relaxed-Sink-of-Verifiable-Line,
+	RootFindingProb/Root-Finding,
+	SATProb/SAT,
+	SISProb/Shortest-Integer-Solution,
+	SVLProb/Sink-of-Verifiable-Line,
+	SVPProb/Shortest-Vector,
+	SecondPreimageProb/Second-Preimage,
+	SourceOrSinkProb/Source-or-Sink,
+	SourceTargetProb/Source-Target,
+	SpernersProb/Sperner-Fixpoint,
+	StrongRSAProb/Strong-RSA,
+	SubsetSumProb/Subset-Sum,
+	VertexCoverProb/Vertex-Cover,
+	WPHProb/Weak-Pigeonhole-Circuit,
+	kSATProb/\ensuremath{k}-SAT,
+}
+
+\cryptoDefineKeyCSV{
+	acc/acc,
+	accm/accm,
+	accept/accept,
+	ad/ad,
+	add/add,
+	authentic/authentic,
+	aux/aux,
+	broken/broken,
+	cc/c,
+	cid/cid,
+	cm/cm,
+	corrupted/corrupted,
+	cp/cp,
+	crs/crs,
+	ct/ct,
+	del/del,
+	ee/e,
+	ek/ek,
+	epk/epk,
+	esk/esk,
+	false/false,
+	fk/fk,
+	fresh/fresh,
+	gk/gk,
+	good/good,
+	hash/h,
+	hk/hk,
+	id/id,
+	il/il,
+	insecure/insecure,
+	invalid/invalid,
+	kc/kc,
+	kk/k,
+	kl/kl,
+	len/ln,
+	ll/ll,
+	ltpk/ltpk,
+	ltsk/ltsk,
+	message/msg,
+	messages/msgs,
+	mm/m,
+	mpk/mpk,
+	msk/msk,
+	nl/nl,
+	nn/n,
+	no/no,
+	nparties/n,
+	oid/oid,
+	ol/ol,
+	op/op,
+	owf/F,
+	party/party,
+	peer/peer,
+	pid/pid,
+	pk/pk,
+	pp/pp,
+	prf/F,
+	prg/G,
+	qq/qq,
+	queries/queries,
+	reject/reject,
+	rem/rem,
+	role/role,
+	rounds/rounds,
+	rr/r,
+	rrs/rs,
+	rt/rt,
+	secure/secure,
+	sgn/sgn,
+	sid/sid,
+	sidv/sidv,
+	sk/sk,
+	srs/srs,
+	ssid/ssid,
+	sspk/sspk,
+	sssk/sssk,
+	sst/sst,
+	st/st,
+	stale/stale,
+	td/td,
+	threshold/t,
+	time/time,
+	tmtime/time,
+	tp/tp,
+	tq/tq,
+	trace/tr,
+	trans/tr,
+	trapdoor/td,
+	true/true,
+	unauthentic/unauthentic,
+	uncorrupted/uncorrupted,
+	upd/upd,
+	update/upd,
+	valid/valid,
+	view/view,
+	vk/vk,
+	yes/yes,
+}
+
+\cryptoDefineOracleCSV{
+	Corrupt/Corrupt,
+	Create/Create,
+	EphemeralKey/EphemeralKey,
+	Execute/Execute,
+	IsPartner/IsPartner,
+	KeyConfirm/KeyConfirm,
+	Partner/Partner,
+	Reveal/Reveal,
+	Send/Send,
+	SessionExpire/SessionExpire,
+	SessionKey/SessionKey,
+	SessionResync/SessionResync,
+	SessionState/SessionState,
+	SessionTranscript/SessionTranscript,
+	Test/Test
+}
+
+\let\SendOracle\oracleSend
+\let\ExecuteOracle\oracleExecute
+\let\RevealOracle\oracleReveal
+\let\CorruptOracle\oracleCorrupt
+\let\TestOracle\oracleTest
+\let\EphemeralKeyOracle\oracleEphemeralKey
+\let\SessionKeyOracle\oracleSessionKey
+
+\newcommand{\HashOracle}{\oracle{H}}
+\newcommand{\SignOracle}{\oracle{Sign}}
+\newcommand{\ChallengeOracle}{\oracle{Challenge}}
+\newcommand{\CDHOracle}{\oracle{CDH}}
+\newcommand{\DDHOracle}{\oracle{DDH}}
+\newcommand{\GapDHOracle}{\oracle{GapDH}}
+\newcommand{\CRGapDHOracle}{\oracle{CRGapDH}}
+
+\newcommand{\ACSetup}{\AC.\funct{Setup}}
+\newcommand{\ACAccum}{\AC.\funct{Accum}}
+\newcommand{\ACAdd}{\AC.\funct{Add}}
+\newcommand{\ACDel}{\AC.\funct{Del}}
+\newcommand{\ACWitGen}{\AC.\funct{WitGen}}
+\newcommand{\ACWitUpdate}{\AC.\funct{WitUpdate}}
+\newcommand{\ACVerify}{\AC.\funct{Verify}}
+\newcommand{\ACNonMemWitGen}{\AC.\funct{NonMemWitGen}}
+\newcommand{\ACNonMemVerify}{\AC.\funct{NonMemVerify}}
+\newcommand{\ACNonWitGen}{\AC.\funct{NonWitGen}}
+\newcommand{\ACNonVerify}{\AC.\funct{NonVerify}}
+
+\newcommand{\ABESetup}{\ABE.\funct{Setup}}
+\newcommand{\ABEKeyGen}{\ABE.\funct{KeyGen}}
+\newcommand{\ABEEnc}{\ABE.\funct{Enc}}
+\newcommand{\ABEDec}{\ABE.\funct{Dec}}
+
+\newcommand{\IBESetup}{\IBE.\funct{Setup}}
+\newcommand{\IBEExtract}{\IBE.\funct{Extract}}
+\newcommand{\IBEEnc}{\IBE.\funct{Enc}}
+\newcommand{\IBEDec}{\IBE.\funct{Dec}}
+
+\newcommand{\HIBESetup}{\HIBE.\funct{Setup}}
+\newcommand{\HIBEExtract}{\HIBE.\funct{Extract}}
+\newcommand{\HIBEEnc}{\HIBE.\funct{Enc}}
+\newcommand{\HIBEDec}{\HIBE.\funct{Dec}}
+
+\newcommand{\BARGSetup}{\BARG.\funct{Setup}}
+\newcommand{\BARGProve}{\BARG.\funct{Prove}}
+\newcommand{\BARGVerify}{\BARG.\funct{Vrfy}}
+
+\newcommand{\ComGen}{\Com.\funct{Gen}}
+\newcommand{\ComCommit}{\Com.\funct{Commit}}
+\newcommand{\ComOpen}{\Com.\funct{Open}}
+\newcommand{\ComVerify}{\Com.\funct{Vrfy}}
+
+\newcommand{\CMSetup}{\CM.\funct{Setup}}
+\newcommand{\CMCommit}{\CM.\funct{Commit}}
+\newcommand{\CMOpen}{\CM.\funct{Open}}
+\newcommand{\CMVerify}{\CM.\funct{Vrfy}}
+
+\newcommand{\PCSetup}{\PC.\funct{Setup}}
+\newcommand{\PCCommit}{\PC.\funct{Commit}}
+\newcommand{\PCOpen}{\PC.\funct{Open}}
+\newcommand{\PCVerify}{\PC.\funct{Vrfy}}
+
+\newcommand{\FCSetup}{\FC.\funct{Setup}}
+\newcommand{\FCCommit}{\FC.\funct{Commit}}
+\newcommand{\FCOpen}{\FC.\funct{Open}}
+\newcommand{\FCVerify}{\FC.\funct{Vrfy}}
+
+\newcommand{\VCSetup}{\VC.\funct{Setup}}
+\newcommand{\VCCommit}{\VC.\funct{Commit}}
+\newcommand{\VCOpen}{\VC.\funct{Open}}
+\newcommand{\VCOpenSub}{\VC.\funct{OpenSub}}
+\newcommand{\VCUpdate}{\VC.\funct{Update}}
+\newcommand{\VCVerify}{\VC.\funct{Verify}}
+\newcommand{\VCVerifySub}{\VC.\funct{VerifySub}}
+\newcommand{\VCWitUpdate}{\VC.\funct{WitUpdate}}
+
+\newcommand{\KZG}{\algostyle{KZG}}
+\newcommand{\KZGSetup}{\KZG.\funct{Setup}}
+\newcommand{\KZGCommit}{\KZG.\funct{Commit}}
+\newcommand{\KZGOpen}{\KZG.\funct{Open}}
+\newcommand{\KZGVerify}{\KZG.\funct{Vrfy}}
+
+\newcommand{\DPFGen}{\DPF.\funct{Gen}}
+\newcommand{\DPFEval}{\DPF.\funct{Eval}}
+
+\newcommand{\FESetup}{\FE.\funct{Setup}}
+\newcommand{\FEKeyGen}{\FE.\funct{KeyGen}}
+\newcommand{\FEEnc}{\FE.\funct{Enc}}
+\newcommand{\FEDec}{\FE.\funct{Dec}}
+\newcommand{\FEGen}{\FE.\funct{Gen}}
+
+\newcommand{\FHEGen}{\FHE.\funct{Gen}}
+\newcommand{\FHEKeyGen}{\FHE.\funct{KeyGen}}
+\newcommand{\FHEEnc}{\FHE.\funct{Enc}}
+\newcommand{\FHEDec}{\FHE.\funct{Dec}}
+\newcommand{\FHEEval}{\FHE.\funct{Eval}}
+\newcommand{\FHEAdd}{\FHE.\funct{Add}}
+\newcommand{\FHEMul}{\FHE.\funct{Mul}}
+
+\newcommand{\FSSetup}{\FS.\funct{Setup}}
+\newcommand{\FSHash}{\FS.\funct{Hash}}
+\newcommand{\FSProve}{\FS.\funct{Prove}}
+\newcommand{\FSVerify}{\FS.\funct{Vrfy}}
+\newcommand{\FSChallenge}{\FS.\funct{Chal}}
+\newcommand{\FSTranscript}{\FS.\funct{Trans}}
+
+\newcommand{\FSSGen}{\FSS.\funct{Gen}}
+\newcommand{\FSSEval}{\FSS.\funct{Eval}}
+
+\newcommand{\HKGen}{\Hash.\funct{Gen}}
+\newcommand{\HSetup}{\Hash.\funct{Setup}}
+\newcommand{\HEval}{\Hash.\funct{Eval}}
+\newcommand{\HCommit}{\Hash.\funct{Commit}}
+\newcommand{\HOpen}{\Hash.\funct{Open}}
+\newcommand{\HExtract}{\Hash.\funct{Extract}}
+\newcommand{\HVerify}{\Hash.\funct{Vrfy}}
+
+\let\HashGen\HKGen
+\let\HashSetup\HSetup
+\let\HashEval\HEval
+\let\HashCommit\HCommit
+\let\HashOpen\HOpen
+\let\HashExtract\HExtract
+\let\HashVerify\HVerify
+
+\newcommand{\Hone}{\funct{H}_1}
+\newcommand{\Htwo}{\funct{H}_2}
+\newcommand{\Hthree}{\funct{H}_3}
+\newcommand{\hashone}[1]{H_1\left(#1\right)}
+\newcommand{\hashtwo}[1]{H_2\left(#1\right)}
+\newcommand{\hashthree}[1]{H_3\left(#1\right)}
+
+\newcommand{\HSSSetup}{\HSS.\funct{Setup}}
+\newcommand{\HSSKeyGen}{\HSS.\funct{KeyGen}}
+\newcommand{\HSSShare}{\HSS.\funct{Share}}
+\newcommand{\HSSEval}{\HSS.\funct{Eval}}
+\newcommand{\HSSReconstruct}{\HSS.\funct{Reconstruct}}
+
+\newcommand{\iOObf}{\iO.\funct{Obf}}
+\newcommand{\Obfuscate}[1]{\widehat{#1}}
+\newcommand{\Obfuscated}[1]{\algostyle{O}(#1)}
+
+\newcommand{\IOPProver}{\IOP.\funct{Prove}}
+\newcommand{\IOPVerifier}{\IOP.\funct{Vrfy}}
+\newcommand{\IOPSetup}{\IOP.\funct{Setup}}
+
+\newcommand{\IVCSetup}{\IVC.\funct{Setup}}
+\newcommand{\IVCProve}{\IVC.\funct{Prove}}
+\newcommand{\IVCVerify}{\IVC.\funct{Vrfy}}
+
+\newcommand{\KEMGen}{\KEM.\funct{Gen}}
+\newcommand{\KEMEncaps}{\KEM.\funct{Encaps}}
+\newcommand{\KEMDecaps}{\KEM.\funct{Decaps}}
+
+\newcommand{\LFSamInj}{\LF.\funct{SamInj}}
+\newcommand{\LFSamLossy}{\LF.\funct{SamLossy}}
+
+\newcommand{\MACGen}{\MAC.\funct{Gen}}
+\newcommand{\MACSign}{\MAC.\funct{Sign}}
+\newcommand{\MACVerify}{\MAC.\funct{Vrfy}}
+
+\newcommand{\MerkleRoot}{\algostyle{root}}
+\newcommand{\AuthPath}{\algostyle{path}}
+\newcommand{\Open}{\algostyle{Open}}
+\newcommand{\proofstr}{\pi}
+
+\newcommand{\MPCSetup}{\MPC.\funct{Setup}}
+\newcommand{\MPCInput}{\MPC.\funct{Input}}
+\newcommand{\MPCEval}{\MPC.\funct{Eval}}
+\newcommand{\MPCOutput}{\MPC.\funct{Output}}
+
+\newcommand{\NISetup}{\NARG.\funct{Setup}}
+\newcommand{\NIIndex}{\NARG.\funct{Index}}
+\newcommand{\NIProve}{\NARG.\funct{Prove}}
+\newcommand{\NIVerify}{\NARG.\funct{Vrfy}}
+\newcommand{\NISim}{\NARG.\funct{Sim}}
+
+\newcommand{\NIZKSetup}{\NIZK.\funct{Setup}}
+\newcommand{\NIZKProve}{\NIZK.\funct{Prove}}
+\newcommand{\NIZKVerify}{\NIZK.\funct{Vrfy}}
+\newcommand{\NIZKSim}{\NIZK.\funct{Sim}}
+
+\newcommand{\OTSetup}{\OT.\funct{Setup}}
+\newcommand{\OTSend}{\OT.\funct{Send}}
+\newcommand{\OTReceive}{\OT.\funct{Receive}}
+
+\newcommand{\OWFFunction}{\algostyle{F}}
+\newcommand{\OWFGen}{\OWFFunction.\funct{Gen}}
+\newcommand{\OWFEval}{\OWFFunction.\funct{Eval}}
+
+\newcommand{\OWPGen}{\OWP.\funct{Gen}}
+\newcommand{\OWPEval}{\OWP.\funct{Eval}}
+\newcommand{\OWPVerify}{\OWP.\funct{Vrfy}}
+
+\newcommand{\rOWFSetup}{\rOWF.\funct{Setup}}
+\newcommand{\rOWFGen}{\rOWF.\funct{Gen}}
+\newcommand{\rOWFGenChal}{\rOWF.\funct{GenChal}}
+\newcommand{\rOWFRerand}{\rOWF.\funct{Rerand}}
+\newcommand{\rOWFVer}{\rOWF.\funct{Vrfy}}
+
+\newcommand{\PCGGen}{\PCG.\funct{Gen}}
+\newcommand{\PCGExpand}{\PCG.\funct{Expand}}
+
+\newcommand{\PIRQuery}{\PIR.\funct{Query}}
+\newcommand{\PIRAnswer}{\PIR.\funct{Answer}}
+\newcommand{\PIRReconstruct}{\PIR.\funct{Reconstruct}}
+
+\newcommand{\PKESetup}{\PKE.\funct{Setup}}
+\newcommand{\PKEKeyGen}{\PKE.\funct{KeyGen}}
+\newcommand{\PKEGen}{\PKE.\funct{Gen}}
+\newcommand{\PKEEnc}{\PKE.\funct{Enc}}
+\newcommand{\PKEDec}{\PKE.\funct{Dec}}
+
+\newcommand{\PRFFunction}{\algostyle{F}}
+\newcommand{\PRFGen}{\PRFFunction.\funct{Gen}}
+\newcommand{\PRFSetup}{\PRFFunction.\funct{Setup}}
+\newcommand{\PRFEval}{\PRFFunction.\funct{Eval}}
+\newcommand{\PRFKey}{\algostyle{k}}
+\newcommand{\PRFPuncture}{\PRFFunction.\funct{Puncture}}
+\newcommand{\PuncturedPRFKey}{\algostyle{k}_{S}}
+
+\newcommand{\PPRFGen}{\PPRF.\funct{Gen}}
+\newcommand{\PPRFPuncture}{\PPRF.\funct{Puncture}}
+\newcommand{\PPRFEval}{\PPRF.\funct{Eval}}
+
+\newcommand{\PRGGen}{\PRG.\funct{Gen}}
+\newcommand{\PRGSetup}{\PRG.\funct{Setup}}
+\newcommand{\PRGEval}{\PRG.\funct{Eval}}
+
+\newcommand{\PSISetup}{\PSI.\funct{Setup}}
+\newcommand{\PSISender}{\PSI.\funct{Sender}}
+\newcommand{\PSIReceiver}{\PSI.\funct{Receiver}}
+
+\newcommand{\SecShare}{\algostyle{SS}}
+\newcommand{\SSScheme}{\SecShare}
+\newcommand{\SSShare}{\SecShare.\funct{Share}}
+\newcommand{\SSReconstruct}{\SecShare.\funct{Reconstruct}}
+\newcommand{\Shamir}{\algostyle{Shamir}}
+\newcommand{\ShamirShare}{\Shamir.\funct{Share}}
+\newcommand{\ShamirReconstruct}{\Shamir.\funct{Reconstruct}}
+\newcommand{\AdditiveShare}{\algostyle{Shr}}
+\newcommand{\AdditiveReconstruct}{\algostyle{Rec}}
+
+\newcommand{\SIGGen}{\SIG.\funct{Gen}}
+\newcommand{\SIGSign}{\SIG.\funct{Sign}}
+\newcommand{\SIGVerify}{\SIG.\funct{Vrfy}}
+
+\newcommand{\BLS}{\algostyle{BLS}}
+\newcommand{\BLSSetup}{\BLS.\funct{Setup}}
+\newcommand{\BLSGen}{\BLS.\funct{Gen}}
+\newcommand{\BLSSign}{\BLS.\funct{Sign}}
+\newcommand{\BLSVerify}{\BLS.\funct{Vrfy}}
+\newcommand{\BLSAggregate}{\BLS.\funct{Aggregate}}
+\newcommand{\BLSAggVerify}{\BLS.\funct{AggVrfy}}
+
+\newcommand{\SigmaCommit}{\Sigma.\funct{Com}}
+\newcommand{\SigmaChallenge}{\Sigma.\funct{Chal}}
+\newcommand{\SigmaResponse}{\Sigma.\funct{Resp}}
+\newcommand{\SigmaVerify}{\Sigma.\funct{Vrfy}}
+
+\newcommand{\SKEGen}{\SKE.\funct{Gen}}
+\newcommand{\SKEEnc}{\SKE.\funct{Enc}}
+\newcommand{\SKEDec}{\SKE.\funct{Dec}}
+
+\newcommand{\SNARGSetup}{\SNARG.\funct{Setup}}
+\newcommand{\SNARGProve}{\SNARG.\funct{Prove}}
+\newcommand{\SNARGVerify}{\SNARG.\funct{Vrfy}}
+
+\newcommand{\TDFGen}{\TDF.\funct{Gen}}
+\newcommand{\TDFEval}{\TDF.\funct{Eval}}
+\newcommand{\TDFVerify}{\TDF.\funct{Vrfy}}
+
+\newcommand{\TDPGen}{\TDP.\funct{Gen}}
+\newcommand{\TDPEval}{\TDP.\funct{Eval}}
+\newcommand{\TDPVerify}{\TDP.\funct{Vrfy}}
+
+\newcommand{\VDFGen}{\VDF.\funct{Gen}}
+\newcommand{\VDFEval}{\VDF.\funct{Eval}}
+\newcommand{\VDFProve}{\VDF.\funct{Prove}}
+\newcommand{\VDFVerify}{\VDF.\funct{Vrfy}}
+
+\newcommand{\VOLESender}{\VOLE.\funct{Sender}}
+\newcommand{\VOLEReceiver}{\VOLE.\funct{Receiver}}
+
+\newcommand{\kdf}[1]{\funct{KDF}\left(#1\right)}
+\newcommand{\mac}[1]{\funct{MAC}\left(#1\right)}
+\newcommand{\sign}[1]{\funct{Sign}\left(#1\right)}
+\newcommand{\verify}[1]{\funct{Vrfy}\left(#1\right)}
+
+\newcommand{\PubKeySpace}{\setstyle{K}_{\algostyle{pk}}}
+\newcommand{\SecKeySpace}{\setstyle{K}_{\algostyle{sk}}}
+\newcommand{\ParamSpace}{\setstyle{P}}
+\newcommand{\IdSpace}{\setstyle{I}}
+\newcommand{\MsgSpace}{\{0,1\}^{\ell_{\m}}}
+\newcommand{\AssocDataSpace}{\{0,1\}^{\ell_{\ad}}}
+\newcommand{\SessionKeySpace}{\{0,1\}^{\ell_{\sst}}}
+\newcommand{\TagSpace}{\{0,1\}^{\ell_{\tagv}}}
+\newcommand{\SessionStoreSpace}{\{0,1\}^{\ell_{\sst}}}
+\newcommand{\CorruptedPartiesSpace}{\{0,1\}^{\ell_{\cp}}}
+\newcommand{\RevealedSessionsSpace}{\{0,1\}^{\ell_{\rs}}}
+\newcommand{\TestQueriesSpace}{\{0,1\}^{\ell_{\tq}}}
+
+\newcommand{\latbasis}{\mathbf{B}}
+\newcommand{\latvec}[1]{\mathbf{#1}}
+\newcommand{\latshortvec}{\mathbf{s}}
+\newcommand{\laterror}{\mathbf{e}}
+\newcommand{\latpubmat}{\mathbf{A}}
+\newcommand{\latsecret}{\mathbf{s}}
+\newcommand{\latmod}{q}
+\newcommand{\latsigma}{\sigma}
+\newcommand{\lattrap}{\mathbf{T}}
+\newcommand{\latsample}{\algostyle{SamplePre}}
+
+\newcommand{\lwedim}{n}
+\newcommand{\lweMod}{q}
+\newcommand{\lweAlpha}{\alpha}
+\newcommand{\sisbound}{\beta}
+
+\newcal{\CiphertextSpace}{C}
+\newcal{\InstanceSpace}{X}
+\newcal{\KeySpace}{K}
+\newcal{\MessageSpace}{M}
+\newcal{\RandomnessSpace}{R}
+\newcal{\UniRand}{U}
+\newcal{\UniformRandomness}{U}
+\newcal{\WitnessSpace}{W}
+
+\newscr{\Prover}{P}
+\newscr{\Verifier}{V}
+\newscr{\HonestProver}{\hat{\Prover}}
+\newscr{\HonestVerifier}{\hat{\Verifier}}
+\newscr{\MaliciousProver}{\tilde{\Prover}}
+\newscr{\MaliciousVerifier}{\tilde{\Verifier}}
+
+\newcommand{\algo}{\setstyle{A}}
+\newcommand{\Red}{\algostyle{R}}
+\newcommand{\Game}{\algostyle{G}}
+\newcommand{\game}{\setstyle{G}}
+\newcommand{\AdvProb}{\var{S}}
+\newcommand{\Prot}{\funct{\Pi}}
+
+\newfunc{\adv}{A}
+\newfunc{\bdv}{B}
+\newfunc{\cdv}{C}
+\newfunc{\ddv}{D}
+\newfunc{\zdv}{Z}
+
+\newcommand{\Orc}{\mathsf{O}}
+\newcommand{\Oracle}{\mathsf{O}}
+\newcommand{\OracleH}{\setstyle{H}}
+\newcommand{\OracleRO}{\setstyle{O}}
+\newcommand{\OracleSim}{\setstyle{O}_{\algostyle{sim}}}
+
+\newscr{\Distribution}{D}
+\newscr{\Distr}{D}
+\newscr{\Ensemble}{E}
+\newscr{\Ensb}{E}
+\newscr{\Language}{L}
+\newscr{\Lang}{L}
+\newscr{\Relation}{R}
+\newscr{\Rel}{R}
+
+\newbb{\Instance}{X}
+\newbb{\OutVal}{Y}
+\newbb{\Witness}{W}
+
+\newbb{\challenge}{c}
+\newbb{\instance}{x}
+\newbb{\instn}{x}
+\newbb{\outval}{y}
+\newbb{\randomness}{r}
+\newbb{\response}{z}
+\newbb{\val}{v}
+\newbb{\witness}{w}
+\newbb{\wit}{w}
+\newcommand{\secret}{s}
+
+\newcommand{\state}{\mathbb{s}}
+\newcommand{\stateP}{\state_P}
+\newcommand{\stateV}{\state_V}
+\newcommand{\stateA}{\state_A}
+\newcommand{\stateSim}{\state_S}
+
+\newcommand{\chal}{\algostyle{ch}}
+\newcommand{\hbound}{c}
+\newcommand{\obprog}{\hat{f}}
+\newcommand{\prog}{f}
+\newcommand{\proofpi}{\pi}
+\newcommand{\proofprime}{\pi'}
+\newcommand{\proofstar}{\pi^*}
+\newcommand{\pt}{a}
+\newcommand{\resp}{\algostyle{rsp}}
+\newcommand{\stmt}{\algostyle{s}}
+
+\newcommand{\Alice}{\algostyle{A}}
+\newcommand{\Bob}{\algostyle{B}}
+\newcommand{\InitiatorAlice}{\Initiator_{\Alice}}
+\newcommand{\Initiator}{\algostyle{Init}}
+\newcommand{\Party}{\var{P}}
+\newcommand{\ResponderBob}{\Responder_{\Bob}}
+\newcommand{\Responder}{\algostyle{Resp}}
+\newcommand{\np}{\var{n_p}}
+
+\newcommand{\sessionstate}{\var{state}}
+\newcommand{\sessionstatus}{\var{status}}
+\newcommand{\sessionpeer}{\var{peer}}
+\newcommand{\sessionkey}{\var{key}}
+\newcommand{\sessionexpiry}{\var{expiry}}
+\newcommand{\sessioncreated}{\var{created}}
+\newcommand{\sessionlast}{\var{last}}
+
+\newcommand{\statusCreated}{\var{created}}
+\newcommand{\statusAccepted}{\var{accepted}}
+\newcommand{\statusRejected}{\var{rejected}}
+\newcommand{\statusCompleted}{\var{completed}}
+\newcommand{\statusExpired}{\var{expired}}
+\newcommand{\statusCorrupted}{\var{corrupted}}
+
+\newcommand{\accepted}{\var{accepted}}
+\newcommand{\keyconfirmed}{\algostyle{keyconfirmed}}
+\newcommand{\expired}{\algostyle{expired}}
+\newcommand{\resynced}{\algostyle{resynced}}
+\newcommand{\ephemeralkey}{\algostyle{ephemeralkey}}
+
+\newcommand{\pivar}{{\pi}}
+\newcommand{\piprimevar}{\pivar^{\star}}
+\newcommand{\pivarprime}{\pivar^{\prime}}
+\newcommand{\pivarparty}{\pivar.\party}
+\newcommand{\pivarpeer}{\pivar.\peer}
+\newcommand{\pivaraccepted}{\pivar.\accepted}
+\newcommand{\pivarssid}{\pivar.\ssid}
+\newcommand{\pivarsessionkey}{\pivar.\sessionkey}
+\newcommand{\pivarfunc}{\pivar.\funct}
+\newcommand{\piprimevarparty}{\piprimevar.\party}
+\newcommand{\piprimevarpeer}{\piprimevar.\peer}
+\newcommand{\piprimevaraccepted}{\piprimevar.\accepted}
+\newcommand{\piprimevarssid}{\piprimevar.\ssid}
+\newcommand{\piprimevarsessionkey}{\piprimevar.\sessionkey}
+\newcommand{\piprimevarfunc}{\piprimevar.\funct}
+\newcommand{\pivarprimeparty}{\pivarprime.\party}
+\newcommand{\pivarprimepeer}{\pivarprime.\peer}
+\newcommand{\pivarprimeaccepted}{\pivarprime.\accepted}
+\newcommand{\pivarprimessid}{\pivarprime.\ssid}
+\newcommand{\pivarprimesessionkey}{\pivarprime.\sessionkey}
+\newcommand{\pivarprimefunc}{\pivarprime.\funct}
+\newcommand{\session}[2]{\pivar_{#1}^{#2}}
+\newcommand{\partner}{\var{prt}}
+\newcommand{\transcript}{\tau}
+
+\newcommand{\msg}{\algostyle{m}}
+\newcommand{\m}{\algostyle{m}}
+\newcommand{\mprimevar}{\msg^{\star}}
+\newcommand{\tagv}{\algostyle{tag}}
+\newcommand{\typed}{\var{type}}
+\newcommand{\coins}{\var{coins}}
+\newcommand{\revrand}{\var{rev_{rand}}}
+\newcommand{\create}{\var{create}}
+\newcommand{\fullType}{\var{full}}
+\newcommand{\reducedType}{\var{reduced}}
+
+\newcommand{\mAlice}{m_{\Alice}}
+\newcommand{\mBob}{m_{\Bob}}
+\newcommand{\msgAlice}{\msg_{\Alice}}
+\newcommand{\msgBob}{\msg_{\Bob}}
+\newcommand{\msgAliceThree}{\msg_{\Alice}^{(3)}}
+\newcommand{\sigmaAlice}{\sigma_{\Alice}}
+\newcommand{\sigmaBob}{\sigma_{\Bob}}
+\newcommand{\sigmaAprime}{\sigma_{\Alice}'}
+\newcommand{\epkA}{\epk_{\Alice}}
+\newcommand{\epkB}{\epk_{\Bob}}
+\newcommand{\eskA}{\esk_{\Alice}}
+\newcommand{\eskB}{\esk_{\Bob}}
+\newcommand{\kkAlice}{\kk_{\Alice}}
+\newcommand{\kkBob}{\kk_{\Bob}}
+\newcommand{\ltpkA}{\ltpk_{\Alice}}
+\newcommand{\ltpkB}{\ltpk_{\Bob}}
+\newcommand{\ltskA}{\ltsk_{\Alice}}
+\newcommand{\ltskB}{\ltsk_{\Bob}}
+\newcommand{\sessionkeyA}{\sessionkey_{\Alice}}
+\newcommand{\sessionkeyB}{\sessionkey_{\Bob}}
+\newcommand{\sspkA}{\sspk_{\Alice}}
+\newcommand{\sspkB}{\sspk_{\Bob}}
+\newcommand{\ssskA}{\sssk_{\Alice}}
+\newcommand{\ssskB}{\sssk_{\Bob}}
+\newcommand{\dA}{\var{d_{\Alice}}}
+\newcommand{\dB}{\var{d_{\Bob}}}
+\newcommand{\eA}{\var{e_{\Alice}}}
+\newcommand{\eB}{\var{e_{\Bob}}}
+\newcommand{\sharedA}{\var{shared_{\Alice}}}
+\newcommand{\sharedB}{\var{shared_{\Bob}}}
+\newcommand{\pkpeer}{\pk_{\algostyle{peer}}}
+\newcommand{\pkself}{\pk_{\algostyle{self}}}
+\newcommand{\skself}{\sk_{\algostyle{self}}}
+
+\newcommand{\FinalAlice}{\algostyle{Final}_{\Alice}}
+\newcommand{\KDFfull}{\funct{KDF}_f}
+\newcommand{\KDFreduced}{\funct{KDF}_r}
+
+\newcommand{\KE}{\algostyle{KE}}
+\newcommand{\PiKE}{\Pi_{\algostyle{KE}}}
+\newcommand{\KKE}{\setstyle{K}}
+\newcommand{\RKE}{\setstyle{R}}
+\newcommand{\KKEspace}{\var{\setstyle{K}_{KE}}}
+\newcommand{\RKEspace}{\var{\setstyle{R}_{KE}}}
+
+\newcommand{\XHMQV}{\funct{XHMQV}}
+\newcommand{\XHMQVInit}{\XHMQV.\funct{Init}}
+\newcommand{\XHMQVResp}{\XHMQV.\funct{Resp}}
+\newcommand{\XHMQVComp}{\XHMQV.\funct{Comp}}
+\newcommand{\XHMQVKDF}{\XHMQV.\funct{KDF}}
+\newcommand{\XHMQVHash}{\XHMQV.\funct{H}}
+
+\newcommand{\sessionstore}{\setstyle{S}}
+\newcommand{\corruptedparties}{\setstyle{C}}
+\newcommand{\revealedsessions}{\setstyle{R}}
+\newcommand{\testqueries}{\setstyle{T}}
+
+\newcommand{\KI}{\algostyle{KI}}
+\newcommand{\secgame}[1]{\game\left(#1\right)}
+\newcommand{\secgameKI}{\secgame{\KI}}
+
+\newcommand{\advantage}[2]{\algostyle{Adv}^{#1}_{#2}}
+\newcommand{\advantageKI}{\algostyle{Adv}^{\algostyle{KI}}}
+\newcommand{\success}[1]{\algostyle{Succ}^{#1}}
+\newcommand{\insecurity}[1]{\algostyle{Insec}^{#1}}
+\newcommand{\security}[1]{\algostyle{Sec}^{#1}}
+
+\newcommand{\Tadv}{t_{\A}}
+\newcommand{\Tred}{t_{\Red}}
+\newcommand{\timeadv}{T_{\A}}
+\newcommand{\timered}{T_{\Red}}
+\newcommand{\spaceadv}{S_{\A}}
+\newcommand{\spacered}{S_{\Red}}
+\newcommand{\epsadv}{\varepsilon_{\A}}
+\newcommand{\epsred}{\varepsilon_{\Red}}
+\newcommand{\pcorr}{\var{p_{corr}}}
+
+\newcommand{\qhash}{q_H}
+\newcommand{\qsign}{q_S}
+\newcommand{\qsend}{q_{\algostyle{send}}}
+\newcommand{\qexec}{q_e}
+\newcommand{\qreveal}{q_r}
+\newcommand{\qcorrupt}{q_c}
+\newcommand{\qtest}{q_t}
+\newcommand{\qsessions}{q_s}
+\newcommand{\qparties}{q_p}
+
+\newcommand{\algoinput}{\textsf{Input:}}
+\newcommand{\algooutput}{\textsf{Output:}}
+\newcommand{\algostep}{\textsf{Step}}
+\newcommand{\algoreturn}{\textsf{Return}}
+
+\newcommand{\pcbreak}{\textsf{break\ }}
+\newcommand{\pccontinue}{\textsf{continue\ }}
+\newcommand{\pcdo}{\textsf{do\ }}
+\newcommand{\pcelse}{\textsf{else:\ }}
+\newcommand{\pcelseif}{\textsf{else if\ }}
+\newcommand{\pcfor}{\textsf{for\ }}
+\newcommand{\pcif}{\textsf{if\ }}
+\newcommand{\pcskip}{\textsf{skip\ }}
+\newcommand{\pcthen}{\textsf{then:\ }}
+\newcommand{\pcwhile}{\textsf{while\ }}
+
+\newcommand{\pcand}{\textsf{and\ }}
+\newcommand{\pcnot}{\textsf{not\ }}
+\newcommand{\pcor}{\textsf{or\ }}
+
+\newcommand{\decr}{\texttt{--}}
+\newcommand{\incr}{\texttt{++}}
+\newcommand{\pcabort}{\textsf{abort\ }}
+\newcommand{\pcdecr}{\textsf{decrement}}
+\newcommand{\pcincr}{\textsf{increment}}
+\newcommand{\pcinput}{\textsf{input\ }}
+\newcommand{\pclet}{\textsf{let\ }}
+\newcommand{\pcoutput}{\textsf{output\ }}
+\newcommand{\pcparse}{\textsf{parse\ }}
+\newcommand{\pcreturn}{\textsf{return\ }}
+\newcommand{\pcset}{\textsf{set\ }}
+
+\newcommand{\makeSectionLabel}[2]{
+	\expandafter\newcommand\csname #1Caption\endcsname{\textsf{\textsc{#2\space}}}
+	\expandafter\newcommand\csname #1CaptionNoSpace\endcsname{\textsf{\textsc{#2}}}
+	\expandafter\newcommand\csname #1Heading\endcsname{\textbf{\csname #1Caption\endcsname}}
+	\expandafter\newcommand\csname #1HeadingNoSpace\endcsname{\textbf{\csname #1CaptionNoSpace\endcsname}}
+}
+
+\makeSectionLabel{adversary}{Adversary}
+\makeSectionLabel{distinguisher}{Distinguisher}
+\makeSectionLabel{game}{Game}
+\makeSectionLabel{procedure}{Procedure}
+\makeSectionLabel{securityDef}{Security Notion}
+
+\newcommand{\oracleCaption}{\textsf{\textsc{Oracle\space}}}
+\newcommand{\oracleCaptionNoSpace}{\textsf{\textsc{Oracle}}}
+\newcommand{\oracleHeading}[1]{\textsc{#1}}
+\newcommand{\oracleHeadingNoSpace}{\textbf{\oracleCaptionNoSpace}}
+
+\newcommand{\newsequenceofgames}[1]{
+	\newcounter{#1}
+	\setcounter{#1}{-1}
+	\def\sequencename{#1}
+	\ifx\GameID\undefined
+		\newcommand{\GameID}{#1}
+	\else
+		\renewcommand{\GameID}{#1}
+	\fi
+	\ifx\PrevLabel\undefined
+		\newcommand{\PrevLabel}{\GameID.NULL}
+	\else
+		\renewcommand{\PrevLabel}{\GameID.NULL}
+	\fi
+	\ifx\ThisLabel\undefined
+		\newcommand{\ThisLabel}{\GameID.NULL}
+	\else
+		\renewcommand{\ThisLabel}{\GameID.NULL}
+	\fi
+}
+
+\newcommand{\nextgame}[1]{
+	\let\PrevLabel\ThisLabel
+	\renewcommand{\ThisLabel}{\GameID.#1}
+	\refstepcounter{\GameID}\label{\GameID.#1}
+	\paragraph{Experiment~$\algostyle{Exp}_\arabic{\GameID}.$}
+}
+\newcommand{\nextgamewithref}[2]{
+	\let\PrevLabel\ThisLabel
+	\renewcommand{\ThisLabel}{\GameID.#1}
+	\refstepcounter{\GameID}\label{\GameID.#1}
+	\paragraph{Game~\hyperref[#2]{$\algostyle{G}_{\arabic{\GameID}}$}}
+}
+\newcommand{\nextgamewithrefi}[3]{
+	\let\PrevLabel\ThisLabel
+	\renewcommand{\ThisLabel}{\GameID.#1}
+	\refstepcounter{\GameID}\label{\GameID.#1}
+	\paragraph{Game~\hyperref[#2]{$\algostyle{G}_{\arabic{\GameID}.#3}$}}
+}
+
+\newcommand{\gameref}[1]{{\hyperref[\sequencename.#1]{\algostyle{G}_{\ref{\sequencename.#1}}}}}
+\newcommand{\gamerefi}[2]{{\hyperref[\sequencename.#1]{\algostyle{G}_{\ref{\sequencename.#1}.#2}}}}
+\newcommand{\gamerefA}[1]{{\hyperref[\sequencename.#1]{\algostyle{G}^{\advA}_{\ref{\sequencename.#1}}}}}
+\newcommand{\gamerefAi}[2]{{\hyperref[\sequencename.#1]{\algostyle{G}^{\advA}_{\ref{\sequencename.#1}.#2}}}}
+
+\newcommand{\gamedelta}[2]{
+	\Pr\left[\gamerefA{#1}\Rightarrow 1\right]
+	- \Pr\left[\gamerefA{#2}\Rightarrow 1\right]}
+\newcommand{\gameequal}[2]{
+	\Pr\left[\gamerefA{#1}\Rightarrow 1\right]
+	= \Pr\left[\gamerefA{#2}\Rightarrow 1\right]}
+
+\NewDocumentCommand{\gamerefW}{m}{\Pr[\gamerefA{#1} \Rightarrow 1]}
+\NewDocumentCommand{\gamerefWi}{m m}{\Pr[\gamerefAi{#1}{#2} \Rightarrow 1]}
+\NewDocumentCommand{\codecommentgames}{m m}{\codecomment{$\gameref{#1}$-$\gameref{#2}$}}
+\NewDocumentCommand{\codecommentgame}{m}{\codecomment{$\gameref{#1}$}}
+\NewDocumentCommand{\timeA}{m}{t_{#1}}
+
+\NewDocumentCommand{\preprocess}{m}{\color{HotPink1}{\blacktriangleright}\:\algostyle{pre:}\:#1}
+\NewDocumentCommand{\postprocess}{m}{\color{HotPink2}{\blacktriangleright}\:\algostyle{post:}\:#1}
+\NewDocumentCommand{\globalprocess}{m}{\color{OrangeRed1}{\blacktriangleright}\:\algostyle{global:}\:#1}
+\NewDocumentCommand{\localprocess}{m}{\color{Chartreuse3}{\blacktriangleright}\:\algostyle{local:}\:#1}
+
+\NewDocumentCommand{\cqq}{}{\coloneqq}
+\NewDocumentCommand{\gnote}{m}{\hfill{\color{LightSteelBlue3}(\small#1)}}
+\NewDocumentCommand{\gn}{m}{\hfill{\color{LightSteelBlue3}(\small#1)}}
+\NewDocumentCommand{\gcomment}{m}{\codecomment{#1}}
+\NewDocumentCommand{\gcommentd}{m m}{\codecommentgames{#1}{#2}}
+
+\newclass{\eufcma}{EUF\textsf{-}CMA}
+\newclass{\eufcmaone}{EUF\textsf{-}CMA1}
+\newclass{\eufcmatwo}{EUF\textsf{-}CMA2}
+\newclass{\eufcmat}{EUF\textsf{-}CMAt}
+\newclass{\sufcma}{SUF\textsf{-}CMA}
+\newclass{\sufcmaone}{SUF\textsf{-}CMA1}
+\newclass{\sufcmatwo}{SUF\textsf{-}CMA2}
+\newclass{\sufcmat}{SUF\textsf{-}CMAt}
+
+\newclass{\indcpa}{IND\textsf{-}CPA}
+\newclass{\indcpaone}{IND\textsf{-}CPA1}
+\newclass{\indcpatwo}{IND\textsf{-}CPA2}
+\newclass{\indcpat}{IND\textsf{-}CPAt}
+\newclass{\indcca}{IND\textsf{-}CCA}
+\newclass{\indccatwo}{IND\textsf{-}CCA2}
+\newclass{\inddcpa}{IND\$\textsf{-}CPA}
+\newclass{\inddcca}{IND\$\textsf{-}CCA}
+\newclass{\nmcpa}{NM\textsf{-}CPA}
+\newclass{\nmcca}{NM\textsf{-}CCA}
+\newclass{\nmccatwo}{NM\textsf{-}CCA2}
+\newclass{\owcpa}{OW\textsf{-}CPA}
+\newclass{\owcca}{OW\textsf{-}CCA}
+
+\newclass{\maceufcma}{EUF\textsf{-}CMA}
+\newclass{\maceufcmaone}{EUF\textsf{-}CMA1}
+\newclass{\maceufcmatwo}{EUF\textsf{-}CMA2}
+\newclass{\maceufcmat}{EUF\textsf{-}CMAt}
+
+\newclass{\kemindcpa}{IND\textsf{-}CPA}
+\newclass{\kemindcca}{IND\textsf{-}CCA}
+\newclass{\kemindccatwo}{IND\textsf{-}CCA2}
+
+\let\EUFCMA\eufcma
+\let\INDCCA\indcca
+\let\INDCCAtwo\indccatwo
+\let\INDCPA\indcpa
+\let\INDDCCA\inddcca
+\let\INDDCPA\inddcpa
+\let\NMCCA\nmcca
+\let\NMCPA\nmcpa
+\let\OWCCA\owcca
+\let\OWCPA\owcpa
+\let\SUFCMA\sufcma
+
+\newcommand{\Algorithmica}{\probstyle{Algorithmica}}
+\newcommand{\Heuristica}{\probstyle{Heuristica}}
+\newcommand{\Pessiland}{\probstyle{Pessiland}}
+\newcommand{\Minicrypt}{\probstyle{Minicrypt}}
+\newcommand{\Cryptomania}{\probstyle{Cryptomania}}
+\newcommand{\Obfustopia}{\probstyle{Obfustopia}}
+
+\newfunc{\DTM}{DTM}
+\newfunc{\NDTM}{NDTM}
+\newfunc{\OracleTM}{O}
+\newfunc{\PPT}{PPT}
+\newfunc{\PTM}{PTM}
+\newfunc{\TM}{TM}
+
+\newfunc{\Circuit}{C}
+\newfunc{\ckt}{C}
+\newfunc{\cktC}{C}
+\newfunc{\cktP}{P}
+\newfunc{\cktS}{S}
+\newfunc{\cktV}{V}
+\newfunc{\LineCircuit}{Ln}
+\newfunc{\PathCircuit}{Ph}
+\newfunc{\PredecessorCircuit}{P}
+\newfunc{\SuccessorCircuit}{S}
+
+\newcommand{\CktClass}{\mathcal{C}}
+\newcommand{\Property}{\mathcal{P}}
+\newcommand{\Depth}{\algostyle{depth}}
+\newcommand{\Gates}{\algostyle{gates}}
+\newcommand{\Size}{\algostyle{size}}
+\newcommand{\Width}{\algostyle{width}}
+\newcommand{\Wires}{\algostyle{wires}}
+
+\newcommand{\Child}{\mathscr{C}}
+\newcommand{\Edge}{\algostyle{E}}
+\newcommand{\EndSolution}{\mathbb{e}}
+\newcommand{\Left}{\mathscr{l}}
+\newcommand{\Neighborhood}{\mathbb{n}}
+\newcommand{\Parent}{\mathscr{p}}
+\newcommand{\Right}{\mathscr{r}}
+\newcommand{\Sink}{\algostyle{snk}}
+\newcommand{\StartSolution}{\mathbb{s}}
+\newcommand{\Vertex}{\algostyle{V}}
+
+\newcommand{\degree}{\algostyle{deg}}
+\newcommand{\indegree}{\algostyle{in\textsf{-}deg}}
+\newcommand{\leaf}{\algostyle{lf}}
+\newcommand{\node}{\algostyle{nd}}
+\newcommand{\outdegree}{\algostyle{out\textsf{-}deg}}
+\newcommand{\source}{\algostyle{src}}
+
+\newcommand{\Sone}{\mathsf{S}^1_2}
+\newcommand{\Stwo}{\mathsf{S}^2_2}
+\newcommand{\Si}[1]{\mathsf{S}^{#1}_2}
+\newcommand{\Ti}[1]{\mathsf{T}^{#1}_2}
+
+\newcommand{\BASIC}{\mathsf{BASIC}}
+\newcommand{\IND}{\mathsf{IND}}
+\newcommand{\LIND}{\mathsf{LIND}}
+\newcommand{\PIND}{\mathsf{PIND}}
+\newcommand{\PiIND}[1]{\Pi^b_{#1}\text{-}\IND}
+\newcommand{\RIND}{\mathsf{RIND}}
+\newcommand{\SigIND}[1]{\Sigma^b_{#1}\text{-}\IND}
+\newcommand{\SigREPL}[1]{\Sigma^b_{#1}\text{-}\mathsf{REPL}}
+
+\newcommand{\AxiomsId}{\mathsf{Id}}
+\newcommand{\Axioms}{\mathsf{Ax}}
+\newcommand{\Clauses}{\mathscr{C}}
+\newcommand{\Contradiction}{\bot}
+\newcommand{\Formula}{\Phi}
+\newcommand{\GateVars}{\mathscr{G}}
+\newcommand{\Neg}[1]{\neg #1}
+\newcommand{\Pos}[1]{#1}
+\newcommand{\Prov}[2]{#1 \proves #2}
+\newcommand{\Restrict}[2]{#1\upharpoonright#2}
+\newcommand{\Seq}[2]{#1 \longmapsto #2}
+\newcommand{\Tseitin}{\mathsf{Ts}}
+\newcommand{\Weakening}{\mathscr{W}}
+
+\newcommand{\clause}[1]{\left( #1 \right)}
+\newcommand{\emptyclause}{\bot}
+\newcommand{\formula}[1]{\left\langle #1 \right\rangle}
+\newcommand{\nproves}{\nvdash}
+\newcommand{\pdepth}[1]{\mathrm{d}(#1)}
+\newcommand{\pnsim}{\nleq_p}
+\newcommand{\proves}{\vdash}
+\newcommand{\psimiff}{\equiv_p}
+\newcommand{\psim}{\leq_p}
+\newcommand{\psize}[1]{\lvert #1 \rvert}
+\newcommand{\ptrans}[1]{#1^*}
+\newcommand{\subst}[2]{[#1 / #2]}
+
+\newcommand{\Kolmogorov}{\algostyle{K}}
+\newcommand{\KC}{\Kolmogorov}
+\newcommand{\KPoly}{\Kolmogorov^{\poly}}
+\newcommand{\KS}{\algostyle{KS}}
+\newcommand{\Kt}{\Kolmogorov^{t}}
+\newcommand{\RC}{\algostyle{rK}}
+\newcommand{\RKt}{\algostyle{rK}^{t}}
+\newcommand{\pKt}{\algostyle{pK}^{t}}
+\newcommand{\rKS}{\algostyle{rKS}}
+
+\newclass{\GapMCSP}{GapMCSP}
+\newclass{\GapMKTP}{GapMKTP}
+\newclass{\MCSP}{MCSP}
+\newclass{\MINKT}{MINKT}
+\newclass{\MKTP}{MKTP}
+\newclass{\MKtP}{MK^{t}P}
+\newclass{\MRSP}{MRSP}
+\newclass{\MinPDT}{MinPDT}
+\newclass{\OSS}{OSS}
+\newclass{\PDT}{PDT}
+
+\makeatother
+\endinput

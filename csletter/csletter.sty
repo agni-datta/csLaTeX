@@ -1,0 +1,164 @@
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{csletter}[2026/04/13 v3.0 Isolated letter-formatting protocol for formal correspondence]
+
+\RequirePackage[english]{babel}
+\RequirePackage{etoolbox}
+\RequirePackage{fancyhdr}
+\RequirePackage{geometry}
+\RequirePackage{graphicx}
+\RequirePackage{iftex}
+\RequirePackage{kvoptions}
+\RequirePackage[x11names,dvipsnames]{xcolor}
+
+\SetupKeyvalOptions{family=csl,prefix=csltr@}
+
+\DeclareStringOption[black]{textcolor}
+\DeclareStringOption[blue]{accentcolor}
+\DeclareStringOption[gray]{footercolor}
+\DeclareStringOption[gray]{headercolor}
+
+\DeclareStringOption[2.5]{topmargin}
+\DeclareStringOption[2.5]{bottommargin}
+\DeclareStringOption[2.5]{leftmargin}
+\DeclareStringOption[2.5]{rightmargin}
+
+\DeclareBoolOption{header}
+\DeclareBoolOption{footer}
+\DeclareBoolOption{date}
+\DeclareBoolOption{logo}
+\DeclareBoolOption{signature}
+
+\DeclareStringOption[logo.png]{logofile}
+\DeclareStringOption[signature.png]{signaturefile}
+
+\DeclareStringOption[left]{headerpos}
+\DeclareStringOption[center]{footerpos}
+\DeclareStringOption[single]{linespacing}
+
+\ProcessKeyvalOptions*
+
+\ifPDFTeX
+	\RequirePackage[T1]{fontenc}
+	\RequirePackage{textcomp}
+	\RequirePackage{ebgaramond}
+	\RequirePackage[scaled=.95]{ysabeau}
+	\RequirePackage[scaled=.9]{noto-mono}
+\else
+	\RequirePackage{fontspec}
+	\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
+
+	\setmainfont{GaramondLibre}[
+		Extension=.otf,
+		UprightFont=*-Regular,
+		ItalicFont=*-Italic,
+		BoldFont=*-Bold,
+		BoldItalicFont=*-BoldItalic,
+		SmallCapsFont=EBGaramond-Medium.otf,
+		SmallCapsFeatures={Letters=SmallCaps},
+	]
+
+	\setmathfont{Garamond-Math.otf}[
+		AutoFakeBold,
+		StylisticSet={2,6,7,9},
+	]
+
+	\setsansfont{Ysabeau}[Scale=MatchLowercase]
+	\setmonofont{Noto Sans Mono}[Scale=MatchLowercase]
+
+	\let\mathbfcal\relax
+	\let\mathbfscr\relax
+	\RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
+\fi
+
+\definecolor{csltext}{named}{\csltr@textcolor}
+\definecolor{cslaccent}{named}{\csltr@accentcolor}
+\definecolor{cslheader}{named}{\csltr@headercolor}
+\definecolor{cslfooter}{named}{\csltr@footercolor}
+
+\color{csltext}
+
+\geometry{
+	top=\csltr@topmargin cm,
+	bottom=\csltr@bottommargin cm,
+	left=\csltr@leftmargin cm,
+	right=\csltr@rightmargin cm,
+	headheight=1.25em,
+	heightrounded,
+	a4paper
+}
+
+\AtBeginDocument{%
+	\ifdefstring{\csltr@linespacing}{onehalf}{%
+		\renewcommand{\baselinestretch}{1.5}%
+		\selectfont
+	}{%
+		\ifdefstring{\csltr@linespacing}{double}{%
+			\renewcommand{\baselinestretch}{2.0}%
+			\selectfont
+		}{%
+			\renewcommand{\baselinestretch}{1.0}%
+			\selectfont
+		}%
+	}%
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.8em}
+
+\ifcsltr@header
+	\pagestyle{fancy}
+	\fancyhf{}
+	\renewcommand{\headrulewidth}{0.4pt}
+	\ifdefstring{\csltr@headerpos}{left}{%
+		\fancyhead[L]{\color{cslheader}\slshape\fromname}%
+	}{%
+		\ifdefstring{\csltr@headerpos}{right}{%
+			\fancyhead[R]{\color{cslheader}\slshape\fromname}%
+		}{%
+			\fancyhead[C]{\color{cslheader}\slshape\fromname}%
+		}%
+	}
+\fi
+
+\ifcsltr@footer
+	\ifcsltr@header\else\pagestyle{fancy}\fi
+	\renewcommand{\footrulewidth}{0.4pt}
+	\ifdefstring{\csltr@footerpos}{left}{%
+		\fancyfoot[L]{\color{cslfooter}\thepage}%
+	}{%
+		\ifdefstring{\csltr@footerpos}{right}{%
+			\fancyfoot[R]{\color{cslfooter}\thepage}%
+		}{%
+			\fancyfoot[C]{\color{cslfooter}\thepage}%
+		}%
+	}
+\fi
+
+\newcommand{\csllogo}{%
+	\ifcsltr@logo
+		\ifdefempty{\csltr@logofile}{}{%
+			\includegraphics[height=2cm]{\csltr@logofile}%
+			\vspace{1em}%
+		}%
+	\fi
+}
+
+\newcommand{\cslsignature}{%
+	\ifcsltr@signature
+		\ifdefempty{\csltr@signaturefile}{}{%
+			\par\vspace{1em}%
+			\includegraphics[height=3em]{\csltr@signaturefile}%
+		}%
+	\fi
+}
+
+\RequirePackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=cslaccent,
+	urlcolor=cslaccent,
+	citecolor=cslaccent,
+	pdfborder={0 0 0}
+}
+
+\endinput

@@ -1,0 +1,354 @@
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{cslecture}[2026/04/13 v3.0 Lecture-notes skeleton for the article class]
+
+\RequirePackage{iftex}
+\RequirePackage{expl3}
+\RequirePackage{graphicx}
+
+\RequirePackage[T1]{fontenc}
+\RequirePackage{lmodern}
+
+\RequirePackage{babel}
+\RequirePackage[autostyle=true,csdisplay=true]{csquotes}
+
+\IfFileExists{bxpdfver.sty}{
+	\RequirePackage[2.0,objcompress,compress]{bxpdfver}
+}{}
+
+\RequirePackage[margin=2.5cm,headheight=14pt]{geometry}
+
+\IfFileExists{microtype.sty}{
+	\RequirePackage[final,protrusion=true,expansion=true]{microtype}
+	\microtypesetup{stretch=50,factor=1100}
+	\UseMicrotypeSet[protrusion]{basicmath}
+}{}
+\emergencystretch=2em
+\linespread{1.15}
+\hbadness=10000
+\vbadness=10000
+
+\RequirePackage[full]{textcomp}
+\RequirePackage[normalem]{ulem}
+\RequirePackage{paralist}
+\RequirePackage{xspace}
+\RequirePackage{xurl}
+
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{amsthm}
+\RequirePackage{mathtools}
+\RequirePackage{bm}
+\@ifundefined{mathbfcal}{}{\let\mathbfcal\relax}
+\IfFileExists{mathalpha.sty}{
+	\RequirePackage[cal=cm,bb=bboldx,scr=esstix]{mathalpha}
+}{}
+
+\RequirePackage[x11names,dvipsnames,svgnames]{xcolor}
+
+\RequirePackage{enumitem}
+\setlist{nosep}
+\setlist[enumerate,1]{label=(\arabic*)}
+\setlist[enumerate,2]{label=(\alph*)}
+\setlist[enumerate,3]{label=(\Roman*)}
+\setlist[itemize,1]  {label=\ensuremath{\bullet}}
+\setlist[itemize,2]  {label=\textendash}
+\setlist[itemize,3]  {label=\ensuremath{\circ}}
+
+\RequirePackage{framed}
+
+\RequirePackage{nameref}
+\RequirePackage[
+	bookmarksnumbered = true,
+	breaklinks        = true,
+	citecolor         = MidnightBlue,
+	colorlinks        = true,
+	linkcolor         = MidnightBlue,
+	pdfencoding       = auto,
+	pdfpagelabels     = true,
+	pdfstartview      = FitH,
+	pdfusetitle,
+	unicode           = true,
+	urlcolor          = MidnightBlue,
+]{hyperref}
+\RequirePackage[capitalize,nameinlink,noabbrev]{cleveref}
+
+\newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1}~\nameref*{#1}}}
+
+\ExplSyntaxOn
+
+\clist_new:N \lcslc_cref_list
+\seq_new:N   \lcslc_cref_seq
+
+\clist_set:Nn \lcslc_cref_list {
+	section       / \textsection  / \textsection\textsection / \textsection / \textsection\textsection ,
+	subsection    / \textsection  / \textsection\textsection / \textsection / \textsection\textsection ,
+	subsubsection / \textsection  / \textsection\textsection / \textsection / \textsection\textsection ,
+	paragraph     / paragraph     / paragraphs      / Paragraph     / Paragraphs ,
+	theorem       / theorem       / theorems        / Theorem       / Theorems ,
+	assertion     / assertion     / assertions      / Assertion     / Assertions ,
+	assumption    / assumption    / assumptions     / Assumption    / Assumptions ,
+	axiom         / axiom         / axioms          / Axiom         / Axioms ,
+	claim         / claim         / claims          / Claim         / Claims ,
+	conclusion    / conclusion    / conclusions     / Conclusion    / Conclusions ,
+	conjecture    / conjecture    / conjectures     / Conjecture    / Conjectures ,
+	corollary     / corollary     / corollaries     / Corollary     / Corollaries ,
+	criterion     / criterion     / criteria        / Criterion     / Criteria ,
+	fact          / fact          / facts           / Fact          / Facts ,
+	folklore      / folklore      / folklore        / Folklore      / Folklore ,
+	hypothesis    / hypothesis    / hypotheses      / Hypothesis    / Hypotheses ,
+	lemma         / lemma         / lemmas          / Lemma         / Lemmas ,
+	observation   / observation   / observations    / Observation   / Observations,
+	postulate     / postulate     / postulates      / Postulate     / Postulates ,
+	property      / property      / properties      / Property      / Properties ,
+	proposition   / proposition   / propositions    / Proposition   / Propositions,
+	application   / application   / applications    / Application   / Applications,
+	construction  / construction  / constructions   / Construction  / Constructions,
+	convention    / convention    / conventions     / Convention    / Conventions ,
+	definition    / definition    / definitions     / Definition    / Definitions ,
+	example       / example       / examples        / Example       / Examples ,
+	experiment    / experiment    / experiments     / Experiment    / Experiments ,
+	notation      / notation      / notations       / Notation      / Notations   ,
+	problem       / problem       / problems        / Problem       / Problems    ,
+	protocol      / protocol      / protocols       / Protocol      / Protocols   ,
+	result        / result        / results         / Result        / Results     ,
+	commentary    / commentary    / commentaries    / Commentary    / Commentaries,
+	exercise      / exercise      / exercises       / Exercise      / Exercises   ,
+	motivation    / motivation    / motivations     / Motivation    / Motivations ,
+	note          / note          / notes           / Note          / Notes       ,
+	question      / question      / questions       / Question      / Questions   ,
+	remark        / remark        / remarks         / Remark        / Remarks     ,
+	guideline     / guideline     / guidelines      / Guideline     / Guidelines  ,
+	important     / important~point / important~points / Important~Point / Important~Points,
+	insight       / insight       / insights        / Insight       / Insights    ,
+	recall        / recall        / recalls         / Recall        / Recalls     ,
+	summary       / summary       / summaries       / Summary       / Summaries   ,
+	tip           / tip           / tips            / Tip           / Tips        ,
+	warning       / warning       / warnings        / Warning       / Warnings    ,
+	proof         / proof         / proofs          / Proof         / Proofs      ,
+}
+
+\clist_map_inline:Nn \lcslc_cref_list {
+	\seq_set_split:Nnn \lcslc_cref_seq { / } { #1 }
+	\tl_set:Nx \l_tmpa_tl { \seq_item:Nn \lcslc_cref_seq {1} }
+	\tl_set:Nx \l_tmpb_tl { \seq_item:Nn \lcslc_cref_seq {2} }
+	\tl_set:Nx \l_tmpc_tl { \seq_item:Nn \lcslc_cref_seq {3} }
+	\tl_set:Nx \l_tmpd_tl { \seq_item:Nn \lcslc_cref_seq {4} }
+	\tl_set:Nx \l_tmpe_tl { \seq_item:Nn \lcslc_cref_seq {5} }
+
+	\use:x { \exp_not:N \crefname { \l_tmpa_tl } { \l_tmpb_tl } { \l_tmpc_tl } }
+	\use:x { \exp_not:N \Crefname { \l_tmpa_tl } { \l_tmpd_tl } { \l_tmpe_tl } }
+}
+
+\ExplSyntaxOff
+
+\Crefname{important}    {Important}     {Important~Points}
+\Crefname{keypoint}     {Key~Point}     {Key~Points}
+\Crefname{notationabuse}{Notation~Abuse}{Notation~Abuses}
+\Crefname{openproblem}  {Open~Problem}  {Open~Problems}
+
+\IfFileExists{thmtools.sty}{
+	\RequirePackage{thmtools}
+}{}
+\RequirePackage{tikz}
+\IfFileExists{mdframed.sty}{
+	\RequirePackage[skipabove=6pt,skipbelow=6pt,framemethod=TikZ]{mdframed}
+}{}
+
+\providecommand{\cs@endsymb}{\ensuremath{\lrcorner}}
+\@ifundefined{qedsymbol}{
+	\newcommand{\qedsymbol}{\ensuremath{\diamond}}
+}{
+	\renewcommand{\qedsymbol}{\ensuremath{\diamond}}
+}
+
+\mdfdefinestyle{cs@ruled}{
+	linewidth         = 0.5pt,
+	topline           = true,  bottomline = true,
+	leftline          = false, rightline  = false,
+	innertopmargin    = 6pt,   innerbottommargin = 6pt,
+	innerleftmargin   = 0pt,   innerrightmargin  = 0pt,
+	skipabove         = 6pt,   skipbelow         = 6pt,
+}
+
+\mdfdefinestyle{cs@titleblock}{
+	linewidth         = 0.5pt,
+	linecolor         = black,
+	backgroundcolor   = gray!1,
+	roundcorner       = 1pt,
+	innertopmargin    = 12pt, innerbottommargin = 12pt,
+	innerleftmargin   = 12pt, innerrightmargin  = 12pt,
+	skipabove         = 0pt,  skipbelow         = 20pt,
+}
+
+\declaretheoremstyle[
+	headfont=\scshape, notefont=\normalfont, bodyfont=\normalfont,
+	spaceabove=0pt, spacebelow=0pt, headpunct={.}, postheadspace=0.5em,
+	mdframed={style=cs@ruled}, qed=\cs@endsymb,
+]{cs@thmlike}
+
+\declaretheoremstyle[
+	headfont=\scshape, notefont=\normalfont, bodyfont=\normalfont,
+	spaceabove=0pt, spacebelow=0pt, headpunct={.}, postheadspace=0.5em,
+	mdframed={style=cs@ruled}, qed=\cs@endsymb,
+]{cs@deflike}
+
+\declaretheoremstyle[
+	headfont=\scshape, notefont=\normalfont, bodyfont=\normalfont,
+	spaceabove=0pt, spacebelow=0pt, headpunct={.}, postheadspace=0.5em,
+	mdframed={style=cs@ruled}, qed=\cs@endsymb,
+]{cs@remarklike}
+
+\declaretheoremstyle[
+	headfont=\sffamily, notefont=\normalfont, bodyfont=\normalfont\sffamily,
+	spaceabove=0pt, spacebelow=0pt, headpunct={.}, postheadspace=0.5em,
+	mdframed={style=cs@ruled}, qed=\cs@endsymb,
+]{cs@hltlike}
+
+\declaretheoremstyle[
+	headfont=\scshape, bodyfont=\normalfont,
+	spaceabove=0pt, spacebelow=0pt, headpunct={.}, postheadspace=0.5em,
+	numbered=no, qed=\qedsymbol,
+]{cs@prooflike}
+
+\declaretheorem[style=cs@thmlike, name=Theorem, numberwithin=section]{theorem}
+
+\ExplSyntaxOn
+
+\cs_new_protected:Npn \cslc_declare:nn #1#2 {
+	\str_set:Nx \l_tmpa_str { \str_lowercase:n {#2} }
+	\@ifundefined{declaretheorem}{}{
+		\@ifundefined{\l_tmpa_str}{
+			\use:x { \exp_not:N \declaretheorem [style=#1, name=#2, sibling=theorem] { \l_tmpa_str } }
+		}{}
+	}
+}
+
+\clist_map_inline:nn {
+	Assertion, Assumption, Axiom, Claim, Conclusion, Conjecture,
+	Corollary, Criterion, Fact, Folklore, Hypothesis, Lemma,
+	Observation, Postulate, Property, Proposition
+}{ \cslc_declare:nn {cs@thmlike} {#1} }
+
+\clist_map_inline:nn {
+	Application, Construction, Convention, Definition, Example,
+	Experiment, Notation, Problem, Protocol, Result
+}{ \cslc_declare:nn {cs@deflike} {#1} }
+
+\clist_map_inline:nn {
+	Commentary, Exercise, Motivation, Note, Question, Remark
+}{ \cslc_declare:nn {cs@remarklike} {#1} }
+
+\clist_map_inline:nn {
+	Guideline, Important, Insight, Recall, Summary, Tip, Warning
+}{ \cslc_declare:nn {cs@hltlike} {#1} }
+
+\declaretheorem[style=cs@remarklike, name={Notation~Abuse}, sibling=theorem]{notationabuse}
+\declaretheorem[style=cs@remarklike, name={Open~Problem},   sibling=theorem]{openproblem}
+\declaretheorem[style=cs@hltlike,    name={Key~Point},      sibling=theorem]{keypoint}
+
+\clist_map_inline:nn { Theorem, Lemma, Corollary, Claim, Conjecture, Hypothesis }{
+	\str_set:Nx \l_tmpa_str { \str_lowercase:n {#1} }
+	\@ifundefined{declaretheorem}{}{
+		\use:x { \exp_not:N \declaretheorem [style=cs@thmlike, name=#1, numbered=no] { \l_tmpa_str * } }
+	}
+}
+
+\ExplSyntaxOff
+
+\let\proof\relax \let\endproof\relax
+\declaretheorem[style=cs@prooflike, name=Proof]{proof}
+
+\AtBeginDocument{
+	\providecommand{\theHtheorem}{\theHsection.\arabic{theorem}}
+}
+
+\makeatletter
+
+\newif\ifcs@haspunct
+\def\cs@checkchar#1{\ifx\cs@checkchar#1\cs@checkchar\else\cs@haspuncttrue\fi}
+\def\cs@testdot   #1.\cs@e#2\cs@s  {\cs@checkchar{#2}}
+\def\cs@testquest #1?\cs@e#2\cs@s  {\cs@checkchar{#2}}
+\def\cs@testexclam#1!\cs@e#2\cs@s  {\cs@checkchar{#2}}
+\def\cs@testcolon #1:\cs@e#2\cs@s  {\cs@checkchar{#2}}
+
+\newcommand{\cs@autopunct}[1]{%
+	\cs@haspunctfalse
+	\cs@testdot   #1\cs@e.\cs@e\cs@s
+	\cs@testquest #1\cs@e?\cs@e\cs@s
+	\cs@testexclam#1\cs@e!\cs@e\cs@s
+	\cs@testcolon #1\cs@e:\cs@e\cs@s
+	#1\ifcs@haspunct\else.\fi}
+
+\def\cs@skip{\begingroup\catcode13=10\@ifnextchar\relax{\endgroup}{\endgroup}}
+
+\NewDocumentCommand{\parhead}{m}{%
+	\smallskip\noindent{\bfseries\boldmath\ignorespaces\cs@autopunct{#1}}%
+	\hskip 0.9em plus 0.3em minus 0.3em\cs@skip}
+
+\NewDocumentCommand{\subparhead}{m}{%
+	\smallskip\noindent{\scshape\ignorespaces\cs@autopunct{#1}}%
+	\hskip 0.9em plus 0.3em minus 0.3em\cs@skip}
+
+\long\def\cs@CustomFBox#1#2#3#4#5#6#7#8#9{%
+	\leavevmode\begingroup
+	\setbox\@tempboxa\hbox{%
+		\color@begingroup\kern\fboxsep{#9}\kern\fboxsep\color@endgroup}%
+	\hbox{\begingroup
+		\@tempdima#4\relax
+		\advance\@tempdima\fboxsep
+		\advance\@tempdima\dp\@tempboxa
+		\expandafter\endgroup\expandafter
+		\lower\the\@tempdima\hbox{\vbox{%
+				\hrule\@height#3\@width#7\relax#1%
+				\hbox{\vrule\@width#5\relax\hspace{#8}%
+					\vbox{\vskip\fboxsep\copy\@tempboxa\vskip\fboxsep}%
+					\vrule\@width#6\relax}%
+				#2\hrule\@height#4\@width#7\relax}}}%
+	\endgroup}
+
+\def\cs@OpenFBox#1#2{%
+	\fboxsep\FrameSep
+	\cs@CustomFBox{}{}{#1}{#2}\FrameRule\z@{1em}{0.5em}}
+
+\newenvironment{nestedbar}[1][\hsize]{%
+	\@ifundefined{OuterFrameSep}{%
+		\@latex@error{nestedbar~requires~a~recent~framed.sty}\@ehd}{}%
+	\def\FrameCommand     {\cs@OpenFBox\FrameRule\FrameRule}%
+	\def\FirstFrameCommand{\cs@OpenFBox\FrameRule\z@}%
+	\def\MidFrameCommand  {\cs@OpenFBox\z@\z@}%
+	\def\LastFrameCommand {\cs@OpenFBox\z@\FrameRule}%
+	\OuterFrameSep=1ex\FrameSep=0pt
+	\MakeFramed{\hsize#1\advance\hsize-\width\FrameRestore}%
+}{\endMakeFramed}
+
+\newcommand{\course}  [1]{\def\@course{#1}}
+\newcommand{\lecturer}[1]{\def\@lecturer{#1}}
+
+\renewcommand{\maketitle}{%
+	\thispagestyle{plain}%
+	\@ifundefined{mdframed}{
+		\noindent\rule{\linewidth}{0.4pt}\par\smallskip
+		\noindent{\Large\bfseries\@title}\par\medskip
+		\noindent
+		\@ifundefined{@author}  {}{\textbf{Author:}~\@author}\hfill
+		\@ifundefined{@date}    {}{\textbf{Date:}~\@date}\par
+		\noindent
+		\@ifundefined{@lecturer}{}{\textbf{Lecturer:}~\@lecturer}\hfill
+		\@ifundefined{@course}  {}{\textbf{Course:}~\@course}\par\smallskip
+		\noindent\rule{\linewidth}{0.4pt}\par\bigskip
+	}{
+		\begin{mdframed}[style=cs@titleblock]
+			\noindent{\Large\bfseries\boldmath\@title}\par\vskip 0.8em
+			\noindent\footnotesize
+			\@ifundefined{@author}  {}{\textbf{Author:}~\@author}\hfill
+			\@ifundefined{@date}    {}{\textbf{Date:}~\@date}\par\vskip 0.4em
+			\noindent
+			\@ifundefined{@lecturer}{}{\textbf{Lecturer:}~\@lecturer}\hfill
+			\@ifundefined{@course}  {}{\textbf{Course:}~\@course}
+		\end{mdframed}
+		\bigskip
+	}
+}
+
+\makeatother
+\endinput
