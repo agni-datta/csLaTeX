@@ -1,0 +1,1205 @@
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{csbook}[2026/04/13 v3.0 Macro framework for textbooks, manuscripts, and reports]
+
+\RequirePackage{calc}
+\RequirePackage{comment}
+\RequirePackage{etoolbox}
+\RequirePackage{iftex}
+\RequirePackage{lipsum}
+\RequirePackage{refcount}
+\RequirePackage{xkeyval}
+\RequirePackage{xparse}
+\RequirePackage{xpatch}
+
+\newif\ifcsbk@baskervaldx
+\newif\ifcsbk@concrete
+\newif\ifcsbk@draft
+\newif\ifcsbk@garamond
+\newif\ifcsbk@gfsdidot
+\newif\ifcsbk@kpfonts
+\newif\ifcsbk@latinmodern
+\newif\ifcsbk@libertine
+\newif\ifcsbk@palatino
+
+\csbk@latinmoderntrue
+\csbk@drafttrue
+
+\DeclareOption{baskervaldx}{
+    \csbk@baskervaldxtrue
+    \csbk@concretefalse
+    \csbk@gfsdidotfalse
+    \csbk@kpfontsfalse
+    \csbk@latinmodernfalse
+    \csbk@libertinefalse
+    \csbk@palatinofalse
+}
+
+\DeclareOption{concrete}{
+    \csbk@baskervaldxfalse
+    \csbk@concretetrue
+    \csbk@gfsdidotfalse
+    \csbk@kpfontsfalse
+    \csbk@latinmodernfalse
+    \csbk@libertinefalse
+    \csbk@palatinofalse
+}
+
+\DeclareOption{garamond}{
+    \csbk@baskervaldxfalse
+    \csbk@concretefalse
+    \csbk@garamondtrue
+    \csbk@gfsdidotfalse
+    \csbk@kpfontsfalse
+    \csbk@latinmodernfalse
+    \csbk@libertinefalse
+    \csbk@palatinofalse
+}
+
+\DeclareOption{gfsdidot}{
+    \csbk@baskervaldxfalse
+    \csbk@concretefalse
+    \csbk@gfsdidottrue
+    \csbk@kpfontsfalse
+    \csbk@latinmodernfalse
+    \csbk@libertinefalse
+    \csbk@palatinofalse
+}
+
+\DeclareOption{kpfonts}{
+    \csbk@baskervaldxfalse
+    \csbk@concretefalse
+    \csbk@gfsdidotfalse
+    \csbk@kpfontstrue
+    \csbk@latinmodernfalse
+    \csbk@libertinefalse
+    \csbk@palatinofalse
+}
+
+\DeclareOption{latinmodern}{
+    \csbk@baskervaldxfalse
+    \csbk@concretefalse
+    \csbk@gfsdidotfalse
+    \csbk@kpfontsfalse
+    \csbk@latinmoderntrue
+    \csbk@libertinefalse
+    \csbk@palatinofalse
+}
+
+\DeclareOption{libertine}{
+    \csbk@baskervaldxfalse
+    \csbk@concretefalse
+    \csbk@gfsdidotfalse
+    \csbk@kpfontsfalse
+    \csbk@latinmodernfalse
+    \csbk@libertinetrue
+    \csbk@palatinofalse
+}
+
+\DeclareOption{palatino}{
+    \csbk@baskervaldxfalse
+    \csbk@concretefalse
+    \csbk@gfsdidotfalse
+    \csbk@kpfontsfalse
+    \csbk@latinmodernfalse
+    \csbk@libertinefalse
+    \csbk@palatinotrue
+}
+
+\DeclareOption{draft}{\csbk@drafttrue}
+\DeclareOption{final}{\csbk@draftfalse}
+
+\DeclareOption*{
+    \PackageWarning{csbook}{Unknown option `\CurrentOption' ignored}
+}
+
+\ProcessOptions\relax
+
+\makeatletter
+
+\tracinglostchars=0
+\def\@font@warning#1{}
+
+\RequirePackage[T1]{fontenc}
+
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{amsthm}
+\RequirePackage[USenglish]{babel}
+\RequirePackage[
+    2.0,
+    objcompress,
+    compress
+]{bxpdfver}
+\RequirePackage[
+    autostyle=true,
+    csdisplay=true
+]{csquotes}
+\RequirePackage{emptypage}
+\RequirePackage{mathrsfs}
+\RequirePackage{mathtools}
+\RequirePackage{moresize}
+\RequirePackage{paralist}
+\RequirePackage{setspace}
+\RequirePackage{soul}
+\RequirePackage[full]{textcomp}
+\RequirePackage{thmtools}
+\RequirePackage[normalem]{ulem}
+\RequirePackage[
+    dvipsnames,
+    table,
+    x11names
+]{xcolor}
+\RequirePackage{xspace}
+\RequirePackage{xurl}
+
+\RequirePackage[margin=2.5cm]{geometry}
+
+\RequirePackage[
+    final,
+    protrusion = true,
+    expansion  = true
+]{microtype}
+
+\microtypesetup{
+    activate   = true,
+    expansion  = true,
+    factor     = 1250,
+    protrusion = true,
+    stretch    = 25
+}
+
+\UseMicrotypeSet[protrusion]{basicmath}
+\UseMicrotypeSet[expansion]{alltext}
+
+\SetExpansion{encoding=*,family=*}{
+    stretch=25,
+    shrink=25,
+    step=1
+}
+\SetProtrusion{encoding=*,family=*}{
+    period={,50},
+    comma={,40},
+    colon={,30},
+    semicolon={,30}
+}
+\emergencystretch=2em
+
+\ifLuaTeX
+
+    \RequirePackage{fontspec}
+    \RequirePackage{lmodern}
+    \RequirePackage{sansmath}
+    \RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket,no-alphabet}]{unicode-math}
+
+    \ifcsbk@baskervaldx
+        \setmainfont{Baskervaldx}[
+            Ligatures         = TeX,
+            SmallCapsFeatures = {RawFeature=+smcp},
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setsansfont{Libertinus Sans}[
+            Scale             = MatchUppercase,
+            Ligatures         = TeX,
+            SmallCapsFeatures = {RawFeature=+smcp},
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmonofont{Noto Sans Mono}[
+            Scale             = MatchLowercase,
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmathfont{KPMath-Regular}[
+            AutoFakeBold,
+            AutoFakeSlant,
+            Scale             = MatchUppercase,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmathfont{Baskervaldx-Reg}[
+            Scale             = MatchUppercase,
+            range             = {up/{latin,Latin,num}},
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmathfont{Baskervaldx-Ita}[
+            Scale             = MatchUppercase,
+            range             = {it/{latin,Latin}},
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmathfont{Libertinus Sans}[
+            Scale             = MatchUppercase,
+            range             = {sfup/{latin,Latin,num},sfit/{latin,Latin}},
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmathfont{Noto Sans Mono}[
+            Scale             = MatchUppercase,
+            range             = {tt/{latin,Latin,num}},
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \let\mathbfcal\relax
+        \let\mathbfscr\relax
+        \RequirePackage[
+            cal=txupr,
+            bb=stix,
+            scr=dutchcal
+        ]{mathalpha}
+    \fi
+
+    \ifcsbk@concrete
+        \RequirePackage[euler]{fontsetup}
+        \defaultfontfeatures{
+            SmallCapsFeatures = {RawFeature=+smcp,+lnum,+tnum},
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        }
+        \let\mathbfcal\relax
+        \let\mathbfscr\relax
+        \RequirePackage[
+            cal=txupr,
+            bb=stix,
+            scr=esstix
+        ]{mathalpha}
+    \fi
+
+    \ifcsbk@garamond
+        \setmainfont{GaramondLibre-Regular}[
+            Ligatures         = TeX,
+            BoldFont          = GaramondLibre-Bold.otf,
+            BoldItalicFont    = GaramondLibre-BoldItalic.otf,
+            ItalicFont        = GaramondLibre-Italic.otf,
+            SmallCapsFont     = EBGaramond-Regular.otf,
+            SmallCapsFeatures = {RawFeature=+smcp},
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setsansfont{Libertinus Sans}[
+            Scale             = MatchUppercase,
+            Ligatures         = TeX,
+            SmallCapsFeatures = {RawFeature=+smcp},
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmonofont{Noto Sans Mono}[
+            Scale             = MatchLowercase,
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmathfont{Garamond Math}[
+            AutoFakeBold,
+            AutoFakeSlant,
+            Scale             = MatchUppercase,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmathfont{GaramondLibre-Regular}[
+            Scale             = MatchUppercase,
+            range             = {up/{latin,Latin,num}},
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmathfont{GaramondLibre-Italic}[
+            Scale             = MatchUppercase,
+            range             = {it/{latin,Latin}},
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmathfont{Libertinus Sans}[
+            Scale             = MatchUppercase,
+            range             = {sfup/{latin,Latin,num},sfit/{latin,Latin}},
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmathfont{Noto Sans Mono}[
+            Scale             = MatchUppercase,
+            range             = {tt/{latin,Latin,num}},
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \let\mathbfcal\relax
+        \let\mathbfscr\relax
+        \RequirePackage[
+            cal=txupr,
+            bb=stix,
+            scr=esstix
+        ]{mathalpha}
+    \fi
+
+    \ifcsbk@gfsdidot
+        \RequirePackage[gfsdidot]{fontsetup}
+        \setsansfont{Libertinus Sans}[
+            Scale             = MatchUppercase,
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmonofont{Noto Sans Mono}[
+            Scale             = MatchLowercase,
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \let\mathbfcal\relax
+        \let\mathbfscr\relax
+        \RequirePackage[
+            cal=cm,
+            bb=stix,
+            scr=dutchcal
+        ]{mathalpha}
+    \fi
+
+    \ifcsbk@kpfonts
+        \RequirePackage[nosf,noDcommand,fakedscripts]{kpfonts-otf}
+        \setsansfont{Libertinus Sans}[
+            Scale             = MatchUppercase,
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmonofont{Noto Sans Mono}[
+            Scale             = MatchLowercase,
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \let\mathbfcal\relax
+        \let\mathbfscr\relax
+        \RequirePackage[
+            cal=cm,
+            bb=stix,
+            scr=dutchcal
+        ]{mathalpha}
+    \fi
+
+    \ifcsbk@latinmodern
+        \setmainfont{NewCM10-Book.otf}[
+            Ligatures         = TeX,
+            SmallCapsFont     = NewCM10-Book.otf,
+            SmallCapsFeatures = {RawFeature=+smcp},
+            RawFeature        = {+calt,+case,+cpsp,+kern,+liga,+lnum,+tnum}
+        ]
+        \setsansfont{NewCMSans10-Book.otf}[
+            Scale             = MatchUppercase,
+            Ligatures         = TeX,
+            SmallCapsFont     = NewCMSans10-Book.otf,
+            SmallCapsFeatures = {RawFeature=+smcp},
+            RawFeature        = {+calt,+case,+cpsp,+kern,+liga,+lnum,+tnum}
+        ]
+        \setmonofont{NewCMMono10-Book.otf}[
+            Scale             = MatchLowercase,
+            Ligatures         = TeX,
+            SmallCapsFont     = NewCMMono10-Book.otf,
+            SmallCapsFeatures = {RawFeature=+smcp},
+            RawFeature        = {+calt,+case,+cpsp,+kern,+liga,+lnum,+tnum}
+        ]
+        \setmathfont{NewCMMath-Book.otf}[
+            AutoFakeBold,
+            AutoFakeSlant,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \let\mathbfcal\relax
+        \let\mathbfscr\relax
+        \RequirePackage[
+            cal=cm,
+            bb=stix,
+            scr=dutchcal
+        ]{mathalpha}
+    \fi
+
+    \ifcsbk@libertine
+        \setmainfont{Libertinus Serif}[
+            Ligatures         = TeX,
+            SmallCapsFeatures = {RawFeature=+smcp},
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setsansfont{Libertinus Sans}[
+            Scale             = MatchUppercase,
+            Ligatures         = TeX,
+            SmallCapsFeatures = {RawFeature=+smcp},
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmonofont{Noto Sans Mono}[
+            Scale             = MatchLowercase,
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmathfont{Libertinus Math}[
+            AutoFakeBold,
+            AutoFakeSlant,
+            Scale             = MatchUppercase,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \let\mathbfcal\relax
+        \let\mathbfscr\relax
+        \RequirePackage[
+            cal=cm,
+            bb=stix,
+            scr=dutchcal
+        ]{mathalpha}
+    \fi
+
+    \ifcsbk@palatino
+        \setmainfont{TeX Gyre Pagella}[
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setsansfont{Libertinus Sans}[
+            Scale             = MatchUppercase,
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmonofont{Noto Sans Mono}[
+            Scale             = MatchLowercase,
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmathfont{TeX Gyre Pagella Math}[
+            AutoFakeBold,
+            AutoFakeSlant,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \let\mathbfcal\relax
+        \let\mathbfscr\relax
+        \RequirePackage[
+            cal=cm,
+            bb=stix,
+            scr=dutchcal
+        ]{mathalpha}
+    \fi
+
+\else
+
+    \ifcsbk@baskervaldx
+        \RequirePackage[
+            proportional,
+            tabular
+        ]{Baskervaldx}
+        \RequirePackage{biolinum}
+        \RequirePackage[
+            baskervaldx,
+            varbb
+        ]{newtxmath}
+        \RequirePackage[
+            cal=txupr,
+            bb=stix,
+            scr=dutchcal
+        ]{mathalpha}
+    \fi
+
+    \ifcsbk@concrete
+        \RequirePackage{ccfonts}
+        \RequirePackage{concmath}
+        \RequirePackage[
+            cal=cm,
+            bb=stix,
+            scr=dutchcal
+        ]{mathalpha}
+    \fi
+
+    \ifcsbk@garamond
+        \RequirePackage[
+            proportional,
+            tabular
+        ]{garamondlibre}
+        \RequirePackage{biolinum}
+        \RequirePackage[
+            ebgaramond,
+            varbb
+        ]{newtxmath}
+        \RequirePackage[
+            cal=txupr,
+            bb=stix,
+            scr=dutchcal
+        ]{mathalpha}
+    \fi
+
+    \ifcsbk@gfsdidot
+        \RequirePackage{AnonymousPro}
+        \RequirePackage{biolinum}
+        \RequirePackage{gfsdidot}
+        \RequirePackage[
+            libertine,
+            varbb
+        ]{newtxmath}
+        \renewcommand{\sfdefault}{LinuxBiolinumT-TLF}
+        \RequirePackage[
+            cal=cm,
+            bb=stix,
+            scr=dutchcal
+        ]{mathalpha}
+    \fi
+
+    \ifcsbk@kpfonts
+        \RequirePackage{AnonymousPro}
+        \RequirePackage{biolinum}
+        \RequirePackage[
+            tabular
+        ]{libertineRoman}
+        \RequirePackage[
+            libertine,
+            varbb
+        ]{newtxmath}
+        \RequirePackage[
+            cal=cm,
+            bb=stix,
+            scr=dutchcal
+        ]{mathalpha}
+        \PackageWarning{csbook}{kpfonts: use LuaLaTeX instead of pdfLaTeX.}
+    \fi
+
+    \ifcsbk@latinmodern
+        \RequirePackage{lmodern}
+        \RequirePackage[
+            cal=cm,
+            bb=stix,
+            scr=dutchcal
+        ]{mathalpha}
+    \fi
+
+    \ifcsbk@libertine
+        \RequirePackage{AnonymousPro}
+        \RequirePackage{biolinum}
+        \RequirePackage[
+            tabular
+        ]{libertineRoman}
+        \RequirePackage[
+            libertine,
+            varbb
+        ]{newtxmath}
+        \RequirePackage[
+            cal=cm,
+            bb=stix,
+            scr=dutchcal
+        ]{mathalpha}
+    \fi
+
+    \ifcsbk@palatino
+        \RequirePackage{AnonymousPro}
+        \RequirePackage{biolinum}
+        \RequirePackage{tgpagella}
+        \RequirePackage[sc]{mathpazo}
+        \RequirePackage[
+            cal=cm,
+            bb=stix,
+            scr=dutchcal
+        ]{mathalpha}
+    \fi
+
+\fi
+
+\RequirePackage{adjustbox}
+\RequirePackage{array}
+\RequirePackage{booktabs}
+\RequirePackage{colortbl}
+\RequirePackage{dashbox}
+\RequirePackage{diagbox}
+\RequirePackage{fancybox}
+\RequirePackage{floatrow}
+\RequirePackage{framed}
+\RequirePackage{graphicx}
+\RequirePackage{hhline}
+\RequirePackage{longtable}
+\RequirePackage{makecell}
+\RequirePackage{multicol}
+\RequirePackage{multirow}
+\RequirePackage{ragged2e}
+\RequirePackage{subcaption}
+\RequirePackage{tabularray}
+\RequirePackage{tabularx}
+\RequirePackage{threeparttable}
+\RequirePackage{verbatim}
+\RequirePackage{xhfill}
+\RequirePackage{xtab}
+
+\RequirePackage{caption}
+
+\AtBeginDocument{
+    \captionsetup{
+        font            = {rm,small},
+        labelfont       = {sc,small},
+        labelsep        = period,
+        skip            = 5pt,
+        justification   = justified
+    }
+}
+
+\RequirePackage{enumitem}
+
+\setlist{nosep, noitemsep}
+\setlist[enumerate, 1]{label = (\arabic*)}
+\setlist[enumerate, 2]{label = (\alph*)}
+\setlist[enumerate, 3]{label = (\Roman*)}
+\setlist[itemize,   1]{label = \ensuremath{\text{-}}}
+\setlist[itemize,   2]{label = \ensuremath{\bullet}}
+\setlist[itemize,   3]{label = \ensuremath{\circ}}
+
+\RequirePackage[makeindex]{imakeidx}
+\makeindex[intoc, title={Index}, columns=2]
+
+\NewDocumentCommand{\annotation}{m}{\footnote{#1}}
+\NewDocumentCommand{\term}{m}{\index{#1}\textit{#1}}
+
+\RequirePackage{nameref}
+\RequirePackage[
+    bookmarks          = false,
+    bookmarksnumbered  = true,
+    breaklinks         = true,
+    citecolor          = DodgerBlue2,
+    colorlinks         = true,
+    hypertexnames      = true,
+    linkcolor          = SteelBlue4,
+    pagebackref        = true,
+    pdfencoding        = auto,
+    pdfpagelabels      = true,
+    pdfpagelayout      = SinglePage,
+    pdfstartview       = FitH,
+    pdfusetitle,
+    unicode            = true,
+    urlcolor           = Purple2
+]{hyperref}
+\pdfstringdefDisableCommands{
+    \def\mathbb#1{#1}
+    \def\mathcal#1{#1}
+    \def\mathfrak#1{#1}
+    \def\mathrm#1{#1}
+    \def\mathscr#1{#1}
+    \def\mathsf#1{#1}
+    \def\mathtt#1{#1}
+    \def\var#1{#1}
+}
+\RequirePackage[nameinlink,capitalise,noabbrev]{cleveref}
+\RequirePackage{xr}
+
+\RequirePackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\chaptermark}[1]{\markboth{\scshape#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\scshape#1}}
+
+\AtBeginDocument{
+    \fancyhead[CE]{\small\scshape\@title}
+    \fancyhead[CO]{\small\scshape\rightmark}
+    \fancyfoot[C]{\small\thepage}
+}
+
+\RequirePackage{titlesec}
+
+\def\@partfont{\normalfont\raggedleft}
+\def\@partlabelfont{\huge\scshape}
+\def\@chapterfont{\huge\sffamily\raggedleft}
+\def\@chapterlabelfont{\normalfont\scshape}
+\def\@sectionfont{\large\centering\scshape}
+\def\@sectionnumfont{\normalfont}
+\def\@subsectionfont{\normalfont\normalsize\scshape\centering}
+\def\@subsubsectionfont{\normalfont\normalsize\scshape}
+
+\NewDocumentCommand{\partfont}         {m}{\def\@partfont{#1}}
+\NewDocumentCommand{\partlabelfont}    {m}{\def\@partlabelfont{#1}}
+\NewDocumentCommand{\chapterfont}      {m}{\def\@chapterfont{#1}}
+\NewDocumentCommand{\chapterlabelfont} {m}{\def\@chapterlabelfont{#1}}
+\NewDocumentCommand{\sectionfont}      {m}{\def\@sectionfont{#1}}
+\NewDocumentCommand{\sectionnumfont}   {m}{\def\@sectionnumfont{#1}}
+\NewDocumentCommand{\subsectionfont}   {m}{\def\@subsectionfont{#1}}
+\NewDocumentCommand{\subsubsectionfont}{m}{\def\@subsubsectionfont{#1}}
+
+\titleformat{\part}[display]
+{\@partfont}
+{\@partlabelfont\partname\enspace\thepart}
+{8pt}
+{\titlerule[1pt]\bigskip\Huge}
+[{\bigskip\titlerule[1pt]}]
+
+\titlespacing*{\part}{0pt}{\fill}{\fill}
+
+\titleformat{\chapter}[display]
+{\filcenter}
+{\raggedleft\@chapterlabelfont{\enspace\chaptername}\enspace{\Huge\thechapter}\medskip}
+{0.3ex}
+{\titlerule[1pt]\vskip2.5ex\@chapterfont}
+[{\medskip\titlerule[1pt]}]
+
+\titleformat{\section}[block]
+{\@sectionfont}
+{}
+{1em}
+{{\@sectionnumfont\textsection\;\thesection}\enspace}
+[]
+
+\titleformat{\subsection}[runin]
+{\@subsectionfont}
+{\textsection\textsection\;\thesubsection}
+{1em}
+{}[.]
+
+\titleformat{\subsubsection}[runin]
+{\@subsubsectionfont}
+{\thesubsubsection.}
+{1em}
+{}[.]
+
+\titlespacing*{\subsubsection}{0pt}{1em}{1em}
+
+\renewcommand*{\backref}[1]{}
+\renewcommand*{\backrefalt}[4]{
+    \ifcase #1\or (Cited on p.~#2).
+    \else (Cited on pp.~#2).
+    \fi
+}
+
+\RequirePackage[most]{tcolorbox}
+\RequirePackage[
+    framemethod = TikZ,
+    ntheorem,
+    skipabove   = 10pt,
+    skipbelow   = 10pt,
+]{mdframed}
+
+\numberwithin{equation}{section}
+
+\NewDocumentCommand{\commonsymb}{}{\ensuremath{\lrcorner}}
+\NewDocumentCommand{\commonstartsymb}{}{\ensuremath{\diamond}}
+
+\mdfdefinestyle{csbk@ruled}{
+    linewidth           = 0.5pt,
+    topline             = true,
+    bottomline          = true,
+    leftline            = false,
+    rightline           = false,
+    innertopmargin      = 6pt,
+    innerbottommargin   = 6pt,
+    innerleftmargin     = 1pt,
+    innerrightmargin    = 1pt,
+    skipabove           = 6pt,
+    skipbelow           = 6pt,
+}
+
+\declaretheoremstyle[
+    headfont            = \scshape,
+    notefont            = \normalfont,
+    bodyfont            = \normalfont,
+    spaceabove          = 0pt,
+    spacebelow          = 0pt,
+    headpunct           = {.},
+    postheadspace       = 0.5em,
+    mdframed            = {style=csbk@ruled},
+    qed                 = \commonsymb
+]{csbk@theoremlike}
+
+\declaretheoremstyle[
+    headfont            = \scshape\commonstartsymb~,
+    notefont            = \normalfont,
+    bodyfont            = \normalfont,
+    spaceabove          = 0pt,
+    spacebelow          = 0pt,
+    headpunct           = {.},
+    postheadspace       = 0.5em,
+    mdframed            = {style=csbk@ruled},
+    qed                 = \commonsymb
+]{csbk@definitionlike}
+
+\declaretheoremstyle[
+    headfont            = \normalfont\scshape,
+    notefont            = \normalfont,
+    bodyfont            = \normalfont,
+    spaceabove          = 0pt,
+    spacebelow          = 0pt,
+    headpunct           = {.},
+    postheadspace       = 0.5em,
+    mdframed            = {style=csbk@ruled},
+    qed                 = \commonsymb
+]{csbk@remarklike}
+
+\declaretheoremstyle[
+    headfont            = \normalfont\sffamily,
+    notefont            = \normalfont,
+    bodyfont            = \normalfont,
+    spaceabove          = 0pt,
+    spacebelow          = 0pt,
+    headpunct           = {.},
+    postheadspace       = 0.5em,
+    mdframed            = {style=csbk@ruled},
+    qed                 = \commonsymb
+]{csbk@highlightlike}
+
+\declaretheorem[
+    name                = Theorem,
+    style               = csbk@theoremlike,
+    numberwithin        = section
+]{theorem}
+
+\renewcommand{\qedsymbol}{$\diamond$}
+
+\newcommand\csbk@declaretheoremfamily[2]{
+    \forcsvlist{\declaretheorem[sibling=theorem,style=#1]}{#2}
+}
+
+\csbk@declaretheoremfamily{csbk@theoremlike}{
+    assertion,
+    assumption,
+    axiom,
+    claim,
+    conclusion,
+    conjecture,
+    corollary,
+    criterion,
+    fact,
+    folklore,
+    hypothesis,
+    lemma,
+    observation,
+    postulate,
+    property,
+    proposition
+}
+
+\csbk@declaretheoremfamily{csbk@definitionlike}{
+    application,
+    construction,
+    convention,
+    definition,
+    example,
+    experiment,
+    notation,
+    problem,
+    protocol,
+    result,
+    solution,
+    step
+}
+
+\csbk@declaretheoremfamily{csbk@remarklike}{
+    commentary,
+    discussion,
+    exercise,
+    motivation,
+    notationabuse,
+    note,
+    openproblem,
+    question,
+    remark,
+    syntax
+}
+
+\csbk@declaretheoremfamily{csbk@highlightlike}{
+    guideline,
+    highlight,
+    important,
+    insight,
+    keypoint,
+    recall,
+    summary,
+    takeaway,
+    tip,
+    warning
+}
+
+\declaretheorem[name=Theorem,       style=csbk@theoremlike,  numbered=no]{theorem*}
+\declaretheorem[name=Lemma,         style=csbk@theoremlike,  numbered=no]{lemma*}
+\declaretheorem[name=Corollary,     style=csbk@theoremlike,  numbered=no]{corollary*}
+\declaretheorem[name=Hypothesis,    style=csbk@theoremlike,  numbered=no]{hypothesis*}
+\declaretheorem[name=Claim,         style=csbk@theoremlike,  numbered=no]{claim*}
+\declaretheorem[name=Conjecture,    style=csbk@theoremlike,  numbered=no]{conjecture*}
+\declaretheorem[name=Open Problem,  style=csbk@remarklike,   numbered=no]{openproblem*}
+\declaretheorem[name=Syntax,        style=csbk@remarklike,   numbered=no]{syntax*}
+
+\crefname{section}{\textsection}{\textsection\textsection}
+\Crefname{section}{\textsection}{\textsection\textsection}
+\crefname{subsection}{\textsection}{\textsection\textsection}
+\Crefname{subsection}{\textsection}{\textsection\textsection}
+\crefname{subsubsection}{\textsection}{\textsection\textsection}
+\Crefname{subsubsection}{\textsection}{\textsection\textsection}
+\crefname{paragraph}{paragraph}{paragraphs}
+\Crefname{paragraph}{Paragraph}{Paragraphs}
+\crefname{subparagraph}{subparagraph}{subparagraphs}
+\Crefname{subparagraph}{Subparagraph}{Subparagraphs}
+
+\newcommand\csbk@setcrefnames[1]{
+    \forcsvlist{\csbk@setcrefname@single}{#1}
+}
+\def\csbk@setcrefname@single#1{
+    \csbk@setcrefname@parse#1\csbk@nil
+}
+\def\csbk@setcrefname@parse#1/#2/#3\csbk@nil{
+    \crefname{#1}{#2}{#3}
+}
+
+\csbk@setcrefnames{
+    application/Application/Applications,
+    assertion/Assertion/Assertions,
+    assumption/Assumption/Assumptions,
+    axiom/Axiom/Axioms,
+    claim/Claim/Claims,
+    commentary/Commentary/Commentaries,
+    conclusion/Conclusion/Conclusions,
+    conjecture/Conjecture/Conjectures,
+    construction/Construction/Constructions,
+    convention/Convention/Conventions,
+    corollary/Corollary/Corollaries,
+    criterion/Criterion/Criteria,
+    definition/Definition/Definitions,
+    discussion/Discussion/Discussions,
+    example/Example/Examples,
+    exercise/Exercise/Exercises,
+    experiment/Experiment/Experiments,
+    fact/Fact/Facts,
+    folklore/Folklore/Folklore,
+    guideline/Guideline/Guidelines,
+    highlight/Highlight/Highlights,
+    hypothesis/Hypothesis/Hypotheses,
+    important/Important point/Important points,
+    insight/Insight/Insights,
+    keypoint/Key point/Key points,
+    lemma/Lemma/Lemmas,
+    motivation/Motivation/Motivations,
+    notation/Notation/Notations,
+    notationabuse/Notation abuse/Notation abuses,
+    note/Note/Notes,
+    observation/Observation/Observations,
+    openproblem/Open problem/Open problems,
+    postulate/Postulate/Postulates,
+    problem/Problem/Problems,
+    proof/Proof/Proofs,
+    property/Property/Properties,
+    proposition/Proposition/Propositions,
+    protocol/Protocol/Protocols,
+    question/Question/Questions,
+    recall/Recall/Recalls,
+    remark/Remark/Remarks,
+    result/Result/Results,
+    solution/Solution/Solutions,
+    step/Step/Steps,
+    summary/Summary/Summaries,
+    syntax/Syntax/Syntaxes,
+    takeaway/Takeaway/Takeaways,
+    theorem/Theorem/Theorems,
+    tip/Tip/Tips,
+    warning/Warning/Warnings
+}
+
+\newif\ifcsbk@haspunctuation
+
+\def\csbk@checkpunctuation#1{%
+    \ifx\csbk@checkpunctuation#1\csbk@checkpunctuation
+    \else
+        \csbk@haspunctuationtrue
+    \fi
+}
+
+\def\csbk@checkdot#1.\csbk@delim#2\csbk@stop{\csbk@checkpunctuation{#2}}
+\def\csbk@checkquestion#1?\csbk@delim#2\csbk@stop{\csbk@checkpunctuation{#2}}
+\def\csbk@checkexclam#1!\csbk@delim#2\csbk@stop{\csbk@checkpunctuation{#2}}
+\def\csbk@checkcolon#1:\csbk@delim#2\csbk@stop{\csbk@checkpunctuation{#2}}
+
+\def\csbk@appendpunctuationifneeded#1{%
+    \csbk@haspunctuationfalse
+    \csbk@checkdot#1\csbk@delim.\csbk@delim\csbk@stop
+    \csbk@checkquestion#1\csbk@delim?\csbk@delim\csbk@stop
+    \csbk@checkexclam#1\csbk@delim!\csbk@delim\csbk@stop
+    \csbk@checkcolon#1\csbk@delim:\csbk@delim\csbk@stop
+    #1\ifcsbk@haspunctuation \else.\fi%
+}
+
+\def\csbk@ignorewhitespaceandimplicitpars{%
+    \begingroup
+    \catcode13=10 %
+    \@ifnextchar\relax
+    {\endgroup}
+    {\endgroup}%
+}
+
+\NewDocumentCommand{\csbk@paragraphhead}{m}{%
+    \smallskip
+    \noindent
+    \textbf{\boldmath\ignorespaces\csbk@appendpunctuationifneeded{#1}}%
+    \hskip 0.9em plus 0.3em minus 0.3em
+    \csbk@ignorewhitespaceandimplicitpars
+}
+
+\NewDocumentCommand{\csbk@subparagraphhead}{m}{%
+    \smallskip
+    \noindent
+    \textsc{\ignorespaces\csbk@appendpunctuationifneeded{#1}}%
+    \hskip 0.9em plus 0.3em minus 0.3em
+    \csbk@ignorewhitespaceandimplicitpars
+}
+
+\NewDocumentCommand{\parhead}{m}{\csbk@paragraphhead{#1}}
+\NewDocumentCommand{\subparhead}{m}{\csbk@subparagraphhead{#1}}
+
+\AtBeginDocument{%
+    \RenewDocumentCommand{\Pr}{}{\mathop{\mathsf{Pr}}}%
+    \RenewDocumentCommand{\paragraph}{m}{\parhead{#1}}%
+    \RenewDocumentCommand{\subparagraph}{m}{\subparhead{#1}}%
+}
+
+\RequirePackage{marginnote}
+
+\providecommand{\csbk@colorize}{\color{Firebrick2}}
+
+\newcommand{\csbk@brokenrefmark}[1]{
+    \marginnote[
+        {\csbk@colorize\normalfont\smash{\LARGE$\star$}\,\tiny\sffamily#1}
+    ]{
+        {\csbk@colorize\normalfont\smash{\LARGE$\star$}\,\tiny\sffamily#1}
+    }
+}
+
+\newbool{csbk@markundef}
+\booltrue{csbk@markundef}
+
+\xpretocmd{\G@refundefinedtrue}{
+    \ifbool{csbk@markundef}{
+        \csbk@brokenrefmark{\@ifundefined{@citeb}{}{\@citeb}}
+    }{}
+}{}{}
+
+\let\csbk@old@setref\@setref
+\renewcommand{\@setref}[3]{
+    \ifx#1\relax\csbk@brokenrefmark{#3}\fi
+    \csbk@markundeffalse
+    \csbk@old@setref{#1}{#2}{#3}
+    \csbk@markundeftrue
+}
+
+\NewDocumentCommand{\newguymarker}{m m m}{
+    \ifcsbk@draft
+        \expandafter\newcommand\csname #1\endcsname[1]{
+            \textcolor{#3}{##1\ \textsc{#2}}
+            \marginnote{\textcolor{#3}{\LARGE$\star$}}
+        }
+    \else
+        \expandafter\newcommand\csname #1\endcsname[1]{}
+    \fi
+}
+
+\ifcsbk@draft
+    \NewDocumentCommand{\added}{m}{
+        \textcolor{OliveGreen}{#1}\marginnote{\textcolor{OliveGreen}{\LARGE$\star$}}
+    }
+    \NewDocumentCommand{\changed}{m}{
+        \textcolor{PineGreen}{#1}\marginnote{\textcolor{PineGreen}{\LARGE$\star$}}
+    }
+    \NewDocumentCommand{\citelater}{m}{
+        \textcolor{WildStrawberry}{[#1]}\marginnote{\textcolor{WildStrawberry}{\LARGE$\star$}}
+    }
+    \NewDocumentCommand{\fixme}{m}{
+        \textcolor{OrangeRed}{[\textsc{Fix-me}: #1]}\marginnote{\textcolor{OrangeRed}{\LARGE$\star$}}
+    }
+    \NewDocumentCommand{\missing}{m}{
+        \textcolor{Crimson}{#1}\marginnote{\textcolor{Crimson}{\LARGE$\star$}}
+    }
+    \NewDocumentCommand{\notes}{m}{
+        \textcolor{ForestGreen}{[\textsc{Note}: #1]}\marginnote{\textcolor{ForestGreen}{\LARGE$\star$}}
+    }
+    \NewDocumentCommand{\query}{m}{
+        \textcolor{RoyalPurple}{[\textsc{Query}: #1]}\marginnote{\textcolor{RoyalPurple}{\LARGE$\star$}}
+    }
+    \NewDocumentCommand{\removed}{m}{
+        \textcolor{Periwinkle}{\sout{#1}}\marginnote{\textcolor{Periwinkle}{\LARGE$\star$}}
+    }
+    \NewDocumentCommand{\todo}{m}{
+        \textcolor{Mahogany}{[\textsc{To-do}: #1]}\marginnote{\textcolor{Mahogany}{\LARGE$\star$}}
+    }
+\else
+    \NewDocumentCommand{\added}{m}{}
+    \NewDocumentCommand{\changed}{m}{}
+    \NewDocumentCommand{\citelater}{m}{}
+    \NewDocumentCommand{\fixme}{m}{}
+    \NewDocumentCommand{\missing}{m}{}
+    \NewDocumentCommand{\notes}{m}{}
+    \NewDocumentCommand{\query}{m}{}
+    \NewDocumentCommand{\removed}{m}{}
+    \NewDocumentCommand{\todo}{m}{}
+\fi
+
+\RequirePackage{etoc}
+\RequirePackage[nottoc]{tocbibind}
+
+\etocsetstyle{part}
+{\addvspace{2.618\baselineskip}\etocskipfirstprefix}
+{\addvspace{0.382\baselineskip}}
+{
+    \vskip0.618\baselineskip
+    \titlerule
+    \vskip0.382\baselineskip
+    \noindent\normalsize\scshape\etocnumber\enspace\etocname\par
+    \vskip0.382\baselineskip
+    \titlerule
+    \addvspace{0.618\baselineskip}
+}
+{}
+
+\etocsetstyle{chapter}
+{}
+{\addvspace{0.382\baselineskip}}
+{
+    \noindent\normalsize\normalfont
+    \makebox[2em][l]{\etocnumber}
+    \scshape\etocname\nobreak
+    \leaders\hbox{$\m@th\mkern 4.5mu.\mkern 4.5mu$}\hfill
+    \nobreak
+    \makebox[1.5em][r]{\normalfont\small\etocpage}
+    \par
+}
+{}
+
+\etocsetstyle{section}
+{}
+{}
+{
+    \noindent\small\normalfont\hspace{2.15em}
+    \makebox[2em][l]{\etocnumber}
+    \etocname\nobreak
+    \leaders\hbox{$\m@th\mkern 4.5mu.\mkern 4.5mu$}\hfill
+    \nobreak
+    \makebox[1.5em][r]{\etocpage}
+    \par
+}
+{}
+
+\etocsetstyle{subsection}{}{}{}{}
+
+\etocsettocstyle
+{\chapter*{\contentsname}\addvspace{1.618\baselineskip}}
+{}
+
+\def\@institute{}
+\def\@subtitle{}
+
+\NewDocumentCommand{\institute}{m}{\def\@institute{#1}}
+\NewDocumentCommand{\subtitle}{m}{\def\@subtitle{#1}}
+
+\def\@authorfont{\normalfont}
+\def\@datefont{\normalfont}
+\def\@institutefont{\normalfont}
+\def\@subtitlefont{\normalfont}
+\def\@titlefont{\normalfont}
+
+\NewDocumentCommand{\authorfont}{m}{\def\@authorfont{#1}}
+\NewDocumentCommand{\datefont}{m}{\def\@datefont{#1}}
+\NewDocumentCommand{\institutefont}{m}{\def\@institutefont{#1}}
+\NewDocumentCommand{\subtitlefont}{m}{\def\@subtitlefont{#1}}
+\NewDocumentCommand{\titlefont}{m}{\def\@titlefont{#1}}
+
+\newlength{\goldenunit}
+\setlength{\goldenunit}{1cm}
+
+\RenewDocumentCommand{\maketitle}{}{
+    \thispagestyle{empty}
+    \vspace*{2.618\goldenunit}
+    \begin{flushleft}
+        \normalfont\normalsize
+        \rule{\textwidth}{1pt}
+        {\fontsize{52}{56}\selectfont\@titlefont\@title\par}
+        \bigskip
+        \rule{\textwidth}{1pt}\par
+        \vspace{1.618\goldenunit}
+        \ifx\@subtitle\@empty\else
+            {\large\@subtitlefont$\diamond$\enspace\@subtitle\enspace$\diamond$\par}
+            \vspace{2.618\goldenunit}
+        \fi
+        {\large\@authorfont\@author\par}
+        \vspace{0.618\goldenunit}
+        {\large\@institutefont\@institute\par}
+        \vfill
+        \rule{\textwidth}{1pt}\par
+        \vspace{0.382\goldenunit}
+        {\large\@datefont\@date\par}
+    \end{flushleft}
+    \cleardoublepage
+}
+
+\makeatother
+\endinput

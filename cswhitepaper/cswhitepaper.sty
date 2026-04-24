@@ -1,0 +1,593 @@
+\NeedsTeXFormat{LaTeX2e}[2022-06-01]
+\ProvidesPackage{cswhitepaper}[2026/04/19 v5.0 Style for professional whitepapers and reports]
+
+\RequirePackage{calc}
+\RequirePackage{comment}
+\RequirePackage{etoolbox}
+\RequirePackage{iftex}
+\RequirePackage{lipsum}
+\RequirePackage{refcount}
+\RequirePackage{xkeyval}
+\RequirePackage{xparse}
+\RequirePackage{xpatch}
+
+\newif\ifcsw@draft
+\csw@draftfalse
+
+\DeclareOption{draft}{\csw@drafttrue}
+\DeclareOption*{\PackageWarning{cswhitepaper}{Unknown option `\CurrentOption' ignored}}
+\ProcessOptions\relax
+
+\makeatletter
+
+\tracinglostchars=0
+\def\@font@warning#1{}
+
+\RequirePackage[T1]{fontenc}
+\RequirePackage[USenglish]{babel}
+
+\RequirePackage[
+    2.0,
+    objcompress,
+    compress
+]{bxpdfver}
+
+\RequirePackage[
+    autostyle = true,
+    csdisplay = true
+]{csquotes}
+
+\RequirePackage{emptypage}
+\RequirePackage{lmodern}
+\RequirePackage{moresize}
+\RequirePackage{paralist}
+\RequirePackage{soul}
+\RequirePackage[full]{textcomp}
+\RequirePackage[normalem]{ulem}
+\RequirePackage{xspace}
+\RequirePackage{xurl}
+
+\RequirePackage{setspace}
+\setstretch{1.15}
+\linespread{1.15}
+
+\RequirePackage[margin=2.5cm]{geometry}
+
+\RequirePackage[
+    dvipsnames,
+    table,
+    x11names
+]{xcolor}
+
+\colorlet{docucolor}{BrickRed}
+\NewDocumentCommand{\documentaccentcolor}{m}{\colorlet{docucolor}{#1}}
+
+\RequirePackage[
+    final,
+    protrusion=true,
+    expansion=true
+]{microtype}
+
+\microtypesetup{
+    activate   = true,
+    expansion  = true,
+    factor     = 1250,
+    protrusion = true,
+    stretch    = 25
+}
+
+\UseMicrotypeSet[protrusion]{basicmath}
+\UseMicrotypeSet[expansion]{alltext}
+
+\SetExpansion{encoding=*,family=*}{
+    stretch    = 25,
+    shrink     = 25,
+    step       = 1
+}
+
+\SetProtrusion{encoding=*,family=*}{
+    period    = {,50},
+    comma     = {,40},
+    colon     = {,30},
+    semicolon = {,30}
+}
+
+\emergencystretch=2em
+
+\RequirePackage{adjustbox}
+\RequirePackage{array}
+\RequirePackage{booktabs}
+\RequirePackage{colortbl}
+\RequirePackage{dashbox}
+\RequirePackage{diagbox}
+\RequirePackage{fancybox}
+\RequirePackage{floatrow}
+\RequirePackage{framed}
+\RequirePackage{graphicx}
+\RequirePackage{hhline}
+\RequirePackage{longtable}
+\RequirePackage{makecell}
+\RequirePackage{marginnote}
+\RequirePackage{multicol}
+\RequirePackage{multirow}
+\RequirePackage{ragged2e}
+\RequirePackage{subcaption}
+\RequirePackage{tabularray}
+\RequirePackage{tabularx}
+\RequirePackage{threeparttable}
+\RequirePackage{verbatim}
+\RequirePackage{xhfill}
+\RequirePackage{xtab}
+
+\RequirePackage{caption}
+
+\AtBeginDocument{
+    \captionsetup{
+        font           = {rm,small},
+        labelfont      = {sc,small},
+        labelsep       = {period},
+        skip           = {5pt},
+        justification  = {justified}
+    }
+}
+
+\RequirePackage{enumitem}
+\setlist{nosep,noitemsep}
+\setlist[enumerate,1]{label={\sffamily\color{docucolor}(\arabic*)}}
+\setlist[enumerate,2]{label={\sffamily\color{docucolor}(\alph*)}}
+\setlist[enumerate,3]{label={\sffamily\color{docucolor}(\Roman*)}}
+\setlist[itemize,1]{label={\sffamily\color{docucolor}\ensuremath{\textsf{-}}}}
+\setlist[itemize,2]{label={\sffamily\color{docucolor}\ensuremath{\bullet}}}
+\setlist[itemize,3]{label={\sffamily\color{docucolor}\ensuremath{\circ}}}
+
+\RequirePackage{tikz}
+\RequirePackage{tikz-cd}
+\RequirePackage{tikz-3dplot}
+\RequirePackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\RequirePackage[most]{tcolorbox}
+
+\RequirePackage[
+    skipabove=10pt,
+    skipbelow=10pt,
+    ntheorem,
+    framemethod=TikZ
+]{mdframed}
+
+\RequirePackage{nameref}
+\RequirePackage[nocompress]{cite}
+\RequirePackage{xr}
+
+\RequirePackage[
+    frenchlinks       = true,
+    unicode           = true,
+    bookmarksnumbered = true,
+    breaklinks        = true,
+    colorlinks        = true,
+    linkcolor         = RoyalBlue2,
+    citecolor         = SlateBlue2,
+    urlcolor          = SpringGreen2,
+    pdfusetitle,
+    pdfpagelabels     = true,
+    pagebackref
+]{hyperref}
+\renewcommand*{\backref}[1]{}
+\renewcommand*{\backrefalt}[4]{
+    \ifcase#1
+    \or(Cited on p.~#2).
+    \else(Cited on pp.~#2).
+    \fi
+}
+
+\RequirePackage[nameinlink,capitalise,noabbrev]{cleveref}
+
+\RequirePackage[titles]{tocloft}
+
+\addtolength{\cftsubsecnumwidth}{3.5pt}
+\addtolength{\cftsubsubsecnumwidth}{3.5pt}
+\addtolength{\cftsecindent}{5pt}
+\addtolength{\cftsubsecindent}{8.5pt}
+\addtolength{\cftsubsubsecindent}{12pt}
+
+\RequirePackage[page,title,header,titletoc,toc]{appendix}
+
+\RequirePackage{authblk}
+
+\renewcommand{\Authfont}{\normalfont\sffamily\large\color{docucolor}\raggedright}
+\renewcommand{\Affilfont}{\normalfont\sffamily\small\color{docucolor}\raggedright}
+
+\renewcommand{\Authsep}{,\;}
+\renewcommand{\Authand}{\;\&\;}
+\renewcommand{\Authands}{\;\&\;}
+
+\setlength{\affilsep}{0.5em}
+
+\RequirePackage{titling}
+
+\pretitle{\begin{raggedright}\normalfont\sffamily\huge\color{docucolor}}
+\posttitle{\par\end{raggedright}\vspace{2em}}
+
+\preauthor{\begin{raggedright}\normalfont\sffamily\Large\color{docucolor}}
+\postauthor{\par\end{raggedright}\vspace{1em}}
+
+\predate{\begin{raggedright}\normalfont\sffamily\small\color{docucolor}}
+\postdate{\par\end{raggedright}\vspace{2em}}
+
+\RequirePackage{titlesec}
+
+\titleformat{\section}
+{\normalfont\raggedright\Large\sffamily\color{docucolor}}
+{\thesection}{1em}{}
+
+\titleformat{\subsection}
+{\normalfont\raggedright\large\sffamily\color{docucolor}}
+{\thesubsection}{1em}{}
+
+\titleformat{\subsubsection}[runin]
+{\normalfont\raggedright\normalsize\sffamily\color{docucolor}}
+{\thesubsubsection}{1em}{}[.]
+
+\titlespacing*{\section}{0pt}{*3}{*1}
+\titlespacing*{\subsection}{0pt}{*2}{*0.5}
+\titlespacing*{\subsubsection}{0pt}{*1}{1em}
+
+\newmdenv[
+    topline=true,
+    bottomline=true,
+    leftline=false,
+    rightline=false,
+    linecolor=docucolor,
+    linewidth=1pt,
+    skipabove=1em,
+    skipbelow=1em,
+    innerleftmargin=0pt,
+    innerrightmargin=0pt,
+    innertopmargin=0.6em,
+    innerbottommargin=0.6em
+]{docuabstractframe}
+
+\renewenvironment{abstract}{
+    \begin{docuabstractframe}
+    \noindent{\sffamily\color{docucolor}Abstract.\,}\sffamily
+}{
+    \end{docuabstractframe}
+}
+
+\ifcsw@draft
+    \providecommand*{\added}[1]{\textcolor{OliveDrab4}{#1}\marginnote{\textcolor{OliveDrab4}{\LARGE$\star$}}}
+    \providecommand*{\changed}[1]{\textcolor{RoyalBlue4}{#1}\marginnote{\textcolor{RoyalBlue4}{\LARGE$\star$}}}
+    \providecommand*{\fixme}[1]{\textcolor{DarkOrange4}{[\textsc{Fix-me}:~#1]}\marginnote{\textcolor{DarkOrange3}{\LARGE$\star$}}}
+    \providecommand*{\missing}[1]{\textcolor{MediumPurple3}{#1}\marginnote{\textcolor{MediumPurple3}{\LARGE$\star$}}}
+    \providecommand*{\notes}[1]{\textcolor{SeaGreen4}{[\textsc{Note}:~#1]}\marginnote{\textcolor{SeaGreen4}{\LARGE$\star$}}}
+    \providecommand*{\query}[1]{\textcolor{DarkOrchid4}{[\textsc{Query}:~#1]}\marginnote{\textcolor{DarkOrchid4}{\LARGE$\star$}}}
+    \providecommand*{\removed}[1]{\textcolor{IndianRed4}{\sout{#1}}\marginnote{\textcolor{IndianRed4}{\LARGE$\star$}}}
+    \providecommand*{\todo}[1]{\textcolor{Firebrick3}{[\textsc{To-do}:~#1]}\marginnote{\textcolor{Firebrick3}{\LARGE$\star$}}}
+\else
+    \providecommand*{\added}[1]{#1}
+    \providecommand*{\changed}[1]{#1}
+    \providecommand*{\fixme}[1]{}
+    \providecommand*{\missing}[1]{}
+    \providecommand*{\notes}[1]{}
+    \providecommand*{\query}[1]{}
+    \providecommand*{\removed}[1]{}
+    \providecommand*{\todo}[1]{}
+\fi
+
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{amsthm}
+\RequirePackage{mathtools}
+\RequirePackage{bm}
+\RequirePackage{mathrsfs}
+\RequirePackage{nicefrac}
+\RequirePackage{siunitx}
+\RequirePackage{thmtools}
+
+\let\mathbfcal\relax
+\let\mathbfscr\relax
+\RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
+
+\numberwithin{equation}{section}
+
+\NewDocumentCommand{\commonsymb}     {}{\ensuremath{\color{docucolor}\lrcorner}}
+\NewDocumentCommand{\commonstartsymb}{}{\ensuremath{\color{docucolor}\diamond}~}
+\NewDocumentCommand{\commonheadfont} {}{\color{docucolor}\sffamily}
+
+\mdfdefinestyle{csw@ruled}{%
+    linewidth         = 1pt,%
+    linecolor         = docucolor,%
+    topline           = true,%
+    bottomline        = true,%
+    leftline          = false,%
+    rightline         = false,%
+    innertopmargin    = 6pt,%
+    innerbottommargin = 6pt,%
+    innerleftmargin   = 1pt,%
+    innerrightmargin  = 1pt,%
+    skipabove         = 6pt,%
+    skipbelow         = 6pt%
+}
+
+\declaretheoremstyle[
+    headfont=\commonheadfont\commonstartsymb,
+    notefont=\normalfont,
+    bodyfont=\normalfont,
+    spaceabove=0pt,
+    spacebelow=0pt,
+    headpunct={.},
+    postheadspace=0.5em,
+    mdframed={style=csw@ruled},
+    qed=\commonsymb
+]{csw@theoremlike}
+
+\declaretheoremstyle[
+    headfont=\commonheadfont\commonstartsymb,
+    notefont=\normalfont,
+    bodyfont=\normalfont,
+    spaceabove=0pt,
+    spacebelow=0pt,
+    headpunct={.},
+    postheadspace=0.5em,
+    mdframed={style=csw@ruled},
+    qed=\commonsymb
+]{csw@definitionlike}
+
+\declaretheoremstyle[
+    headfont=\commonheadfont\commonstartsymb,
+    notefont=\normalfont,
+    bodyfont=\normalfont,
+    spaceabove=0pt,
+    spacebelow=0pt,
+    headpunct={.},
+    postheadspace=0.5em,
+    mdframed={style=csw@ruled},
+    qed=\commonsymb
+]{csw@remarklike}
+
+\declaretheoremstyle[
+    headfont=\commonheadfont\commonstartsymb,
+    notefont=\normalfont,
+    bodyfont=\normalfont,
+    spaceabove=0pt,
+    spacebelow=0pt,
+    headpunct={.},
+    postheadspace=0.5em,
+    mdframed={style=csw@ruled},
+    qed=\commonsymb
+]{csw@highlightlike}
+
+\declaretheorem[name=Theorem,style=csw@theoremlike,numberwithin=section]{theorem}
+\renewcommand{\qedsymbol}{\commonsymb}
+
+\newcommand\csw@declaretheoremfamily[2]{%
+    \forcsvlist{\declaretheorem[sibling=theorem,style=#1]}{#2}%
+}
+
+\csw@declaretheoremfamily{csw@theoremlike}{%
+    assertion,
+    assumption,
+    axiom,
+    claim,
+    conclusion,
+    conjecture,
+    corollary,
+    criterion,
+    fact,
+    folklore,
+    hypothesis,
+    lemma,
+    observation,
+    postulate,
+    property,
+    proposition%
+}
+\csw@declaretheoremfamily{csw@definitionlike}{%
+    application,
+    construction,
+    convention,
+    definition,
+    example,
+    experiment,
+    notation,
+    problem,
+    protocol,
+    result,
+    solution,
+    step%
+}
+\csw@declaretheoremfamily{csw@remarklike}{%
+    commentary,
+    discussion,
+    exercise,
+    motivation,
+    notationabuse,
+    note,
+    openproblem,
+    question,
+    remark,
+    syntax%
+}
+\csw@declaretheoremfamily{csw@highlightlike}{%
+    guideline,
+    highlight,
+    important,
+    insight,
+    keypoint,
+    recall,
+    summary,
+    takeaway,
+    tip,
+    warning%
+}
+
+\declaretheorem[name=Theorem,     style=csw@theoremlike, numbered=no]{theorem*}
+\declaretheorem[name=Lemma,       style=csw@theoremlike, numbered=no]{lemma*}
+\declaretheorem[name=Corollary,   style=csw@theoremlike, numbered=no]{corollary*}
+\declaretheorem[name=Hypothesis,  style=csw@theoremlike, numbered=no]{hypothesis*}
+\declaretheorem[name=Claim,       style=csw@theoremlike, numbered=no]{claim*}
+\declaretheorem[name=Conjecture,  style=csw@theoremlike, numbered=no]{conjecture*}
+\declaretheorem[name=Open Problem,style=csw@remarklike,  numbered=no]{openproblem*}
+\declaretheorem[name=Syntax,      style=csw@remarklike,  numbered=no]{syntax*}
+
+\crefname{section}{\textsection}{\textsection\textsection}
+\Crefname{section}{\textsection}{\textsection\textsection}
+\crefname{subsection}{\textsection}{\textsection\textsection}
+\Crefname{subsection}{\textsection}{\textsection\textsection}
+\crefname{subsubsection}{\textsection}{\textsection\textsection}
+\Crefname{subsubsection}{\textsection}{\textsection\textsection}
+\crefname{paragraph}{paragraph}{paragraphs}
+\Crefname{paragraph}{Paragraph}{Paragraphs}
+\crefname{subparagraph}{subparagraph}{subparagraphs}
+\Crefname{subparagraph}{Subparagraph}{Subparagraphs}
+
+\newcommand\csw@setcrefnames[1]{\forcsvlist{\csw@setcrefname@single}{#1}}
+\def\csw@setcrefname@single#1{\csw@setcrefname@parse#1\csw@nil}
+\def\csw@setcrefname@parse#1/#2/#3\csw@nil{\crefname{#1}{#2}{#3}}
+
+\csw@setcrefnames{%
+    application/Application/Applications,%
+    assertion/Assertion/Assertions,%
+    assumption/Assumption/Assumptions,%
+    axiom/Axiom/Axioms,%
+    claim/Claim/Claims,%
+    commentary/Commentary/Commentaries,%
+    conclusion/Conclusion/Conclusions,%
+    conjecture/Conjecture/Conjectures,%
+    construction/Construction/Constructions,%
+    convention/Convention/Conventions,%
+    corollary/Corollary/Corollaries,%
+    criterion/Criterion/Criteria,%
+    definition/Definition/Definitions,%
+    discussion/Discussion/Discussions,%
+    example/Example/Examples,%
+    exercise/Exercise/Exercises,%
+    experiment/Experiment/Experiments,%
+    fact/Fact/Facts,%
+    folklore/Folklore/Folklore,%
+    guideline/Guideline/Guidelines,%
+    highlight/Highlight/Highlights,%
+    hypothesis/Hypothesis/Hypotheses,%
+    important/Important point/Important points,%
+    insight/Insight/Insights,%
+    keypoint/Key point/Key points,%
+    lemma/Lemma/Lemmas,%
+    motivation/Motivation/Motivations,%
+    notation/Notation/Notations,%
+    notationabuse/Notation abuse/Notation abuses,%
+    note/Note/Notes,%
+    observation/Observation/Observations,%
+    openproblem/Open problem/Open problems,%
+    postulate/Postulate/Postulates,%
+    problem/Problem/Problems,%
+    proof/Proof/Proofs,%
+    property/Property/Properties,%
+    proposition/Proposition/Propositions,%
+    protocol/Protocol/Protocols,%
+    question/Question/Questions,%
+    recall/Recall/Recalls,%
+    remark/Remark/Remarks,%
+    result/Result/Results,%
+    solution/Solution/Solutions,%
+    step/Step/Steps,%
+    summary/Summary/Summaries,%
+    syntax/Syntax/Syntaxes,%
+    takeaway/Takeaway/Takeaways,%
+    theorem/Theorem/Theorems,%
+    tip/Tip/Tips,%
+    warning/Warning/Warnings%
+}
+
+\NewDocumentCommand{\newguymarker}{mmm}{%
+    \ifcsw@draft
+        \expandafter\NewDocumentCommand\csname#1\endcsname{m}{%
+            \textcolor{#3}{##1\ \textsc{#2}}%
+            \marginnote{\textcolor{#3}{\LARGE$\star$}}%
+        }%
+    \else
+        \expandafter\NewDocumentCommand\csname#1\endcsname{m}{}%
+    \fi
+}
+
+\providecommand{\csw@colorize}{\color{Firebrick2}}
+
+\newcommand{\csw@brokenrefmark}[1]{
+    \marginnote[
+        {\csw@colorize\normalfont\smash{\LARGE$\star$}\,\tiny\sffamily#1}
+    ]{
+        {\csw@colorize\normalfont\smash{\LARGE$\star$}\,\tiny\sffamily#1}
+    }
+}
+
+\newbool{csw@markundef}
+\booltrue{csw@markundef}
+
+\xpretocmd{\G@refundefinedtrue}{
+    \ifbool{csw@markundef}{
+        \csw@brokenrefmark{\@ifundefined{@citeb}{}{\@citeb}}
+    }{}
+}{}{}
+
+\let\csw@old@setref\@setref
+\renewcommand{\@setref}[3]{
+    \ifx#1\relax\csw@brokenrefmark{#3}\fi
+    \csw@markundeffalse
+    \csw@old@setref{#1}{#2}{#3}
+    \csw@markundeftrue
+}
+
+\newif\ifcsw@haspunctuation
+
+\def\csw@checkpunctuation#1{%
+    \ifx\csw@checkpunctuation#1\csw@checkpunctuation\else
+        \csw@haspunctuationtrue
+    \fi
+}
+
+\def\csw@checkdot      #1.\csw@delim#2\csw@stop{\csw@checkpunctuation{#2}}
+\def\csw@checkquestion #1?\csw@delim#2\csw@stop{\csw@checkpunctuation{#2}}
+\def\csw@checkexclam   #1!\csw@delim#2\csw@stop{\csw@checkpunctuation{#2}}
+\def\csw@checkcolon    #1:\csw@delim#2\csw@stop{\csw@checkpunctuation{#2}}
+
+\def\csw@appendpunctuationifneeded#1{%
+    \csw@haspunctuationfalse
+    \csw@checkdot      #1\csw@delim.\csw@delim\csw@stop
+    \csw@checkquestion #1\csw@delim?\csw@delim\csw@stop
+    \csw@checkexclam   #1\csw@delim!\csw@delim\csw@stop
+    \csw@checkcolon    #1\csw@delim:\csw@delim\csw@stop
+    #1\ifcsw@haspunctuation\else.\fi
+}
+
+\def\csw@ignorewhitespaceandimplicitpars{%
+    \begingroup
+    \catcode13=10\relax
+    \@ifnextchar\relax{\endgroup}{\endgroup}%
+}
+
+\NewDocumentCommand{\csw@paragraphhead}{m}{%
+    \smallskip
+    \noindent
+    \textbf{\ignorespaces\csw@appendpunctuationifneeded{#1}}%
+    \hskip 0.9em plus 0.3em minus 0.3em
+    \csw@ignorewhitespaceandimplicitpars
+}
+
+\NewDocumentCommand{\csw@subparagraphhead}{m}{%
+    \smallskip
+    \noindent
+    \textsc{\ignorespaces\csw@appendpunctuationifneeded{#1}}%
+    \hskip 0.9em plus 0.3em minus 0.3em
+    \csw@ignorewhitespaceandimplicitpars
+}
+
+\NewDocumentCommand{\parhead}   {m}{\csw@paragraphhead{#1}}
+\NewDocumentCommand{\subparhead}{m}{\csw@subparagraphhead{#1}}
+
+\AtBeginDocument{%
+    \renewcommand{\paragraph}[1]{\parhead{#1}}%
+    \renewcommand{\subparagraph}[1]{\subparhead{#1}}%
+    \renewcommand{\Pr}{\mathop{\mathsf{Pr}}}%
+}
+
+\makeatother
+\endinput

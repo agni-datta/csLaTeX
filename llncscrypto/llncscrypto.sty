@@ -1,0 +1,677 @@
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{llncscrypto}[2026/04/13 v3.0 Cryptographic layer for the Springer LLNCS framework]
+
+\RequirePackage{iftex}
+
+\makeatletter
+
+\newif\ifllncs@appendix  \llncs@appendixfalse
+\newif\ifllncs@captions  \llncs@captionsfalse
+\newif\ifllncs@final    \llncs@finalfalse
+\newif\ifllncs@crypto    \llncs@cryptofalse
+\newif\ifllncs@draft     \llncs@draftfalse
+\newif\ifllncs@preprint    \llncs@preprintfalse
+\newif\ifllncs@libertine \llncs@libertinefalse
+\newif\ifllncs@notes     \llncs@notestrue
+\newif\ifllncs@theorems  \llncs@theoremsfalse
+\newif\ifllncs@tikz      \llncs@tikzfalse
+
+\DeclareOption{appendix} {\llncs@appendixtrue}
+\DeclareOption{captions} {\llncs@captionstrue}
+\DeclareOption{final}   {\llncs@finaltrue\llncs@notesfalse\llncs@draftfalse}
+\DeclareOption{crypto}   {\llncs@cryptotrue}
+\DeclareOption{draft}    {\llncs@drafttrue}
+\DeclareOption{preprint}   {\llncs@preprinttrue}
+\DeclareOption{libertine}{\llncs@libertinetrue}
+\DeclareOption{nonotes}  {\llncs@notesfalse}
+\DeclareOption{theorems} {\llncs@theoremstrue}
+\DeclareOption{tikz}     {\llncs@tikztrue}
+\DeclareOption*{\PackageWarning{llncscrypto}{Unknown option `\CurrentOption'}}
+\ProcessOptions\relax
+
+\RequirePackage[full]{textcomp}
+\RequirePackage[x11names, dvipsnames, svgnames]{xcolor}
+\RequirePackage{calc}
+\RequirePackage{etoolbox}
+\RequirePackage{framed}
+
+\RequirePackage{marginnote}
+\RequirePackage{nameref}
+\RequirePackage{xparse}
+\RequirePackage{xspace}
+
+\RequirePackage[
+	final,
+	protrusion=true,
+	expansion=true
+]{microtype}
+
+\microtypesetup{
+	activate=true,
+	final,
+	protrusion=true,
+	expansion=true,
+	stretch=50,
+	factor=1100
+}
+
+\UseMicrotypeSet[protrusion]{basicmath}
+\UseMicrotypeSet[expansion]{alltext}
+
+\SetExpansion{
+	encoding=*,
+	family=*
+}{
+	stretch=50,
+	shrink=50,
+	step=1
+}
+
+\SetProtrusion{
+	encoding=*,
+	family=*
+}{
+	period = { ,50},
+	comma  = { ,40},
+	colon  = { ,30},
+	semicolon = { ,30}
+}
+\emergencystretch=2em
+
+\RequirePackage[T1]{fontenc}
+\ifllncs@libertine
+	\RequirePackage{libertineRoman}
+	\RequirePackage{biolinum}
+	\RequirePackage[libertine,varbb]{newtxmath}
+	\RequirePackage{AnonymousPro}
+\else
+	\RequirePackage{lmodern}
+\fi
+
+\RequirePackage{amsmath}
+\RequirePackage{amsfonts}
+\RequirePackage{mathtools}
+\RequirePackage{bm}
+\ifcsname openbox\endcsname \let\openbox\relax \fi
+\ifcsname proof\endcsname \let\proof\relax \fi
+\ifcsname endproof\endcsname \let\endproof\relax \fi
+\RequirePackage{amsthm}
+\let\proof\relax
+\let\endproof\relax
+\ifllncs@libertine
+	\ifcsname mathbfcal\endcsname \let\mathbfcal\relax \fi
+	\ifcsname mathbfscr\endcsname \let\mathbfscr\relax \fi
+	\RequirePackage[cal=cm,bb=bboldx,scr=esstix]{mathalpha}
+\else
+	\RequirePackage{amssymb}
+	\RequirePackage{mathrsfs}
+	\ifcsname mathbfcal\endcsname \let\mathbfcal\relax \fi
+	\ifcsname mathbfscr\endcsname \let\mathbfscr\relax \fi
+	\RequirePackage[cal=cm, bb=bboldx, scr=esstix]{mathalpha}
+\fi
+
+\RequirePackage{ifthen}
+\RequirePackage{relsize}
+\RequirePackage{enumitem}
+\setlist{noitemsep,nosep}
+\setlist[enumerate,1]{label=(\arabic*),  leftmargin=2em}
+\setlist[enumerate,2]{label=(\alph*),    leftmargin=2em}
+\setlist[itemize,1]  {label=\textendash, leftmargin=2em}
+\setlist[itemize,2]  {label=\textbullet, leftmargin=2em}
+
+\ifllncs@preprint
+	\RequirePackage[%
+		letterpaper,
+		top    = 1in,
+		bottom = 1in,
+		left   = 1.25in,
+		right  = 1.25in,
+		headheight = 14pt
+	]{geometry}
+	\RequirePackage{setspace}
+	\setstretch{1.15}
+	\RequirePackage{fancyhdr}
+	\fancypagestyle{llncs@preprint}{%
+		\fancyhf{}%
+		\fancyfoot[C]{\small\thepage}%
+		\renewcommand{\headrulewidth}{0pt}%
+		\renewcommand{\footrulewidth}{0pt}%
+	}
+	\AtBeginDocument{\pagestyle{llncs@preprint}}
+	\AtBeginDocument{%
+		\ifnum\@ptsize=1\else
+			\PackageWarning{llncscrypto}{%
+				eprint mode expects [11pt] in \string\documentclass}%
+		\fi
+	}
+	\let\llncs@origttitle\title
+	\renewcommand{\title}[1]{%
+		\llncs@origttitle{\LARGE\normalfont\bfseries#1}%
+	}
+	\NewDocumentCommand{\preprint}{O{}O{}}{%
+		\AtEndPreamble{%
+			\fancypagestyle{llncs@preprint}{%
+				\fancyhf{}%
+				\IfValueT{#1}{\fancyhead[L]{\small\textsc{#1}}}%
+				\IfValueT{#2}{\fancyhead[R]{\small\textsc{#2}}}%
+				\fancyfoot[C]{\small\thepage}%
+				\renewcommand{\headrulewidth}{0pt}%
+			}%
+		}%
+	}
+\fi
+
+\RequirePackage[%
+	bookmarksnumbered = true,
+	breaklinks        = true,
+	citecolor         = DodgerBlue3,
+	colorlinks        = true,
+	linkcolor         = RoyalBlue3,
+	pagebackref       = true,
+	pdfencoding       = auto,
+	pdfpagelabels     = true,
+	pdfstartview      = FitH,
+	pdfusetitle,
+	unicode           = true,
+	urlcolor          = Turquoise4
+]{hyperref}
+
+\renewcommand*{\backref}[1]{}
+\renewcommand*{\backrefalt}[4]{%
+	\ifcase#1\or(Cited on p.~#2).\else(Cited on pp.~#2).\fi}
+
+\newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1}~\nameref*{#1}}}
+
+\RequirePackage[capitalize, nameinlink, noabbrev]{cleveref}
+
+\Crefname{section}   {\textsection}{\textsection\textsection}
+\Crefname{subsection}{\textsection}{\textsection\textsection}
+\Crefname{paragraph} {Paragraph}   {Paragraphs}
+
+\Crefname{theorem}    {Theorem}    {Theorems}
+\Crefname{assertion}  {Assertion}  {Assertions}
+\Crefname{assumption} {Assumption} {Assumptions}
+\Crefname{axiom}      {Axiom}      {Axioms}
+\Crefname{claim}      {Claim}      {Claims}
+\Crefname{conclusion} {Conclusion} {Conclusions}
+\Crefname{conjecture} {Conjecture} {Conjectures}
+\Crefname{corollary}  {Corollary}  {Corollaries}
+\Crefname{criterion}  {Criterion}  {Criteria}
+\Crefname{fact}       {Fact}       {Facts}
+\Crefname{folklore}   {Folklore}   {Folklore}
+\Crefname{hypothesis} {Hypothesis} {Hypotheses}
+\Crefname{lemma}      {Lemma}      {Lemmas}
+\Crefname{observation}{Observation}{Observations}
+\Crefname{postulate}  {Postulate}  {Postulates}
+\Crefname{property}   {Property}   {Properties}
+\Crefname{proposition}{Proposition}{Propositions}
+
+\Crefname{application} {Application} {Applications}
+\Crefname{construction}{Construction}{Constructions}
+\Crefname{convention}  {Convention}  {Conventions}
+\Crefname{definition}  {Definition}  {Definitions}
+\Crefname{experiment}  {Experiment}  {Experiments}
+\Crefname{notation}    {Notation}    {Notations}
+\Crefname{openproblem} {Open Problem}{Open Problems}
+\Crefname{problem}     {Problem}     {Problems}
+\Crefname{protocol}    {Protocol}    {Protocols}
+\Crefname{result}      {Result}      {Results}
+
+\Crefname{commentary}   {Commentary}   {Commentaries}
+\Crefname{exercise}     {Exercise}     {Exercises}
+\Crefname{motivation}   {Motivation}   {Motivations}
+\Crefname{notationabuse}{Notation Abuse}{Notation Abuses}
+\Crefname{note}         {Note}         {Notes}
+\Crefname{question}     {Question}     {Questions}
+\Crefname{remark}       {Remark}       {Remarks}
+
+\Crefname{guideline}{Guideline}{Guidelines}
+\Crefname{important}{Important}{Important Points}
+\Crefname{insight}  {Insight}  {Insights}
+\Crefname{keypoint} {Key Point}{Key Points}
+\Crefname{warning}  {Warning}  {Warnings}
+
+\RequirePackage{graphicx}
+\RequirePackage{booktabs}
+\RequirePackage{adjustbox}
+\RequirePackage{float}
+
+\providecommand*{\caption@documentclass}{standard}%
+
+\ifllncs@captions
+	\RequirePackage{caption}
+	\RequirePackage{subcaption}
+	\AtBeginDocument{%
+		\captionsetup{%
+			font      = {rm, small},
+			labelfont = {sc},
+			labelsep  = period,
+			skip      = 5pt,
+			belowskip = 0pt
+		}%
+		\captionsetup[table] {skip=4pt}%
+		\captionsetup[figure]{skip=4pt}%
+	}%
+\else
+	\RequirePackage{subcaption}
+\fi
+
+\ifllncs@theorems
+	\AtBeginDocument{%
+		\def\llncs@undefenv#1{%
+			\@ifundefined{#1}         {}{\expandafter\let\csname#1\endcsname\relax}%
+			\@ifundefined{end#1}      {}{\expandafter\let\csname end#1\endcsname\relax}%
+			\@ifundefined{c@#1}       {}{\expandafter\let\csname c@#1\endcsname\relax
+				\expandafter\let\csname the#1\endcsname\relax
+				\expandafter\let\csname p@#1\endcsname\relax}%
+		}%
+		\llncs@undefenv{theorem}
+		\llncs@undefenv{lemma}
+		\llncs@undefenv{corollary}
+		\llncs@undefenv{proposition}
+		\llncs@undefenv{definition}
+		\llncs@undefenv{remark}
+		\llncs@undefenv{claim}
+		\llncs@undefenv{example}
+		\llncs@undefenv{conjecture}
+		\llncs@undefenv{property}
+		\llncs@undefenv{problem}
+		\llncs@undefenv{exercise}
+		\llncs@undefenv{question}
+		\llncs@undefenv{note}
+		\llncs@undefenv{proof}
+		\spnewtheorem{theorem}    {Theorem}    [section]{\bfseries}{\normalfont}
+		\spnewtheorem{assertion}  {Assertion}  [section]{\bfseries}{\normalfont}
+		\spnewtheorem{assumption} {Assumption} [section]{\bfseries}{\normalfont}
+		\spnewtheorem{axiom}      {Axiom}      [section]{\bfseries}{\normalfont}
+		\spnewtheorem{claim}      {Claim}      [section]{\bfseries}{\normalfont}
+		\spnewtheorem{conclusion} {Conclusion} [section]{\bfseries}{\normalfont}
+		\spnewtheorem{conjecture} {Conjecture} [section]{\bfseries}{\normalfont}
+		\spnewtheorem{corollary}  {Corollary}  [section]{\bfseries}{\normalfont}
+		\spnewtheorem{criterion}  {Criterion}  [section]{\bfseries}{\normalfont}
+		\spnewtheorem{fact}       {Fact}       [section]{\bfseries}{\normalfont}
+		\spnewtheorem{folklore}   {Folklore}   [section]{\bfseries}{\normalfont}
+		\spnewtheorem{hypothesis} {Hypothesis} [section]{\bfseries}{\normalfont}
+		\spnewtheorem{lemma}      {Lemma}      [section]{\bfseries}{\normalfont}
+		\spnewtheorem{observation}{Observation}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{postulate}  {Postulate}  [section]{\bfseries}{\normalfont}
+		\spnewtheorem{property}   {Property}   [section]{\bfseries}{\normalfont}
+		\spnewtheorem{proposition}{Proposition}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{application} {Application} [section]{\bfseries}{\normalfont}
+		\spnewtheorem{construction}{Construction}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{convention}  {Convention}  [section]{\bfseries}{\normalfont}
+		\spnewtheorem{definition}  {Definition}  [section]{\bfseries}{\normalfont}
+		\spnewtheorem{experiment}  {Experiment}  [section]{\bfseries}{\normalfont}
+		\spnewtheorem{notation}    {Notation}    [section]{\bfseries}{\normalfont}
+		\spnewtheorem{openproblem} {Open Problem}[section]{\bfseries}{\normalfont}
+		\spnewtheorem{problem}     {Problem}     [section]{\bfseries}{\normalfont}
+		\spnewtheorem{protocol}    {Protocol}    [section]{\bfseries}{\normalfont}
+		\spnewtheorem{result}      {Result}      [section]{\bfseries}{\normalfont}
+		\spnewtheorem{commentary}   {Commentary}   [section]{\scshape}{\normalfont}
+		\spnewtheorem{exercise}     {Exercise}     [section]{\scshape}{\normalfont}
+		\spnewtheorem{example}      {Example}      [section]{\scshape}{\normalfont}
+		\spnewtheorem{motivation}   {Motivation}   [section]{\scshape}{\normalfont}
+		\spnewtheorem{notationabuse}{Notation Abuse}[section]{\scshape}{\normalfont}
+		\spnewtheorem{note}         {Note}         [section]{\scshape}{\normalfont}
+		\spnewtheorem{question}     {Question}     [section]{\scshape}{\normalfont}
+		\spnewtheorem{remark}       {Remark}       [section]{\scshape}{\normalfont}
+		\spnewtheorem{guideline}{Guideline}[section]{\sffamily}{\normalfont}
+		\spnewtheorem{important}{Important}[section]{\sffamily}{\normalfont}
+		\spnewtheorem{insight}  {Insight}  [section]{\sffamily}{\normalfont}
+		\spnewtheorem{keypoint} {Key Point}[section]{\sffamily}{\normalfont}
+		\spnewtheorem{warning}  {Warning}  [section]{\sffamily}{\normalfont}
+		\spnewtheorem*{claim*}    {Claim}     {\bfseries}{\normalfont}
+		\spnewtheorem*{corollary*}{Corollary} {\bfseries}{\normalfont}
+		\spnewtheorem*{lemma*}    {Lemma}     {\bfseries}{\normalfont}
+		\spnewtheorem*{theorem*}  {Theorem}   {\bfseries}{\normalfont}
+		\spnewtheorem*{proof}{Proof}{\scshape}{\normalfont}
+		\expandafter\let\csname llncs@endproof\expandafter\endcsname
+		\csname endproof\endcsname
+		\expandafter\def\csname endproof\endcsname{\qed\csname llncs@endproof\endcsname}%
+		\newenvironment{claimproof}[1][Proof of Claim]{\begin{proof}[#1]}{\end{proof}}
+	}%
+\fi
+
+\ifllncs@appendix
+	\RequirePackage[page, toc]{appendix}
+	\@chapter@ppfalse
+\fi
+
+\ifllncs@crypto
+	\AtEndPreamble{%
+		\IfFileExists{tcscrypto.sty}%
+		{\RequirePackage{tcscrypto}}%
+		{\PackageWarning{llncscrypto}{tcscrypto.sty not found}}%
+		\RequirePackage{orcidlink}%
+	}%
+\fi
+
+\ifllncs@tikz
+	\RequirePackage{tikz}
+	\RequirePackage{pgfplots}
+	\pgfplotsset{compat=1.18}
+	\RequirePackage{tikz-cd}
+	\usetikzlibrary{%
+		arrows.meta, backgrounds, calc,
+		decorations.markings, decorations.pathreplacing,
+		fit, graphs, matrix, positioning,
+		shapes.geometric, shapes.misc
+	}
+\fi
+
+\definecolor{llncs@notecolor}{rgb}{0.52,0.20,0.52}
+
+\newbool{llncs@infootnote}  \boolfalse{llncs@infootnote}
+\newbool{llncs@intabular}   \boolfalse{llncs@intabular}
+\newbool{llncs@inminipage}  \boolfalse{llncs@inminipage}
+\newbool{llncs@inframed}    \boolfalse{llncs@inframed}
+
+\let\llncs@oldfootnote\footnote
+\renewcommand{\footnote}[1]{%
+	{\booltrue{llncs@infootnote}\llncs@oldfootnote{#1}}%
+	\boolfalse{llncs@infootnote}%
+}
+\BeforeBeginEnvironment{tabular} {\booltrue{llncs@intabular}}
+\AfterEndEnvironment  {tabular}  {\boolfalse{llncs@intabular}}
+\BeforeBeginEnvironment{minipage}{\booltrue{llncs@inminipage}}
+\AfterEndEnvironment  {minipage} {\boolfalse{llncs@inminipage}}
+\let\llncs@origMakeFramed\MakeFramed
+\let\llncs@origEndMakeFramed\endMakeFramed
+\def\MakeFramed{\booltrue{llncs@inframed}\llncs@origMakeFramed}%
+\def\endMakeFramed{\llncs@origEndMakeFramed\boolfalse{llncs@inframed}}%
+
+\newcommand{\sidenote}[1]{%
+	\ifthenelse{%
+		\boolean{llncs@infootnote} \OR
+		\boolean{llncs@intabular}  \OR
+		\boolean{llncs@inminipage} \OR
+		\boolean{llncs@inframed}%
+	}{\marginnote{\tiny#1}}{\marginpar{\tiny#1}}%
+}
+
+\newcounter{llncs@dnote}
+\newcommand{\llncs@dnotelist}{}
+\newcommand{\llncs@appenddnote}[3]{%
+	\refstepcounter{llncs@dnote}%
+	\label{llncs@dn:\thellncs@dnote}%
+	\expandafter\long\expandafter\def
+	\csname llncs@dn@a@\thellncs@dnote\endcsname{#1}%
+	\expandafter\def
+	\csname llncs@dn@c@\thellncs@dnote\endcsname{#2}%
+	\expandafter\long\expandafter\def
+	\csname llncs@dn@t@\thellncs@dnote\endcsname{#3}%
+	\edef\llncs@dn@cur{\thellncs@dnote}%
+	\expandafter\gappto\expandafter\llncs@dnotelist
+	\expandafter{\expandafter\llncs@dnotelist@emit\expandafter{\llncs@dn@cur}}%
+}
+\newcommand{\llncs@dnotelist@emit}[1]{%
+	\noindent
+	{\color{\csname llncs@dn@c@#1\endcsname}\normalfont$\bigstar$}~%
+	\expandafter\ifx\csname llncs@dn@a@#1\endcsname\@empty\else
+		{\small\itshape\csname llncs@dn@a@#1\endcsname:\enspace}%
+	\fi
+	{\color{\csname llncs@dn@c@#1\endcsname}\small\sffamily\bfseries
+		\csname llncs@dn@t@#1\endcsname}%
+	\hfill{\small\normalfont(p.~\pageref{llncs@dn:#1})}\par\smallskip
+}
+
+\ifllncs@notes
+	\newcommand{\dtcolornote}[3][]{%
+		\llncs@appenddnote{#1}{#2}{#3}%
+		\sidenote{{\color{#2}\normalfont$\bigstar$}}%
+		\ifmmode\expandafter\mbox\fi{%
+		{\color{#2}\smaller\sffamily\bfseries\boldmath
+			[#3\ifx\relax#1\relax\else{\mdseries\itshape~---#1}\fi]}%
+		}%
+	}
+	\newcommand{\dtnote}[2][]{\dtcolornote[#1]{llncs@notecolor}{#2}}
+	\newcommand{\XXX}[1][XXX]{%
+		\sidenote{{\color{red}\normalfont$\blacktriangleright$}}%
+		{\color{red}\smaller\sffamily\bfseries[#1]}%
+	}
+	\newcommand{\dtignore}[2][]{%
+		\sidenote{{\color{llncs@notecolor}\normalfont$\looparrowright$\scriptsize~#1}}%
+	}
+\else
+	\newcommand{\dtcolornote}[3][]{\ignorespaces}
+	\newcommand{\dtnote}[2][]{\ignorespaces}
+	\newcommand{\XXX}[1][XXX]{%
+		\@latex@error{%
+			\string\XXX{} found but notes are disabled (camera or nonotes option)%
+		}\@ehd
+	}
+	\newcommand{\dtignore}[2][]{\ignorespaces}
+\fi
+
+\newcommand{\printdtnotes}{%
+	\ifnum\value{llncs@dnote}>0
+		\section*{Author Notes}%
+		\llncs@dnotelist
+	\fi
+}
+
+\NewDocumentCommand{\newcomment}{mmm}{%
+	\expandafter\NewDocumentCommand\csname#3\endcsname{m}{%
+		\ifllncs@notes\dtcolornote[#1]{#2}{##1}\fi
+	}%
+}
+
+\newif\ifllncs@haspunct
+\def\llncs@testchar#1{%
+	\ifx\llncs@testchar#1\llncs@testchar\else\llncs@haspuncttrue\fi}
+\def\llncs@testdot  #1.\llncs@e#2\llncs@s  {\llncs@testchar{#2}}
+\def\llncs@testquest#1?\llncs@e#2\llncs@s  {\llncs@testchar{#2}}
+\def\llncs@testexclam#1!\llncs@e#2\llncs@s {\llncs@testchar{#2}}
+\def\llncs@testcolon#1:\llncs@e#2\llncs@s  {\llncs@testchar{#2}}
+\newcommand{\llncs@autopunct}[1]{%
+	\llncs@haspunctfalse
+	\llncs@testdot  #1\llncs@e.\llncs@e\llncs@s
+	\llncs@testquest#1\llncs@e?\llncs@e\llncs@s
+	\llncs@testexclam#1\llncs@e!\llncs@e\llncs@s
+	\llncs@testcolon#1\llncs@e:\llncs@e\llncs@s
+	#1\ifllncs@haspunct\else.\fi
+}
+
+\def\llncs@skipspaces{%
+	\begingroup\catcode13=10
+	\@ifnextchar\relax{\endgroup}{\endgroup}%
+}
+
+\newcommand{\parheadnoperiod}[1]{%
+	\smallskip\noindent
+	{\bfseries\boldmath\ignorespaces#1}%
+	\hskip0.9em plus 0.3em minus 0.3em
+	\llncs@skipspaces
+}
+
+\newcommand{\subparheadnoperiod}[1]{%
+	\smallskip\noindent
+	{\scshape\boldmath\ignorespaces#1}%
+	\hskip0.9em plus 0.3em minus 0.3em
+	\llncs@skipspaces
+}
+
+\newcommand{\parhead}[1]{\parheadnoperiod{\llncs@autopunct{#1}}}
+\renewcommand{\paragraph}[1]{\parhead{#1}}
+
+\newcommand{\subparhead}[1]{\subparheadnoperiod{\llncs@autopunct{#1}}}
+\renewcommand{\subparagraph}[1]{\subparhead{#1}}
+
+\long\def\llncs@CustomFBox#1#2#3#4#5#6#7#8#9{%
+	\leavevmode\begingroup
+	\setbox\@tempboxa\hbox{
+		\color@begingroup\kern\fboxsep{#9}\kern\fboxsep\color@endgroup}%
+	\hbox{%
+		\begingroup
+		\@tempdima#4\relax
+		\advance\@tempdima\fboxsep
+		\advance\@tempdima\dp\@tempboxa
+		\expandafter\endgroup\expandafter
+		\lower\the\@tempdima\hbox{\vbox{%
+				\hrule\@height#3\@width#7\relax
+				#1%
+				\hbox{%
+					\vrule\@width#5\relax
+					\hspace{#8}%
+					\vbox{\vskip\fboxsep\copy\@tempboxa\vskip\fboxsep}%
+					\vrule\@width#6\relax}%
+				#2%
+				\hrule\@height#4\@width#7\relax}}%
+	}%
+	\endgroup
+}
+
+\newcommand{\llncs@nb@hrlen}{1em}
+\newcommand{\llncs@nb@indent}{0.4em}
+
+\def\llncs@OpenFBox#1#2{%
+	\fboxsep\FrameSep
+	\llncs@CustomFBox{}{}{#1}{#2}\FrameRule\z@
+	{\llncs@nb@hrlen}{\llncs@nb@indent}%
+}
+
+\newenvironment{nestedbar}[1][\hsize]{%
+	\@ifundefined{OuterFrameSep}{%
+		\@latex@error{nestedbar requires a recent framed.sty}\@ehd}{}%
+	\def\FrameCommand     {\llncs@OpenFBox\FrameRule\FrameRule}%
+	\def\FirstFrameCommand{\llncs@OpenFBox\FrameRule\z@}%
+	\def\MidFrameCommand  {\llncs@OpenFBox\z@\z@}%
+	\def\LastFrameCommand {\llncs@OpenFBox\z@\FrameRule}%
+	\OuterFrameSep=1ex\FrameSep=0pt
+	\MakeFramed{\hsize#1\advance\hsize-\width\FrameRestore}%
+	\smallskip
+}{\smallskip\endMakeFramed}
+
+\newcommand{\emailref}[1]{\href{mailto:#1}{\nolinkurl{#1}}}
+\newcommand{\httpref}[1] {\href{http://#1}{\nolinkurl{#1}}}
+
+\newcommand{\footnotesymb}[2]{%
+	\def\@tempa{#1}%
+	\ifx\@tempa\@empty
+		\let\llncs@savedmakefntext\@makefntext
+		\long\def\@makefntext##1{\parindent1em\noindent##1}%
+		{\protected@xdef\@thefnmark{}}%
+		\@footnotetext{#2}%
+		\let\@makefntext\llncs@savedmakefntext
+	\else
+		{\protected@xdef\@thefnmark{#1}}\@footnotemark\@footnotetext{#2}%
+	\fi
+}
+
+\newcounter{llncs@missing}
+\newcommand{\llncs@missinglist}{}
+\newcommand{\missing}[1]{%
+	\refstepcounter{llncs@missing}%
+	\label{llncs@miss:\thellncs@missing}%
+	\gappto\llncs@missinglist{%
+		\noindent\textcolor{BrickRed}{%
+			$\star$~\thellncs@missing~(p.~\pageref{llncs@miss:\thellncs@missing}):~#1%
+		}\par\medskip
+	}%
+	\ifllncs@notes\llncs@appenddnote{Missing}{BrickRed}{#1}\fi
+	\textcolor{BrickRed}{#1}%
+}
+\newcommand{\printmissing}{%
+	\section*{Missing Content}%
+	\llncs@missinglist
+}
+
+\NewDocumentEnvironment{acknowledgment}{o}{%
+	\IfNoValueTF{#1}%
+	{\noindent\paragraph{Acknowledgment.}}%
+	{\noindent\paragraph{#1}}%
+}{}
+
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\mathsc}[1]{\textnormal{\textsc{#1}}}
+
+\newcommand{\highlightcolor}{RoyalBlue}
+\newcommand{\sethighlightcolor}[1]{\renewcommand{\highlightcolor}{#1}}
+\newcommand{\textem}[1]{\textcolor{\highlightcolor}{#1}}
+
+\newlist{points}{itemize}{1}
+\setlist[points]{label={-}, leftmargin=1em, itemsep=1pt,
+	before=\smallskip, after=\smallskip}
+
+\newlist{codelist}{enumerate}{1}
+\setlist[codelist,1]{label=\textcolor{gray}{\texttt{[\arabic*]}},
+	leftmargin=3em, itemsep=1pt, before=\smallskip, after=\smallskip}
+
+\newlist{checkbox}{itemize}{1}
+\setlist[checkbox]{label=$\square$, leftmargin=1em}
+\newcommand{\checked}{\item[$\checkmark$]}
+
+\newlist{deflist}{description}{1}
+\setlist[deflist]{labelwidth=0.33\textwidth, labelsep=1em,
+	leftmargin=0.33\textwidth, font=\normalfont\bfseries,
+	style=nextline, itemsep=4pt}
+
+\RequirePackage[%
+	skipabove=6pt, skipbelow=6pt,
+	ntheorem, framemethod=Tikz
+]{mdframed}
+
+\mdfdefinestyle{llncs@box}{%
+	font             = \small,
+	roundcorner      = 1.5pt,
+	linewidth        = 0.5pt,
+	skipabove        = 0.5\baselineskip,
+	skipbelow        = 0.1\baselineskip,
+	innerleftmargin  = 6pt,
+	innerrightmargin = 6pt,
+	innertopmargin   = 6pt,
+	innerbottommargin= 6pt,
+	backgroundcolor  = white,
+	linecolor        = black
+}
+
+\newcommand{\llncs@boxtitle}[1]{%
+	\IfNoValueF{#1}{%
+		\noindent\textbf{\small#1}\par\smallskip
+		\noindent\hrule height 0.4pt\relax\vspace{0.4\baselineskip}%
+	}%
+}
+
+\NewDocumentEnvironment{protocolbox}{o}{%
+	\begin{mdframed}[style=llncs@box]%
+	\llncs@boxtitle{#1}%
+	\begin{points}%
+}{%
+	\end{points}%
+	\end{mdframed}%
+}
+
+\NewDocumentEnvironment{codelistbox}{o}{%
+	\begin{mdframed}[style=llncs@box]%
+	\llncs@boxtitle{#1}%
+	\begin{codelist}%
+}{%
+	\end{codelist}%
+	\end{mdframed}%
+}
+
+\NewDocumentEnvironment{simplebox}{o}{%
+	\begin{mdframed}[style=llncs@box]%
+	\llncs@boxtitle{#1}%
+}{%
+	\end{mdframed}%
+}
+
+\ifllncs@draft
+	\RequirePackage{scrtime}
+	\RequirePackage{prelim2e}
+
+	\newcommand{\llncs@datetime}{%
+		\the\year-%
+		\ifnum\the\month<10 0\fi\the\month-%
+		\ifnum\the\day<10 0\fi\the\day\space\thistime
+	}
+
+	\renewcommand{\PrelimText}{%
+		\normalfont\sffamily\small\color{red}%
+		This is a draft made on~\llncs@datetime; not for distribution%
+	}
+\fi
+
+\makeatother
+\endinput

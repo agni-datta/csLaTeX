@@ -1,0 +1,976 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{csamsmath}[2026/04/13 v3.0 Absolute mathematical backbone for layout and proofs]
+
+\RequirePackage{calc}
+\RequirePackage{comment}
+\RequirePackage{etoolbox}
+\RequirePackage{iftex}
+\RequirePackage{xkeyval}
+\RequirePackage{xparse}
+\RequirePackage{xpatch}
+
+\newif\ifcsam@baskervaldx
+\newif\ifcsam@concrete
+\newif\ifcsam@draft
+\newif\ifcsam@gfsdidot
+\newif\ifcsam@kpfonts
+\newif\ifcsam@latinmodern
+\newif\ifcsam@libertine
+\newif\ifcsam@palatino
+
+\csam@latinmoderntrue
+\csam@drafttrue
+
+\DeclareOption{baskervaldx}{
+    \csam@baskervaldxtrue
+    \csam@concretefalse
+    \csam@gfsdidotfalse
+    \csam@kpfontsfalse
+    \csam@latinmodernfalse
+    \csam@libertinefalse
+    \csam@palatinofalse
+}
+
+\DeclareOption{concrete}{
+    \csam@baskervaldxfalse
+    \csam@concretetrue
+    \csam@gfsdidotfalse
+    \csam@kpfontsfalse
+    \csam@latinmodernfalse
+    \csam@libertinefalse
+    \csam@palatinofalse
+}
+
+\DeclareOption{gfsdidot}{
+    \csam@baskervaldxfalse
+    \csam@concretefalse
+    \csam@gfsdidottrue
+    \csam@kpfontsfalse
+    \csam@latinmodernfalse
+    \csam@libertinefalse
+    \csam@palatinofalse
+}
+
+\DeclareOption{kpfonts}{
+    \csam@baskervaldxfalse
+    \csam@concretefalse
+    \csam@gfsdidotfalse
+    \csam@kpfontstrue
+    \csam@latinmodernfalse
+    \csam@libertinefalse
+    \csam@palatinofalse
+}
+
+\DeclareOption{latinmodern}{
+    \csam@baskervaldxfalse
+    \csam@concretefalse
+    \csam@gfsdidotfalse
+    \csam@kpfontsfalse
+    \csam@latinmoderntrue
+    \csam@libertinefalse
+    \csam@palatinofalse
+}
+
+\DeclareOption{libertine}{
+    \csam@baskervaldxfalse
+    \csam@concretefalse
+    \csam@gfsdidotfalse
+    \csam@kpfontsfalse
+    \csam@latinmodernfalse
+    \csam@libertinetrue
+    \csam@palatinofalse
+}
+
+\DeclareOption{palatino}{
+    \csam@baskervaldxfalse
+    \csam@concretefalse
+    \csam@gfsdidotfalse
+    \csam@kpfontsfalse
+    \csam@latinmodernfalse
+    \csam@libertinefalse
+    \csam@palatinotrue
+}
+
+\DeclareOption{draft}{\csam@drafttrue}
+\DeclareOption{final}{\csam@draftfalse}
+\DeclareOption*{
+    \PackageWarning{csamsmath}{Unknown option `\CurrentOption' ignored}
+}
+
+\ProcessOptions\relax
+
+\makeatletter
+\tracinglostchars=0
+\def\@font@warning#1{}
+
+\RequirePackage[T1]{fontenc}
+
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{amsthm}
+\RequirePackage[USenglish]{babel}
+\RequirePackage[
+    2.0,
+    objcompress,
+    compress
+]{bxpdfver}
+\RequirePackage[
+    autostyle=true,
+    csdisplay=true
+]{csquotes}
+\RequirePackage{emptypage}
+\RequirePackage{mathrsfs}
+\RequirePackage{mathtools}
+\RequirePackage{moresize}
+\RequirePackage{paralist}
+\RequirePackage{setspace}
+\RequirePackage{soul}
+\RequirePackage[full]{textcomp}
+\RequirePackage{thmtools}
+\RequirePackage[normalem]{ulem}
+\RequirePackage[
+    dvipsnames,
+    table,
+    x11names
+]{xcolor}
+\RequirePackage{xspace}
+\RequirePackage{xurl}
+
+\RequirePackage[
+    margin=2.5cm
+]{geometry}
+
+\RequirePackage[
+    expansion=true,
+    final,
+    nopatch,
+    protrusion=true
+]{microtype}
+
+\microtypesetup{
+    activate   = true,
+    expansion  = true,
+    factor     = 1250,
+    protrusion = true,
+    stretch    = 25
+}
+
+\UseMicrotypeSet[protrusion]{basicmath}
+\UseMicrotypeSet[expansion]{alltext}
+
+\SetExpansion{
+    encoding=*,
+    family=*
+}{
+    stretch=25,
+    shrink=25,
+    step=1
+}
+\SetProtrusion{
+    encoding=*,
+    family=*
+}{
+    period={,50},
+    comma={,40},
+    colon={,30},
+    semicolon={,30}
+}
+\emergencystretch=2em
+
+\ifLuaTeX
+
+    \RequirePackage{fontspec}
+    \RequirePackage{lmodern}
+    \RequirePackage{sansmath}
+    \RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
+
+    \ifcsam@baskervaldx
+        \setmainfont{Baskervaldx}[
+            Ligatures         = TeX,
+            SmallCapsFeatures = {RawFeature=+smcp},
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setsansfont{Libertinus Sans}[
+            Scale             = MatchUppercase,
+            Ligatures         = TeX,
+            SmallCapsFeatures = {RawFeature=+smcp},
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmonofont{Noto Sans Mono}[
+            Scale             = MatchLowercase,
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmathfont{KPMath-Regular}[
+            AutoFakeBold,
+            AutoFakeSlant,
+            Scale             = MatchUppercase,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmathfont{Baskervaldx-Reg}[
+            Scale             = MatchUppercase,
+            range             = {up/{latin,Latin,num}},
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmathfont{Baskervaldx-Ita}[
+            Scale             = MatchUppercase,
+            range             = {it/{latin,Latin}},
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmathfont{Libertinus Sans}[
+            Scale             = MatchUppercase,
+            range             = {sfup/{latin,Latin,num},sfit/{latin,Latin}},
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmathfont{Noto Sans Mono}[
+            Scale             = MatchUppercase,
+            range             = {tt/{latin,Latin,num}},
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \let\mathbfcal\relax
+        \let\mathbfscr\relax
+        \RequirePackage[
+            cal=txupr,
+            bb=stix,
+            scr=dutchcal
+        ]{mathalpha}
+    \fi
+
+    \ifcsam@concrete
+        \RequirePackage[euler]{fontsetup}
+        \let\mathbfcal\relax
+        \let\mathbfscr\relax
+        \RequirePackage[
+            cal=txupr,
+            bb=stix,
+            scr=dutchcal
+        ]{mathalpha}
+    \fi
+
+    \ifcsam@gfsdidot
+        \RequirePackage[gfsdidot]{fontsetup}
+        \setsansfont{Libertinus Sans}[
+            Scale             = MatchUppercase,
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmonofont{Noto Sans Mono}[
+            Scale             = MatchLowercase,
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \let\mathbfcal\relax
+        \let\mathbfscr\relax
+        \RequirePackage[
+            cal=cm,
+            bb=stix,
+            scr=dutchcal
+        ]{mathalpha}
+    \fi
+
+    \ifcsam@kpfonts
+        \RequirePackage[nosf,noDcommand,fakedscripts]{kpfonts-otf}
+        \setsansfont{Libertinus Sans}[
+            Scale             = MatchUppercase,
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmonofont{Noto Sans Mono}[
+            Scale             = MatchLowercase,
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \let\mathbfcal\relax
+        \let\mathbfscr\relax
+        \RequirePackage[
+            cal=cm,
+            bb=stix,
+            scr=dutchcal
+        ]{mathalpha}
+    \fi
+
+    \ifcsam@latinmodern
+        \setmainfont{Latin Modern Roman}[
+            Ligatures         = TeX,
+            SmallCapsFont     = Latin Modern Roman Caps,
+            SmallCapsFeatures = {RawFeature=+smcp},
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setsansfont{Latin Modern Sans}[
+            Scale             = MatchUppercase,
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmonofont{Latin Modern Mono}[
+            Scale             = MatchLowercase,
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmathfont{Latin Modern Math}[
+            AutoFakeBold,
+            AutoFakeSlant,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \let\mathbfcal\relax
+        \let\mathbfscr\relax
+        \RequirePackage[
+            cal=cm,
+            bb=stix,
+            scr=dutchcal
+        ]{mathalpha}
+    \fi
+
+    \ifcsam@libertine
+        \setmainfont{Libertinus Serif}[
+            Ligatures         = TeX,
+            SmallCapsFeatures = {RawFeature=+smcp},
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setsansfont{Libertinus Sans}[
+            Scale             = MatchUppercase,
+            Ligatures         = TeX,
+            SmallCapsFeatures = {RawFeature=+smcp},
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmonofont{Noto Sans Mono}[
+            Scale             = MatchLowercase,
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmathfont{Libertinus Math}[
+            AutoFakeBold,
+            AutoFakeSlant,
+            Scale             = MatchUppercase,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \let\mathbfcal\relax
+        \let\mathbfscr\relax
+        \RequirePackage[
+            cal=cm,
+            bb=stix,
+            scr=dutchcal
+        ]{mathalpha}
+    \fi
+
+    \ifcsam@palatino
+        \setmainfont{TeX Gyre Pagella}[
+            Ligatures         = TeX,
+            SmallCapsFont     = TeX Gyre Pagella,
+            SmallCapsFeatures = {RawFeature=+smcp},
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setsansfont{Libertinus Sans}[
+            Scale             = MatchUppercase,
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmonofont{Noto Sans Mono}[
+            Scale             = MatchLowercase,
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmathfont{TeX Gyre Pagella Math}[
+            AutoFakeBold,
+            AutoFakeSlant,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \let\mathbfcal\relax
+        \let\mathbfscr\relax
+        \RequirePackage[
+            cal=cm,
+            bb=stix,
+            scr=dutchcal
+        ]{mathalpha}
+    \fi
+
+\else
+
+    \ifcsam@baskervaldx
+        \RequirePackage[
+            proportional,
+            tabular
+        ]{Baskervaldx}
+        \RequirePackage{biolinum}
+        \RequirePackage[
+            baskervaldx,
+            varbb
+        ]{newtxmath}
+        \RequirePackage[
+            cal=txupr,
+            bb=stix,
+            scr=dutchcal
+        ]{mathalpha}
+    \fi
+
+    \ifcsam@concrete
+        \RequirePackage{ccfonts}
+        \RequirePackage{concmath}
+        \RequirePackage[
+            cal=cm,
+            bb=stix,
+            scr=dutchcal
+        ]{mathalpha}
+    \fi
+
+    \ifcsam@gfsdidot
+        \RequirePackage{AnonymousPro}
+        \RequirePackage{biolinum}
+        \RequirePackage{gfsdidot}
+        \RequirePackage[
+            libertine,
+            varbb
+        ]{newtxmath}
+        \renewcommand{\sfdefault}{LinuxBiolinumT-TLF}
+        \RequirePackage[
+            cal=cm,
+            bb=stix,
+            scr=dutchcal
+        ]{mathalpha}
+    \fi
+
+    \ifcsam@kpfonts
+        \RequirePackage{AnonymousPro}
+        \RequirePackage{biolinum}
+        \RequirePackage[
+            tabular
+        ]{libertineRoman}
+        \RequirePackage[
+            libertine,
+            varbb
+        ]{newtxmath}
+        \RequirePackage[
+            cal=cm,
+            bb=stix,
+            scr=dutchcal
+        ]{mathalpha}
+        \PackageWarning{csamsmath}{kpfonts: use LuaLaTeX instead of pdfLaTeX.}
+    \fi
+
+    \ifcsam@latinmodern
+        \RequirePackage{lmodern}
+        \RequirePackage[
+            cal=cm,
+            bb=stix,
+            scr=dutchcal
+        ]{mathalpha}
+    \fi
+
+    \ifcsam@libertine
+        \RequirePackage{AnonymousPro}
+        \RequirePackage{biolinum}
+        \RequirePackage[
+            tabular
+        ]{libertineRoman}
+        \RequirePackage[
+            libertine,
+            varbb
+        ]{newtxmath}
+        \RequirePackage[
+            cal=cm,
+            bb=stix,
+            scr=dutchcal
+        ]{mathalpha}
+    \fi
+
+    \ifcsam@palatino
+        \RequirePackage{AnonymousPro}
+        \RequirePackage{biolinum}
+        \RequirePackage{tgpagella}
+        \RequirePackage[sc]{mathpazo}
+        \RequirePackage[
+            cal=cm,
+            bb=stix,
+            scr=dutchcal
+        ]{mathalpha}
+    \fi
+
+\fi
+
+\RequirePackage{adjustbox}
+\RequirePackage{array}
+\RequirePackage{booktabs}
+\RequirePackage{colortbl}
+\RequirePackage{dashbox}
+\RequirePackage{diagbox}
+\RequirePackage{fancybox}
+\RequirePackage{floatrow}
+\RequirePackage{framed}
+\RequirePackage{graphicx}
+\RequirePackage{hhline}
+\RequirePackage{longtable}
+\RequirePackage{makecell}
+\RequirePackage{multicol}
+\RequirePackage{multirow}
+\RequirePackage{ragged2e}
+\RequirePackage{subcaption}
+\RequirePackage{tabularray}
+\RequirePackage{tabularx}
+\RequirePackage{threeparttable}
+\RequirePackage{verbatim}
+\RequirePackage{xhfill}
+\RequirePackage{xtab}
+
+\RequirePackage{caption}
+
+\AtBeginDocument{
+    \captionsetup{
+        font            = {rm,small},
+        labelfont       = {sc,small},
+        labelsep        = period,
+        skip            = 5pt,
+        justification   = justified
+    }
+}
+
+\RequirePackage{enumitem}
+
+\setlist{nosep,noitemsep}
+\setlist[enumerate, 1]{label = (\arabic*)}
+\setlist[enumerate, 2]{label = (\roman*)}
+\setlist[enumerate, 3]{label = (\Roman*)}
+\setlist[itemize,   1]{label = \ensuremath{\text{-}}}
+\setlist[itemize,   2]{label = \ensuremath{\bullet}}
+\setlist[itemize,   3]{label = \ensuremath{\circ}}
+
+\RequirePackage{nameref}
+\RequirePackage[
+    bookmarksnumbered   = true,
+    breaklinks          = true,
+    citecolor           = NavyBlue,
+    colorlinks          = true,
+    linkcolor           = MidnightBlue,
+    pagebackref,
+    pdfencoding         = auto,
+    pdfpagelabels       = true,
+    pdfpagelayout       = SinglePage,
+    pdfstartview        = FitH,
+    pdfusetitle,
+    unicode             = true,
+    urlcolor            = CadetBlue
+]{hyperref}
+\pdfstringdefDisableCommands{
+    \def\mathbb#1{#1}
+    \def\mathcal#1{#1}
+    \def\mathfrak#1{#1}
+    \def\mathrm#1{#1}
+    \def\mathscr#1{#1}
+    \def\mathsf#1{#1}
+    \def\mathtt#1{#1}
+    \def\var#1{#1}
+}
+\RequirePackage[
+    nameinlink,
+    capitalise,
+    noabbrev
+]{cleveref}
+\RequirePackage{xr}
+
+\RequirePackage{titling}
+
+\pretitle{
+    \begin{center}
+    \LARGE\bfseries
+}
+\posttitle{
+    \end{center}
+}
+\preauthor{
+    \begin{center}
+    \normalsize\scshape
+}
+\postauthor{
+    \end{center}
+}
+\predate{
+    \begin{center}
+    \small\normalfont
+}
+\postdate{
+    \end{center}
+}
+
+\RequirePackage[auth-sc]{authblk}
+
+\renewcommand{\Authfont}{\normalsize\scshape}
+\renewcommand{\Affilfont}{\small\normalfont}
+
+\RequirePackage{titlesec}
+
+\titleformat{\section}
+{\normalfont\bfseries\Large}
+{\thesection\quad}{0pt}{}[]
+
+\titleformat{\subsection}
+{\normalfont\bfseries\large}
+{\thesubsection\quad}{0pt}{}[]
+
+\titleformat{\subsubsection}[runin]
+{\normalfont\bfseries\normalsize}
+{\thesubsubsection.}{0.5em}{}[.]
+
+\renewcommand*{\backref}[1]{}
+\renewcommand*{\backrefalt}[4]{
+    \ifcase #1\or (Cited on p.~#2).
+    \else (Cited on pp.~#2).
+    \fi
+}
+
+\numberwithin{equation}{section}
+
+\declaretheoremstyle[
+    headfont        = \bfseries,
+    notefont        = \normalfont,
+    bodyfont        = \normalfont,
+    spaceabove      = 3pt,
+    spacebelow      = 3pt,
+    headpunct       = {.},
+    postheadspace   = 0.5em
+]{csam@theoremlike}
+
+\declaretheoremstyle[
+    headfont        = \bfseries,
+    notefont        = \normalfont,
+    bodyfont        = \normalfont,
+    spaceabove      = 3pt,
+    spacebelow      = 3pt,
+    headpunct       = {.},
+    postheadspace   = 0.5em
+]{csam@definitionlike}
+
+\declaretheoremstyle[
+    headfont        = \normalfont\scshape,
+    notefont        = \normalfont,
+    bodyfont        = \normalfont,
+    spaceabove      = 3pt,
+    spacebelow      = 3pt,
+    headpunct       = {.},
+    postheadspace   = 0.5em
+]{csam@remarklike}
+
+\declaretheoremstyle[
+    headfont        = \normalfont\sffamily,
+    notefont        = \normalfont,
+    bodyfont        = \normalfont,
+    spaceabove      = 3pt,
+    spacebelow      = 3pt,
+    headpunct       = {.},
+    postheadspace   = 0.5em
+]{csam@highlightlike}
+
+\declaretheorem[
+    name            = Theorem,
+    style           = csam@theoremlike,
+    numberwithin    = section
+]{theorem}
+
+\newcommand\csam@declaretheoremfamily[2]{
+    \forcsvlist{\declaretheorem[sibling=theorem,style=#1]}{#2}
+}
+
+\csam@declaretheoremfamily{csam@theoremlike}{
+    assertion,
+    assumption,
+    axiom,
+    claim,
+    conclusion,
+    conjecture,
+    corollary,
+    criterion,
+    fact,
+    folklore,
+    hypothesis,
+    lemma,
+    observation,
+    postulate,
+    property,
+    proposition
+}
+
+\csam@declaretheoremfamily{csam@definitionlike}{
+    application,
+    construction,
+    convention,
+    definition,
+    example,
+    experiment,
+    problem,
+    protocol,
+    result,
+    solution,
+    step,
+    notation
+}
+
+\csam@declaretheoremfamily{csam@remarklike}{
+    commentary,
+    discussion,
+    exercise,
+    motivation,
+    notationabuse,
+    note,
+    openproblem,
+    question,
+    remark,
+    syntax
+}
+
+\csam@declaretheoremfamily{csam@highlightlike}{
+    guideline,
+    highlight,
+    important,
+    insight,
+    keypoint,
+    recall,
+    summary,
+    takeaway,
+    tip,
+    warning
+}
+
+\declaretheorem[name=Theorem,       style=csam@theoremlike,  numbered=no]{theorem*}
+\declaretheorem[name=Lemma,         style=csam@theoremlike,  numbered=no]{lemma*}
+\declaretheorem[name=Corollary,     style=csam@theoremlike,  numbered=no]{corollary*}
+\declaretheorem[name=Hypothesis,    style=csam@theoremlike,  numbered=no]{hypothesis*}
+\declaretheorem[name=Claim,         style=csam@theoremlike,  numbered=no]{claim*}
+\declaretheorem[name=Conjecture,    style=csam@theoremlike,  numbered=no]{conjecture*}
+\declaretheorem[name=Open Problem,  style=csam@remarklike,   numbered=no]{openproblem*}
+\declaretheorem[name=Syntax,        style=csam@remarklike,   numbered=no]{syntax*}
+
+\let\proof\relax
+\let\endproof\relax
+
+\declaretheoremstyle[
+    headfont        = \itshape,
+    bodyfont        = \normalfont,
+    spaceabove      = 5pt,
+    spacebelow      = 5pt,
+    headpunct       = {.},
+    postheadspace   = 0.5em,
+    qed             = \ensuremath{\scriptstyle\square}
+]{csam@proofstyle}
+
+\declaretheorem[name=Proof,style=csam@proofstyle,numbered=no]{proof}
+
+\crefname{section}{\textsection}{\textsection\textsection}
+\Crefname{section}{\textsection}{\textsection\textsection}
+\crefname{subsection}{\textsection}{\textsection\textsection}
+\Crefname{subsection}{\textsection}{\textsection\textsection}
+\crefname{subsubsection}{\textsection}{\textsection\textsection}
+\Crefname{subsubsection}{\textsection}{\textsection\textsection}
+\crefname{paragraph}{paragraph}{paragraphs}
+\Crefname{paragraph}{Paragraph}{Paragraphs}
+\crefname{subparagraph}{subparagraph}{subparagraphs}
+\Crefname{subparagraph}{Subparagraph}{Subparagraphs}
+
+\newcommand\csam@setcrefnames[1]{
+    \forcsvlist{\csam@setcrefname@single}{#1}
+}
+\def\csam@setcrefname@single#1{
+    \csam@setcrefname@parse#1\csam@nil
+}
+\def\csam@setcrefname@parse#1/#2/#3\csam@nil{
+    \crefname{#1}{#2}{#3}
+}
+
+\csam@setcrefnames{
+    application/Application/Applications,
+    assertion/Assertion/Assertions,
+    assumption/Assumption/Assumptions,
+    axiom/Axiom/Axioms,
+    claim/Claim/Claims,
+    commentary/Commentary/Commentaries,
+    conclusion/Conclusion/Conclusions,
+    conjecture/Conjecture/Conjectures,
+    construction/Construction/Constructions,
+    convention/Convention/Conventions,
+    corollary/Corollary/Corollaries,
+    criterion/Criterion/Criteria,
+    definition/Definition/Definitions,
+    discussion/Discussion/Discussions,
+    example/Example/Examples,
+    exercise/Exercise/Exercises,
+    experiment/Experiment/Experiments,
+    fact/Fact/Facts,
+    folklore/Folklore/Folklore,
+    guideline/Guideline/Guidelines,
+    highlight/Highlight/Highlights,
+    hypothesis/Hypothesis/Hypotheses,
+    important/Important point/Important points,
+    insight/Insight/Insights,
+    keypoint/Key point/Key points,
+    lemma/Lemma/Lemmas,
+    motivation/Motivation/Motivations,
+    notation/Notation/Notations,
+    notationabuse/Notation abuse/Notation abuses,
+    note/Note/Notes,
+    observation/Observation/Observations,
+    openproblem/Open problem/Open problems,
+    postulate/Postulate/Postulates,
+    problem/Problem/Problems,
+    proof/Proof/Proofs,
+    property/Property/Properties,
+    proposition/Proposition/Propositions,
+    protocol/Protocol/Protocols,
+    question/Question/Questions,
+    recall/Recall/Recalls,
+    remark/Remark/Remarks,
+    result/Result/Results,
+    solution/Solution/Solutions,
+    step/Step/Steps,
+    summary/Summary/Summaries,
+    syntax/Syntax/Syntaxes,
+    takeaway/Takeaway/Takeaways,
+    theorem/Theorem/Theorems,
+    tip/Tip/Tips,
+    warning/Warning/Warnings
+}
+
+\newif\ifcsam@haspunctuation
+
+\def\csam@checkpunctuation#1{%
+    \ifx\csam@checkpunctuation#1\csam@checkpunctuation
+    \else
+        \csam@haspunctuationtrue
+    \fi
+}
+
+\def\csam@checkdot#1.\csam@delim#2\csam@stop{\csam@checkpunctuation{#2}}
+\def\csam@checkquestion#1?\csam@delim#2\csam@stop{\csam@checkpunctuation{#2}}
+\def\csam@checkexclam#1!\csam@delim#2\csam@stop{\csam@checkpunctuation{#2}}
+\def\csam@checkcolon#1:\csam@delim#2\csam@stop{\csam@checkpunctuation{#2}}
+
+\def\csam@appendpunctuationifneeded#1{%
+    \csam@haspunctuationfalse
+    \csam@checkdot#1\csam@delim.\csam@delim\csam@stop
+    \csam@checkquestion#1\csam@delim?\csam@delim\csam@stop
+    \csam@checkexclam#1\csam@delim!\csam@delim\csam@stop
+    \csam@checkcolon#1\csam@delim:\csam@delim\csam@stop
+    #1\ifcsam@haspunctuation \else.\fi%
+}
+
+\def\csam@ignorewhitespaceandimplicitpars{%
+    \begingroup
+    \catcode13=10 %
+    \@ifnextchar\relax
+    {\endgroup}
+    {\endgroup}%
+}
+
+\NewDocumentCommand{\csam@paragraphhead}{m}{%
+    \smallskip
+    \noindent
+    \textbf{\boldmath\ignorespaces\csam@appendpunctuationifneeded{#1}}%
+    \hskip 0.9em plus 0.3em minus 0.3em
+    \csam@ignorewhitespaceandimplicitpars
+}
+
+\NewDocumentCommand{\csam@subparagraphhead}{m}{%
+    \smallskip
+    \noindent
+    \textsc{\ignorespaces\csam@appendpunctuationifneeded{#1}}%
+    \hskip 0.9em plus 0.3em minus 0.3em
+    \csam@ignorewhitespaceandimplicitpars
+}
+
+\NewDocumentCommand{\parhead}{m}{\csam@paragraphhead{#1}}
+\NewDocumentCommand{\subparhead}{m}{\csam@subparagraphhead{#1}}
+
+\RequirePackage{marginnote}
+
+\providecommand{\csam@colorize}{\color{Firebrick2}}
+
+\newcommand{\csam@brokenrefmark}[1]{
+    \marginnote[
+        {\csam@colorize\normalfont\smash{\LARGE$\star$}\,\tiny\sffamily#1}
+    ]{
+        {\csam@colorize\normalfont\smash{\LARGE$\star$}\,\tiny\sffamily#1}
+    }
+}
+
+\newbool{csam@markundef}
+\booltrue{csam@markundef}
+
+\xpretocmd{\G@refundefinedtrue}{
+    \ifbool{csam@markundef}{
+        \csam@brokenrefmark{\@ifundefined{@citeb}{}{\@citeb}}
+    }{}
+}{}{}
+
+\let\csam@old@setref\@setref
+\renewcommand{\@setref}[3]{
+    \ifx#1\relax\csam@brokenrefmark{#3}\fi
+    \csam@markundeffalse
+    \csam@old@setref{#1}{#2}{#3}
+    \csam@markundeftrue
+}
+
+\RequirePackage[most]{tcolorbox}
+\RequirePackage[
+    skipabove=10pt,
+    skipbelow=10pt,
+    ntheorem,
+    framemethod=TikZ
+]{mdframed}
+
+\NewDocumentCommand{\newguymarker}{m m m}{
+    \ifcsam@draft
+        \expandafter\newcommand\csname #1\endcsname[1]{
+            \textcolor{#3}{##1\ \textsc{#2}}
+            \marginnote{\textcolor{#3}{\LARGE$\star$}}
+        }
+    \else
+        \expandafter\newcommand\csname #1\endcsname[1]{}
+    \fi
+}
+
+\ifcsam@draft
+    \NewDocumentCommand{\added}{m}{
+        \textcolor{OliveGreen}{#1}\marginnote{\textcolor{OliveGreen}{\LARGE$\star$}}
+    }
+    \NewDocumentCommand{\changed}{m}{
+        \textcolor{PineGreen}{#1}\marginnote{\textcolor{PineGreen}{\LARGE$\star$}}
+    }
+    \NewDocumentCommand{\citelater}{m}{
+        \textcolor{WildStrawberry}{[#1]}\marginnote{\textcolor{WildStrawberry}{\LARGE$\star$}}
+    }
+    \NewDocumentCommand{\fixme}{m}{
+        \textcolor{OrangeRed}{[\textsc{Fix-me}: #1]}\marginnote{\textcolor{OrangeRed}{\LARGE$\star$}}
+    }
+    \NewDocumentCommand{\missing}{m}{
+        \textcolor{Crimson}{#1}\marginnote{\textcolor{Crimson}{\LARGE$\star$}}
+    }
+    \NewDocumentCommand{\notes}{m}{
+        \textcolor{ForestGreen}{[\textsc{Note}: #1]}\marginnote{\textcolor{ForestGreen}{\LARGE$\star$}}
+    }
+    \NewDocumentCommand{\query}{m}{
+        \textcolor{RoyalPurple}{[\textsc{Query}: #1]}\marginnote{\textcolor{RoyalPurple}{\LARGE$\star$}}
+    }
+    \NewDocumentCommand{\removed}{m}{
+        \textcolor{Periwinkle}{\sout{#1}}\marginnote{\textcolor{Periwinkle}{\LARGE$\star$}}
+    }
+    \NewDocumentCommand{\todo}{m}{
+        \textcolor{Mahogany}{[\textsc{To-do}: #1]}\marginnote{\textcolor{Mahogany}{\LARGE$\star$}}
+    }
+\else
+    \NewDocumentCommand{\added}{m}{}
+    \NewDocumentCommand{\changed}{m}{}
+    \NewDocumentCommand{\citelater}{m}{}
+    \NewDocumentCommand{\fixme}{m}{}
+    \NewDocumentCommand{\missing}{m}{}
+    \NewDocumentCommand{\notes}{m}{}
+    \NewDocumentCommand{\query}{m}{}
+    \NewDocumentCommand{\removed}{m}{}
+    \NewDocumentCommand{\todo}{m}{}
+\fi
+
+\AtBeginDocument{
+    \RenewDocumentCommand{\paragraph}{m}{\parhead{#1}}
+    \RenewDocumentCommand{\subparagraph}{m}{\subparhead{#1}}
+    \RenewDocumentCommand{\Pr}{}{\mathop{\mathsf{Pr}}}
+}
+
+\makeatother
+\endinput

@@ -1,0 +1,792 @@
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{cstufte}[2026/04/13 v3.0 Structural overhaul mimicking the Tufte aesthetic]
+
+\RequirePackage{kvoptions}
+\SetupKeyvalOptions{
+    family=et,
+    prefix=cstf@
+}
+
+\DeclareStringOption[black]{framecolor}
+\DeclareStringOption[white]{backcolor}
+\DeclareBoolOption[false]{colorful}
+
+\DeclareBoolOption[true]{microtype}
+\DeclareBoolOption[true]{nicefonts}
+
+\DeclareBoolOption[true]{mathoperators}
+\DeclareBoolOption[true]{latticenotation}
+
+\DeclareStringOption[2pt]{rulerwidth}
+
+\DeclareBoolOption[false]{draft}
+
+\ProcessKeyvalOptions*
+
+\RequirePackage{iftex}
+
+\ifPDFTeX
+    \RequirePackage[T1]{fontenc}
+    \RequirePackage[utf8]{inputenc}
+\fi
+
+\RequirePackage[english]{babel}
+\RequirePackage[autostyle=true,csdisplay=true]{csquotes}
+\RequirePackage[x11names,dvipsnames,svgnames]{xcolor}
+
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{amsthm}
+\RequirePackage{mathrsfs}
+\RequirePackage{mathtools}
+\RequirePackage{nicefrac}
+\RequirePackage{thmtools}
+
+\RequirePackage{siunitx}
+\sisetup{
+    detect-all,
+    per-mode=symbol,
+    group-separator={,},
+    group-minimum-digits=4
+}
+
+\RequirePackage{etoolbox}
+\RequirePackage{xparse}
+\RequirePackage{xpatch}
+
+\numberwithin{equation}{section}
+
+\ifcstf@microtype
+    \RequirePackage[
+        final,
+        protrusion=true,
+        expansion=true
+    ]{microtype}
+
+    \microtypesetup{
+        activate=true,
+        final,
+        protrusion=true,
+        expansion=true,
+        stretch=50,
+        factor=1100
+    }
+
+    \UseMicrotypeSet[protrusion]{basicmath}
+    \UseMicrotypeSet[expansion]{alltext}
+
+    \SetExpansion{
+        encoding=*,
+        family=*
+    }{
+        stretch=50,
+        shrink=50,
+        step=1
+    }
+
+    \SetProtrusion{
+        encoding=*,
+        family=*
+    }{
+        period     = { ,50},
+        comma      = { ,40},
+        colon      = { ,30},
+        semicolon  = { ,30}
+    }
+
+    \emergencystretch=2em
+    \DisableLigatures[f]{encoding=T1,family=tt*}
+    \SetTracking{encoding=*,shape=sc}{40}
+\fi
+
+\ifcstf@nicefonts
+    \RequirePackage[full]{textcomp}
+    \RequirePackage[proportional,tabular]{Baskervaldx}
+    \RequirePackage[baskervaldx,varbb]{newtxmath}
+    \RequirePackage{biolinum}
+\fi
+
+\RequirePackage[normalem]{ulem}
+\RequirePackage{emptypage}
+\RequirePackage{moresize}
+\RequirePackage{paralist}
+\RequirePackage{pifont}
+\RequirePackage{soul}
+\RequirePackage{xspace}
+\RequirePackage{xurl}
+
+\RequirePackage{tikz}
+\RequirePackage{tikz-3dplot}
+\RequirePackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\usetikzlibrary{
+    3d,
+    arrows.meta,
+    backgrounds,
+    calc,
+    calc,
+    calc,
+    decorations.markings,
+    decorations.pathmorphing,
+    decorations.pathreplacing,
+    fadings,
+    intersections,
+    matrix,
+    patterns,
+    positioning,
+    scopes,
+    shadows,
+    shapes.geometric,
+    shapes.misc,
+}
+
+\tikzset{
+    lattice point/.style={
+            circle,
+            fill=black,
+            inner sep=1.5pt,
+            outer sep=0pt
+        },
+    basis vector/.style={
+            -Stealth,
+            thick,
+            shorten >=2pt
+        },
+    fundamental domain/.style={
+            fill=black!5,
+            draw=black!40,
+            thick,
+            fill opacity=0.3
+        },
+    voronoi cell/.style={
+            fill=blue!5,
+            draw=blue!40,
+            thick,
+            fill opacity=0.2
+        }
+}
+
+\RequirePackage{adjustbox}
+\RequirePackage{dashbox}
+\RequirePackage{fancybox}
+\RequirePackage{floatrow}
+\RequirePackage{framed}
+\RequirePackage{graphicx}
+\RequirePackage[%
+    skipabove=10pt,
+    skipbelow=10pt,
+    ntheorem,
+    framemethod=TikZ
+]{mdframed}
+\RequirePackage{pdflscape}
+\RequirePackage{placeins}
+\RequirePackage{rotating}
+\RequirePackage{subcaption}
+\RequirePackage{wrapfig}
+
+\ifcstf@colorful
+    \definecolor{cstf@frame}{RGB}{70,130,180}
+    \definecolor{cstf@back}{RGB}{248,248,255}
+    \definecolor{cstf@title}{RGB}{25,25,112}
+\else
+    \definecolor{cstf@frame}{named}{\cstf@framecolor}
+    \definecolor{cstf@back}{named}{\cstf@backcolor}
+    \definecolor{cstf@title}{named}{black}
+\fi
+
+\RequirePackage[most]{tcolorbox}
+\tcbuselibrary{breakable,skins,theorems}
+
+\tcbset{
+    elegantbox/.style={
+            enhanced,
+            breakable,
+            colback=cstf@back,
+            colframe=cstf@frame,
+            coltitle=cstf@title,
+            sharp corners,
+            boxrule=0pt,
+            leftrule=\cstf@rulerwidth,
+            left=8pt,
+            right=0pt,
+            top=4pt,
+            bottom=4pt,
+            toptitle=2pt,
+            bottomtitle=2pt,
+            parbox=false,
+            fonttitle=\bfseries\sffamily,
+            fontupper=\normalfont,
+            attach title to upper={\ },
+            after title={\space},
+            before upper={\parindent=15pt},
+            segmentation style={solid,cstf@frame,line width=0.5pt}
+        }
+}
+
+\RequirePackage{array}
+\RequirePackage{booktabs}
+\RequirePackage{colortbl}
+\RequirePackage{diagbox}
+\RequirePackage{hhline}
+\RequirePackage{longtable}
+\RequirePackage{makecell}
+\RequirePackage{multirow}
+\RequirePackage{tabularray}
+\RequirePackage{tabularx}
+\RequirePackage{threeparttable}
+
+\setlength{\heavyrulewidth}{1.0pt}
+\setlength{\lightrulewidth}{0.5pt}
+\setlength{\aboverulesep}{0.2ex}
+\setlength{\belowrulesep}{0.2ex}
+
+\RequirePackage{multicol}
+\RequirePackage{ragged2e}
+\RequirePackage{verbatim}
+\RequirePackage{xhfill}
+
+\RequirePackage{enumitem}
+\setlist{leftmargin=*, itemsep=2pt, topsep=4pt, nosep}
+\setlist[enumerate,1]{label=(\arabic*)}
+\setlist[enumerate,2]{label=(\alph*)}
+\setlist[enumerate,3]{label=(\Roman*)}
+\setlist[itemize,1]{label=\ensuremath{\text{-}}}
+\setlist[itemize,2]{label=\ensuremath{\bullet}}
+\setlist[itemize,3]{label=\ensuremath{\circ}}
+
+\RequirePackage{fancyvrb}
+\RequirePackage{listings}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    columns=flexible,
+    keepspaces=true,
+    showstringspaces=false,
+    frame=none,
+    numbers=left,
+    numberstyle=\tiny\color{black!40},
+    xleftmargin=2em,
+    framexleftmargin=1.5em
+}
+
+\RequirePackage[
+    backend=bibtex,
+    style=oxalph,
+    sorting=nyt,
+    sortcites=true,
+    maxbibnames=99,
+    giveninits=true,
+    doi=true,
+    url=true,
+    eprint=true
+]{biblatex}
+
+\DeclareFieldFormat{url}{\url{#1}}
+\DeclareFieldFormat{doi}{%
+    \ifhyperref
+    {\href{https://doi.org/#1}{\nolinkurl{doi:#1}}}
+    {\nolinkurl{doi:#1}}%
+}
+
+\RequirePackage{xargs}
+\renewcommandx{\cite}[3][1={0pt},2={}]{%
+    \sidenote[][#1]{\fullcite[#2]{#3}}%
+}
+
+\newcommandx{\margincite}[3][1={0pt},2={}]{%
+    \marginnote[][#1]{\fullcite[#2]{#3}}%
+}
+
+\RequirePackage[makeindex]{imakeidx}
+\makeindex[intoc,title={Index},columns=2]
+
+\RequirePackage{nameref}
+\RequirePackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=SteelBlue4,
+    citecolor=SteelBlue4,
+    urlcolor=SteelBlue4,
+    filecolor=SteelBlue4,
+    breaklinks=true,
+    bookmarksnumbered=true,
+    bookmarksopen=true,
+    bookmarksopenlevel=2,
+    pdfdisplaydoctitle=true,
+    pdfpagemode=UseOutlines,
+    pdfstartview=FitH,
+    pdfencoding=auto,
+    pdfpagelayout=SinglePage,
+    unicode=true
+}
+
+\RequirePackage[nameinlink,capitalise,noabbrev]{cleveref}
+\RequirePackage{xr}
+
+\declaretheoremstyle[%
+    headfont=\scshape,
+    notefont=\normalfont\scshape,
+    bodyfont=\normalfont,
+    spaceabove=3pt,
+    spacebelow=3pt,
+    headpunct=.,
+    postheadspace=.5em
+]{csam@theoremlike}
+
+\declaretheoremstyle[%
+    headfont=\scshape,
+    notefont=\normalfont\scshape,
+    bodyfont=\normalfont,
+    spaceabove=3pt,
+    spacebelow=3pt,
+    headpunct=.,
+    postheadspace=.5em
+]{csam@definitionlike}
+
+\declaretheoremstyle[%
+    headfont=\normalfont\scshape,
+    bodyfont=\normalfont,
+    spaceabove=3pt,
+    spacebelow=3pt,
+    headpunct=.,
+    postheadspace=.5em
+]{csam@remarklike}
+
+\declaretheoremstyle[%
+    headfont=\normalfont\sffamily,
+    bodyfont=\normalfont,
+    spaceabove=3pt,
+    spacebelow=3pt,
+    headpunct=.,
+    postheadspace=.5em
+]{csam@highlightlike}
+
+\declaretheoremstyle[%
+    headfont=\itshape,
+    bodyfont=\normalfont,
+    spaceabove=5pt,
+    spacebelow=5pt,
+    headpunct={.},
+    postheadspace=0.5em,
+    qed=\ensuremath{\scriptstyle\square}
+]{csam@proofstyle}
+
+\declaretheorem[%
+    name=Theorem,
+    style=csam@theoremlike,
+    numberwithin=section
+]{theorem}
+
+\newcommand\cstf@declaretheoremfamily[2]{%
+    \forcsvlist{\declaretheorem[sibling=theorem,style=#1]}{#2}%
+}
+
+\cstf@declaretheoremfamily{csam@theoremlike}{%
+    assertion,assumption,axiom,claim,conclusion,conjecture,corollary,%
+    criterion,fact,folklore,hypothesis,lemma,observation,postulate,%
+    property,proposition%
+}
+
+\cstf@declaretheoremfamily{csam@definitionlike}{%
+    application,construction,convention,definition,example,experiment,%
+    problem,protocol,result,solution,step,notation%
+}
+
+\cstf@declaretheoremfamily{csam@remarklike}{%
+    commentary,discussion,exercise,motivation,notationabuse,note,%
+    openproblem,question,remark,syntax%
+}
+
+\cstf@declaretheoremfamily{csam@highlightlike}{%
+    guideline,highlight,important,insight,keypoint,recall,summary,%
+    takeaway,tip,warning%
+}
+
+\declaretheorem[name=Theorem,     style=csam@theoremlike, numbered=no]{theorem*}
+\declaretheorem[name=Lemma,       style=csam@theoremlike, numbered=no]{lemma*}
+\declaretheorem[name=Corollary,   style=csam@theoremlike, numbered=no]{corollary*}
+\declaretheorem[name=Hypothesis,  style=csam@theoremlike, numbered=no]{hypothesis*}
+\declaretheorem[name=Claim,       style=csam@theoremlike, numbered=no]{claim*}
+\declaretheorem[name=Conjecture,  style=csam@theoremlike, numbered=no]{conjecture*}
+\declaretheorem[name=Open Problem,style=csam@remarklike,  numbered=no]{openproblem*}
+\declaretheorem[name=Syntax,      style=csam@remarklike,  numbered=no]{syntax*}
+
+\crefname{section}{\textsection}{\textsection\textsection}
+\Crefname{section}{\textsection}{\textsection\textsection}
+\crefname{subsection}{\textsection}{\textsection\textsection}
+\Crefname{subsection}{\textsection}{\textsection\textsection}
+\crefname{subsubsection}{\textsection}{\textsection\textsection}
+\Crefname{subsubsection}{\textsection}{\textsection\textsection}
+\crefname{paragraph}{paragraph}{paragraphs}
+\Crefname{paragraph}{Paragraph}{Paragraphs}
+\crefname{subparagraph}{subparagraph}{subparagraphs}
+\Crefname{subparagraph}{Subparagraph}{Subparagraphs}
+
+\newcommand\cstf@setcrefnames[1]{\forcsvlist{\cstf@setcrefname@single}{#1}}
+\def\cstf@setcrefname@single#1{\cstf@setcrefname@parse#1\cstf@nil}
+\def\cstf@setcrefname@parse#1/#2/#3\cstf@nil{\crefname{#1}{#2}{#3}}
+
+\cstf@setcrefnames{%
+    application/Application/Applications,%
+    assertion/Assertion/Assertions,%
+    assumption/Assumption/Assumptions,%
+    axiom/Axiom/Axioms,%
+    claim/Claim/Claims,%
+    commentary/Commentary/Commentaries,%
+    conclusion/Conclusion/Conclusions,%
+    conjecture/Conjecture/Conjectures,%
+    construction/Construction/Constructions,%
+    convention/Convention/Conventions,%
+    corollary/Corollary/Corollaries,%
+    criterion/Criterion/Criteria,%
+    definition/Definition/Definitions,%
+    discussion/Discussion/Discussions,%
+    example/Example/Examples,%
+    exercise/Exercise/Exercises,%
+    experiment/Experiment/Experiments,%
+    fact/Fact/Facts,%
+    folklore/Folklore/Folklore,%
+    guideline/Guideline/Guidelines,%
+    highlight/Highlight/Highlights,%
+    hypothesis/Hypothesis/Hypotheses,%
+    important/Important point/Important points,%
+    insight/Insight/Insights,%
+    keypoint/Key point/Key points,%
+    lemma/Lemma/Lemmas,%
+    motivation/Motivation/Motivations,%
+    notation/Notation/Notations,%
+    notationabuse/Notation abuse/Notation abuses,%
+    note/Note/Notes,%
+    observation/Observation/Observations,%
+    openproblem/Open problem/Open problems,%
+    postulate/Postulate/Postulates,%
+    problem/Problem/Problems,%
+    proof/Proof/Proofs,%
+    property/Property/Properties,%
+    proposition/Proposition/Propositions,%
+    protocol/Protocol/Protocols,%
+    question/Question/Questions,%
+    recall/Recall/Recalls,%
+    remark/Remark/Remarks,%
+    result/Result/Results,%
+    solution/Solution/Solutions,%
+    step/Step/Steps,%
+    summary/Summary/Summaries,%
+    syntax/Syntax/Syntaxes,%
+    takeaway/Takeaway/Takeaways,%
+    theorem/Theorem/Theorems,%
+    tip/Tip/Tips,%
+    warning/Warning/Warnings%
+}
+
+\RequirePackage{sectsty}
+\RequirePackage{titlesec}
+\RequirePackage{titletoc}
+
+\partfont{\normalfont\huge\itshape\centering}
+\chapterfont{\normalfont\huge\itshape\raggedright}
+\sectionfont{\normalfont\LARGE\itshape\raggedright}
+\subsectionfont{\normalfont\Large\itshape\raggedright}
+\subsubsectionfont{\normalfont\large\itshape\raggedright}
+
+\titleformat{\section}
+{\normalfont\bfseries\Large}
+{\thesection}{5pt}{}
+
+\titleformat{\subsection}
+{\bfseries\large}
+{\thesubsection}{7.5pt}{}
+
+\titleformat{\subsubsection}[runin]
+{\bfseries\normalsize}
+{\thesubsubsection.}{0.75em}{}[.\ ]
+
+\titlecontents{part}
+[0pt]
+{\addvspace{0.25\baselineskip}}
+{\allcaps{Part~\thecontentslabel}}
+{\allcaps}
+{}
+[\vspace*{0.5\baselineskip}]
+
+\titlecontents{chapter}
+[4em]
+{\vspace*{0.5\baselineskip}}
+{\itshape\contentslabel{2em}}
+{\itshape}
+{\hfill\textit{\thecontentspage}}
+[\vspace*{0.5\baselineskip}]
+
+\titlecontents{section}
+[6.5em]
+{}
+{\itshape\small\contentslabel{2.3em}}
+{\itshape\small}
+{\hfill\textit{\thecontentspage}}
+[\vspace*{2pt}]
+
+\renewcommand{\allcapsspacing}[1]{\textls[250]{#1}}
+\renewcommand{\allcaps}[1]{\textls[250]{\MakeTextUppercase{#1}}}
+\renewcommand{\smallcapsspacing}[1]{\textls[175]{#1}}
+\renewcommand{\smallcaps}[1]{\smallcapsspacing{\scshape\MakeTextLowercase{#1}}}
+\renewcommand{\textsc}[1]{\smallcapsspacing{\textsmallcaps{#1}}}
+
+\renewcommand{\maketitlepage}{%
+    \begingroup
+    \setlength{\parindent}{0pt}
+    {\LARGE\textsc{\@author}\par}
+    \vspace{1.75in}{\HUGE\itshape\@title\par}
+    \vspace{0.5in}{\large\textsf{\smallcaps{\@date}}\par}
+    \vfill{\large\textit{\@publisher}\par}
+    \thispagestyle{empty}
+    \endgroup
+}
+
+\providecommand{\cstf@colorize}{\color{Firebrick2}}
+
+\newcommand{\cstf@brokenrefmark}[1]{%
+    \marginnote[%
+        {\cstf@colorize\normalfont\smash{\LARGE$\star$}\ \tiny\sffamily#1}%
+    ]{%
+        {\cstf@colorize\normalfont\smash{\LARGE$\star$}\ \tiny\sffamily#1}%
+    }%
+}
+
+\newbool{cstf@markundef}
+\booltrue{cstf@markundef}
+
+\NewDocumentCommand{\newguymarker}{mmm}{%
+    \ifcstf@draft
+        \expandafter\newcommand\csname #1\endcsname[1]{%
+            \textcolor{#3}{##1\ \textsc{#2}}%
+            \marginnote{\textcolor{#3}{\LARGE$\star$}}%
+        }%
+    \else
+        \expandafter\newcommand\csname #1\endcsname[1]{}%
+    \fi
+}
+
+\ifcstf@draft
+    \providecommand{\todo}[1]{%
+        \textcolor{Red}{[\textsc{To-do}: #1]}%
+        \marginnote{\textcolor{Red}{\LARGE$\star$}}%
+    }
+    \providecommand{\fixme}[1]{%
+        \textcolor{OrangeRed}{[\textsc{Fix-me}: #1]}%
+        \marginnote{\textcolor{OrangeRed}{\LARGE$\star$}}%
+    }
+    \providecommand{\missing}[1]{%
+        \textcolor{Crimson}{#1}%
+        \marginnote{\textcolor{Crimson}{\LARGE$\star$}}%
+    }
+    \providecommand{\notes}[1]{%
+        \textcolor{ForestGreen}{[\textsc{Note}: #1]}%
+        \marginnote{\textcolor{ForestGreen}{\LARGE$\star$}}%
+    }
+    \providecommand{\query}[1]{%
+        \textcolor{Purple}{[\textsc{Q}: #1]}%
+        \marginnote{\textcolor{Purple}{\LARGE$\star$}}%
+    }
+    \providecommand{\changed}[1]{%
+        \textcolor{blue}{#1}%
+        \marginnote{\textcolor{blue}{\LARGE$\star$}}%
+    }
+    \providecommand{\added}[1]{%
+        \textcolor{OliveGreen}{#1}%
+        \marginnote{\textcolor{OliveGreen}{\LARGE$\star$}}%
+    }
+    \providecommand{\removed}[1]{%
+        \textcolor{Gray}{\sout{#1}}%
+        \marginnote{\textcolor{Gray}{\LARGE$\star$}}%
+    }
+\else
+    \providecommand{\added}[1]{#1}
+    \providecommand{\changed}[1]{#1}
+    \providecommand{\fixme}[1]{}
+    \providecommand{\missing}[1]{}
+    \providecommand{\notes}[1]{}
+    \providecommand{\query}[1]{}
+    \providecommand{\removed}[1]{}
+    \providecommand{\todo}[1]{}
+\fi
+
+\newif\ifcstf@haspunctuation
+
+\def\cstf@checkpunctuation#1{%
+    \ifx\cstf@checkpunctuation#1\cstf@checkpunctuation
+    \else
+        \cstf@haspunctuationtrue
+    \fi
+}
+
+\def\cstf@checkdot#1.\cstf@delim#2\cstf@stop{\cstf@checkpunctuation{#2}}
+\def\cstf@checkquestion#1?\cstf@delim#2\cstf@stop{\cstf@checkpunctuation{#2}}
+\def\cstf@checkexclam#1!\cstf@delim#2\cstf@stop{\cstf@checkpunctuation{#2}}
+\def\cstf@checkcolon#1:\cstf@delim#2\cstf@stop{\cstf@checkpunctuation{#2}}
+
+\def\cstf@appendpunctuationifneeded#1{%
+    \cstf@haspunctuationfalse
+    \cstf@checkdot#1\cstf@delim.\cstf@delim\cstf@stop
+    \cstf@checkquestion#1\cstf@delim?\cstf@delim\cstf@stop
+    \cstf@checkexclam#1\cstf@delim!\cstf@delim\cstf@stop
+    \cstf@checkcolon#1\cstf@delim:\cstf@delim\cstf@stop
+    #1\ifcstf@haspunctuation\else.\fi%
+}
+
+\def\cstf@ignorewhitespaceandimplicitpars{%
+    \begingroup
+    \catcode13=10
+    \@ifnextchar\relax{\endgroup}{\endgroup}%
+}
+
+\NewDocumentCommand{\cstf@paragraphhead}{m}{%
+    \smallskip
+    \noindent
+    \textbf{\boldmath\ignorespaces\cstf@appendpunctuationifneeded{#1}}%
+    \hskip 0.9em plus 0.3em minus 0.3em
+    \cstf@ignorewhitespaceandimplicitpars
+}
+
+\NewDocumentCommand{\cstf@subparagraphhead}{m}{%
+    \smallskip
+    \noindent
+    \textsc{\ignorespaces\cstf@appendpunctuationifneeded{#1}}%
+    \hskip 0.9em plus 0.3em minus 0.3em
+    \cstf@ignorewhitespaceandimplicitpars
+}
+
+\NewDocumentCommand{\parhead}{m}{\cstf@paragraphhead{#1}}
+\NewDocumentCommand{\subparhead}{m}{\cstf@subparagraphhead{#1}}
+
+\AtBeginDocument{%
+    \renewcommand{\paragraph}[1]{\parhead{#1}}%
+    \renewcommand{\subparagraph}[1]{\subparhead{#1}}%
+    \renewcommand{\Pr}{\mathop{\mathsf{Pr}}}%
+}
+
+\setlength{\parskip}{0pt plus 1pt}
+
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\setcounter{topnumber}{2}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{4}
+\renewcommand{\textfraction}{0.07}
+\renewcommand{\floatpagefraction}{0.85}
+
+\emergencystretch=2em
+\hfuzz=0.5pt
+
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{1}
+
+\ifcstf@latticenotation
+    \RequirePackage[small]{complexity}
+
+    \renewcommand{\R}{\mathbb{R}}
+    \providecommand{\Z}{\mathbb{Z}}
+    \providecommand{\Q}{\mathbb{Q}}
+    \providecommand{\C}{\mathbb{C}}
+    \providecommand{\N}{\mathbb{N}}
+    \providecommand{\F}{\mathbb{F}}
+    \providecommand{\A}{\mathbb{A}}
+    \providecommand{\Qbar}{\overline{\Q}}
+
+    \providecommand{\Lattice}{\Lambda}
+    \providecommand{\DualLattice}{\Lattice^*}
+    \providecommand{\basis}{\mathbf{B}}
+    \providecommand{\GSbasis}{\widetilde{\basis}}
+
+    \providecommand{\vecb}{\mathbf{b}}
+    \providecommand{\vecu}{\mathbf{u}}
+    \providecommand{\vecv}{\mathbf{v}}
+    \providecommand{\vecw}{\mathbf{w}}
+    \providecommand{\vecx}{\mathbf{x}}
+    \providecommand{\vecy}{\mathbf{y}}
+    \providecommand{\veczero}{\mathbf{0}}
+    \providecommand{\vecz}{\mathbf{z}}
+
+    \providecommand{\BDD}{\mathsf{BDD}}
+    \providecommand{\CVP}{\mathsf{CVP}}
+    \providecommand{\GapCVP}{\mathsf{GapCVP}}
+    \providecommand{\GapSVP}{\mathsf{GapSVP}}
+    \providecommand{\LWE}{\mathsf{LWE}}
+    \providecommand{\SIS}{\mathsf{SIS}}
+    \providecommand{\SVP}{\mathsf{SVP}}
+\fi
+
+\ifcstf@mathoperators
+    \DeclareMathOperator{\Ann}{Ann}
+    \DeclareMathOperator{\Aut}{Aut}
+    \DeclareMathOperator{\GL}{GL}
+    \DeclareMathOperator{\Inn}{Inn}
+    \DeclareMathOperator{\Isom}{Isom}
+    \DeclareMathOperator{\Norm}{N}
+    \DeclareMathOperator{\Orb}{Orb}
+    \DeclareMathOperator{\SIVP}{SIVP}
+    \DeclareMathOperator{\Stab}{Stab}
+    \DeclareMathOperator{\Sym}{Sym}
+    \DeclareMathOperator{\Tor}{Tor}
+    \DeclareMathOperator{\Tr}{Tr}
+
+    \DeclareMathOperator{\GF}{\mathbb{GF}}
+    \DeclareMathOperator{\adj}{adj}
+    \DeclareMathOperator{\argmin}{arg\,min}
+    \DeclareMathOperator{\aut}{aut}
+    \DeclareMathOperator{\chr}{char}
+    \DeclareMathOperator{\col}{col}
+    \DeclareMathOperator{\covol}{covol}
+    \DeclareMathOperator{\detop}{det}
+    \DeclareMathOperator{\diag}{diag}
+    \DeclareMathOperator{\dist}{dist}
+    \DeclareMathOperator{\im}{im}
+    \DeclareMathOperator{\lcm}{lcm}
+    \DeclareMathOperator{\nullity}{nullity}
+    \DeclareMathOperator{\perm}{perm}
+    \DeclareMathOperator{\rank}{rank}
+    \DeclareMathOperator{\sgn}{sgn}
+    \DeclareMathOperator{\spanop}{span}
+    \DeclareMathOperator{\spn}{span}
+    \DeclareMathOperator{\supp}{supp}
+    \DeclareMathOperator{\tr}{tr}
+    \DeclareMathOperator{\vol}{vol}
+    \DeclareMathOperator{\zero}{\mathbb{0}}
+\fi
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\inner}{\langle}{\rangle}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\paren}{(}{)}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+
+\DeclarePairedDelimiterX{\ip}[2]{\langle}{\rangle}{#1, #2}
+
+\providecommand{\minlen}[1][]{\lambda_{#1}}
+\providecommand{\covering}{\mu}
+
+\providecommand{\mpar}[1]{%
+    \marginpar[\raggedleft\footnotesize #1]{\raggedright\footnotesize #1}%
+}
+
+\providecommand{\cf}{cf.\xspace}
+\providecommand{\eg}{e.g.\xspace}
+\providecommand{\etal}{et al.\xspace}
+\providecommand{\etc}{etc.\xspace}
+\providecommand{\ie}{i.e.\xspace}
+
+\providecommand{\danger}{%
+    \marginpar[\raggedleft\Large\textdbend]{\raggedright\Large\textdbend}%
+}
+
+\providecommand{\term}[1]{\emph{#1}\index{#1}}
+
+\endinput
+

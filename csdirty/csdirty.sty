@@ -1,0 +1,1107 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{csdirty}[2026/04/13 v3.0 Comprehensive academic framework and centralized preamble]
+
+\RequirePackage{etoolbox}
+\RequirePackage{iftex}
+
+\newif\if@csdr@comments
+\newif\if@csdr@fullversion
+\newif\if@csdr@abridged
+\newif\if@csdr@loadappendix
+\newif\if@csdr@loadcrypto
+\newif\if@csdr@loadepigraph
+\newif\if@csdr@loadall
+\newif\if@csdr@loadallpage
+\newif\if@csdr@loadnicespacing
+\newif\if@csdr@loadnumbering
+\newif\if@csdr@loadnomath
+\newif\if@csdr@loadoldsection
+\newif\if@csdr@loadorcid
+\newif\if@csdr@loadtheorems
+\newif\if@csdr@loadtikz
+\newif\if@csdr@loadmacros
+\newif\if@csdr@modernmath
+
+\@csdr@commentsfalse
+\@csdr@fullversionfalse
+\@csdr@abridgedfalse
+\@csdr@loadappendixfalse
+\@csdr@loadcryptofalse
+\@csdr@loadepigraphfalse
+\@csdr@loadalltrue
+\@csdr@loadallpagefalse
+\@csdr@loadnicespacingfalse
+\@csdr@loadnumberingfalse
+\@csdr@loadnomathfalse
+\@csdr@loadoldsectionfalse
+\@csdr@loadorcidfalse
+\@csdr@loadtheoremsfalse
+\@csdr@loadtikzfalse
+\@csdr@loadmacrostrue
+\@csdr@modernmathfalse
+
+\def\csdr@font{lmodern}
+\def\csdr@margin{3.5cm}
+\def\csdr@spacing{1.0}
+
+\DeclareOption{lmodern}{\def\csdr@font{lmodern}}
+\DeclareOption{latinmodern}{\def\csdr@font{lmodern}}
+\DeclareOption{libertinus}{\def\csdr@font{libertinus}}
+\DeclareOption{concrete}{\def\csdr@font{concrete}}
+\DeclareOption{garamond}{\def\csdr@font{garamond}}
+\DeclareOption{gfsdidot}{\def\csdr@font{gfsdidot}}
+\DeclareOption{palatino}{\def\csdr@font{palatino}}
+
+\DeclareOption{fullversion}{\@csdr@fullversiontrue\@csdr@abridgedfalse}
+\DeclareOption{abridged}{\@csdr@abridgedtrue\@csdr@fullversionfalse}
+\DeclareOption{preprint}{\@csdr@fullversiontrue\@csdr@abridgedfalse}
+
+\DeclareOption{appendix}{\@csdr@loadappendixtrue}
+\DeclareOption{comments}{\@csdr@commentstrue}
+\DeclareOption{crypto}{\@csdr@loadcryptotrue}
+\DeclareOption{epigraph}{\@csdr@loadepigraphtrue}
+\DeclareOption{all}{\@csdr@loadalltrue}
+\DeclareOption{fullpage}{\@csdr@loadallpagetrue}
+\DeclareOption{nicespacing}{\@csdr@loadnicespacingtrue}
+\DeclareOption{numbering}{\@csdr@loadnumberingtrue}
+\DeclareOption{nomath}{\@csdr@loadnomathtrue}
+\DeclareOption{oldsection}{\@csdr@loadoldsectiontrue}
+\DeclareOption{orcidlink}{\@csdr@loadorcidtrue}
+\DeclareOption{theorems}{\@csdr@loadtheoremstrue}
+\DeclareOption{tikz}{\@csdr@loadtikztrue}
+\DeclareOption{macros}{\@csdr@loadmacrostrue}
+\DeclareOption{modernmath}{\@csdr@modernmathtrue}
+
+\DeclareOption{noappendix}{\@csdr@loadappendixfalse}
+\DeclareOption{nocomments}{\@csdr@commentsfalse}
+\DeclareOption{nocrypto}{\@csdr@loadcryptofalse}
+\DeclareOption{noepigraph}{\@csdr@loadepigraphfalse}
+\DeclareOption{nofullpage}{\@csdr@loadallpagefalse}
+\DeclareOption{noorcidlink}{\@csdr@loadorcidfalse}
+\DeclareOption{notheorems}{\@csdr@loadtheoremsfalse}
+\DeclareOption{notikz}{\@csdr@loadtikzfalse}
+\DeclareOption{nomacros}{\@csdr@loadmacrosfalse}
+
+\if@csdr@loadall
+	\PackageInfo{csdirty}{Loading full version with all features}%
+	\@csdr@loadappendixtrue
+	\@csdr@loadepigraphtrue
+	\@csdr@loadnicespacingtrue
+	\@csdr@loadorcidtrue
+	\@csdr@loadtheoremstrue
+	\@csdr@loadtikztrue
+	\@csdr@loadmacrostrue
+\fi
+
+\ProcessOptions\relax
+
+\ifLuaTeX
+	\PackageInfo{csdirty}{LuaTeX engine detected - full Unicode support enabled}%
+\else
+	\ifPDFTeX
+		\PackageInfo{csdirty}{pdfTeX engine detected - using fallback configurations}%
+	\else
+		\PackageWarning{csdirty}{%
+			Unsupported TeX engine detected.^^J%
+			This package is optimized for LuaTeX with pdfTeX fallback.^^J%
+			Unexpected behavior may occur%
+		}%
+	\fi
+\fi
+
+\@ifclassloaded{article}{%
+	\PackageInfo{csdirty}{Document class: article}%
+}{%
+	\@ifclassloaded{report}{%
+		\PackageInfo{csdirty}{Document class: report}%
+	}{%
+		\@ifclassloaded{book}{%
+			\PackageInfo{csdirty}{Document class: book}%
+		}{%
+			\PackageWarning{csdirty}{%
+				Unsupported document class detected.^^J%
+				This package is tested with: article, report, book.^^J%
+				Current class: \@classoptionslist
+			}%
+		}%
+	}%
+}
+
+\RequirePackage{calc}
+\RequirePackage{comment}
+\RequirePackage{xparse}
+
+\RequirePackage[x11names,dvipsnames]{xcolor}
+
+\RequirePackage[2.0,objcompress,compress]{bxpdfver}
+\RequirePackage[nottoc]{tocbibind}
+\RequirePackage{babel}
+\RequirePackage{pdfpages}
+\RequirePackage{refcount}
+
+\if@csdr@loadallpage
+	\RequirePackage[margin=1in]{geometry}
+	\PackageInfo{csdirty}{Using fullpage layout (1in margins)}%
+\else
+	\RequirePackage[margin=\csdr@margin]{geometry}
+	\PackageInfo{csdirty}{Using margin: \csdr@margin}%
+\fi
+
+\RequirePackage{setspace}
+\if@csdr@loadnicespacing
+	\setstretch{1.15}%
+	\PackageInfo{csdirty}{Using nice spacing (1.15)}%
+\else
+	\setstretch{\csdr@spacing}%
+	\PackageInfo{csdirty}{Using spacing: \csdr@spacing}%
+\fi
+
+\RequirePackage[autostyle=true,csdisplay=true]{csquotes}
+\RequirePackage[final]{microtype}
+\RequirePackage[full]{textcomp}
+\RequirePackage[nocompress]{cite}
+\RequirePackage[normalem]{ulem}
+\RequirePackage{emptypage}
+\RequirePackage{lipsum}
+\RequirePackage{marginnote}
+\RequirePackage{paralist}
+\RequirePackage{pifont}
+\RequirePackage{soul}
+\RequirePackage{xspace}
+\RequirePackage{xurl}
+
+\def\csdr@font@lmodern{%
+	\PackageInfo{csdirty}{Loading Latin Modern fonts}%
+	\ifLuaTeX
+		\csdr@load@lmodern@lua
+	\else
+		\csdr@load@lmodern@pdftex
+	\fi
+}
+
+\def\csdr@font@libertinus{%
+	\PackageInfo{csdirty}{Loading Libertinus fonts}%
+	\ifLuaTeX
+		\let\Game\relax
+		\csdr@load@libertinus@lua
+	\else
+		\csdr@load@libertinus@pdftex
+	\fi
+}
+
+\def\csdr@font@concrete{%
+	\PackageInfo{csdirty}{Loading Concrete fonts}%
+	\ifLuaTeX
+		\csdr@load@concrete@lua
+	\else
+		\csdr@load@concrete@pdftex
+	\fi
+}
+
+\def\csdr@font@garamond{%
+	\PackageInfo{csdirty}{Loading Garamond fonts}%
+	\ifLuaTeX
+		\csdr@load@garamond@lua
+	\else
+		\PackageError{csdirty}{Garamond font requires LuaTeX}{%
+			The garamond font option is only available with LuaTeX.^^J%
+			Please use lualatex instead of pdflatex%
+		}%
+	\fi
+}
+
+\def\csdr@font@gfsdidot{%
+	\PackageInfo{csdirty}{Loading GFS Didot fonts}%
+	\ifLuaTeX
+		\csdr@load@gfsdidot@lua
+	\else
+		\csdr@load@gfsdidot@pdftex
+	\fi
+}
+
+\def\csdr@font@palatino{%
+	\PackageInfo{csdirty}{Loading Palatino fonts}%
+	\ifLuaTeX
+		\csdr@load@palatino@lua
+	\else
+		\csdr@load@palatino@pdftex
+	\fi
+}
+
+\def\csdr@load@lmodern@lua{%
+	\RequirePackage{fontspec}%
+	\RequirePackage{thmtools}%
+	\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}%
+	\setmainfont{Latin Modern Roman}[
+		Ligatures=TeX,
+		SmallCapsFont=Latin Modern Roman Caps,
+		RawFeature={+calt,+case,+cpsp,+kern,+liga,+lnum,+pnum}
+	]%
+	\setsansfont{Latin Modern Sans}[Scale=MatchUppercase,Ligatures=TeX]%
+	\setmonofont{Latin Modern Mono}[Scale=MatchLowercase,Ligatures=TeX]%
+	\setmathfont{Latin Modern Math}[AutoFakeBold,AutoFakeSlant]%
+	\let\mathbfcal\relax
+	\let\mathbfscr\relax
+	\RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}%
+}
+
+\def\csdr@load@libertinus@lua{%
+	\RequirePackage{fontspec}%
+	\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}%
+	\setmainfont{Libertinus Serif}[
+		Scale=MatchUppercase,
+		RawFeature={+calt,+liga,+lnum,+pnum}
+	]%
+	\setmathfont{Libertinus Math}[
+		Scale=MatchUppercase,
+		RawFeature={+calt,+liga,+lnum,+pnum}
+	]%
+	\setsansfont{Libertinus Sans}[
+		Scale=MatchUppercase,
+		RawFeature={+calt,+liga,+lnum,+pnum}
+	]%
+	\setmonofont{Latin Modern Mono}[
+		Scale=MatchUppercase,
+		RawFeature={+calt,+liga,+lnum,+pnum}
+	]%
+	\let\mathbfcal\relax
+	\let\mathbfscr\relax
+	\RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}%
+}
+
+\def\csdr@load@gfsdidot@lua{%
+	\RequirePackage[gfsdidot]{fontsetup}%
+	\setsansfont{Libertinus Sans}[
+		Scale=MatchUppercase,
+		RawFeature={+calt,+liga,+lnum,+pnum}
+	]%
+	\let\mathbfcal\relax
+	\let\mathbfscr\relax
+	\RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}%
+}
+
+\def\csdr@load@concrete@lua{%
+	\RequirePackage[concrete]{fontsetup}%
+	\let\mathbfcal\relax
+	\let\mathbfscr\relax
+	\RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}%
+}
+
+\def\csdr@load@palatino@lua{%
+	\RequirePackage{fontspec}%
+	\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}%
+	\setmainfont{TeX Gyre Pagella}[Ligatures=TeX]%
+	\setsansfont{Libertinus Sans}[Scale=MatchUppercase,Ligatures=TeX]%
+	\setmonofont{Latin Modern Mono}[Scale=MatchLowercase,Ligatures=TeX]%
+	\setmathfont{TeX Gyre Pagella Math}[AutoFakeBold,AutoFakeSlant]%
+	\let\mathbfcal\relax
+	\let\mathbfscr\relax
+	\RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}%
+}
+
+\def\csdr@load@garamond@lua{%
+	\RequirePackage{lualatex-math}%
+	\RequirePackage{fontspec}%
+	\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}%
+	\setmainfont{GaramondLibre}[
+		Extension=.otf,
+		UprightFont=*-Regular,
+		ItalicFont=*-Italic,
+		BoldFont=*-Bold,
+		BoldItalicFont=*-BoldItalic,
+		SmallCapsFont=EBGaramond-Medium.otf,
+		SmallCapsFeatures={Letters=SmallCaps},
+	]%
+	\setmathfont{Garamond-Math.otf}[
+		AutoFakeBold,
+		StylisticSet={2,6,7,9},
+	]%
+	\setsansfont{Ysabeau}[Scale=MatchLowercase]%
+	\setmonofont{Noto Sans Mono}[Scale=MatchLowercase]%
+	\let\mathbfcal\relax
+	\let\mathbfscr\relax
+	\RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}%
+}
+
+\def\csdr@load@lmodern@pdftex{%
+	\RequirePackage[T1]{fontenc}%
+	\RequirePackage{lmodern}%
+	\RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}%
+	\csdr@load@common@math@pdftex
+}
+
+\def\csdr@load@libertinus@pdftex{%
+	\RequirePackage[T1]{fontenc}%
+	\RequirePackage{lmodern}%
+	\RequirePackage{biolinum}%
+	\RequirePackage{libertineRoman}%
+	\RequirePackage[libertine,varbb]{newtxmath}%
+	\RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}%
+	\csdr@load@common@math@pdftex
+}
+
+\def\csdr@load@gfsdidot@pdftex{%
+	\RequirePackage[T1]{fontenc}%
+	\RequirePackage{lmodern}%
+	\RequirePackage{libertinust1math}%
+	\RequirePackage{gfsdidot}%
+	\RequirePackage{biolinum}%
+	\renewcommand\sfdefault{LinuxBiolinumT-TLF}%
+	\RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}%
+	\csdr@load@common@math@pdftex
+}
+
+\def\csdr@load@concrete@pdftex{%
+	\RequirePackage[T1]{fontenc}%
+	\RequirePackage{ccfonts}%
+	\RequirePackage{concmath}%
+	\RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}%
+	\csdr@load@common@math@pdftex
+}
+
+\def\csdr@load@palatino@pdftex{%
+	\RequirePackage[T1]{fontenc}%
+	\RequirePackage{biolinum}%
+	\RequirePackage{tgpagella}%
+	\RequirePackage[sc]{mathpazo}%
+	\RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}%
+	\csdr@load@common@math@pdftex
+}
+
+\def\csdr@load@common@math@pdftex{%
+	\RequirePackage{amsmath}%
+	\RequirePackage{amssymb}%
+	\RequirePackage{amsthm}%
+	\RequirePackage{bm}%
+	\RequirePackage{mathrsfs}%
+	\RequirePackage{mathtools}%
+	\RequirePackage{moresize}%
+	\RequirePackage{nicefrac}%
+	\RequirePackage{siunitx}%
+	\RequirePackage{thmtools}%
+}
+
+\def\csdr@load@nomath{%
+	\RequirePackage[T1]{fontenc}%
+	\PackageInfo{csdirty}{Math packages disabled}%
+}
+
+\AtEndPreamble{%
+	\if@csdr@loadnomath
+		\csdr@load@nomath
+	\else
+		\@nameuse{csdr@font@\csdr@font}%
+	\fi
+}
+
+\RequirePackage{nameref}
+\RequirePackage[
+	bookmarksnumbered=true,
+	breaklinks=true,
+	citecolor=MidnightBlue,
+	colorlinks=true,
+	frenchlinks=true,
+	linkcolor=MidnightBlue,
+	pagebackref,
+	pdfencoding=auto,
+	pdfpagelabels=true,
+	pdfpagelayout=SinglePage,
+	pdfstartview=FitH,
+	pdfusetitle,
+	unicode=true,
+	urlcolor=MidnightBlue
+]{hyperref}
+
+\AtBeginDocument{%
+	\RequirePackage[capitalize,nameinlink,noabbrev]{cleveref}%
+	\crefname{section}{\S}{\S\S}%
+	\Crefname{section}{\S}{\S\S}%
+	\crefname{subsection}{\S}{\S\S}%
+	\Crefname{subsection}{\S}{\S\S}%
+	\crefname{subsubsection}{\S}{\S\S}%
+	\Crefname{subsubsection}{\S}{\S\S}%
+}
+
+\RequirePackage{xr}
+
+\renewcommand*\backref[1]{}
+\renewcommand*\backrefalt[4]{%
+	\ifcase#1\relax
+	\or (Cited on p.~#2).%
+	\else (Cited on pp.~#2).%
+	\fi
+}
+
+\newcommand*\fullref[1]{\hyperref[{#1}]{\autoref*{#1}~\nameref*{#1}}}
+
+\RequirePackage{adjustbox}
+\RequirePackage{array}
+\RequirePackage{booktabs}
+\RequirePackage{caption}
+\RequirePackage{colortbl}
+\RequirePackage{dashbox}
+\RequirePackage{diagbox}
+\RequirePackage{fancybox}
+\RequirePackage{float}
+\RequirePackage{framed}
+\RequirePackage{graphicx}
+\RequirePackage{hhline}
+\RequirePackage{longtable}
+\RequirePackage{makecell}
+\RequirePackage{multicol}
+\RequirePackage{multirow}
+\RequirePackage{pdflscape}
+\RequirePackage{placeins}
+\RequirePackage{ragged2e}
+\RequirePackage{rotating}
+\RequirePackage{subcaption}
+\RequirePackage{tabularray}
+\RequirePackage{tabularx}
+\RequirePackage{threeparttable}
+\RequirePackage{verbatim}
+\RequirePackage{wrapfig}
+\RequirePackage{xhfill}
+\RequirePackage{xtab}
+
+\AtBeginDocument{%
+	\captionsetup{%
+		font={rm,small},
+		labelfont={color=black,sc,small},
+		labelsep=period,
+		skip=5pt,
+		justification=justified
+	}%
+	\captionsetup[table]{position=bottom,skip=5pt}%
+	\captionsetup[figure]{position=bottom,skip=5pt}%
+}
+
+\RequirePackage{enumitem}
+
+\setlist{nosep}
+\setlist[enumerate,1]{label=(\arabic*)}
+\setlist[enumerate,2]{label=(\alph*)}
+\setlist[enumerate,3]{label=(\Roman*)}
+\setlist[itemize,1]{label=\ensuremath{\bullet}}
+\setlist[itemize,2]{label=\ensuremath{\textendash}}
+\setlist[itemize,3]{label=\ensuremath{\circ}}
+
+\RequirePackage[most]{tcolorbox}
+\RequirePackage[
+	skipabove=10pt,
+	skipbelow=10pt,
+	ntheorem,
+	framemethod=TikZ
+]{mdframed}
+
+\NewDocumentCommand\newguymarker{mmm}{%
+	\if@csdr@comments
+		\expandafter\newcommand\csname#1\endcsname[1]{%
+			\textcolor{#3}{##1\ \textsc{#2}}%
+			\marginnote{\textcolor{#3}{\LARGE$\star$}}%
+		}%
+	\else
+		\expandafter\newcommand\csname#1\endcsname[1]{}%
+	\fi
+}
+
+\if@csdr@comments
+	\providecommand\todo[1]{%
+		\textcolor{Red}{[\textsc{To-do}: #1]}%
+		\marginnote{\textcolor{Red}{\LARGE$\star$}}%
+	}
+	\providecommand\fixme[1]{%
+		\textcolor{OrangeRed}{[\textsc{Fix-me}: #1]}%
+		\marginnote{\textcolor{OrangeRed}{\LARGE$\star$}}%
+	}
+	\providecommand\missing[1]{%
+		\textcolor{Crimson}{#1}%
+		\marginnote{\textcolor{Crimson}{\LARGE$\star$}}%
+	}
+	\providecommand\notes[1]{%
+		\textcolor{ForestGreen}{[\textsc{Note}: #1]}%
+		\marginnote{\textcolor{ForestGreen}{\LARGE$\star$}}%
+	}
+	\providecommand\query[1]{%
+		\textcolor{Purple}{[\textsc{Q}: #1]}%
+		\marginnote{\textcolor{Purple}{\LARGE$\star$}}%
+	}
+\else
+	\providecommand\fixme[1]{}
+	\providecommand\missing[1]{}
+	\providecommand\notes[1]{}
+	\providecommand\query[1]{}
+	\providecommand\todo[1]{}
+\fi
+
+\if@csdr@comments
+	\providecommand\changed[1]{%
+		\textcolor{blue}{#1}%
+		\marginnote{\textcolor{blue}{\LARGE$\star$}}%
+	}
+	\providecommand\added[1]{%
+		\textcolor{OliveGreen}{#1}%
+		\marginnote{\textcolor{OliveGreen}{\LARGE$\star$}}%
+	}
+	\providecommand\removed[1]{%
+		\textcolor{Gray}{\sout{#1}}%
+		\marginnote{\textcolor{Gray}{\LARGE$\star$}}%
+	}
+\else
+	\providecommand\changed[1]{#1}
+	\providecommand\added[1]{#1}
+	\providecommand\removed[1]{}
+\fi
+
+\if@csdr@loadepigraph
+	\RequirePackage{epigraph}
+	\setlength\epigraphrule{0.5pt}
+	\setlength\epigraphwidth{0.65\textwidth}
+	\renewcommand\textflush{flushright}
+	\renewcommand\epigraphsize{\small}
+
+	\let\csdr@old@epigraph\epigraph
+	\RenewDocumentCommand\epigraph{mm}{%
+		\csdr@old@epigraph{\textsf{#1}}{\smallskip\textsc{#2}}%
+	}
+
+	\@ifclassloaded{book}{%
+		\NewDocumentCommand\generateDedications{m}{%
+			\clearpage\thispagestyle{plain}%
+			\begin{center}\vspace*{\fill}%
+				\large#1%
+				\vspace*{\fill}\end{center}%
+			\clearpage
+		}%
+	}{}%
+	\@ifclassloaded{report}{%
+		\NewDocumentCommand\generateDedications{m}{%
+			\clearpage\thispagestyle{plain}%
+			\begin{center}\vspace*{\fill}%
+				\large#1%
+				\vspace*{\fill}\end{center}%
+			\clearpage
+		}%
+	}{}%
+\fi
+
+\if@csdr@loadtikz
+	\RequirePackage{pgfplots}
+	\pgfplotsset{compat=1.18}
+	\RequirePackage{tikz}
+	\RequirePackage{tikz-cd}
+	\RequirePackage{tikz-3dplot}
+	\usetikzlibrary{%
+		3d,
+		arrows,
+		arrows.meta,
+		automata,
+		babel,
+		backgrounds,
+		bending,
+		calc,
+		calendar,
+		chains,
+		circuits.ee.IEC,
+		circuits.logic.IEC,
+		datavisualization,
+		datavisualization.formats.functions,
+		decorations,
+		decorations.markings,
+		decorations.pathmorphing,
+		decorations.shapes,
+		decorations.text,
+		er,
+		external,
+		fadings,
+		fit,
+		graphs,
+		graphs.standard,
+		hobby,
+		intersections,
+		lindenmayersystems,
+		matrix,
+		mindmap,
+		patterns,
+		patterns.meta,
+		petri,
+		plothandlers,
+		plotmarks,
+		positioning,
+		quotes,
+		scopes,
+		shadows,
+		shapes,
+		shapes.arrows,
+		shapes.callouts,
+		shapes.geometric,
+		shapes.misc,
+		shapes.multipart,
+		shapes.symbols,
+		spy,
+		svg.path,
+		through,
+		tikzmark,
+		trees
+	}
+	\PackageInfo{csdirty}{TikZ loaded with common libraries}%
+\fi
+
+\if@csdr@loadappendix
+	\RequirePackage[page,title,header,titletoc,toc]{appendix}
+\fi
+
+\if@csdr@loadtheorems
+	\PackageInfo{csdirty}{Loaded thmtools for theorem environments}%
+	\RequirePackage{amsthm}%
+	\RequirePackage{thmtools}%
+	\numberwithin{equation}{section}
+
+	\declaretheoremstyle[%
+		headfont=\bfseries,
+		notefont=\normalfont\scshape,
+		bodyfont=\normalfont,
+		spaceabove=3pt,
+		spacebelow=3pt,
+		headpunct=.,
+		postheadspace=.5em
+	]{csdr@theoremlike}
+
+	\declaretheoremstyle[%
+		headfont=\bfseries,
+		notefont=\normalfont\scshape,
+		bodyfont=\normalfont,
+		spaceabove=3pt,
+		spacebelow=3pt,
+		headpunct=.,
+		postheadspace=.5em
+	]{csdr@definitionlike}
+
+	\declaretheoremstyle[%
+		headfont=\normalfont\scshape,
+		bodyfont=\normalfont,
+		spaceabove=3pt,
+		spacebelow=3pt,
+		headpunct=.,
+		postheadspace=.5em
+	]{csdr@remarklike}
+
+	\declaretheoremstyle[%
+		headfont=\normalfont\sffamily,
+		bodyfont=\normalfont,
+		spaceabove=3pt,
+		spacebelow=3pt,
+		headpunct=.,
+		postheadspace=.5em
+	]{csdr@highlightlike}
+
+	\declaretheorem[%
+		name=Theorem,
+		style=csdr@theoremlike,
+		numberwithin=section
+	]{theorem}
+
+	\newcommand\csdr@declaretheoremfamily[2]{%
+		\forcsvlist{\declaretheorem[sibling=theorem,style=#1]}{#2}%
+	}
+
+	\csdr@declaretheoremfamily{csdr@theoremlike}{%
+		assertion,assumption,axiom,claim,conclusion,conjecture,corollary,%
+		criterion,fact,folklore,hypothesis,lemma,observation,postulate,%
+		property,proposition%
+	}
+
+	\csdr@declaretheoremfamily{csdr@definitionlike}{%
+		application,construction,convention,definition,example,experiment,%
+		problem,protocol,result,solution,step,notation%
+	}
+
+	\csdr@declaretheoremfamily{csdr@remarklike}{%
+		commentary,discussion,exercise,motivation,notationabuse,note,%
+		openproblem,question,remark,syntax%
+	}
+
+	\csdr@declaretheoremfamily{csdr@highlightlike}{%
+		guideline,highlight,important,insight,keypoint,recall,summary,%
+		takeaway,tip,warning%
+	}
+
+	\declaretheorem[name=Theorem,style=csdr@theoremlike,numbered=no]{theorem*}
+	\declaretheorem[name=Lemma,style=csdr@theoremlike,numbered=no]{lemma*}
+	\declaretheorem[name=Corollary,style=csdr@theoremlike,numbered=no]{corollary*}
+	\declaretheorem[name=Hypothesis,style=csdr@theoremlike,numbered=no]{hypothesis*}
+	\declaretheorem[name=Claim,style=csdr@theoremlike,numbered=no]{claim*}
+	\declaretheorem[name=Conjecture,style=csdr@theoremlike,numbered=no]{conjecture*}
+	\declaretheorem[name=Open Problem,style=csdr@remarklike,numbered=no]{openproblem*}
+	\declaretheorem[name=Syntax,style=csdr@remarklike,numbered=no]{syntax*}
+
+\fi
+
+\if@csdr@loadcrypto
+	\IfFileExists{tcscrypto.sty}{%
+		\RequirePackage{tcscrypto}%
+		\PackageInfo{csdirty}{Loaded tcscrypto package}%
+	}{%
+		\PackageWarning{csdirty}{Package tcscrypto.sty not found}%
+	}%
+\fi
+
+\if@csdr@loadorcid
+	\IfFileExists{orcidlink.sty}{%
+		\RequirePackage{orcidlink}%
+		\PackageInfo{csdirty}{Loaded orcidlink package}%
+	}{%
+		\PackageWarning{csdirty}{Package orcidlink.sty not found}%
+	}%
+\fi
+
+\if@csdr@loadnumbering
+	\IfFileExists{nicodemus.sty}{%
+		\RequirePackage{nicodemus}%
+		\PackageInfo{csdirty}{Loaded nicodemus package}%
+	}{%
+		\PackageWarning{csdirty}{Package nicodemus.sty not found}%
+	}%
+\fi
+
+\NewDocumentCommand\newcomment{mmm}{%
+	\expandafter\NewDocumentCommand\csname#3\endcsname{m}{%
+		\if@csdr@comments
+			\noindent\textcolor{#2}{\sffamily##1 -- $\mathsf{#1}$}%
+		\fi
+	}%
+}
+
+\AtBeginDocument{%
+	\if@csdr@abridged
+		\NewDocumentEnvironment{acknowledgment}{o}{}{}%
+	\else
+		\NewDocumentEnvironment{acknowledgment}{o}{%
+			\@ifclassloaded{book}{%
+				\IfNoValueTF{#1}{\chapter*{Acknowledgment}}{\chapter*{#1}}%
+			}{%
+				\@ifclassloaded{report}{%
+					\IfNoValueTF{#1}{\chapter*{Acknowledgment}}{\chapter*{#1}}%
+				}{%
+					\IfNoValueTF{#1}{\paragraph*{Acknowledgment.}}{\paragraph*{#1}}%
+				}%
+			}%
+		}{}%
+	\fi
+}
+
+\@ifclassloaded{book}{%
+	\NewDocumentEnvironment{abstract}{}{%
+		\begingroup\quotation\small
+		\textbf{\abstractname.\ }%
+		\addcontentsline{toc}{section}{\protect\abstractname}%
+	}{%
+		\endquotation\endgroup
+	}%
+}{%
+	\RenewDocumentEnvironment{abstract}{}{%
+		\begingroup\quotation\small
+		\textbf{\abstractname.\ }%
+		\addcontentsline{toc}{section}{\protect\abstractname}%
+	}{%
+		\endquotation\endgroup
+	}%
+}
+
+\NewDocumentCommand\toc{}{%
+	\clearpage\vfill
+	\begin{spacing}{1.00}%
+		\tableofcontents
+	\end{spacing}%
+	\vfill\clearpage
+}
+
+\NewDocumentCommand\printbib{O{alphaurl} m}{%
+	\vfill\clearpage
+	\begin{spacing}{1.00}%
+		\bibliographystyle{#1}%
+		\bibliography{#2}%
+	\end{spacing}%
+	\vfill\clearpage
+}
+
+\RequirePackage{hep-title}
+\titlefont{\normalfont\Huge\raggedright\itshape}
+\subtitlefont{\normalfont\LARGE\raggedright\bfseries}
+\authorfont{\normalfont\large\scshape\raggedright}
+\affiliationfont{\normalfont\small\scshape\raggedright}
+\datefont{\normalfont\normalsize\sffamily\scshape\raggedright}
+\preprintfont{\normalfont\small\scshape}
+
+\RequirePackage[titles]{tocloft}
+\NewDocumentCommand\adjusttocspacing{}{%
+	\addtolength\cftchapnumwidth{5pt}%
+	\addtolength\cftsecnumwidth{3.5pt}%
+	\addtolength\cftsubsecnumwidth{3.5pt}%
+	\addtolength\cftsubsubsecnumwidth{3.5pt}%
+	\addtolength\cftsecindent{5pt}%
+	\addtolength\cftsubsecindent{8.5pt}%
+	\addtolength\cftsubsubsecindent{12pt}%
+}
+
+\RequirePackage{titlesec}
+
+\newcommand*\partheadingfont{\normalfont\bfseries\huge}
+\newcommand*\chapterheadingfont{\normalfont\itshape\LARGE}
+\newcommand*\sectionheadingfont{\normalfont\bfseries\Large}
+\newcommand*\subsectionheadingfont{\normalfont\bfseries\large}
+\newcommand*\subsubsectionheadingfont{\normalfont\bfseries\normalsize}
+\newcommand*\paragraphheadingfont{\normalfont\bfseries\normalsize}
+\newcommand*\subparagraphheadingfont{\normalfont\scshape\normalsize}
+
+\newcommand*\setsectionformats{%
+	\if@csdr@loadoldsection
+		\titleformat{\section}{\sectionheadingfont}{\S\thesection}{10pt}{}%
+		\titleformat{\subsection}{\subsectionheadingfont}{\S\S\thesubsection}{10pt}{}%
+		\titleformat{\subsubsection}[runin]{\subsubsectionheadingfont}{\S\S\S\thesubsubsection}{10pt}{}%
+	\else
+		\titleformat{\section}{\sectionheadingfont}{\thesection}{10pt}{}%
+		\titleformat{\subsection}{\subsectionheadingfont}{\thesubsection}{10pt}{}%
+		\titleformat{\subsubsection}[runin]{\subsubsectionheadingfont}{\thesubsubsection}{10pt}{}%
+	\fi
+	\titleformat{\paragraph}[runin]{\paragraphheadingfont}{\theparagraph}{10pt}{}[.]%
+	\titlespacing*{\paragraph}{0pt}{\medskipamount}{*1}%
+	\titleformat{\subparagraph}[runin]{\subparagraphheadingfont}{\thesubparagraph}{10pt}{}[.]%
+	\titlespacing*{\subparagraph}{0pt}{\medskipamount}{*1}%
+}
+
+\newcommand*\setchapterformat{%
+	\titleformat{\chapter}[display]{\chapterheadingfont}%
+	{\filleft\textnormal{\textsf{\large\chaptertitlename}~\Huge\textsf{\thechapter}}}%
+	{2ex}{\titlerule\vspace{1ex}\filright}[\vspace{1ex}\titlerule]%
+}
+
+\newcommand*\setpartformat{%
+	\titleformat{\part}[display]{\partheadingfont}%
+	{\scshape\partname~{\Huge\thepart}}%
+	{1ex}{\scshape\titlerule\vspace{1ex}\Huge}[\vspace{1ex}\titlerule]%
+}
+
+\newif\ifcsdr@haspunctuation
+
+\def\csdr@checkpunctuation#1{%
+	\ifx\csdr@checkpunctuation#1\csdr@checkpunctuation
+	\else
+		\csdr@haspunctuationtrue
+	\fi
+}
+
+\def\csdr@checkdot#1.\csdr@delim#2\csdr@stop{\csdr@checkpunctuation{#2}}
+\def\csdr@checkquestion#1?\csdr@delim#2\csdr@stop{\csdr@checkpunctuation{#2}}
+\def\csdr@checkexclam#1!\csdr@delim#2\csdr@stop{\csdr@checkpunctuation{#2}}
+\def\csdr@checkcolon#1:\csdr@delim#2\csdr@stop{\csdr@checkpunctuation{#2}}
+
+\def\csdr@appendpunctuationifneeded#1{%
+	\csdr@haspunctuationfalse
+	\csdr@checkdot#1\csdr@delim.\csdr@delim\csdr@stop
+	\csdr@checkquestion#1\csdr@delim?\csdr@delim\csdr@stop
+	\csdr@checkexclam#1\csdr@delim!\csdr@delim\csdr@stop
+	\csdr@checkcolon#1\csdr@delim:\csdr@delim\csdr@stop
+	#1\ifcsdr@haspunctuation \else.\fi%
+}
+
+\def\csdr@ignorewhitespaceandimplicitpars{%
+	\begingroup
+	\catcode13=10
+	\@ifnextchar\relax
+	{\endgroup}
+	{\endgroup}%
+}
+
+\NewDocumentCommand{\csdr@paragraphhead}{m}{%
+	\smallskip
+	\noindent
+	\textbf{\boldmath\ignorespaces\csdr@appendpunctuationifneeded{#1}}%
+	\hskip 0.9em plus 0.3em minus 0.3em
+	\csdr@ignorewhitespaceandimplicitpars
+}
+
+\NewDocumentCommand{\parhead}{m}{\csdr@paragraphhead{#1}}
+
+\providecommand{\csdr@colorize}{\color{Firebrick2}}
+
+\newcommand{\csdr@brokenrefmark}[1]{%
+	\marginnote[%
+		{\csdr@colorize\normalfont\smash{\LARGE$\star$}\ \tiny\sffamily#1}%
+	]{%
+		{\csdr@colorize\normalfont\smash{\LARGE$\star$}\ \tiny\sffamily#1}%
+	}%
+}
+
+\newbool{csdr@markundef}
+\booltrue{csdr@markundef}
+
+\xpretocmd{\G@refundefinedtrue}{%
+	\ifbool{csdr@markundef}{%
+		\csdr@brokenrefmark{\@ifundefined{@citeb}{}{\@citeb}}%
+	}{}%
+}{}{}
+
+\let\csdr@old@setref=\@setref
+\renewcommand{\@setref}[3]{%
+	\ifx#1\relax \csdr@brokenrefmark{#3}\fi%
+	\csdr@markundeffalse%
+	\csdr@old@setref{#1}{#2}{#3}%
+	\csdr@markundeftrue%
+}
+
+\if@csdr@loadmacros
+	\newlist{points}{itemize}{1}
+	\setlist[points]{label=\textendash,leftmargin=1em,itemsep=1pt,before=\smallskip,after=\smallskip}
+
+	\newlist{codelist}{enumerate}{1}
+	\setlist[codelist,1]{label=\textcolor{gray}{\texttt{[\arabic*]}},leftmargin=1em,itemsep=1pt}
+
+	\newlist{checkbox}{itemize}{1}
+	\setlist[checkbox]{label=$\square$,leftmargin=1em}
+	\newcommand*\checked{\item[\checkmark]}
+
+	\newlist{deflist}{description}{1}
+	\setlist[deflist]{labelwidth=0.35\textwidth,labelsep=1em,leftmargin=0.35\textwidth,%
+		font=\normalfont\bfseries,style=nextline,itemsep=5pt}
+
+	\newcommand*\highlightcolor{RoyalBlue}
+	\newcommand*\sethighlightcolor[1]{\renewcommand*\highlightcolor{#1}}
+	\newcommand*\emphmath[1]{\textcolor{\highlightcolor}{\mathrm{#1}}}
+	\newcommand*\emphtext[1]{\textcolor{\highlightcolor}{#1}}
+	\newcommand*\textbi[1]{\textbf{\textit{#1}}}
+	\newcommand*\textem[1]{\textcolor{\highlightcolor}{#1}}
+	\newcommand*\code[1]{\texttt{#1}}
+	\newcommand*\mathsc[1]{\textnormal{\textsc{#1}}}
+	\newcommand*\mathbi[1]{\textnormal{\textbf{\textit{#1}}}}
+	\newcommand*\inmath[1]{\ensuremath{#1}}
+	\mathchardef\mathhyphen="2D
+	\newcommand*\putInQuotes[1]{``#1''}
+	\newcommand*\strike[1]{\bgroup\ULdepth=-.55ex\ULset{#1}\egroup}
+
+	\NewDocumentEnvironment{bashbox}{}{%
+		\begin{adjustbox}{minipage=\textwidth,precode=\dbox}%
+		\centering\medskip
+		\begin{minipage}{0.975\textwidth}\noindent
+	}{%
+		\end{minipage}\medskip
+		\end{adjustbox}%
+	}
+
+	\NewDocumentEnvironment{protocolbox}{o}{%
+		\begin{mdframed}[font=\small,roundcorner=1.5pt,linewidth=0.5pt,%
+			skipabove=0.5\baselineskip,skipbelow=0.1\baselineskip,%
+			innerleftmargin=5pt,innerrightmargin=5pt,innertopmargin=5pt,innerbottommargin=5pt]%
+		\IfNoValueF{#1}{\noindent\textbf{#1}\par\smallskip\hrule height0.4pt\vspace{0.5\baselineskip}}%
+		\begin{points}%
+	}{%
+		\end{points}%
+		\end{mdframed}%
+	}
+
+	\NewDocumentEnvironment{codelistbox}{o}{%
+		\begin{mdframed}[font=\small,roundcorner=1.5pt,linewidth=0.5pt,%
+			skipabove=0.5\baselineskip,skipbelow=0.1\baselineskip,%
+			innerleftmargin=5pt,innerrightmargin=5pt,innertopmargin=5pt,innerbottommargin=5pt]%
+		\IfNoValueF{#1}{\noindent\textbf{#1}\par\smallskip\hrule height0.4pt\vspace{0.5\baselineskip}}%
+		\begin{codelist}%
+	}{%
+		\end{codelist}%
+		\end{mdframed}%
+	}
+
+	\NewDocumentEnvironment{simplebox}{o}{%
+		\begin{mdframed}[font=\small,roundcorner=1.5pt,linewidth=0.5pt,%
+			skipabove=0.5\baselineskip,skipbelow=0.1\baselineskip,%
+			innerleftmargin=5pt,innerrightmargin=5pt,innertopmargin=5pt,innerbottommargin=5pt]%
+		\IfNoValueF{#1}{\noindent\textbf{#1}\par\smallskip\hrule height0.4pt\vspace{0.5\baselineskip}}%
+	}{%
+		\end{mdframed}%
+	}
+
+	\newtcolorbox{wirebox}{%
+		colframe=black,colback=white,sharp corners,boxrule=0.5pt,%
+		coltitle=black,colbacktitle=white,boxsep=5pt,top=0pt,bottom=0pt,left=5pt,right=5pt%
+	}
+\fi
+
+\if@csdr@modernmath
+	\RequirePackage{upgreek}
+
+	\providecommand*\Alpha{\mathrm{A}}
+	\providecommand*\Beta{\mathrm{B}}
+	\providecommand*\Chi{\mathrm{X}}
+	\providecommand*\Epsilon{\mathrm{E}}
+	\providecommand*\Eta{\mathrm{H}}
+	\providecommand*\Iota{\mathrm{I}}
+	\providecommand*\Kappa{\mathrm{K}}
+	\providecommand*\Mu{\mathrm{M}}
+	\providecommand*\Nu{\mathrm{N}}
+	\providecommand*\Omicron{\mathrm{O}}
+	\providecommand*\Rho{\mathrm{R}}
+	\providecommand*\Tau{\mathrm{T}}
+	\providecommand*\Zeta{\mathrm{Z}}
+	\providecommand*\omicron{\mathrm{o}}
+
+	\@ifundefined{Upalpha}{}{\renewcommand*\Alpha{\Upalpha}}
+	\@ifundefined{Upbeta}{}{\renewcommand*\Beta{\Upbeta}}
+	\@ifundefined{Upchi}{}{\renewcommand*\Chi{\Upchi}}
+	\@ifundefined{Updelta}{}{\renewcommand*\Delta{\Updelta}}
+	\@ifundefined{Upepsilon}{}{\renewcommand*\Epsilon{\Upepsilon}}
+	\@ifundefined{Upeta}{}{\renewcommand*\Eta{\Upeta}}
+	\@ifundefined{Upgamma}{}{\renewcommand*\Gamma{\Upgamma}}
+	\@ifundefined{Upiota}{}{\renewcommand*\Iota{\Upiota}}
+	\@ifundefined{Upkappa}{}{\renewcommand*\Kappa{\Upkappa}}
+	\@ifundefined{Uplambda}{}{\renewcommand*\Lambda{\Uplambda}}
+	\@ifundefined{Upmu}{}{\renewcommand*\Mu{\Upmu}}
+	\@ifundefined{Upnu}{}{\renewcommand*\Nu{\Upnu}}
+	\@ifundefined{Upomega}{}{\renewcommand*\Omega{\Upomega}}
+	\@ifundefined{Upomicron}{}{\renewcommand*\Omicron{\Upomicron}}
+	\@ifundefined{Upphi}{}{\renewcommand*\Phi{\Upphi}}
+	\@ifundefined{Uppi}{}{\renewcommand*\Pi{\Uppi}}
+	\@ifundefined{Uppsi}{}{\renewcommand*\Psi{\Uppsi}}
+	\@ifundefined{Uprho}{}{\renewcommand*\Rho{\Uprho}}
+	\@ifundefined{Upsigma}{}{\renewcommand*\Sigma{\Upsigma}}
+	\@ifundefined{Uptau}{}{\renewcommand*\Tau{\Uptau}}
+	\@ifundefined{Uptheta}{}{\renewcommand*\Theta{\Uptheta}}
+	\@ifundefined{Upupsilon}{}{\renewcommand*\Upsilon{\Upupsilon}}
+	\@ifundefined{Upxi}{}{\renewcommand*\Xi{\Upxi}}
+	\@ifundefined{Upzeta}{}{\renewcommand*\Zeta{\Upzeta}}
+\fi
+
+\newcommand*\simplefancyheader{%
+	\RequirePackage{fancyhdr}%
+	\pagestyle{fancy}%
+	\fancyhf{}%
+	\fancyhead[LE,RO]{\rmfamily\small\textnormal{\@title}}%
+	\fancyhead[RE,LO]{\rmfamily\small\thepage}%
+	\fancyfoot{}%
+	\setlength\headheight{12pt}%
+}
+
+\AtBeginDocument{%
+	\@ifclassloaded{article}{%
+		\setsectionformats
+		\setpartformat
+	}{}%
+	\@ifclassloaded{report}{%
+		\setpartformat
+		\setchapterformat
+		\setsectionformats
+		\simplefancyheader
+		\adjusttocspacing
+	}{}%
+	\@ifclassloaded{book}{%
+		\setpartformat
+		\setchapterformat
+		\setsectionformats
+		\simplefancyheader
+		\adjusttocspacing
+	}{}%
+}
+
+\AtBeginDocument{%
+	\renewcommand\paragraph[1]{\parhead{#1}}%
+	\renewcommand\Pr{\mathop{\mathsf{Pr}}}%
+}
+
+\endinput

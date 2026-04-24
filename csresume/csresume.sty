@@ -1,0 +1,333 @@
+\NeedsTeXFormat{LaTeX2e}[2022-06-01]
+\ProvidesPackage{csresume}[2026/04/14 v4.1 CV and resume templating package]
+
+\RequirePackage{etoolbox}
+\RequirePackage{expl3}
+\RequirePackage{iftex}
+\RequirePackage{xparse}
+
+\ExplSyntaxOn
+
+\str_new:N  \g__csrs_font_str
+\bool_new:N \g__csrs_allowbreaks_bool
+\str_gset:Nn \g__csrs_font_str { gfsdidot }
+\bool_gset_false:N \g__csrs_allowbreaks_bool
+
+\keys_define:nn { csresume }
+{
+    font        .str_gset:N  = \g__csrs_font_str ,
+    font        .initial:n   = gfsdidot ,
+    allowbreaks .bool_gset:N = \g__csrs_allowbreaks_bool ,
+    allowbreaks .default:n   = true ,
+    gfsdidot    .code:n = { \str_gset:Nn \g__csrs_font_str { gfsdidot    } } ,
+    libertinus  .code:n = { \str_gset:Nn \g__csrs_font_str { libertinus  } } ,
+    euler       .code:n = { \str_gset:Nn \g__csrs_font_str { euler       } } ,
+    baskerville .code:n = { \str_gset:Nn \g__csrs_font_str { baskerville } } ,
+    unknown     .code:n = { \msg_warning:nnn { csresume } { unknown-option } {#1} } ,
+}
+
+\msg_new:nnn { csresume } { unknown-option } { Unknown~option~`#1'~ignored. }
+
+\cs_new_protected:Npn \csrs@process@option {
+    \keys_set:no { csresume } { \CurrentOption }
+}
+
+\ExplSyntaxOff
+
+\DeclareOption*{\csrs@process@option}
+\ProcessOptions\relax
+
+\newif\ifcsrs@baskerville
+\newif\ifcsrs@allowbreaks
+
+\ExplSyntaxOn
+\str_if_eq:VnT \g__csrs_font_str { baskerville } { \csrs@baskervilletrue }
+\bool_if:NT \g__csrs_allowbreaks_bool { \csrs@allowbreakstrue }
+\cs_gset:Npx \csrs@fontname { \g__csrs_font_str }
+\ExplSyntaxOff
+
+\RequirePackage[
+    2.0,
+    compress,
+    objcompress
+]{bxpdfver}
+\RequirePackage[english]{babel}
+\RequirePackage[
+    autostyle = true,
+    csdisplay = true
+]{csquotes}
+\RequirePackage{graphicx}
+\RequirePackage[
+    dvipsnames,
+    table,
+    x11names
+]{xcolor}
+
+\RequirePackage[
+    final,
+    protrusion=true,
+    expansion=true
+]{microtype}
+\microtypesetup{
+    activate   = true,
+    final      = true,
+    protrusion = true,
+    expansion  = true,
+    stretch    = 50,
+    factor     = 1250
+}
+\UseMicrotypeSet[protrusion]{basicmath}
+\UseMicrotypeSet[expansion]{alltext}
+\SetExpansion{
+    encoding=*,
+    family=*
+}{
+    stretch=50,
+    shrink=50,
+    step=1
+}
+\SetProtrusion{
+    encoding=*,
+    family=*
+}{
+    period={,50},
+    comma={,40},
+    colon={,30},
+    semicolon={,30}
+}
+\emergencystretch=2em
+
+\ifPDFTeX
+    \RequirePackage[T1]{fontenc}
+    \RequirePackage[
+        proportional,
+        tabular
+    ]{Baskervaldx}
+    \RequirePackage{biolinum}
+    \RequirePackage[
+        baskervaldx,
+        varbb
+    ]{newtxmath}
+    \RequirePackage[
+        cal=txupr,
+        bb=stix,
+        scr=dutchcal
+    ]{mathalpha}
+\else
+    \ifcsrs@baskerville
+        \RequirePackage{fontspec}
+        \RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
+        \setmainfont{Baskervaldx}[
+            Ligatures           = TeX,
+            SmallCapsFeatures   = {RawFeature = +smcp},
+            RawFeature          = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setsansfont{Libertinus Sans}[
+            Scale               = MatchUppercase,
+            Ligatures           = TeX,
+            SmallCapsFeatures   = {RawFeature = +smcp},
+            RawFeature          = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmonofont{Noto Sans Mono}[
+            Scale               = MatchLowercase,
+            Ligatures           = TeX
+        ]
+
+        \setmathfont{KPMath-Regular}[
+            Scale               = MatchUppercase,
+            AutoFakeBold,
+            AutoFakeSlant
+        ]
+
+        \setmathfont{Baskervaldx-Reg}[
+            Scale               = MatchUppercase,
+            range               = {up/{latin,Latin,num}},
+            Ligatures           = TeX,
+            RawFeature          = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+
+        \setmathfont{Baskervaldx-Ita}[
+            Scale               = MatchUppercase,
+            range               = {it/{latin,Latin}},
+            Ligatures           = TeX,
+            RawFeature          = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+
+        \setmathfont{Libertinus Sans}[
+            Scale               = MatchUppercase,
+            range               = {sfup/{latin,Latin,num}, sfit/{latin,Latin}},
+            Ligatures           = TeX,
+            RawFeature          = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+
+        \setmathfont{Noto Sans Mono}[
+            Scale               = MatchUppercase,
+            range               = {tt/{latin,Latin,num}},
+            RawFeature          = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+    \else
+        \expandafter\RequirePackage\expandafter[\csrs@fontname]{fontsetup}
+        \setsansfont{Libertinus Sans}[
+            Scale               = MatchUppercase,
+            Ligatures           = TeX,
+            SmallCapsFeatures   = {RawFeature=+smcp},
+            RawFeature          = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+    \fi
+\fi
+
+\RequirePackage{geometry}
+\geometry{
+    paper          = a4paper,
+    top            = 2cm,
+    bottom         = 2cm,
+    left           = 4cm,
+    right          = 2cm,
+    heightrounded,
+    marginparwidth = 3.5cm,
+    marginparsep   = 0.5cm,
+    headheight     = 0.75cm,
+    headsep        = 0.75cm,
+    footskip       = 1cm,
+}
+
+\RequirePackage{setspace}
+\setstretch{1.10}
+\setlength{\parindent}{0pt}
+\setcounter{secnumdepth}{0}
+
+\RequirePackage{marginnote}
+\reversemarginpar
+\renewcommand*{\raggedleftmarginnote}{}
+\setlength{\marginparsep}{-10pt}
+
+\newcommand{\years}[1]{\marginnote{\footnotesize\scshape#1}}
+
+\RequirePackage{titlesec}
+\titleformat{\section}{\Large\color{black!75}\scshape}{}{0em}{}[\titlerule]
+\titleformat{\subsection}{\large\color{black!75}\scshape}{}{0em}{}[\titlerule]
+\titleformat{\subsubsection}{\mdseries\scshape\sffamily\normalsize\color{black!75}}{}{0em}{}
+\titlespacing*{\section}{0pt}{2ex plus .3ex minus .2ex}{1.5ex plus .2ex}
+\titlespacing*{\subsection}{0pt}{1.5ex plus .2ex minus .1ex}{1.2ex plus .1ex}
+
+\RequirePackage{enumitem}
+\setlist{nosep,noitemsep}
+\setlist[itemize]{label=\textcolor{black!75}{\textbullet}}
+
+\RequirePackage{multicol}
+
+\RequirePackage[
+    hyperref      = true,
+    defernumbers  = true,
+    bibstyle      = alphabetic,
+    maxalphanames = 4,
+    minalphanames = 3,
+    maxnames      = 999,
+    sorting       = ydnt,
+    giveninits    = false,
+    backend       = biber,
+]{biblatex}
+
+\DeclareFieldFormat{marginlabel}{#1}
+\DeclareFieldFormat{labelalpha}{}
+\DeclareFieldFormat{labelalphawidth}{}
+\setlength{\biblabelsep}{0pt}
+\setlength{\labelwidth}{0pt}
+
+\DeclareNameAlias{default}{given-family}
+
+\DeclareFieldFormat[
+    article,
+    inproceedings,
+    incollection,
+    inbook,
+    thesis,
+    unpublished
+]{title}{\textit{#1}\isdot}
+
+\renewbibmacro*{begentry}{%
+    \years{[\printfield[marginlabel]{labelalpha}]}%
+}
+
+\RequirePackage[bookmarks,colorlinks,breaklinks]{hyperref}
+\hypersetup{
+    bookmarksnumbered = true,
+    breaklinks        = true,
+    colorlinks        = true,
+    frenchlinks       = true,
+    pdfencoding       = auto,
+    pdfpagelayout     = SinglePage,
+    pdfstartview      = FitH,
+    unicode           = true,
+    linkcolor         = MidnightBlue,
+    citecolor         = MidnightBlue,
+    filecolor         = MidnightBlue,
+    urlcolor          = MidnightBlue,
+    pdftitle          = {Curriculum Vitae},
+    pdfauthor         = {},
+}
+
+\NewDocumentCommand{\contactblock}{m m m m m m m}{%
+    {\color{black!75}\huge\scshape#1\bigskip\hrule\par}%
+    \vspace{1em}%
+    \textsc{#2}\\%
+    #3\par
+    Email:~\texttt{\href{mailto:#4}{#4}}~|~%
+    Website:~\texttt{\href{https://#5}{#5}}\par
+    Scholar:~\texttt{\href{https://scholar.google.com/citations?user=#6}{#6}}~|~%
+    DBLP:~\texttt{\href{https://dblp.org/pid/#7}{#7}}%
+    {\color{black!75}\vspace{1em}\hrule\par}%
+}
+
+\NewDocumentCommand{\details}{m m m m}{%
+    \years{#1}%
+    {\itshape#2},\ {#3}\\[2pt]%
+    {#4}\par\smallskip
+}
+
+\NewDocumentCommand{\columndetails}{m m m}{%
+    \years{#1}%
+    {\itshape#2}%
+    \hfill#3%
+}
+
+\NewDocumentCommand{\referals}{m m m m m m}{%
+    \noindent
+    \begin{minipage}{\linewidth}
+        \textbf{#1}\par
+        \textit{#2}\par
+        #3\par
+        #4\par
+        \href{mailto:#5}{\texttt{#5}}\par
+        \href{https://#6}{\texttt{#6}}
+    \end{minipage}%
+    \par\vspace{1.5em}%
+}
+
+\NewDocumentCommand{\finishcv}{m m}{%
+    \par\vfill
+    \begin{center}
+        \footnotesize\sffamily
+        \textcolor{gray}{%
+            \textsc{Updated on~#1}~~{\raisebox{-0.5pt}{\textbullet}}~~%
+            \href{https://#2}{\textnormal{\texttt{#2}}}%
+        }%
+    \end{center}%
+}
+
+\newenvironment{refcolumns}
+{\begin{multicols}{2}\small}
+{\end{multicols}}
+
+\newenvironment{ditemize}
+{\begin{multicols}{2}\begin{itemize}[nosep,leftmargin=*]}
+{\end{itemize}\end{multicols}}
+
+\ifcsrs@allowbreaks
+    \AtEndPreamble{%
+        \appto{\details}{\pagebreak[0]}%
+        \appto{\columndetails}{\pagebreak[0]}%
+    }%
+\fi
+
+\endinput
