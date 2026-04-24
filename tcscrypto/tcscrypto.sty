@@ -292,11 +292,19 @@
 	DLIN/DLIN,
 	DLP/DLP,
 	GapDH/GapDH,
+	IFP/IFP,
+	ISIS/ISIS,
 	LPN/LPN,
 	LRSW/LRSW,
 	LWE/LWE,
+	MLWE/MLWE,
+	MSIS/MSIS,
+	NTRU/NTRU,
+	RLWE/RLWE,
 	RSA/RSA,
+	RSIS/RSIS,
 	SD/SD,
+	SIS/SIS,
 	SXDH/SXDH,
 	XDH/XDH,
 	coCDH/coCDH,
@@ -305,55 +313,149 @@
 	qSDH/qSDH,
 }
 
+\providecommand{\Hash}{\algostyle{H}}
+\providecommand{\Key}{\algostyle{k}}
+
+\providecommand{\hash}{\algostyle{H}}
 \providecommand{\owf}{\algostyle{F}}
 \providecommand{\prf}{\algostyle{F}}
 \providecommand{\prg}{\algostyle{G}}
-\providecommand{\hash}{\algostyle{H}}
-\providecommand{\Hash}{\algostyle{H}}
 \providecommand{\trapdoor}{\algostyle{Td}}
 
-\providecommand{\Key}{\algostyle{k}}
+\providecommand{\ACAccum}{\funct{Acc.Accum}}
+\providecommand{\ACAdd}{\funct{Acc.Add}}
+\providecommand{\ACDel}{\funct{Acc.Del}}
+\providecommand{\ACNonMemVerify}{\funct{Acc.NonMemVerify}}
+\providecommand{\ACNonMemWitGen}{\funct{Acc.NonMemWitGen}}
+\providecommand{\ACNonVerify}{\funct{Acc.NonVerify}}
+\providecommand{\ACNonWitGen}{\funct{Acc.NonWitGen}}
+\providecommand{\ACSetup}{\funct{Acc.Setup}}
+\providecommand{\ACVerify}{\funct{Acc.Verify}}
+\providecommand{\ACWitGen}{\funct{Acc.WitGen}}
+\providecommand{\ACWitUpdate}{\funct{Acc.WitUpdate}}
+
+\providecommand{\Com}{\funct{Com}}
+\providecommand{\ComCommit}{\Com.\funct{Commit}}
+\providecommand{\ComGen}{\Com.\funct{Gen}}
+\providecommand{\ComOpen}{\Com.\funct{Open}}
+\providecommand{\ComVerify}{\Com.\funct{Vrfy}}
+
+\providecommand{\CM}{\funct{CM}}
+\providecommand{\CMSetup}{\CM.\funct{Setup}}
+\providecommand{\CMCommit}{\CM.\funct{Commit}}
+\providecommand{\CMOpen}{\CM.\funct{Open}}
+\providecommand{\CMVerify}{\CM.\funct{Vrfy}}
+
+\providecommand{\PC}{\funct{PC}}
+\providecommand{\PCSetup}{\PC.\funct{Setup}}
+\providecommand{\PCCommit}{\PC.\funct{Commit}}
+\providecommand{\PCOpen}{\PC.\funct{Open}}
+\providecommand{\PCVerify}{\PC.\funct{Vrfy}}
+
+\providecommand{\FC}{\funct{FC}}
+\providecommand{\FCSetup}{\FC.\funct{Setup}}
+\providecommand{\FCCommit}{\FC.\funct{Commit}}
+\providecommand{\FCOpen}{\FC.\funct{Open}}
+\providecommand{\FCVerify}{\FC.\funct{Vrfy}}
+
+\providecommand{\VCCommit}{\VC.\funct{Commit}}
+\providecommand{\VCOpenSub}{\VC.\funct{OpenSub}}
+\providecommand{\VCOpen}{\VC.\funct{Open}}
+\providecommand{\VCSetup}{\VC.\funct{Setup}}
+\providecommand{\VCUpdate}{\VC.\funct{Update}}
+\providecommand{\VCVerifySub}{\VC.\funct{VerifySub}}
+\providecommand{\VCVerify}{\VC.\funct{Verify}}
+\providecommand{\VCWitUpdate}{\VC.\funct{WitUpdate}}
+
+\providecommand{\FEDec}{\FE.\funct{Dec}}
+\providecommand{\FEEnc}{\FE.\funct{Enc}}
+\providecommand{\FEGen}{\FE.\funct{Gen}}
+\providecommand{\FEKeyGen}{\FE.\funct{KeyGen}}
+
+\providecommand{\FEDec}{\FHE.\funct{Dec}}
+\providecommand{\FEMul}{\FHE.\funct{Mul}}
+\providecommand{\FHEAdd}{\FHE.\funct{Add}}
+\providecommand{\FHEEnc}{\FHE.\funct{Enc}}
+\providecommand{\FHEEval}{\FHE.\funct{Eval}}
+\providecommand{\FHEGen}{\FHE.\funct{Gen}}
+\providecommand{\FHEKeyGen}{\FHE.\funct{KeyGen}}
+
+\providecommand{\FSChallenge}{\FS.\funct{Chal}}
+\providecommand{\FSHash}{\FS.\funct{Hash}}
+\providecommand{\FSProve}{\FS.\funct{Prove}}
+\providecommand{\FSSetup}{\FS.\funct{Setup}}
+\providecommand{\FSTranscript}{\FS.\funct{Trans}}
+\providecommand{\FSVerify}{\FS.\funct{Vrfy}}
+
+\providecommand{\HashGen}{\funct{\HASH.Gen}}
+\providecommand{\HashEval}{\funct{\HASH.Eval}}
+\providecommand{\HashVerify}{\funct{\HASH.Vrfy}}
+
+\providecommand{\MACGen}{\MAC.\funct{Gen}}
+\providecommand{\MACSign}{\MAC.\funct{Sign}}
+\providecommand{\MACVerify}{\MAC.\funct{Vrfy}}
+
+\providecommand{\KEMDecaps}{\KEM.\funct{Decaps}}
+\providecommand{\KEMEncaps}{\KEM.\funct{Encaps}}
+\providecommand{\KEMGen}{\KEM.\funct{Gen}}
+
+\providecommand{\NIIndex}{\algostyle{NI.Index}}
+\providecommand{\NIProve}{\algostyle{NI.Prove}}
+\providecommand{\NISetup}{\algostyle{NI.Setup}}
+\providecommand{\NISim}{\algostyle{NI.Sim}}
+\providecommand{\NIVerify}{\algostyle{NI.Vrfy}}
+
+\providecommand{\NIZKProve}{\algostyle{NIZK.Prove}}
+\providecommand{\NIZKSetup}{\algostyle{NIZK.Setup}}
+\providecommand{\NIZKSim}{\algostyle{NIZK.Sim}}
+\providecommand{\NIZKVerify}{\algostyle{NIZK.Vrfy}}
+
 \providecommand{\OWFEval}{\OWFFunction.\funct{Eval}}
 \providecommand{\OWFFunction}{\algostyle{F}}
 \providecommand{\OWFGen}{\OWFFunction.\funct{Gen}}
-\providecommand{\OWF}{\algostyle{OWF}}
 
-\providecommand{\OWP}{\algostyle{OWP}}
 \providecommand{\OWPEval}{\OWP.\funct{Eval}}
 \providecommand{\OWPGen}{\OWP.\funct{Gen}}
-\providecommand{\OWPVerify}{\OWP.\funct{Verify}}
+\providecommand{\OWPVerify}{\OWP.\funct{Vrfy}}
 
-\providecommand{\TDF}{\algostyle{TDF}}
-\providecommand{\TDFGen}{\TDF.\funct{Gen}}
-\providecommand{\TDFEval}{\TDF.\funct{Eval}}
-\providecommand{\TDFVerify}{\TDF.\funct{Verify}}
+\providecommand{\PKEGen}{\PKE.\funct{Gen}}
+\providecommand{\PKEEnc}{\PKE.\funct{Enc}}
+\providecommand{\PKEDec}{\PKE.\funct{Dec}}
 
-\providecommand{\TDP}{\algostyle{TDP}}
-\providecommand{\TDPGen}{\TDP.\funct{Gen}}
-\providecommand{\TDPEval}{\TDP.\funct{Eval}}
-\providecommand{\TDPVerify}{\TDP.\funct{Verify}}
-
-\providecommand{\VDF}{\algostyle{VDF}}
-\providecommand{\VDFGen}{\VDF.\funct{Gen}}
-\providecommand{\VDFEval}{\VDF.\funct{Eval}}
-\providecommand{\VDFProve}{\VDF.\funct{Prove}}
-\providecommand{\VDFVerify}{\VDF.\funct{Verify}}
-
-\providecommand{\PPRF}{\schemestyle{PPRF}}
 \providecommand{\PRFEval}{\PRFFunction.\funct{Eval}}
 \providecommand{\PRFFunction}{\algostyle{F}}
 \providecommand{\PRFGen}{\PRFFunction.\funct{Gen}}
 \providecommand{\PRFKey}{\algostyle{k}}
 \providecommand{\PRFPuncture}{\PRFFunction.\funct{Puncture}}
 \providecommand{\PRFSetup}{\PRFFunction.\funct{Setup}}
-\providecommand{\PRF}{\schemestyle{PRF}}
 \providecommand{\PuncturedPRFKey}{\algostyle{k}_{S}}
 
-\providecommand{\rOWF}{\schemestyle{rOWF}}
-\providecommand{\rOWFSetup}{\rOWF.\funct{Setup}}
 \providecommand{\rOWFGenChal}{\rOWF.\funct{GenChal}}
+\providecommand{\rOWFGen}{\rOWF.\funct{Gen}}
 \providecommand{\rOWFRerand}{\rOWF.\funct{Rerand}}
-\providecommand{\rOWFVer}{\rOWF.\funct{Ver}}
+\providecommand{\rOWFSetup}{\rOWF.\funct{Setup}}
+\providecommand{\rOWFVer}{\rOWF.\funct{Vrfy}}
+
+\providecommand{\SIGGen}{\SIG.\funct{Gen}}
+\providecommand{\SIGSign}{\SIG.\funct{Sign}}
+\providecommand{\SIGVerify}{\SIG.\funct{Vrfy}}
+
+\providecommand{\SKEGen}{\SKE.\funct{Gen}}
+\providecommand{\SKEEnc}{\SKE.\funct{Enc}}
+\providecommand{\SKEDec}{\SKE.\funct{Dec}}
+
+\providecommand{\TDFGen}{\TDF.\funct{Gen}}
+\providecommand{\TDFEval}{\TDF.\funct{Eval}}
+\providecommand{\TDFVerify}{\TDF.\funct{Vrfy}}
+
+\providecommand{\TDPGen}{\TDP.\funct{Gen}}
+\providecommand{\TDPEval}{\TDP.\funct{Eval}}
+\providecommand{\TDPVerify}{\TDP.\funct{Vrfy}}
+
+\providecommand{\VDFGen}{\VDF.\funct{Gen}}
+\providecommand{\VDFEval}{\VDF.\funct{Eval}}
+\providecommand{\VDFProve}{\VDF.\funct{Prove}}
+\providecommand{\VDFVerify}{\VDF.\funct{Vrfy}}
 
 \providecommand{\Hone}{\funct{H}_1}
 \providecommand{\Htwo}{\funct{H}_2}
@@ -372,54 +474,53 @@
 \providecommand{\Open}{\algostyle{Open}}
 \providecommand{\proofstr}{\pi}
 
-\providecommand{\IHO}{\schemestyle{IHO}}
-\providecommand{\diO}{\schemestyle{diO}}
-\providecommand{\Obf}{\algostyle{O}}
-\providecommand{\Obfuscated}[1]{\algostyle{O}(#1)}
 \providecommand{\Obfucate}[1]{\widehat{#1}}
+\providecommand{\Obfuscated}[1]{\algostyle{O}(#1)}
+
+\providecommand{\IHO}{\schemestyle{IHO}}
+\providecommand{\Obf}{\algostyle{O}}
 \providecommand{\VBB}{\schemestyle{VBB}}
+\providecommand{\diO}{\schemestyle{diO}}
+\providecommand{\ihO}{\schemestyle{ihO}}
 
 \cryptoDefineAlgoCSV{
+	Chal/Chal,
+	Commit/Commit,
 	Dec/Dec,
+	Decode/Decode,
 	Enc/Enc,
+	Encode/Encode,
+	Eval/Eval,
+	EvalPoly/EvalPoly,
+	Exp/Exp,
 	Fake/Fake,
+	Gen/Gen,
+	Guess/Guess,
 	HExtract/HExtract,
 	HHash/HHash,
 	HSetup/HSetup,
 	Index/Index,
+	Init/Init,
+	Interp/Interp,
+	Inv/Inv,
 	KDF/KDF,
 	KeyGen/KeyGen,
+	Prove/Prove,
+	Puncture/Puncture,
+	Query/Query,
+	Resp/Resp,
+	Search/Search,
 	Setup/Setup,
 	Sign/Sign,
+	Step/Step,
+	Updt/Updt,
+	Verify/Vrfy,
 	Vrfy/Vrfy,
 }
 
 \providecommand{\Derive}{\algostyle{Derive}}
-\providecommand{\FE}{\funct{FE}}
 \providecommand{\Hybrid}{\funct{Hybrid}}
 \providecommand{\Hyb}{\funct{Hybrid}}
-\providecommand{\PKE}{\funct{PKE}}
-
-\providecommand{\MAC}{\funct{MAC}}
-\providecommand{\MACGen}{\MAC.\funct{Gen}}
-\providecommand{\MACSign}{\MAC.\funct{Sign}}
-\providecommand{\MACVerify}{\MAC.\funct{Vrfy}}
-
-\providecommand{\SIG}{\funct{DS}}
-\providecommand{\SIGGen}{\SIG.\funct{Gen}}
-\providecommand{\SIGSign}{\SIG.\funct{Sign}}
-\providecommand{\SIGVerify}{\SIG.\funct{Vrfy}}
-
-\providecommand{\KEM}{\funct{KEM}}
-\providecommand{\KEMGen}{\KEM.\funct{Gen}}
-\providecommand{\KEMEncaps}{\KEM.\funct{Encaps}}
-\providecommand{\KEMDecaps}{\KEM.\funct{Decaps}}
-
-\providecommand{\Com}{\funct{Com}}
-\providecommand{\ComGen}{\Com.\funct{Gen}}
-\providecommand{\ComCommit}{\Com.\funct{Commit}}
-\providecommand{\ComOpen}{\Com.\funct{Open}}
-\providecommand{\ComVerify}{\Com.\funct{Vrfy}}
 
 \cryptoDefineKeyCSV{
 	epk/epk,
@@ -900,8 +1001,41 @@
 \NewDocumentCommand{\gcomment}{m}{\codecomment{#1}}
 \NewDocumentCommand{\gcommentd}{m m}{\codecommentgames{#1}{#2}}
 
+\providecommand{\PRG}{\mathsf{PRG}}
+\providecommand{\HSG}{\mathsf{HSG}}
+\providecommand{\NW}{\mathsf{NW}}
+\providecommand{\stretch}{\ell}
+\providecommand{\seedlen}{d}
+\providecommand{\prgseed}{s}
+\providecommand{\prgout}{y}
+
+\newclass{\CLS}{CLS}
+\newclass{\EOL}{EOL}
+\newclass{\EOML}{EOML}
+\newclass{\EOPL}{EOPL}
+\newclass{\PWPP}{PWPP}
+\newclass{\RSVL}{RSVL}
+\newclass{\SOPL}{SOPL}
+\newclass{\SVL}{SVL}
+\newclass{\UEOPL}{UEOPL}
+
+\providecommand{\Share}{\algostyle{Share}}
+\providecommand{\Reconstruct}{\algostyle{Reconstruct}}
+\providecommand{\threshold}{t}
+\providecommand{\nparties}{n}
+
+\newclass{\PPT}{PPT}
+\newclass{\AI}{AI}
+
+\newclass{\ROM}{ROM}
+\newclass{\QROM}{QROM}
+
+\newclass{\npROM}{npROM}
+\newclass{\osROM}{osROM}
+\newclass{\pROM}{pROM}
+\newclass{\sROM}{sROM}
+
 \newclass{\AHP}{AHP}
-\newclass{\CRS}{CRS}
 \newclass{\HVZK}{HVZK}
 \newclass{\IOP}{IOP}
 \newclass{\IVC}{IVC}
@@ -915,44 +1049,63 @@
 \newclass{\zkSNARK}{zkSNARK}
 \newclass{\zkSTARK}{zkSTARK}
 
-\newclass{\CLS}{CLS}
-\newclass{\EOL}{EOL}
-\newclass{\EOML}{EOML}
-\newclass{\EOPL}{EOPL}
-\newclass{\PWPP}{PWPP}
-\newclass{\RSVL}{RSVL}
-\newclass{\SOPL}{SOPL}
-\newclass{\SVL}{SVL}
-\newclass{\UEOPL}{UEOPL}
-
+\newclass{\ABE}{ABE}
+\newclass{\BARG}{BARG}
+\newclass{\CIH}{CIH}
+\newclass{\CRHF}{CRHF}
+\newclass{\DS}{DS}
+\newclass{\FE}{FE}
 \newclass{\FHE}{FHE}
+\newclass{\FS}{FS}
+\newclass{\FSS}{FSS}
+\newclass{\HASH}{HASH}
 \newclass{\HE}{HE}
-\newclass{\MCSP}{MCSP}
-\newclass{\MinPDT}{MinPDT}
+\newclass{\HIBE}{HIBE}
+\newclass{\HIS}{HIS}
+\newclass{\HSS}{HSS}
+\newclass{\IBE}{IBE}
+\newclass{\KEM}{KEM}
+\newclass{\MLFHE}{MLFHE}
+\newclass{\MT}{MT}
+\newclass{\OLE}{OLE}
+\newclass{\OPRF}{OPRF}
 \newclass{\OT}{OT}
-\newclass{\PPT}{PPT}
-\newclass{\Perm}{Perm}
-\newclass{\iO}{\mathsf{iO}}
+\newclass{\OWF}{OWF}
+\newclass{\OWP}{OWP}
+\newclass{\PCG}{PCG}
+\newclass{\PIR}{PIR}
+\newclass{\PKE}{PKE}
+\newclass{\PKFE}{PKFE}
+\newclass{\PPRF}{PPRF}
+\newclass{\PRF}{PRF}
+\newclass{\PSI}{PSI}
+\newclass{\RO}{RO}
+\newclass{\SIG}{DS}
+\newclass{\SKE}{SKE}
+\newclass{\SKFE}{SKFE}
+\newclass{\SPMPC}{SPMPC}
+\newclass{\SSB}{SSB}
+\newclass{\TCR}{TCR}
+\newclass{\TDF}{TDF}
+\newclass{\TDP}{TDP}
+\newclass{\UOW}{UOW}
+\newclass{\VC}{VC}
+\newclass{\VDF}{VDF}
+\newclass{\VOLE}{VOLE}
 
-\newclass{\MLWE}{MLWE}
-\newclass{\MSIS}{MSIS}
-\newclass{\RLWE}{RLWE}
-\newclass{\RSIS}{RSIS}
-\newclass{\SIS}{SIS}
+\newclass{\cFE}{cFE}
+\newclass{\iO}{iO}
+\newclass{\rOWF}{rOWF}
+
+\newclass{\CRS}{CRS}
+\newclass{\SRS}{SRS}
 
 \newclass{\AGM}{AGM}
-\newclass{\AI}{AI}
 \newclass{\GGM}{GGM}
-\newclass{\ICM}{ICM}
-\newclass{\QROM}{QROM}
-\newclass{\ROM}{ROM}
-\newclass{\SIR}{SIR}
-\newclass{\npROM}{npROM}
-\newclass{\osROM}{osROM}
-\newclass{\sROM}{sROM}
 
-\newclass{\DS}{DS}
-\newclass{\IFP}{IFP}
+\newclass{\DPVW}{DPVW}
+\newclass{\ICM}{ICM}
+\newclass{\SIR}{SIR}
 
 \newclass{\eufcmaone}{EUF\textsf{-}CMA1}
 \newclass{\eufcmatwo}{EUF\textsf{-}CMA2}
@@ -996,19 +1149,6 @@
 \providecommand{\Cryptomania}{\textsc{Cryptomania}\xspace}
 \providecommand{\Obfustopia}{\textsc{Obfustopia}\xspace}
 
-\newfunc{\Challenge}{Chal}
-\newfunc{\Commit}{Commit}
-\newfunc{\Exp}{Exp}
-\newfunc{\Gen}{Gen}
-\newfunc{\Guess}{Guess}
-\newfunc{\Init}{Init}
-\newfunc{\Prove}{Prove}
-\newfunc{\Query}{Query}
-\newfunc{\Response}{Resp}
-\newfunc{\Step}{Step}
-\newfunc{\Update}{Updt}
-\newfunc{\Verify}{Vrfy}
-
 \newfunc{\accept}{accept}
 \newfunc{\reject}{reject}
 \newfunc{\Win}{Win}
@@ -1028,46 +1168,15 @@
 \newfunc{\Fold}{Fold}
 \newfunc{\VerifyAcc}{VerifyAcc}
 
-\newfunc{\Decode}{Decode}
-\newfunc{\Encode}{Encode}
-\newfunc{\Eval}{Eval}
-\newfunc{\EvalPoly}{EvalPoly}
-\newfunc{\Interp}{Interp}
-\newfunc{\Inv}{Inv}
-\newfunc{\Puncture}{Puncture}
-
-\newfunc{\Sample}{Sample}
-\newfunc{\Rand}{Rand}
 \newfunc{\Coins}{Coins}
-
-\newfunc{\CRHF}{CRHF}
-\newfunc{\MT}{MT}
-\newfunc{\RO}{H}
-\newfunc{\TCR}{TCR}
-\newfunc{\UOW}{UOW}
-\newfunc{\VC}{VC}
-\newfunc{\sRO}{sRO}
-
-\newfunc{\FS}{FS}
-\newfunc{\FSChallenge}{\FS.Challenge}
-\newfunc{\FSTranscript}{\FS.Transcript}
-\providecommand{\FSHash}{\FS.Hash}
+\newfunc{\Rand}{Rand}
+\newfunc{\Sample}{Sample}
 
 \newfunc{\Dist}{D}
 \newfunc{\aux}{aux}
 \newfunc{\cm}{cm}
 \newfunc{\rt}{rt}
 \newfunc{\td}{td}
-
-\providecommand{\NIIndex}{\algostyle{NI.Index}}
-\providecommand{\NIProve}{\algostyle{NI.Prove}}
-\providecommand{\NISetup}{\algostyle{NI.Setup}}
-\providecommand{\NISim}{\algostyle{NI.Sim}}
-\providecommand{\NIVerify}{\algostyle{NI.Verify}}
-
-\providecommand{\FSSetup}{\algostyle{FS.Setup}}
-\providecommand{\FSProve}{\algostyle{FS.Prove}}
-\providecommand{\FSVerify}{\algostyle{FS.Verify}}
 
 \newfunc{\TM}{TM}
 \newfunc{\DTM}{DTM}
@@ -1188,14 +1297,15 @@
 	\IfValueT{#2}{\left[#2\right]}%
 }
 
-\newcal{\Table}{T}
-\newcal{\MessageSpace}{M}
 \newcal{\CiphertextSpace}{C}
-\newcal{\KeySpace}{K}
-\newcal{\RandomnessSpace}{R}
-\newcal{\WitnessSpace}{W}
 \newcal{\InstanceSpace}{X}
-\newcal{\ProofSpace}{\Pi}
+\newcal{\KeySpace}{K}
+\newcal{\MessageSpace}{M}
+\newcal{\RandomnessSpace}{R}
+\newcal{\Table}{T}
+\newcal{\UniRand}{U}
+\newcal{\UniformRandomness}{U}
+\newcal{\WitnessSpace}{W}
 
 \cryptoDefineProbCSV{
 	BipartiteProb/Bipartite-Matching,
@@ -1256,6 +1366,88 @@
 	WPHProb/Weak-Pigeonhole-Circuit,
 	kSATProb/k-SAT,
 }
+
+\cryptoDefineAlgoCSV{
+	APC/APC,
+	CP/CP,
+	CPV/CPV,
+	DNFF/DNFF,
+	DPLL/DPLL,
+	ExtFrege/EF,
+	Frege/F,
+	HA/HA,
+	IPS/IPS,
+	LJ/LJ,
+	LK/LK,
+	MaxRes/MaxRes,
+	NJ/NJ,
+	NK/NK,
+	NS/NS,
+	PA/PA,
+	PC/PC,
+	PCR/PCR,
+	PV/PV,
+	Res/Res,
+	ResGraph/ResG,
+	ResTree/ResT,
+	SA/SA,
+	SOS/SOS,
+	VNC/VNC,
+	VPV/VPV,
+}
+
+\providecommand{\Sone}{\mathsf{S}^1_2}
+\providecommand{\Stwo}{\mathsf{S}^2_2}
+\providecommand{\Si}[1]{\mathsf{S}^{#1}_2}
+\providecommand{\Ti}[1]{\mathsf{T}^{#1}_2}
+
+\providecommand{\PIND}{\mathsf{PIND}}
+\providecommand{\LIND}{\mathsf{LIND}}
+\providecommand{\RIND}{\mathsf{RIND}}
+\providecommand{\SigIND}[1]{\Sigma^b_{#1}\text{-}\mathsf{IND}}
+\providecommand{\PiIND}[1]{\Pi^b_{#1}\text{-}\mathsf{IND}}
+\providecommand{\SigREPL}[1]{\Sigma^b_{#1}\text{-}\mathsf{REPL}}
+
+\providecommand{\AxiomsId}{\mathsf{Id}}
+\providecommand{\Axioms}{\mathsf{Ax}}
+\providecommand{\Contradiction}{\bot}
+\providecommand{\Weakening}{\mathsf{W}}
+
+\providecommand{\Prov}[2]{#1 \proves #2}
+\providecommand{\Seq}[2]{#1 \longmapsto #2}
+
+\providecommand{\nproves}{\nvdash}
+\providecommand{\pdepth}[1]{\mathrm{d}(#1)}
+\providecommand{\pnsim}{\nleq_p}
+\providecommand{\proves}{\vdash}
+\providecommand{\psimiff}{\equiv_p}
+\providecommand{\psim}{\leq_p}
+\providecommand{\psize}[1]{\lvert #1 \rvert}
+\providecommand{\ptrans}[1]{#1^*}
+\providecommand{\subst}[2]{[#1 / #2]}
+
+\providecommand{\KC}{\Kolmogorov}
+\providecommand{\KC}{\algostyle{K}}
+\providecommand{\KPoly}{\Kolmogorov^{\poly}}
+\providecommand{\KS}{\algostyle{KS}}
+\providecommand{\KT}{\algostyle{KT}}
+\providecommand{\Kolmogorov}{\algostyle{K}}
+\providecommand{\Kt}{\Kolmogorov^t}
+\providecommand{\RC}{\algostyle{rK}}
+\providecommand{\RKt}{\algostyle{rK}^t}
+\providecommand{\pKt}{\algostyle{pK}^t}
+\providecommand{\rKS}{\algostyle{rKS}}
+
+\newclass{\GapMCSP}{GapMCSP}
+\newclass{\GapMKTP}{GapMKTP}
+\newclass{\MCSP}{MCSP}
+\newclass{\MINKT}{MINKT}
+\newclass{\MKTP}{MKTP}
+\newclass{\MKtP}{MK^tP}
+\newclass{\MRSP}{MRSP}
+\newclass{\MinPDT}{MinPDT}
+\newclass{\OSS}{OSS}
+\newclass{\PDT}{PDT}
 
 \ExplSyntaxOn
 \int_step_inline:nnn { 1 } { 26 }
