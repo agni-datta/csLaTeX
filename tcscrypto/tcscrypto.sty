@@ -134,8 +134,11 @@
 \providecommand{\CC}{\mathbb{C}}
 \providecommand{\GL}{\mathbb{GL}}
 \providecommand{\NN}{\mathbb{N}}
+\providecommand{\Primes}{\mathcal{P}}
 \providecommand{\QQ}{\mathbb{Q}}
 \providecommand{\RR}{\mathbb{R}}
+\providecommand{\ZZp}{\mathbb{Z}_p}
+\providecommand{\ZZq}{\mathbb{Z}_q}
 \providecommand{\ZZ}{\mathbb{Z}}
 \providecommand{\bits}{\{0,1\}}
 \providecommand{\unary}[1]{1^{#1}}
@@ -143,6 +146,9 @@
 \providecommand{\FF}{\mathbb{F}}
 \providecommand{\FFp}{\mathbb{F}_p}
 \providecommand{\FFq}{\mathbb{F}_q}
+
+\providecommand{\GGen}{\algostyle{GGen}}
+\providecommand{\PGen}{\algostyle{PGen}}
 
 \providecommand{\GG}{\mathbb{G}}
 \providecommand{\GGp}{\mathbb{G}_p}
@@ -192,9 +198,6 @@
 \providecommand{\lognot}{\neg}
 \providecommand{\xor}{\oplus}
 
-\providecommand{\AND}{\algostyle{AND}}
-\providecommand{\OR}{\algostyle{OR}}
-
 \ExplSyntaxOn
 \NewDocumentCommand{\mbf}{m}
 {
@@ -206,6 +209,7 @@
 
 \renewcommand{\vec}[1]{\mbf{#1}}
 
+\let\E\relax
 \let\Pr\relax
 \let\poly\relax
 \mathchardef\mhyphen="2D
@@ -234,8 +238,12 @@
 	}\,
 }
 
+\DeclareMathOperator*{\E}{\mathbb{E}}
 \DeclareMathOperator*{\Pr}{\algostyle{Pr}}
 \DeclareMathOperator*{\StatDist}{\Delta}
+
+\providecommand{\Prob}[1]{\Pr\left[#1\right]}
+\providecommand{\Exp}[1]{\E\left[#1\right]}
 
 \DeclareMathOperator*{\equivdist}{\equiv}
 \DeclareMathOperator*{\getsr}{\sample}
@@ -277,6 +285,10 @@
 \providecommand{\secparamlog}{\log\lambda}
 \providecommand{\depth}{\algostyle{depth}}
 
+\providecommand{\BadEvent}{\overbar{\Event{E}}}
+\providecommand{\Event}{\algostyle{E}}
+\providecommand{\GoodEvent}{\Event{E}}
+
 \providecommand{\Dom}{\algostyle{Dom}}
 \providecommand{\Im}{\algostyle{Im}}
 \providecommand{\Range}{\algostyle{Range}}
@@ -291,6 +303,9 @@
 	DDH/DDH,
 	DLIN/DLIN,
 	DLP/DLP,
+	DLWE/DLWE,
+	DLog/DLog,
+	Dlog/Dlog,
 	GapDH/GapDH,
 	IFP/IFP,
 	ISIS/ISIS,
@@ -304,7 +319,10 @@
 	RSA/RSA,
 	RSIS/RSIS,
 	SD/SD,
+	SDH/SDH,
 	SIS/SIS,
+	SLWE/SLWE,
+	SVP/SVP,
 	SXDH/SXDH,
 	XDH/XDH,
 	coCDH/coCDH,
@@ -484,6 +502,7 @@
 \providecommand{\ihO}{\schemestyle{ihO}}
 
 \cryptoDefineAlgoCSV{
+	AND/AND,
 	Chal/Chal,
 	Commit/Commit,
 	Dec/Dec,
@@ -496,6 +515,7 @@
 	Fake/Fake,
 	Gen/Gen,
 	Guess/Guess,
+	HEval/HEval,
 	HExtract/HExtract,
 	HHash/HHash,
 	HSetup/HSetup,
@@ -503,19 +523,32 @@
 	Init/Init,
 	Interp/Interp,
 	Inv/Inv,
+	Inverter/Inv,
 	KDF/KDF,
 	KeyGen/KeyGen,
+	Majority/Maj,
+	NAND/NAND,
+	NOR/NOR,
+	NOT/NOT,
+	OR/OR,
+	Predictor/P,
+	Prog/P,
 	Prove/Prove,
 	Puncture/Puncture,
 	Query/Query,
 	Resp/Resp,
+	Sam/Sam,
+	Sampler/Sam,
 	Search/Search,
 	Setup/Setup,
 	Sign/Sign,
+	Source/Src,
 	Step/Step,
 	Updt/Updt,
 	Verify/Vrfy,
 	Vrfy/Vrfy,
+	XNOR/XNOR,
+	XOR/XOR,
 }
 
 \providecommand{\Derive}{\algostyle{Derive}}
@@ -523,19 +556,36 @@
 \providecommand{\Hyb}{\funct{Hybrid}}
 
 \cryptoDefineKeyCSV{
+	acc/acc,
+	cc/c,
+	ee/e,
 	epk/epk,
 	esk/esk,
+	fk/fk,
+	gk/gk,
 	hk/hk,
-	kk/kk,
+	il/il,
+	kk/k,
+	kl/kl,
+	len/ln,
+	ll/ll,
 	ltpk/ltpk,
 	ltsk/ltsk,
+	mm/m,
 	mpk/mpk,
 	msk/msk,
+	nl/nl,
+	nn/n,
+	ol/ol,
 	pk/pk,
 	pp/pp,
+	qq/qq,
+	rr/r,
 	sk/sk,
 	sspk/sspk,
 	sssk/sssk,
+	st/st,
+	tmtime/time,
 	vk/vk,
 }
 
@@ -560,15 +610,20 @@
 \providecommand{\role}{\var{role}}
 
 \cryptoDefineVarCSV{
+	add/add,
 	cid/cid,
+	del/del,
 	msg/msg,
 	oid/oid,
+	op/op,
 	pid/pid,
+	rem/rem,
 	sid/sid,
 	sidv/sidv,
 	ssid/ssid,
 	sst/sst,
-	tp/tp
+	tp/tp,
+	upd/upd,
 }
 
 \providecommand{\sessionstate}{\var{state}}
@@ -782,7 +837,7 @@
 \providecommand{\Environment}{\setstyle{Z}}
 \providecommand{\Experiment}{\algostyle{Exp}}
 \providecommand{\Extractor}{\algostyle{Ext}}
-\providecommand{\Ext}{\setstyle{E}}
+\providecommand{\Ext}{\setstyle{Ext}}
 \providecommand{\Functionality}{\setstyle{F}}
 \providecommand{\Ideal}{\setstyle{Ideal}}
 \providecommand{\Protocol}{\algostyle{Protocol}}
@@ -891,10 +946,12 @@
 \clist_map_inline:nn
 {
 	authentic,
+	bad,
 	broken,
 	corrupted,
 	false,
 	fresh,
+	good,
 	insecure,
 	invalid,
 	no,
