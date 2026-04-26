@@ -682,7 +682,9 @@
     fact,
     folklore,
     hypothesis,
+    informaltheorem,
     lemma,
+    metatheorem,
     observation,
     postulate,
     property,
@@ -730,14 +732,15 @@
     warning
 }
 
-\declaretheorem[name=Theorem,       style=csam@theoremlike,  numbered=no]{theorem*}
-\declaretheorem[name=Lemma,         style=csam@theoremlike,  numbered=no]{lemma*}
-\declaretheorem[name=Corollary,     style=csam@theoremlike,  numbered=no]{corollary*}
-\declaretheorem[name=Hypothesis,    style=csam@theoremlike,  numbered=no]{hypothesis*}
-\declaretheorem[name=Claim,         style=csam@theoremlike,  numbered=no]{claim*}
-\declaretheorem[name=Conjecture,    style=csam@theoremlike,  numbered=no]{conjecture*}
-\declaretheorem[name=Open Problem,  style=csam@remarklike,   numbered=no]{openproblem*}
-\declaretheorem[name=Syntax,        style=csam@remarklike,   numbered=no]{syntax*}
+\declaretheorem[name=Claim,             style=csam@theoremlike,  numbered=no]{claim*}
+\declaretheorem[name=Conjecture,        style=csam@theoremlike,  numbered=no]{conjecture*}
+\declaretheorem[name=Corollary,         style=csam@theoremlike,  numbered=no]{corollary*}
+\declaretheorem[name=Hypothesis,        style=csam@theoremlike,  numbered=no]{hypothesis*}
+\declaretheorem[name=Theorem Informal,  style=csam@theoremlike,  numbered=no]{informaltheorem*}
+\declaretheorem[name=Lemma,             style=csam@theoremlike,  numbered=no]{lemma*}
+\declaretheorem[name=Open Problem,      style=csam@remarklike,   numbered=no]{openproblem*}
+\declaretheorem[name=Syntax,            style=csam@remarklike,   numbered=no]{syntax*}
+\declaretheorem[name=Theorem,           style=csam@theoremlike,  numbered=no]{theorem*}
 
 \let\proof\relax
 \let\endproof\relax
@@ -799,9 +802,11 @@
     highlight/Highlight/Highlights,
     hypothesis/Hypothesis/Hypotheses,
     important/Important point/Important points,
+    informaltheorem/Theorem Informal/Theorem Informals,
     insight/Insight/Insights,
     keypoint/Key point/Key points,
     lemma/Lemma/Lemmas,
+    metatheorem/Metatheorem/Metatheorems,
     motivation/Motivation/Motivations,
     notation/Notation/Notations,
     notationabuse/Notation abuse/Notation abuses,
