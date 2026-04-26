@@ -296,9 +296,12 @@
 \providecommand{\Orc}{\mathsf{O}}
 
 \cryptoDefineSchemeCSV{
+	ApproxSVP/ApproxSVP,
+	BDD/BDD,
 	BDH/BDH,
 	CDH/CDH,
 	CRGapDH/CRGapDH,
+	CVP/CVP,
 	DBDH/DBDH,
 	DDH/DDH,
 	DLIN/DLIN,
@@ -306,9 +309,13 @@
 	DLWE/DLWE,
 	DLog/DLog,
 	Dlog/Dlog,
+	GapCVP/GapCVP,
 	GapDH/GapDH,
+	GapSIVP/GapSIVP,
+	GapSVP/GapSVP,
 	IFP/IFP,
 	ISIS/ISIS,
+	LDD/LDD,
 	LPN/LPN,
 	LRSW/LRSW,
 	LWE/LWE,
@@ -321,14 +328,17 @@
 	SD/SD,
 	SDH/SDH,
 	SIS/SIS,
+	SIVP/SIVP,
 	SLWE/SLWE,
 	SVP/SVP,
 	SXDH/SXDH,
+	UniqueSVP/UniqueSVP,
 	XDH/XDH,
 	coCDH/coCDH,
 	coDDH/coDDH,
 	qBDH/qBDH,
 	qSDH/qSDH,
+	uSVP/uSVP,
 }
 
 \providecommand{\Hash}{\algostyle{H}}
@@ -405,9 +415,21 @@
 \providecommand{\FSTranscript}{\FS.\funct{Trans}}
 \providecommand{\FSVerify}{\FS.\funct{Vrfy}}
 
-\providecommand{\HashGen}{\funct{\HASH.Gen}}
-\providecommand{\HashEval}{\funct{\HASH.Eval}}
-\providecommand{\HashVerify}{\funct{\HASH.Vrfy}}
+\providecommand{\HCommit}{\funct{\Hash.Commit}}
+\providecommand{\HEval}{\funct{\Hash.Eval}}
+\providecommand{\HExtract}{\funct{\Hash.Extract}}
+\providecommand{\HKGen}{\funct{\Hash.Gen}}
+\providecommand{\HOpen}{\funct{\Hash.Open}}
+\providecommand{\HSetup}{\funct{\Hash.Setup}}
+\providecommand{\HVerify}{\funct{\Hash.Vrfy}}
+
+\providecommand{\HashCommit}{\funct{\Hash.Commit}}
+\providecommand{\HashEval}{\funct{\Hash.Eval}}
+\providecommand{\HashExtract}{\funct{\Hash.Extract}}
+\providecommand{\HashGen}{\funct{\Hash.Gen}}
+\providecommand{\HashOpen}{\funct{\Hash.Open}}
+\providecommand{\HashSetup}{\funct{\Hash.Setup}}
+\providecommand{\HashVerify}{\funct{\Hash.Vrfy}}
 
 \providecommand{\MACGen}{\MAC.\funct{Gen}}
 \providecommand{\MACSign}{\MAC.\funct{Sign}}
@@ -515,10 +537,6 @@
 	Fake/Fake,
 	Gen/Gen,
 	Guess/Guess,
-	HEval/HEval,
-	HExtract/HExtract,
-	HHash/HHash,
-	HSetup/HSetup,
 	Index/Index,
 	Init/Init,
 	Interp/Interp,
@@ -1279,12 +1297,14 @@
 \providecommand{\node}{\algostyle{nd}}
 \providecommand{\outdegree}{\algostyle{out\textsf{-}deg}}
 
-\providecommand{\newscr}[2]{\providecommand{#1}{\mathcal{#2}}}
+\providecommand{\newscr}[2]{\providecommand{#1}{\mathscr{#2}}}
 \newscr{\Distribution}{D}
 \newscr{\Ensemble}{E}
 \newscr{\Func}{F}
 \newscr{\Language}{L}
+\newscr{\Lang}{L}
 \newscr{\Relation}{R}
+\newscr{\Rel}{R}
 
 \providecommand{\newbb}[2]{\providecommand{#1}{\mathbb{#2}}}
 \newbb{\Instance}{X}
@@ -1318,7 +1338,6 @@
 \providecommand{\queries}{\algostyle{queries}}
 
 \providecommand{\inst}{\mathbb{x}}
-\providecommand{\Rel}{\mathscr{R}}
 \providecommand{\prog}{f}
 \providecommand{\obprog}{\hat{f}}
 \providecommand{\pt}{a}
