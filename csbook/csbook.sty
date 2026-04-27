@@ -1160,51 +1160,61 @@
 {\chapter*{\contentsname}\addvspace{1.618\baselineskip}}
 {}
 
+\RequirePackage{titling}
+\RequirePackage[auth-sc]{authblk}
+
 \def\@institute{}
 \def\@subtitle{}
-
 \NewDocumentCommand{\institute}{m}{\def\@institute{#1}}
 \NewDocumentCommand{\subtitle}{m}{\def\@subtitle{#1}}
 
-\def\@authorfont{\normalfont}
+\def\@authorfont{\normalsize\scshape}
+\def\@institutefont{\small\normalfont}
 \def\@datefont{\normalfont}
-\def\@institutefont{\normalfont}
 \def\@subtitlefont{\normalfont}
 \def\@titlefont{\normalfont}
-
 \NewDocumentCommand{\authorfont}{m}{\def\@authorfont{#1}}
-\NewDocumentCommand{\datefont}{m}{\def\@datefont{#1}}
 \NewDocumentCommand{\institutefont}{m}{\def\@institutefont{#1}}
+\NewDocumentCommand{\datefont}{m}{\def\@datefont{#1}}
 \NewDocumentCommand{\subtitlefont}{m}{\def\@subtitlefont{#1}}
 \NewDocumentCommand{\titlefont}{m}{\def\@titlefont{#1}}
 
 \newlength{\goldenunit}
 \setlength{\goldenunit}{1cm}
 
-\RenewDocumentCommand{\maketitle}{}{
-    \thispagestyle{empty}
-    \vspace*{2.618\goldenunit}
-    \begin{flushleft}
-        \normalfont\normalsize
-        \rule{\textwidth}{1pt}
-        {\fontsize{52}{56}\selectfont\@titlefont\@title\par}
-        \bigskip
-        \rule{\textwidth}{1pt}\par
-        \vspace{1.618\goldenunit}
-        \ifx\@subtitle\@empty\else
-            {\large\@subtitlefont$\diamond$\enspace\@subtitle\enspace$\diamond$\par}
-            \vspace{2.618\goldenunit}
-        \fi
-        {\large\@authorfont\@author\par}
-        \vspace{0.618\goldenunit}
-        {\large\@institutefont\@institute\par}
-        \vfill
-        \rule{\textwidth}{1pt}\par
-        \vspace{0.382\goldenunit}
-        {\large\@datefont\@date\par}
-    \end{flushleft}
+\renewcommand{\maketitlehooka}{%
+    \thispagestyle{empty}%
+    \null\vskip 0.12\textheight\relax
+    \begin{flushleft}%
+    \rule{\textwidth}{1pt}\par
+    \vspace{0.618\goldenunit}%
+}
+\renewcommand{\maketitlehookd}{%
+    \end{flushleft}%
     \cleardoublepage
 }
+
+\pretitle{\fontsize{52}{56}\selectfont\@titlefont}
+\posttitle{%
+    \par\vspace{-\goldenunit}%
+    \rule{\textwidth}{1pt}\par
+    \ifx\@subtitle\@empty
+        \vspace{1.618\goldenunit}%
+    \else
+        \vspace{\goldenunit}%
+        {\large\@subtitlefont$\diamond$\enspace\@subtitle\enspace$\diamond$\par}%
+        \vspace{1.618\goldenunit}%
+    \fi
+}
+
+\preauthor{\large\@authorfont}
+\postauthor{\par\vfill}
+
+\predate{\rule{\textwidth}{1pt}\par\vspace{0.618\goldenunit}\large\@datefont}
+\postdate{\par}
+
+\renewcommand{\Authfont}{\@authorfont}
+\renewcommand{\Affilfont}{\@institutefont}
 
 \makeatother
 \endinput

@@ -1,6 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{tcscrypto}[2026/04/13 v3.0 Notations and environments for TCS and Cryptography]
-
 \RequirePackage{appendix}
 \RequirePackage[full]{complexity}
 
@@ -18,8 +17,6 @@
 \providecommand{\oracle}[1]{\oraclestyle{#1}}
 \providecommand{\proc}[1]{\funcstyle{#1}}
 \providecommand{\var}[1]{\varstyle{#1}}
-
-\providecommand{\A}{\setstyle{A}}
 
 \ExplSyntaxOn
 
@@ -40,6 +37,12 @@
 {
 	\clist_map_inline:nn { #1 }
 	{ \__crypto_parse_pair:w ##1 \q_stop { } { algostyle } }
+}
+
+\NewDocumentCommand \cryptoDefineClassCSV { m }
+{
+	\clist_map_inline:nn { #1 }
+	{ \__crypto_parse_pair:w ##1 \q_stop { } { newclass } }
 }
 
 \NewDocumentCommand \cryptoDefineVarCSV { m }
@@ -517,26 +520,34 @@
 \providecommand{\Obfucate}[1]{\widehat{#1}}
 \providecommand{\Obfuscated}[1]{\algostyle{O}(#1)}
 
-\providecommand{\IHO}{\schemestyle{IHO}}
-\providecommand{\Obf}{\algostyle{O}}
-\providecommand{\VBB}{\schemestyle{VBB}}
-\providecommand{\diO}{\schemestyle{diO}}
-\providecommand{\ihO}{\schemestyle{ihO}}
-
 \cryptoDefineAlgoCSV{
 	AND/AND,
+	Acc/Acc,
+	Bad/Bad,
 	Chal/Chal,
+	Coins/Coins,
 	Commit/Commit,
 	Dec/Dec,
+	Decide/Decide,
+	DecideAcc/DecideAcc,
+	Decision/Decision,
 	Decode/Decode,
+	Derive/Derive,
+	Dist/D,
 	Enc/Enc,
 	Encode/Encode,
+	Equivocate/Equiv,
 	Eval/Eval,
 	EvalPoly/EvalPoly,
 	Exp/Exp,
+	ExtFunc/Extract,
+	Extract/Extract,
 	Fake/Fake,
+	Fold/Fold,
 	Gen/Gen,
 	Guess/Guess,
+	Hyb/Hybrid,
+	Hybrid/Hybrid,
 	Index/Index,
 	Init/Init,
 	Interp/Interp,
@@ -544,6 +555,8 @@
 	Inverter/Inv,
 	KDF/KDF,
 	KeyGen/KeyGen,
+	KeyGenLT/KeyGenLT,
+	KeyGenSS/KeyGenSS,
 	Majority/Maj,
 	NAND/NAND,
 	NOR/NOR,
@@ -554,28 +567,46 @@
 	Prove/Prove,
 	Puncture/Puncture,
 	Query/Query,
+	Rand/Rand,
+	RandFunction/R,
+	Reconstruct/Reconstruct,
 	Resp/Resp,
 	Sam/Sam,
+	Sample/Sample,
 	Sampler/Sam,
 	Search/Search,
 	Setup/Setup,
+	Share/Share,
 	Sign/Sign,
+	SimFunc/Sim,
+	SimProve/SimProve,
+	SimSetup/SimSetup,
 	Source/Src,
 	Step/Step,
+	Table/T,
 	Updt/Updt,
 	Verify/Vrfy,
+	VerifyAcc/VerifyAcc,
 	Vrfy/Vrfy,
+	Win/Win,
 	XNOR/XNOR,
 	XOR/XOR,
+	IHO/IHO,
+	Obf/O,
+	VBB/VBB,
 }
-
-\providecommand{\Derive}{\algostyle{Derive}}
-\providecommand{\Hybrid}{\funct{Hybrid}}
-\providecommand{\Hyb}{\funct{Hybrid}}
 
 \cryptoDefineKeyCSV{
 	acc/acc,
+	accept/accept,
+	add/add,
+	aux/aux,
 	cc/c,
+	cid/cid,
+	cm/cm,
+	cp/cp,
+	crs/crs,
+	del/del,
 	ee/e,
 	epk/epk,
 	esk/esk,
@@ -591,24 +622,45 @@
 	ltsk/ltsk,
 	mm/m,
 	mpk/mpk,
+	msg/msg,
+	msgs/msgs,
 	msk/msk,
 	nl/nl,
 	nn/n,
+	nparties/n,
+	oid/oid,
 	ol/ol,
+	op/op,
+	pid/pid,
 	pk/pk,
 	pp/pp,
 	qq/qq,
+	queries/queries,
+	reject/reject,
+	rem/rem,
+	rounds/rounds,
 	rr/r,
+	rs/rs,
+	rt/rt,
+	sid/sid,
+	sidv/sidv,
 	sk/sk,
+	srs/srs,
+	ssid/ssid,
 	sspk/sspk,
 	sssk/sssk,
+	sst/sst,
 	st/st,
+	td/td,
+	threshold/t,
 	tmtime/time,
+	tp/tp,
+	tq/tq,
+	trans/tr,
+	upd/upd,
+	view/view,
 	vk/vk,
 }
-
-\providecommand{\KeyGenLT}{\funct{KeyGenLT}}
-\providecommand{\KeyGenSS}{\funct{KeyGenSS}}
 
 \providecommand{\PubKeySpace}{\setstyle{K}_{\algostyle{pk}}}
 \providecommand{\SecKeySpace}{\setstyle{K}_{\algostyle{sk}}}
@@ -626,23 +678,6 @@
 \providecommand{\party}{\algostyle{party}}
 \providecommand{\peer}{\algostyle{peer}}
 \providecommand{\role}{\var{role}}
-
-\cryptoDefineVarCSV{
-	add/add,
-	cid/cid,
-	del/del,
-	msg/msg,
-	oid/oid,
-	op/op,
-	pid/pid,
-	rem/rem,
-	sid/sid,
-	sidv/sidv,
-	ssid/ssid,
-	sst/sst,
-	tp/tp,
-	upd/upd,
-}
 
 \providecommand{\sessionstate}{\var{state}}
 \providecommand{\sessionstatus}{\var{status}}
@@ -790,9 +825,6 @@
 \providecommand{\corruptedparties}{\setstyle{C}}
 \providecommand{\revealedsessions}{\setstyle{R}}
 \providecommand{\testqueries}{\setstyle{T}}
-\providecommand{\tq}{\algostyle{tq}}
-\providecommand{\cp}{\algostyle{cp}}
-\providecommand{\rs}{\algostyle{rs}}
 
 \providecommand{\HashOracle}{\oracle{H}}
 \providecommand{\SignOracle}{\oracle{Sign}}
@@ -1076,111 +1108,101 @@
 \NewDocumentCommand{\gcomment}{m}{\codecomment{#1}}
 \NewDocumentCommand{\gcommentd}{m m}{\codecommentgames{#1}{#2}}
 
-\providecommand{\PRG}{\mathsf{PRG}}
-\providecommand{\HSG}{\mathsf{HSG}}
-\providecommand{\NW}{\mathsf{NW}}
-\providecommand{\stretch}{\ell}
-\providecommand{\seedlen}{d}
-\providecommand{\prgseed}{s}
-\providecommand{\prgout}{y}
+\cryptoDefineClassCSV{
+	CLS/CLS,
+	EOL/EOL,
+	EOML/EOML,
+	EOPL/EOPL,
+	PWPP/PWPP,
+	RSVL/RSVL,
+	SOPL/SOPL,
+	SVL/SVL,
+	UEOPL/UEOPL,
+}
 
-\newclass{\CLS}{CLS}
-\newclass{\EOL}{EOL}
-\newclass{\EOML}{EOML}
-\newclass{\EOPL}{EOPL}
-\newclass{\PWPP}{PWPP}
-\newclass{\RSVL}{RSVL}
-\newclass{\SOPL}{SOPL}
-\newclass{\SVL}{SVL}
-\newclass{\UEOPL}{UEOPL}
-
-\providecommand{\Share}{\algostyle{Share}}
-\providecommand{\Reconstruct}{\algostyle{Reconstruct}}
-\providecommand{\threshold}{t}
-\providecommand{\nparties}{n}
-
-\newclass{\PPT}{PPT}
-\newclass{\AI}{AI}
-
-\newclass{\ROM}{ROM}
-\newclass{\QROM}{QROM}
-
-\newclass{\npROM}{npROM}
-\newclass{\osROM}{osROM}
-\newclass{\pROM}{pROM}
-\newclass{\sROM}{sROM}
-
-\newclass{\AHP}{AHP}
-\newclass{\HVZK}{HVZK}
-\newclass{\IOP}{IOP}
-\newclass{\IVC}{IVC}
-\newclass{\LPCP}{LPCP}
-\newclass{\NIZK}{NIZK}
-\newclass{\QPCP}{QPCP}
-\newclass{\SNARG}{SNARG}
-\newclass{\SNARK}{SNARK}
-\newclass{\ZK}{ZK}
-\newclass{\coSZK}{coSZK}
-\newclass{\zkSNARK}{zkSNARK}
-\newclass{\zkSTARK}{zkSTARK}
-
-\newclass{\ABE}{ABE}
-\newclass{\BARG}{BARG}
-\newclass{\CIH}{CIH}
-\newclass{\CRHF}{CRHF}
-\newclass{\DS}{DS}
-\newclass{\FE}{FE}
-\newclass{\FHE}{FHE}
-\newclass{\FS}{FS}
-\newclass{\FSS}{FSS}
-\newclass{\HASH}{HASH}
-\newclass{\HE}{HE}
-\newclass{\HIBE}{HIBE}
-\newclass{\HIS}{HIS}
-\newclass{\HSS}{HSS}
-\newclass{\IBE}{IBE}
-\newclass{\KEM}{KEM}
-\newclass{\MLFHE}{MLFHE}
-\newclass{\MT}{MT}
-\newclass{\OLE}{OLE}
-\newclass{\OPRF}{OPRF}
-\newclass{\OT}{OT}
-\newclass{\OWF}{OWF}
-\newclass{\OWP}{OWP}
-\newclass{\PCG}{PCG}
-\newclass{\PIR}{PIR}
-\newclass{\PKE}{PKE}
-\newclass{\PKFE}{PKFE}
-\newclass{\PPRF}{PPRF}
-\newclass{\PRF}{PRF}
-\newclass{\PSI}{PSI}
-\newclass{\RO}{RO}
-\newclass{\SIG}{DS}
-\newclass{\SKE}{SKE}
-\newclass{\SKFE}{SKFE}
-\newclass{\SPMPC}{SPMPC}
-\newclass{\SSB}{SSB}
-\newclass{\TCR}{TCR}
-\newclass{\TDF}{TDF}
-\newclass{\TDP}{TDP}
-\newclass{\UOW}{UOW}
-\newclass{\VC}{VC}
-\newclass{\VDF}{VDF}
-\newclass{\VOLE}{VOLE}
-
-\newclass{\cFE}{cFE}
-\newclass{\iO}{iO}
-\newclass{\rOWF}{rOWF}
-
-\newclass{\CRS}{CRS}
-\newclass{\SRS}{SRS}
-
-\newclass{\AGM}{AGM}
-\newclass{\GGM}{GGM}
-
-\newclass{\DPVW}{DPVW}
-\newclass{\ICM}{ICM}
-\newclass{\SIR}{SIR}
+\cryptoDefineClassCSV{
+	ABE/ABE,
+	AGM/AGM,
+	AHP/AHP,
+	AI/AI,
+	BARG/BARG,
+	CI/CI,
+	CIH/CIH,
+	CRHF/CRHF,
+	CRS/CRS,
+	DPVW/DPVW,
+	DS/DS,
+	FE/FE,
+	FHE/FHE,
+	FS/FS,
+	FSS/FSS,
+	GGM/GGM,
+	HASH/HASH,
+	HE/HE,
+	HIBE/HIBE,
+	HIS/HIS,
+	HSG/HSG,
+	HSS/HSS,
+	HVZK/HVZK,
+	IBE/IBE,
+	ICM/ICM,
+	IOP/IOP,
+	IVC/IVC,
+	KEM/KEM,
+	LPCP/LPCP,
+	MLFHE/MLFHE,
+	MT/MT,
+	NIZK/NIZK,
+	NW/NW,
+	OLE/OLE,
+	OPRF/OPRF,
+	OT/OT,
+	OWF/OWF,
+	OWP/OWP,
+	PCG/PCG,
+	PIR/PIR,
+	PKE/PKE,
+	PKFE/PKFE,
+	PPRF/PPRF,
+	PRF/PRF,
+	PRG/RG,
+	PSI/PSI,
+	QPCP/QPCP,
+	QROM/QROM,
+	RO/RO,
+	ROM/ROM,
+	SIG/DS,
+	SIR/SIR,
+	SKE/SKE,
+	SKFE/SKFE,
+	SNARG/SNARG,
+	SNARK/SNARK,
+	SPMPC/SPMPC,
+	SRS/SRS,
+	SSB/SSB,
+	TCR/TCR,
+	TDF/TDF,
+	TDP/TDP,
+	UOW/UOW,
+	VC/VC,
+	VDF/VDF,
+	VOLE/VOLE,
+	ZK/ZK,
+	cFE/cFE,
+	coSZK/coSZK,
+	diO/diO,
+	iO/iO,
+	ihO/ihO,
+	npROM/npROM,
+	osRO/osRO,
+	osROM/osROM,
+	pROM/pROM,
+	rOWF/rOWF,
+	sRO/sRO,
+	sROM/sROM,
+	zkSNARK/zkSNARK,
+	zkSTARK/zkSTARK,
+}
 
 \newclass{\eufcmaone}{EUF\textsf{-}CMA1}
 \newclass{\eufcmatwo}{EUF\textsf{-}CMA2}
@@ -1224,40 +1246,12 @@
 \providecommand{\Cryptomania}{\textsc{Cryptomania}\xspace}
 \providecommand{\Obfustopia}{\textsc{Obfustopia}\xspace}
 
-\newfunc{\accept}{accept}
-\newfunc{\reject}{reject}
-\newfunc{\Win}{Win}
-\newfunc{\Bad}{Bad}
-
-\newfunc{\crs}{crs}
-\newfunc{\srs}{srs}
-
-\newfunc{\Equivocate}{Equiv}
-\newfunc{\ExtFunc}{Extract}
-\newfunc{\SimFunc}{Sim}
-\newfunc{\SimProve}{SimProve}
-\newfunc{\SimSetup}{SimSetup}
-
-\newfunc{\Acc}{Acc}
-\newfunc{\DecideAcc}{DecideAcc}
-\newfunc{\Fold}{Fold}
-\newfunc{\VerifyAcc}{VerifyAcc}
-
-\newfunc{\Coins}{Coins}
-\newfunc{\Rand}{Rand}
-\newfunc{\Sample}{Sample}
-
-\newfunc{\Dist}{D}
-\newfunc{\aux}{aux}
-\newfunc{\cm}{cm}
-\newfunc{\rt}{rt}
-\newfunc{\td}{td}
-
-\newfunc{\TM}{TM}
 \newfunc{\DTM}{DTM}
 \newfunc{\NDTM}{NDTM}
-\newfunc{\PTM}{PTM}
 \newfunc{\OracleTM}{O}
+\newfunc{\PPT}{PPT}
+\newfunc{\PTM}{PTM}
+\newfunc{\TM}{TM}
 
 \newfunc{\Circuit}{C}
 \providecommand{\ckt}{\setstyle{C}}
@@ -1270,7 +1264,6 @@
 \newfunc{\PathCircuit}{Path}
 \newfunc{\PredecessorCircuit}{P}
 \newfunc{\SuccessorCircuit}{S}
-\newfunc{\Decision}{Decision}
 
 \providecommand{\CktClass}{\mathcal{C}}
 \providecommand{\Property}{\mathcal{P}}
@@ -1331,12 +1324,6 @@
 \providecommand{\chal}{\algostyle{ch}}
 \providecommand{\resp}{\algostyle{rsp}}
 
-\providecommand{\trans}{\algostyle{tr}}
-\providecommand{\view}{\algostyle{view}}
-\providecommand{\msgs}{\algostyle{msgs}}
-\providecommand{\rounds}{\algostyle{rounds}}
-\providecommand{\queries}{\algostyle{queries}}
-
 \providecommand{\inst}{\mathbb{x}}
 \providecommand{\prog}{f}
 \providecommand{\obprog}{\hat{f}}
@@ -1378,7 +1365,6 @@
 \newcal{\KeySpace}{K}
 \newcal{\MessageSpace}{M}
 \newcal{\RandomnessSpace}{R}
-\newcal{\Table}{T}
 \newcal{\UniRand}{U}
 \newcal{\UniformRandomness}{U}
 \newcal{\WitnessSpace}{W}
