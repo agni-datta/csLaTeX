@@ -1,23 +1,31 @@
-# cslectureseries
+---
+title: README
+aliases: README
+linter-yaml-title-alias: README
+date created: Monday, April 13th 2026, 9:36:11 pm
+date modified: Friday, May 1st 2026, 11:23:02 pm
+---
+
+## cslectureseries
 
 A robust document class for academic lecture notes and course series, built upon the standard `book` class with a focus on structured typography and integrated reference management.
 
-## Features
+### Features
 
 - **Boxed Chapter Headers**: Distinctive framed chapter titles for high visibility.
 - **Integrated Indexing**: Automatic indexing of emphasized terms via a patched `\emph` command.
 - **Reference Tracking**: Margin markers for broken or undefined references in draft mode.
 - **Solution Environments**: Specialized environments for exercise solutions.
 
-## Installation & Usage
+### Installation & Usage
 
-### Loading the Class
+#### Loading the Class
 
 ```latex
 \documentclass[options]{cslectureseries}
 ```
 
-### Basic Example
+#### Basic Example
 
 ```latex
 \documentclass[kpf, draft]{cslectureseries}
@@ -33,35 +41,41 @@ A robust document class for academic lecture notes and course series, built upon
 \end{document}
 ```
 
-## Package Options
+### Package Options
 
-### Fonts
+#### Fonts
+
 - `kpf`: (Default) Uses KP-Fonts.
 - `bsk`: Uses Baskervaldx with professional math integration.
 
-### Mode Toggles
+#### Mode Toggles
+
 - `draft`: (Default) Enables broken reference markers and collaborative annotations.
 - `final`: Suppresses all annotations and reference markers for production.
 
-## API Reference
+### API Reference
 
-### Metadata & Frontmatter
+#### Metadata & Frontmatter
+
 - `\coursetitle{text}`: Sets the title for the cover and headers.
 - `\maketitle`: Generates a full-page formal title cover.
 
-### Theorem Environments
+#### Theorem Environments
+
 Standard suites included: `theorem`, `lemma`, `proposition`, `definition`, `remark`, `example`, etc.
+
 Specialized: `solution` environment for exercise answers.
 
-### Revision Tools (Draft Mode)
+#### Revision Tools (Draft Mode)
+
 - `\todo{text}`, `\fixme{text}`, `\added{text}`, `\changed{text}`, etc.
 - `\newguymarker{cmd}{label}{color}`: Define custom markers.
 
-## Conflicts & Requirements
+### Conflicts & Requirements
 
 - **book**: This class loads the standard `book` class internally.
 - **Engine**: Best used with engines supporting modern font features (LuaLaTeX recommended for best font results).
 
-## License
+### License
 
 Everything in this repository is distributed under the **LaTeX Project Public License v1.3c**.

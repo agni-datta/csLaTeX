@@ -1,23 +1,31 @@
-# csbook
+---
+title: README
+aliases: README
+linter-yaml-title-alias: README
+date created: Sunday, April 12th 2026, 9:33:58 pm
+date modified: Friday, May 1st 2026, 11:23:02 pm
+---
+
+## csbook
 
 A robust macro framework for compiling complex textbooks, manuscripts, and reports, featuring specialized styling for large tables of contents, chapter/part headers, and reference management.
 
-## Features
+### Features
 
 - **Redefined Sectioning**: Custom typography for `\part`, `\chapter`, `\section`, and `\paragraph`.
 - **Dual Output Modes**: Seamless switching between collaborative `draft` and production `final` modes.
 - **Reference Tracking**: Integrated `bxpdfver` compliance and broken reference detection on page margins.
 - **High-End Typography**: Built-in support for multiple premium font families.
 
-## Installation & Usage
+### Installation & Usage
 
-### Loading the Package
+#### Loading the Package
 
 ```latex
 \usepackage[options]{csbook}
 ```
 
-### Basic Example
+#### Basic Example
 
 ```latex
 \documentclass{book}
@@ -30,30 +38,34 @@ A robust macro framework for compiling complex textbooks, manuscripts, and repor
 \end{document}
 ```
 
-## Package Options
+### Package Options
 
-### Fonts
+#### Fonts
+
 - `latinmodern`, `libertine`, `gfsdidot`, `concrete`, `palatino`, `kpfonts`, `baskervaldx`, `garamond`.
 
-### Rendering Mode
+#### Rendering Mode
+
 - `draft`: Shows todos, fixmes, and margin annotations for collaborative work.
 - `final`: (Default) Suppresses all collaborative annotations for final production.
 
-## API Reference
+### API Reference
 
-### Title Formatting
+#### Title Formatting
+
 - `\parhead{text}`: Punctuated inline paragraph heading.
 - Redefines standard LaTeX headers (`\part`, `\chapter`, etc.) using `titlesec`.
 
-### Reference Tracking
+#### Reference Tracking
+
 - Patches `\@setref` to catch and display undefined citations in the margins.
 
-## Conflicts & Requirements
+### Conflicts & Requirements
 
 - **Structural Class**: Must be used with document classes that support `\chapter` (e.g., `book`, `report`).
 - **tocloft**: Strongly overwrites `\tableofcontents` logic; avoid external TOC overrides.
 - **tcolorbox/mdframed**: Uses `mdframed` internally; use `most` compatibility for nested `tcolorbox` layouts.
 
-## License
+### License
 
 Everything in this repository is distributed under the **LaTeX Project Public License v1.3c**.

@@ -1,23 +1,31 @@
-# csdirty
+---
+title: README
+aliases: README
+linter-yaml-title-alias: README
+date created: Sunday, April 12th 2026, 9:34:02 pm
+date modified: Friday, May 1st 2026, 11:23:02 pm
+---
+
+## csdirty
 
 A comprehensive, modern academic framework that serves as a centralized preamble for LaTeX documents, managing fonts, mathematical environments, and document utilities in a single package.
 
-## Features
+### Features
 
 - **Centralized Management**: Loads all necessary fonts and packages without scattering definitions.
 - **Multi-Engine Optimization**: Optimized for LuaTeX with robust fallbacks for pdfTeX.
 - **Feature Modularization**: Toggle specific suites (TikZ, Theorems, Crypto) via package options.
 - **Revision Tracking**: Integrated API for collaborative drafting and annotations.
 
-## Installation & Usage
+### Installation & Usage
 
-### Loading the Package
+#### Loading the Package
 
 ```latex
 \usepackage[options]{csdirty}
 ```
 
-### Basic Example
+#### Basic Example
 
 ```latex
 \documentclass{article}
@@ -30,12 +38,14 @@ A comprehensive, modern academic framework that serves as a centralized preamble
 \end{document}
 ```
 
-## Package Options
+### Package Options
 
-### Font Families
+#### Font Families
+
 - `lmodern` / `latinmodern` (Default), `libertinus`, `concrete`, `garamond` (LuaTeX only), `gfsdidot`, `palatino`.
 
-### Feature Toggles
+#### Feature Toggles
+
 - `all`: (Default) Enables virtually all available capabilities.
 - `comments`: Toggles the annotation API for revision tracking.
 - `theorems`: Integrated theorem suites from `csthm`.
@@ -44,21 +54,23 @@ A comprehensive, modern academic framework that serves as a centralized preamble
 - `orcidlink`: Enables the `\orcidlink` command.
 - `nomath`: Disables all mathematical fonts and amsthm features globally.
 
-## API Reference
+### API Reference
 
-### Annotation Commands (Draft Mode)
+#### Annotation Commands (Draft Mode)
+
 - `\todo{text}`, `\fixme{text}`, `\added{text}`, `\changed{text}`, `\removed{text}`, `\missing{text}`.
 - `\newcomment{name}{color}{cmd}`: Define custom inline comments.
 
-### Layout Utilities
+#### Layout Utilities
+
 - `\fullref{label}`: Integrated hyperref + nameref combination.
 - `\generateDedications{text}`: Centered dedication page for books/reports.
 
-## Conflicts & Requirements
+### Conflicts & Requirements
 
 - **Engine Requirements**: Garamond and other OpenType features require LuaLaTeX.
 - **Document Class**: Tested with `article`, `report`, and `book`.
 
-## License
+### License
 
 Everything in this repository is distributed under the **LaTeX Project Public License v1.3c**.

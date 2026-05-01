@@ -1,24 +1,32 @@
-# cspresentation
+---
+title: README
+aliases: README
+linter-yaml-title-alias: README
+date created: Sunday, April 12th 2026, 9:35:01 pm
+date modified: Friday, May 1st 2026, 11:23:02 pm
+---
+
+## cspresentation
 
 A premium Beamer theme overlay built upon the Metropolis theme, utilizing the Nord color palette for modern, clean, and highly readable academic slideshows.
 
-## Features
+### Features
 
 - **Nord Palette**: Implementation of the full 16-color Nord design system.
 - **Metropolis Integration**: Leverages the robust Metropolis theme structure with custom refinements.
 - **Custom TikZ Styles**: Predefined styles for nodes, idea boxes, and key points.
 - **Academic Utilities**: Specialized commands for citations, source attribution, and content revelation.
 
-## Installation & Usage
+### Installation & Usage
 
-### Loading the Package
+#### Loading the Package
 
 ```latex
 \documentclass{beamer}
 \usepackage{cspresentation}
 ```
 
-### Basic Example
+#### Basic Example
 
 ```latex
 \documentclass{beamer}
@@ -35,30 +43,34 @@ A premium Beamer theme overlay built upon the Metropolis theme, utilizing the No
 \end{document}
 ```
 
-## Package Options
+### Package Options
+
 - **None**. Configuration is managed via the internal theme settings and Metropolis options.
 
-## API Reference
+### API Reference
 
-### Text Styles
+#### Text Styles
+
 - `\kw{text}`: Key word highlighting (Nord Frost).
 - `\bad{text}`, `\good{text}`, `\warn{text}`: Semantic color highlighting.
 - `\code{text}`: Formatted inline code.
 - `\citeref{text}`: Small-caps citation references.
 
-### Layout Tools
+#### Layout Tools
+
 - `\source{text}`: Absolute-positioned source attribution on the slide bottom.
 - `\reveal{n}{text}`: Reveal text on a specific slide overlay with accent coloring.
 - `\csrule`: A colored horizontal rule.
 
-### TikZ Styles
+#### TikZ Styles
+
 - `mainnode`, `ideabox`, `keybox`: Standardized styles for architectural and conceptual diagrams.
 
-## Conflicts & Requirements
+### Conflicts & Requirements
 
 - **Beamer**: Must be used with the `beamer` document class.
 - **Metropolis**: Requires the Metropolis theme package (`beamerthememetropolis`) to be installed.
 
-## License
+### License
 
 Everything in this repository is distributed under the **LaTeX Project Public License v1.3c**.
