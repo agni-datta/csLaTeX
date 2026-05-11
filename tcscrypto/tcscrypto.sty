@@ -83,11 +83,22 @@
 	\tl_set:Nx \l_tmpa_tl { \int_to_Alph:n { #1 } }
 	\cs_if_free:cT { adv \l_tmpa_tl } { \cs_new:cpx { adv \l_tmpa_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathsf { \l_tmpa_tl } } } } }
 	\cs_if_free:cT { bb \l_tmpa_tl } { \cs_new:cpx { bb \l_tmpa_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathbb { \l_tmpa_tl } } } } }
-	\cs_if_free:cT { bf \l_tmpa_tl } { \cs_new:cpx { bf \l_tmpa_tl } { \exp_not:N \textbf { \l_tmpa_tl } } }
+	\cs_if_free:cT { bf \l_tmpa_tl } { \cs_new:cpx { bf \l_tmpa_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathbf { \l_tmpa_tl } } } } }
 	\cs_if_free:cT { cal \l_tmpa_tl } { \cs_new:cpx { cal \l_tmpa_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathcal { \l_tmpa_tl } } } } }
 	\cs_if_free:cT { frak \l_tmpa_tl } { \cs_new:cpx { frak \l_tmpa_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathfrak { \l_tmpa_tl } } } } }
 	\cs_if_free:cT { sf \l_tmpa_tl } { \cs_new:cpx { sf \l_tmpa_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathsf { \l_tmpa_tl } } } } }
 	\cs_if_free:cT { scr \l_tmpa_tl } { \cs_new:cpx { scr \l_tmpa_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathscr { \l_tmpa_tl } } } } }
+}
+
+\int_step_inline:nnn { 1 } { 26 }
+{
+	\tl_set:Nx \l_tmpa_tl { \int_to_alph:n { #1 } }
+	\cs_if_free:cT { bb \l_tmpa_tl }   { \cs_new:cpx { bb \l_tmpa_tl }   { \exp_not:N \ensuremath { { \exp_not:N \mathbb   { \l_tmpa_tl } } } } }
+	\cs_if_free:cT { bf \l_tmpa_tl }   { \cs_new:cpx { bf \l_tmpa_tl }   { \exp_not:N \ensuremath { { \exp_not:N \mathbf   { \l_tmpa_tl } } } } }
+	\cs_if_free:cT { cal \l_tmpa_tl }  { \cs_new:cpx { cal \l_tmpa_tl }  { \exp_not:N \ensuremath { { \exp_not:N \mathcal  { \l_tmpa_tl } } } } }
+	\cs_if_free:cT { frak \l_tmpa_tl } { \cs_new:cpx { frak \l_tmpa_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathfrak { \l_tmpa_tl } } } } }
+	\cs_if_free:cT { sf \l_tmpa_tl }   { \cs_new:cpx { sf \l_tmpa_tl }   { \exp_not:N \ensuremath { { \exp_not:N \mathsf   { \l_tmpa_tl } } } } }
+	\cs_if_free:cT { scr \l_tmpa_tl }  { \cs_new:cpx { scr \l_tmpa_tl }  { \exp_not:N \ensuremath { { \exp_not:N \mathscr  { \l_tmpa_tl } } } } }
 }
 
 \ExplSyntaxOff
@@ -132,6 +143,15 @@
 	}%
 \fi
 
+\@ifundefined{acknowledgements}{%
+	\NewDocumentEnvironment{acknowledgements}{}%
+	{%
+		\addcontentsline{toc}{section}{\protect\textbf{Acknowledgements}}%
+		\paragraph{Acknowledgements.}%
+	}
+	{}
+}{}
+
 \newlength{\strutdepth}
 \settodepth{\strutdepth}{\strutbox}
 \newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
@@ -145,30 +165,31 @@
 \@ifundefined{para}{\newcommand{\para}[1]{\subparagraph{#1}}}{}
 \@ifundefined{term}{\newcommand{\term}[1]{\textsf{#1}}}{}
 
-\NewDocumentEnvironment{protocolbox}{o}
-{
-	\begin{mdframed}[
-		font 				= \small,
-		roundcorner 		= 1.5pt,
-		linewidth 			= 0.5pt,
-		skipabove 			= 0.5\baselineskip,
-		skipbelow 			= 0.1\baselineskip,
-		leftmargin 			= 0pt,
-		rightmargin 		= 0pt,
-		innerleftmargin 	= 5pt,
-		innerrightmargin 	= 5pt,
-		innertopmargin 		= 5pt,
-		innerbottommargin 	= 5pt,
-		backgroundcolor 	= white,
-		linecolor 			= black
-	]
-	\IfNoValueF{#1}{
-		\noindent\textnormal{\textbf{#1}}\par\smallskip
-		\noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}
-	}\noindent
-}{
-	\end{mdframed}
-}
+\@ifundefined{protocolbox}{%
+	\NewDocumentEnvironment{protocolbox}{o}{%
+		\begin{mdframed}[
+			font 				= \small,
+			roundcorner 		= 1.5pt,
+			linewidth 			= 0.5pt,
+			skipabove 			= 0.5\baselineskip,
+			skipbelow 			= 0.1\baselineskip,
+			leftmargin 			= 0pt,
+			rightmargin 		= 0pt,
+			innerleftmargin 	= 5pt,
+			innerrightmargin 	= 5pt,
+			innertopmargin 		= 5pt,
+			innerbottommargin 	= 5pt,
+			backgroundcolor 	= white,
+			linecolor 			= black
+		]
+		\IfNoValueF{#1}{
+			\noindent\textnormal{\textbf{#1}}\par\smallskip
+			\noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}
+		}\noindent
+	}{
+		\end{mdframed}
+	}
+}{}
 
 \let\E\relax
 \let\Game\relax
@@ -244,6 +265,8 @@
 \newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
 \newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
 \newcommand{\inner}[2]{\left\langle#1,\,#2\right\rangle}
+\newcommand{\interaction}[2]{\langle #1, #2 \rangle}
+\newcommand{\interact}[1]{\langle #1 \rangle}
 \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
 \newcommand{\proj}[2]{#1\left[#2\right]}
 \newcommand{\seq}[1]{\left(#1\right)}
@@ -381,6 +404,7 @@
 	EOPL/EOPL,
 	IPP/IPP,
 	MAP/MAP,
+	PHC/PHC,
 	PWPP/PWPP,
 	RIP/RIP,
 	RSVL/RSVL,
@@ -554,6 +578,7 @@
 	Coins/Coins,
 	Com/Com,
 	Commit/Commit,
+	Cost/Cost,
 	Dec/Dec,
 	Decide/Decide,
 	DecideAcc/DecideAcc,
@@ -576,7 +601,9 @@
 	Extract/Extract,
 	Extractor/Ext,
 	Fake/Fake,
+	Fmt/Fmt,
 	Fold/Fold,
+	Format/Fmt,
 	Functionality/F,
 	GGen/GGen,
 	Gen/Gen,
@@ -616,6 +643,7 @@
 	RandFunction/R,
 	Real/Real,
 	Reconstruct/Reconstruct,
+	Reduce/Reduce,
 	Resp/Resp,
 	RevealRand/RevealRand,
 	Run/Run,
@@ -632,6 +660,7 @@
 	SimProve/SimProve,
 	SimSetup/SimSetup,
 	Simulator/Sim,
+	Solve/Solve,
 	Source/Src,
 	Step/Step,
 	Table/T,
@@ -734,6 +763,7 @@
 	LocalSearchProb/Local-Search,
 	MCSPProb/Minimum-Circuit-Size,
 	MatchingProb/Matching,
+	MaxCutProb/Max-Cut,
 	MaxFlowProb/Max-Flow,
 	MaxSATProb/Max-SAT,
 	MinCutProb/Min-Cut,
@@ -777,6 +807,7 @@
 	cid/cid,
 	cm/cm,
 	corrupted/corrupted,
+	cost/cost,
 	cp/cp,
 	crs/crs,
 	ct/ct,
@@ -1221,7 +1252,15 @@
 \newcommand{\Game}{\algostyle{G}}
 \newcommand{\game}{\setstyle{G}}
 \newcommand{\AdvProb}{\var{S}}
-\newcommand{\Prot}{\funct{\Pi}}
+\ifluatex
+	\newcommand{\Prot}{\ensuremath{\text{\textsf{Π}}}}
+\fi
+\ifxetex
+	\newcommand{\Prot}{\ensuremath{\text{\textsf{Π}}}}
+\else
+	\newcommand{\Prot}{\ensuremath{\algostyle{\Pi}}}
+
+\fi
 
 \newfunc{\adv}{A}
 \newfunc{\bdv}{B}
