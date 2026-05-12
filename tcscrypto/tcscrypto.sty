@@ -20,8 +20,10 @@
 \RequirePackage{array}
 \RequirePackage[full]{complexity}
 \RequirePackage{derivative}
+\RequirePackage{etoolbox}
 \RequirePackage{mdframed}
 \RequirePackage{physics2}
+\RequirePackage{xparse}
 \RequirePackage{xspace}
 
 \newcommand{\algostyle}[1]{\ensuremath{\mathsf{#1}}}
@@ -168,19 +170,19 @@
 \@ifundefined{protocolbox}{%
 	\NewDocumentEnvironment{protocolbox}{o}{%
 		\begin{mdframed}[
-			font 				= \small,
-			roundcorner 		= 1.5pt,
-			linewidth 			= 0.5pt,
-			skipabove 			= 0.5\baselineskip,
-			skipbelow 			= 0.1\baselineskip,
-			leftmargin 			= 0pt,
-			rightmargin 		= 0pt,
-			innerleftmargin 	= 5pt,
-			innerrightmargin 	= 5pt,
-			innertopmargin 		= 5pt,
-			innerbottommargin 	= 5pt,
-			backgroundcolor 	= white,
-			linecolor 			= black
+			font               = \small,
+			roundcorner        = 1.5pt,
+			linewidth          = 0.5pt,
+			skipabove          = 0.5\baselineskip,
+			skipbelow          = 0.1\baselineskip,
+			leftmargin         = 0pt,
+			rightmargin        = 0pt,
+			innerleftmargin    = 5pt,
+			innerrightmargin   = 5pt,
+			innertopmargin     = 5pt,
+			innerbottommargin  = 5pt,
+			backgroundcolor    = white,
+			linecolor          = black
 		]
 		\IfNoValueF{#1}{
 			\noindent\textnormal{\textbf{#1}}\par\smallskip
@@ -386,7 +388,7 @@
 
 \newcommand{\Func}{\sfF}
 \newcommand{\Primes}{\mathsf{Primes}}
-\newcommand{\Protocol}{\Pi}
+\newcommand{\Protocol}{\Prot}
 \newcommand{\SecParam}{\lambda}
 \newcommand{\comparam}{\kappa}
 \newcommand{\secparamlog}{\log\lambda}
@@ -1420,7 +1422,7 @@
 \newcommand{\KDFreduced}{\funct{KDF}_r}
 
 \newcommand{\KE}{\algostyle{KE}}
-\newcommand{\PiKE}{\Pi_{\algostyle{KE}}}
+\newcommand{\PiKE}{\Prot_{\algostyle{KE}}}
 \newcommand{\KKE}{\setstyle{K}}
 \newcommand{\RKE}{\setstyle{R}}
 \newcommand{\KKEspace}{\var{\setstyle{K}_{KE}}}
