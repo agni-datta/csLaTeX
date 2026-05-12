@@ -146,16 +146,16 @@
 \RequirePackage[%
 	bookmarksnumbered = true,
 	breaklinks        = true,
-	citecolor         = SteelBlue2,
+	citecolor         = SteelBlue4,
 	colorlinks        = true,
-	linkcolor         = SteelBlue2,
+	linkcolor         = SteelBlue4,
 	pagebackref       = true,
 	pdfencoding       = auto,
 	pdfpagelabels     = true,
 	pdfstartview      = FitH,
 	pdfusetitle,
 	unicode           = true,
-	urlcolor          = SteelBlue2
+	urlcolor          = SteelBlue4
 ]{hyperref}
 
 \renewcommand*{\backref}[1]{}
@@ -447,10 +447,10 @@
 	{\booltrue{llncs@infootnote}\llncs@oldfootnote{#1}}%
 	\boolfalse{llncs@infootnote}%
 }
-\BeforeBeginEnvironment{tabular} {\booltrue{llncs@intabular}}
-\AfterEndEnvironment  {tabular}  {\boolfalse{llncs@intabular}}
-\BeforeBeginEnvironment{minipage}{\booltrue{llncs@inminipage}}
-\AfterEndEnvironment  {minipage} {\boolfalse{llncs@inminipage}}
+\BeforeBeginEnvironment{tabular}  {\booltrue{llncs@intabular}}
+\AfterEndEnvironment   {tabular}  {\boolfalse{llncs@intabular}}
+\BeforeBeginEnvironment{minipage} {\booltrue{llncs@inminipage}}
+\AfterEndEnvironment   {minipage} {\boolfalse{llncs@inminipage}}
 \let\llncs@origMakeFramed\MakeFramed
 \let\llncs@origEndMakeFramed\endMakeFramed
 \def\MakeFramed{\booltrue{llncs@inframed}\llncs@origMakeFramed}%
@@ -559,7 +559,7 @@
 
 \newcommand{\subparheadnoperiod}[1]{%
 	\smallskip\noindent
-	{\scshape\boldmath\ignorespaces#1}%
+	{\scshape\ignorespaces#1}%
 	\hskip0.9em plus 0.3em minus 0.3em
 	\llncs@skipspaces
 }
@@ -633,12 +633,12 @@
 	\refstepcounter{llncs@missing}%
 	\label{llncs@miss:\thellncs@missing}%
 	\gappto\llncs@missinglist{%
-		\noindent\textcolor{BrickRed}{%
+		\noindent\textcolor{Firebrick2}{%
 			$\star$~\thellncs@missing~(p.~\pageref{llncs@miss:\thellncs@missing}):~#1%
 		}\par\medskip
 	}%
-	\ifllncs@notes\llncs@appenddnote{Missing}{BrickRed}{#1}\fi
-	\textcolor{BrickRed}{#1}%
+	\ifllncs@notes\llncs@appenddnote{Missing}{Firebrick2}{#1}\fi
+	\textcolor{Firebrick2}{#1}%
 }
 \newcommand{\printmissing}{%
 	\section*{Missing Content}%
@@ -654,30 +654,50 @@
 \newcommand{\code}[1]{\texttt{#1}}
 \newcommand{\mathsc}[1]{\textnormal{\textsc{#1}}}
 
-\newcommand{\highlightcolor}{RoyalBlue}
+\newcommand{\highlightcolor}{Firebrick2}
 \newcommand{\sethighlightcolor}[1]{\renewcommand{\highlightcolor}{#1}}
 \newcommand{\textem}[1]{\textcolor{\highlightcolor}{#1}}
 
 \newlist{points}{itemize}{1}
-\setlist[points]{label={-}, leftmargin=1em, itemsep=1pt,
-	before=\smallskip, after=\smallskip}
+\setlist[points]{
+	label={-},
+	leftmargin=1em,
+	itemsep=1pt,
+	before=\smallskip,
+	after=\smallskip
+}
 
 \newlist{codelist}{enumerate}{1}
-\setlist[codelist,1]{label=\textcolor{gray}{\texttt{[\arabic*]}},
-	leftmargin=3em, itemsep=1pt, before=\smallskip, after=\smallskip}
+\setlist[codelist,1]{
+	label=\textcolor{gray}{\texttt{[\arabic*]}},
+	leftmargin=3em,
+	itemsep=1pt,
+	before=\smallskip,
+	after=\smallskip
+}
 
 \newlist{checkbox}{itemize}{1}
-\setlist[checkbox]{label=$\square$, leftmargin=1em}
+\setlist[checkbox]{
+	label=$\square$,
+	leftmargin=1em
+}
 \newcommand{\checked}{\item[$\checkmark$]}
 
 \newlist{deflist}{description}{1}
-\setlist[deflist]{labelwidth=0.33\textwidth, labelsep=1em,
-	leftmargin=0.33\textwidth, font=\normalfont\bfseries,
-	style=nextline, itemsep=4pt}
+\setlist[deflist]{
+	labelwidth=0.33\textwidth,
+	labelsep=1em,
+	leftmargin=0.33\textwidth,
+	font=\normalfont\bfseries,
+	style=nextline,
+	itemsep=4pt
+}
 
 \RequirePackage[%
-	skipabove=6pt, skipbelow=6pt,
-	ntheorem, framemethod=Tikz
+	skipabove=0.5\baselineskip,
+	skipbelow=0.5\baselineskip,
+	ntheorem,
+	framemethod=Tikz
 ]{mdframed}
 
 \mdfdefinestyle{llncs@box}{%
@@ -685,7 +705,7 @@
 	roundcorner      = 1.5pt,
 	linewidth        = 0.5pt,
 	skipabove        = 0.5\baselineskip,
-	skipbelow        = 0.1\baselineskip,
+	skipbelow        = 0.5\baselineskip,
 	innerleftmargin  = 6pt,
 	innerrightmargin = 6pt,
 	innertopmargin   = 6pt,
