@@ -2,54 +2,44 @@
 title: README
 aliases: README
 linter-yaml-title-alias: README
-date created: Sunday, April 12th 2026, 9:36:58 pm
-date modified: Monday, May 11th 2026, 2:46:58 pm
+date created: Thursday, May 14th 2026, 10:21:51 pm
+date modified: Thursday, May 14th 2026, 10:24:27 pm
 ---
 
 <!-- @format -->
 
 ## csindex
 
-A specialized MakeIndex style file (`.ist`) designed to produce meticulously formatted and typographically consistent document indexes.
+MakeIndex style file (`.ist`) for typographically clean document indexes with letter headings and dotfill leaders.
 
-### Features
+### Usage
 
-- **Letter Headings**: Automatically groups index entries under bold letter headings (A, B, Symbols).
-- **Dotfill Leaders**: Automatically appends dotfill leaders between entries and page numbers.
-- **Clean Formatting**: Optimized for readability and professional academic aesthetics.
+Not loaded via `\usepackage`. Pass it to the `makeindex` processor.
 
-### Installation & Usage
-
-#### Loading the Style
-
-As an `.ist` file, this is not loaded via `\usepackage`. It must be passed to the `makeindex` processor.
-
-##### Using `imakeidx` (Recommended)
+#### With `imakeidx` (recommended)
 
 ```latex
 \usepackage[makeindex, options=-s csindex.ist]{imakeidx}
 \makeindex
 ```
 
-##### Manual Compilation
+#### Manual compilation
 
 ```bash
 makeindex -s csindex.ist yourfile.idx
 ```
 
-### Package Options
+### Features
 
-- **None**. This is a configuration style file and does not accept LaTeX package options.
+- Groups entries under bold letter headings (A, B, … Symbols).
+- Dotfill leaders between entries and page numbers.
+- No LaTeX package options—this is a configuration style file.
 
-### API Reference
+### Requirements
 
-This style file establishes typographical paradigms rather than new macros. It affects the rendering of the standard `\printindex` or `\theindex` environment.
-
-### Conflicts & Requirements
-
-- **Executable**: Ensure the `makeindex` executable is present in your system’s build path.
-- **File Placement**: The `csindex.ist` file must be accessible to the compiler (usually in the same directory as your main `.tex` file).
+- `makeindex` executable must be on the system build path.
+- `csindex.ist` must be accessible to the compiler (usually the same directory as the main `.tex` file).
 
 ### License
 
-Everything in this repository is distributed under the **LaTeX Project Public License v1.3c**.
+LaTeX Project Public License v1.3c.

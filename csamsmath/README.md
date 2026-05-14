@@ -2,32 +2,21 @@
 title: README
 aliases: README
 linter-yaml-title-alias: README
-date created: Sunday, April 12th 2026, 9:33:57 pm
-date modified: Monday, May 11th 2026, 2:46:57 pm
+date created: Thursday, May 14th 2026, 10:21:39 pm
+date modified: Thursday, May 14th 2026, 10:24:27 pm
 ---
 
 <!-- @format -->
 
 ## csamsmath
 
-A professional LaTeX package providing a mathematical backbone for STEM publications, specifically designed for layout geometry, typesetting properties, cross-referencing, and logic proofs.
+Math backbone for STEM publications: fonts, theorem environments, and collaborative annotations.
 
-### Features
-
-- **Automated Theorem Numbering**: Per-section sibling counters for over 50 environment types.
-- **Integrated Font Logic**: Multi-engine support (pdfTeX, LuaTeX, XeTeX) with automatic font fallbacks.
-- **Collaborative Annotations**: Integrated margin notes and revision tracking for draft versions.
-- **Theorem-Environment Suite**: Built on `thmtools` with consistent academic styling.
-
-### Installation & Usage
-
-#### Loading the Package
+### Usage
 
 ```latex
 \usepackage[options]{csamsmath}
 ```
-
-#### Basic Example
 
 ```latex
 \documentclass{report}
@@ -35,49 +24,48 @@ A professional LaTeX package providing a mathematical backbone for STEM publicat
 
 \begin{document}
 \begin{theorem}
-    Mathematical content goes here.
+    Mathematical content.
 \end{theorem}
 \end{document}
 ```
 
-### Package Options
+### Options
 
-#### Font Options
+#### Fonts
 
-- `latinmodern`: (Default) Modern Computer Modern configuration.
-- `libertine`: Stronger rendering weight for visual readability.
-- `gfsdidot`: GFS classical variants.
-- `concrete`: Knuth Concrete rendering suitable for notes.
-- `palatino`: High-quality TeX Gyre Pagella integration.
-- `baskervaldx`: Professional Baskervaldx font integration.
-- `kpfonts`: Enforces LuaLaTeX; triggers fallback warning on pdfLaTeX.
+- `latinmodern`—(Default) Modern Computer Modern.
+- `libertine`—Stronger rendering weight.
+- `gfsdidot`—GFS classical variants.
+- `concrete`—Knuth Concrete, suitable for notes.
+- `palatino`—TeX Gyre Pagella.
+- `baskervaldx`—Baskervaldx.
+- `kpfonts`—KP Fonts; requires LuaLaTeX (fallback warning on pdfLaTeX).
 
-#### Mode Toggles
+#### Mode
 
-- `draft`: Enables collaborative margin notes and annotation rendering.
-- `final`: (Default) Suppresses all annotations for publication drops.
+- `draft`—enables margin notes and annotation rendering.
+- `final`—(Default) suppresses all annotations.
 
-### API Reference
+### API
 
-#### Theorem-like Environments (Numbered)
+#### Theorem-like environments
 
-- `theorem`, `lemma`, `corollary`, `proposition`, `conjecture`, `fact`, `claim`.
+`theorem`, `lemma`, `corollary`, `proposition`, `conjecture`, `fact`, `claim`.
 
-#### Definition & Remark Environments
+#### Definition & remark environments
 
-- `definition`, `notation`, `protocol`, `problem`, `construction`.
-- `remark`, `note`, `example`, `observation`, `openproblem`.
+`definition`, `notation`, `protocol`, `problem`, `construction`, `remark`, `note`, `example`, `observation`, `openproblem`.
 
-#### Annotation Commands (Draft Mode Only)
+#### Annotation commands (draft mode)
 
 - `\todo{text}`, `\query{text}`, `\missing{text}`, `\notes{text}`.
-- `\newguymarker{cmd}{label}{color}`: Define custom user markers.
+- `\newguymarker{cmd}{label}{color}`—define a custom user marker.
 
-### Conflicts & Requirements
+### Conflicts
 
-- **amsthm**: Avoid loading `amsthm` manually before this package to prevent `thmtools` styling crashes.
-- **Engine Rules**: Optimized for LuaLaTeX; pdfLaTeX is supported with fallback font configurations.
+- Do not load `amsthm` manually before this package.
+- Optimized for LuaLaTeX; pdfLaTeX is supported with fallback fonts.
 
 ### License
 
-Everything in this repository is distributed under the **LaTeX Project Public License v1.3c**.
+LaTeX Project Public License v1.3c.

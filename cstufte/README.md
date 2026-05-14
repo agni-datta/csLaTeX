@@ -2,32 +2,21 @@
 title: README
 aliases: README
 linter-yaml-title-alias: README
-date created: Monday, April 13th 2026, 9:30:58 am
-date modified: Monday, May 11th 2026, 2:46:58 pm
+date created: Thursday, May 14th 2026, 10:22:47 pm
+date modified: Thursday, May 14th 2026, 10:24:28 pm
 ---
 
 <!-- @format -->
 
 ## cstufte
 
-A structural LaTeX package mimicking the Tufte aesthetic, optimized for clarity, side-notes, and elegant marginalia in academic and technical documents.
+Tufte-style layout package with wide margins, side-notes, lattice cryptography macros, and premium box styles.
 
-### Features
-
-- **Tufte Aesthetic**: Focus on wide margins, side-notes, and a high-ratio of white space.
-- **Lattice Notation Suite**: Specialized mathematical macros for lattice-based cryptography and complexity theory.
-- **Integrated Sidebar Assets**: Commands for margin notes, side-citations, and danger markers.
-- **Premium Box Styles**: Elegant tcolorbox implementations for theorems and remarks.
-
-### Installation & Usage
-
-#### Loading the Package
+### Usage
 
 ```latex
 \usepackage[options]{cstufte}
 ```
-
-#### Basic Example
 
 ```latex
 \documentclass{article}
@@ -40,39 +29,39 @@ This is a claim\cite{Agni2026}.
 \end{document}
 ```
 
-### Package Options
+### Options
 
 #### Styling
 
-- `colorful`: (Boolean) Enables a Blue/Steel color palette for boxes and titles.
-- `framecolor`, `backcolor`: Manual color overrides.
-- `rulerwidth`: Width of the elegant vertical bars (Default: `2pt`).
+- `colorful`—Blue/Steel palette for boxes and titles.
+- `framecolor`, `backcolor`—manual color overrides.
+- `rulerwidth`—width of vertical bars (default: `2pt`).
 
-#### Features (Booleans)
+#### Features (booleans)
 
-- `nicefonts`: Loads Baskervaldx and Biolinum.
-- `mathoperators`: Loads a massive suite of TCS-related math operators.
-- `latticenotation`: Loads standard symbols for lattice cryptography ($\Lattice, \Z, \R$, etc.).
-- `draft`: Enables broken reference markers in the margins.
+- `nicefonts`—loads Baskervaldx and Biolinum.
+- `mathoperators`—TCS-related math operators.
+- `latticenotation`—lattice cryptography symbols.
+- `draft`—broken reference markers in the margins.
 
-### API Reference
+### API
 
 #### Marginalia
 
-- `\cite[offset][post]{key}`: Places a full citation in the side margin.
-- `\mpar{text}`: Ragged-aligned footnote-style margin paragraph.
-- `\danger`: Places a “danger” bend marker in the margin.
+- `\cite[offset][post]{key}`—full citation in the side margin.
+- `\mpar{text}`—ragged footnote-style margin paragraph.
+- `\danger`—“danger” bend marker in the margin.
 
-#### Math & Symbols
+#### Math & symbols
 
-- `\Lattice`, `\DualLattice`, `\basis`, `\SVP`, `\CVP`, `\LWE`, `\SIS`: Common lattice cryptography symbols.
-- `\abs{}`, `\norm{}`, `\ip{,}`, `\set{}`: Paired delimiters using `mathtools`.
+- `\Lattice`, `\DualLattice`, `\basis`, `\SVP`, `\CVP`, `\LWE`, `\SIS`—lattice cryptography symbols.
+- `\abs{}`, `\norm{}`, `\ip{,}`, `\set{}`—paired delimiters via `mathtools`.
 
-### Conflicts & Requirements
+### Conflicts
 
-- **Geometry**: This package heavily modifies margins; ensure no other packages override the `geometry` layout.
-- **biblatex**: Side-citations require a Biber-compatible bibliography setup.
+- Heavily modifies margins; do not let other packages override the `geometry` layout.
+- Side-citations require a Biber-compatible bibliography setup.
 
 ### License
 
-Everything in this repository is distributed under the **LaTeX Project Public License v1.3c**.
+LaTeX Project Public License v1.3c.

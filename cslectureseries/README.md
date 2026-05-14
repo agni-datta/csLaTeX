@@ -2,32 +2,21 @@
 title: README
 aliases: README
 linter-yaml-title-alias: README
-date created: Monday, April 13th 2026, 9:36:11 pm
-date modified: Monday, May 11th 2026, 2:46:58 pm
+date created: Thursday, May 14th 2026, 10:22:05 pm
+date modified: Thursday, May 14th 2026, 10:24:27 pm
 ---
 
 <!-- @format -->
 
 ## cslectureseries
 
-A robust document class for academic lecture notes and course series, built upon the standard `book` class with a focus on structured typography and integrated reference management.
+Document class for academic lecture series, built on `book` with boxed chapter headers, automatic indexing, and draft/final annotation modes.
 
-### Features
-
-- **Boxed Chapter Headers**: Distinctive framed chapter titles for high visibility.
-- **Integrated Indexing**: Automatic indexing of emphasized terms via a patched `\emph` command.
-- **Reference Tracking**: Margin markers for broken or undefined references in draft mode.
-- **Solution Environments**: Specialized environments for exercise solutions.
-
-### Installation & Usage
-
-#### Loading the Class
+### Usage
 
 ```latex
 \documentclass[options]{cslectureseries}
 ```
-
-#### Basic Example
 
 ```latex
 \documentclass[kpf, draft]{cslectureseries}
@@ -43,41 +32,39 @@ A robust document class for academic lecture notes and course series, built upon
 \end{document}
 ```
 
-### Package Options
+### Options
 
 #### Fonts
 
-- `kpf`: (Default) Uses KP-Fonts.
-- `bsk`: Uses Baskervaldx with professional math integration.
+- `kpf`—(Default) KP Fonts.
+- `bsk`—Baskervaldx with math integration.
 
-#### Mode Toggles
+#### Mode
 
-- `draft`: (Default) Enables broken reference markers and collaborative annotations.
-- `final`: Suppresses all annotations and reference markers for production.
+- `draft`—(Default) enables broken reference markers and collaborative annotations.
+- `final`—suppresses all annotations and markers.
 
-### API Reference
+### API
 
-#### Metadata & Frontmatter
+#### Metadata
 
-- `\coursetitle{text}`: Sets the title for the cover and headers.
-- `\maketitle`: Generates a full-page formal title cover.
+- `\coursetitle{text}`—title for the cover and headers.
+- `\maketitle`—full-page formal title cover.
 
-#### Theorem Environments
+#### Theorem environments
 
-Standard suites included: `theorem`, `lemma`, `proposition`, `definition`, `remark`, `example`, etc.
+`theorem`, `lemma`, `proposition`, `definition`, `remark`, `example`, and the standard suite. Includes `solution` for exercise answers.
 
-Specialized: `solution` environment for exercise answers.
+#### Revision tools (draft mode)
 
-#### Revision Tools (Draft Mode)
+- `\todo{text}`, `\fixme{text}`, `\added{text}`, `\changed{text}`.
+- `\newguymarker{cmd}{label}{color}`—define custom markers.
 
-- `\todo{text}`, `\fixme{text}`, `\added{text}`, `\changed{text}`, etc.
-- `\newguymarker{cmd}{label}{color}`: Define custom markers.
+### Conflicts
 
-### Conflicts & Requirements
-
-- **book**: This class loads the standard `book` class internally.
-- **Engine**: Best used with engines supporting modern font features (LuaLaTeX recommended for best font results).
+- Loads `book` internally; do not pass another base class.
+- LuaLaTeX recommended for best font results.
 
 ### License
 
-Everything in this repository is distributed under the **LaTeX Project Public License v1.3c**.
+LaTeX Project Public License v1.3c.

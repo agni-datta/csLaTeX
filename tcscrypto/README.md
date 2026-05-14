@@ -2,35 +2,21 @@
 title: README
 aliases: README
 linter-yaml-title-alias: README
-date created: Sunday, April 12th 2026, 9:36:49 pm
-date modified: Monday, May 11th 2026, 2:46:58 pm
+date created: Thursday, May 14th 2026, 10:23:37 pm
+date modified: Thursday, May 14th 2026, 10:24:28 pm
 ---
 
 <!-- @format -->
 
 ## tcscrypto
 
-A comprehensive mathematical notation and syntactic environment suite tailored for Theoretical Computer Science (TCS) and Cryptography proofs.
+Mathematical notation and environment suite for Theoretical Computer Science and Cryptography.
 
-### Features
-
-- **Standardized Notations**: Consistent symbols for probability, complexity classes, and algebraic structures.
-- **Circuit & Graph Theory**: Explicit macros for circuit complexity (e.g., `\Depth`, `\Size`, `\Width`) and graph elements (e.g., `\node`, `\Edge`, `\degree`).
-- **Proof Complexity & SAT**: Dedicated macros for clauses, Tseitin encodings, and proof derivations (e.g., `\Axioms`, `\Clauses`, `\proves`).
-- **Kolmogorov Complexity**: Comprehensive macros for classical and resource-bounded Kolmogorov complexity (e.g., `\KS`, `\Kt`, `\rKS`).
-- **Syntactic Builders**: Macros for defining entire suites of algorithms, variables, and oracles via CSV lists.
-- **Cryptographic Primitives**: Specialized commands for random sampling ($\getsr$), negligible functions ($\negl$), and security games.
-- **Protocol Layouts**: Framed environments for presenting cryptographic protocols and algorithm blocks.
-
-### Installation & Usage
-
-#### Loading the Package
+### Usage
 
 ```latex
 \usepackage{tcscrypto}
 ```
-
-#### Basic Example
 
 ```latex
 \documentclass{article}
@@ -46,41 +32,47 @@ The adversary $\algo$ samples $x \getsr \bits^{\secparam}$.
 \end{document}
 ```
 
-### Package Options
+### Features
 
-- **None**. This package prioritizes deterministic syntax rules and logic.
+- Standardized symbols for probability, complexity classes, and algebraic structures.
+- Circuit complexity and graph theory macros.
+- Proof complexity and SAT macros.
+- Kolmogorov complexity macros.
+- Syntactic builders to define algorithm, oracle, and problem suites via CSV lists.
+- Cryptographic primitives: sampling, negligible functions, security games.
+- Framed environments for protocol and algorithm blocks.
 
-### API Reference
+### API
 
-#### Mathematical Symbols
+#### Mathematical symbols
 
-- `\secparam`, `\negl`, `\poly`, `\Pr`, `\bits`: Standard TCS constants and operators.
-- `\getsr`, `\longsample`: Random sampling arrows.
-- `\NN`, `\ZZ`, `\QQ`, `\RR`, `\FF`: Standard blackboard bold sets.
+- `\secparam`, `\negl`, `\poly`, `\Pr`, `\bits`—standard TCS constants.
+- `\getsr`, `\longsample`—random sampling arrows.
+- `\NN`, `\ZZ`, `\QQ`, `\RR`, `\FF`—blackboard bold sets.
 
-#### Complexity & TCS Domains
+#### Complexity & TCS domains
 
-- **Circuit Complexity**: `\CktClass`, `\Depth`, `\Size`, `\Gates`, `\Width`, `\Wires`
-- **Graph Theory**: `\Vertex`, `\Edge`, `\Neighborhood`, `\degree`, `\source`, `\Sink`, `\leaf`
-- **Proof Complexity**: `\Clauses`, `\Tseitin`, `\Axioms`, `\proves`, `\Restrict`
-- **Kolmogorov Complexity**: `\Kolmogorov`, `\Kt`, `\KS`, `\KPoly`, `\pKt`
+- **Circuit complexity**: `\CktClass`, `\Depth`, `\Size`, `\Gates`, `\Width`, `\Wires`
+- **Graph theory**: `\Vertex`, `\Edge`, `\Neighborhood`, `\degree`, `\source`, `\Sink`, `\leaf`
+- **Proof complexity**: `\Clauses`, `\Tseitin`, `\Axioms`, `\proves`, `\Restrict`
+- **Kolmogorov complexity**: `\Kolmogorov`, `\Kt`, `\KS`, `\KPoly`, `\pKt`
 
-#### Syntactic Builders
+#### Syntactic builders
 
-- `\cryptoDefineAlgoCSV{KeyGen/KeyGen, …}`: Defines a list of algorithmic macros.
-- `\cryptoDefineOracleCSV{Reveal/Reveal, …}`: Defines a list of oracle macros.
-- `\cryptoDefineProbCSV{…}`: Defines a list of computational problems.
+- `\cryptoDefineAlgoCSV{KeyGen/KeyGen, …}`—define a list of algorithmic macros.
+- `\cryptoDefineOracleCSV{Reveal/Reveal, …}`—define a list of oracle macros.
+- `\cryptoDefineProbCSV{…}`—define a list of computational problems.
 
-#### Semantic Entities
+#### Semantic entities
 
-- `\Adv`, `\Sim`, `\Distinguisher`: Adversarial entities.
-- `\Experiment`, `\Game`, `\Simulator`: Structural entities for proofs.
+- `\Adv`, `\Sim`, `\Distinguisher`—adversarial entities.
+- `\Experiment`, `\Game`, `\Simulator`—structural entities for proofs.
 
-### Conflicts & Requirements
+### Conflicts
 
-- **Complexity**: Loads the `complexity` package internally.
-- **mdframed**: Used for protocol boxes; ensure no conflicting frame settings are loaded.
+- Loads the `complexity` package internally.
+- Uses `mdframed` for protocol boxes; avoid conflicting frame settings.
 
 ### License
 
-Everything in this repository is distributed under the **LaTeX Project Public License v1.3c**.
+LaTeX Project Public License v1.3c.

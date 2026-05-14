@@ -2,32 +2,21 @@
 title: README
 aliases: README
 linter-yaml-title-alias: README
-date created: Sunday, April 12th 2026, 9:34:43 pm
-date modified: Monday, May 11th 2026, 2:46:58 pm
+date created: Thursday, May 14th 2026, 10:22:12 pm
+date modified: Thursday, May 14th 2026, 10:24:27 pm
 ---
 
 <!-- @format -->
 
 ## csletter
 
-A professional LaTeX style package for formal correspondence, providing a refined protocol for letter formatting with customizable aesthetics and engine-aware font selection.
+Style package for formal correspondence with configurable colors, margins, and engine-aware Garamond font selection.
 
-### Features
-
-- **Formal Protocol**: Pre-configured layout for professional letters and correspondence.
-- **Customizable Aesthetics**: Key-value options for colors, margins, and spacing.
-- **Engine-Aware Fonts**: Automatically selects high-quality Garamond fonts for both pdfTeX and LuaTeX/XeTeX.
-- **Integrated Assets**: Simple commands for logos and signatures.
-
-### Installation & Usage
-
-#### Loading the Package
+### Usage
 
 ```latex
 \usepackage[options]{csletter}
 ```
-
-#### Basic Example
 
 ```latex
 \documentclass{article}
@@ -41,36 +30,37 @@ A professional LaTeX style package for formal correspondence, providing a refine
 \end{document}
 ```
 
-### Package Options
+### Options
 
-#### Styling
+#### Colors
 
-- `textcolor`: Primary text color (Default: `black`).
-- `accentcolor`: Color for hyperlinks and highlights (Default: `blue`).
-- `headercolor` / `footercolor`: Header and footer text colors.
-- `linespacing`: `single`, `onehalf`, or `double`.
+- `textcolor`—primary text color (default: `black`).
+- `accentcolor`—hyperlinks and highlights (default: `blue`).
+- `headercolor` / `footercolor`—header and footer text colors.
+
+#### Spacing
+
+- `linespacing`—`single`, `onehalf`, or `double`.
 
 #### Margins
 
-- `topmargin`, `bottommargin`, `leftmargin`, `rightmargin` (Values in cm).
+- `topmargin`, `bottommargin`, `leftmargin`, `rightmargin`—values in cm.
 
-#### Elements (Booleans)
+#### Elements (booleans)
 
-- `header`, `footer`, `date`, `logo`, `signature`: Toggles specific components.
-- `logofile`, `signaturefile`: Paths to the respective image files.
+- `header`, `footer`, `date`, `logo`, `signature`—toggle each component.
+- `logofile`, `signaturefile`—paths to image files.
 
-### API Reference
+### API
 
-#### Assets
+- `\csllogo`—renders the logo when `logo=true`.
+- `\cslsignature`—renders the signature when `signature=true`.
 
-- `\csllogo`: Renders the logo if `logo=true` is set.
-- `\cslsignature`: Renders the signature image if `signature=true` is set.
+### Conflicts
 
-### Conflicts & Requirements
-
-- **Graphics**: Requires external image files if `logo` or `signature` options are used.
-- **Engine**: Optimized for LuaTeX but supports pdfTeX with font fallbacks.
+- `logo` and `signature` options require external image files.
+- Optimized for LuaTeX; pdfTeX is supported with font fallbacks.
 
 ### License
 
-Everything in this repository is distributed under the **LaTeX Project Public License v1.3c**.
+LaTeX Project Public License v1.3c.

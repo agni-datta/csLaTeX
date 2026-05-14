@@ -1,19 +1,15 @@
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \ProvidesPackage{csbook}[2026/04/13 v3.0 Macro framework for textbooks, manuscripts, and reports]
 
-\RequirePackage{calc}
-\RequirePackage{comment}
 \RequirePackage{etoolbox}
 \RequirePackage{iftex}
-\RequirePackage{lipsum}
-\RequirePackage{refcount}
-\RequirePackage{xkeyval}
 \RequirePackage{xparse}
 \RequirePackage{xpatch}
 
 \newif\ifcsbk@baskervaldx
 \newif\ifcsbk@concrete
 \newif\ifcsbk@draft
+\newif\ifcsbk@lastpage
 \newif\ifcsbk@garamond
 \newif\ifcsbk@gfsdidot
 \newif\ifcsbk@kpfonts
@@ -24,89 +20,30 @@
 \csbk@latinmoderntrue
 \csbk@drafttrue
 
-\DeclareOption{baskervaldx}{
-    \csbk@baskervaldxtrue
+\newcommand{\csbk@setfont}[1]{%
+    \csbk@baskervaldxfalse
     \csbk@concretefalse
+    \csbk@garamondfalse
     \csbk@gfsdidotfalse
     \csbk@kpfontsfalse
     \csbk@latinmodernfalse
     \csbk@libertinefalse
     \csbk@palatinofalse
+    \csname csbk@#1true\endcsname
 }
 
-\DeclareOption{concrete}{
-    \csbk@baskervaldxfalse
-    \csbk@concretetrue
-    \csbk@gfsdidotfalse
-    \csbk@kpfontsfalse
-    \csbk@latinmodernfalse
-    \csbk@libertinefalse
-    \csbk@palatinofalse
-}
+\DeclareOption{baskervaldx}{\csbk@setfont{baskervaldx}}
+\DeclareOption{concrete}   {\csbk@setfont{concrete}}
+\DeclareOption{garamond}   {\csbk@setfont{garamond}}
+\DeclareOption{gfsdidot}   {\csbk@setfont{gfsdidot}}
+\DeclareOption{kpfonts}    {\csbk@setfont{kpfonts}}
+\DeclareOption{latinmodern}{\csbk@setfont{latinmodern}}
+\DeclareOption{libertine}  {\csbk@setfont{libertine}}
+\DeclareOption{palatino}   {\csbk@setfont{palatino}}
 
-\DeclareOption{garamond}{
-    \csbk@baskervaldxfalse
-    \csbk@concretefalse
-    \csbk@garamondtrue
-    \csbk@gfsdidotfalse
-    \csbk@kpfontsfalse
-    \csbk@latinmodernfalse
-    \csbk@libertinefalse
-    \csbk@palatinofalse
-}
-
-\DeclareOption{gfsdidot}{
-    \csbk@baskervaldxfalse
-    \csbk@concretefalse
-    \csbk@gfsdidottrue
-    \csbk@kpfontsfalse
-    \csbk@latinmodernfalse
-    \csbk@libertinefalse
-    \csbk@palatinofalse
-}
-
-\DeclareOption{kpfonts}{
-    \csbk@baskervaldxfalse
-    \csbk@concretefalse
-    \csbk@gfsdidotfalse
-    \csbk@kpfontstrue
-    \csbk@latinmodernfalse
-    \csbk@libertinefalse
-    \csbk@palatinofalse
-}
-
-\DeclareOption{latinmodern}{
-    \csbk@baskervaldxfalse
-    \csbk@concretefalse
-    \csbk@gfsdidotfalse
-    \csbk@kpfontsfalse
-    \csbk@latinmoderntrue
-    \csbk@libertinefalse
-    \csbk@palatinofalse
-}
-
-\DeclareOption{libertine}{
-    \csbk@baskervaldxfalse
-    \csbk@concretefalse
-    \csbk@gfsdidotfalse
-    \csbk@kpfontsfalse
-    \csbk@latinmodernfalse
-    \csbk@libertinetrue
-    \csbk@palatinofalse
-}
-
-\DeclareOption{palatino}{
-    \csbk@baskervaldxfalse
-    \csbk@concretefalse
-    \csbk@gfsdidotfalse
-    \csbk@kpfontsfalse
-    \csbk@latinmodernfalse
-    \csbk@libertinefalse
-    \csbk@palatinotrue
-}
-
-\DeclareOption{draft}{\csbk@drafttrue}
-\DeclareOption{final}{\csbk@draftfalse}
+\DeclareOption{draft}   {\csbk@drafttrue}
+\DeclareOption{final}   {\csbk@draftfalse}
+\DeclareOption{lastpage}{\csbk@lastpagetrue}
 
 \DeclareOption*{
     \PackageWarning{csbook}{Unknown option `\CurrentOption' ignored}
@@ -114,12 +51,8 @@
 
 \ProcessOptions\relax
 
-\makeatletter
-
 \tracinglostchars=0
 \def\@font@warning#1{}
-
-\RequirePackage[T1]{fontenc}
 
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
@@ -141,7 +74,6 @@
 \RequirePackage{paralist}
 \RequirePackage{setspace}
 \RequirePackage{soul}
-\RequirePackage[full]{textcomp}
 \RequirePackage{thmtools}
 \RequirePackage[normalem]{ulem}
 \RequirePackage[
@@ -183,6 +115,8 @@
     semicolon={,30}
 }
 \emergencystretch=2em
+
+\newif\ifcsbk@mathalpha@stylish
 
 \ifLuaTeX
 
@@ -237,13 +171,7 @@
             range             = {tt/{latin,Latin,num}},
             RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
         ]
-        \let\mathbfcal\relax
-        \let\mathbfscr\relax
-        \RequirePackage[
-            cal=txupr,
-            bb=stix,
-            scr=dutchcal
-        ]{mathalpha}
+        \csbk@mathalpha@stylishtrue
     \fi
 
     \ifcsbk@concrete
@@ -252,13 +180,7 @@
             SmallCapsFeatures = {RawFeature=+smcp,+lnum,+tnum},
             RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
         }
-        \let\mathbfcal\relax
-        \let\mathbfscr\relax
-        \RequirePackage[
-            cal=txupr,
-            bb=stix,
-            scr=esstix
-        ]{mathalpha}
+        \csbk@mathalpha@stylishfalse
     \fi
 
     \ifcsbk@garamond
@@ -268,7 +190,7 @@
             BoldItalicFont    = GaramondLibre-BoldItalic.otf,
             ItalicFont        = GaramondLibre-Italic.otf,
             SmallCapsFont     = EBGaramond-Regular.otf,
-            SmallCapsFeatures = {RawFeature=+smcp},
+            SmallCapsFeatures = {RawFeature={+smcp,+lnum,+tnum}},
             RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
         ]
         \setsansfont{Libertinus Sans}[
@@ -311,13 +233,7 @@
             range             = {tt/{latin,Latin,num}},
             RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
         ]
-        \let\mathbfcal\relax
-        \let\mathbfscr\relax
-        \RequirePackage[
-            cal=txupr,
-            bb=stix,
-            scr=esstix
-        ]{mathalpha}
+        \csbk@mathalpha@stylishtrue
     \fi
 
     \ifcsbk@gfsdidot
@@ -332,13 +248,7 @@
             Ligatures         = TeX,
             RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
         ]
-        \let\mathbfcal\relax
-        \let\mathbfscr\relax
-        \RequirePackage[
-            cal=cm,
-            bb=stix,
-            scr=dutchcal
-        ]{mathalpha}
+        \csbk@mathalpha@stylishtrue
     \fi
 
     \ifcsbk@kpfonts
@@ -353,13 +263,7 @@
             Ligatures         = TeX,
             RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
         ]
-        \let\mathbfcal\relax
-        \let\mathbfscr\relax
-        \RequirePackage[
-            cal=cm,
-            bb=stix,
-            scr=dutchcal
-        ]{mathalpha}
+        \csbk@mathalpha@stylishtrue
     \fi
 
     \ifcsbk@latinmodern
@@ -388,13 +292,7 @@
             AutoFakeSlant,
             RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
         ]
-        \let\mathbfcal\relax
-        \let\mathbfscr\relax
-        \RequirePackage[
-            cal=cm,
-            bb=stix,
-            scr=dutchcal
-        ]{mathalpha}
+        \csbk@mathalpha@stylishfalse
     \fi
 
     \ifcsbk@libertine
@@ -420,13 +318,7 @@
             Scale             = MatchUppercase,
             RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
         ]
-        \let\mathbfcal\relax
-        \let\mathbfscr\relax
-        \RequirePackage[
-            cal=cm,
-            bb=stix,
-            scr=dutchcal
-        ]{mathalpha}
+        \csbk@mathalpha@stylishtrue
     \fi
 
     \ifcsbk@palatino
@@ -449,16 +341,13 @@
             AutoFakeSlant,
             RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
         ]
-        \let\mathbfcal\relax
-        \let\mathbfscr\relax
-        \RequirePackage[
-            cal=cm,
-            bb=stix,
-            scr=dutchcal
-        ]{mathalpha}
+        \csbk@mathalpha@stylishtrue
     \fi
 
 \else
+
+    \RequirePackage[T1]{fontenc}
+    \RequirePackage{sansmath}
 
     \ifcsbk@baskervaldx
         \RequirePackage[
@@ -470,21 +359,13 @@
             baskervaldx,
             varbb
         ]{newtxmath}
-        \RequirePackage[
-            cal=txupr,
-            bb=stix,
-            scr=dutchcal
-        ]{mathalpha}
+        \csbk@mathalpha@stylishtrue
     \fi
 
     \ifcsbk@concrete
         \RequirePackage{ccfonts}
         \RequirePackage{concmath}
-        \RequirePackage[
-            cal=cm,
-            bb=stix,
-            scr=dutchcal
-        ]{mathalpha}
+        \csbk@mathalpha@stylishfalse
     \fi
 
     \ifcsbk@garamond
@@ -497,11 +378,7 @@
             ebgaramond,
             varbb
         ]{newtxmath}
-        \RequirePackage[
-            cal=txupr,
-            bb=stix,
-            scr=dutchcal
-        ]{mathalpha}
+        \csbk@mathalpha@stylishtrue
     \fi
 
     \ifcsbk@gfsdidot
@@ -513,11 +390,7 @@
             varbb
         ]{newtxmath}
         \renewcommand{\sfdefault}{LinuxBiolinumT-TLF}
-        \RequirePackage[
-            cal=cm,
-            bb=stix,
-            scr=dutchcal
-        ]{mathalpha}
+        \csbk@mathalpha@stylishtrue
     \fi
 
     \ifcsbk@kpfonts
@@ -530,21 +403,13 @@
             libertine,
             varbb
         ]{newtxmath}
-        \RequirePackage[
-            cal=cm,
-            bb=stix,
-            scr=dutchcal
-        ]{mathalpha}
+        \csbk@mathalpha@stylishtrue
         \PackageWarning{csbook}{kpfonts: use LuaLaTeX instead of pdfLaTeX.}
     \fi
 
     \ifcsbk@latinmodern
         \RequirePackage{lmodern}
-        \RequirePackage[
-            cal=cm,
-            bb=stix,
-            scr=dutchcal
-        ]{mathalpha}
+        \csbk@mathalpha@stylishfalse
     \fi
 
     \ifcsbk@libertine
@@ -557,11 +422,7 @@
             libertine,
             varbb
         ]{newtxmath}
-        \RequirePackage[
-            cal=cm,
-            bb=stix,
-            scr=dutchcal
-        ]{mathalpha}
+        \csbk@mathalpha@stylishtrue
     \fi
 
     \ifcsbk@palatino
@@ -569,38 +430,34 @@
         \RequirePackage{biolinum}
         \RequirePackage{tgpagella}
         \RequirePackage[sc]{mathpazo}
-        \RequirePackage[
-            cal=cm,
-            bb=stix,
-            scr=dutchcal
-        ]{mathalpha}
+        \csbk@mathalpha@stylishtrue
     \fi
 
+\fi
+
+\let\mathbfcal\relax
+\let\mathbfscr\relax
+\ifcsbk@mathalpha@stylish
+    \RequirePackage[cal=txupr,bb=stix,scr=dutchcal]{mathalpha}
+\else
+    \RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
 \fi
 
 \RequirePackage{adjustbox}
 \RequirePackage{array}
 \RequirePackage{booktabs}
 \RequirePackage{colortbl}
-\RequirePackage{dashbox}
-\RequirePackage{diagbox}
-\RequirePackage{fancybox}
 \RequirePackage{floatrow}
 \RequirePackage{framed}
 \RequirePackage{graphicx}
-\RequirePackage{hhline}
 \RequirePackage{longtable}
 \RequirePackage{makecell}
 \RequirePackage{multicol}
 \RequirePackage{multirow}
-\RequirePackage{ragged2e}
 \RequirePackage{subcaption}
 \RequirePackage{tabularray}
 \RequirePackage{tabularx}
 \RequirePackage{threeparttable}
-\RequirePackage{verbatim}
-\RequirePackage{xhfill}
-\RequirePackage{xtab}
 
 \RequirePackage{caption}
 
@@ -620,7 +477,7 @@
 \setlist[enumerate, 1]{label = (\arabic*)}
 \setlist[enumerate, 2]{label = (\alph*)}
 \setlist[enumerate, 3]{label = (\Roman*)}
-\setlist[itemize,   1]{label = \ensuremath{\text{-}}}
+\setlist[itemize,   1]{label = \textendash}
 \setlist[itemize,   2]{label = \ensuremath{\bullet}}
 \setlist[itemize,   3]{label = \ensuremath{\circ}}
 
@@ -648,16 +505,25 @@
     unicode            = true,
     urlcolor           = SteelBlue4
 ]{hyperref}
-\pdfstringdefDisableCommands{
-    \def\mathbb#1{#1}
-    \def\mathcal#1{#1}
-    \def\mathfrak#1{#1}
-    \def\mathrm#1{#1}
-    \def\mathscr#1{#1}
-    \def\mathsf#1{#1}
-    \def\mathtt#1{#1}
-    \def\var#1{#1}
+
+\pdfstringdefDisableCommands{%
+\def\langle{<}\def\rangle{>}%
+\def\lceil{[}\def\rceil{]}%
+\def\left{}\def\right{}%
+\def\lfloor{[}\def\rfloor{]}%
+\def\mathbb#1{#1}%
+\def\mathbf#1{#1}%
+\def\mathcal#1{#1}%
+\def\mathfrak#1{#1}%
+\def\mathrm#1{#1}%
+\def\mathscr#1{#1}%
+\def\mathsf#1{#1}%
+\def\mathtt#1{#1}%
+\def\operatorname#1{#1}%
+\def\text#1{#1}%
+\def\var#1{#1}%
 }
+
 \RequirePackage[nameinlink,capitalise,noabbrev]{cleveref}
 \RequirePackage{xr}
 
@@ -668,10 +534,18 @@
 \renewcommand{\chaptermark}[1]{\markboth{\scshape#1}{}}
 \renewcommand{\sectionmark}[1]{\markright{\scshape#1}}
 
+\ifcsbk@lastpage
+    \RequirePackage{lastpage}
+    \newcommand{\csbk@pagenum}{\thepage\,/\,\pageref*{LastPage}}
+\else
+    \newcommand{\csbk@pagenum}{\thepage}
+\fi
+
 \AtBeginDocument{
     \fancyhead[CE]{\small\scshape\@title}
     \fancyhead[CO]{\small\scshape\rightmark}
-    \fancyfoot[C]{\small\thepage}
+    \fancyhead[LE,RO]{\small\csbk@pagenum}
+    \fancyfoot[C]{}
 }
 
 \RequirePackage{titlesec}
@@ -998,10 +872,8 @@
 
 \def\csbk@ignorewhitespaceandimplicitpars{%
     \begingroup
-    \catcode13=10 %
-    \@ifnextchar\relax
-    {\endgroup}
-    {\endgroup}%
+    \catcode13=10%
+    \endgroup
 }
 
 \NewDocumentCommand{\csbk@paragraphhead}{m}{%
@@ -1029,6 +901,107 @@
     \RenewDocumentCommand{\subparagraph}{m}{\subparhead{#1}}%
 }
 
+\long\def\csbk@CustomFBox#1#2#3#4#5#6#7#8#9{%
+    \leavevmode\begingroup
+    \setbox\@tempboxa\hbox{\color@begingroup\kern\fboxsep{#9}\kern\fboxsep\color@endgroup}%
+    \hbox{\begingroup\@tempdima#4\relax
+        \advance\@tempdima\fboxsep\advance\@tempdima\dp\@tempboxa
+        \expandafter\endgroup\expandafter
+        \lower\the\@tempdima\hbox{\vbox{%
+                \hrule\@height#3\@width#7\relax#1%
+                \hbox{\vrule\@width#5\relax\hspace{#8}%
+                    \vbox{\vskip\fboxsep\copy\@tempboxa\vskip\fboxsep}%
+                    \vrule\@width#6\relax}%
+                #2\hrule\@height#4\@width#7\relax}}}%
+    \endgroup
+}
+
+\def\csbk@OpenFBox#1#2{%
+    \fboxsep\FrameSep
+    \csbk@CustomFBox{}{}{#1}{#2}\FrameRule\z@{1em}{0.4em}%
+}
+
+\newenvironment{nestedbar}[1][\hsize]{%
+    \@ifundefined{OuterFrameSep}{%
+        \@latex@error{nestedbar requires a recent framed.sty}\@ehd}{}%
+    \def\FrameCommand     {\csbk@OpenFBox\FrameRule\FrameRule}%
+    \def\FirstFrameCommand{\csbk@OpenFBox\FrameRule\z@}%
+    \def\MidFrameCommand  {\csbk@OpenFBox\z@\z@}%
+    \def\LastFrameCommand {\csbk@OpenFBox\z@\FrameRule}%
+    \OuterFrameSep=1ex\FrameSep=0pt
+    \MakeFramed{\hsize#1\advance\hsize-\width\FrameRestore}\smallskip
+}{\smallskip\endMakeFramed}
+
+\newif\ifcsbk@incaption
+\newif\ifcsbk@infloat
+\newif\ifcsbk@infootnote
+\newif\ifcsbk@inframed
+\newif\ifcsbk@inlist
+\newif\ifcsbk@inminipage
+\newif\ifcsbk@intabular
+
+\let\csbk@oldfootnote\footnote
+\renewcommand\footnote[1]{%
+    \csbk@infootnotetrue
+    \csbk@oldfootnote{#1}%
+    \csbk@infootnotefalse
+}%
+
+\BeforeBeginEnvironment{tabular}    {\csbk@intabulartrue}%
+\AfterEndEnvironment   {tabular}    {\csbk@intabularfalse}%
+\BeforeBeginEnvironment{longtable}  {\csbk@intabulartrue}%
+\AfterEndEnvironment   {longtable}  {\csbk@intabularfalse}%
+\BeforeBeginEnvironment{tabularx}   {\csbk@intabulartrue}%
+\AfterEndEnvironment   {tabularx}   {\csbk@intabularfalse}%
+\BeforeBeginEnvironment{tblr}       {\csbk@intabulartrue}%
+\AfterEndEnvironment   {tblr}       {\csbk@intabularfalse}%
+
+\BeforeBeginEnvironment{minipage}   {\csbk@inminipagetrue}%
+\AfterEndEnvironment   {minipage}   {\csbk@inminipagefalse}%
+\BeforeBeginEnvironment{multicols}  {\csbk@inminipagetrue}%
+\AfterEndEnvironment   {multicols}  {\csbk@inminipagefalse}%
+
+\BeforeBeginEnvironment{mdframed}   {\csbk@inframedtrue}%
+\AfterEndEnvironment   {mdframed}   {\csbk@inframedfalse}%
+\BeforeBeginEnvironment{tcolorbox}  {\csbk@inframedtrue}%
+\AfterEndEnvironment   {tcolorbox}  {\csbk@inframedfalse}%
+\BeforeBeginEnvironment{framed}     {\csbk@inframedtrue}%
+\AfterEndEnvironment   {framed}     {\csbk@inframedfalse}%
+\BeforeBeginEnvironment{shaded}     {\csbk@inframedtrue}%
+\AfterEndEnvironment   {shaded}     {\csbk@inframedfalse}%
+\BeforeBeginEnvironment{leftbar}    {\csbk@inframedtrue}%
+\AfterEndEnvironment   {leftbar}    {\csbk@inframedfalse}%
+
+\let\csbk@origMakeFramed\MakeFramed
+\let\csbk@origEndMakeFramed\endMakeFramed
+\def\MakeFramed{\csbk@inframedtrue\csbk@origMakeFramed}
+\def\endMakeFramed{\csbk@origEndMakeFramed\csbk@inframedfalse}
+
+\BeforeBeginEnvironment{enumerate}    {\csbk@inlisttrue}%
+\AfterEndEnvironment   {enumerate}    {\csbk@inlistfalse}%
+\BeforeBeginEnvironment{itemize}      {\csbk@inlisttrue}%
+\AfterEndEnvironment   {itemize}      {\csbk@inlistfalse}%
+\BeforeBeginEnvironment{description}  {\csbk@inlisttrue}%
+\AfterEndEnvironment   {description}  {\csbk@inlistfalse}%
+\BeforeBeginEnvironment{compactenum}  {\csbk@inlisttrue}%
+\AfterEndEnvironment   {compactenum}  {\csbk@inlistfalse}%
+\BeforeBeginEnvironment{compactitem}  {\csbk@inlisttrue}%
+\AfterEndEnvironment   {compactitem}  {\csbk@inlistfalse}%
+\BeforeBeginEnvironment{compactdesc}  {\csbk@inlisttrue}%
+\AfterEndEnvironment   {compactdesc}  {\csbk@inlistfalse}%
+
+\BeforeBeginEnvironment{figure}       {\csbk@infloattrue}%
+\AfterEndEnvironment   {figure}       {\csbk@infloatfalse}%
+\BeforeBeginEnvironment{table}        {\csbk@infloattrue}%
+\AfterEndEnvironment   {table}        {\csbk@infloatfalse}%
+\BeforeBeginEnvironment{figure*}      {\csbk@infloattrue}%
+\AfterEndEnvironment   {figure*}      {\csbk@infloatfalse}%
+\BeforeBeginEnvironment{table*}       {\csbk@infloattrue}%
+\AfterEndEnvironment   {table*}       {\csbk@infloatfalse}%
+
+\AtBeginEnvironment{subfigure}        {\csbk@incaptiontrue}%
+\AtEndEnvironment  {subfigure}        {\csbk@incaptionfalse}%
+
 \RequirePackage{marginnote}
 
 \providecommand{\csbk@colorize}{\color{Firebrick2}}
@@ -1041,13 +1014,13 @@
     }
 }
 
-\newbool{csbk@markundef}
-\booltrue{csbk@markundef}
+\newif\ifcsbk@markundef
+\csbk@markundeftrue
 
 \xpretocmd{\G@refundefinedtrue}{
-    \ifbool{csbk@markundef}{
+    \ifcsbk@markundef
         \csbk@brokenrefmark{\@ifundefined{@citeb}{}{\@citeb}}
-    }{}
+    \fi
 }{}{}
 
 \let\csbk@old@setref\@setref
@@ -1215,6 +1188,19 @@
 
 \renewcommand{\Authfont}{\@authorfont}
 \renewcommand{\Affilfont}{\@institutefont}
+
+\ifcsbk@draft
+    \IfFileExists{scrtime.sty}{%
+        \RequirePackage{scrtime}%
+        \RequirePackage{prelim2e}%
+        \newcommand\csbk@datetime{%
+            \the\year-\ifnum\the\month<10 0\fi\the\month-%
+            \ifnum\the\day<10 0\fi\the\day\space\thistime}%
+        \renewcommand\PrelimText{%
+            \normalfont\scshape\footnotesize\color{IndianRed2}%
+            Draft --- {\csbk@datetime} --- Not for Distribution.}%
+    }{}%
+\fi
 
 \makeatother
 \endinput

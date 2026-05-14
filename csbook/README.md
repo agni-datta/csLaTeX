@@ -2,32 +2,21 @@
 title: README
 aliases: README
 linter-yaml-title-alias: README
-date created: Sunday, April 12th 2026, 9:33:58 pm
-date modified: Monday, May 11th 2026, 2:46:57 pm
+date created: Thursday, May 14th 2026, 10:21:45 pm
+date modified: Thursday, May 14th 2026, 10:24:27 pm
 ---
 
 <!-- @format -->
 
 ## csbook
 
-A robust macro framework for compiling complex textbooks, manuscripts, and reports, featuring specialized styling for large tables of contents, chapter/part headers, and reference management.
+Macro framework for textbooks, manuscripts, and reports. Handles sectioning typography, draft/final modes, and broken-reference tracking.
 
-### Features
-
-- **Redefined Sectioning**: Custom typography for `\part`, `\chapter`, `\section`, and `\paragraph`.
-- **Dual Output Modes**: Seamless switching between collaborative `draft` and production `final` modes.
-- **Reference Tracking**: Integrated `bxpdfver` compliance and broken reference detection on page margins.
-- **High-End Typography**: Built-in support for multiple premium font families.
-
-### Installation & Usage
-
-#### Loading the Package
+### Usage
 
 ```latex
 \usepackage[options]{csbook}
 ```
-
-#### Basic Example
 
 ```latex
 \documentclass{book}
@@ -40,34 +29,29 @@ A robust macro framework for compiling complex textbooks, manuscripts, and repor
 \end{document}
 ```
 
-### Package Options
+### Options
 
 #### Fonts
 
-- `latinmodern`, `libertine`, `gfsdidot`, `concrete`, `palatino`, `kpfonts`, `baskervaldx`, `garamond`.
+`latinmodern`, `libertine`, `gfsdidot`, `concrete`, `palatino`, `kpfonts`, `baskervaldx`, `garamond`.
 
-#### Rendering Mode
+#### Mode
 
-- `draft`: Shows todos, fixmes, and margin annotations for collaborative work.
-- `final`: (Default) Suppresses all collaborative annotations for final production.
+- `draft`—shows todos, fixmes, and margin annotations.
+- `final`—(Default) suppresses all annotations.
 
-### API Reference
+### API
 
-#### Title Formatting
+- `\parhead{text}`—punctuated inline paragraph heading.
+- Redefines `\part`, `\chapter`, `\section`, etc. via `titlesec`.
+- Patches `\@setref` to display undefined citations in the margins.
 
-- `\parhead{text}`: Punctuated inline paragraph heading.
-- Redefines standard LaTeX headers (`\part`, `\chapter`, etc.) using `titlesec`.
+### Conflicts
 
-#### Reference Tracking
-
-- Patches `\@setref` to catch and display undefined citations in the margins.
-
-### Conflicts & Requirements
-
-- **Structural Class**: Must be used with document classes that support `\chapter` (e.g., `book`, `report`).
-- **tocloft**: Strongly overwrites `\tableofcontents` logic; avoid external TOC overrides.
-- **tcolorbox/mdframed**: Uses `mdframed` internally; use `most` compatibility for nested `tcolorbox` layouts.
+- Requires a `\chapter`-supporting class (`book`, `report`).
+- Overwrites `\tableofcontents`; avoid external TOC overrides.
+- Uses `mdframed` internally; use `most` compatibility for nested `tcolorbox` layouts.
 
 ### License
 
-Everything in this repository is distributed under the **LaTeX Project Public License v1.3c**.
+LaTeX Project Public License v1.3c.

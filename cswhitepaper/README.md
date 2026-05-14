@@ -2,32 +2,21 @@
 title: README
 aliases: README
 linter-yaml-title-alias: README
-date created: Sunday, April 12th 2026, 9:35:44 pm
-date modified: Monday, May 11th 2026, 2:46:58 pm
+date created: Thursday, May 14th 2026, 10:22:54 pm
+date modified: Thursday, May 14th 2026, 10:24:28 pm
 ---
 
 <!-- @format -->
 
 ## cswhitepaper
 
-A modern LaTeX style package designed for technical whitepapers, research reports, and collaborative academic drafting, featuring a premium ruled aesthetic and integrated annotation tools.
+Style package for technical whitepapers and research reports with ruled theorem aesthetics and collaborative annotation tools.
 
-### Features
-
-- **Collaborative Annotation**: Built-in system for `\todo`, `\fixme`, and marker-based comments.
-- **Customizable Accent Colors**: Global color control via `\documentaccentcolor`.
-- **Semantic Sectioning**: Custom `\parhead` and `\subparhead` commands for inline headings.
-- **Premium Ruled Theorems**: Unified theorem and definition styling using elegant horizontal rules.
-
-### Installation & Usage
-
-#### Loading the Package
+### Usage
 
 ```latex
 \usepackage[options]{cswhitepaper}
 ```
-
-#### Basic Example
 
 ```latex
 \documentclass{article}
@@ -42,35 +31,33 @@ This is a new technical result.
 \end{document}
 ```
 
-### Package Options
+### Options
 
-#### Mode Toggles
+- `draft`—(Default) enables annotations, revision highlights, and margin markers.
+- `final`—suppresses all annotations for production output.
 
-- `draft`: (Default) Enables collaborative annotations, revision highlights (`\added`, `\changed`), and margin markers.
-- `final`: Suppresses all annotations and revision tracking for production output.
-
-### API Reference
+### API
 
 #### Configuration
 
-- `\documentaccentcolor{color}`: Sets the primary accent color for rules and headers.
+- `\documentaccentcolor{color}`—primary accent color for rules and headers.
 
-#### Annotation Commands (Draft Mode)
+#### Annotation commands (draft mode)
 
 - `\todo{text}`, `\fixme{text}`, `\notes{text}`, `\query{text}`, `\missing{text}`.
-- `\added{text}`, `\changed{text}`, `\removed{text}`: Revision tracking highlights.
-- `\newguymarker{cmd}{label}{color}`: Define custom participant markers.
+- `\added{text}`, `\changed{text}`, `\removed{text}`—revision tracking.
+- `\newguymarker{cmd}{label}{color}`—define custom participant markers.
 
 #### Sectioning
 
-- `\parhead{text}`: Bold inline heading with automated punctuation.
-- `\subparhead{text}`: Small-caps inline heading with automated punctuation.
+- `\parhead{text}`—bold inline heading with automated punctuation.
+- `\subparhead{text}`—small-caps inline heading with automated punctuation.
 
-### Conflicts & Requirements
+### Conflicts
 
-- **amsthm**: Avoid loading `amsthm` manually before this package to prevent `thmtools` styling conflicts.
-- **Document Class**: Optimized for `article` and `report` classes.
+- Do not load `amsthm` manually before this package.
+- Optimized for `article` and `report` classes.
 
 ### License
 
-Everything in this repository is distributed under the **LaTeX Project Public License v1.3c**.
+LaTeX Project Public License v1.3c.

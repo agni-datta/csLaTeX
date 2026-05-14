@@ -2,33 +2,22 @@
 title: README
 aliases: README
 linter-yaml-title-alias: README
-date created: Sunday, April 12th 2026, 9:35:01 pm
-date modified: Monday, May 11th 2026, 2:46:58 pm
+date created: Thursday, May 14th 2026, 10:22:20 pm
+date modified: Thursday, May 14th 2026, 10:24:27 pm
 ---
 
 <!-- @format -->
 
 ## cspresentation
 
-A premium Beamer theme overlay built upon the Metropolis theme, utilizing the Nord color palette for modern, clean, and highly readable academic slideshows.
+Beamer theme overlay built on Metropolis with the Nord color palette.
 
-### Features
-
-- **Nord Palette**: Implementation of the full 16-color Nord design system.
-- **Metropolis Integration**: Leverages the robust Metropolis theme structure with custom refinements.
-- **Custom TikZ Styles**: Predefined styles for nodes, idea boxes, and key points.
-- **Academic Utilities**: Specialized commands for citations, source attribution, and content revelation.
-
-### Installation & Usage
-
-#### Loading the Package
+### Usage
 
 ```latex
 \documentclass{beamer}
 \usepackage{cspresentation}
 ```
-
-#### Basic Example
 
 ```latex
 \documentclass{beamer}
@@ -45,34 +34,37 @@ A premium Beamer theme overlay built upon the Metropolis theme, utilizing the No
 \end{document}
 ```
 
-### Package Options
+### Features
 
-- **None**. Configuration is managed via the internal theme settings and Metropolis options.
+- Full 16-color Nord palette.
+- Custom refinements on top of the Metropolis theme structure.
+- Predefined TikZ styles for diagrams.
+- Commands for citations, source attribution, and content reveals.
 
-### API Reference
+### API
 
-#### Text Styles
+#### Text styles
 
-- `\kw{text}`: Key word highlighting (Nord Frost).
-- `\bad{text}`, `\good{text}`, `\warn{text}`: Semantic color highlighting.
-- `\code{text}`: Formatted inline code.
-- `\citeref{text}`: Small-caps citation references.
+- `\kw{text}`—keyword highlight (Nord Frost).
+- `\bad{text}`, `\good{text}`, `\warn{text}`—semantic color highlights.
+- `\code{text}`—inline code.
+- `\citeref{text}`—small-caps citation reference.
 
-#### Layout Tools
+#### Layout
 
-- `\source{text}`: Absolute-positioned source attribution on the slide bottom.
-- `\reveal{n}{text}`: Reveal text on a specific slide overlay with accent coloring.
-- `\csrule`: A colored horizontal rule.
+- `\source{text}`—source attribution pinned to the slide bottom.
+- `\reveal{n}{text}`—reveal text on overlay $n$ with accent color.
+- `\csrule`—colored horizontal rule.
 
-#### TikZ Styles
+#### TikZ styles
 
-- `mainnode`, `ideabox`, `keybox`: Standardized styles for architectural and conceptual diagrams.
+`mainnode`, `ideabox`, `keybox`—standardized styles for architectural and conceptual diagrams.
 
-### Conflicts & Requirements
+### Conflicts
 
-- **Beamer**: Must be used with the `beamer` document class.
-- **Metropolis**: Requires the Metropolis theme package (`beamerthememetropolis`) to be installed.
+- Requires `beamer` document class.
+- Requires the Metropolis theme (`beamerthememetropolis`).
 
 ### License
 
-Everything in this repository is distributed under the **LaTeX Project Public License v1.3c**.
+LaTeX Project Public License v1.3c.

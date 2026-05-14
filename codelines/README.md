@@ -2,69 +2,65 @@
 title: README
 aliases: README
 linter-yaml-title-alias: README
-date created: Monday, May 11th 2026, 8:15:00 pm
-date modified: Monday, May 11th 2026, 2:47:52 pm
+date created: Thursday, May 14th 2026, 10:21:30 pm
+date modified: Thursday, May 14th 2026, 10:24:27 pm
 ---
 
 <!-- @format -->
 
 ## codelines
 
-A professional LaTeX package providing an algorithmic listing environment with automated line numbering, specifically designed for pseudo-code, step-by-step procedures, and technical documentation.
+Algorithmic listing environment with automated line numbering for pseudo-code and step-by-step procedures.
 
-### Features
-
-- **Nested Listings**: Support for up to 10 levels of nested algorithmic steps with automatic indentation adjustment.
-- **Automated Line Numbering**: Continuous line numbering across multiple environments or manually resettable.
-- **Customizable Formatting**: Easy adjustment of line number style, digit count, and prefixes.
-- **Advanced Layouts**: Integrated support for boxed content and specialized alignment (right/center) within lines.
-
-### Installation & Usage
-
-#### Loading the Package
+### Usage
 
 ```latex
 \usepackage{codelines}
 ```
 
-#### Basic Example
-
 ```latex
 \begin{codelines}
-    \item Initialize variables $x \gets 0, y \gets 1$.
-    \item For each element $e$ in $S$:
+    \item Initialize $x \gets 0, y \gets 1$.
+    \item For each $e \in S$:
     \begin{codelines}
         \item Compute $f(e)$.
-        \item If $f(e) > x$, then set $x \gets f(e)$.
+        \item If $f(e) > x$, set $x \gets f(e)$.
     \end{codelines}
-    \item Return the result $x$.
+    \item Return $x$.
 \end{codelines}
 ```
 
-### API Reference
+### Features
 
-#### Environments
+- Up to 10 levels of nesting with automatic indentation.
+- Continuous line numbering across environments; manually resettable.
+- Adjustable line number style, digit count, and prefix.
+- Boxed content and right/center alignment within lines.
 
-- `codelines`: The primary environment for listings. Supports an optional argument to set the starting line number (defaults to the current counter value).
+### API
 
-#### Line Number Management
+#### Environment
 
-- `\codelinessetlinenr{n}`: Manually set the next line number to $n$.
-- `\codelinesresetlinenr`: Reset the line counter to 0.
+- `codelines`: Primary listing environment. Optional argument sets the starting line number.
 
-#### Layout & Alignment
+#### Line number management
 
-- `\codelinesbox{width}{content}`: Places content in a top-aligned parbox of specified width, useful for multi-line logic or annotations within a single numbered line.
-- `\codelinesrightalign{text}`: Aligns text to the right of the current line.
-- `\codelinescenteralign{text}`: Centers text within the available space of the line.
-- `\codelinesplus` / `\codelinesminus`: Incrementally adjust the indentation level for the current list depth.
+- `\codelinessetlinenr{n}`—set next line number to $n$.
+- `\codelinesresetlinenr`—reset counter to 0.
 
-#### Customization Hooks
+#### Layout
 
-- `\codelineslinenrformat`: Redefine this to change the font/color of line numbers (Default: `\normalfont\footnotesize\ttfamily\color{black!50}`).
-- `\codelineslinenrdigits`: Redefine this to change the expected number of digits for padding (Default: `2`).
-- `\codelinesrefprefix`: Prefix added to cross-references of line numbers (Default: empty).
+- `\codelinesbox{width}{content}`—top-aligned parbox for multi-line annotations on a single numbered line.
+- `\codelinesrightalign{text}`—right-align text within the line.
+- `\codelinescenteralign{text}`—center text within the line.
+- `\codelinesplus` / `\codelinesminus`—adjust indentation level incrementally.
+
+#### Customization hooks
+
+- `\codelineslinenrformat`—font/color of line numbers (default: `\normalfont\footnotesize\ttfamily\color{black!50}`).
+- `\codelineslinenrdigits`—digit count for padding (default: `2`).
+- `\codelinesrefprefix`—prefix for cross-references (default: empty).
 
 ### License
 
-Everything in this repository is distributed under the **LaTeX Project Public License v1.3c**.
+LaTeX Project Public License v1.3c.

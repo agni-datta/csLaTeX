@@ -278,28 +278,39 @@
 	\def\llncs@undefenv#1{%
 		\@ifundefined{#1}    {}{\expandafter\let\csname#1\endcsname\relax}%
 		\@ifundefined{end#1} {}{\expandafter\let\csname end#1\endcsname\relax}%
-		\@ifundefined{c@#1}  {}{\expandafter\let\csname c@#1\endcsname\relax
+		\@ifundefined{c@#1}  {}{%
+			\expandafter\let\csname c@#1\endcsname\relax
 			\expandafter\let\csname the#1\endcsname\relax
-			\expandafter\let\csname p@#1\endcsname\relax}%
+			\expandafter\let\csname p@#1\endcsname\relax
+		}%
 	}%
+
 	\def\llncs@dropenv#1{%
 		\@ifundefined{#1}    {}{\expandafter\let\csname#1\endcsname\relax}%
 		\@ifundefined{end#1} {}{\expandafter\let\csname end#1\endcsname\relax}%
 	}%
+
 	\newcommand{\llncs@capfirst}[1]{%
 		\expandafter\llncs@capfirst@i#1\relax
 	}%
+
 	\def\llncs@capfirst@i#1#2\relax{%
 		{\MakeUppercase{#1}}#2%
 	}%
+
 	\newcommand{\llncs@thmfamily}[2]{%
 		\renewcommand*{\do}[1]{%
-			\declaretheorem[sibling=theorem,style=#1,name={\llncs@capfirst{##1}}]{##1}%
+			\declaretheorem[
+				sibling=theorem,
+				style=#1,
+				name={\llncs@capfirst{##1}}
+			]{##1}%
 		}%
 		\docsvlist{#2}%
 	}%
 
 	\AtEndPreamble{%
+
 		\@for\llncs@env:={%
 				theorem,%
 				assertion,%
@@ -341,10 +352,19 @@
 				insight,%
 				keypoint,%
 				warning%
-			}\do{\llncs@undefenv\llncs@env}%
+			}\do{%
+			\llncs@undefenv\llncs@env
+		}%
+
 		\llncs@dropenv{case}%
 		\llncs@dropenv{solution}%
-		\declaretheorem[style=llncs@thmstyle@bold, numberwithin=section, name=Theorem]{theorem}
+
+		\declaretheorem[
+			style=llncs@thmstyle@bold,
+			numberwithin=section,
+			name=Theorem
+		]{theorem}
+
 		\llncs@thmfamily{llncs@thmstyle@bold}{%
 			assertion,%
 			assumption,%
@@ -372,7 +392,8 @@
 			protocol,%
 			result%
 		}
-		\llncs@thmfamily{llncs@thmstyle@sc}{
+
+		\llncs@thmfamily{llncs@thmstyle@sc}{%
 			commentary,%
 			exercise,%
 			example,%
@@ -381,23 +402,66 @@
 			question,%
 			remark%
 		}
-		\llncs@thmfamily{llncs@thmstyle@sf}{
+
+		\llncs@thmfamily{llncs@thmstyle@sf}{%
 			guideline,%
 			important,%
 			insight,%
 			warning%
 		}
-		\forcsvlist{\declaretheorem[numbered=no, style=llncs@thmstyle@bold]}{
-			claim*,%
-			corollary*,%
-			lemma*,%
-			theorem*%
-		}
-		\declaretheorem[style=llncs@thmstyle@bold, sibling=theorem, name={Open Problem}]{openproblem}
-		\declaretheorem[style=llncs@thmstyle@sc, sibling=theorem, name={Notation Abuse}]{notationabuse}
-		\declaretheorem[style=llncs@thmstyle@sf, sibling=theorem, name={Key Point}]{keypoint}
-		\declaretheorem[style=llncs@thmstyle@proof, numbered=no, name=Proof]{proof}
-		\newenvironment{claimproof}[1][Proof of Claim]{\begin{proof}[#1]}{\end{proof}}
+
+		\declaretheorem[
+			style=llncs@thmstyle@bold,
+			numbered=no,
+			name=Theorem
+		]{theorem*}
+
+		\declaretheorem[
+			style=llncs@thmstyle@bold,
+			numbered=no,
+			name=Lemma
+		]{lemma*}
+
+		\declaretheorem[
+			style=llncs@thmstyle@bold,
+			numbered=no,
+			name=Corollary
+		]{corollary*}
+
+		\declaretheorem[
+			style=llncs@thmstyle@bold,
+			numbered=no,
+			name=Claim
+		]{claim*}
+
+		\declaretheorem[
+			style=llncs@thmstyle@bold,
+			sibling=theorem,
+			name={Open Problem}
+		]{openproblem}
+
+		\declaretheorem[
+			style=llncs@thmstyle@sc,
+			sibling=theorem,
+			name={Notation Abuse}
+		]{notationabuse}
+
+		\declaretheorem[
+			style=llncs@thmstyle@sf,
+			sibling=theorem,
+			name={Key Point}
+		]{keypoint}
+
+		\declaretheorem[
+			style=llncs@thmstyle@proof,
+			numbered=no,
+			name=Proof
+		]{proof}
+
+		\newenvironment{claimproof}[1][Proof of Claim]
+		{\begin{proof}[#1]}
+		{\end{proof}}
+
 	}%
 \fi
 
@@ -757,7 +821,7 @@
 	}
 
 	\renewcommand{\PrelimText}{%
-		\normalfont\sffamily\small\color{red}%
+		\normalfont\ttfamily\small\color{BrickRed3}%
 		This is a draft made on~\llncs@datetime; not for distribution%
 	}
 \fi

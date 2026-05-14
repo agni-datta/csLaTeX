@@ -2,36 +2,25 @@
 title: README
 aliases: README
 linter-yaml-title-alias: README
-date created: Sunday, April 12th 2026, 9:35:27 pm
-date modified: Monday, May 11th 2026, 2:46:58 pm
+date created: Thursday, May 14th 2026, 10:22:38 pm
+date modified: Thursday, May 14th 2026, 10:24:27 pm
 ---
 
 <!-- @format -->
 
 ## csthm
 
-A comprehensive theorem environment suite for Theoretical Computer Science (TCS), providing highly customizable and typographically rigorous styles for lemmas, proofs, and definitions.
+Theorem environment suite for TCS with three design modes, dynamic accent colors, and full `cleveref` integration.
 
-### Features
-
-- **Multiple Design Modes**: Choose between `normal`, `fancy`, and `oldschool` aesthetics.
-- **Dynamic Accent Colors**: Easily globalize color schemes via `\SetAccentColor`.
-- **Integrated Cleveref**: Pre-configured `cleveref` support for all 50+ environment types.
-- **Automated Punctuation**: Proof and theorem markers with consistent academic styling.
-
-### Installation & Usage
-
-#### Loading the Package
+### Usage
 
 ```latex
 \usepackage[options]{csthm}
 ```
 
-#### Basic Example
-
 ```latex
 \documentclass{article}
-\usepackage{hyperref} % Required for cleveref support
+\usepackage{hyperref}   % load before csthm
 \usepackage[fancy]{csthm}
 
 \begin{document}
@@ -41,38 +30,45 @@ A comprehensive theorem environment suite for Theoretical Computer Science (TCS)
 \end{document}
 ```
 
-### Package Options
+### Options
 
-#### Style Selection
+- `normal`—ruled headers with standard serif body.
+- `fancy`—colorful left-bar designs with background tints.
+- `oldschool`—classic LaTeX formatting with small-caps headers.
 
-- `normal`: Ruled headers with standard serif body.
-- `fancy`: Colorful left-bar designs with background tints.
-- `oldschool`: Classic LaTeX-style theorem formatting with SC-headers.
-
-### API Reference
+### API
 
 #### Configuration
 
-- `\SetAccentColor{color}`: Globally sets the color for theorem markers and fancy bars.
-- `\emailid{address}`: Formatted clickable email command.
+- `\SetAccentColor{color}`—global color for theorem markers and fancy bars.
+- `\emailid{address}`—formatted clickable email.
 
-#### Environment Suites
+#### Theorem-like environments
 
-- **Theorem-like**: `theorem`, `lemma`, `proposition`, `claim`, `conjecture`, `fact`, etc.
-- **Definition-like**: `definition`, `protocol`, `problem`, `application`, etc.
-- **Remark-like**: `remark`, `note`, `example`, `exercise`, `notationabuse`.
-- **Highlight-like**: `guideline`, `important`, `insight`, `warning`.
+`theorem`, `lemma`, `proposition`, `claim`, `conjecture`, `fact`, and more.
 
-#### Specialized Blocks
+#### Definition-like environments
 
-- `case`: Custom list environment for proof cases.
-- `proof`: Re-implemented proof environment with consistent QED markers.
+`definition`, `protocol`, `problem`, `application`, and more.
 
-### Conflicts & Requirements
+#### Remark-like environments
 
-- **hyperref**: Must be loaded _before_ `csthm` to enable automated `cleveref` capitalization and links.
-- **thmtools**: This package is the primary engine; avoid loading it with conflicting options.
+`remark`, `note`, `example`, `exercise`, `notationabuse`.
+
+#### Highlight-like environments
+
+`guideline`, `important`, `insight`, `warning`.
+
+#### Specialized blocks
+
+- `case`—list environment for proof cases.
+- `proof`—reimplemented with consistent QED markers.
+
+### Conflicts
+
+- Load `hyperref` **before** `csthm` for `cleveref` capitalization and links.
+- Do not load `thmtools` with conflicting options.
 
 ### License
 
-Everything in this repository is distributed under the **LaTeX Project Public License v1.3c**.
+LaTeX Project Public License v1.3c.

@@ -2,32 +2,21 @@
 title: README
 aliases: README
 linter-yaml-title-alias: README
-date created: Sunday, April 12th 2026, 9:34:28 pm
-date modified: Monday, May 11th 2026, 2:46:58 pm
+date created: Thursday, May 14th 2026, 10:21:58 pm
+date modified: Thursday, May 14th 2026, 10:24:27 pm
 ---
 
 <!-- @format -->
 
 ## cslecture
 
-An expansive lecture-notes skeleton configured over the standard `article` class, optimized for high-density information with condensed typography and specialized mathematical environments.
+Lecture-notes skeleton over the `article` class, tuned for high-density information with condensed typography and mathematical environments.
 
-### Features
-
-- **High-Density Typography**: Adjusted spacing and line spreads to eliminate gaps in long-form notes.
-- **Enhanced Theorem Display**: Built-in `thmtools` configuration with ruled styles for academic rigor.
-- **Semantic Sectioning**: Custom `\parhead` and `\subparhead` commands for inline concept definition.
-- **Nested Structures**: Custom `nestedbar` environment for demarcating nested logical blocks or sub-lemmas.
-
-### Installation & Usage
-
-#### Loading the Package
+### Usage
 
 ```latex
 \usepackage{cslecture}
 ```
-
-#### Basic Example
 
 ```latex
 \documentclass[12pt]{article}
@@ -43,33 +32,36 @@ An expansive lecture-notes skeleton configured over the standard `article` class
 \end{document}
 ```
 
-### Package Options
+### Features
 
-- **None**. The build is strictly dependent on core `cslecture` logic.
+- Condensed spacing to eliminate gaps in long-form notes.
+- `thmtools` theorem environments with ruled styles.
+- Inline concept headings via `\parhead` and `\subparhead`.
+- `nestedbar` environment for nested logical blocks or sub-lemmas.
 
-### API Reference
+### API
 
 #### Metadata
 
-- `\course{text}`: Sets the course name for the title block.
-- `\lecturer{text}`: Sets the lecturer’s name for the title block.
-- `\maketitle`: Generates a custom boxed assignment/lecture header.
+- `\course{text}`—course name for the title block.
+- `\lecturer{text}`—lecturer name for the title block.
+- `\maketitle`—generates a custom boxed lecture header.
 
-#### Sectioning & Blocks
+#### Sectioning
 
-- `\parhead{text}`: Bold inline heading with automated punctuation.
-- `\subparhead{text}`: Small-caps inline heading with automated punctuation.
-- `nestedbar`: Environment using vertical bars to demarcate nested logical content.
+- `\parhead{text}`—bold inline heading with automated punctuation.
+- `\subparhead{text}`—small-caps inline heading with automated punctuation.
+- `nestedbar`—environment using vertical bars to demarcate nested content.
 
-#### Theorems
+#### Theorem environments
 
-Standard numbered environments: `theorem`, `lemma`, `definition`, `remark`, `example`, etc.
+`theorem`, `lemma`, `definition`, `remark`, `example`, and the standard suite.
 
-### Conflicts & Requirements
+### Conflicts
 
-- **article**: This package is explicitly designed for the `article` document class.
-- **maketitle**: Redefining `\maketitle` externally may break the integrated header system.
+- Designed for the `article` document class.
+- Redefining `\maketitle` externally breaks the integrated header.
 
 ### License
 
-Everything in this repository is distributed under the **LaTeX Project Public License v1.3c**.
+LaTeX Project Public License v1.3c.

@@ -2,32 +2,21 @@
 title: README
 aliases: README
 linter-yaml-title-alias: README
-date created: Sunday, April 12th 2026, 9:15:02 pm
-date modified: Monday, May 11th 2026, 2:46:58 pm
+date created: Thursday, May 14th 2026, 10:22:30 pm
+date modified: Thursday, May 14th 2026, 10:24:27 pm
 ---
 
 <!-- @format -->
 
 ## csresume
 
-A streamlined LaTeX package for creating visually striking CVs and Resumes, designed for professional academic and industrial correspondence with a focus on high-end typography.
+CV and resume package with academic-oriented typography and BibLaTeX integration.
 
-### Features
-
-- **Lightweight Design**: Avoids heavy graphical backends or complex XML parsing.
-- **Academic Optimization**: Built-in support for Biber/BibLaTeX with ydnt sorting (Year-Descending).
-- **Flexible Typography**: Support for GFS Didot, Libertinus, and Baskervaldx font families.
-- **Professional Layout**: Integrated contact blocks, chronological detail entries, and referral formatting.
-
-### Installation & Usage
-
-#### Loading the Package
+### Usage
 
 ```latex
 \usepackage[options]{csresume}
 ```
-
-#### Basic Example
 
 ```latex
 \documentclass[a4paper]{article}
@@ -40,41 +29,41 @@ A streamlined LaTeX package for creating visually striking CVs and Resumes, desi
 \end{document}
 ```
 
-### Package Options
+### Options
 
 #### Fonts
 
-- `gfsdidot`: (Default) GFS Didot serif.
-- `libertinus`: Libertinus Serif and Sans.
-- `baskerville`: Professional Baskervaldx integration.
-- `euler`: Replaces math digits with Euler digits.
+- `gfsdidot`—(Default) GFS Didot serif.
+- `libertinus`—Libertinus Serif and Sans.
+- `baskerville`—Baskervaldx.
+- `euler`—Euler digits in math mode.
 
 #### Layout
 
-- `allowbreaks`: Permits sections to break across pages (ideal for multi-page CVs).
+- `allowbreaks`—permits sections to break across pages.
 
-### API Reference
+### API
 
-#### Header & Contact
+#### Header
 
-- `\contactblock{Name}{Title}{Company}{Email}{Web}{ScholarID}{DBLPID}`: Generates the resume header.
+- `\contactblock{Name}{Title}{Company}{Email}{Web}{ScholarID}{DBLPID}`—generates the resume header.
 
-#### Entry Commands
+#### Entries
 
-- `\details{Years}{Degree/Title}{Institution}{Description}`: Chronological entry with margin years.
-- `\columndetails{Years}{Title}{RightText}`: Two-column entry for skills or short items.
-- `\referals{Name}{Title}{Org}{Address}{Email}{Web}`: Standardized referral block.
+- `\details{Years}{Degree/Title}{Institution}{Description}`—chronological entry with margin years.
+- `\columndetails{Years}{Title}{RightText}`—two-column entry.
+- `\referals{Name}{Title}{Org}{Address}{Email}{Web}`—referral block.
 
 #### Environments
 
-- `refcolumns`: Two-column layout for references.
-- `ditemize`: Two-column itemized list.
+- `refcolumns`—two-column layout for references.
+- `ditemize`—two-column itemized list.
 
-### Conflicts & Requirements
+### Conflicts
 
-- **article**: Best used with the `article` document class.
-- **biblatex**: Requires `biber` as the backend for publication lists.
+- Best used with the `article` document class.
+- Requires `biber` as the backend for publication lists.
 
 ### License
 
-Everything in this repository is distributed under the **LaTeX Project Public License v1.3c**.
+LaTeX Project Public License v1.3c.
