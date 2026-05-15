@@ -1256,12 +1256,12 @@
 \newcommand{\AdvProb}{\var{S}}
 \ifluatex
 	\newcommand{\Prot}{\ensuremath{\text{\textsf{Π}}}}
-\fi
-\ifxetex
-	\newcommand{\Prot}{\ensuremath{\text{\textsf{Π}}}}
 \else
-	\newcommand{\Prot}{\ensuremath{\algostyle{\Pi}}}
-
+	\ifxetex
+		\newcommand{\Prot}{\ensuremath{\text{\textsf{Π}}}}
+	\else
+		\newcommand{\Prot}{\ensuremath{\algostyle{\Pi}}}
+	\fi
 \fi
 
 \newfunc{\adv}{A}
@@ -1648,6 +1648,7 @@
 \newfunc{\TM}{TM}
 
 \newfunc{\Circuit}{C}
+\newfunc{\Ckt}{C}
 \newfunc{\ckt}{C}
 \newfunc{\cktC}{C}
 \newfunc{\cktP}{P}

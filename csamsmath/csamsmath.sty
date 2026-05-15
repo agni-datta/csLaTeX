@@ -43,7 +43,7 @@
 \DeclareOption{draft}{\csam@drafttrue}
 \DeclareOption{final}{\csam@draftfalse}
 
-\DeclareOption*{
+\DeclareOption*{%
     \PackageWarning{csamsmath}{Unknown option `\CurrentOption' ignored}
 }
 
@@ -265,30 +265,27 @@
     \fi
 
     \ifcsam@latinmodern
-        \setmainfont{NewCM10-Book.otf}[
+        \setmainfont{Latin Modern Roman}[
             Ligatures         = TeX,
-            SmallCapsFont     = NewCM10-Book.otf,
+            SmallCapsFont     = Latin Modern Roman Caps,
             SmallCapsFeatures = {RawFeature=+smcp},
-            RawFeature        = {+calt,+case,+cpsp,+kern,+liga,+lnum,+tnum}
+            RawFeature        = {+calt,+case,+kern,+mark,+mkmk,+liga,+lnum,+tnum}
         ]
-        \setsansfont{NewCMSans10-Book.otf}[
+        \setsansfont{Latin Modern Sans}[
             Scale             = MatchUppercase,
             Ligatures         = TeX,
-            SmallCapsFont     = NewCMSans10-Book.otf,
-            SmallCapsFeatures = {RawFeature=+smcp},
-            RawFeature        = {+calt,+case,+cpsp,+kern,+liga,+lnum,+tnum}
+            SmallCapsFeatures = {Letters=SmallCaps},
+            RawFeature        = {+calt,+case,+kern,+mark,+mkmk,+liga,+lnum,+tnum}
         ]
-        \setmonofont{NewCMMono10-Book.otf}[
+        \setmonofont{Latin Modern Mono}[
             Scale             = MatchLowercase,
             Ligatures         = TeX,
-            SmallCapsFont     = NewCMMono10-Book.otf,
-            SmallCapsFeatures = {RawFeature=+smcp},
-            RawFeature        = {+calt,+case,+cpsp,+kern,+liga,+lnum,+tnum}
+            RawFeature        = {+calt,+case,+kern,+mark,+mkmk,+liga,+lnum,+tnum}
         ]
-        \setmathfont{NewCMMath-Book.otf}[
+        \setmathfont{Latin Modern Math}[
             AutoFakeBold,
             AutoFakeSlant,
-            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+            RawFeature        = {+calt,+case,+kern,+mark,+mkmk,+liga,+lnum,+tnum}
         ]
         \csam@mathalpha@stylishfalse
     \fi

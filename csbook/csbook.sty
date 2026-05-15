@@ -104,17 +104,17 @@
 \UseMicrotypeSet[expansion]{alltext}
 
 \SetExpansion{encoding=*,family=*}{
-    stretch=25,
-    shrink=25,
-    step=1
+    stretch = 25,
+    shrink  = 25,
+    step    = 1
 }
 \SetProtrusion{encoding=*,family=*}{
-    period={,50},
-    comma={,40},
-    colon={,30},
-    semicolon={,30}
+    period    = { ,50 },
+    comma     = { ,40 },
+    colon     = { ,30 },
+    semicolon = { ,30 }
 }
-\emergencystretch=2em
+\emergencystretch = 2em
 
 \newif\ifcsbk@mathalpha@stylish
 
@@ -267,30 +267,27 @@
     \fi
 
     \ifcsbk@latinmodern
-        \setmainfont{NewCM10-Book.otf}[
+        \setmainfont{Latin Modern Roman}[
             Ligatures         = TeX,
-            SmallCapsFont     = NewCM10-Book.otf,
+            SmallCapsFont     = Latin Modern Roman Caps,
             SmallCapsFeatures = {RawFeature=+smcp},
-            RawFeature        = {+calt,+case,+cpsp,+kern,+liga,+lnum,+tnum}
+            RawFeature        = {+calt,+case,+kern,+mark,+mkmk,+liga,+lnum,+tnum}
         ]
-        \setsansfont{NewCMSans10-Book.otf}[
+        \setsansfont{Latin Modern Sans}[
             Scale             = MatchUppercase,
             Ligatures         = TeX,
-            SmallCapsFont     = NewCMSans10-Book.otf,
-            SmallCapsFeatures = {RawFeature=+smcp},
-            RawFeature        = {+calt,+case,+cpsp,+kern,+liga,+lnum,+tnum}
+            SmallCapsFeatures = {Letters=SmallCaps},
+            RawFeature        = {+calt,+case,+kern,+mark,+mkmk,+liga,+lnum,+tnum}
         ]
-        \setmonofont{NewCMMono10-Book.otf}[
+        \setmonofont{Latin Modern Mono}[
             Scale             = MatchLowercase,
             Ligatures         = TeX,
-            SmallCapsFont     = NewCMMono10-Book.otf,
-            SmallCapsFeatures = {RawFeature=+smcp},
-            RawFeature        = {+calt,+case,+cpsp,+kern,+liga,+lnum,+tnum}
+            RawFeature        = {+calt,+case,+kern,+mark,+mkmk,+liga,+lnum,+tnum}
         ]
-        \setmathfont{NewCMMath-Book.otf}[
+        \setmathfont{Latin Modern Math}[
             AutoFakeBold,
             AutoFakeSlant,
-            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+            RawFeature        = {+calt,+case,+kern,+mark,+mkmk,+liga,+lnum,+tnum}
         ]
         \csbk@mathalpha@stylishfalse
     \fi
