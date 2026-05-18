@@ -1,0 +1,106 @@
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{csdeferproofs}[2026/05/19 v1.0 Deferred-proof infrastructure for csLaTeX packages]
+
+\makeatletter
+
+\RequirePackage{kvoptions}
+\SetupKeyvalOptions{family=csdp, prefix=csdp@}
+
+\DeclareBoolOption[true]{appendix}
+\DeclareStringOption[cref]{commandref}
+\DeclareStringOption[defaultcategory]{category}
+\DeclareStringOption[Proof]{proofname}
+\DeclareStringOption[Proof Sketch]{sketchname}
+
+\newif\ifcsdp@loaded
+\csdp@loadedfalse
+
+\ProcessKeyvalOptions{csdp}
+
+\ifcsdp@appendix
+
+    \RequirePackage{etoolbox}
+
+    \AtEndPreamble{%
+        \IfFileExists{proof-at-the-end.sty}{%
+            \RequirePackage[commandRef=\csdp@commandref, conf={end}]{proof-at-the-end}%
+            \pratendSetGlobal{text proof only theorem, category=\csdp@category}%
+            \newEndProof{proofE}%
+            \newEndProof[text proof only theorem]{proofEsketch}%
+            \let\csdp@proofEsketchSaved\proofEsketch
+            \let\csdp@endproofEsketchSaved\endproofEsketch
+            \renewenvironment{proofEsketch}[1][]{%
+                \def\proofname{\csdp@sketchname}%
+                \csdp@proofEsketchSaved[##1]%
+            }{\csdp@endproofEsketchSaved}%
+            \NewDocumentEnvironment{deferproof}{m O{}}{%
+                \begin{proofE}[##2]%
+                    }{\end{proofE}}%
+            \NewDocumentEnvironment{deferproofsketch}{m O{}}{%
+                \begin{proofEsketch}[##2]%
+                    }{\end{proofEsketch}}%
+            \csdp@loadedtrue
+        }{%
+            \PackageError{csdeferproofs}{%
+                The proof-at-the-end package is required when appendix=true.\MessageBreak
+                Install it via your TeX distribution or from CTAN:%
+                \MessageBreak
+                https://ctan.org/pkg/proof-at-the-end%
+            }{%
+                Either install proof-at-the-end, or load csdeferproofs with%
+                \MessageBreak the option appendix=false to keep proofs in place.%
+            }%
+        }%
+    }%
+
+    \newcommand{\NewDeferredThm}[3][]{%
+        \AtEndPreamble{\newEndThm[#1]{#2}{#3}}%
+    }
+
+    \NewDocumentCommand{\printDeferredProofs}{O{Proof of}}{%
+        \begingroup
+        \let\csdp@savedproof\proof
+        \let\csdp@savedendproof\endproof
+        \renewenvironment{proof}[1][]{%
+            \subsection*{#1~##1}%
+            \noindent\ignorespaces
+        }{%
+            \hfill\qed\par\medskip
+        }%
+        \printProofs
+        \endgroup
+    }%
+
+\else
+
+    \newcommand{\NewDeferredThm}[3][]{}
+
+    \newenvironment{proofE}[1][]{\begin{proof}}{\end{proof}}
+    \newenvironment{proofEsketch}[1][]{%
+        \begin{proof}[\csdp@sketchname]%
+            }{\end{proof}}
+
+    \newenvironment{deferproof}[1]{\begin{proof}}{\end{proof}}
+    \newenvironment{deferproofsketch}[1]{%
+        \begin{proof}[\csdp@sketchname]%
+            }{\end{proof}}
+
+    \NewDocumentCommand{\printDeferredProofs}{O{}}{}
+
+\fi
+
+\newcommand{\NewDeferredThmAlias}[2]{%
+    \ifcsdp@appendix
+    \else
+        \newenvironment{#1}[2][]{%
+            \begin{#2}[##1]%
+        }{\end{#2}}%
+    \fi
+}
+
+\newcommand{\IfDeferredProofsActive}[2]{%
+    \ifcsdp@appendix #1\else #2\fi
+}
+
+\makeatother
+\endinput
