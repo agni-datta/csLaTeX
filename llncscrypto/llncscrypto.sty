@@ -1,3 +1,10 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% llncscrypto — Typography and theorem extensions for the Springer LLNCS class %%
+%%                                                                              %%
+%% Author : Agni Datta                                                          %%
+%% GitHub : https://github.com/agni-datta/csLaTeX                               %%
+%% Docs   : See README.md in this directory for full documentation.             %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \ProvidesPackage{llncscrypto}[2026/04/13 v3.0 Cryptographic layer for the Springer LLNCS framework]
 
@@ -146,7 +153,7 @@
 \RequirePackage[%
 	bookmarksnumbered = true,
 	breaklinks        = true,
-	citecolor         = SteelBlue4,
+	citecolor         = IndianRed4,
 	colorlinks        = true,
 	linkcolor         = SteelBlue4,
 	pagebackref       = true,
@@ -155,7 +162,7 @@
 	pdfstartview      = FitH,
 	pdfusetitle,
 	unicode           = true,
-	urlcolor          = SteelBlue4
+	urlcolor          = SpringGreen4
 ]{hyperref}
 
 \renewcommand*{\backref}[1]{}
@@ -237,7 +244,7 @@
 
 \ifllncs@theorems
 	\RequirePackage{thmtools}
-
+	\renewcommand{\qedsymbol}{\ensuremath{\scriptstyle\square}}
 	\declaretheoremstyle[
 		spaceabove    = \topsep,
 		spacebelow    = \topsep,
@@ -272,7 +279,7 @@
 		bodyfont      = \normalfont,
 		headpunct     = {.},
 		postheadspace = 5pt,
-		qed           = {\ensuremath{\square}}
+		qed           = {\qedsymbol}
 	]{llncs@thmstyle@proof}
 
 	\def\llncs@undefenv#1{%
@@ -557,27 +564,52 @@
 		\llncs@appenddnote{#1}{#2}{#3}%
 		\sidenote{{\color{#2}\normalfont$\bigstar$}}%
 		\ifmmode\expandafter\mbox\fi{%
-		{\color{#2}\smaller\sffamily\bfseries\boldmath
+		{\color{#2}\sffamily\bfseries\boldmath
 			[#3\ifx\relax#1\relax\else{\mdseries\itshape~---#1}\fi]}%
 		}%
 	}
 	\newcommand{\dtnote}[2][]{\dtcolornote[#1]{llncs@notecolor}{#2}}
 	\newcommand{\XXX}[1][XXX]{%
-		\sidenote{{\color{red}\normalfont$\blacktriangleright$}}%
-		{\color{red}\smaller\sffamily\bfseries[#1]}%
+		\sidenote{{\color{PaleVioletRed3}\normalfont$\star$}}{%
+			\color{PaleVioletRed3}
+			\sffamily\[#1]
+				}}%
+				\newcommand{\dtignore}[2][]{%
+				\sidenote{{\color{llncs@notecolor}\normalfont$\looparrowright$\scriptsize~#1}}%
 	}
-	\newcommand{\dtignore}[2][]{%
-		\sidenote{{\color{llncs@notecolor}\normalfont$\looparrowright$\scriptsize~#1}}%
-	}
+	\NewDocumentCommand{\added}{m}{%
+		\textcolor{OliveGreen}{#1}\marginnote{\textcolor{OliveGreen}{\LARGE$\star$}}}
+	\NewDocumentCommand{\changed}{m}{%
+		\textcolor{PineGreen}{#1}\marginnote{\textcolor{PineGreen}{\LARGE$\star$}}}
+	\NewDocumentCommand{\citelater}{m}{%
+		\textcolor{WildStrawberry}{[#1]}\marginnote{\textcolor{WildStrawberry}{\LARGE$\star$}}}
+	\NewDocumentCommand{\fixme}{m}{%
+		\textcolor{OrangeRed}{[\textsc{Fix-me}: #1]}\marginnote{\textcolor{OrangeRed}{\LARGE$\star$}}}
+	\NewDocumentCommand{\notes}{m}{%
+		\textcolor{ForestGreen}{[\textsc{Note}: #1]}\marginnote{\textcolor{ForestGreen}{\LARGE$\star$}}}
+	\NewDocumentCommand{\query}{m}{%
+		\textcolor{RoyalPurple}{[\textsc{Query}: #1]}\marginnote{\textcolor{RoyalPurple}{\LARGE$\star$}}}
+	\NewDocumentCommand{\removed}{m}{%
+		\textcolor{Periwinkle}{\sout{#1}}\marginnote{\textcolor{Periwinkle}{\LARGE$\star$}}}
+	\NewDocumentCommand{\todo}{m}{%
+		\textcolor{Mahogany}{[\textsc{To-do}: #1]}\marginnote{\textcolor{Mahogany}{\LARGE$\star$}}}
 \else
 	\newcommand{\dtcolornote}[3][]{\ignorespaces}
 	\newcommand{\dtnote}[2][]{\ignorespaces}
 	\newcommand{\XXX}[1][XXX]{%
 		\@latex@error{%
-			\string\XXX{} found but notes are disabled (camera or nonotes option)%
+			\string\XXX{} found but notes are disabled (final or nonotes option)%
 		}\@ehd
 	}
 	\newcommand{\dtignore}[2][]{\ignorespaces}
+	\NewDocumentCommand{\added}{m}{}
+	\NewDocumentCommand{\changed}{m}{}
+	\NewDocumentCommand{\citelater}{m}{}
+	\NewDocumentCommand{\fixme}{m}{}
+	\NewDocumentCommand{\notes}{m}{}
+	\NewDocumentCommand{\query}{m}{}
+	\NewDocumentCommand{\removed}{m}{}
+	\NewDocumentCommand{\todo}{m}{}
 \fi
 
 \newcommand{\printdtnotes}{%
@@ -810,6 +842,45 @@
 	\end{mdframed}%
 }
 
+\RequirePackage[normalem]{ulem}
+\RequirePackage{xpatch}
+
+\newcommand{\llncs@brokenrefmark}[1]{%
+	\marginnote[%
+		{\color{Firebrick2}\normalfont\smash{\LARGE$\star$}\,\tiny\sffamily#1}%
+	]{%
+		{\color{Firebrick2}\normalfont\smash{\LARGE$\star$}\,\tiny\sffamily#1}%
+	}%
+}
+
+\newif\ifllncs@markundef
+\llncs@markundeftrue
+
+\xpretocmd{\G@refundefinedtrue}{%
+	\ifllncs@markundef
+		\llncs@brokenrefmark{\@ifundefined{@citeb}{}{\@citeb}}%
+	\fi
+}{}{}
+
+\let\llncs@old@setref\@setref
+\renewcommand{\@setref}[3]{%
+	\ifx#1\relax\llncs@brokenrefmark{#3}\fi
+	\llncs@markundeffalse
+	\llncs@old@setref{#1}{#2}{#3}%
+	\llncs@markundeftrue
+}
+
+\NewDocumentCommand{\newguymarker}{m m m}{%
+	\ifllncs@notes
+		\expandafter\NewDocumentCommand\csname #1\endcsname{m}{%
+			\textcolor{#3}{##1\ \textsc{#2}}%
+			\marginnote{\textcolor{#3}{\LARGE$\star$}}%
+		}%
+	\else
+		\expandafter\NewDocumentCommand\csname #1\endcsname{m}{}%
+	\fi
+}
+
 \ifllncs@draft
 	\RequirePackage{scrtime}
 	\RequirePackage{prelim2e}
@@ -821,7 +892,7 @@
 	}
 
 	\renewcommand{\PrelimText}{%
-		\normalfont\ttfamily\small\color{BrickRed3}%
+		\normalfont\scshape\footnotesize\color{DeepPink3}%
 		This is a draft made on~\llncs@datetime; not for distribution%
 	}
 \fi

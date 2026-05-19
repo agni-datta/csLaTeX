@@ -3,14 +3,19 @@ title: README
 aliases: README
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:21:45 pm
-date modified: Thursday, May 14th 2026, 10:24:27 pm
+date modified: Tuesday, May 19th 2026, 1:35:34 am
 ---
 
 <!-- @format -->
 
 ## csbook
 
-Macro framework for textbooks, manuscripts, and reports. Handles sectioning typography, draft/final modes, and broken-reference tracking.
+Macro framework for textbooks, manuscripts, and large reports. Handles font selection, sectioning typography (via `titlesec`), draft/final annotation modes, and a broken-reference tracking system that marks undefined `\ref` and `\cite` targets in the margin rather than silently printing “??”. Pairs with `csamsmath` for the math layer, but can be used standalone with any theorem package.
+
+### Requirements
+
+- Requires a document class that supports `\chapter`: use `book` or `report`. Loading with `article` will cause `titlesec` chapter formatting to fail.
+- Do not load `amsthm` before this package.
 
 ### Usage
 
@@ -18,40 +23,68 @@ Macro framework for textbooks, manuscripts, and reports. Handles sectioning typo
 \usepackage[options]{csbook}
 ```
 
+### Minimal example
+
 ```latex
 \documentclass{book}
-\usepackage[concrete, draft]{csbook}
+\usepackage[palatino, draft]{csbook}
 
 \begin{document}
 \chapter{Introduction}
 \section{Motivation}
-...
+Here is a broken reference: \cref{thm:doesnotexist}.
 \end{document}
 ```
 
+In `draft` mode the broken reference prints “??” in the text and a margin note indicating the undefined label. In `final` mode it prints “??” silently, as standard LaTeX does.
+
 ### Options
 
-#### Fonts
+#### Font options (mutually exclusive)
 
-`latinmodern`, `libertine`, `gfsdidot`, `concrete`, `palatino`, `kpfonts`, `baskervaldx`, `garamond`.
+- `latinmodern`: (default) Latin Modern.
+- `libertine`: TeX Gyre Libertine with Libertinus Math.
+- `gfsdidot`: GFS Didot.
+- `concrete`: Knuth Concrete with Euler math.
+- `palatino`: TeX Gyre Pagella.
+- `kpfonts`: KP Fonts; requires LuaLaTeX.
+- `baskervaldx`: Baskervaldx with newtxmath.
+- `garamond`: TeX Gyre Termes.
 
-#### Mode
+#### Mode options
 
-- `draft`—shows todos, fixmes, and margin annotations.
-- `final`—(Default) suppresses all annotations.
+- `draft`: shows todos, fixmes, and margin annotations. Broken `\ref` and `\cite` targets are flagged in the margin.
+- `final`: (default) suppresses all annotations and margin markers.
 
 ### API
 
-- `\parhead{text}`—punctuated inline paragraph heading.
-- Redefines `\part`, `\chapter`, `\section`, etc. via `titlesec`.
-- Patches `\@setref` to display undefined citations in the margins.
+#### Paragraph headings
 
-### Conflicts
+- `\parhead{text}`: bold inline heading. Appends a period automatically unless `text` already ends with punctuation. Use in place of `\paragraph`.
 
-- Requires a `\chapter`-supporting class (`book`, `report`).
-- Overwrites `\tableofcontents`; avoid external TOC overrides.
-- Uses `mdframed` internally; use `most` compatibility for nested `tcolorbox` layouts.
+#### Sectioning
+
+`csbook` redefines `\part`, `\chapter`, `\section`, `\subsection`, `\subsubsection` via `titlesec` to apply consistent typographic spacing and font choices. Do not redefine these after loading the package.
+
+#### Broken-reference tracking (draft mode)
+
+`csbook` patches `\@setref` so that any `\ref`, `\cref`, or `\cite` that resolves to an undefined label prints a margin note naming the missing label. This is strictly a visual aid during writing: it has no effect on the compiled output in `final` mode.
+
+#### Table of contents
+
+`\tableofcontents` is patched for consistent formatting. Avoid overriding it with external TOC packages after loading `csbook`.
+
+### Compatibility and conflicts
+
+- Requires `book` or `report` class. Will silently misformat or error on `article` because `titlesec` chapter definitions reference `\chapter`.
+- Uses `mdframed` internally for certain framed environments. If you also use `tcolorbox`, load it with the `most` library for compatibility: `\usepackage[most]{tcolorbox}`.
+- Do not redefine `\tableofcontents` externally: the patched version handles `csbook`‘s own formatting.
+- Font options must match between `csbook` and `csamsmath` if both are loaded. Load `csbook` first with the font option; `csamsmath` will detect and defer to it.
 
 ### License
 
 LaTeX Project Public License v1.3c.
+
+### Author
+
+Agni Datta: [agni-datta/csLaTeX](https://github.com/agni-datta/csLaTeX)

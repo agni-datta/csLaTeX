@@ -3,7 +3,7 @@ title: README
 aliases: README
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:22:05 pm
-date modified: Thursday, May 14th 2026, 10:24:27 pm
+date modified: Tuesday, May 19th 2026, 1:35:34 am
 ---
 
 <!-- @format -->
@@ -36,20 +36,20 @@ Document class for academic lecture series, built on `book` with boxed chapter h
 
 #### Fonts
 
-- `kpf`—(Default) KP Fonts.
-- `bsk`—Baskervaldx with math integration.
+- `kpf`: (Default) KP Fonts.
+- `bsk`: Baskervaldx with math integration.
 
 #### Mode
 
-- `draft`—(Default) enables broken reference markers and collaborative annotations.
-- `final`—suppresses all annotations and markers.
+- `draft`: (Default) enables broken reference markers and collaborative annotations.
+- `final`: suppresses all annotations and markers.
 
 ### API
 
 #### Metadata
 
-- `\coursetitle{text}`—title for the cover and headers.
-- `\maketitle`—full-page formal title cover.
+- `\coursetitle{text}`: title for the cover and headers.
+- `\maketitle`: full-page formal title cover.
 
 #### Theorem environments
 
@@ -58,7 +58,7 @@ Document class for academic lecture series, built on `book` with boxed chapter h
 #### Revision tools (draft mode)
 
 - `\todo{text}`, `\fixme{text}`, `\added{text}`, `\changed{text}`.
-- `\newguymarker{cmd}{label}{color}`—define custom markers.
+- `\newguymarker{cmd}{label}{color}`: define custom markers.
 
 ### Conflicts
 

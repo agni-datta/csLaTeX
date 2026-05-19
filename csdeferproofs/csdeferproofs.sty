@@ -1,5 +1,12 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% csdeferproofs — Deferred-proof infrastructure for csLaTeX packages           %%
+%%                                                                              %%
+%% Author : Agni Datta                                                          %%
+%% GitHub : https://github.com/agni-datta/csLaTeX                               %%
+%% Docs   : See README.md in this directory for full documentation.             %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{csdeferproofs}[2026/05/19 v1.0 Deferred-proof infrastructure for csLaTeX packages]
+\ProvidesPackage{csdeferproofs}[2026/05/19 v1.1 Deferred-proof infrastructure for csLaTeX packages]
 
 \makeatletter
 
@@ -35,10 +42,10 @@
             }{\csdp@endproofEsketchSaved}%
             \NewDocumentEnvironment{deferproof}{m O{}}{%
                 \begin{proofE}[##2]%
-                    }{\end{proofE}}%
+            }{\end{proofE}}%
             \NewDocumentEnvironment{deferproofsketch}{m O{}}{%
                 \begin{proofEsketch}[##2]%
-                    }{\end{proofEsketch}}%
+            }{\end{proofEsketch}}%
             \csdp@loadedtrue
         }{%
             \PackageError{csdeferproofs}{%
@@ -62,10 +69,10 @@
         \let\csdp@savedproof\proof
         \let\csdp@savedendproof\endproof
         \renewenvironment{proof}[1][]{%
-            \subsection*{#1~##1}%
+            \subsection{#1~##1}%
             \noindent\ignorespaces
         }{%
-            \hfill\qed\par\medskip
+            \qed
         }%
         \printProofs
         \endgroup
@@ -73,17 +80,19 @@
 
 \else
 
+    \providecommand{\thmt@shortoptarg}{}
+
     \newcommand{\NewDeferredThm}[3][]{}
 
     \newenvironment{proofE}[1][]{\begin{proof}}{\end{proof}}
     \newenvironment{proofEsketch}[1][]{%
         \begin{proof}[\csdp@sketchname]%
-            }{\end{proof}}
+    }{\end{proof}}
 
     \newenvironment{deferproof}[1]{\begin{proof}}{\end{proof}}
     \newenvironment{deferproofsketch}[1]{%
         \begin{proof}[\csdp@sketchname]%
-            }{\end{proof}}
+    }{\end{proof}}
 
     \NewDocumentCommand{\printDeferredProofs}{O{}}{}
 
@@ -92,8 +101,12 @@
 \newcommand{\NewDeferredThmAlias}[2]{%
     \ifcsdp@appendix
     \else
-        \newenvironment{#1}[2][]{%
-            \begin{#2}[##1]%
+        \newenvironment{#1}[1][]{%
+            \ifx##1\@empty
+                \begin{#2}%
+            \else
+                \begin{#2}[##1]%
+            \fi
         }{\end{#2}}%
     \fi
 }

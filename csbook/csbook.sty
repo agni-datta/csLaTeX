@@ -1,3 +1,10 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% csbook — Macro framework for textbooks, manuscripts, and reports             %%
+%%                                                                              %%
+%% Author : Agni Datta                                                          %%
+%% GitHub : https://github.com/agni-datta/csLaTeX                               %%
+%% Docs   : See README.md in this directory for full documentation.             %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \ProvidesPackage{csbook}[2026/04/13 v3.0 Macro framework for textbooks, manuscripts, and reports]
 
@@ -1194,7 +1201,7 @@
             \the\year-\ifnum\the\month<10 0\fi\the\month-%
             \ifnum\the\day<10 0\fi\the\day\space\thistime}%
         \renewcommand\PrelimText{%
-            \normalfont\scshape\footnotesize\color{IndianRed2}%
+            \normalfont\scshape\footnotesize\color{DeepPink3}%
             Draft --- {\csbk@datetime} --- Not for Distribution.}%
     }{}%
 \fi

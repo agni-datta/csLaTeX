@@ -3,7 +3,7 @@ title: README
 aliases: README
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:21:51 pm
-date modified: Thursday, May 14th 2026, 10:24:27 pm
+date modified: Tuesday, May 19th 2026, 1:35:34 am
 ---
 
 <!-- @format -->
@@ -33,7 +33,7 @@ makeindex -s csindex.ist yourfile.idx
 
 - Groups entries under bold letter headings (A, B, … Symbols).
 - Dotfill leaders between entries and page numbers.
-- No LaTeX package options—this is a configuration style file.
+- No LaTeX package options: this is a configuration style file.
 
 ### Requirements
 

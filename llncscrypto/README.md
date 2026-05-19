@@ -3,45 +3,56 @@ title: README
 aliases: README
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:23:24 pm
-date modified: Thursday, May 14th 2026, 10:24:28 pm
+date modified: Tuesday, May 19th 2026, 1:35:35 am
 ---
 
 <!-- @format -->
 
 ## llncscrypto
 
-Typography, theorem environments, author tooling, and optional cryptography support on top of the Springer LLNCS class.
+Typography, theorem environments, author tooling, and optional cryptography support on top of the Springer LLNCS class. Replaces the sparse LLNCS defaults with a fully equipped research-paper environment: a complete theorem suite registered with `cleveref`, per-author color-coded notes with a collected list, missing-content tracking, paragraph headings, list and box environments, and optional TikZ and crypto layers. The entire package is controlled through a single `\usepackage` line with option flags: nothing needs to be wired up manually.
 
 ### Requirements
 
-- Document class: `llncs`.
-- Do not load `amsthm` manually—this package manages it internally.
+- Document class must be `llncs`. This package is not designed for `article` or `book`.
+- Do not load `amsthm` manually. The package manages it internally via `thmtools`. Loading `amsthm` before this package will cause option conflicts.
+- Load `csdeferproofs` after this package if you use it, because `llncscrypto` registers its `proof` environment inside `\AtEndPreamble` and `csdeferproofs` must append its own hook later in the queue.
 
 ### Usage
 
 ```latex
-\documentclass{llncs}
+\documentclass[runningheads, a4paper]{llncs}
 \usepackage[options]{llncscrypto}
+```
+
+### Typical conference paper preamble
+
+```latex
+\documentclass[runningheads, a4paper, envcountsect]{llncs}
+\usepackage[crypto, captions, draft, tikz, theorems]{llncscrypto}
+\usepackage[appendix=true]{csdeferproofs}
+\NewDeferredThm{theoremE}{theorem}
+\NewDeferredThm{lemmaE}{lemma}
 ```
 
 ### Options
 
-| Option      | Default | Description                                                                          |
-| ----------- | ------- | ------------------------------------------------------------------------------------ |
-| `appendix`  | off     | Load the `appendix` package configured for LLNCS.                                    |
-| `captions`  | off     | Load `caption` and `subcaption` with styled formatting.                              |
-| `crypto`    | off     | Load `tcscrypto` (if present) and `orcidlink`.                                       |
-| `draft`     | off     | Stamp each page with a dated “not for distribution” watermark.                       |
-| `final`     | off     | Camera-ready mode: disables all notes and draft markers.                             |
-| `libertine` | off     | Use Libertine/Biolinum with matching math.                                           |
-| `nonotes`   | off     | Suppress author notes without enabling full `final` mode.                            |
-| `preprint`  | off     | Eprint layout: letter paper, 1.15× spacing, centered page numbers. Expects `[11pt]`. |
-| `theorems`  | off     | Replace LLNCS theorem environments with a full standardized set.                     |
-| `tikz`      | off     | Load TikZ, PGFPlots, and tikz-cd with common libraries.                              |
+| Option      | Default | Description                                                                                                |
+| ----------- | ------- | ---------------------------------------------------------------------------------------------------------- |
+| `appendix`  | off     | Load the `appendix` package configured for LLNCS page geometry.                                            |
+| `captions`  | off     | Load `caption` and `subcaption` with styled figure and table formatting.                                   |
+| `crypto`    | off     | Load `tcscrypto` (if present on disk) and `orcidlink` for ORCID badges.                                    |
+| `draft`     | off     | Stamp each page with a dated “not for distribution” watermark and enable author notes.                     |
+| `final`     | off     | Camera-ready mode: disable all notes, draft markers, and `\XXX` flags. Incompatible with `draft`.          |
+| `libertine` | off     | Use Libertine body font and Biolinum sans with matching math.                                              |
+| `nonotes`   | off     | Suppress author notes without enabling full `final` mode. Useful for anonymous submission review copies.   |
+| `preprint`  | off     | Eprint layout: letter paper, 1.15× line spacing, centered page numbers. Expects the `[11pt]` class option. |
+| `theorems`  | off     | Tear down LLNCS built-in theorem environments and replace with a full standardized set.                    |
+| `tikz`      | off     | Load TikZ, PGFPlots, and tikz-cd with a standard library set.                                              |
 
 ### Theorem environments (`theorems` option)
 
-LLNCS built-ins are torn down and replaced. `case` and `solution` are dropped.
+When `theorems` is passed, all LLNCS built-in theorem-like environments are removed and replaced. The `case` and `solution` environments from LLNCS are dropped entirely.
 
 **Bold heading, roman body** (numbered per section):
 
@@ -61,76 +72,115 @@ LLNCS built-ins are torn down and replaced. `case` and `solution` are dropped.
 
 **Additional:**
 
-`claimproof`—like `proof` but defaults to “Proof of Claim”. Accepts an optional heading override.
+- `claimproof`: like `proof` but defaults to “Proof of Claim” as the heading. Accepts an optional argument to override the heading text.
 
-All numbered environments are registered with `cleveref`.
+All numbered environments are registered with `cleveref`. Use `\cref{label}` for automatic type-aware references.
 
 ### Commands
 
-#### Author notes (active unless `final` or `nonotes`)
+#### Author notes and annotation commands (active unless `final` or `nonotes`)
 
-- `\dtnote[author]{text}`—color-coded inline note with a sidebar marker and notes-list entry.
-- `\dtcolornote[author]{color}{text}`—same with explicit color.
-- `\newcomment{author}{color}{cmd}`—define a custom per-author shorthand.
-- `\XXX[label]`—red inline flag; raises an error in `final`/`nonotes`.
-- `\dtignore[label]{text}`—sidebar marker only; body is suppressed.
-- `\printdtnotes`—print collected author notes as a section. No-op if none.
-- `\missing{text}`—highlight missing content in red and add to the missing list.
-- `\printmissing`—print collected missing-content entries as a section.
+All annotation commands produce colored inline text plus a margin star `★` for quick visual scanning. In `final` or `nonotes` mode all of these become no-ops (except `\XXX`, which raises an error).
+
+**Collaborative notes (tracked in a collected list):**
+
+- `\dtnote[author]{text}`: color-coded inline note with a sidebar marker. The note is added to an internal list printed by `\printdtnotes`. If `author` is omitted, a default label is used.
+- `\dtcolornote[author]{color}{text}`: same as `\dtnote` but with an explicit color override.
+- `\newcomment{author}{color}{cmd}`: define a shorthand command `\cmd{text}` for a specific author. Call once per collaborator in the preamble. Example: `\newcomment{Agni}{RoyalBlue}{\agni}` creates `\agni{text}`.
+- `\newguymarker{cmd}{label}{color}`: define a per-author annotation command `\cmd{text}` that renders the text in the given color with a “label” sidebar marker and margin star. Unlike `\newcomment`, it does not add to the `\printdtnotes` list: it is a simpler inline highlighter. In `final`/`nonotes` mode it becomes a no-op.
+- `\dtignore[label]{text}`: places a sidebar marker but suppresses the body text entirely. Use to mark a passage for later attention without rendering its content.
+- `\printdtnotes`: prints all collected author notes as a section. Produces no output if there are no notes. Call at the end of the document for a consolidated review list.
+
+**Inline drafting markers:**
+
+- `\todo{text}`: action item in dark red. Use for things that must be done before submission.
+- `\fixme{text}`: renders as `[Fix-me: text]` in orange-red. Use for broken or placeholder content.
+- `\query{text}`: renders as `[Query: text]` in purple. Use for open questions between co-authors.
+- `\notes{text}`: renders as `[Note: text]` in forest green. Use for informational remarks during drafting.
+- `\added{text}`: renders the text in olive green. Use to mark newly added passages for co-author review.
+- `\changed{text}`: renders the text in pine green. Use to mark revised passages.
+- `\removed{text}`: renders the text with a strikethrough in periwinkle. Use to mark passages proposed for deletion without actually removing them yet.
+- `\citelater{text}`: renders `[text]` in wild strawberry. Use as a citation placeholder when you know a reference is needed but have not looked it up yet.
+- `\XXX[label]`: bold red inline flag for severe issues. The optional label defaults to `XXX`. In `final` or `nonotes` mode this raises a LaTeX error, forcing you to clear all flags before submission. Never leave `\XXX` in a document you send to a venue.
+
+**Missing-content tracking:**
+
+- `\missing{text}`: highlights missing content in red, adds it to an internal list, and (if notes are enabled) also appends it to the `\printdtnotes` list with page-back reference.
+- `\printmissing`: prints all collected missing-content entries as a section with page references. Call near the end of the document during drafting.
+
+#### Broken-reference tracking (always active)
+
+Whenever a `\ref`, `\cref`, or `\cite` target does not exist yet, a red star `★` appears in the margin at that point in the text. This fires unconditionally (no `draft` mode required), so undefined labels are immediately visible without having to search the log. The markers disappear as soon as the labels are defined on the next compile. This is separate from annotation commands: it cannot be suppressed by `final` or `nonotes` because its purpose is to catch real compilation problems, not to clean up draft remarks.
 
 #### Paragraph headings
 
-- `\parhead{text}`—bold inline heading; appends a period unless text ends with punctuation.
-- `\parheadnoperiod{text}`—bold inline heading, no automatic punctuation.
-- `\subparhead{text}`—small-caps inline heading with automatic punctuation.
-- `\subparheadnoperiod{text}`—small-caps inline heading, no automatic punctuation.
+These replace `\paragraph` and `\subparagraph` with typographically consistent alternatives:
 
-These replace `\paragraph` and `\subparagraph`.
+- `\parhead{text}`: bold inline heading. Appends a period automatically unless `text` already ends with punctuation (`.`, `!`, `?`, `:`).
+- `\parheadnoperiod{text}`: bold inline heading with no automatic punctuation.
+- `\subparhead{text}`: small-caps inline heading with automatic punctuation.
+- `\subparheadnoperiod{text}`: small-caps inline heading with no automatic punctuation.
 
 #### References
 
-- `\fullref{label}`—hyperlinked reference combining `\autoref` and `\nameref`.
+- `\fullref{label}`: hyperlinked reference that combines `\autoref` (type name) and `\nameref` (theorem title) into a single clickable span. Produces output like “Theorem 3.1 (Main Result)”.
 
-#### Text & math
+#### Text and math
 
-- `\code{text}`—typewriter font.
-- `\mathsc{text}`—small caps in math mode.
-- `\textem{text}`—colored emphasis (default: `RoyalBlue`).
-- `\sethighlightcolor{color}`—change the color used by `\textem`.
+- `\code{text}`: inline typewriter-font code span.
+- `\mathsc{text}`: small caps inside math mode. Use for complexity classes, problem names, and named entities that should not be italicized.
+- `\textem{text}`: colored emphasis, default color `RoyalBlue`. Use for key terms being introduced or highlighted.
+- `\sethighlightcolor{color}`: change the color used by `\textem` for the rest of the document.
 
 #### Footnotes
 
-- `\footnotesymb{mark}{text}`—footnote with a custom mark. Empty first argument for no mark.
+- `\footnotesymb{mark}{text}`: footnote with a custom symbol mark instead of the default number. Pass an empty first argument `{}` for no mark (anonymous footnote).
 
 #### Links
 
-- `\emailref{address}`—`mailto:` hyperlink.
-- `\httpref{address}`—`http://` hyperlink.
+- `\emailref{address}`: renders a `mailto:` hyperlink. Use in author blocks and correspondence notes.
+- `\httpref{address}`: renders an `http://` hyperlink.
 
 #### Preprint mode
 
-- `\preprint[left-header][right-header]`—set running headers. Call in the preamble after `\usepackage`.
+- `\preprint[left-header][right-header]`: sets running headers for eprint-style layout. Call in the preamble after `\usepackage{llncscrypto}`. Both arguments are optional; defaults to title and author.
 
 ### Environments
 
 #### Lists
 
-- `points`—itemize with en-dash bullets and tight spacing.
-- `codelist`—enumerate with gray `[n]` labels.
-- `checkbox`—itemize with `□` labels; use `\checked` for a `✓` item.
-- `deflist`—description list with a fixed 33%-width label column.
+- `points`: itemize with en-dash bullets and tight vertical spacing. Use for theorem hypothesis lists and enumerated steps.
+- `codelist`: enumerate with gray `[n]` labels. Use for numbered algorithm steps or protocol descriptions.
+- `checkbox`: itemize with `□` bullet labels. Use `\checked` on an item to render `✓` instead of `□`. Useful for requirement checklists.
+- `deflist`: description list with a fixed 33%-width label column. Use for notation tables and term definitions.
 
-#### Boxes (all accept an optional title)
+#### Boxes (all accept an optional title argument)
 
-- `constructionbox[title]`—framed box with a `points` list.
-- `codelistbox[title]`—framed box with a `codelist`.
-- `simplebox[title]`—framed box with free content.
+- `constructionbox[title]`: framed box containing a `points` list. Standard container for protocol and construction descriptions.
+- `codelistbox[title]`: framed box containing a `codelist`. Use for numbered algorithm descriptions.
+- `simplebox[title]`: framed box with free content. Use for game definitions, experiments, or any block that needs visual separation.
 
 #### Other
 
-- `nestedbar[width]`—left vertical rule to demarcate a logical block (default: `\hsize`).
-- `acknowledgment[heading]`—acknowledgment paragraph (default heading: “Acknowledgment”).
+- `nestedbar[width]`: draws a left vertical rule for the duration of the environment. Default width is `\hsize`. Use to demarcate a sub-proof, a nested argument, or a logical block within a long proof.
+- `acknowledgment[heading]`: formats an acknowledgment paragraph with the given heading (default: “Acknowledgment”). Use at the end of the paper before the bibliography.
+
+### Caveats
+
+- Do not load `amsthm` before this package. It manages `amsthm` and `thmtools` internally. If you see “option clash for package amsthm”, something loaded it before `llncscrypto`.
+- The `theorems` option tears down LLNCS built-ins. Do not use LLNCS’s own `\spnewtheorem` or `\begin{theorem}` before loading `llncscrypto` with `theorems`, as they will be overwritten.
+- `\XXX` raises a hard error in `final`/`nonotes` mode intentionally. If compilation fails after switching to `final`, search the source for `\XXX` and remove or resolve every occurrence before resubmitting.
+- The `preprint` option changes page geometry and expects the `[11pt]` class option on `\documentclass`. Using it with `[10pt]` will produce lines that are too wide.
+- If you use `csdeferproofs`, always load `llncscrypto` first. The proof environment must exist before `csdeferproofs` hooks into it.
+- The broken-reference tracking patches `\@setref` and `\G@refundefinedtrue` at load time. Margin stars on first compile of a new document indicate genuine missing labels, not a bug. They clear on the next compile once labels are defined.
+- The unified annotation commands (`\todo`, `\fixme`, `\added`, `\changed`, `\removed`, etc.) require `ulem` for `\removed`’s strikethrough rendering. The package loads `ulem` automatically with the `[normalem]` option so that `\emph` is not affected.
+- `\notes` is a newly added command that may shadow any `\notes` you defined yourself in the preamble. Rename your own definition if there is a conflict.
+- `\missing` has richer behavior than the csamsmath version: it page-indexes every occurrence and integrates with `\printdtnotes`. If you switch a document from csamsmath to llncscrypto, `\missing` will behave differently, as it now also accumulates entries and shows page references when `\printmissing` is called.
 
 ### License
 
 LaTeX Project Public License v1.3c.
+
+### Author
+
+Agni Datta: [agni-datta/csLaTeX](https://github.com/agni-datta/csLaTeX)

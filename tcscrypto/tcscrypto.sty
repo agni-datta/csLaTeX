@@ -1,3 +1,10 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% tcscrypto — Notation and environment suite for TCS and Cryptography          %%
+%%                                                                              %%
+%% Author : Agni Datta                                                          %%
+%% GitHub : https://github.com/agni-datta/csLaTeX                               %%
+%% Docs   : See README.md in this directory for full documentation.             %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{tcscrypto}[2026/05/02 v3.3 Notations and environments for TCS and Cryptography]
 
@@ -1493,14 +1500,23 @@
 \newcommand{\decr}{\texttt{--}}
 \newcommand{\incr}{\texttt{++}}
 \newcommand{\pcabort}{\textsf{abort\ }}
+\newcommand{\pcassert}{\textsf{assert\ }}
 \newcommand{\pcdecr}{\textsf{decrement}}
+\newcommand{\pcemulate}{\textsf{emulate\ }}
+\newcommand{\pcfind}{\textsf{find\ }}
+\newcommand{\pchalt}{\textsf{halt\ }}
 \newcommand{\pcincr}{\textsf{increment}}
 \newcommand{\pcinput}{\textsf{input\ }}
 \newcommand{\pclet}{\textsf{let\ }}
 \newcommand{\pcoutput}{\textsf{output\ }}
 \newcommand{\pcparse}{\textsf{parse\ }}
+\newcommand{\pcreceive}{\textsf{receive\ }}
+\newcommand{\pcrepeat}{\textsf{repeat\ }}
 \newcommand{\pcreturn}{\textsf{return\ }}
+\newcommand{\pcsend}{\textsf{send\ }}
 \newcommand{\pcset}{\textsf{set\ }}
+\newcommand{\pctitlerule}{\par\smallskip\hrule\smallskip}
+\newcommand{\pctitle}[1]{\noindent#1\pctitlerule}
 
 \newcommand{\makeSectionLabel}[2]{
 	\expandafter\newcommand\csname #1Caption\endcsname{\textsf{\textsc{#2\space}}}

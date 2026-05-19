@@ -3,14 +3,19 @@ title: README
 aliases: README
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:22:54 pm
-date modified: Thursday, May 14th 2026, 10:24:28 pm
+date modified: Tuesday, May 19th 2026, 1:35:35 am
 ---
 
 <!-- @format -->
 
 ## cswhitepaper
 
-Style package for technical whitepapers and research reports with ruled theorem aesthetics and collaborative annotation tools.
+Style package for technical whitepapers, research reports, and position papers. Provides ruled theorem aesthetics, a comprehensive collaborative annotation system with per-author color coding, revision tracking commands (`\added`, `\changed`, `\removed`), and a clean sectioning hierarchy. Designed for documents that circulate among multiple authors before publication: the annotation system makes it easy to see who wrote what and what still needs attention, then everything is suppressed cleanly with `final`.
+
+### Requirements
+
+- Works with `article` and `report` classes. Not designed for `book` or `beamer`.
+- Do not load `amsthm` before this package.
 
 ### Usage
 
@@ -18,46 +23,99 @@ Style package for technical whitepapers and research reports with ruled theorem 
 \usepackage[options]{cswhitepaper}
 ```
 
+### Minimal example
+
 ```latex
 \documentclass{article}
 \usepackage[draft]{cswhitepaper}
 \documentaccentcolor{NavyBlue}
 
 \begin{document}
-\section{Abstract}
-This is a new technical result.
-\todo{Check citations here.}
-\parhead{Methodology} We follow a standard approach.
+\section{Introduction}
+
+\todo{Expand this section before submission.}
+
+\parhead{Methodology} We follow a standard reduction argument.
+
+\begin{theorem}[Main Result]
+    \label{thm:main}
+    The construction is secure under the LWE assumption.
+\end{theorem}
+
+\begin{proof}
+    \missing{Write the full reduction here.}
+\end{proof}
 \end{document}
 ```
 
 ### Options
 
-- `draft`—(Default) enables annotations, revision highlights, and margin markers.
-- `final`—suppresses all annotations for production output.
+- `draft`: (default) enables all annotations, revision highlights, and margin markers. Use this during writing and review.
+- `final`: suppresses every annotation, highlight, and margin marker. The document body renders as if the annotation commands were never called. Use this for the final submitted or published version. Switching from `draft` to `final` is the only change needed to go from a working draft to a clean document.
 
 ### API
 
-#### Configuration
+#### Global configuration
 
-- `\documentaccentcolor{color}`—primary accent color for rules and headers.
-
-#### Annotation commands (draft mode)
-
-- `\todo{text}`, `\fixme{text}`, `\notes{text}`, `\query{text}`, `\missing{text}`.
-- `\added{text}`, `\changed{text}`, `\removed{text}`—revision tracking.
-- `\newguymarker{cmd}{label}{color}`—define custom participant markers.
+- `\documentaccentcolor{color}`: sets the primary accent color used for ruled lines, section headings, and theorem decorations. Call once in the preamble. Accepts any color name known to `xcolor`. Default: a neutral dark blue.
 
 #### Sectioning
 
-- `\parhead{text}`—bold inline heading with automated punctuation.
-- `\subparhead{text}`—small-caps inline heading with automated punctuation.
+- `\parhead{text}`: bold inline heading with automatic trailing period. Use in place of `\paragraph` for named steps, cases, or subsections that do not warrant a numbered heading.
+- `\subparhead{text}`: small-caps inline heading with automatic trailing period. Use for finer-grained structure below `\parhead`.
 
-### Conflicts
+#### Annotation commands (active in `draft` mode; no-ops in `final`)
 
-- Do not load `amsthm` manually before this package.
-- Optimized for `article` and `report` classes.
+General annotations:
+
+- `\todo{text}`: inline todo marker in a bright color with a margin flag. Use for items that must be addressed before submission.
+- `\fixme{text}`: inline fixme marker, visually distinct from `\todo`. Use for known errors or broken content.
+- `\query{text}`: question to be resolved, rendered in a different color. Use to flag something you are unsure about.
+- `\notes{text}`: general inline note, lower priority than todo/fixme. Use for reminders and future improvements.
+- `\missing{text}`: placeholder for content not yet written, rendered in a distinctive warning color. Use inside theorem bodies, proof skeletons, or section stubs.
+
+Revision tracking:
+
+- `\added{text}`: marks newly added text in green. Use when incorporating reviewer feedback or co-author additions.
+- `\changed{text}`: marks revised text in orange. Use for sections that have been rewritten since a previous draft.
+- `\removed{text}`: marks text to be deleted in red strikethrough. Use to propose a deletion for co-author review before committing it.
+
+Per-author markers:
+
+- `\newguymarker{cmd}{label}{color}`: defines a custom per-author annotation command `\cmd{text}` that renders `text` in the given color with a sidebar `[label]` marker. Use this once per collaborator in the preamble, then each author calls their own command throughout the document.
+
+```latex
+\newguymarker{\agni}{Agni}{RoyalBlue}
+\newguymarker{\matteo}{Matteo}{BrickRed}
+
+% In the document:
+\agni{I think this proof needs another case.}
+\matteo{Agreed, I will handle it.}
+```
+
+### Theorem environments
+
+`cswhitepaper` provides a complete theorem suite with ruled aesthetics controlled by `\documentaccentcolor`:
+
+**Theorem-like:** `theorem`, `lemma`, `corollary`, `proposition`, `claim`, `conjecture`, `fact`
+
+**Definition-like:** `definition`, `notation`, `protocol`, `problem`, `construction`
+
+**Remark-like:** `remark`, `note`, `example`, `observation`, `openproblem`
+
+All environments are numbered per section, accept optional titles, and are registered with `cleveref`.
+
+### Caveats
+
+- The `final` option suppresses annotations entirely: it does not warn about unfilled `\missing{}` or unresolved `\todo{}` calls. Run a `draft` build and search the PDF for annotation markers before switching to `final`.
+- `\newguymarker` defines a new command at call time. If two authors call it with the same command name, the second definition silently overwrites the first. Use distinct command names per author.
+- Do not load `amsthm` before this package. Loading it after is harmless.
+- Revision tracking commands (`\added`, `\changed`, `\removed`) render in `draft` mode only. In `final` mode, `\added` and `\changed` render their argument as plain text; `\removed` renders nothing. This means `\removed{text}` actually removes the text from the final output, which is intentional but requires care: do not use `\removed` for text you might want to keep.
 
 ### License
 
 LaTeX Project Public License v1.3c.
+
+### Author
+
+Agni Datta: [agni-datta/csLaTeX](https://github.com/agni-datta/csLaTeX)

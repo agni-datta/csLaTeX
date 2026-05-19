@@ -1,3 +1,10 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% csamsmath — Mathematical backbone for STEM publications                      %%
+%%                                                                              %%
+%% Author : Agni Datta                                                          %%
+%% GitHub : https://github.com/agni-datta/csLaTeX                               %%
+%% Docs   : See README.md in this directory for full documentation.             %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \ProvidesPackage{csamsmath}[2026/05/15 v3.1 Absolute mathematical backbone for layout and proofs]
 
@@ -666,7 +673,7 @@
     spacebelow    = 5pt,
     headpunct     = {.},
     postheadspace = 0.5em,
-    qed           = \ensuremath{\scriptstyle\square}
+    qed           = \ensuremath{\scriptstyle\blacksquare}
 ]{csam@proofstyle}
 
 \declaretheorem[name=Proof,style=csam@proofstyle,numbered=no]{proof}
@@ -957,6 +964,14 @@
         \textcolor{Periwinkle}{\sout{#1}}\marginnote{\textcolor{Periwinkle}{\LARGE$\star$}}}
     \NewDocumentCommand{\todo}{m}{%
         \textcolor{Mahogany}{[\textsc{To-do}: #1]}\marginnote{\textcolor{Mahogany}{\LARGE$\star$}}}
+    \NewDocumentCommand{\XXX}{o}{%
+        \marginnote{{\color{PaleVioletRed3}\normalfont$\star$}}%
+        \textcolor{PaleVioletRed3}{\sffamily
+            \IfNoValueTF{#1}
+            {[XXX]}
+            {[#1]}%
+        }%
+    }
     \IfFileExists{scrtime.sty}{%
         \RequirePackage{scrtime}%
         \RequirePackage{prelim2e}%
@@ -964,7 +979,7 @@
             \the\year-\ifnum\the\month<10 0\fi\the\month-%
             \ifnum\the\day<10 0\fi\the\day\space\thistime}%
         \renewcommand\PrelimText{%
-            \normalfont\scshape\footnotesize\color{IndianRed2}%
+            \normalfont\scshape\footnotesize\color{DeepPink3}%
             Draft --- {\csam@datetime} --- Not for Distribution}%
     }{}%
 \else
@@ -977,6 +992,9 @@
     \NewDocumentCommand{\query}{m}{}
     \NewDocumentCommand{\removed}{m}{}
     \NewDocumentCommand{\todo}{m}{}
+    \NewDocumentCommand{\XXX}{O{XXX}}{%
+        \@latex@error{\string\XXX{} found in final mode — remove all \string\XXX before submission}\@ehd
+    }
 \fi
 
 \AtBeginDocument{%

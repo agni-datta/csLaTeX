@@ -3,14 +3,18 @@ title: README
 aliases: README
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:21:30 pm
-date modified: Thursday, May 14th 2026, 10:24:27 pm
+date modified: Tuesday, May 19th 2026, 1:35:34 am
 ---
 
 <!-- @format -->
 
 ## codelines
 
-Algorithmic listing environment with automated line numbering for pseudo-code and step-by-step procedures.
+Algorithmic listing environment with automated line numbering for pseudo-code and step-by-step procedures. Designed for mathematical papers where you want clean, readable algorithm descriptions without the overhead of `algorithmicx` or `algorithm2e`: no floats, no caption machinery, no special syntax for keywords. You write a nested `enumerate`-like environment and get numbered lines with automatic indentation.
+
+### Requirements
+
+No external dependencies beyond a standard TeX distribution. Internally uses `enumitem` for list geometry and `pgffor` for iteration internals.
 
 ### Usage
 
@@ -18,9 +22,11 @@ Algorithmic listing environment with automated line numbering for pseudo-code an
 \usepackage{codelines}
 ```
 
+### Basic example
+
 ```latex
 \begin{codelines}
-    \item Initialize $x \gets 0, y \gets 1$.
+    \item Initialize $x \gets 0$, $y \gets 1$.
     \item For each $e \in S$:
     \begin{codelines}
         \item Compute $f(e)$.
@@ -30,37 +36,70 @@ Algorithmic listing environment with automated line numbering for pseudo-code an
 \end{codelines}
 ```
 
-### Features
+Line numbers appear in the left margin. Nesting produces an extra indentation level per depth, up to 10 levels. The counter is continuous across multiple `codelines` environments in the same document by default, so a second algorithm block picks up where the first left off unless you reset manually.
 
-- Up to 10 levels of nesting with automatic indentation.
-- Continuous line numbering across environments; manually resettable.
-- Adjustable line number style, digit count, and prefix.
-- Boxed content and right/center alignment within lines.
+### Starting line number
+
+The environment accepts one optional argument: the starting line number for that block.
+
+```latex
+\begin{codelines}[5]
+    \item This line is numbered 5.
+    \item This line is numbered 6.
+\end{codelines}
+```
 
 ### API
 
 #### Environment
 
-- `codelines`: Primary listing environment. Optional argument sets the starting line number.
+- `codelines`: primary listing environment. Optional argument `[n]` sets the starting line number.
 
 #### Line number management
 
-- `\codelinessetlinenr{n}`—set next line number to $n$.
-- `\codelinesresetlinenr`—reset counter to 0.
+- `\codelinessetlinenr{n}`: set the next line number to $n$. Equivalent to using the optional argument but can be called outside the environment, e.g. between two blocks.
+- `\codelinesresetlinenr`: reset the counter to 0. Use at the start of a new algorithm if you want numbering to restart from 1.
 
-#### Layout
+#### Layout within a line
 
-- `\codelinesbox{width}{content}`—top-aligned parbox for multi-line annotations on a single numbered line.
-- `\codelinesrightalign{text}`—right-align text within the line.
-- `\codelinescenteralign{text}`—center text within the line.
-- `\codelinesplus` / `\codelinesminus`—adjust indentation level incrementally.
+- `\codelinesbox{width}{content}`: wraps `content` in a top-aligned `\parbox` of the given width. Use when a single numbered line contains multi-line content that must align with the line number rather than reflow freely. Useful for structured side-by-side annotations.
+- `\codelinesrightalign{text}`: right-aligns `text` within the current line. The canonical use is running-time annotations such as `\codelinesrightalign{// $O(n)$}`.
+- `\codelinescenteralign{text}`: centers `text` within the current line.
+- `\codelinesplus`: increase indentation by one level without opening a nested `codelines` environment. Use when you want to visually indent a continuation without incrementing the nesting counter.
+- `\codelinesminus`: decrease indentation by one level.
 
 #### Customization hooks
 
-- `\codelineslinenrformat`—font/color of line numbers (default: `\normalfont\footnotesize\ttfamily\color{black!50}`).
-- `\codelineslinenrdigits`—digit count for padding (default: `2`).
-- `\codelinesrefprefix`—prefix for cross-references (default: empty).
+These are commands you redefine globally with `\renewcommand` to change appearance across the entire document:
+
+- `\codelineslinenrformat`: font and color of line numbers. Default: `\normalfont\footnotesize\ttfamily\color{black!50}`. For example, to print line numbers in red: `\renewcommand{\codelineslinenrformat}{\footnotesize\color{red}}`.
+- `\codelineslinenrdigits`: number of digits for zero-padding. Default `2` gives `01`, `02`, …, `99`. Set to `3` if your algorithm exceeds 99 lines.
+- `\codelinesrefprefix`: prefix prepended to internal cross-reference anchors. Default is empty. Set a unique string per algorithm if you have multiple `codelines` blocks in the same document and need unambiguous `\ref` or `\label` targets.
+
+### Cross-referencing
+
+Standard `\label`/`\ref` works on any `\item`. Place `\label{…}` immediately after `\item`:
+
+```latex
+\begin{codelines}
+    \item \label{line:init} Initialize $x \gets 0$.
+    \item \label{line:loop} For each $e \in S$, update $x$.
+\end{codelines}
+
+See line~\ref{line:init} for initialization.
+```
+
+### Caveats
+
+- The environment is intentionally not a float. It appears exactly where placed in the source. Wrap in a `figure` or a custom float if you need a caption or want LaTeX to manage placement.
+- Nesting beyond 10 levels is unsupported and will silently produce incorrect indentation.
+- `\codelinesplus` and `\codelinesminus` modify a global indentation counter. Do not use them inside groups expecting them to be automatically reversed.
+- Line numbers are rendered via `enumitem` internals: if you heavily customize `enumitem` globally, verify that `codelines` still renders correctly.
 
 ### License
 
 LaTeX Project Public License v1.3c.
+
+### Author
+
+Agni Datta: [agni-datta/csLaTeX](https://github.com/agni-datta/csLaTeX)
