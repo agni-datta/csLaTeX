@@ -314,10 +314,33 @@
             Ligatures         = TeX,
             RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
         ]
-        \setmathfont{Libertinus Math}[
+        \setmathfont{KPMath-Regular}[
             AutoFakeBold,
             AutoFakeSlant,
             Scale             = MatchUppercase,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmathfont{LibertinusSerif-Regular}[
+            Scale             = MatchUppercase,
+            range             = {up/{latin,Latin,num}},
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmathfont{LibertinusSerif-Italic}[
+            Scale             = MatchUppercase,
+            range             = {it/{latin,Latin}},
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmathfont{Libertinus Sans}[
+            Scale             = MatchUppercase,
+            range             = {sfup/{latin,Latin,num},sfit/{latin,Latin}},
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]
+        \setmathfont{Noto Sans Mono}[
+            Scale             = MatchUppercase,
+            range             = {tt/{latin,Latin,num}},
             RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
         ]
         \csam@mathalpha@stylishtrue
