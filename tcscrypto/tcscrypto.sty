@@ -76,7 +76,7 @@
 { \clist_map_inline:nn { #1 } { \__crypto_parse_pair:w ##1 \q_stop { } { schemestyle } } }
 
 \NewDocumentCommand \cryptoDefineOracleCSV { m }
-{ \clist_map_inline:nn { #1 } { \__crypto_parse_pair:w ##1 \q_stop { oracle } { oraclestyle } } }
+{ \clist_map_inline:nn { #1 } { \__crypto_parse_pair:w ##1 \q_stop { } { oraclestyle } } }
 
 \NewDocumentCommand \cryptoDefineProbCSV { m }
 { \clist_map_inline:nn { #1 } { \__crypto_parse_pair:w ##1 \q_stop { } { probstyle } } }
@@ -732,7 +732,7 @@
 	PC/PC,
 	PCR/PCR,
 	PV/PV,
-	Pos/Pos,
+	Post/Post,
 	RegRes/Reg\textsf{-}Res,
 	Res/Res,
 	ResGraph/ResG,
