@@ -191,7 +191,7 @@
 			backgroundcolor    = white,
 			linecolor          = black
 		]
-		\IfNoValueF{#1}{
+		\IfNoValueF{#1}{%
 			\noindent\textnormal{\textbf{#1}}\par\smallskip
 			\noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}
 		}\noindent
@@ -203,6 +203,7 @@
 \let\E\relax
 \let\Game\relax
 \let\Im\relax
+\let\Pos\relax
 \let\Pr\relax
 
 \let\adv\relax
@@ -297,6 +298,9 @@
 	\setstyle{O}
 	\IfValueT{#1}{\left(#1\right)}
 	\IfValueT{#2}{\left[#2\right]}
+}
+\NewDocumentCommand{\smallO}{d()}{%
+	\mathscr{o}\IfValueT{#1}{\left(#1\right)}%
 }
 \NewDocumentCommand{\expon}{d() d[]}{
 	\exp
@@ -407,16 +411,20 @@
 \newcommand{\GoodEvent}{\Event{E}}
 
 \cryptoDefineClassCSV{
+	ARG/ARG,
 	CLS/CLS,
 	EOL/EOL,
 	EOML/EOML,
 	EOPL/EOPL,
 	IPP/IPP,
 	MAP/MAP,
+	NARG/NARG,
+	NISIP/NISIP,
 	PHC/PHC,
 	PWPP/PWPP,
 	RIP/RIP,
 	RSVL/RSVL,
+	SIP/SIP,
 	SOPL/SOPL,
 	SUBEXPSPACE/SUBEXPSPACE,
 	SVL/SVL,
@@ -430,6 +438,7 @@
 	AI/AI,
 	ARG/ARG,
 	BARG/BARG,
+	Beacon/BC,
 	CI/CI,
 	CIH/CIH,
 	CM/CM,
@@ -459,6 +468,7 @@
 	KEM/KEM,
 	LF/LF,
 	LPCP/LPCP,
+	MD/MD,
 	ML/ML,
 	MLFHE/MLFHE,
 	MPC/MPC,
@@ -482,6 +492,7 @@
 	PSI/PSI,
 	QPCP/QPCP,
 	QROM/QROM,
+	RBR/RBR,
 	RO/RO,
 	ROM/ROM,
 	SIG/SIG,
@@ -491,8 +502,10 @@
 	SNARG/SNARG,
 	SNARK/SNARK,
 	SPMPC/SPMPC,
+	SR/SR,
 	SRS/SRS,
 	SSB/SSB,
+	SoK/SoK,
 	TCR/TCR,
 	TDF/TDF,
 	TDH/TDH,
@@ -501,6 +514,7 @@
 	VC/VC,
 	VDF/VDF,
 	VOLE/VOLE,
+	VRF/VRF,
 	ZK/ZK,
 }
 
@@ -625,6 +639,7 @@
 	IHO/IHO,
 	Ideal/I,
 	Index/Index,
+	Inf/Inf,
 	Init/Init,
 	Interp/Interp,
 	Inv/Inv,
@@ -691,6 +706,7 @@
 }
 
 \cryptoDefineAlgoCSV{
+	ACFrege/AC\textsuperscript{0}\textsf{-}Frege,
 	APC/APC,
 	CP/CP,
 	CPV/CPV,
@@ -701,11 +717,14 @@
 	ExtFrege/ExtFrege,
 	FV/FV,
 	Frege/Frege,
+	G/G,
 	HA/HA,
 	IPS/IPS,
 	LJ/LJ,
 	LK/LK,
 	MaxRes/MaxRes,
+	MergeRes/MergeRes,
+	MonRes/Mon\textsf{-}Res,
 	NJ/NJ,
 	NK/NK,
 	NS/NS,
@@ -713,14 +732,19 @@
 	PC/PC,
 	PCR/PCR,
 	PV/PV,
+	Pos/Pos,
+	RegRes/Reg\textsf{-}Res,
 	Res/Res,
 	ResGraph/ResG,
 	ResTree/ResT,
 	SA/SA,
+	SAplus/SA^{+},
 	SOS/SOS,
+	TCFrege/TC\textsuperscript{0}\textsf{-}Frege,
 	TreeRes/TreeRes,
 	VNC/VNC,
 	VPV/VPV,
+	WRes/W\textsf{-}Res,
 }
 
 \cryptoDefineAlgoCSV{
@@ -807,8 +831,8 @@
 
 \cryptoDefineKeyCSV{
 	acc/acc,
-	accm/accm,
 	accept/accept,
+	accm/accm,
 	ad/ad,
 	add/add,
 	authentic/authentic,
@@ -838,6 +862,7 @@
 	il/il,
 	insecure/insecure,
 	invalid/invalid,
+	iv/iv,
 	kc/kc,
 	kk/k,
 	kl/kl,
@@ -879,6 +904,7 @@
 	sid/sid,
 	sidv/sidv,
 	sk/sk,
+	sr/sr,
 	srs/srs,
 	ssid/ssid,
 	sspk/sspk,
@@ -907,13 +933,27 @@
 }
 
 \cryptoDefineOracleCSV{
+	CDHOracle/CDH,
+	CRGapDHOracle/CRGapDH,
+	ChallengeOracle/Challenge,
 	Corrupt/Corrupt,
 	Create/Create,
-	EphemeralKey/EphemeralKey,
+	DDHOracle/DDH,
+	DecryptionOracle/Decrypt,
+	EncryptionOracle/Encrypt,
+	EvalOracle/Eval,
 	Execute/Execute,
+	ExposeOracle/Expose,
+	GapDHOracle/GapDH,
+	HashOracle/Hash,
 	IsPartner/IsPartner,
 	KeyConfirm/KeyConfirm,
+	KeyGenOracle/KeyGen,
+	NewKeyOracle/NewKey,
 	Partner/Partner,
+	ProverOracle/Prover,
+	PunctureOracle/Puncture,
+	ROOracle/RO,
 	Reveal/Reveal,
 	Send/Send,
 	SessionExpire/SessionExpire,
@@ -921,7 +961,13 @@
 	SessionResync/SessionResync,
 	SessionState/SessionState,
 	SessionTranscript/SessionTranscript,
-	Test/Test
+	SignOracle/Sign,
+	SimOracle/SimOracle,
+	Test/Test,
+	UnwrapOracle/Unwrap,
+	VerifierOracle/Verifier,
+	VerifyOracle/Vrfy,
+	WrapOracle/Wrap,
 }
 
 \let\SendOracle\oracleSend
@@ -931,14 +977,6 @@
 \let\TestOracle\oracleTest
 \let\EphemeralKeyOracle\oracleEphemeralKey
 \let\SessionKeyOracle\oracleSessionKey
-
-\newcommand{\HashOracle}{\oracle{H}}
-\newcommand{\SignOracle}{\oracle{Sign}}
-\newcommand{\ChallengeOracle}{\oracle{Challenge}}
-\newcommand{\CDHOracle}{\oracle{CDH}}
-\newcommand{\DDHOracle}{\oracle{DDH}}
-\newcommand{\GapDHOracle}{\oracle{GapDH}}
-\newcommand{\CRGapDHOracle}{\oracle{CRGapDH}}
 
 \newcommand{\ACSetup}{\AC.\funct{Setup}}
 \newcommand{\ACAccum}{\AC.\funct{Accum}}
@@ -1176,6 +1214,12 @@
 \newcommand{\SIGSign}{\SIG.\funct{Sign}}
 \newcommand{\SIGVerify}{\SIG.\funct{Vrfy}}
 
+\newcommand{\SoKSetup}{\SoK.\funct{Setup}}
+\newcommand{\SoKSign}{\SoK.\funct{Sign}}
+\newcommand{\SoKSimSetup}{\SoK.\funct{SimSetup}}
+\newcommand{\SoKSimSign}{\SoK.\funct{SimSign}}
+\newcommand{\SoKVerify}{\SoK.\funct{Vrfy}}
+
 \newcommand{\BLS}{\algostyle{BLS}}
 \newcommand{\BLSSetup}{\BLS.\funct{Setup}}
 \newcommand{\BLSGen}{\BLS.\funct{Gen}}
@@ -1197,6 +1241,10 @@
 \newcommand{\SNARGProve}{\SNARG.\funct{Prove}}
 \newcommand{\SNARGVerify}{\SNARG.\funct{Vrfy}}
 
+\newcommand{\SNARKSetup}{\SNARK.\funct{Setup}}
+\newcommand{\SNARKProve}{\SNARK.\funct{Prove}}
+\newcommand{\SNARKVerify}{\SNARK.\funct{Vrfy}}
+
 \newcommand{\TDFGen}{\TDF.\funct{Gen}}
 \newcommand{\TDFEval}{\TDF.\funct{Eval}}
 \newcommand{\TDFVerify}{\TDF.\funct{Vrfy}}
@@ -1215,6 +1263,17 @@
 \newcommand{\VDFEval}{\VDF.\funct{Eval}}
 \newcommand{\VDFProve}{\VDF.\funct{Prove}}
 \newcommand{\VDFVerify}{\VDF.\funct{Vrfy}}
+
+\newcommand{\VRFKeyGen}{\VRF.\funct{KeyGen}}
+\newcommand{\VRFEval}{\VRF.\funct{Eval}}
+\newcommand{\VRFVerify}{\VRF.\funct{Vrfy}}
+
+\newcommand{\BeaconSetup}{\Beacon.\funct{Setup}}
+\newcommand{\BeaconSample}{\Beacon.\funct{Sample}}
+\newcommand{\BeaconVerify}{\Beacon.\funct{Vrfy}}
+
+\newcommand{\MDSetup}{\MD.\funct{Setup}}
+\newcommand{\MDEval}{\MD.\funct{Eval}}
 
 \newcommand{\VOLESender}{\VOLE.\funct{Sender}}
 \newcommand{\VOLEReceiver}{\VOLE.\funct{Receiver}}
@@ -1258,11 +1317,13 @@
 \newcal{\KeySpace}{K}
 \newcal{\MessageSpace}{M}
 \newcal{\RandomnessSpace}{R}
+\newcal{\StateSpace}{S}
 \newcal{\UniRand}{U}
 \newcal{\UniformRandomness}{U}
 \newcal{\WitnessSpace}{W}
 
 \newscr{\Prover}{P}
+\newscr{\Schema}{S}
 \newscr{\Verifier}{V}
 \newscr{\HonestProver}{\hat{\Prover}}
 \newscr{\HonestVerifier}{\hat{\Verifier}}
@@ -1320,11 +1381,11 @@
 \newbb{\wit}{w}
 \newcommand{\secret}{s}
 
-\newcommand{\state}{\mathbb{s}}
-\newcommand{\stateP}{\state_P}
-\newcommand{\stateV}{\state_V}
-\newcommand{\stateA}{\state_A}
-\newcommand{\stateSim}{\state_S}
+\newcommand{\state}{\algostyle{st}}
+\newcommand{\stateP}{\state_\Prover}
+\newcommand{\stateV}{\state_\Verifier}
+\newcommand{\stateA}{\state_\Adv}
+\newcommand{\stateSim}{\state_\Sim}
 
 \newcommand{\chal}{\algostyle{ch}}
 \newcommand{\hbound}{c}
