@@ -199,7 +199,7 @@
             RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
         ]
         \setsansfont{Libertinus Sans}[
-            Scale             = MatchUppercase,
+            Scale             = MatchLowercase,
             Ligatures         = TeX,
             SmallCapsFeatures = {RawFeature=+smcp},
             RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
@@ -261,7 +261,8 @@
         \setsansfont{Libertinus Sans}[
             Scale             = MatchUppercase,
             Ligatures         = TeX,
-            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum},
+            SmallCapsFeatures = {Letters=SmallCaps},
         ]
         \setmonofont{Noto Sans Mono}[
             Scale             = MatchLowercase,
@@ -564,6 +565,9 @@
 
 \numberwithin{equation}{section}
 
+\newcommand{\thmendsymb}{\ensuremath{\scriptstyle\lrcorner}}
+\renewcommand{\qedsymbol}{\ensuremath{\scriptstyle\square}}
+
 \declaretheoremstyle[
     headfont      = \bfseries,
     notefont      = \normalfont,
@@ -571,7 +575,8 @@
     spaceabove    = 3pt,
     spacebelow    = 3pt,
     headpunct     = {.},
-    postheadspace = 0.5em
+    postheadspace = 0.5em,
+    qed           = {\thmendsymb}
 ]{csam@theoremlike}
 
 \declaretheoremstyle[
@@ -581,7 +586,8 @@
     spaceabove    = 3pt,
     spacebelow    = 3pt,
     headpunct     = {.},
-    postheadspace = 0.5em
+    postheadspace = 0.5em,
+    qed           = {\thmendsymb}
 ]{csam@definitionlike}
 
 \declaretheoremstyle[
@@ -591,7 +597,8 @@
     spaceabove    = 3pt,
     spacebelow    = 3pt,
     headpunct     = {.},
-    postheadspace = 0.5em
+    postheadspace = 0.5em,
+    qed           = {\thmendsymb}
 ]{csam@remarklike}
 
 \declaretheoremstyle[
@@ -601,7 +608,8 @@
     spaceabove    = 3pt,
     spacebelow    = 3pt,
     headpunct     = {.},
-    postheadspace = 0.5em
+    postheadspace = 0.5em,
+    qed           = {\thmendsymb}
 ]{csam@highlightlike}
 
 \declaretheorem[
@@ -696,7 +704,7 @@
     spacebelow    = 5pt,
     headpunct     = {.},
     postheadspace = 0.5em,
-    qed           = \ensuremath{\scriptstyle\blacksquare}
+    qed           = {\qedsymbol}
 ]{csam@proofstyle}
 
 \declaretheorem[name=Proof,style=csam@proofstyle,numbered=no]{proof}
