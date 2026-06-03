@@ -818,7 +818,6 @@
     \smallskip
     \noindent
     \textbf{\boldmath\ignorespaces\csam@appendpunctuationifneeded{#1}}%
-    \hskip 0.9em plus 0.3em minus 0.3em
     \csam@ignorewhitespaceandimplicitpars
 }
 
@@ -826,12 +825,11 @@
     \smallskip
     \noindent
     \textsc{\ignorespaces\csam@appendpunctuationifneeded{#1}}%
-    \hskip 0.9em plus 0.3em minus 0.3em
     \csam@ignorewhitespaceandimplicitpars
 }
 
-\NewDocumentCommand{\parhead}{m}{\csam@paragraphhead{#1}}
-\NewDocumentCommand{\subparhead}{m}{\csam@subparagraphhead{#1}}
+\NewDocumentCommand{\parhead}{m}{\csam@paragraphhead{#1}~}
+\NewDocumentCommand{\subparhead}{m}{\csam@subparagraphhead{#1}~}
 
 \RequirePackage{framed}
 
