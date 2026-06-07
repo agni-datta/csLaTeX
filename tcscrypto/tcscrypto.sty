@@ -123,7 +123,6 @@
 	\renewcommand\appendixpagename{Supplementary Material}
 	\crefname{appendix}{Supplementary Material}{Supplementary Materials}
 \fi
-\Crefname{algocf}{Algorithm}{Algorithms}
 
 \if@tcscrypto@toc
 	\setcounter{tocdepth}{2}
@@ -230,6 +229,7 @@
 \newbb{\CC}{C}
 \newbb{\FF}{F}
 \newbb{\GG}{G}
+\newbb{\GF}{GF}
 \newbb{\GL}{GL}
 \newbb{\NN}{N}
 \newbb{\QQ}{Q}
@@ -278,9 +278,9 @@
 \newcommand{\interaction}[2]{\langle #1, #2 \rangle}
 \newcommand{\interact}[1]{\langle #1 \rangle}
 \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\paren}[1]{\left\{#1\right\}}
 \newcommand{\proj}[2]{#1\left[#2\right]}
 \newcommand{\seq}[1]{\left(#1\right)}
-\newcommand{\set}[1]{\left\{#1\right\}}
 \newcommand{\sqbrkt}[1]{\left[#1\right]}
 \newcommand{\tuple}[1]{\left(#1\right)}
 \newcommand{\vspan}[1]{\left(#1\right)}
@@ -364,7 +364,6 @@
 \DeclareMathOperator*{\sindist}{\equiv_s}
 \DeclareMathOperator*{\cindist}{\equiv_c}
 \DeclareMathOperator*{\pindist}{\equiv_p}
-
 \DeclareMathOperator*{\hyph}{\mhyphen}
 \DeclareMathOperator*{\inR}{\in_{\mathrm{R}}}
 \DeclareMathOperator*{\shouldeq}{\stackrel{\text{!}}{=}}
@@ -379,8 +378,6 @@
 \DeclareMathOperator*{\gates}{\algostyle{gates}}
 \DeclareMathOperator*{\gate}{\algostyle{gate}}
 \DeclareMathOperator*{\img}{\algostyle{img}}
-\DeclareMathOperator*{\lg}{\algostyle{lg}}
-\DeclareMathOperator*{\log}{\algostyle{log}}
 \DeclareMathOperator*{\negl}{\algostyle{negl}}
 \DeclareMathOperator*{\ord}{\algostyle{ord}}
 \DeclareMathOperator*{\polylog}{\algostyle{polylog}}
@@ -396,6 +393,11 @@
 \DeclareMathOperator*{\width}{\algostyle{width}}
 \DeclareMathOperator*{\wires}{\algostyle{wires}}
 \DeclareMathOperator*{\wire}{\algostyle{wire}}
+
+\DeclareMathOperator*{\chr}{\mathrm{char}}
+\DeclareMathOperator*{\lcm}{\mathrm{lcm}}
+\DeclareMathOperator*{\lg}{\mathrm{lg}}
+\DeclareMathOperator*{\log}{\mathrm{log}}
 
 \newcommand{\Func}{\sfF}
 \newcommand{\Primes}{\mathsf{Primes}}
@@ -437,52 +439,96 @@
 	AHP/AHP,
 	AI/AI,
 	ARG/ARG,
+	ATP/ATP,
+	ApproxSVP/ApproxSVP,
 	BARG/BARG,
+	BDD/BDD,
+	BDH/BDH,
+	BFS/BFS.
 	Beacon/BC,
+	CDCL/CDCL,
+	CDH/CDH,
+	CH/CH,
 	CI/CI,
 	CIH/CIH,
 	CM/CM,
+	CNF/CNF,
+	CRGapDH/CRGapDH,
 	CRHF/CRHF,
 	CRS/CRS,
+	CVP/CVP,
+	DAG/DAG,
+	DBDH/DBDH,
+	DDH/DDH,
+	DFS/DFS,
+	DH/DH,
+	DL/DL,
+	DLIN/DLIN,
+	DLP/DLP,
+	DLWE/DLWE,
+	DLog/DLog,
+	DNF/DNF,
 	DPF/DPF,
 	DPVW/DPVW,
 	DS/DS,
+	Dlog/Dlog,
 	ELF/ELF,
 	FC/FC,
 	FE/FE,
 	FHE/FHE,
 	FS/FS,
 	FSS/FSS,
+	GCH/GCH,
 	GGM/GGM,
+	GM/GM,
+	GRH/GRH,
+	GapCVP/GapCVP,
+	GapDH/GapDH,
+	GapSIVP/GapSIVP,
+	GapSVP/GapSVP,
 	HASH/HASH,
 	HE/HE,
 	HIBE/HIBE,
 	HIS/HIS,
+	HM/HM,
 	HSG/HSG,
 	HSS/HSS,
 	HVZK/HVZK,
 	IBE/IBE,
 	ICM/ICM,
+	IFP/IFP,
 	IOP/IOP,
+	ISIS/ISIS,
 	IVC/IVC,
 	KEM/KEM,
+	LDD/LDD,
 	LF/LF,
 	LPCP/LPCP,
+	LPN/LPN,
+	LRSW/LRSW,
+	LWE/LWE,
+	MAJORITY/MAJORITY,
 	MD/MD,
 	ML/ML,
 	MLFHE/MLFHE,
+	MLWE/MLWE,
 	MPC/MPC,
+	MSIS/MSIS,
 	MT/MT,
 	NARG/NARG,
 	NIZK/NIZK,
+	NNF/NNF,
+	NTRU/NTRU,
 	NW/NW,
 	OLE/OLE,
 	OPRF/OPRF,
 	OT/OT,
 	OWF/OWF,
 	OWP/OWP,
+	PARITY/PARITY,
 	PC/PC,
 	PCG/PCG,
+	PHP/PHP,
 	PIR/PIR,
 	PKE/PKE,
 	PKFE/PKFE,
@@ -490,32 +536,59 @@
 	PRF/PRF,
 	PRG/PRG,
 	PSI/PSI,
+	QM/QM,
+	QNR/QNR,
 	QPCP/QPCP,
+	QR/QR,
 	QROM/QROM,
 	RBR/RBR,
+	RH/RH,
+	RLWE/RLWE,
 	RO/RO,
 	ROM/ROM,
+	RR/RR.
+	RSA/RSA,
+	RSIS/RSIS,
+	SAT/SAT,
+	SD/SD,
+	SDH/SDH,
 	SIG/SIG,
 	SIR/SIR,
+	SIS/SIS,
+	SIVP/SIVP,
 	SKE/SKE,
 	SKFE/SKFE,
+	SLWE/SLWE,
 	SNARG/SNARG,
 	SNARK/SNARK,
 	SPMPC/SPMPC,
 	SR/SR,
 	SRS/SRS,
 	SSB/SSB,
+	SVP/SVP,
+	SXDH/SXDH,
 	SoK/SoK,
+	TAUT/TAUT,
 	TCR/TCR,
 	TDF/TDF,
 	TDH/TDH,
 	TDP/TDP,
+	UNSAT/UNSAT,
 	UOW/UOW,
+	UniqueSVP/UniqueSVP,
 	VC/VC,
 	VDF/VDF,
 	VOLE/VOLE,
 	VRF/VRF,
+	WFF/WFF,
+	XDH/XDH,
+	ZFC/ZFC,
 	ZK/ZK,
+	coCDH/coCDH,
+	coDDH/coDDH,
+	qBDH/qBDH,
+	qSDH/qSDH,
+	uSVP/uSVP,
 }
 
 \cryptoDefineSchemeCSV{
@@ -533,62 +606,6 @@
 	sROM/sROM,
 	zkSNARK/zkSNARK,
 	zkSTARK/zkSTARK,
-}
-
-\cryptoDefineSchemeCSV{
-	ApproxSVP/ApproxSVP,
-	BDD/BDD,
-	BDH/BDH,
-	CDH/CDH,
-	CNF/CNF,
-	CRGapDH/CRGapDH,
-	CVP/CVP,
-	DAG/DAG,
-	DBDH/DBDH,
-	DDH/DDH,
-	DH/DH,
-	DL/DL,
-	DLIN/DLIN,
-	DLP/DLP,
-	DLWE/DLWE,
-	DLog/DLog,
-	DNF/DNF,
-	Dlog/Dlog,
-	GapCVP/GapCVP,
-	GapDH/GapDH,
-	GapSIVP/GapSIVP,
-	GapSVP/GapSVP,
-	IFP/IFP,
-	ISIS/ISIS,
-	LDD/LDD,
-	LPN/LPN,
-	LRSW/LRSW,
-	LWE/LWE,
-	MLWE/MLWE,
-	MSIS/MSIS,
-	NNF/NNF,
-	NTRU/NTRU,
-	PHP/PHP,
-	RLWE/RLWE,
-	RSA/RSA,
-	RSIS/RSIS,
-	SAT/SAT,
-	SD/SD,
-	SDH/SDH,
-	SIS/SIS,
-	SIVP/SIVP,
-	SLWE/SLWE,
-	SVP/SVP,
-	SXDH/SXDH,
-	TAUT/TAUT,
-	UNSAT/UNSAT,
-	UniqueSVP/UniqueSVP,
-	XDH/XDH,
-	coCDH/coCDH,
-	coDDH/coDDH,
-	qBDH/qBDH,
-	qSDH/qSDH,
-	uSVP/uSVP,
 }
 
 \cryptoDefineAlgoCSV{
