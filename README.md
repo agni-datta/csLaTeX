@@ -22,6 +22,7 @@ LaTeX packages for computer science research, technical teaching, and academic d
 | [`csamsmath`](csamsmath/README.md)            | 3.1     | Math backbone for research papers: fonts, theorem environments, and annotation commands.                                                 |
 | [`csbook`](csbook/README.md)                  | 3.0     | Framework for textbooks and large reports with draft/final modes and broken-reference tracking.                                          |
 | [`csdeferproofs`](csdeferproofs/README.md)    | 1.0     | Deferred-proof infrastructure: collect proofs into a “Missing Proofs” appendix in submission mode; keep them inline in eprint mode.      |
+| [`eudoxus`](eudoxus/README.md)                | 1.0     | General-purpose math package: fonts, layout, theorem environments, TikZ, and bibliography styling for `amsart` documents.                |
 | [`cslecture`](cslecture/README.md)            | 3.0     | Skeleton for lecture notes over the `article` class: condensed spacing, boxed title block, and a full theorem suite.                     |
 | [`csletter`](csletter/README.md)              | 3.0     | Professional correspondence with configurable colors, margins, spacing, and optional logo and signature images.                          |
 | [`cspresentation`](cspresentations/README.md) | 3.0     | Beamer theme overlay on Metropolis with the Nord color palette, semantic highlight commands, and TikZ diagram styles.                    |
@@ -89,6 +90,7 @@ csLaTeX/
 ├── csamsmath/          csamsmath.sty, README.md
 ├── csbook/             csbook.sty, README.md
 ├── csdeferproofs/      csdeferproofs.sty, README.md
+├── eudoxus/            eudoxus.sty, README.md
 ├── cslecture/          cslecture.sty, README.md
 ├── csletter/           csletter.sty, README.md
 ├── cspresentations/    cspresentation.sty, README.md
