@@ -10,16 +10,15 @@
 
 \makeatletter
 
-\newif\if@tcscrypto@emphasis
-\@tcscrypto@emphasisfalse
-\newif\if@tcscrypto@venue
-\@tcscrypto@venuefalse
-\newif\if@tcscrypto@toc
-\@tcscrypto@toctrue
+\newif\if@tcscrypto@emphasis\@tcscrypto@emphasisfalse
+\newif\if@tcscrypto@small\@tcscrypto@smallfalse
+\newif\if@tcscrypto@toc\@tcscrypto@toctrue
+\newif\if@tcscrypto@venue\@tcscrypto@venuefalse
 
 \DeclareOption{noemph}{\@tcscrypto@emphasistrue}
-\DeclareOption{venuestyle}{\@tcscrypto@venuetrue}
 \DeclareOption{notoc}{\@tcscrypto@tocfalse}
+\DeclareOption{small}{\@tcscrypto@smalltrue}
+\DeclareOption{venuestyle}{\@tcscrypto@venuetrue}
 
 \ProcessOptions\relax
 
@@ -33,14 +32,39 @@
 \RequirePackage{xparse}
 \RequirePackage{xspace}
 
-\newcommand{\algostyle}[1]{\ensuremath{\mathsf{#1}}}
+\if@tcscrypto@small
+	\newcommand\complexity@reducesize{%
+		\ifx\@currsize\normalsize\small
+		\else
+			\ifx\@currsize\small\footnotesize
+			\else
+				\ifx\@currsize\large\normalsize
+				\fi
+			\fi
+		\fi
+	}
+	\renewcommand\complexity@possiblymakesmaller[1]{%
+		\mathchoice
+		{\hbox{\complexity@reducesize$#1$}}%
+		{\hbox{\complexity@reducesize$#1$}}%
+		{#1}%
+		{#1}}%
+	\newcommand{\algostyle}[1]{%
+		\ensuremath{\hbox{\complexity@reducesize$\mathsf{#1}$%
+			}%
+		}%
+	}%
+\else
+	\newcommand{\algostyle}[1]{\ensuremath{\mathsf{#1}}}
+\fi
+
 \newcommand{\funcstyle}[1]{\algostyle{#1}}
-\newcommand{\keystyle}[1]{\algostyle{#1}}
+\newcommand{\keystyle}[1]{\ensuremath{\mathsf{{#1}}}}
 \newcommand{\oraclestyle}[1]{\ensuremath{\textnormal{\textsc{#1}}}}
 \newcommand{\probstyle}[1]{\ensuremath{\textnormal{\textsc{#1}}}\xspace}
-\newcommand{\schemestyle}[1]{\ensuremath{\mathsf{#1}}}
+\newcommand{\schemestyle}[1]{\algostyle{#1}}
 \newcommand{\setstyle}[1]{\ensuremath{\mathcal{#1}}}
-\newcommand{\varstyle}[1]{\ensuremath{\mathsf{#1}}}
+\newcommand{\varstyle}[1]{\algostyle{#1}}
 
 \newcommand{\funct}[1]{\funcstyle{#1}}
 \newcommand{\key}[1]{\keystyle{#1}}
@@ -167,7 +191,7 @@
 \newcommand{\mathcolorbox}[2]{\colorbox{#1}{$\displaystyle#2$}}
 \newcommand{\emphbox}[1]{\mathcolorbox{SlateBlue3}{#1}}
 \newcommand{\emphdiff}[1]{{\leavevmode\color{RoyalBlue3}#1}}
-\newcommand{\highlightbox}[1]{\colorbox{Orange!30}{#1}}
+\newcommand{\highlightbox}[1]{\colorbox{Goldenrod1!30}{#1}}
 
 \@ifundefined{keywords}{\newcommand{\keywords}[1]{\paragraph{Keywords:}{#1}}}{}
 \@ifundefined{para}{\newcommand{\para}[1]{\subparagraph{#1}}}{}
@@ -368,10 +392,12 @@
 \DeclareMathOperator*{\inR}{\in_{\mathrm{R}}}
 \DeclareMathOperator*{\shouldeq}{\stackrel{\text{!}}{=}}
 
+\DeclareMathOperator{\Adj}{\algostyle{Adj}}
 \DeclareMathOperator{\Dom}{\algostyle{Dom}}
 \DeclareMathOperator{\Im}{\algostyle{Im}}
 \DeclareMathOperator{\Range}{\algostyle{Range}}
 
+\DeclareMathOperator*{\adj}{\algostyle{adj}}
 \DeclareMathOperator*{\codom}{\algostyle{codom}}
 \DeclareMathOperator*{\depth}{\algostyle{depth}}
 \DeclareMathOperator*{\dom}{\algostyle{dom}}
@@ -444,7 +470,7 @@
 	BARG/BARG,
 	BDD/BDD,
 	BDH/BDH,
-	BFS/BFS.
+	BFS/BFS,
 	Beacon/BC,
 	CDCL/CDCL,
 	CDH/CDH,
