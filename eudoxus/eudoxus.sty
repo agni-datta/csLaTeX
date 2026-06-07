@@ -1,0 +1,395 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% eudoxus.sty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{eudoxus}[2026/06/07 v1.0.0 Eudoxus Math LaTeX package]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Options
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newif\ifeudoxmath     \eudoxmathtrue
+\newif\ifeudoxtheorems \eudoxtheoremstrue
+\newif\ifeudoxtcs      \eudoxtcsfalse
+\newif\ifeudoxlayout   \eudoxlayouttrue
+
+\DeclareOption{nomath}     {\eudoxmathfalse\eudoxtheoremsfalse\eudoxtcsfalse}
+\DeclareOption{notheorems} {\eudoxtheoremsfalse}
+\DeclareOption{notcs}      {\eudoxtcsfalse}
+\DeclareOption{nolayout}   {\eudoxlayoutfalse}
+
+\DeclareOption*{\PackageWarning{eudoxus}{Unknown option `\CurrentOption'}}
+\ProcessOptions\relax
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Encoding and language
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage[english]{babel}
+\RequirePackage[T1]{fontenc}
+\RequirePackage[utf8]{inputenc}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Page layout
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifeudoxlayout
+  \RequirePackage[a4paper,margin=1in]{geometry}
+  \RequirePackage{setspace}
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Typography
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage[normalem]{ulem}
+\RequirePackage{moresize}
+\RequirePackage{relsize}
+\RequirePackage{soul}
+\RequirePackage{titlecaps}
+\RequirePackage{xspace}
+\RequirePackage{xurl}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Color
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage[dvipsnames,table,x11names]{xcolor}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Graphics and floats
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{adjustbox}
+\RequirePackage{afterpage}
+\RequirePackage{floatrow}
+\RequirePackage{graphicx}
+\RequirePackage{placeins}
+\RequirePackage{subcaption}
+\RequirePackage{wrapfig}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Tables
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{array}
+\RequirePackage{booktabs}
+\RequirePackage{colortbl}
+\RequirePackage{hhline}
+\RequirePackage{makecell}
+\RequirePackage{multicol}
+\RequirePackage{multirow}
+\RequirePackage{tabularray}
+\RequirePackage{tabularx}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Lists
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{paralist}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Environments
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{comment}
+\RequirePackage{fancyvrb}
+\RequirePackage{framed}
+\RequirePackage[framemethod=TikZ,skipabove=5pt,skipbelow=5pt,roundcorner=2pt]{mdframed}
+\RequirePackage{verbatim}
+
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TikZ
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{pgfplots}
+\RequirePackage{tikz}
+\pgfplotsset{compat=1.18}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Annotations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{marginnote}
+\RequirePackage[draft]{todonotes}
+\RequirePackage{xargs}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Mathematics
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifeudoxmath
+  \RequirePackage{amsfonts}
+  \RequirePackage{amsmath}
+  \RequirePackage{amssymb}
+  \RequirePackage{amsthm}
+  \RequirePackage{bbm}
+  \RequirePackage{bm}
+  \RequirePackage{braket}
+  \RequirePackage{esvect}
+  \RequirePackage{lmodern}
+  \RequirePackage[bb=bboldx,cal=cm,scr=dutchcal]{mathalpha}
+  \RequirePackage{mathrsfs}
+  \RequirePackage{mathtools}
+  \RequirePackage[Symbol]{upgreek}
+  \DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
+  \numberwithin{equation}{subsection}
+  \allowdisplaybreaks
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Microtype
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage[final,protrusion=true,expansion=true]{microtype}
+\microtypesetup{%
+  activate   = true,
+  expansion  = true,
+  factor     = 1250,
+  protrusion = true,
+  stretch    = 25
+}
+\UseMicrotypeSet[protrusion]{basicmath}
+\UseMicrotypeSet[expansion]{alltext}
+\SetExpansion{encoding=*,family=*}{stretch=25,shrink=25,step=1}
+\SetProtrusion{encoding=*,family=*}{period={,50},comma={,40},colon={,30},semicolon={,30}}
+\emergencystretch=2em
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% References
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage[round,numbers]{natbib}
+\RequirePackage{breakcites}
+\RequirePackage[
+  bookmarksnumbered  = true,
+  breaklinks         = true,
+  citecolor          = SteelBlue4,
+  colorlinks         = true,
+  hypertexnames      = true,
+  linkcolor          = DeepSkyBlue4,
+  pagebackref        = true,
+  pdfencoding        = auto,
+  pdfpagelabels      = true,
+  pdfpagelayout      = SinglePage,
+  pdfstartview       = FitH,
+  pdfusetitle,
+  unicode            = true,
+  urlcolor           = Blue4
+]{hyperref}
+
+\pdfstringdefDisableCommands{%
+\def\S{\textsection}%
+\def\langle{<}\def\rangle{>}%
+\def\lceil{[}\def\rceil{]}%
+\def\left{}\def\right{}%
+\def\lfloor{[}\def\rfloor{]}%
+\def\mathbb#1{#1}%
+\def\mathbf#1{#1}%
+\def\mathcal#1{#1}%
+\def\mathfrak#1{#1}%
+\def\mathrm#1{#1}%
+\def\mathscr#1{#1}%
+\def\mathsf#1{#1}%
+\def\mathtt#1{#1}%
+\def\operatorname#1{#1}%
+\def\text#1{#1}%
+\def\var#1{#1}%
+}
+
+\renewcommand*{\backref}[1]{}
+\renewcommand*{\backrefalt}[4]{%
+  \ifcase #1\or (Cited on p.~#2).
+  \else (Cited on pp.~#2).
+  \fi
+}
+
+\ifeudoxlayout
+  \@ifclassloaded{amsart}{%
+    \makeatletter
+    \patchcmd{\thebibliography}
+    {\list}
+    {\small\setstretch{1.075}\list}
+    {}{}
+    \makeatother
+  }{}
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Cross-references (zref-clever)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{zref-clever}
+\RequirePackage{zref-vario}
+\zcsetup{
+  cap        = true,
+  noabbrev,
+  nameinlink = true,
+  lang       = english
+}
+\zcRefTypeSetup{section}{
+  Name-sg = \textsection,
+  name-sg = \textsection,
+  Name-pl = \textsection\textsection,
+  name-pl = \textsection\textsection
+}
+\zcRefTypeSetup{subsection}{
+  Name-sg = \textsection,
+  name-sg = \textsection,
+  Name-pl = \textsection\textsection,
+  name-pl = \textsection\textsection
+}
+\zcRefTypeSetup{subsubsection}{
+  Name-sg = \textsection,
+  name-sg = \textsection,
+  Name-pl = \textsection\textsection,
+  name-pl = \textsection\textsection
+}
+
+\NewDocumentCommand{\Cref}{O{}m}{\zcref[S,#1]{#2}}
+\let\cref\zcref
+\let\crefrange\zcrefrange
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Theorem environments
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifeudoxtheorems
+  \newtheoremstyle{theoremlike}
+  {3pt}{3pt}{\normalfont}{}{\scshape}{.}{0.5em}{}
+  \newtheoremstyle{definitionlike}
+  {3pt}{3pt}{\normalfont}{}{\scshape}{.}{0.5em}{}
+  \newtheoremstyle{remarklike}
+  {3pt}{3pt}{\normalfont}{}{\scshape}{.}{0.5em}{}
+
+  \theoremstyle{theoremlike}
+  \newtheorem{theorem}{Theorem}[section]
+  \newtheorem{assertion}[theorem]{Assertion}
+  \newtheorem{assumption}[theorem]{Assumption}
+  \newtheorem{axiom}[theorem]{Axiom}
+  \newtheorem{claim}[theorem]{Claim}
+  \newtheorem{conclusion}[theorem]{Conclusion}
+  \newtheorem{conjecture}[theorem]{Conjecture}
+  \newtheorem{corollary}[theorem]{Corollary}
+  \newtheorem{criterion}[theorem]{Criterion}
+  \newtheorem{fact}[theorem]{Fact}
+  \newtheorem{folklore}[theorem]{Folklore}
+  \newtheorem{hypothesis}[theorem]{Hypothesis}
+  \newtheorem{informaltheorem}[theorem]{Informal Theorem}
+  \newtheorem{lemma}[theorem]{Lemma}
+  \newtheorem{metatheorem}[theorem]{Metatheorem}
+  \newtheorem{observation}[theorem]{Observation}
+  \newtheorem{postulate}[theorem]{Postulate}
+  \newtheorem{property}[theorem]{Property}
+  \newtheorem{proposition}[theorem]{Proposition}
+
+  \theoremstyle{definitionlike}
+  \newtheorem{application}[theorem]{Application}
+  \newtheorem{construction}[theorem]{Construction}
+  \newtheorem{convention}[theorem]{Convention}
+  \newtheorem{definition}[theorem]{Definition}
+  \newtheorem{example}[theorem]{Example}
+  \newtheorem{experiment}[theorem]{Experiment}
+  \newtheorem{notation}[theorem]{Notation}
+  \newtheorem{problem}[theorem]{Problem}
+  \newtheorem{protocol}[theorem]{Protocol}
+  \newtheorem{result}[theorem]{Result}
+  \newtheorem{solution}[theorem]{Solution}
+  \newtheorem{step}[theorem]{Step}
+
+  \theoremstyle{remarklike}
+  \newtheorem{commentary}[theorem]{Commentary}
+  \newtheorem{discussion}[theorem]{Discussion}
+  \newtheorem{exercise}[theorem]{Exercise}
+  \newtheorem{guideline}[theorem]{Guideline}
+  \newtheorem{highlight}[theorem]{Highlight}
+  \newtheorem{important}[theorem]{Important}
+  \newtheorem{insight}[theorem]{Insight}
+  \newtheorem{keypoint}[theorem]{Key Point}
+  \newtheorem{motivation}[theorem]{Motivation}
+  \newtheorem{notationabuse}[theorem]{Notation Abuse}
+  \newtheorem{note}[theorem]{Note}
+  \newtheorem{openproblem}[theorem]{Open Problem}
+  \newtheorem{question}[theorem]{Question}
+  \newtheorem{recall}[theorem]{Recall}
+  \newtheorem{remark}[theorem]{Remark}
+  \newtheorem{summary}[theorem]{Summary}
+  \newtheorem{syntax}[theorem]{Syntax}
+  \newtheorem{takeaway}[theorem]{Takeaway}
+  \newtheorem{tip}[theorem]{Tip}
+  \newtheorem{warning}[theorem]{Warning}
+
+  \theoremstyle{theoremlike}
+  \newtheorem*{theorem*}{Theorem}
+  \newtheorem*{lemma*}{Lemma}
+  \newtheorem*{corollary*}{Corollary}
+  \newtheorem*{hypothesis*}{Hypothesis}
+  \newtheorem*{claim*}{Claim}
+  \newtheorem*{conjecture*}{Conjecture}
+
+  \theoremstyle{definitionlike}
+  \newtheorem*{informaltheorem*}{Informal Theorem}
+
+  \theoremstyle{remarklike}
+  \newtheorem*{openproblem*}{Open Problem}
+  \newtheorem*{syntax*}{Syntax}
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Paragraph headings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newif\ifedxhaspunct
+
+\newcommand{\edxcheckpunct}[1]{%
+  \ifx\edxcheckpunct#1\edxcheckpunct\else\edxhaspuncttrue\fi
+}
+
+\def\edxcheckdot#1.\edxsep#2\edxend{\edxcheckpunct{#2}}
+\def\edxcheckquestion#1?\edxsep#2\edxend{\edxcheckpunct{#2}}
+\def\edxcheckexclam#1!\edxsep#2\edxend{\edxcheckpunct{#2}}
+\def\edxcheckcolon#1:\edxsep#2\edxend{\edxcheckpunct{#2}}
+
+\newcommand{\edxappendpunct}[1]{%
+  \edxhaspunctfalse
+  \edxcheckdot#1\edxsep.\edxsep\edxend
+  \edxcheckquestion#1\edxsep?\edxsep\edxend
+  \edxcheckexclam#1\edxsep!\edxsep\edxend
+  \edxcheckcolon#1\edxsep:\edxsep\edxend
+  #1\ifedxhaspunct\else.\fi
+}
+
+\newcommand{\edxeatnewline}{%
+  \begingroup\catcode13=10\endgroup
+}
+
+\NewDocumentCommand{\parhead}{m}{%
+  \smallskip\noindent
+  \textbf{\boldmath\ignorespaces\edxappendpunct{#1}}~\edxeatnewline
+}
+
+\NewDocumentCommand{\subparhead}{m}{%
+  \smallskip\noindent
+  \textsc{\ignorespaces\edxappendpunct{#1}}~\edxeatnewline
+}
+
+\let\paragraph\parhead
+\let\subparagraph\subparhead
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TCS and cryptography
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifeudoxtcs
+  \IfFileExists{tcscrypto.sty}{%
+    \RequirePackage[notoc]{tcscrypto}%
+  }{%
+    \PackageWarning{eudoxus}{tcscrypto.sty not found; skipping}%
+  }
+\fi
+
+\endinput
