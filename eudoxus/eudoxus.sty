@@ -26,7 +26,7 @@
 % Encoding and language
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[english]{babel}
+\RequirePackage{babel}
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
 
@@ -87,6 +87,7 @@
 % Lists
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\RequirePackage{enumitem}
 \RequirePackage{paralist}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -137,7 +138,7 @@
   \RequirePackage[bb=bboldx,cal=cm,scr=dutchcal]{mathalpha}
   \RequirePackage[Symbol]{upgreek}
   \DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
-  \numberwithin{equation}{subsection}
+  \numberwithin{equation}{section}
   \allowdisplaybreaks
 \fi
 
@@ -168,10 +169,10 @@
 \RequirePackage[
   bookmarksnumbered  = true,
   breaklinks         = true,
-  citecolor          = SteelBlue4,
+  citecolor          = Blue3,
   colorlinks         = true,
   hypertexnames      = true,
-  linkcolor          = DeepSkyBlue4,
+  linkcolor          = Blue3,
   pagebackref        = true,
   pdfencoding        = auto,
   pdfpagelabels      = true,
@@ -179,7 +180,7 @@
   pdfstartview       = FitH,
   pdfusetitle,
   unicode            = true,
-  urlcolor           = Blue4
+  urlcolor           = Blue3
 ]{hyperref}
 
 \pdfstringdefDisableCommands{%
@@ -260,11 +261,11 @@
 
 \ifeudoxtheorems
   \newtheoremstyle{theoremlike}
-  {3pt}{3pt}{\normalfont}{}{\scshape}{.}{0.5em}{}
+  {2.5pt}{2.5pt}{\normalfont}{}{\scshape}{.}{0.5em}{}
   \newtheoremstyle{definitionlike}
-  {3pt}{3pt}{\normalfont}{}{\scshape}{.}{0.5em}{}
+  {2.5pt}{2.5pt}{\normalfont}{}{\scshape}{.}{0.5em}{}
   \newtheoremstyle{remarklike}
-  {3pt}{3pt}{\normalfont}{}{\scshape}{.}{0.5em}{}
+  {2.5pt}{2.5pt}{\normalfont}{}{\scshape}{.}{0.5em}{}
 
   \theoremstyle{theoremlike}
   \newtheorem{theorem}{Theorem}[section]
