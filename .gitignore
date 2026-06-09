@@ -28,9 +28,11 @@
 *.toc
 *.vrb
 *.xdv
+*.pdf
 
 # Editor temporaries
-*~
-*.swp
-*.swo
 *.bak0
+*.bak1
+*.swo
+*.swp
+*~

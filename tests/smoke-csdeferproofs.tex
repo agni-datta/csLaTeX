@@ -1,0 +1,8 @@
+\documentclass{article}
+\usepackage[latinmodern,final]{csamsmath}
+\usepackage[appendix=false]{csdeferproofs}
+\NewDeferredThmAlias{theoremE}{theorem}
+\begin{document}
+\begin{theoremE}\label{thm:deferred-smoke}The alias is available.\end{theoremE}
+\begin{deferproof}{thm:deferred-smoke}The proof remains inline.\end{deferproof}
+\end{document}

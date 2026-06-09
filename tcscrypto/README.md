@@ -1,23 +1,24 @@
 ---
-title: README
-aliases: README
-linter-yaml-title-alias: README
+title: "tcscrypto"
+aliases: "tcscrypto"
+linter-yaml-title-alias: "tcscrypto"
 date created: Thursday, May 14th 2026, 10:23:37 pm
-date modified: Tuesday, May 19th 2026, 3:05:26 am
+date modified: 2026-07-30
 ---
 
 <!-- @format -->
 
-## tcscrypto
+# tcscrypto
 
-Mathematical notation and environment suite for Theoretical Computer Science and Cryptography. Provides a large, standardized library of symbols, operators, and macros covering probability and sampling, complexity classes, algebraic structures, circuit complexity, graph theory, proof complexity, Kolmogorov complexity, and cryptographic primitives. Also provides framed `protocolbox` and `algorithmbox` environments for protocol and algorithm descriptions. Designed to be loaded once and give you a consistent notation baseline across a whole research project: no more redefining `\getsr` in every paper.
+A notation library for theoretical computer science and cryptography. It standardizes probability, complexity, algebra, circuits, graphs, proof complexity, Kolmogorov complexity, cryptographic entities, and framed protocol or algorithm descriptions.
 
-### Requirements
+## Requirements
 
+- Loads `amsmath` and `mathrsfs`. It loads `amssymb` only when `unicode-math` is absent, so the notation library works independently without redeclaring Unicode mathematics symbols.
 - Loads the `complexity` package internally for complexity class macros. Do not load `complexity` separately with conflicting options.
 - Uses `mdframed` for protocol and algorithm boxes. If you also use `tcolorbox`, load it with the `most` compatibility option.
 
-### Usage
+## Usage
 
 ```latex
 \usepackage{tcscrypto}
@@ -25,7 +26,22 @@ Mathematical notation and environment suite for Theoretical Computer Science and
 
 No options. The full library is always loaded.
 
-### Minimal example
+### Manuscript Status Marks
+
+Use `\manuscriptmark` inside `\title` or `\author` to attach a precise manuscript-status notice through `\thanks`. The bracketed mode is required.
+
+- `\manuscriptmark[pre]` marks a preliminary preprint. The notice states that the manuscript may change and that a conference version may omit or abridge technical material.
+- `\manuscriptmark[final]` marks the full version of the work. The notice identifies the manuscript as containing the complete proofs, extended technical material, and supplementary results.
+
+Both notices state that any separately published version is governed by the copyright, license, and publication terms applicable to that version. The package deliberately does not redefine TeX's primitive `\mark`, which is required by running-header and output-routine machinery.
+
+When `hyperref` derives PDF metadata or bookmarks from the title, `tcscrypto` removes the status mark and its option from the PDF string. The printed title footnote remains unchanged.
+
+```latex
+\title{A Paper Title\manuscriptmark[pre]}
+```
+
+## Minimal Example
 
 ```latex
 \documentclass{article}
@@ -44,9 +60,9 @@ Let $\secparam$ be the security parameter and $\KeyGen$ be a PPT algorithm. The 
 \end{document}
 ```
 
-### API
+## API
 
-#### Security and probability
+### Security and Probability
 
 - `\secparam`: security parameter $\lambda$ (or $\kappa$, depending on convention; check the macro definition if needed).
 - `\negl`: negligible function $\negl(\cdot)$.
@@ -57,11 +73,11 @@ Let $\secparam$ be the security parameter and $\KeyGen$ be a PPT algorithm. The 
 - `\longsample`: longer variant of `\getsr` for display math.
 - `\Pr`: probability operator $\Pr[\cdot]$ with correct spacing.
 
-#### Number sets (blackboard bold)
+### Number Sets (Blackboard Bold)
 
 `\NN`, `\ZZ`, `\QQ`, `\RR`, `\CC`, `\FF`: natural numbers, integers, rationals, reals, complex numbers, and a generic field.
 
-#### Paired delimiters (auto-sizing)
+### Paired Delimiters (Auto-Sizing)
 
 - `\abs{x}`: $|x|$
 - `\norm{x}`: $\|x\|$
@@ -69,14 +85,14 @@ Let $\secparam$ be the security parameter and $\KeyGen$ be a PPT algorithm. The 
 - `\set{x}`: $\{x\}$
 - `\ceil{x}`, `\floor{x}`: ceiling and floor brackets
 
-#### Circuit complexity
+### Circuit Complexity
 
 - `\CktClass{C}`: circuit class name in the standard format.
 - `\Depth(C)`, `\Size(C)`, `\Width(C)`, `\Wires(C)`: circuit resource measures.
 - `\Gates(C)`: gate count.
 - `\fan`: fan-in/fan-out notation.
 
-#### Graph theory
+### Graph Theory
 
 - `\Vertex(G)`, `\Edge(G)`: vertex and edge sets of graph $G$.
 - `\Neighborhood(v)`: neighborhood of vertex $v$.
@@ -84,7 +100,7 @@ Let $\secparam$ be the security parameter and $\KeyGen$ be a PPT algorithm. The 
 - `\source`, `\Sink`: source and sink vertices.
 - `\leaf`: leaf node.
 
-#### Proof complexity and SAT
+### Proof Complexity and SAT
 
 - `\Clauses(\phi)`: clause set of formula $\phi$.
 - `\Tseitin(G)`: Tseitin formula for graph $G$.
@@ -92,7 +108,7 @@ Let $\secparam$ be the security parameter and $\KeyGen$ be a PPT algorithm. The 
 - `\proves`: provability relation $\vdash$.
 - `\Restrict(\phi, \rho)`: restriction of formula $\phi$ under assignment $\rho$.
 
-#### Kolmogorov complexity
+### Kolmogorov Complexity
 
 - `\Kolmogorov(x)`: plain Kolmogorov complexity $K(x)$.
 - `\Kt(x)`: time-bounded Kolmogorov complexity $Kt(x)$.
@@ -100,15 +116,16 @@ Let $\secparam$ be the security parameter and $\KeyGen$ be a PPT algorithm. The 
 - `\KPoly(x)`: polynomial-time variant.
 - `\pKt(x)`: probabilistic variant.
 
-#### Syntactic builders for algorithm and oracle suites
+### Syntactic Builders for Algorithm and Oracle Suites
 
 These macros define families of commands from a comma-separated list of `key/DisplayName` pairs. Use them once in the preamble to set up a consistent notation for a protocol suite.
 
+- `\newsf{\command}{text}`: defines a no-argument command that renders `text` in sans-serif math. The package uses this builder for standard instances, witnesses, challenges, responses, and security notions.
 - `\cryptoDefineAlgoCSV{KeyGen/KeyGen, Enc/Enc, Dec/Dec}`: defines `\algo{KeyGen}`, `\algo{Enc}`, `\algo{Dec}` rendering in the appropriate algorithmic style. Also defines shorthand commands `\KeyGen`, `\Enc`, `\Dec`.
 - `\cryptoDefineOracleCSV{Reveal/Reveal, Corrupt/Corrupt}`: defines oracle-style macros with the appropriate formatting.
 - `\cryptoDefineProbCSV{DL/DL, CDH/CDH}`: defines computational problem macros in small caps.
 
-#### Semantic entities
+### Semantic Entities
 
 - `\Adv`: adversary $\mathcal{A}$.
 - `\Sim`: simulator $\mathcal{S}$.
@@ -117,7 +134,7 @@ These macros define families of commands from a comma-separated list of `key/Dis
 - `\Game{G}`: security game $\mathsf{Game}_{G}$.
 - `\Simulator`: simulator entity (alternate rendering).
 
-#### Framed environments
+### Framed Environments
 
 Both environments accept an optional title argument in square brackets.
 
@@ -133,17 +150,18 @@ Both environments accept an optional title argument in square brackets.
 \end{protocolbox}
 ```
 
-### Caveats
+## Caveats
 
 - `tcscrypto` loads `complexity` internally. If you load `complexity` yourself with different options (e.g., a different class for `\P` or `\NP`), you will get option clash errors. Let `tcscrypto` manage `complexity` entirely, or load `tcscrypto` first.
 - The syntactic builders (`\cryptoDefineAlgoCSV` etc.) define commands at call time. If you call them twice with overlapping names, the second call overwrites the first. Define all your algorithm suites in one place at the top of the preamble.
 - `\Pr` redefines the standard `\Pr` operator. If another package has already defined `\Pr` differently, load `tcscrypto` first to avoid conflicts.
+- The standard operators `\argmax`, `\argmin`, `\chr`, `\lcm`, `\lg`, and `\log` use ordinary operator placement. In particular, their subscripts remain beside the operator in display mathematics rather than moving underneath it.
 - `mdframed` boxes (`protocolbox`, `algorithmbox`) do not break across pages. If a protocol description is very long, it will overflow into the bottom margin. Split it manually into two boxes if needed.
 
-### License
+## License
 
 LaTeX Project Public License v1.3c.
 
-### Author
+## Author
 
 Agni Datta: [agni-datta/csLaTeX](https://github.com/agni-datta/csLaTeX)
