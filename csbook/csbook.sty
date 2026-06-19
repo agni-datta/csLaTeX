@@ -715,14 +715,15 @@
     fact,
     folklore,
     hypothesis,
-    informaltheorem,
     lemma,
-    metatheorem,
     observation,
     postulate,
     property,
     proposition
 }
+
+\declaretheorem[name=Informal Theorem, sibling=theorem, style=csbk@theoremlike]{informaltheorem}
+\declaretheorem[name=Meta Theorem,     sibling=theorem, style=csbk@theoremlike]{metatheorem}
 
 \csbk@declaretheoremfamily{csbk@definitionlike}{
     application,
@@ -744,26 +745,28 @@
     discussion,
     exercise,
     motivation,
-    notationabuse,
     note,
-    openproblem,
     question,
     remark,
     syntax
 }
+
+\declaretheorem[name=Notation Abuse, sibling=theorem, style=csbk@remarklike]{notationabuse}
+\declaretheorem[name=Open Problem,   sibling=theorem, style=csbk@remarklike]{openproblem}
 
 \csbk@declaretheoremfamily{csbk@highlightlike}{
     guideline,
     highlight,
     important,
     insight,
-    keypoint,
     recall,
     summary,
     takeaway,
     tip,
     warning
 }
+
+\declaretheorem[name=Key Point, sibling=theorem, style=csbk@highlightlike]{keypoint}
 
 \declaretheorem[name=Claim,             style=csbk@theoremlike,  numbered=no]{claim*}
 \declaretheorem[name=Conjecture,        style=csbk@theoremlike,  numbered=no]{conjecture*}
@@ -772,7 +775,7 @@
 \declaretheorem[name=Lemma,             style=csbk@theoremlike,  numbered=no]{lemma*}
 \declaretheorem[name=Open Problem,      style=csbk@remarklike,   numbered=no]{openproblem*}
 \declaretheorem[name=Syntax,            style=csbk@remarklike,   numbered=no]{syntax*}
-\declaretheorem[name=Theorem Informal,  style=csbk@theoremlike,  numbered=no]{informaltheorem*}
+\declaretheorem[name=Informal Theorem,  style=csbk@theoremlike,  numbered=no]{informaltheorem*}
 \declaretheorem[name=Theorem,           style=csbk@theoremlike,  numbered=no]{theorem*}
 
 \crefname{section}{\textsection}{\textsection\textsection}
@@ -820,17 +823,17 @@
     highlight/Highlight/Highlights,
     hypothesis/Hypothesis/Hypotheses,
     important/Important point/Important points,
-    informaltheorem/Theorem Informal/Theorem Informals,
+    informaltheorem/Informal Theorem/Informal Theorems,
     insight/Insight/Insights,
-    keypoint/Key point/Key points,
+    keypoint/Key Point/Key Points,
     lemma/Lemma/Lemmas,
-    metatheorem/Metatheorem/Metatheorems,
+    metatheorem/Meta Theorem/Meta Theorems,
     motivation/Motivation/Motivations,
     notation/Notation/Notations,
-    notationabuse/Notation abuse/Notation abuses,
+    notationabuse/Notation Abuse/Notation Abuses,
     note/Note/Notes,
     observation/Observation/Observations,
-    openproblem/Open problem/Open problems,
+    openproblem/Open Problem/Open Problems,
     postulate/Postulate/Postulates,
     problem/Problem/Problems,
     proof/Proof/Proofs,

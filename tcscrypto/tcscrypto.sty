@@ -30,9 +30,11 @@
 	\RequirePackage[full]{complexity}
 \fi
 \RequirePackage{derivative}
+\RequirePackage{enumitem}
 \RequirePackage{etoolbox}
 \RequirePackage{mdframed}
 \RequirePackage{physics2}
+\RequirePackage{setspace}
 \RequirePackage{xparse}
 \RequirePackage{xspace}
 
@@ -139,6 +141,12 @@
 	\cs_if_free:cT { scr \l_tmpa_tl }  { \cs_new:cpx { scr \l_tmpa_tl }  { \exp_not:N \ensuremath { { \exp_not:N \mathscr  { \l_tmpa_tl } } } } }
 }
 
+\int_step_inline:nnn { 1 } { 26 }
+{
+	\tl_set:Nx \l_tmpa_tl { \int_to_Alph:n { #1 } }
+	\cs_if_free:cT { Mat \l_tmpa_tl } { \cs_new:cpx { Mat \l_tmpa_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathbf { \l_tmpa_tl } } } } }
+}
+
 \ExplSyntaxOff
 
 \if@tcscrypto@emphasis
@@ -148,9 +156,6 @@
 \if@tcscrypto@venue
 	\setlength{\belowcaptionskip}{-15pt}
 	\setlength{\textfloatsep}{10pt plus 1.0pt minus 2.0pt}
-	\renewcommand\appendixname{Supplementary Material}
-	\renewcommand\appendixpagename{Supplementary Material}
-	\crefname{appendix}{Supplementary Material}{Supplementary Materials}
 \fi
 
 \if@tcscrypto@toc
@@ -185,22 +190,35 @@
 	{%
 		\addcontentsline{toc}{section}{\protect\textbf{Acknowledgements}}%
 		\paragraph{Acknowledgements.}%
+		\ignorespaces%
 	}
 	{}
 }{}
 
-\newlength{\strutdepth}
-\settodepth{\strutdepth}{\strutbox}
-\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\@ifundefined{printreferences}{%
+	\newcommand{\printreferences}[2][aomalpha]{%
+		\begin{small}
+			\setstretch{1}%
+			\bibliographystyle{#1}%
+			\bibliography{#2}%
+		\end{small}
+	}%
+}{}
 
-\newcommand{\mathcolorbox}[2]{\colorbox{#1}{$\displaystyle#2$}}
-\newcommand{\emphbox}[1]{\mathcolorbox{SlateBlue3}{#1}}
-\newcommand{\emphdiff}[1]{{\leavevmode\color{RoyalBlue3}#1}}
-\newcommand{\highlightbox}[1]{\colorbox{Goldenrod1!30}{#1}}
-
-\@ifundefined{keywords}{\newcommand{\keywords}[1]{\paragraph{Keywords:}{#1}}}{}
-\@ifundefined{para}{\newcommand{\para}[1]{\subparagraph{#1}}}{}
-\@ifundefined{term}{\newcommand{\term}[1]{\textsf{#1}}}{}
+\@ifundefined{researchquestion}{%
+	\newcommand{\researchquestionlabel}[1]{\textsc{#1}\hfil}
+	\newenvironment{researchquestion}{%
+		\list{}{%
+			\setlength{\labelwidth}{0pt}%
+			\setlength{\labelsep}{0.5em}%
+			\setlength{\leftmargin}{0pt}%
+			\setlength{\itemindent}{\parindent}%
+			\setlength{\parsep}{\parskip}%
+			\setlength{\itemsep}{0.4ex}%
+			\let\makelabel\researchquestionlabel
+		}%
+	}{\endlist}%
+}{}
 
 \@ifundefined{protocolbox}{%
 	\NewDocumentEnvironment{protocolbox}{o}{%
@@ -210,8 +228,8 @@
 			linewidth          = 0.5pt,
 			skipabove          = 0.5\baselineskip,
 			skipbelow          = 0.1\baselineskip,
-			leftmargin         = 0pt,
-			rightmargin        = 0pt,
+			leftmargin         = 2pt,
+			rightmargin        = 2pt,
 			innerleftmargin    = 5pt,
 			innerrightmargin   = 5pt,
 			innertopmargin     = 5pt,
@@ -228,6 +246,19 @@
 	}
 }{}
 
+\newlength{\strutdepth}
+\settodepth{\strutdepth}{\strutbox}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+\newcommand{\mathcolorbox}[2]{\colorbox{#1}{$\displaystyle#2$}}
+\newcommand{\emphbox}[1]{\mathcolorbox{SlateBlue3}{#1}}
+\newcommand{\emphdiff}[1]{{\leavevmode\color{RoyalBlue3}#1}}
+\newcommand{\highlightbox}[1]{\colorbox{Goldenrod1!30}{#1}}
+
+\@ifundefined{keywords}{\newcommand{\keywords}[1]{\paragraph{Keywords:}{#1}}}{}
+\@ifundefined{para}{\newcommand{\para}[1]{\subparagraph{#1}}}{}
+\@ifundefined{term}{\newcommand{\term}[1]{\textsf{#1}}}{}
+
 \let\E\relax
 \let\Game\relax
 \let\Im\relax
@@ -235,6 +266,7 @@
 \let\Pr\relax
 
 \let\adv\relax
+\let\complement\relax
 \let\iff\relax
 \let\implies\relax
 \let\lg\relax
@@ -263,6 +295,7 @@
 \newbb{\NN}{N}
 \newbb{\QQ}{Q}
 \newbb{\RR}{R}
+\newbb{\TT}{T}
 \newbb{\ZZ}{Z}
 
 \newcommand{\ZZp}{\ZZ_{p}}
@@ -303,14 +336,18 @@
 \newcommand{\abs}[1]{\left\lvert#1\right\rvert}
 \newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
 \newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\fpart}[1]{\ensuremath{\{#1\}}}
+\newcommand{\indicator}[1]{\mathbf{1}_{#1}}
 \newcommand{\inner}[2]{\left\langle#1,\,#2\right\rangle}
-\newcommand{\interaction}[2]{\langle #1, #2 \rangle}
-\newcommand{\interact}[1]{\langle #1 \rangle}
+\newcommand{\interaction}[2]{\langle#1,\,#2\rangle}
+\newcommand{\interact}[1]{\langle#1\rangle}
 \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\pair}[2]{\left(#1,#2\right)}
 \newcommand{\paren}[1]{\left\{#1\right\}}
 \newcommand{\proj}[2]{#1\left[#2\right]}
 \newcommand{\seq}[1]{\left(#1\right)}
 \newcommand{\sqbrkt}[1]{\left[#1\right]}
+\newcommand{\trip}[3]{\left(#1,#2,#3\right)}
 \newcommand{\tuple}[1]{\left(#1\right)}
 \newcommand{\vspan}[1]{\left(#1\right)}
 
@@ -328,6 +365,7 @@
 	\IfValueT{#1}{\left(#1\right)}
 	\IfValueT{#2}{\left[#2\right]}
 }
+\let\BigO\bigO
 \NewDocumentCommand{\smallO}{d()}{%
 	\mathscr{o}\IfValueT{#1}{\left(#1\right)}%
 }
@@ -355,9 +393,6 @@
 
 \DeclareMathOperator*{\E}{\mathbb{E}}
 \DeclareMathOperator*{\Pr}{\algostyle{Pr}}
-
-\newcommand{\vect}[1]{\algostyle{#1}}
-\newcommand{\vec}[1]{\mathbf{#1}}
 
 \mathchardef\mhyphen="2D
 
@@ -389,52 +424,84 @@
 \newcommand{\unif}[1]{\algostyle{U}_{#1}}
 \newcommand{\approxstat}[1]{\stackrel{#1}{\approx}}
 
-\DeclareMathOperator*{\equivdist}{\equiv}
-\DeclareMathOperator*{\sindist}{\equiv_s}
+\newcommand{\vect}[1]{\algostyle{#1}}
+\newcommand{\vec}[1]{\mathbf{#1}}
+
 \DeclareMathOperator*{\cindist}{\equiv_c}
-\DeclareMathOperator*{\pindist}{\equiv_p}
+\DeclareMathOperator*{\equivdist}{\equiv}
 \DeclareMathOperator*{\hyph}{\mhyphen}
 \DeclareMathOperator*{\inR}{\in_{\mathrm{R}}}
+\DeclareMathOperator*{\iso}{\cong}
+\DeclareMathOperator*{\logred}{\leq_{\mathrm{L}}}
+\DeclareMathOperator*{\notiso}{\not\cong}
+\DeclareMathOperator*{\onevec}{\mathbf{1}}
+\DeclareMathOperator*{\pindist}{\equiv_p}
+\DeclareMathOperator*{\polyred}{\leq_{\mathrm{m}}^{\P}}
 \DeclareMathOperator*{\shouldeq}{\stackrel{\text{!}}{=}}
+\DeclareMathOperator*{\sindist}{\equiv_s}
+\DeclareMathOperator*{\zerovec}{\mathbf{0}}
 
+\DeclareMathOperator{\Aut}{\algostyle{Aut}}
+\DeclareMathOperator{\Diag}{\algostyle{Diag}}
+\DeclareMathOperator{\Image}{\algostyle{Im}}
+\DeclareMathOperator{\Odd}{\algostyle{Odd}}
+\DeclareMathOperator{\Sol}{\algostyle{Sol}}
 \DeclareMathOperator{\Adj}{\algostyle{Adj}}
 \DeclareMathOperator{\Dom}{\algostyle{Dom}}
 \DeclareMathOperator{\Im}{\algostyle{Im}}
 \DeclareMathOperator{\Range}{\algostyle{Range}}
 
 \DeclareMathOperator*{\adj}{\algostyle{adj}}
+\DeclareMathOperator*{\aff}{\algostyle{aff}}
+\DeclareMathOperator*{\cl}{\algostyle{cl}}
 \DeclareMathOperator*{\codom}{\algostyle{codom}}
+\DeclareMathOperator*{\cone}{\algostyle{cone}}
+\DeclareMathOperator*{\conv}{\algostyle{conv}}
 \DeclareMathOperator*{\depth}{\algostyle{depth}}
+\DeclareMathOperator*{\diam}{\algostyle{diam}}
+\DeclareMathOperator*{\dist}{\algostyle{dist}}
 \DeclareMathOperator*{\dom}{\algostyle{dom}}
 \DeclareMathOperator*{\gates}{\algostyle{gates}}
 \DeclareMathOperator*{\gate}{\algostyle{gate}}
+\DeclareMathOperator*{\hit}{\algostyle{hit}}
 \DeclareMathOperator*{\img}{\algostyle{img}}
 \DeclareMathOperator*{\negl}{\algostyle{negl}}
 \DeclareMathOperator*{\ord}{\algostyle{ord}}
 \DeclareMathOperator*{\polylog}{\algostyle{polylog}}
 \DeclareMathOperator*{\poly}{\algostyle{poly}}
 \DeclareMathOperator*{\range}{\algostyle{range}}
+\DeclareMathOperator*{\rank}{\algostyle{rank}}
+\DeclareMathOperator*{\sech}{\algostyle{sech}}
 \DeclareMathOperator*{\size}{\algostyle{size}}
 \DeclareMathOperator*{\sol}{\algostyle{sol}}
+\DeclareMathOperator*{\spanop}{\algostyle{span}}
+\DeclareMathOperator*{\spec}{\algostyle{spec}}
 \DeclareMathOperator*{\spn}{\algostyle{span}}
 \DeclareMathOperator*{\supp}{\algostyle{supp}}
 \DeclareMathOperator*{\tr}{\algostyle{Tr}}
 \DeclareMathOperator*{\vars}{\algostyle{vars}}
 \DeclareMathOperator*{\vecop}{\algostyle{vec}}
+\DeclareMathOperator*{\vol}{\algostyle{vol}}
 \DeclareMathOperator*{\width}{\algostyle{width}}
 \DeclareMathOperator*{\wires}{\algostyle{wires}}
 \DeclareMathOperator*{\wire}{\algostyle{wire}}
 
+\DeclareMathOperator*{\argmax}{\mathrm{arg}\,\mathrm{max}}
+\DeclareMathOperator*{\argmin}{\mathrm{arg}\,\mathrm{min}}
 \DeclareMathOperator*{\chr}{\mathrm{char}}
 \DeclareMathOperator*{\lcm}{\mathrm{lcm}}
 \DeclareMathOperator*{\lg}{\mathrm{lg}}
 \DeclareMathOperator*{\log}{\mathrm{log}}
 
-\newcommand{\Func}{\sfF}
+\newcommand{\Func}{\calF}
+\newcommand{\Lag}{\mathcal{L}}
+\newcommand{\Sym}{\mathfrak{S}}
 \newcommand{\Primes}{\mathsf{Primes}}
 \newcommand{\Protocol}{\Prot}
 \newcommand{\SecParam}{\lambda}
+
 \newcommand{\comparam}{\kappa}
+\newcommand{\complement}{\algostyle{c}}
 \newcommand{\secparamlog}{\log\lambda}
 \newcommand{\secparam}{\lambda}
 \newcommand{\secpar}{\lambda}
@@ -449,18 +516,32 @@
 	EOL/EOL,
 	EOML/EOML,
 	EOPL/EOPL,
+	GapMCSP/GapMCSP,
+	GapMKTP/GapMKTP,
 	IPP/IPP,
 	MAP/MAP,
+	MCSP/MCSP,
+	MINKT/MINKT,
+	MKTP/MKTP,
+	MKtP/MK^{t}P,
+	MRSP/MRSP,
+	MinPDT/MinPDT,
 	NARG/NARG,
 	NISIP/NISIP,
+	OSS/OSS,
+	PDT/PDT,
 	PHC/PHC,
 	PWPP/PWPP,
+	ParityP/\oplus\P,
+	ParitySAT/\oplus\SAT,
 	RIP/RIP,
 	RSVL/RSVL,
 	SIP/SIP,
 	SOPL/SOPL,
 	SUBEXPSPACE/SUBEXPSPACE,
 	SVL/SVL,
+	SharpP/\#\P,
+	SharpSAT/\#\SAT,
 	UEOPL/UEOPL,
 }
 
@@ -507,11 +588,14 @@
 	FC/FC,
 	FE/FE,
 	FHE/FHE,
+	FO/FO,
 	FS/FS,
 	FSS/FSS,
 	GCH/GCH,
 	GGM/GGM,
+	GI/GI,
 	GM/GM,
+	GNI/GNI,
 	GRH/GRH,
 	GapCVP/GapCVP,
 	GapDH/GapDH,
@@ -532,14 +616,17 @@
 	ISIS/ISIS,
 	IVC/IVC,
 	KEM/KEM,
+	KKT/KKT,
 	LDD/LDD,
 	LF/LF,
+	LICQ/LICQ,
 	LPCP/LPCP,
 	LPN/LPN,
 	LRSW/LRSW,
 	LWE/LWE,
 	MAJORITY/MAJORITY,
 	MD/MD,
+	MFCQ/MFCQ,
 	ML/ML,
 	MLFHE/MLFHE,
 	MLWE/MLWE,
@@ -547,7 +634,9 @@
 	MSIS/MSIS,
 	MT/MT,
 	NARG/NARG,
+	NCP/NCP,
 	NIZK/NIZK,
+	NLP/NLP,
 	NNF/NNF,
 	NTRU/NTRU,
 	NW/NW,
@@ -557,6 +646,7 @@
 	OWF/OWF,
 	OWP/OWP,
 	PARITY/PARITY,
+	PATH/PATH,
 	PC/PC,
 	PCG/PCG,
 	PHP/PHP,
@@ -564,25 +654,30 @@
 	PKE/PKE,
 	PKFE/PKFE,
 	PPRF/PPRF,
+	PPT/PPT,
 	PRF/PRF,
 	PRG/PRG,
 	PSI/PSI,
+	QBF/QBF,
 	QM/QM,
 	QNR/QNR,
 	QPCP/QPCP,
 	QR/QR,
 	QROM/QROM,
+	QSAT/QSAT,
 	RBR/RBR,
 	RH/RH,
 	RLWE/RLWE,
 	RO/RO,
 	ROM/ROM,
-	RR/RR.
+	RR/RR,
 	RSA/RSA,
 	RSIS/RSIS,
 	SAT/SAT,
+	SCC/SCC,
 	SD/SD,
 	SDH/SDH,
+	SDP/SDP,
 	SIG/SIG,
 	SIR/SIR,
 	SIS/SIS,
@@ -593,9 +688,11 @@
 	SNARG/SNARG,
 	SNARK/SNARK,
 	SPMPC/SPMPC,
+	SQP/SQP,
 	SR/SR,
 	SRS/SRS,
 	SSB/SSB,
+	STCON/STCON,
 	SVP/SVP,
 	SXDH/SXDH,
 	SoK/SoK,
@@ -604,8 +701,11 @@
 	TDF/TDF,
 	TDH/TDH,
 	TDP/TDP,
+	TQBF/TQBF,
+	TSP/TSP,
 	UNSAT/UNSAT,
 	UOW/UOW,
+	USAT/USAT,
 	UniqueSVP/UniqueSVP,
 	VC/VC,
 	VDF/VDF,
@@ -654,6 +754,9 @@
 	Cost/Cost,
 	Dec/Dec,
 	Decide/Decide,
+	DistBernoulli/Bernoulli,
+	DistBinary/Binary,
+	DistGaussian/Gaussian,
 	DecideAcc/DecideAcc,
 	Decision/Decision,
 	Decode/Decode,
@@ -678,12 +781,14 @@
 	Fold/Fold,
 	Format/Fmt,
 	Functionality/F,
+	GES/GES,
 	GGen/GGen,
 	Gen/Gen,
 	Guess/Guess,
 	Hash/Hash,
-	Hyb/Hybrid,
-	Hybrid/Hybrid,
+	Hint/Hint,
+	Hyb/Hyb,
+	Hybrid/Hyb,
 	IHO/IHO,
 	Ideal/I,
 	Index/Index,
@@ -699,6 +804,7 @@
 	KeyGenLT/KeyGenLT,
 	KeyGenSS/KeyGenSS,
 	Literal/Literal,
+	MQ/MQ,
 	Majority/Maj,
 	NAND/NAND,
 	NOR/NOR,
@@ -706,6 +812,7 @@
 	Next/Next,
 	OR/OR,
 	Obf/O,
+	PAC/PAC,
 	PGen/PGen,
 	Predictor/P,
 	Prog/Prog,
@@ -713,6 +820,7 @@
 	Prove/Prove,
 	Puncture/Puncture,
 	Query/Query,
+	REenc/RE,
 	Rand/Rand,
 	RandFunction/R,
 	Real/Real,
@@ -748,6 +856,7 @@
 	VerifyAcc/VerifyAcc,
 	View/View,
 	Vrfy/Vrfy,
+	WE/WE,
 	Win/Win,
 	XNOR/XNOR,
 	XOR/XOR,
@@ -755,12 +864,18 @@
 
 \cryptoDefineAlgoCSV{
 	ACFrege/AC\textsuperscript{0}\textsf{-}Frege,
+	AltPolyTime/AP,
+	AltTime/ATIME,
 	APC/APC,
+	Assumption/X,
 	CP/CP,
 	CPV/CPV,
 	DAGRes/DAG\textsf{-}Res,
 	DNFF/DNFF,
 	DPLL/DPLL,
+	EQ/EQ,
+	Eq/Eq,
+	EXPCOM/EXPCOM,
 	EF/EF,
 	ExtFrege/ExtFrege,
 	FV/FV,
@@ -768,6 +883,7 @@
 	G/G,
 	HA/HA,
 	IPS/IPS,
+	LLL/LLL,
 	LJ/LJ,
 	LK/LK,
 	MaxRes/MaxRes,
@@ -781,6 +897,7 @@
 	PCR/PCR,
 	PV/PV,
 	Post/Post,
+	Reduction/R,
 	RegRes/Reg\textsf{-}Res,
 	Res/Res,
 	ResGraph/ResG,
@@ -819,15 +936,16 @@
 \cryptoDefineProbCSV{
 	BipartiteProb/Bipartite-Matching,
 	BrouwerProb/Brouwer-Fixpoint,
-	CDHProb/CDH,
-	CRTProb/CRT,
+	CDHProb/Computational-Diffie-Hellman,
+	CRTProb/Chinese-Remainder-Theorem,
 	CVPProb/Closest-Vector,
 	CliqueProb/Clique,
 	CollisionProb/Collision,
 	ColoringProb/Graph-Coloring,
 	CycleProb/Cycle,
-	DDHProb/DDH,
-	DLPProb/DLP,
+	DDHProb/Decision-Diffie-Hellman,
+	DHProb/Diffie-Hellman,
+	DLPProb/Discrete-Logarithm,
 	DiscreteLogProb/Discrete-Logarithm,
 	EOLProb/End-of-Line,
 	EOMLProb/End-of-Metered-Line,
@@ -859,7 +977,7 @@
 	PreimageProb/Preimage,
 	QRAProb/Quadratic-Residuosity,
 	QRProb/Quadratic-Residue,
-	RSAProb/RSA,
+	RSAProb/Rivest-Shamir-Adleman,
 	RSVLProb/Relaxed-Sink-of-Verifiable-Line,
 	RootFindingProb/Root-Finding,
 	SATProb/SAT,
@@ -983,6 +1101,7 @@
 \cryptoDefineOracleCSV{
 	CDHOracle/CDH,
 	CRGapDHOracle/CRGapDH,
+	CGL/CGL,
 	ChallengeOracle/Challenge,
 	Corrupt/Corrupt,
 	Create/Create,
@@ -1378,11 +1497,11 @@
 \newscr{\MaliciousProver}{\tilde{\Prover}}
 \newscr{\MaliciousVerifier}{\tilde{\Verifier}}
 
-\newcommand{\algo}{\setstyle{A}}
-\newcommand{\Red}{\algostyle{R}}
-\newcommand{\Game}{\algostyle{G}}
-\newcommand{\game}{\setstyle{G}}
 \newcommand{\AdvProb}{\var{S}}
+\newcommand{\Game}{\algostyle{G}}
+\newcommand{\Red}{\algostyle{R}}
+\newcommand{\algo}{\setstyle{A}}
+\newcommand{\game}{\setstyle{G}}
 \ifluatex
 	\newcommand{\Prot}{\ensuremath{\text{\textsf{Π}}}}
 \else
@@ -1424,10 +1543,10 @@
 \newbb{\outval}{y}
 \newbb{\randomness}{r}
 \newbb{\response}{z}
+\newbb{\secret}{s}
 \newbb{\val}{v}
 \newbb{\witness}{w}
 \newbb{\wit}{w}
-\newcommand{\secret}{s}
 
 \newcommand{\state}{\algostyle{st}}
 \newcommand{\stateP}{\state_\Prover}
@@ -1778,12 +1897,11 @@
 \newcommand{\Cryptomania}{\probstyle{Cryptomania}}
 \newcommand{\Obfustopia}{\probstyle{Obfustopia}}
 
-\newfunc{\DTM}{DTM}
-\newfunc{\NDTM}{NDTM}
-\newfunc{\OracleTM}{O}
-\newfunc{\PPT}{PPT}
-\newfunc{\PTM}{PTM}
-\newfunc{\TM}{TM}
+\newcommand{\DTM}{\mathcal{M}}
+\newcommand{\NDTM}{\mathcal{N}}
+\newcommand{\OTM}{\mathcal{O}}
+\newcommand{\PTM}{\mathcal{M}}
+\newcommand{\TM}{\mathcal{M}}
 
 \newfunc{\Circuit}{C}
 \newfunc{\Ckt}{C}
@@ -1797,11 +1915,16 @@
 \newfunc{\PredecessorCircuit}{P}
 \newfunc{\SuccessorCircuit}{S}
 
+\newcommand{\Accept}{\algostyle{accept}}
+\newcommand{\Cert}{\algostyle{cert}}
 \newcommand{\CktClass}{\mathcal{C}}
-\newcommand{\Property}{\mathcal{P}}
 \newcommand{\Depth}{\algostyle{depth}}
+\newcommand{\Fail}{\algostyle{fail}}
+\newcommand{\False}{\algostyle{false}}
 \newcommand{\Gates}{\algostyle{gates}}
+\newcommand{\Property}{\mathcal{P}}
 \newcommand{\Size}{\algostyle{size}}
+\newcommand{\True}{\algostyle{true}}
 \newcommand{\Width}{\algostyle{width}}
 \newcommand{\Wires}{\algostyle{wires}}
 
@@ -1816,6 +1939,7 @@
 \newcommand{\StartSolution}{\mathbb{s}}
 \newcommand{\Vertex}{\algostyle{V}}
 
+\newcommand{\coPATH}{\PATH^{\mathsf{c}}}
 \newcommand{\degree}{\algostyle{deg}}
 \newcommand{\indegree}{\algostyle{in\textsf{-}deg}}
 \newcommand{\leaf}{\algostyle{lf}}
@@ -1864,26 +1988,18 @@
 \newcommand{\ptrans}[1]{#1^*}
 \newcommand{\subst}[2]{[#1 / #2]}
 
-\newcommand{\Kolmogorov}{\algostyle{K}}
 \newcommand{\KC}{\Kolmogorov}
 \newcommand{\KPoly}{\Kolmogorov^{\poly}}
-\newcommand{\KS}{\algostyle{KS}}
+\newcommand{\KS}{\Kolmogorov{\calS}}
+\newcommand{\Kolmogorov}{\calK}
 \newcommand{\Kt}{\Kolmogorov^{t}}
-\newcommand{\RC}{\algostyle{rK}}
-\newcommand{\RKt}{\algostyle{rK}^{t}}
-\newcommand{\pKt}{\algostyle{pK}^{t}}
-\newcommand{\rKS}{\algostyle{rKS}}
+\newcommand{\RC}{{r}\Kolmogorov}
+\newcommand{\RKt}{{r}\Kolmogorov^{t}}
+\newcommand{\pKt}{{p}\Kolmogorov^{t}}
+\newcommand{\rKS}{{r}\Kolmogorov{\calS}}
 
-\newclass{\GapMCSP}{GapMCSP}
-\newclass{\GapMKTP}{GapMKTP}
-\newclass{\MCSP}{MCSP}
-\newclass{\MINKT}{MINKT}
-\newclass{\MKTP}{MKTP}
-\newclass{\MKtP}{MK^{t}P}
-\newclass{\MRSP}{MRSP}
-\newclass{\MinPDT}{MinPDT}
-\newclass{\OSS}{OSS}
-\newclass{\PDT}{PDT}
+\newcommand{\SigmaCSAT}[1]{\ensuremath{\Sigma_{#1}\SAT}}
+\newcommand{\PiCSAT}[1]{\ensuremath{\Pi_{#1}\SAT}}
 
 \makeatother
 \endinput

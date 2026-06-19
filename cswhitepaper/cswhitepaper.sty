@@ -408,25 +408,28 @@
     discussion,
     exercise,
     motivation,
-    notationabuse,
     note,
-    openproblem,
     question,
     remark,
     syntax%
 }
+
+\declaretheorem[name=Notation Abuse, sibling=theorem, style=csw@remarklike]{notationabuse}
+\declaretheorem[name=Open Problem,   sibling=theorem, style=csw@remarklike]{openproblem}
+
 \csw@declaretheoremfamily{csw@highlightlike}{%
     guideline,
     highlight,
     important,
     insight,
-    keypoint,
     recall,
     summary,
     takeaway,
     tip,
     warning%
 }
+
+\declaretheorem[name=Key Point, sibling=theorem, style=csw@highlightlike]{keypoint}
 
 \declaretheorem[name=Theorem,     style=csw@theoremlike, numbered=no]{theorem*}
 \declaretheorem[name=Lemma,       style=csw@theoremlike, numbered=no]{lemma*}
@@ -477,14 +480,14 @@
     hypothesis/Hypothesis/Hypotheses,%
     important/Important point/Important points,%
     insight/Insight/Insights,%
-    keypoint/Key point/Key points,%
+    keypoint/Key Point/Key Points,%
     lemma/Lemma/Lemmas,%
     motivation/Motivation/Motivations,%
     notation/Notation/Notations,%
-    notationabuse/Notation abuse/Notation abuses,%
+    notationabuse/Notation Abuse/Notation Abuses,%
     note/Note/Notes,%
     observation/Observation/Observations,%
-    openproblem/Open problem/Open problems,%
+    openproblem/Open Problem/Open Problems,%
     postulate/Postulate/Postulates,%
     problem/Problem/Problems,%
     proof/Proof/Proofs,%
