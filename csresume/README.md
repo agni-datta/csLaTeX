@@ -3,20 +3,21 @@ title: README
 aliases: README
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:22:30 pm
-date modified: Tuesday, May 19th 2026, 1:35:34 am
+date modified: Sunday, June 21st 2026, 2:07:00 am
 ---
 
 <!-- @format -->
 
 ## csresume
 
-CV and resume package with academic-oriented typography, flexible entry layouts, and BibLaTeX integration for publication lists. Handles the full structure of an academic CV: contact header, chronological entries with margin years, two-column reference blocks, and a publications section driven by a `.bib` file. Font choices are tuned for print and screen readability.
+CV and resume package with academic-oriented typography, flexible entry layouts, and BibLaTeX integration for publication lists. Handles the full structure of an academic CV: contact header, chronological entries with margin years, two-column reference blocks, compact interest lists, and a publications section driven by a `.bib` file. Font choices are tuned for print and screen readability, while the default visual palette uses RoyalBlue4 and darker RoyalBlue4 mixtures.
 
 ### Requirements
 
 - Use with the `article` document class on A4 or letter paper.
 - Requires `biber` as the BibLaTeX backend for publication lists. `bibtex` is not supported.
-- Logo and signature image files must exist on disk if used.
+- LuaLaTeX or XeLaTeX is recommended for the modern font stack. pdfLaTeX is supported through a conservative fallback.
+- Logo and signature image files must exist on disk if used by surrounding project code.
 
 ### Usage
 
@@ -28,17 +29,19 @@ CV and resume package with academic-oriented typography, flexible entry layouts,
 
 ```latex
 \documentclass[a4paper]{article}
-\usepackage[baskerville]{csresume}
+\usepackage[libertinus]{csresume}
 
 \begin{document}
 
-\contactblock{Agni Datta}{Researcher}{IIT Bombay}{agnidatta.org@gmail.com}{agnidatta.org}{agni-scholar-id}{agni-dblp-id}
+\contactblock{Name}{Researcher}{Institution}{name@example.edu}{example.edu}{scholar-id}{dblp-id}
 
 \section{Education}
 \details{2020--2024}{PhD in Computer Science}{Stanford University}{Thesis: On the Security of Fiat--Shamir}
 
 \section{Publications}
 % BibLaTeX-driven list goes here
+
+\finishcv{\today}{https://example.edu}
 
 \end{document}
 ```
@@ -47,10 +50,12 @@ CV and resume package with academic-oriented typography, flexible entry layouts,
 
 #### Font options (mutually exclusive)
 
-- `gfsdidot`: (default) GFS Didot serif. Classical and elegant; works well in print.
-- `libertinus`: Libertinus Serif and Sans. Slightly wider, very readable on screen.
-- `baskerville`: Baskervaldx. Traditional academic serif with strong contrast.
-- `euler`: Euler digits in math mode. Combine with another font option for body text if needed.
+- `gfsdidot`: (default) GFS Didot via `fontsetup`. Classical and elegant; works well in print.
+- `libertinus`: Libertinus Serif and Sans with KPMath and Libertinus math ranges. Slightly wider, very readable on screen.
+- `baskerville`: Baskervaldx with KPMath and Baskervaldx math ranges. Traditional academic serif with strong contrast.
+- `euler`: Concrete Roman with Euler Math via `fontsetup`.
+
+Under LuaLaTeX and XeLaTeX, sans-serif text uses Libertinus Sans and monospace text uses Anonymous Pro.
 
 #### Layout options
 
@@ -60,7 +65,7 @@ CV and resume package with academic-oriented typography, flexible entry layouts,
 
 #### Header block
 
-- `\contactblock{Name}{Title}{Institution}{Email}{Website}{ScholarID}{DBLPID}`: generates the full CV header with name, title, institutional affiliation, and contact links. All arguments are required; pass an empty `{}` for any field you want to suppress.
+- `\contactblock{Name}{Title}{Institution}{Email}{Website}{ScholarID}{DBLPID}`: generates the full CV header with name, title, institutional affiliation, and contact links.
 
 #### Chronological entries
 
@@ -83,6 +88,10 @@ CV and resume package with academic-oriented typography, flexible entry layouts,
 
 - `ditemize`: two-column itemized list. Use for skills, programming languages, or other short paired entries where a single-column list would waste space.
 
+#### Footer
+
+- `\finishcv{Date}{URL}`: prints a modern muted footer of the form `Updated Date • URL`. Pass the complete URL, including the scheme, for example `https://example.edu`; the command does not prepend `https://`.
+
 ### Publications list (BibLaTeX)
 
 `csresume` is designed to work with a `\printbibliography` call inside a `publications` section. Set up BibLaTeX in the preamble:
@@ -99,19 +108,20 @@ Then in the document:
 \printbibliography[heading=none]
 ```
 
-The `ydnt` sorting order (year descending, name, title) puts the most recent papers first, which is standard for academic CVs.
+The `ydnt` sorting order (year descending, name, title) puts the most recent papers first, which is standard for academic CVs. Titles of articles, proceedings papers, theses, and unpublished manuscripts are printed in italics; unpublished manuscripts are not enclosed in quotation marks.
 
 ### Caveats
 
-- `\contactblock` renders all seven fields. If you leave `ScholarID` or `DBLPID` empty, the corresponding link is suppressed. Do not omit the argument: pass `{}`.
+- `\contactblock` expects all seven fields.
+- `\finishcv` expects a complete URL. Use `\finishcv{\today}{https://example.edu}`, not `\finishcv{\today}{example.edu}`.
 - The `allowbreaks` option changes section penalty values globally. If your CV has only a few sections and you want fine-grained control, it is usually better to insert `\pagebreak` manually rather than enabling this option.
 - BibLaTeX requires two compile passes with `biber` between them: `lualatex → biber → lualatex → lualatex`. If you use `latexmk`, add `$bibtex_use = 2;` to your `.latexmkrc`.
-- Font options affect body text only. Math mode uses the default math font unless you also load a math font package.
+- Font options configure the body, sans, mono, and math stack under LuaLaTeX and XeLaTeX; pdfLaTeX uses the package fallback.
 
 ### License
 
 LaTeX Project Public License v1.3c.
 
-### Author
+### Repository
 
-Agni Datta: [agni-datta/csLaTeX](https://github.com/agni-datta/csLaTeX)
+[csLaTeX](https://github.com/agni-datta/csLaTeX)

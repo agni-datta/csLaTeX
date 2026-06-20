@@ -26,7 +26,7 @@ LaTeX packages for computer science research, technical teaching, and academic d
 | [`cslecture`](cslecture/README.md)            | 3.0     | Skeleton for lecture notes over the `article` class: condensed spacing, boxed title block, and a full theorem suite.                     |
 | [`csletter`](csletter/README.md)              | 3.0     | Professional correspondence with configurable colors, margins, spacing, and optional logo and signature images.                          |
 | [`cspresentation`](cspresentations/README.md) | 3.0     | Beamer theme overlay on Metropolis with the Nord color palette, semantic highlight commands, and TikZ diagram styles.                    |
-| [`csresume`](csresume/README.md)              | 4.1     | Academic CV and resume with chronological entries, a BibLaTeX-driven publications section, and reference block layouts.                  |
+| [`csresume`](csresume/README.md)              | 4.2     | Academic CV and resume with chronological entries, BibLaTeX publications, compact lists, and reference block layouts.                   |
 | [`csthm`](csthm/README.md)                    | 3.0     | Theorem suite with three visual modes (`normal`, `fancy`, `oldschool`), dynamic accent colors, and full `cleveref` integration.          |
 | [`cstufte`](cstufte/README.md)                | 3.0     | Tufte-style wide-margin layout with side-citations, marginalia, and a lattice cryptography notation library.                             |
 | [`cswhitepaper`](cswhitepaper/README.md)      | 5.0     | Style for technical reports with per-author annotation commands, revision tracking, and ruled theorem aesthetics.                        |
