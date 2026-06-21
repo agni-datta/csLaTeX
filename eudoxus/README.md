@@ -17,6 +17,7 @@ General-purpose mathematics package for research papers and lecture notes. Bundl
 - `hyperref` is loaded internally. Do **not** load it again before `\usepackage{eudoxus}`.
 - The `tcs` option requires `tcscrypto.sty` (from the `tcscrypto` package in this repository) to be on the TeX search path. If it is absent, `eudoxus` emits a warning and skips it.
 - `geometry` is loaded under the default `layout` mode. If your class already sets page dimensions (e.g. `amsart` with custom geometry), pass `nolayout` to suppress it.
+- Loads `babel` without language options. Choose document languages through the class options or load `babel` explicitly before `eudoxus`.
 
 ### Usage
 
@@ -81,9 +82,13 @@ All environments are numbered per section and use small-caps headers. Unnumbered
 
 `commentary`, `discussion`, `exercise`, `guideline`, `highlight`, `important`, `insight`, `keypoint`, `motivation`, `notationabuse`, `note`, `openproblem`, `question`, `recall`, `remark`, `summary`, `syntax`, `takeaway`, `tip`, `warning`
 
-**Unnumbered variants** (declared with `\newtheorem*`):
+**Unnumbered theorem variants**:
 
 `theorem*`, `lemma*`, `corollary*`, `hypothesis*`, `claim*`, `conjecture*`, `informaltheorem*`, `openproblem*`, `syntax*`
+
+**Proof-style variants**:
+
+`proof`, `proofsketch`, `proofidea`
 
 ### Paragraph headings
 

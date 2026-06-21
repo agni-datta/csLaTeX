@@ -44,10 +44,12 @@ The environment accepts one optional argument: the starting line number for that
 
 ```latex
 \begin{codelines}[5]
-    \item This line is numbered 5.
-    \item This line is numbered 6.
+    \item This line is labeled 05.
+    \item This line is labeled 06.
 \end{codelines}
 ```
+
+Line labels are zero-padded by default, so the first lines display as `00`, `01`, `02`, and so on.
 
 ### API
 
@@ -57,8 +59,8 @@ The environment accepts one optional argument: the starting line number for that
 
 #### Line number management
 
-- `\codelinessetlinenr{n}`: set the next line number to $n$. Equivalent to using the optional argument but can be called outside the environment, e.g. between two blocks.
-- `\codelinesresetlinenr`: reset the counter to 0. Use at the start of a new algorithm if you want numbering to restart from 1.
+- `\codelinessetlinenr{n}`: set the next line label to $n$. Equivalent to using the optional argument but can be called outside the environment, e.g. between two blocks. The printed label is still zero-padded, so `\codelinessetlinenr{1}` displays `01`.
+- `\codelinesresetlinenr`: reset the counter to 0. Use at the start of a new algorithm if you want numbering to restart at `00`.
 
 #### Layout within a line
 
@@ -73,7 +75,7 @@ The environment accepts one optional argument: the starting line number for that
 These are commands you redefine globally with `\renewcommand` to change appearance across the entire document:
 
 - `\codelineslinenrformat`: font and color of line numbers. Default: `\normalfont\footnotesize\ttfamily\color{black!50}`. For example, to print line numbers in red: `\renewcommand{\codelineslinenrformat}{\footnotesize\color{red}}`.
-- `\codelineslinenrdigits`: number of digits for zero-padding. Default `2` gives `01`, `02`, …, `99`. Set to `3` if your algorithm exceeds 99 lines.
+- `\codelineslinenrdigits`: number of digits for zero-padding. Default `2` gives `00`, `01`, …, `99`. Set to `3` if your algorithm exceeds 99 lines.
 - `\codelinesrefprefix`: prefix prepended to internal cross-reference anchors. Default is empty. Set a unique string per algorithm if you have multiple `codelines` blocks in the same document and need unambiguous `\ref` or `\label` targets.
 
 ### Cross-referencing

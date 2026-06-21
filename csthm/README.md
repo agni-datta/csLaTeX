@@ -94,6 +94,8 @@ All environments are numbered per section and registered with `cleveref`. Every 
 **Proof and case structure:**
 
 - `proof`: reimplemented with consistent QED markers that respect the current accent color.
+- `proofsketch`: unnumbered proof-style environment headed “Proof (Sketch)”.
+- `proofidea`: unnumbered proof-style environment headed “Proof (Idea)”.
 - `case`: list environment for enumerating proof cases. Items are labeled **Case 1:**, **Case 2:**, etc. in bold. Accepts an optional label override per item.
 
 ```latex

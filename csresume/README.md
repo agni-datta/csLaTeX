@@ -18,6 +18,7 @@ CV and resume package with academic-oriented typography, flexible entry layouts,
 - Requires `biber` as the BibLaTeX backend for publication lists. `bibtex` is not supported.
 - LuaLaTeX or XeLaTeX is recommended for the modern font stack. pdfLaTeX is supported through a conservative fallback.
 - Logo and signature image files must exist on disk if used by surrounding project code.
+- Loads `babel` without language options. Choose document languages through the class options or load `babel` explicitly before `csresume`.
 
 ### Usage
 

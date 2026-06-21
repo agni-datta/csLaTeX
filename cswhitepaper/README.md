@@ -16,6 +16,7 @@ Style package for technical whitepapers, research reports, and position papers. 
 
 - Works with `article` and `report` classes. Not designed for `book` or `beamer`.
 - Do not load `amsthm` before this package.
+- Loads `babel` without language options. Choose document languages through the class options or load `babel` explicitly before `cswhitepaper`.
 
 ### Usage
 
@@ -57,7 +58,7 @@ Style package for technical whitepapers, research reports, and position papers. 
 
 #### Global configuration
 
-- `\documentaccentcolor{color}`: sets the primary accent color used for ruled lines, section headings, and theorem decorations. Call once in the preamble. Accepts any color name known to `xcolor`. Default: a neutral dark blue.
+- `\documentaccentcolor{color}`: sets the primary accent color used for ruled lines, section headings, and theorem decorations. Call once in the preamble. Accepts any color name known to `xcolor`. Default: a neutral dark blue. URL links use `Peach`.
 
 #### Sectioning
 
@@ -102,6 +103,8 @@ Per-author markers:
 **Definition-like:** `definition`, `notation`, `protocol`, `problem`, `construction`
 
 **Remark-like:** `remark`, `note`, `example`, `observation`, `openproblem`
+
+**Proof-style:** `proof`, `proofsketch`, `proofidea`
 
 All environments are numbered per section, accept optional titles, and are registered with `cleveref`.
 

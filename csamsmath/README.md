@@ -16,6 +16,7 @@ Mathematical backbone for STEM publications. Handles font selection, a full suit
 
 - Optimized for LuaLaTeX. pdfLaTeX is supported with font fallbacks; some font options silently degrade or warn.
 - Do not load `amsthm` manually before this package: it loads and configures `amsthm` internally via `thmtools`. Loading it again afterward is harmless but loading it before will cause option conflicts.
+- Loads `babel` without language options. Choose document languages through the class options or load `babel` explicitly before `csamsmath`.
 
 ### Usage
 
@@ -78,6 +79,10 @@ All accept an optional title argument: `\begin{theorem}[My Title]`.
 
 All environments are declared via `thmtools` and registered with `cleveref`, so `\cref{thm:fermat}` produces “Theorem 1.1” automatically.
 
+#### Proof environments
+
+`proof`, `proofsketch`, and `proofidea` are unnumbered proof-style environments.
+
 #### Annotation commands (active in `draft` mode only)
 
 All annotation commands produce colored inline text plus a margin star `★` so you can scan for open items in the margin without reading the body.
@@ -102,7 +107,7 @@ Whenever a `\ref`, `\cref`, or `\cite` target does not exist yet, a red star `�
 
 - Do not load `amsthm` before this package. Loading it after is fine.
 - This package loads `thmtools`, `cleveref`, `hyperref` (if not already present), and several font packages. If you load any of these independently, do so after `csamsmath` or verify there are no option conflicts.
-- If you use `babel` with a non-English language, load it before `csamsmath` to avoid hyphenation pattern conflicts.
+- Language selection is document-level. If a document needs non-default Babel languages, pass them through the class options or load `babel` explicitly before `csamsmath`.
 - On pdfLaTeX, `kpfonts` silently falls back to Latin Modern: this is intentional, not a bug.
 - The broken-reference tracking patches `\@setref` and `\G@refundefinedtrue` at load time. It will fire on every undefined `\ref`, `\cref`, and `\cite` target throughout the document. If you see unexpected margin stars on first compile of a new document, they indicate real missing labels, not a bug in the package.
 - `\XXX` in `final` mode raises a hard `\@latex@error`. This is intentional. If your build pipeline uses `-interaction=nonstopmode` and you accidentally have `\XXX` in the source, the PDF will still be produced but the error will appear in the log. You must resolve it before submission.

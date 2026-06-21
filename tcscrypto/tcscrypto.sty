@@ -1,14 +1,18 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% tcscrypto — Notation and environment suite for TCS and Cryptography          %%
-%%                                                                              %%
-%% Author : Agni Datta                                                          %%
-%% GitHub : https://github.com/agni-datta/csLaTeX                               %%
-%% Docs   : See README.md in this directory for full documentation.             %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% tcscrypto.sty — Notation and environment suite for TCS and Cryptography
+%
+% Author  : Agni Datta
+% GitHub  : https://github.com/agni-datta/csLaTeX
+% License : LPPL v1.3c
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{tcscrypto}[2026/05/02 v3.3 Notations and environments for TCS and Cryptography]
 
 \makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Options
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newif\if@tcscrypto@emphasis\@tcscrypto@emphasisfalse
 \newif\if@tcscrypto@small\@tcscrypto@smallfalse
@@ -21,6 +25,10 @@
 \DeclareOption{venuestyle}{\@tcscrypto@venuetrue}
 
 \ProcessOptions\relax
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Dependencies
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{appendix}
 \RequirePackage{array}
@@ -39,7 +47,7 @@
 \RequirePackage{xspace}
 
 \if@tcscrypto@small
-	\newcommand\tcs@reducesize{%
+	\NewDocumentCommand{\tcs@reducesize}{}{%
 		\ifx\@currsize\normalsize\small
 		\else
 			\ifx\@currsize\small\footnotesize
@@ -49,39 +57,47 @@
 			\fi
 		\fi
 	}
-	\newcommand\tcs@possiblymakesmaller[1]{%
+	\NewDocumentCommand{\tcs@possiblymakesmaller}{m}{%
 		\mathchoice
 		{\hbox{\tcs@reducesize$#1$}}%
 		{\hbox{\tcs@reducesize$#1$}}%
 		{#1}%
 		{#1}%
 	}%
-	\newcommand{\algostyle}[1]{%
+	\NewDocumentCommand{\algostyle}{m}{%
 		\ensuremath{\hbox{\tcs@reducesize$\mathsf{#1}$%
 			}%
 		}%
 	}%
 \else
-	\newcommand{\algostyle}[1]{\ensuremath{\mathsf{#1}}}
+	\NewDocumentCommand{\algostyle}{m}{\ensuremath{\mathsf{#1}}}
 \fi
 
-\newcommand{\funcstyle}[1]{\algostyle{#1}}
-\newcommand{\keystyle}[1]{\ensuremath{\mathsf{{#1}}}}
-\newcommand{\oraclestyle}[1]{\ensuremath{\textnormal{\textsc{#1}}}}
-\newcommand{\probstyle}[1]{\ensuremath{\textnormal{\textsc{#1}}}\xspace}
-\newcommand{\schemestyle}[1]{\algostyle{#1}}
-\newcommand{\setstyle}[1]{\ensuremath{\mathcal{#1}}}
-\newcommand{\varstyle}[1]{\algostyle{#1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Core Style Constructors
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\funct}[1]{\funcstyle{#1}}
-\newcommand{\key}[1]{\keystyle{#1}}
-\newcommand{\oracle}[1]{\oraclestyle{#1}}
-\newcommand{\proc}[1]{\funcstyle{#1}}
-\newcommand{\var}[1]{\varstyle{#1}}
+\NewDocumentCommand{\funcstyle}{m}{\algostyle{#1}}
+\NewDocumentCommand{\keystyle}{m}{\ensuremath{\mathsf{{#1}}}}
+\NewDocumentCommand{\oraclestyle}{m}{\ensuremath{\textnormal{\textsc{#1}}}}
+\NewDocumentCommand{\probstyle}{m}{\ensuremath{\textnormal{\textsc{#1}}}\xspace}
+\NewDocumentCommand{\schemestyle}{m}{\algostyle{#1}}
+\NewDocumentCommand{\setstyle}{m}{\ensuremath{\mathcal{#1}}}
+\NewDocumentCommand{\varstyle}{m}{\algostyle{#1}}
 
-\newcommand{\newbb}[2]{\newcommand{#1}{\ensuremath{\mathbb{#2}}}}
-\newcommand{\newcal}[2]{\newcommand{#1}{\ensuremath{\mathcal{#2}}}}
-\newcommand{\newscr}[2]{\newcommand{#1}{\ensuremath{\mathscr{#2}}}}
+\NewDocumentCommand{\funct}{m}{\funcstyle{#1}}
+\NewDocumentCommand{\key}{m}{\keystyle{#1}}
+\NewDocumentCommand{\oracle}{m}{\oraclestyle{#1}}
+\NewDocumentCommand{\proc}{m}{\funcstyle{#1}}
+\NewDocumentCommand{\var}{m}{\varstyle{#1}}
+
+\NewDocumentCommand{\newbb}{m m}{\NewDocumentCommand{#1}{}{\ensuremath{\mathbb{#2}}}}
+\NewDocumentCommand{\newcal}{m m}{\NewDocumentCommand{#1}{}{\ensuremath{\mathcal{#2}}}}
+\NewDocumentCommand{\newscr}{m m}{\NewDocumentCommand{#1}{}{\ensuremath{\mathscr{#2}}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CSV-Based Macro Generators
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ExplSyntaxOn
 
@@ -149,8 +165,12 @@
 
 \ExplSyntaxOff
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Package Options With Runtime Effects
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \if@tcscrypto@emphasis
-	\renewcommand{\emph}[1]{\textsf{#1}}
+	\RenewDocumentCommand{\emph}{m}{\textsf{#1}}
 \fi
 
 \if@tcscrypto@venue
@@ -165,9 +185,9 @@
 	}
 	\@ifclassloaded{llncs}{%
 		\let\tcscrypto@oldmaketitle\maketitle
-		\def\maketitle{%
+		\RenewDocumentCommand{\maketitle}{}{%
 			\let\tcscrypto@oldaddcontentsline\addcontentsline
-			\renewcommand{\addcontentsline}[3]{}%
+			\RenewDocumentCommand{\addcontentsline}{m m m}{}%
 			\tcscrypto@oldmaketitle
 			\let\addcontentsline\tcscrypto@oldaddcontentsline
 		}%
@@ -175,7 +195,7 @@
 		\@ifpackageloaded{setspace}{}{%
 			\RequirePackage{setspace}%
 		}
-		\newcommand{\toc}{%
+		\NewDocumentCommand{\toc}{}{%
 			\begin{spacing}{1.075}
 				\begin{small}
 					\tableofcontents%
@@ -184,6 +204,10 @@
 		}
 	}%
 \fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Document-Level Convenience Environments
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \@ifundefined{acknowledgements}{%
 	\NewDocumentEnvironment{acknowledgements}{}%
@@ -196,7 +220,7 @@
 }{}
 
 \@ifundefined{printreferences}{%
-	\newcommand{\printreferences}[2][aomalpha]{%
+	\NewDocumentCommand{\printreferences}{O{aomalpha} m}{%
 		\begin{small}
 			\setstretch{1}%
 			\bibliographystyle{#1}%
@@ -206,8 +230,8 @@
 }{}
 
 \@ifundefined{researchquestion}{%
-	\newcommand{\researchquestionlabel}[1]{\textsc{#1}\hfil}
-	\newenvironment{researchquestion}{%
+	\NewDocumentCommand{\researchquestionlabel}{m}{\textsc{#1}\hfil}
+	\NewDocumentEnvironment{researchquestion}{}{%
 		\list{}{%
 			\setlength{\labelwidth}{0pt}%
 			\setlength{\labelsep}{0.5em}%
@@ -246,18 +270,26 @@
 	}
 }{}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Tables, Boxes, Highlighting, and Small Text Helpers
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \newlength{\strutdepth}
 \settodepth{\strutdepth}{\strutbox}
 \newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 
-\newcommand{\mathcolorbox}[2]{\colorbox{#1}{$\displaystyle#2$}}
-\newcommand{\emphbox}[1]{\mathcolorbox{SlateBlue3}{#1}}
-\newcommand{\emphdiff}[1]{{\leavevmode\color{RoyalBlue3}#1}}
-\newcommand{\highlightbox}[1]{\colorbox{Goldenrod1!30}{#1}}
+\NewDocumentCommand{\mathcolorbox}{m m}{\colorbox{#1}{$\displaystyle#2$}}
+\NewDocumentCommand{\emphbox}{m}{\mathcolorbox{SlateBlue3}{#1}}
+\NewDocumentCommand{\emphdiff}{m}{{\leavevmode\color{RoyalBlue3}#1}}
+\NewDocumentCommand{\highlightbox}{m}{\colorbox{Goldenrod1!30}{#1}}
 
-\@ifundefined{keywords}{\newcommand{\keywords}[1]{\paragraph{Keywords:}{#1}}}{}
-\@ifundefined{para}{\newcommand{\para}[1]{\subparagraph{#1}}}{}
-\@ifundefined{term}{\newcommand{\term}[1]{\textsf{#1}}}{}
+\@ifundefined{keywords}{\NewDocumentCommand{\keywords}{m}{\paragraph{Keywords:}{#1}}}{}
+\@ifundefined{para}{\NewDocumentCommand{\para}{m}{\subparagraph{#1}}}{}
+\@ifundefined{term}{\NewDocumentCommand{\term}{m}{\textsf{#1}}}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Conflict Resets
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \let\E\relax
 \let\Game\relax
@@ -275,17 +307,25 @@
 \let\polylog\relax
 \let\vec\relax
 
-\newcommand{\aew}{a.e.\xspace}
-\newcommand{\aka}{a.k.a.\xspace}
-\newcommand{\cf}{cf.\xspace}
-\newcommand{\eg}{e.g.,\xspace}
-\newcommand{\etal}{et~al.\xspace}
-\newcommand{\etc}{etc.\xspace}
-\newcommand{\ie}{i.e.,\xspace}
-\newcommand{\nb}{N.B.\xspace}
-\newcommand{\viz}{viz.\xspace}
-\newcommand{\vs}{vs.\xspace}
-\newcommand{\wrt}{w.r.t.\xspace}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Prose Abbreviations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\NewDocumentCommand{\aew}{}{a.e.\xspace}
+\NewDocumentCommand{\aka}{}{a.k.a.\xspace}
+\NewDocumentCommand{\cf}{}{cf.\xspace}
+\NewDocumentCommand{\eg}{}{e.g.,\xspace}
+\NewDocumentCommand{\etal}{}{et~al.\xspace}
+\NewDocumentCommand{\etc}{}{etc.\xspace}
+\NewDocumentCommand{\ie}{}{i.e.,\xspace}
+\NewDocumentCommand{\nb}{}{N.B.\xspace}
+\NewDocumentCommand{\viz}{}{viz.\xspace}
+\NewDocumentCommand{\vs}{}{vs.\xspace}
+\NewDocumentCommand{\wrt}{}{w.r.t.\xspace}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Algebraic Domains and Groups
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newbb{\CC}{C}
 \newbb{\FF}{F}
@@ -298,58 +338,62 @@
 \newbb{\TT}{T}
 \newbb{\ZZ}{Z}
 
-\newcommand{\ZZp}{\ZZ_{p}}
-\newcommand{\ZZq}{\ZZ_{q}}
+\NewDocumentCommand{\ZZp}{}{\ZZ_{p}}
+\NewDocumentCommand{\ZZq}{}{\ZZ_{q}}
 
-\newcommand{\FFp}{\FF_{p}}
-\newcommand{\FFq}{\FF_{q}}
+\NewDocumentCommand{\FFp}{}{\FF_{p}}
+\NewDocumentCommand{\FFq}{}{\FF_{q}}
 
-\newcommand{\GGp}{\GG_{p}}
-\newcommand{\GGq}{\GG_{q}}
-\newcommand{\GGt}{\GG_{T}}
-\newcommand{\GT}{\GG_{T}}
-\newcommand{\GGone}{\GG_{1}}
-\newcommand{\GGtwo}{\GG_{2}}
+\NewDocumentCommand{\GGp}{}{\GG_{p}}
+\NewDocumentCommand{\GGq}{}{\GG_{q}}
+\NewDocumentCommand{\GGt}{}{\GG_{T}}
+\NewDocumentCommand{\GT}{}{\GG_{T}}
+\NewDocumentCommand{\GGone}{}{\GG_{1}}
+\NewDocumentCommand{\GGtwo}{}{\GG_{2}}
 
-\newcommand{\ggen}{g}
-\newcommand{\ggenp}{g_p}
-\newcommand{\ggenq}{g_q}
-\newcommand{\ggenone}{g_1}
-\newcommand{\ggentwo}{g_2}
-\newcommand{\ggent}{g_T}
+\NewDocumentCommand{\ggen}{}{g}
+\NewDocumentCommand{\ggenp}{}{g_p}
+\NewDocumentCommand{\ggenq}{}{g_q}
+\NewDocumentCommand{\ggenone}{}{g_1}
+\NewDocumentCommand{\ggentwo}{}{g_2}
+\NewDocumentCommand{\ggent}{}{g_T}
 
-\newcommand{\gexp}[2]{#1^{#2}}
-\newcommand{\gmult}[2]{#1 \cdot #2}
-\newcommand{\ginv}[1]{#1^{-1}}
-\newcommand{\gorder}[1]{\abs{#1}}
-\newcommand{\ggenorder}{\gorder{\ggen}}
+\NewDocumentCommand{\gexp}{m m}{#1^{#2}}
+\NewDocumentCommand{\gmult}{m m}{#1 \cdot #2}
+\NewDocumentCommand{\ginv}{m}{#1^{-1}}
+\NewDocumentCommand{\gorder}{m}{\abs{#1}}
+\NewDocumentCommand{\ggenorder}{}{\gorder{\ggen}}
 
-\newcommand{\pairing}[2]{e\left(#1,\,#2\right)}
-\newcommand{\pairingfunc}{e}
+\NewDocumentCommand{\pairing}{m m}{e\left(#1,\,#2\right)}
+\NewDocumentCommand{\pairingfunc}{}{e}
 
-\newcommand{\bits}{\{0,1\}}
-\newcommand{\unary}[1]{1^{#1}}
-\newcommand{\eps}{\epsilon}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Generic Syntax, Delimiters, and Asymptotic Notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\Description}[1]{\left\langle#1\right\rangle}
+\NewDocumentCommand{\bits}{}{\{0,1\}}
+\NewDocumentCommand{\unary}{m}{1^{#1}}
+\NewDocumentCommand{\eps}{}{\epsilon}
 
-\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
-\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
-\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
-\newcommand{\fpart}[1]{\ensuremath{\{#1\}}}
-\newcommand{\indicator}[1]{\mathbf{1}_{#1}}
-\newcommand{\inner}[2]{\left\langle#1,\,#2\right\rangle}
-\newcommand{\interaction}[2]{\langle#1,\,#2\rangle}
-\newcommand{\interact}[1]{\langle#1\rangle}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
-\newcommand{\pair}[2]{\left(#1,#2\right)}
-\newcommand{\paren}[1]{\left\{#1\right\}}
-\newcommand{\proj}[2]{#1\left[#2\right]}
-\newcommand{\seq}[1]{\left(#1\right)}
-\newcommand{\sqbrkt}[1]{\left[#1\right]}
-\newcommand{\trip}[3]{\left(#1,#2,#3\right)}
-\newcommand{\tuple}[1]{\left(#1\right)}
-\newcommand{\vspan}[1]{\left(#1\right)}
+\NewDocumentCommand{\Description}{m}{\left\langle#1\right\rangle}
+
+\NewDocumentCommand{\abs}{m}{\left\lvert#1\right\rvert}
+\NewDocumentCommand{\ceil}{m}{\left\lceil#1\right\rceil}
+\NewDocumentCommand{\floor}{m}{\left\lfloor#1\right\rfloor}
+\NewDocumentCommand{\fpart}{m}{\ensuremath{\{#1\}}}
+\NewDocumentCommand{\indicator}{m}{\mathbf{1}_{#1}}
+\NewDocumentCommand{\inner}{m m}{\left\langle#1,\,#2\right\rangle}
+\NewDocumentCommand{\interaction}{m m}{\langle#1,\,#2\rangle}
+\NewDocumentCommand{\interact}{m}{\langle#1\rangle}
+\NewDocumentCommand{\norm}{m}{\left\lVert#1\right\rVert}
+\NewDocumentCommand{\pair}{m m}{\left(#1,#2\right)}
+\NewDocumentCommand{\paren}{m}{\left\{#1\right\}}
+\NewDocumentCommand{\proj}{m m}{#1\left[#2\right]}
+\NewDocumentCommand{\seq}{m}{\left(#1\right)}
+\NewDocumentCommand{\sqbrkt}{m}{\left[#1\right]}
+\NewDocumentCommand{\trip}{m m m}{\left(#1,#2,#3\right)}
+\NewDocumentCommand{\tuple}{m}{\left(#1\right)}
+\NewDocumentCommand{\vspan}{m}{\left(#1\right)}
 
 \NewDocumentCommand{\Exp}{d[]}{
 	\E
@@ -391,6 +435,10 @@
 		\right]
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Probability, Sampling, and Distribution Operators
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \DeclareMathOperator*{\E}{\mathbb{E}}
 \DeclareMathOperator*{\Pr}{\algostyle{Pr}}
 
@@ -420,12 +468,16 @@
 \DeclareMathOperator*{\getsr}{\sample}
 
 \DeclareMathOperator*{\StatDist}{\Delta}
-\newcommand{\Uniform}[1]{\setstyle{U}_{#1}}
-\newcommand{\unif}[1]{\algostyle{U}_{#1}}
-\newcommand{\approxstat}[1]{\stackrel{#1}{\approx}}
+\NewDocumentCommand{\Uniform}{m}{\setstyle{U}_{#1}}
+\NewDocumentCommand{\unif}{m}{\algostyle{U}_{#1}}
+\NewDocumentCommand{\approxstat}{m}{\stackrel{#1}{\approx}}
 
-\newcommand{\vect}[1]{\algostyle{#1}}
-\newcommand{\vec}[1]{\mathbf{#1}}
+\NewDocumentCommand{\vect}{m}{\algostyle{#1}}
+\NewDocumentCommand{\vec}{m}{\mathbf{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Relations and General Mathematical Operators
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \DeclareMathOperator*{\cindist}{\equiv_c}
 \DeclareMathOperator*{\equivdist}{\equiv}
@@ -493,22 +545,26 @@
 \DeclareMathOperator*{\lg}{\mathrm{lg}}
 \DeclareMathOperator*{\log}{\mathrm{log}}
 
-\newcommand{\Func}{\calF}
-\newcommand{\Lag}{\mathcal{L}}
-\newcommand{\Sym}{\mathfrak{S}}
-\newcommand{\Primes}{\mathsf{Primes}}
-\newcommand{\Protocol}{\Prot}
-\newcommand{\SecParam}{\lambda}
+\NewDocumentCommand{\Func}{}{\calF}
+\NewDocumentCommand{\Lag}{}{\mathcal{L}}
+\NewDocumentCommand{\Sym}{}{\mathfrak{S}}
+\NewDocumentCommand{\Primes}{}{\mathsf{Primes}}
+\NewDocumentCommand{\Protocol}{}{\Prot}
+\NewDocumentCommand{\SecParam}{}{\lambda}
 
-\newcommand{\comparam}{\kappa}
-\newcommand{\complement}{\algostyle{c}}
-\newcommand{\secparamlog}{\log\lambda}
-\newcommand{\secparam}{\lambda}
-\newcommand{\secpar}{\lambda}
+\NewDocumentCommand{\comparam}{}{\kappa}
+\NewDocumentCommand{\complement}{}{\algostyle{c}}
+\NewDocumentCommand{\secparamlog}{}{\log\lambda}
+\NewDocumentCommand{\secparam}{}{\lambda}
+\NewDocumentCommand{\secpar}{}{\lambda}
 
-\newcommand{\BadEvent}{\overbar{\Event}}
-\newcommand{\Event}{\algostyle{E}}
-\newcommand{\GoodEvent}{\Event{E}}
+\NewDocumentCommand{\BadEvent}{}{\overbar{\Event}}
+\NewDocumentCommand{\Event}{}{\algostyle{E}}
+\NewDocumentCommand{\GoodEvent}{}{\Event{E}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Complexity Classes and Search Problems
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \cryptoDefineClassCSV{
 	ARG/ARG,
@@ -544,6 +600,10 @@
 	SharpSAT/\#\SAT,
 	UEOPL/UEOPL,
 }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Cryptographic Schemes, Assumptions, Models, and Formalisms
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \cryptoDefineSchemeCSV{
 	ABE/ABE,
@@ -739,6 +799,10 @@
 	zkSTARK/zkSTARK,
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Algorithms, Procedures, and Proof-System Names
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \cryptoDefineAlgoCSV{
 	AND/AND,
 	Acc/Acc,
@@ -912,6 +976,10 @@
 	WRes/W\textsf{-}Res,
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Session and Protocol Predicates
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \cryptoDefineAlgoCSV{
 	CheckExpiry/CheckExpiry,
 	CheckSessionState/CheckSessionState,
@@ -932,6 +1000,10 @@
 	VerifySessionKey/VerifySessionKey,
 	VerifySignature/VerifySignature,
 }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Named Computational Problems
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \cryptoDefineProbCSV{
 	BipartiteProb/Bipartite-Matching,
@@ -994,6 +1066,10 @@
 	WPHProb/Weak-Pigeonhole-Circuit,
 	kSATProb/\ensuremath{k}-SAT,
 }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Common Variables, Keys, and State Components
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \cryptoDefineKeyCSV{
 	acc/acc,
@@ -1098,6 +1174,10 @@
 	yes/yes,
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Oracle Names and Oracle Aliases
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \cryptoDefineOracleCSV{
 	CDHOracle/CDH,
 	CRGapDHOracle/CRGapDH,
@@ -1145,106 +1225,110 @@
 \let\EphemeralKeyOracle\oracleEphemeralKey
 \let\SessionKeyOracle\oracleSessionKey
 
-\newcommand{\ACSetup}{\AC.\funct{Setup}}
-\newcommand{\ACAccum}{\AC.\funct{Accum}}
-\newcommand{\ACAdd}{\AC.\funct{Add}}
-\newcommand{\ACDel}{\AC.\funct{Del}}
-\newcommand{\ACWitGen}{\AC.\funct{WitGen}}
-\newcommand{\ACWitUpdate}{\AC.\funct{WitUpdate}}
-\newcommand{\ACVerify}{\AC.\funct{Verify}}
-\newcommand{\ACNonMemWitGen}{\AC.\funct{NonMemWitGen}}
-\newcommand{\ACNonMemVerify}{\AC.\funct{NonMemVerify}}
-\newcommand{\ACNonWitGen}{\AC.\funct{NonWitGen}}
-\newcommand{\ACNonVerify}{\AC.\funct{NonVerify}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Cryptographic Primitive Interfaces
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\ABESetup}{\ABE.\funct{Setup}}
-\newcommand{\ABEKeyGen}{\ABE.\funct{KeyGen}}
-\newcommand{\ABEEnc}{\ABE.\funct{Enc}}
-\newcommand{\ABEDec}{\ABE.\funct{Dec}}
+\NewDocumentCommand{\ACSetup}{}{\AC.\funct{Setup}}
+\NewDocumentCommand{\ACAccum}{}{\AC.\funct{Accum}}
+\NewDocumentCommand{\ACAdd}{}{\AC.\funct{Add}}
+\NewDocumentCommand{\ACDel}{}{\AC.\funct{Del}}
+\NewDocumentCommand{\ACWitGen}{}{\AC.\funct{WitGen}}
+\NewDocumentCommand{\ACWitUpdate}{}{\AC.\funct{WitUpdate}}
+\NewDocumentCommand{\ACVerify}{}{\AC.\funct{Verify}}
+\NewDocumentCommand{\ACNonMemWitGen}{}{\AC.\funct{NonMemWitGen}}
+\NewDocumentCommand{\ACNonMemVerify}{}{\AC.\funct{NonMemVerify}}
+\NewDocumentCommand{\ACNonWitGen}{}{\AC.\funct{NonWitGen}}
+\NewDocumentCommand{\ACNonVerify}{}{\AC.\funct{NonVerify}}
 
-\newcommand{\IBESetup}{\IBE.\funct{Setup}}
-\newcommand{\IBEExtract}{\IBE.\funct{Extract}}
-\newcommand{\IBEEnc}{\IBE.\funct{Enc}}
-\newcommand{\IBEDec}{\IBE.\funct{Dec}}
+\NewDocumentCommand{\ABESetup}{}{\ABE.\funct{Setup}}
+\NewDocumentCommand{\ABEKeyGen}{}{\ABE.\funct{KeyGen}}
+\NewDocumentCommand{\ABEEnc}{}{\ABE.\funct{Enc}}
+\NewDocumentCommand{\ABEDec}{}{\ABE.\funct{Dec}}
 
-\newcommand{\HIBESetup}{\HIBE.\funct{Setup}}
-\newcommand{\HIBEExtract}{\HIBE.\funct{Extract}}
-\newcommand{\HIBEEnc}{\HIBE.\funct{Enc}}
-\newcommand{\HIBEDec}{\HIBE.\funct{Dec}}
+\NewDocumentCommand{\IBESetup}{}{\IBE.\funct{Setup}}
+\NewDocumentCommand{\IBEExtract}{}{\IBE.\funct{Extract}}
+\NewDocumentCommand{\IBEEnc}{}{\IBE.\funct{Enc}}
+\NewDocumentCommand{\IBEDec}{}{\IBE.\funct{Dec}}
 
-\newcommand{\BARGSetup}{\BARG.\funct{Setup}}
-\newcommand{\BARGProve}{\BARG.\funct{Prove}}
-\newcommand{\BARGVerify}{\BARG.\funct{Vrfy}}
+\NewDocumentCommand{\HIBESetup}{}{\HIBE.\funct{Setup}}
+\NewDocumentCommand{\HIBEExtract}{}{\HIBE.\funct{Extract}}
+\NewDocumentCommand{\HIBEEnc}{}{\HIBE.\funct{Enc}}
+\NewDocumentCommand{\HIBEDec}{}{\HIBE.\funct{Dec}}
 
-\newcommand{\ComGen}{\Com.\funct{Gen}}
-\newcommand{\ComCommit}{\Com.\funct{Commit}}
-\newcommand{\ComOpen}{\Com.\funct{Open}}
-\newcommand{\ComVerify}{\Com.\funct{Vrfy}}
+\NewDocumentCommand{\BARGSetup}{}{\BARG.\funct{Setup}}
+\NewDocumentCommand{\BARGProve}{}{\BARG.\funct{Prove}}
+\NewDocumentCommand{\BARGVerify}{}{\BARG.\funct{Vrfy}}
 
-\newcommand{\CMSetup}{\CM.\funct{Setup}}
-\newcommand{\CMCommit}{\CM.\funct{Commit}}
-\newcommand{\CMOpen}{\CM.\funct{Open}}
-\newcommand{\CMVerify}{\CM.\funct{Vrfy}}
+\NewDocumentCommand{\ComGen}{}{\Com.\funct{Gen}}
+\NewDocumentCommand{\ComCommit}{}{\Com.\funct{Commit}}
+\NewDocumentCommand{\ComOpen}{}{\Com.\funct{Open}}
+\NewDocumentCommand{\ComVerify}{}{\Com.\funct{Vrfy}}
 
-\newcommand{\PCSetup}{\PC.\funct{Setup}}
-\newcommand{\PCCommit}{\PC.\funct{Commit}}
-\newcommand{\PCOpen}{\PC.\funct{Open}}
-\newcommand{\PCVerify}{\PC.\funct{Vrfy}}
+\NewDocumentCommand{\CMSetup}{}{\CM.\funct{Setup}}
+\NewDocumentCommand{\CMCommit}{}{\CM.\funct{Commit}}
+\NewDocumentCommand{\CMOpen}{}{\CM.\funct{Open}}
+\NewDocumentCommand{\CMVerify}{}{\CM.\funct{Vrfy}}
 
-\newcommand{\FCSetup}{\FC.\funct{Setup}}
-\newcommand{\FCCommit}{\FC.\funct{Commit}}
-\newcommand{\FCOpen}{\FC.\funct{Open}}
-\newcommand{\FCVerify}{\FC.\funct{Vrfy}}
+\NewDocumentCommand{\PCSetup}{}{\PC.\funct{Setup}}
+\NewDocumentCommand{\PCCommit}{}{\PC.\funct{Commit}}
+\NewDocumentCommand{\PCOpen}{}{\PC.\funct{Open}}
+\NewDocumentCommand{\PCVerify}{}{\PC.\funct{Vrfy}}
 
-\newcommand{\VCSetup}{\VC.\funct{Setup}}
-\newcommand{\VCCommit}{\VC.\funct{Commit}}
-\newcommand{\VCOpen}{\VC.\funct{Open}}
-\newcommand{\VCOpenSub}{\VC.\funct{OpenSub}}
-\newcommand{\VCUpdate}{\VC.\funct{Update}}
-\newcommand{\VCVerify}{\VC.\funct{Verify}}
-\newcommand{\VCVerifySub}{\VC.\funct{VerifySub}}
-\newcommand{\VCWitUpdate}{\VC.\funct{WitUpdate}}
+\NewDocumentCommand{\FCSetup}{}{\FC.\funct{Setup}}
+\NewDocumentCommand{\FCCommit}{}{\FC.\funct{Commit}}
+\NewDocumentCommand{\FCOpen}{}{\FC.\funct{Open}}
+\NewDocumentCommand{\FCVerify}{}{\FC.\funct{Vrfy}}
 
-\newcommand{\KZG}{\algostyle{KZG}}
-\newcommand{\KZGSetup}{\KZG.\funct{Setup}}
-\newcommand{\KZGCommit}{\KZG.\funct{Commit}}
-\newcommand{\KZGOpen}{\KZG.\funct{Open}}
-\newcommand{\KZGVerify}{\KZG.\funct{Vrfy}}
+\NewDocumentCommand{\VCSetup}{}{\VC.\funct{Setup}}
+\NewDocumentCommand{\VCCommit}{}{\VC.\funct{Commit}}
+\NewDocumentCommand{\VCOpen}{}{\VC.\funct{Open}}
+\NewDocumentCommand{\VCOpenSub}{}{\VC.\funct{OpenSub}}
+\NewDocumentCommand{\VCUpdate}{}{\VC.\funct{Update}}
+\NewDocumentCommand{\VCVerify}{}{\VC.\funct{Verify}}
+\NewDocumentCommand{\VCVerifySub}{}{\VC.\funct{VerifySub}}
+\NewDocumentCommand{\VCWitUpdate}{}{\VC.\funct{WitUpdate}}
 
-\newcommand{\DPFGen}{\DPF.\funct{Gen}}
-\newcommand{\DPFEval}{\DPF.\funct{Eval}}
+\NewDocumentCommand{\KZG}{}{\algostyle{KZG}}
+\NewDocumentCommand{\KZGSetup}{}{\KZG.\funct{Setup}}
+\NewDocumentCommand{\KZGCommit}{}{\KZG.\funct{Commit}}
+\NewDocumentCommand{\KZGOpen}{}{\KZG.\funct{Open}}
+\NewDocumentCommand{\KZGVerify}{}{\KZG.\funct{Vrfy}}
 
-\newcommand{\FESetup}{\FE.\funct{Setup}}
-\newcommand{\FEKeyGen}{\FE.\funct{KeyGen}}
-\newcommand{\FEEnc}{\FE.\funct{Enc}}
-\newcommand{\FEDec}{\FE.\funct{Dec}}
-\newcommand{\FEGen}{\FE.\funct{Gen}}
+\NewDocumentCommand{\DPFGen}{}{\DPF.\funct{Gen}}
+\NewDocumentCommand{\DPFEval}{}{\DPF.\funct{Eval}}
 
-\newcommand{\FHEGen}{\FHE.\funct{Gen}}
-\newcommand{\FHEKeyGen}{\FHE.\funct{KeyGen}}
-\newcommand{\FHEEnc}{\FHE.\funct{Enc}}
-\newcommand{\FHEDec}{\FHE.\funct{Dec}}
-\newcommand{\FHEEval}{\FHE.\funct{Eval}}
-\newcommand{\FHEAdd}{\FHE.\funct{Add}}
-\newcommand{\FHEMul}{\FHE.\funct{Mul}}
+\NewDocumentCommand{\FESetup}{}{\FE.\funct{Setup}}
+\NewDocumentCommand{\FEKeyGen}{}{\FE.\funct{KeyGen}}
+\NewDocumentCommand{\FEEnc}{}{\FE.\funct{Enc}}
+\NewDocumentCommand{\FEDec}{}{\FE.\funct{Dec}}
+\NewDocumentCommand{\FEGen}{}{\FE.\funct{Gen}}
 
-\newcommand{\FSSetup}{\FS.\funct{Setup}}
-\newcommand{\FSHash}{\FS.\funct{Hash}}
-\newcommand{\FSProve}{\FS.\funct{Prove}}
-\newcommand{\FSVerify}{\FS.\funct{Vrfy}}
-\newcommand{\FSChallenge}{\FS.\funct{Chal}}
-\newcommand{\FSTranscript}{\FS.\funct{Trans}}
+\NewDocumentCommand{\FHEGen}{}{\FHE.\funct{Gen}}
+\NewDocumentCommand{\FHEKeyGen}{}{\FHE.\funct{KeyGen}}
+\NewDocumentCommand{\FHEEnc}{}{\FHE.\funct{Enc}}
+\NewDocumentCommand{\FHEDec}{}{\FHE.\funct{Dec}}
+\NewDocumentCommand{\FHEEval}{}{\FHE.\funct{Eval}}
+\NewDocumentCommand{\FHEAdd}{}{\FHE.\funct{Add}}
+\NewDocumentCommand{\FHEMul}{}{\FHE.\funct{Mul}}
 
-\newcommand{\FSSGen}{\FSS.\funct{Gen}}
-\newcommand{\FSSEval}{\FSS.\funct{Eval}}
+\NewDocumentCommand{\FSSetup}{}{\FS.\funct{Setup}}
+\NewDocumentCommand{\FSHash}{}{\FS.\funct{Hash}}
+\NewDocumentCommand{\FSProve}{}{\FS.\funct{Prove}}
+\NewDocumentCommand{\FSVerify}{}{\FS.\funct{Vrfy}}
+\NewDocumentCommand{\FSChallenge}{}{\FS.\funct{Chal}}
+\NewDocumentCommand{\FSTranscript}{}{\FS.\funct{Trans}}
 
-\newcommand{\HKGen}{\Hash.\funct{Gen}}
-\newcommand{\HSetup}{\Hash.\funct{Setup}}
-\newcommand{\HEval}{\Hash.\funct{Eval}}
-\newcommand{\HCommit}{\Hash.\funct{Commit}}
-\newcommand{\HOpen}{\Hash.\funct{Open}}
-\newcommand{\HExtract}{\Hash.\funct{Extract}}
-\newcommand{\HVerify}{\Hash.\funct{Vrfy}}
+\NewDocumentCommand{\FSSGen}{}{\FSS.\funct{Gen}}
+\NewDocumentCommand{\FSSEval}{}{\FSS.\funct{Eval}}
+
+\NewDocumentCommand{\HKGen}{}{\Hash.\funct{Gen}}
+\NewDocumentCommand{\HSetup}{}{\Hash.\funct{Setup}}
+\NewDocumentCommand{\HEval}{}{\Hash.\funct{Eval}}
+\NewDocumentCommand{\HCommit}{}{\Hash.\funct{Commit}}
+\NewDocumentCommand{\HOpen}{}{\Hash.\funct{Open}}
+\NewDocumentCommand{\HExtract}{}{\Hash.\funct{Extract}}
+\NewDocumentCommand{\HVerify}{}{\Hash.\funct{Vrfy}}
 
 \let\HashGen\HKGen
 \let\HashSetup\HSetup
@@ -1254,230 +1338,234 @@
 \let\HashExtract\HExtract
 \let\HashVerify\HVerify
 
-\newcommand{\Hone}{\funct{H}_1}
-\newcommand{\Htwo}{\funct{H}_2}
-\newcommand{\Hthree}{\funct{H}_3}
-\newcommand{\hashone}[1]{H_1\left(#1\right)}
-\newcommand{\hashtwo}[1]{H_2\left(#1\right)}
-\newcommand{\hashthree}[1]{H_3\left(#1\right)}
+\NewDocumentCommand{\Hone}{}{\funct{H}_1}
+\NewDocumentCommand{\Htwo}{}{\funct{H}_2}
+\NewDocumentCommand{\Hthree}{}{\funct{H}_3}
+\NewDocumentCommand{\hashone}{m}{H_1\left(#1\right)}
+\NewDocumentCommand{\hashtwo}{m}{H_2\left(#1\right)}
+\NewDocumentCommand{\hashthree}{m}{H_3\left(#1\right)}
 
-\newcommand{\HSSSetup}{\HSS.\funct{Setup}}
-\newcommand{\HSSKeyGen}{\HSS.\funct{KeyGen}}
-\newcommand{\HSSShare}{\HSS.\funct{Share}}
-\newcommand{\HSSEval}{\HSS.\funct{Eval}}
-\newcommand{\HSSReconstruct}{\HSS.\funct{Reconstruct}}
+\NewDocumentCommand{\HSSSetup}{}{\HSS.\funct{Setup}}
+\NewDocumentCommand{\HSSKeyGen}{}{\HSS.\funct{KeyGen}}
+\NewDocumentCommand{\HSSShare}{}{\HSS.\funct{Share}}
+\NewDocumentCommand{\HSSEval}{}{\HSS.\funct{Eval}}
+\NewDocumentCommand{\HSSReconstruct}{}{\HSS.\funct{Reconstruct}}
 
-\newcommand{\iOObf}{\iO.\funct{Obf}}
-\newcommand{\Obfuscate}[1]{\widehat{#1}}
-\newcommand{\Obfuscated}[1]{\algostyle{O}(#1)}
+\NewDocumentCommand{\iOObf}{}{\iO.\funct{Obf}}
+\NewDocumentCommand{\Obfuscate}{m}{\widehat{#1}}
+\NewDocumentCommand{\Obfuscated}{m}{\algostyle{O}(#1)}
 
-\newcommand{\IOPProver}{\IOP.\funct{Prove}}
-\newcommand{\IOPVerifier}{\IOP.\funct{Vrfy}}
-\newcommand{\IOPSetup}{\IOP.\funct{Setup}}
+\NewDocumentCommand{\IOPProver}{}{\IOP.\funct{Prove}}
+\NewDocumentCommand{\IOPVerifier}{}{\IOP.\funct{Vrfy}}
+\NewDocumentCommand{\IOPSetup}{}{\IOP.\funct{Setup}}
 
-\newcommand{\IVCSetup}{\IVC.\funct{Setup}}
-\newcommand{\IVCProve}{\IVC.\funct{Prove}}
-\newcommand{\IVCVerify}{\IVC.\funct{Vrfy}}
+\NewDocumentCommand{\IVCSetup}{}{\IVC.\funct{Setup}}
+\NewDocumentCommand{\IVCProve}{}{\IVC.\funct{Prove}}
+\NewDocumentCommand{\IVCVerify}{}{\IVC.\funct{Vrfy}}
 
-\newcommand{\KEMGen}{\KEM.\funct{Gen}}
-\newcommand{\KEMEncaps}{\KEM.\funct{Encaps}}
-\newcommand{\KEMDecaps}{\KEM.\funct{Decaps}}
+\NewDocumentCommand{\KEMGen}{}{\KEM.\funct{Gen}}
+\NewDocumentCommand{\KEMEncaps}{}{\KEM.\funct{Encaps}}
+\NewDocumentCommand{\KEMDecaps}{}{\KEM.\funct{Decaps}}
 
-\newcommand{\ELFEval}{\ELF.\funct{Eval}}
-\newcommand{\ELFSamInj}{\ELF.\funct{SamInj}}
-\newcommand{\ELFSamLossy}{\ELF.\funct{SamLossy}}
+\NewDocumentCommand{\ELFEval}{}{\ELF.\funct{Eval}}
+\NewDocumentCommand{\ELFSamInj}{}{\ELF.\funct{SamInj}}
+\NewDocumentCommand{\ELFSamLossy}{}{\ELF.\funct{SamLossy}}
 
-\newcommand{\LFEval}{\LF.\funct{Eval}}
-\newcommand{\LFSamInj}{\LF.\funct{SamInj}}
-\newcommand{\LFSamLossy}{\LF.\funct{SamLossy}}
+\NewDocumentCommand{\LFEval}{}{\LF.\funct{Eval}}
+\NewDocumentCommand{\LFSamInj}{}{\LF.\funct{SamInj}}
+\NewDocumentCommand{\LFSamLossy}{}{\LF.\funct{SamLossy}}
 
-\newcommand{\MACGen}{\MAC.\funct{Gen}}
-\newcommand{\MACSign}{\MAC.\funct{Sign}}
-\newcommand{\MACVerify}{\MAC.\funct{Vrfy}}
+\NewDocumentCommand{\MACGen}{}{\MAC.\funct{Gen}}
+\NewDocumentCommand{\MACSign}{}{\MAC.\funct{Sign}}
+\NewDocumentCommand{\MACVerify}{}{\MAC.\funct{Vrfy}}
 
-\newcommand{\MerkleRoot}{\algostyle{root}}
-\newcommand{\AuthPath}{\algostyle{path}}
-\newcommand{\Open}{\algostyle{Open}}
-\newcommand{\proofstr}{\pi}
+\NewDocumentCommand{\MerkleRoot}{}{\algostyle{root}}
+\NewDocumentCommand{\AuthPath}{}{\algostyle{path}}
+\NewDocumentCommand{\Open}{}{\algostyle{Open}}
+\NewDocumentCommand{\proofstr}{}{\pi}
 
-\newcommand{\MPCSetup}{\MPC.\funct{Setup}}
-\newcommand{\MPCInput}{\MPC.\funct{Input}}
-\newcommand{\MPCEval}{\MPC.\funct{Eval}}
-\newcommand{\MPCOutput}{\MPC.\funct{Output}}
+\NewDocumentCommand{\MPCSetup}{}{\MPC.\funct{Setup}}
+\NewDocumentCommand{\MPCInput}{}{\MPC.\funct{Input}}
+\NewDocumentCommand{\MPCEval}{}{\MPC.\funct{Eval}}
+\NewDocumentCommand{\MPCOutput}{}{\MPC.\funct{Output}}
 
-\newcommand{\NISetup}{\NARG.\funct{Setup}}
-\newcommand{\NIIndex}{\NARG.\funct{Index}}
-\newcommand{\NIProve}{\NARG.\funct{Prove}}
-\newcommand{\NIVerify}{\NARG.\funct{Vrfy}}
-\newcommand{\NISim}{\NARG.\funct{Sim}}
+\NewDocumentCommand{\NISetup}{}{\NARG.\funct{Setup}}
+\NewDocumentCommand{\NIIndex}{}{\NARG.\funct{Index}}
+\NewDocumentCommand{\NIProve}{}{\NARG.\funct{Prove}}
+\NewDocumentCommand{\NIVerify}{}{\NARG.\funct{Vrfy}}
+\NewDocumentCommand{\NISim}{}{\NARG.\funct{Sim}}
 
-\newcommand{\NIZKSetup}{\NIZK.\funct{Setup}}
-\newcommand{\NIZKProve}{\NIZK.\funct{Prove}}
-\newcommand{\NIZKVerify}{\NIZK.\funct{Vrfy}}
-\newcommand{\NIZKSim}{\NIZK.\funct{Sim}}
+\NewDocumentCommand{\NIZKSetup}{}{\NIZK.\funct{Setup}}
+\NewDocumentCommand{\NIZKProve}{}{\NIZK.\funct{Prove}}
+\NewDocumentCommand{\NIZKVerify}{}{\NIZK.\funct{Vrfy}}
+\NewDocumentCommand{\NIZKSim}{}{\NIZK.\funct{Sim}}
 
-\newcommand{\OTSetup}{\OT.\funct{Setup}}
-\newcommand{\OTSend}{\OT.\funct{Send}}
-\newcommand{\OTReceive}{\OT.\funct{Receive}}
+\NewDocumentCommand{\OTSetup}{}{\OT.\funct{Setup}}
+\NewDocumentCommand{\OTSend}{}{\OT.\funct{Send}}
+\NewDocumentCommand{\OTReceive}{}{\OT.\funct{Receive}}
 
-\newcommand{\OWFFunction}{\algostyle{F}}
-\newcommand{\OWFGen}{\OWFFunction.\funct{Gen}}
-\newcommand{\OWFEval}{\OWFFunction.\funct{Eval}}
+\NewDocumentCommand{\OWFFunction}{}{\algostyle{F}}
+\NewDocumentCommand{\OWFGen}{}{\OWFFunction.\funct{Gen}}
+\NewDocumentCommand{\OWFEval}{}{\OWFFunction.\funct{Eval}}
 
-\newcommand{\OWPGen}{\OWP.\funct{Gen}}
-\newcommand{\OWPEval}{\OWP.\funct{Eval}}
-\newcommand{\OWPVerify}{\OWP.\funct{Vrfy}}
+\NewDocumentCommand{\OWPGen}{}{\OWP.\funct{Gen}}
+\NewDocumentCommand{\OWPEval}{}{\OWP.\funct{Eval}}
+\NewDocumentCommand{\OWPVerify}{}{\OWP.\funct{Vrfy}}
 
-\newcommand{\rOWFSetup}{\rOWF.\funct{Setup}}
-\newcommand{\rOWFGen}{\rOWF.\funct{Gen}}
-\newcommand{\rOWFGenChal}{\rOWF.\funct{GenChal}}
-\newcommand{\rOWFRerand}{\rOWF.\funct{Rerand}}
-\newcommand{\rOWFVer}{\rOWF.\funct{Vrfy}}
+\NewDocumentCommand{\rOWFSetup}{}{\rOWF.\funct{Setup}}
+\NewDocumentCommand{\rOWFGen}{}{\rOWF.\funct{Gen}}
+\NewDocumentCommand{\rOWFGenChal}{}{\rOWF.\funct{GenChal}}
+\NewDocumentCommand{\rOWFRerand}{}{\rOWF.\funct{Rerand}}
+\NewDocumentCommand{\rOWFVer}{}{\rOWF.\funct{Vrfy}}
 
-\newcommand{\PCGGen}{\PCG.\funct{Gen}}
-\newcommand{\PCGExpand}{\PCG.\funct{Expand}}
+\NewDocumentCommand{\PCGGen}{}{\PCG.\funct{Gen}}
+\NewDocumentCommand{\PCGExpand}{}{\PCG.\funct{Expand}}
 
-\newcommand{\PIRQuery}{\PIR.\funct{Query}}
-\newcommand{\PIRAnswer}{\PIR.\funct{Answer}}
-\newcommand{\PIRReconstruct}{\PIR.\funct{Reconstruct}}
+\NewDocumentCommand{\PIRQuery}{}{\PIR.\funct{Query}}
+\NewDocumentCommand{\PIRAnswer}{}{\PIR.\funct{Answer}}
+\NewDocumentCommand{\PIRReconstruct}{}{\PIR.\funct{Reconstruct}}
 
-\newcommand{\PKESetup}{\PKE.\funct{Setup}}
-\newcommand{\PKEKeyGen}{\PKE.\funct{KeyGen}}
-\newcommand{\PKEGen}{\PKE.\funct{Gen}}
-\newcommand{\PKEEnc}{\PKE.\funct{Enc}}
-\newcommand{\PKEDec}{\PKE.\funct{Dec}}
+\NewDocumentCommand{\PKESetup}{}{\PKE.\funct{Setup}}
+\NewDocumentCommand{\PKEKeyGen}{}{\PKE.\funct{KeyGen}}
+\NewDocumentCommand{\PKEGen}{}{\PKE.\funct{Gen}}
+\NewDocumentCommand{\PKEEnc}{}{\PKE.\funct{Enc}}
+\NewDocumentCommand{\PKEDec}{}{\PKE.\funct{Dec}}
 
-\newcommand{\PRFFunction}{\algostyle{F}}
-\newcommand{\PRFGen}{\PRFFunction.\funct{Gen}}
-\newcommand{\PRFSetup}{\PRFFunction.\funct{Setup}}
-\newcommand{\PRFEval}{\PRFFunction.\funct{Eval}}
-\newcommand{\PRFKey}{\algostyle{k}}
-\newcommand{\PRFPuncture}{\PRFFunction.\funct{Puncture}}
-\newcommand{\PuncturedPRFKey}{\algostyle{k}_{S}}
+\NewDocumentCommand{\PRFFunction}{}{\algostyle{F}}
+\NewDocumentCommand{\PRFGen}{}{\PRFFunction.\funct{Gen}}
+\NewDocumentCommand{\PRFSetup}{}{\PRFFunction.\funct{Setup}}
+\NewDocumentCommand{\PRFEval}{}{\PRFFunction.\funct{Eval}}
+\NewDocumentCommand{\PRFKey}{}{\algostyle{k}}
+\NewDocumentCommand{\PRFPuncture}{}{\PRFFunction.\funct{Puncture}}
+\NewDocumentCommand{\PuncturedPRFKey}{}{\algostyle{k}_{S}}
 
-\newcommand{\PPRFGen}{\PPRF.\funct{Gen}}
-\newcommand{\PPRFPuncture}{\PPRF.\funct{Puncture}}
-\newcommand{\PPRFEval}{\PPRF.\funct{Eval}}
+\NewDocumentCommand{\PPRFGen}{}{\PPRF.\funct{Gen}}
+\NewDocumentCommand{\PPRFPuncture}{}{\PPRF.\funct{Puncture}}
+\NewDocumentCommand{\PPRFEval}{}{\PPRF.\funct{Eval}}
 
-\newcommand{\PRGGen}{\PRG.\funct{Gen}}
-\newcommand{\PRGSetup}{\PRG.\funct{Setup}}
-\newcommand{\PRGEval}{\PRG.\funct{Eval}}
+\NewDocumentCommand{\PRGGen}{}{\PRG.\funct{Gen}}
+\NewDocumentCommand{\PRGSetup}{}{\PRG.\funct{Setup}}
+\NewDocumentCommand{\PRGEval}{}{\PRG.\funct{Eval}}
 
-\newcommand{\PSISetup}{\PSI.\funct{Setup}}
-\newcommand{\PSISender}{\PSI.\funct{Sender}}
-\newcommand{\PSIReceiver}{\PSI.\funct{Receiver}}
+\NewDocumentCommand{\PSISetup}{}{\PSI.\funct{Setup}}
+\NewDocumentCommand{\PSISender}{}{\PSI.\funct{Sender}}
+\NewDocumentCommand{\PSIReceiver}{}{\PSI.\funct{Receiver}}
 
-\newcommand{\SecShare}{\algostyle{SS}}
-\newcommand{\SSScheme}{\SecShare}
-\newcommand{\SSShare}{\SecShare.\funct{Share}}
-\newcommand{\SSReconstruct}{\SecShare.\funct{Reconstruct}}
-\newcommand{\Shamir}{\algostyle{Shamir}}
-\newcommand{\ShamirShare}{\Shamir.\funct{Share}}
-\newcommand{\ShamirReconstruct}{\Shamir.\funct{Reconstruct}}
-\newcommand{\AdditiveShare}{\algostyle{Shr}}
-\newcommand{\AdditiveReconstruct}{\algostyle{Rec}}
+\NewDocumentCommand{\SecShare}{}{\algostyle{SS}}
+\NewDocumentCommand{\SSScheme}{}{\SecShare}
+\NewDocumentCommand{\SSShare}{}{\SecShare.\funct{Share}}
+\NewDocumentCommand{\SSReconstruct}{}{\SecShare.\funct{Reconstruct}}
+\NewDocumentCommand{\Shamir}{}{\algostyle{Shamir}}
+\NewDocumentCommand{\ShamirShare}{}{\Shamir.\funct{Share}}
+\NewDocumentCommand{\ShamirReconstruct}{}{\Shamir.\funct{Reconstruct}}
+\NewDocumentCommand{\AdditiveShare}{}{\algostyle{Shr}}
+\NewDocumentCommand{\AdditiveReconstruct}{}{\algostyle{Rec}}
 
-\newcommand{\SIGGen}{\SIG.\funct{Gen}}
-\newcommand{\SIGSign}{\SIG.\funct{Sign}}
-\newcommand{\SIGVerify}{\SIG.\funct{Vrfy}}
+\NewDocumentCommand{\SIGGen}{}{\SIG.\funct{Gen}}
+\NewDocumentCommand{\SIGSign}{}{\SIG.\funct{Sign}}
+\NewDocumentCommand{\SIGVerify}{}{\SIG.\funct{Vrfy}}
 
-\newcommand{\SoKSetup}{\SoK.\funct{Setup}}
-\newcommand{\SoKSign}{\SoK.\funct{Sign}}
-\newcommand{\SoKSimSetup}{\SoK.\funct{SimSetup}}
-\newcommand{\SoKSimSign}{\SoK.\funct{SimSign}}
-\newcommand{\SoKVerify}{\SoK.\funct{Vrfy}}
+\NewDocumentCommand{\SoKSetup}{}{\SoK.\funct{Setup}}
+\NewDocumentCommand{\SoKSign}{}{\SoK.\funct{Sign}}
+\NewDocumentCommand{\SoKSimSetup}{}{\SoK.\funct{SimSetup}}
+\NewDocumentCommand{\SoKSimSign}{}{\SoK.\funct{SimSign}}
+\NewDocumentCommand{\SoKVerify}{}{\SoK.\funct{Vrfy}}
 
-\newcommand{\BLS}{\algostyle{BLS}}
-\newcommand{\BLSSetup}{\BLS.\funct{Setup}}
-\newcommand{\BLSGen}{\BLS.\funct{Gen}}
-\newcommand{\BLSSign}{\BLS.\funct{Sign}}
-\newcommand{\BLSVerify}{\BLS.\funct{Vrfy}}
-\newcommand{\BLSAggregate}{\BLS.\funct{Aggregate}}
-\newcommand{\BLSAggVerify}{\BLS.\funct{AggVrfy}}
+\NewDocumentCommand{\BLS}{}{\algostyle{BLS}}
+\NewDocumentCommand{\BLSSetup}{}{\BLS.\funct{Setup}}
+\NewDocumentCommand{\BLSGen}{}{\BLS.\funct{Gen}}
+\NewDocumentCommand{\BLSSign}{}{\BLS.\funct{Sign}}
+\NewDocumentCommand{\BLSVerify}{}{\BLS.\funct{Vrfy}}
+\NewDocumentCommand{\BLSAggregate}{}{\BLS.\funct{Aggregate}}
+\NewDocumentCommand{\BLSAggVerify}{}{\BLS.\funct{AggVrfy}}
 
-\newcommand{\SigmaCommit}{\Sigma.\funct{Com}}
-\newcommand{\SigmaChallenge}{\Sigma.\funct{Chal}}
-\newcommand{\SigmaResponse}{\Sigma.\funct{Resp}}
-\newcommand{\SigmaVerify}{\Sigma.\funct{Vrfy}}
+\NewDocumentCommand{\SigmaCommit}{}{\Sigma.\funct{Com}}
+\NewDocumentCommand{\SigmaChallenge}{}{\Sigma.\funct{Chal}}
+\NewDocumentCommand{\SigmaResponse}{}{\Sigma.\funct{Resp}}
+\NewDocumentCommand{\SigmaVerify}{}{\Sigma.\funct{Vrfy}}
 
-\newcommand{\SKEGen}{\SKE.\funct{Gen}}
-\newcommand{\SKEEnc}{\SKE.\funct{Enc}}
-\newcommand{\SKEDec}{\SKE.\funct{Dec}}
+\NewDocumentCommand{\SKEGen}{}{\SKE.\funct{Gen}}
+\NewDocumentCommand{\SKEEnc}{}{\SKE.\funct{Enc}}
+\NewDocumentCommand{\SKEDec}{}{\SKE.\funct{Dec}}
 
-\newcommand{\SNARGSetup}{\SNARG.\funct{Setup}}
-\newcommand{\SNARGProve}{\SNARG.\funct{Prove}}
-\newcommand{\SNARGVerify}{\SNARG.\funct{Vrfy}}
+\NewDocumentCommand{\SNARGSetup}{}{\SNARG.\funct{Setup}}
+\NewDocumentCommand{\SNARGProve}{}{\SNARG.\funct{Prove}}
+\NewDocumentCommand{\SNARGVerify}{}{\SNARG.\funct{Vrfy}}
 
-\newcommand{\SNARKSetup}{\SNARK.\funct{Setup}}
-\newcommand{\SNARKProve}{\SNARK.\funct{Prove}}
-\newcommand{\SNARKVerify}{\SNARK.\funct{Vrfy}}
+\NewDocumentCommand{\SNARKSetup}{}{\SNARK.\funct{Setup}}
+\NewDocumentCommand{\SNARKProve}{}{\SNARK.\funct{Prove}}
+\NewDocumentCommand{\SNARKVerify}{}{\SNARK.\funct{Vrfy}}
 
-\newcommand{\TDFGen}{\TDF.\funct{Gen}}
-\newcommand{\TDFEval}{\TDF.\funct{Eval}}
-\newcommand{\TDFVerify}{\TDF.\funct{Vrfy}}
+\NewDocumentCommand{\TDFGen}{}{\TDF.\funct{Gen}}
+\NewDocumentCommand{\TDFEval}{}{\TDF.\funct{Eval}}
+\NewDocumentCommand{\TDFVerify}{}{\TDF.\funct{Vrfy}}
 
-\newcommand{\TDHDec}{\TDH.\funct{Dec}}
-\newcommand{\TDHEnc}{\TDH.\funct{Enc}}
-\newcommand{\TDHGen}{\TDH.\funct{Gen}}
-\newcommand{\TDHHash}{\TDH.\funct{Hash}}
-\newcommand{\TDHSetup}{\TDH.\funct{Setup}}
+\NewDocumentCommand{\TDHDec}{}{\TDH.\funct{Dec}}
+\NewDocumentCommand{\TDHEnc}{}{\TDH.\funct{Enc}}
+\NewDocumentCommand{\TDHGen}{}{\TDH.\funct{Gen}}
+\NewDocumentCommand{\TDHHash}{}{\TDH.\funct{Hash}}
+\NewDocumentCommand{\TDHSetup}{}{\TDH.\funct{Setup}}
 
-\newcommand{\TDPGen}{\TDP.\funct{Gen}}
-\newcommand{\TDPEval}{\TDP.\funct{Eval}}
-\newcommand{\TDPVerify}{\TDP.\funct{Vrfy}}
+\NewDocumentCommand{\TDPGen}{}{\TDP.\funct{Gen}}
+\NewDocumentCommand{\TDPEval}{}{\TDP.\funct{Eval}}
+\NewDocumentCommand{\TDPVerify}{}{\TDP.\funct{Vrfy}}
 
-\newcommand{\VDFGen}{\VDF.\funct{Gen}}
-\newcommand{\VDFEval}{\VDF.\funct{Eval}}
-\newcommand{\VDFProve}{\VDF.\funct{Prove}}
-\newcommand{\VDFVerify}{\VDF.\funct{Vrfy}}
+\NewDocumentCommand{\VDFGen}{}{\VDF.\funct{Gen}}
+\NewDocumentCommand{\VDFEval}{}{\VDF.\funct{Eval}}
+\NewDocumentCommand{\VDFProve}{}{\VDF.\funct{Prove}}
+\NewDocumentCommand{\VDFVerify}{}{\VDF.\funct{Vrfy}}
 
-\newcommand{\VRFKeyGen}{\VRF.\funct{KeyGen}}
-\newcommand{\VRFEval}{\VRF.\funct{Eval}}
-\newcommand{\VRFVerify}{\VRF.\funct{Vrfy}}
+\NewDocumentCommand{\VRFKeyGen}{}{\VRF.\funct{KeyGen}}
+\NewDocumentCommand{\VRFEval}{}{\VRF.\funct{Eval}}
+\NewDocumentCommand{\VRFVerify}{}{\VRF.\funct{Vrfy}}
 
-\newcommand{\BeaconSetup}{\Beacon.\funct{Setup}}
-\newcommand{\BeaconSample}{\Beacon.\funct{Sample}}
-\newcommand{\BeaconVerify}{\Beacon.\funct{Vrfy}}
+\NewDocumentCommand{\BeaconSetup}{}{\Beacon.\funct{Setup}}
+\NewDocumentCommand{\BeaconSample}{}{\Beacon.\funct{Sample}}
+\NewDocumentCommand{\BeaconVerify}{}{\Beacon.\funct{Vrfy}}
 
-\newcommand{\MDSetup}{\MD.\funct{Setup}}
-\newcommand{\MDEval}{\MD.\funct{Eval}}
+\NewDocumentCommand{\MDSetup}{}{\MD.\funct{Setup}}
+\NewDocumentCommand{\MDEval}{}{\MD.\funct{Eval}}
 
-\newcommand{\VOLESender}{\VOLE.\funct{Sender}}
-\newcommand{\VOLEReceiver}{\VOLE.\funct{Receiver}}
+\NewDocumentCommand{\VOLESender}{}{\VOLE.\funct{Sender}}
+\NewDocumentCommand{\VOLEReceiver}{}{\VOLE.\funct{Receiver}}
 
-\newcommand{\kdf}[1]{\funct{KDF}\left(#1\right)}
-\newcommand{\mac}[1]{\funct{MAC}\left(#1\right)}
-\newcommand{\sign}[1]{\funct{Sign}\left(#1\right)}
-\newcommand{\verify}[1]{\funct{Vrfy}\left(#1\right)}
+\NewDocumentCommand{\kdf}{m}{\funct{KDF}\left(#1\right)}
+\NewDocumentCommand{\mac}{m}{\funct{MAC}\left(#1\right)}
+\NewDocumentCommand{\sign}{m}{\funct{Sign}\left(#1\right)}
+\NewDocumentCommand{\verify}{m}{\funct{Vrfy}\left(#1\right)}
 
-\newcommand{\PubKeySpace}{\setstyle{K}_{\algostyle{pk}}}
-\newcommand{\SecKeySpace}{\setstyle{K}_{\algostyle{sk}}}
-\newcommand{\ParamSpace}{\setstyle{P}}
-\newcommand{\IdSpace}{\setstyle{I}}
-\newcommand{\MsgSpace}{\{0,1\}^{\ell_{\m}}}
-\newcommand{\AssocDataSpace}{\{0,1\}^{\ell_{\ad}}}
-\newcommand{\SessionKeySpace}{\{0,1\}^{\ell_{\sst}}}
-\newcommand{\TagSpace}{\{0,1\}^{\ell_{\tagv}}}
-\newcommand{\SessionStoreSpace}{\{0,1\}^{\ell_{\sst}}}
-\newcommand{\CorruptedPartiesSpace}{\{0,1\}^{\ell_{\cp}}}
-\newcommand{\RevealedSessionsSpace}{\{0,1\}^{\ell_{\rs}}}
-\newcommand{\TestQueriesSpace}{\{0,1\}^{\ell_{\tq}}}
+\NewDocumentCommand{\PubKeySpace}{}{\setstyle{K}_{\algostyle{pk}}}
+\NewDocumentCommand{\SecKeySpace}{}{\setstyle{K}_{\algostyle{sk}}}
+\NewDocumentCommand{\ParamSpace}{}{\setstyle{P}}
+\NewDocumentCommand{\IdSpace}{}{\setstyle{I}}
+\NewDocumentCommand{\MsgSpace}{}{\{0,1\}^{\ell_{\m}}}
+\NewDocumentCommand{\AssocDataSpace}{}{\{0,1\}^{\ell_{\ad}}}
+\NewDocumentCommand{\SessionKeySpace}{}{\{0,1\}^{\ell_{\sst}}}
+\NewDocumentCommand{\TagSpace}{}{\{0,1\}^{\ell_{\tagv}}}
+\NewDocumentCommand{\SessionStoreSpace}{}{\{0,1\}^{\ell_{\sst}}}
+\NewDocumentCommand{\CorruptedPartiesSpace}{}{\{0,1\}^{\ell_{\cp}}}
+\NewDocumentCommand{\RevealedSessionsSpace}{}{\{0,1\}^{\ell_{\rs}}}
+\NewDocumentCommand{\TestQueriesSpace}{}{\{0,1\}^{\ell_{\tq}}}
 
-\newcommand{\latbasis}{\mathbf{B}}
-\newcommand{\latvec}[1]{\mathbf{#1}}
-\newcommand{\latshortvec}{\mathbf{s}}
-\newcommand{\laterror}{\mathbf{e}}
-\newcommand{\latpubmat}{\mathbf{A}}
-\newcommand{\latsecret}{\mathbf{s}}
-\newcommand{\latmod}{q}
-\newcommand{\latsigma}{\sigma}
-\newcommand{\lattrap}{\mathbf{T}}
-\newcommand{\latsample}{\algostyle{SamplePre}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Lattice Notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\lwedim}{n}
-\newcommand{\lweMod}{q}
-\newcommand{\lweAlpha}{\alpha}
-\newcommand{\sisbound}{\beta}
+\NewDocumentCommand{\latbasis}{}{\mathbf{B}}
+\NewDocumentCommand{\latvec}{m}{\mathbf{#1}}
+\NewDocumentCommand{\latshortvec}{}{\mathbf{s}}
+\NewDocumentCommand{\laterror}{}{\mathbf{e}}
+\NewDocumentCommand{\latpubmat}{}{\mathbf{A}}
+\NewDocumentCommand{\latsecret}{}{\mathbf{s}}
+\NewDocumentCommand{\latmod}{}{q}
+\NewDocumentCommand{\latsigma}{}{\sigma}
+\NewDocumentCommand{\lattrap}{}{\mathbf{T}}
+\NewDocumentCommand{\latsample}{}{\algostyle{SamplePre}}
+
+\NewDocumentCommand{\lwedim}{}{n}
+\NewDocumentCommand{\lweMod}{}{q}
+\NewDocumentCommand{\lweAlpha}{}{\alpha}
+\NewDocumentCommand{\sisbound}{}{\beta}
 
 \newcal{\CiphertextSpace}{C}
 \newcal{\InstanceSpace}{X}
@@ -1497,18 +1585,22 @@
 \newscr{\MaliciousProver}{\tilde{\Prover}}
 \newscr{\MaliciousVerifier}{\tilde{\Verifier}}
 
-\newcommand{\AdvProb}{\var{S}}
-\newcommand{\Game}{\algostyle{G}}
-\newcommand{\Red}{\algostyle{R}}
-\newcommand{\algo}{\setstyle{A}}
-\newcommand{\game}{\setstyle{G}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Protocol Parties, Languages, Relations, and Witness Syntax
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\NewDocumentCommand{\AdvProb}{}{\var{S}}
+\NewDocumentCommand{\Game}{}{\algostyle{G}}
+\NewDocumentCommand{\Red}{}{\algostyle{R}}
+\NewDocumentCommand{\algo}{}{\setstyle{A}}
+\NewDocumentCommand{\game}{}{\setstyle{G}}
 \ifluatex
-	\newcommand{\Prot}{\ensuremath{\text{\textsf{Π}}}}
+	\NewDocumentCommand{\Prot}{}{\ensuremath{\text{\textsf{Π}}}}
 \else
 	\ifxetex
-		\newcommand{\Prot}{\ensuremath{\text{\textsf{Π}}}}
+		\NewDocumentCommand{\Prot}{}{\ensuremath{\text{\textsf{Π}}}}
 	\else
-		\newcommand{\Prot}{\ensuremath{\algostyle{\Pi}}}
+		\NewDocumentCommand{\Prot}{}{\ensuremath{\algostyle{\Pi}}}
 	\fi
 \fi
 
@@ -1518,11 +1610,11 @@
 \newfunc{\ddv}{D}
 \newfunc{\zdv}{Z}
 
-\newcommand{\Orc}{\mathsf{O}}
-\newcommand{\Oracle}{\mathsf{O}}
-\newcommand{\OracleH}{\setstyle{H}}
-\newcommand{\OracleRO}{\setstyle{O}}
-\newcommand{\OracleSim}{\setstyle{O}_{\algostyle{sim}}}
+\NewDocumentCommand{\Orc}{}{\mathsf{O}}
+\NewDocumentCommand{\Oracle}{}{\mathsf{O}}
+\NewDocumentCommand{\OracleH}{}{\setstyle{H}}
+\NewDocumentCommand{\OracleRO}{}{\setstyle{O}}
+\NewDocumentCommand{\OracleSim}{}{\setstyle{O}_{\algostyle{sim}}}
 
 \newscr{\Distribution}{D}
 \newscr{\Distr}{D}
@@ -1548,222 +1640,238 @@
 \newbb{\witness}{w}
 \newbb{\wit}{w}
 
-\newcommand{\state}{\algostyle{st}}
-\newcommand{\stateP}{\state_\Prover}
-\newcommand{\stateV}{\state_\Verifier}
-\newcommand{\stateA}{\state_\Adv}
-\newcommand{\stateSim}{\state_\Sim}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Interactive Proof and Proof-Carrying State
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\chal}{\algostyle{ch}}
-\newcommand{\hbound}{c}
-\newcommand{\obprog}{\hat{f}}
-\newcommand{\prog}{f}
-\newcommand{\proofpi}{\pi}
-\newcommand{\proofprime}{\pi'}
-\newcommand{\proofstar}{\pi^*}
-\newcommand{\pt}{a}
-\newcommand{\resp}{\algostyle{rsp}}
-\newcommand{\stmt}{\algostyle{s}}
+\NewDocumentCommand{\state}{}{\algostyle{st}}
+\NewDocumentCommand{\stateP}{}{\state_\Prover}
+\NewDocumentCommand{\stateV}{}{\state_\Verifier}
+\NewDocumentCommand{\stateA}{}{\state_\Adv}
+\NewDocumentCommand{\stateSim}{}{\state_\Sim}
 
-\newcommand{\Alice}{\algostyle{A}}
-\newcommand{\Bob}{\algostyle{B}}
-\newcommand{\InitiatorAlice}{\Initiator_{\Alice}}
-\newcommand{\Initiator}{\algostyle{Init}}
-\newcommand{\Party}{\var{P}}
-\newcommand{\ResponderBob}{\Responder_{\Bob}}
-\newcommand{\Responder}{\algostyle{Resp}}
-\newcommand{\np}{\var{n_p}}
+\NewDocumentCommand{\chal}{}{\algostyle{ch}}
+\NewDocumentCommand{\hbound}{}{c}
+\NewDocumentCommand{\obprog}{}{\hat{f}}
+\NewDocumentCommand{\prog}{}{f}
+\NewDocumentCommand{\proofpi}{}{\pi}
+\NewDocumentCommand{\proofprime}{}{\pi'}
+\NewDocumentCommand{\proofstar}{}{\pi^*}
+\NewDocumentCommand{\pt}{}{a}
+\NewDocumentCommand{\resp}{}{\algostyle{rsp}}
+\NewDocumentCommand{\stmt}{}{\algostyle{s}}
 
-\newcommand{\sessionstate}{\var{state}}
-\newcommand{\sessionstatus}{\var{status}}
-\newcommand{\sessionpeer}{\var{peer}}
-\newcommand{\sessionkey}{\var{key}}
-\newcommand{\sessionexpiry}{\var{expiry}}
-\newcommand{\sessioncreated}{\var{created}}
-\newcommand{\sessionlast}{\var{last}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Parties, Sessions, and Key-Exchange State
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\statusCreated}{\var{created}}
-\newcommand{\statusAccepted}{\var{accepted}}
-\newcommand{\statusRejected}{\var{rejected}}
-\newcommand{\statusCompleted}{\var{completed}}
-\newcommand{\statusExpired}{\var{expired}}
-\newcommand{\statusCorrupted}{\var{corrupted}}
+\NewDocumentCommand{\Alice}{}{\algostyle{A}}
+\NewDocumentCommand{\Bob}{}{\algostyle{B}}
+\NewDocumentCommand{\InitiatorAlice}{}{\Initiator_{\Alice}}
+\NewDocumentCommand{\Initiator}{}{\algostyle{Init}}
+\NewDocumentCommand{\Party}{}{\var{P}}
+\NewDocumentCommand{\ResponderBob}{}{\Responder_{\Bob}}
+\NewDocumentCommand{\Responder}{}{\algostyle{Resp}}
+\NewDocumentCommand{\np}{}{\var{n_p}}
 
-\newcommand{\accepted}{\var{accepted}}
-\newcommand{\keyconfirmed}{\algostyle{keyconfirmed}}
-\newcommand{\expired}{\algostyle{expired}}
-\newcommand{\resynced}{\algostyle{resynced}}
-\newcommand{\ephemeralkey}{\algostyle{ephemeralkey}}
+\NewDocumentCommand{\sessionstate}{}{\var{state}}
+\NewDocumentCommand{\sessionstatus}{}{\var{status}}
+\NewDocumentCommand{\sessionpeer}{}{\var{peer}}
+\NewDocumentCommand{\sessionkey}{}{\var{key}}
+\NewDocumentCommand{\sessionexpiry}{}{\var{expiry}}
+\NewDocumentCommand{\sessioncreated}{}{\var{created}}
+\NewDocumentCommand{\sessionlast}{}{\var{last}}
 
-\newcommand{\pivar}{{\pi}}
-\newcommand{\piprimevar}{\pivar^{\star}}
-\newcommand{\pivarprime}{\pivar^{\prime}}
-\newcommand{\pivarparty}{\pivar.\party}
-\newcommand{\pivarpeer}{\pivar.\peer}
-\newcommand{\pivaraccepted}{\pivar.\accepted}
-\newcommand{\pivarssid}{\pivar.\ssid}
-\newcommand{\pivarsessionkey}{\pivar.\sessionkey}
-\newcommand{\pivarfunc}{\pivar.\funct}
-\newcommand{\piprimevarparty}{\piprimevar.\party}
-\newcommand{\piprimevarpeer}{\piprimevar.\peer}
-\newcommand{\piprimevaraccepted}{\piprimevar.\accepted}
-\newcommand{\piprimevarssid}{\piprimevar.\ssid}
-\newcommand{\piprimevarsessionkey}{\piprimevar.\sessionkey}
-\newcommand{\piprimevarfunc}{\piprimevar.\funct}
-\newcommand{\pivarprimeparty}{\pivarprime.\party}
-\newcommand{\pivarprimepeer}{\pivarprime.\peer}
-\newcommand{\pivarprimeaccepted}{\pivarprime.\accepted}
-\newcommand{\pivarprimessid}{\pivarprime.\ssid}
-\newcommand{\pivarprimesessionkey}{\pivarprime.\sessionkey}
-\newcommand{\pivarprimefunc}{\pivarprime.\funct}
-\newcommand{\session}[2]{\pivar_{#1}^{#2}}
-\newcommand{\partner}{\var{prt}}
-\newcommand{\transcript}{\tau}
+\NewDocumentCommand{\statusCreated}{}{\var{created}}
+\NewDocumentCommand{\statusAccepted}{}{\var{accepted}}
+\NewDocumentCommand{\statusRejected}{}{\var{rejected}}
+\NewDocumentCommand{\statusCompleted}{}{\var{completed}}
+\NewDocumentCommand{\statusExpired}{}{\var{expired}}
+\NewDocumentCommand{\statusCorrupted}{}{\var{corrupted}}
 
-\newcommand{\msg}{\algostyle{m}}
-\newcommand{\m}{\algostyle{m}}
-\newcommand{\mprimevar}{\msg^{\star}}
-\newcommand{\tagv}{\algostyle{tag}}
-\newcommand{\typed}{\var{type}}
-\newcommand{\coins}{\var{coins}}
-\newcommand{\revrand}{\var{rev_{rand}}}
-\newcommand{\create}{\var{create}}
-\newcommand{\fullType}{\var{full}}
-\newcommand{\reducedType}{\var{reduced}}
+\NewDocumentCommand{\accepted}{}{\var{accepted}}
+\NewDocumentCommand{\keyconfirmed}{}{\algostyle{keyconfirmed}}
+\NewDocumentCommand{\expired}{}{\algostyle{expired}}
+\NewDocumentCommand{\resynced}{}{\algostyle{resynced}}
+\NewDocumentCommand{\ephemeralkey}{}{\algostyle{ephemeralkey}}
 
-\newcommand{\mAlice}{m_{\Alice}}
-\newcommand{\mBob}{m_{\Bob}}
-\newcommand{\msgAlice}{\msg_{\Alice}}
-\newcommand{\msgBob}{\msg_{\Bob}}
-\newcommand{\msgAliceThree}{\msg_{\Alice}^{(3)}}
-\newcommand{\sigmaAlice}{\sigma_{\Alice}}
-\newcommand{\sigmaBob}{\sigma_{\Bob}}
-\newcommand{\sigmaAprime}{\sigma_{\Alice}'}
-\newcommand{\epkA}{\epk_{\Alice}}
-\newcommand{\epkB}{\epk_{\Bob}}
-\newcommand{\eskA}{\esk_{\Alice}}
-\newcommand{\eskB}{\esk_{\Bob}}
-\newcommand{\kkAlice}{\kk_{\Alice}}
-\newcommand{\kkBob}{\kk_{\Bob}}
-\newcommand{\ltpkA}{\ltpk_{\Alice}}
-\newcommand{\ltpkB}{\ltpk_{\Bob}}
-\newcommand{\ltskA}{\ltsk_{\Alice}}
-\newcommand{\ltskB}{\ltsk_{\Bob}}
-\newcommand{\sessionkeyA}{\sessionkey_{\Alice}}
-\newcommand{\sessionkeyB}{\sessionkey_{\Bob}}
-\newcommand{\sspkA}{\sspk_{\Alice}}
-\newcommand{\sspkB}{\sspk_{\Bob}}
-\newcommand{\ssskA}{\sssk_{\Alice}}
-\newcommand{\ssskB}{\sssk_{\Bob}}
-\newcommand{\dA}{\var{d_{\Alice}}}
-\newcommand{\dB}{\var{d_{\Bob}}}
-\newcommand{\eA}{\var{e_{\Alice}}}
-\newcommand{\eB}{\var{e_{\Bob}}}
-\newcommand{\sharedA}{\var{shared_{\Alice}}}
-\newcommand{\sharedB}{\var{shared_{\Bob}}}
-\newcommand{\pkpeer}{\pk_{\algostyle{peer}}}
-\newcommand{\pkself}{\pk_{\algostyle{self}}}
-\newcommand{\skself}{\sk_{\algostyle{self}}}
+\NewDocumentCommand{\pivar}{}{{\pi}}
+\NewDocumentCommand{\piprimevar}{}{\pivar^{\star}}
+\NewDocumentCommand{\pivarprime}{}{\pivar^{\prime}}
+\NewDocumentCommand{\pivarparty}{}{\pivar.\party}
+\NewDocumentCommand{\pivarpeer}{}{\pivar.\peer}
+\NewDocumentCommand{\pivaraccepted}{}{\pivar.\accepted}
+\NewDocumentCommand{\pivarssid}{}{\pivar.\ssid}
+\NewDocumentCommand{\pivarsessionkey}{}{\pivar.\sessionkey}
+\NewDocumentCommand{\pivarfunc}{}{\pivar.\funct}
+\NewDocumentCommand{\piprimevarparty}{}{\piprimevar.\party}
+\NewDocumentCommand{\piprimevarpeer}{}{\piprimevar.\peer}
+\NewDocumentCommand{\piprimevaraccepted}{}{\piprimevar.\accepted}
+\NewDocumentCommand{\piprimevarssid}{}{\piprimevar.\ssid}
+\NewDocumentCommand{\piprimevarsessionkey}{}{\piprimevar.\sessionkey}
+\NewDocumentCommand{\piprimevarfunc}{}{\piprimevar.\funct}
+\NewDocumentCommand{\pivarprimeparty}{}{\pivarprime.\party}
+\NewDocumentCommand{\pivarprimepeer}{}{\pivarprime.\peer}
+\NewDocumentCommand{\pivarprimeaccepted}{}{\pivarprime.\accepted}
+\NewDocumentCommand{\pivarprimessid}{}{\pivarprime.\ssid}
+\NewDocumentCommand{\pivarprimesessionkey}{}{\pivarprime.\sessionkey}
+\NewDocumentCommand{\pivarprimefunc}{}{\pivarprime.\funct}
+\NewDocumentCommand{\session}{m m}{\pivar_{#1}^{#2}}
+\NewDocumentCommand{\partner}{}{\var{prt}}
+\NewDocumentCommand{\transcript}{}{\tau}
 
-\newcommand{\FinalAlice}{\algostyle{Final}_{\Alice}}
-\newcommand{\KDFfull}{\funct{KDF}_f}
-\newcommand{\KDFreduced}{\funct{KDF}_r}
+\NewDocumentCommand{\msg}{}{\algostyle{m}}
+\NewDocumentCommand{\m}{}{\algostyle{m}}
+\NewDocumentCommand{\mprimevar}{}{\msg^{\star}}
+\NewDocumentCommand{\tagv}{}{\algostyle{tag}}
+\NewDocumentCommand{\typed}{}{\var{type}}
+\NewDocumentCommand{\coins}{}{\var{coins}}
+\NewDocumentCommand{\revrand}{}{\var{rev_{rand}}}
+\NewDocumentCommand{\create}{}{\var{create}}
+\NewDocumentCommand{\fullType}{}{\var{full}}
+\NewDocumentCommand{\reducedType}{}{\var{reduced}}
 
-\newcommand{\KE}{\algostyle{KE}}
-\newcommand{\PiKE}{\Prot_{\algostyle{KE}}}
-\newcommand{\KKE}{\setstyle{K}}
-\newcommand{\RKE}{\setstyle{R}}
-\newcommand{\KKEspace}{\var{\setstyle{K}_{KE}}}
-\newcommand{\RKEspace}{\var{\setstyle{R}_{KE}}}
+\NewDocumentCommand{\mAlice}{}{m_{\Alice}}
+\NewDocumentCommand{\mBob}{}{m_{\Bob}}
+\NewDocumentCommand{\msgAlice}{}{\msg_{\Alice}}
+\NewDocumentCommand{\msgBob}{}{\msg_{\Bob}}
+\NewDocumentCommand{\msgAliceThree}{}{\msg_{\Alice}^{(3)}}
+\NewDocumentCommand{\sigmaAlice}{}{\sigma_{\Alice}}
+\NewDocumentCommand{\sigmaBob}{}{\sigma_{\Bob}}
+\NewDocumentCommand{\sigmaAprime}{}{\sigma_{\Alice}'}
+\NewDocumentCommand{\epkA}{}{\epk_{\Alice}}
+\NewDocumentCommand{\epkB}{}{\epk_{\Bob}}
+\NewDocumentCommand{\eskA}{}{\esk_{\Alice}}
+\NewDocumentCommand{\eskB}{}{\esk_{\Bob}}
+\NewDocumentCommand{\kkAlice}{}{\kk_{\Alice}}
+\NewDocumentCommand{\kkBob}{}{\kk_{\Bob}}
+\NewDocumentCommand{\ltpkA}{}{\ltpk_{\Alice}}
+\NewDocumentCommand{\ltpkB}{}{\ltpk_{\Bob}}
+\NewDocumentCommand{\ltskA}{}{\ltsk_{\Alice}}
+\NewDocumentCommand{\ltskB}{}{\ltsk_{\Bob}}
+\NewDocumentCommand{\sessionkeyA}{}{\sessionkey_{\Alice}}
+\NewDocumentCommand{\sessionkeyB}{}{\sessionkey_{\Bob}}
+\NewDocumentCommand{\sspkA}{}{\sspk_{\Alice}}
+\NewDocumentCommand{\sspkB}{}{\sspk_{\Bob}}
+\NewDocumentCommand{\ssskA}{}{\sssk_{\Alice}}
+\NewDocumentCommand{\ssskB}{}{\sssk_{\Bob}}
+\NewDocumentCommand{\dA}{}{\var{d_{\Alice}}}
+\NewDocumentCommand{\dB}{}{\var{d_{\Bob}}}
+\NewDocumentCommand{\eA}{}{\var{e_{\Alice}}}
+\NewDocumentCommand{\eB}{}{\var{e_{\Bob}}}
+\NewDocumentCommand{\sharedA}{}{\var{shared_{\Alice}}}
+\NewDocumentCommand{\sharedB}{}{\var{shared_{\Bob}}}
+\NewDocumentCommand{\pkpeer}{}{\pk_{\algostyle{peer}}}
+\NewDocumentCommand{\pkself}{}{\pk_{\algostyle{self}}}
+\NewDocumentCommand{\skself}{}{\sk_{\algostyle{self}}}
 
-\newcommand{\XHMQV}{\funct{XHMQV}}
-\newcommand{\XHMQVInit}{\XHMQV.\funct{Init}}
-\newcommand{\XHMQVResp}{\XHMQV.\funct{Resp}}
-\newcommand{\XHMQVComp}{\XHMQV.\funct{Comp}}
-\newcommand{\XHMQVKDF}{\XHMQV.\funct{KDF}}
-\newcommand{\XHMQVHash}{\XHMQV.\funct{H}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Key-Exchange Security Notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\sessionstore}{\setstyle{S}}
-\newcommand{\corruptedparties}{\setstyle{C}}
-\newcommand{\revealedsessions}{\setstyle{R}}
-\newcommand{\testqueries}{\setstyle{T}}
+\NewDocumentCommand{\FinalAlice}{}{\algostyle{Final}_{\Alice}}
+\NewDocumentCommand{\KDFfull}{}{\funct{KDF}_f}
+\NewDocumentCommand{\KDFreduced}{}{\funct{KDF}_r}
 
-\newcommand{\KI}{\algostyle{KI}}
-\newcommand{\secgame}[1]{\game\left(#1\right)}
-\newcommand{\secgameKI}{\secgame{\KI}}
+\NewDocumentCommand{\KE}{}{\algostyle{KE}}
+\NewDocumentCommand{\PiKE}{}{\Prot_{\algostyle{KE}}}
+\NewDocumentCommand{\KKE}{}{\setstyle{K}}
+\NewDocumentCommand{\RKE}{}{\setstyle{R}}
+\NewDocumentCommand{\KKEspace}{}{\var{\setstyle{K}_{KE}}}
+\NewDocumentCommand{\RKEspace}{}{\var{\setstyle{R}_{KE}}}
 
-\newcommand{\advantage}[2]{\algostyle{Adv}^{#1}_{#2}}
-\newcommand{\advantageKI}{\algostyle{Adv}^{\algostyle{KI}}}
-\newcommand{\success}[1]{\algostyle{Succ}^{#1}}
-\newcommand{\insecurity}[1]{\algostyle{Insec}^{#1}}
-\newcommand{\security}[1]{\algostyle{Sec}^{#1}}
+\NewDocumentCommand{\XHMQV}{}{\funct{XHMQV}}
+\NewDocumentCommand{\XHMQVInit}{}{\XHMQV.\funct{Init}}
+\NewDocumentCommand{\XHMQVResp}{}{\XHMQV.\funct{Resp}}
+\NewDocumentCommand{\XHMQVComp}{}{\XHMQV.\funct{Comp}}
+\NewDocumentCommand{\XHMQVKDF}{}{\XHMQV.\funct{KDF}}
+\NewDocumentCommand{\XHMQVHash}{}{\XHMQV.\funct{H}}
 
-\newcommand{\Tadv}{t_{\A}}
-\newcommand{\Tred}{t_{\Red}}
-\newcommand{\timeadv}{T_{\A}}
-\newcommand{\timered}{T_{\Red}}
-\newcommand{\spaceadv}{S_{\A}}
-\newcommand{\spacered}{S_{\Red}}
-\newcommand{\epsadv}{\varepsilon_{\A}}
-\newcommand{\epsred}{\varepsilon_{\Red}}
-\newcommand{\pcorr}{\var{p_{corr}}}
+\NewDocumentCommand{\sessionstore}{}{\setstyle{S}}
+\NewDocumentCommand{\corruptedparties}{}{\setstyle{C}}
+\NewDocumentCommand{\revealedsessions}{}{\setstyle{R}}
+\NewDocumentCommand{\testqueries}{}{\setstyle{T}}
 
-\newcommand{\qhash}{q_H}
-\newcommand{\qsign}{q_S}
-\newcommand{\qsend}{q_{\algostyle{send}}}
-\newcommand{\qexec}{q_e}
-\newcommand{\qreveal}{q_r}
-\newcommand{\qcorrupt}{q_c}
-\newcommand{\qtest}{q_t}
-\newcommand{\qsessions}{q_s}
-\newcommand{\qparties}{q_p}
+\NewDocumentCommand{\KI}{}{\algostyle{KI}}
+\NewDocumentCommand{\secgame}{m}{\game\left(#1\right)}
+\NewDocumentCommand{\secgameKI}{}{\secgame{\KI}}
 
-\newcommand{\algoinput}{\textsf{Input:}}
-\newcommand{\algooutput}{\textsf{Output:}}
-\newcommand{\algostep}{\textsf{Step}}
-\newcommand{\algoreturn}{\textsf{Return}}
+\NewDocumentCommand{\advantage}{m m}{\algostyle{Adv}^{#1}_{#2}}
+\NewDocumentCommand{\advantageKI}{}{\algostyle{Adv}^{\algostyle{KI}}}
+\NewDocumentCommand{\success}{m}{\algostyle{Succ}^{#1}}
+\NewDocumentCommand{\insecurity}{m}{\algostyle{Insec}^{#1}}
+\NewDocumentCommand{\security}{m}{\algostyle{Sec}^{#1}}
 
-\newcommand{\pcbreak}{\textsf{break\ }}
-\newcommand{\pccontinue}{\textsf{continue\ }}
-\newcommand{\pcdo}{\textsf{do\ }}
-\newcommand{\pcelse}{\textsf{else:\ }}
-\newcommand{\pcelseif}{\textsf{else if\ }}
-\newcommand{\pcfor}{\textsf{for\ }}
-\newcommand{\pcif}{\textsf{if\ }}
-\newcommand{\pcskip}{\textsf{skip\ }}
-\newcommand{\pcthen}{\textsf{then:\ }}
-\newcommand{\pcwhile}{\textsf{while\ }}
+\NewDocumentCommand{\Tadv}{}{t_{\A}}
+\NewDocumentCommand{\Tred}{}{t_{\Red}}
+\NewDocumentCommand{\timeadv}{}{T_{\A}}
+\NewDocumentCommand{\timered}{}{T_{\Red}}
+\NewDocumentCommand{\spaceadv}{}{S_{\A}}
+\NewDocumentCommand{\spacered}{}{S_{\Red}}
+\NewDocumentCommand{\epsadv}{}{\varepsilon_{\A}}
+\NewDocumentCommand{\epsred}{}{\varepsilon_{\Red}}
+\NewDocumentCommand{\pcorr}{}{\var{p_{corr}}}
 
-\newcommand{\pcand}{\textsf{and\ }}
-\newcommand{\pcnot}{\textsf{not\ }}
-\newcommand{\pcor}{\textsf{or\ }}
+\NewDocumentCommand{\qhash}{}{q_H}
+\NewDocumentCommand{\qsign}{}{q_S}
+\NewDocumentCommand{\qsend}{}{q_{\algostyle{send}}}
+\NewDocumentCommand{\qexec}{}{q_e}
+\NewDocumentCommand{\qreveal}{}{q_r}
+\NewDocumentCommand{\qcorrupt}{}{q_c}
+\NewDocumentCommand{\qtest}{}{q_t}
+\NewDocumentCommand{\qsessions}{}{q_s}
+\NewDocumentCommand{\qparties}{}{q_p}
 
-\newcommand{\decr}{\texttt{--}}
-\newcommand{\incr}{\texttt{++}}
-\newcommand{\pcabort}{\textsf{abort\ }}
-\newcommand{\pcassert}{\textsf{assert\ }}
-\newcommand{\pcdecr}{\textsf{decrement}}
-\newcommand{\pcemulate}{\textsf{emulate\ }}
-\newcommand{\pcfind}{\textsf{find\ }}
-\newcommand{\pchalt}{\textsf{halt\ }}
-\newcommand{\pcincr}{\textsf{increment}}
-\newcommand{\pcinput}{\textsf{input\ }}
-\newcommand{\pclet}{\textsf{let\ }}
-\newcommand{\pcoutput}{\textsf{output\ }}
-\newcommand{\pcparse}{\textsf{parse\ }}
-\newcommand{\pcreceive}{\textsf{receive\ }}
-\newcommand{\pcrepeat}{\textsf{repeat\ }}
-\newcommand{\pcreturn}{\textsf{return\ }}
-\newcommand{\pcsend}{\textsf{send\ }}
-\newcommand{\pcset}{\textsf{set\ }}
-\newcommand{\pctitlerule}{\par\smallskip\hrule\smallskip}
-\newcommand{\pctitle}[1]{\noindent#1\pctitlerule}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Pseudocode Keywords and Section Labels
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\makeSectionLabel}[2]{
-	\expandafter\newcommand\csname #1Caption\endcsname{\textsf{\textsc{#2\space}}}
-	\expandafter\newcommand\csname #1CaptionNoSpace\endcsname{\textsf{\textsc{#2}}}
-	\expandafter\newcommand\csname #1Heading\endcsname{\textbf{\csname #1Caption\endcsname}}
-	\expandafter\newcommand\csname #1HeadingNoSpace\endcsname{\textbf{\csname #1CaptionNoSpace\endcsname}}
+\NewDocumentCommand{\algoinput}{}{\textsf{Input:}}
+\NewDocumentCommand{\algooutput}{}{\textsf{Output:}}
+\NewDocumentCommand{\algostep}{}{\textsf{Step}}
+\NewDocumentCommand{\algoreturn}{}{\textsf{Return}}
+
+\NewDocumentCommand{\pcbreak}{}{\textsf{break\ }}
+\NewDocumentCommand{\pccontinue}{}{\textsf{continue\ }}
+\NewDocumentCommand{\pcdo}{}{\textsf{do\ }}
+\NewDocumentCommand{\pcelse}{}{\textsf{else:\ }}
+\NewDocumentCommand{\pcelseif}{}{\textsf{else if\ }}
+\NewDocumentCommand{\pcfor}{}{\textsf{for\ }}
+\NewDocumentCommand{\pcif}{}{\textsf{if\ }}
+\NewDocumentCommand{\pcskip}{}{\textsf{skip\ }}
+\NewDocumentCommand{\pcthen}{}{\textsf{then:\ }}
+\NewDocumentCommand{\pcwhile}{}{\textsf{while\ }}
+
+\NewDocumentCommand{\pcand}{}{\textsf{and\ }}
+\NewDocumentCommand{\pcnot}{}{\textsf{not\ }}
+\NewDocumentCommand{\pcor}{}{\textsf{or\ }}
+
+\NewDocumentCommand{\decr}{}{\texttt{--}}
+\NewDocumentCommand{\incr}{}{\texttt{++}}
+\NewDocumentCommand{\pcabort}{}{\textsf{abort\ }}
+\NewDocumentCommand{\pcassert}{}{\textsf{assert\ }}
+\NewDocumentCommand{\pcdecr}{}{\textsf{decrement}}
+\NewDocumentCommand{\pcemulate}{}{\textsf{emulate\ }}
+\NewDocumentCommand{\pcfind}{}{\textsf{find\ }}
+\NewDocumentCommand{\pchalt}{}{\textsf{halt\ }}
+\NewDocumentCommand{\pcincr}{}{\textsf{increment}}
+\NewDocumentCommand{\pcinput}{}{\textsf{input\ }}
+\NewDocumentCommand{\pclet}{}{\textsf{let\ }}
+\NewDocumentCommand{\pcoutput}{}{\textsf{output\ }}
+\NewDocumentCommand{\pcparse}{}{\textsf{parse\ }}
+\NewDocumentCommand{\pcreceive}{}{\textsf{receive\ }}
+\NewDocumentCommand{\pcrepeat}{}{\textsf{repeat\ }}
+\NewDocumentCommand{\pcreturn}{}{\textsf{return\ }}
+\NewDocumentCommand{\pcsend}{}{\textsf{send\ }}
+\NewDocumentCommand{\pcset}{}{\textsf{set\ }}
+\NewDocumentCommand{\pctitlerule}{}{\par\smallskip\hrule\smallskip}
+\NewDocumentCommand{\pctitle}{m}{\noindent#1\pctitlerule}
+
+\NewDocumentCommand{\makeSectionLabel}{m m}{
+	\expandafter\NewDocumentCommand\csname #1Caption\endcsname{}{\textsf{\textsc{#2\space}}}
+	\expandafter\NewDocumentCommand\csname #1CaptionNoSpace\endcsname{}{\textsf{\textsc{#2}}}
+	\expandafter\NewDocumentCommand\csname #1Heading\endcsname{}{\textbf{\csname #1Caption\endcsname}}
+	\expandafter\NewDocumentCommand\csname #1HeadingNoSpace\endcsname{}{\textbf{\csname #1CaptionNoSpace\endcsname}}
 }
 
 \makeSectionLabel{adversary}{Adversary}
@@ -1772,60 +1880,68 @@
 \makeSectionLabel{procedure}{Procedure}
 \makeSectionLabel{securityDef}{Security Notion}
 
-\newcommand{\oracleCaption}{\textsf{\textsc{Oracle\space}}}
-\newcommand{\oracleCaptionNoSpace}{\textsf{\textsc{Oracle}}}
-\newcommand{\oracleHeading}[1]{\textsc{#1}}
-\newcommand{\oracleHeadingNoSpace}{\textbf{\oracleCaptionNoSpace}}
+\NewDocumentCommand{\oracleCaption}{}{\textsf{\textsc{Oracle\space}}}
+\NewDocumentCommand{\oracleCaptionNoSpace}{}{\textsf{\textsc{Oracle}}}
+\NewDocumentCommand{\oracleHeading}{m}{\textsc{#1}}
+\NewDocumentCommand{\oracleHeadingNoSpace}{}{\textbf{\oracleCaptionNoSpace}}
 
-\newcommand{\newsequenceofgames}[1]{
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Game-Hopping References and Code Comments
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\NewDocumentCommand{\newsequenceofgames}{m}{
 	\newcounter{#1}
 	\setcounter{#1}{-1}
-	\def\sequencename{#1}
+	\@ifundefined{sequencename}{%
+		\NewDocumentCommand{\sequencename}{}{#1}%
+	}{%
+		\RenewDocumentCommand{\sequencename}{}{#1}%
+	}
 	\ifx\GameID\undefined
-		\newcommand{\GameID}{#1}
+		\NewDocumentCommand{\GameID}{}{#1}
 	\else
-		\renewcommand{\GameID}{#1}
+		\RenewDocumentCommand{\GameID}{}{#1}
 	\fi
 	\ifx\PrevLabel\undefined
-		\newcommand{\PrevLabel}{\GameID.NULL}
+		\NewDocumentCommand{\PrevLabel}{}{\GameID.NULL}
 	\else
-		\renewcommand{\PrevLabel}{\GameID.NULL}
+		\RenewDocumentCommand{\PrevLabel}{}{\GameID.NULL}
 	\fi
 	\ifx\ThisLabel\undefined
-		\newcommand{\ThisLabel}{\GameID.NULL}
+		\NewDocumentCommand{\ThisLabel}{}{\GameID.NULL}
 	\else
-		\renewcommand{\ThisLabel}{\GameID.NULL}
+		\RenewDocumentCommand{\ThisLabel}{}{\GameID.NULL}
 	\fi
 }
 
-\newcommand{\nextgame}[1]{
+\NewDocumentCommand{\nextgame}{m}{
 	\let\PrevLabel\ThisLabel
-	\renewcommand{\ThisLabel}{\GameID.#1}
+	\RenewDocumentCommand{\ThisLabel}{}{\GameID.#1}
 	\refstepcounter{\GameID}\label{\GameID.#1}
 	\paragraph{Experiment~$\algostyle{Exp}_\arabic{\GameID}.$}
 }
-\newcommand{\nextgamewithref}[2]{
+\NewDocumentCommand{\nextgamewithref}{m m}{
 	\let\PrevLabel\ThisLabel
-	\renewcommand{\ThisLabel}{\GameID.#1}
+	\RenewDocumentCommand{\ThisLabel}{}{\GameID.#1}
 	\refstepcounter{\GameID}\label{\GameID.#1}
 	\paragraph{Game~\hyperref[#2]{$\algostyle{G}_{\arabic{\GameID}}$}}
 }
-\newcommand{\nextgamewithrefi}[3]{
+\NewDocumentCommand{\nextgamewithrefi}{m m m}{
 	\let\PrevLabel\ThisLabel
-	\renewcommand{\ThisLabel}{\GameID.#1}
+	\RenewDocumentCommand{\ThisLabel}{}{\GameID.#1}
 	\refstepcounter{\GameID}\label{\GameID.#1}
 	\paragraph{Game~\hyperref[#2]{$\algostyle{G}_{\arabic{\GameID}.#3}$}}
 }
 
-\newcommand{\gameref}[1]{{\hyperref[\sequencename.#1]{\algostyle{G}_{\ref{\sequencename.#1}}}}}
-\newcommand{\gamerefi}[2]{{\hyperref[\sequencename.#1]{\algostyle{G}_{\ref{\sequencename.#1}.#2}}}}
-\newcommand{\gamerefA}[1]{{\hyperref[\sequencename.#1]{\algostyle{G}^{\advA}_{\ref{\sequencename.#1}}}}}
-\newcommand{\gamerefAi}[2]{{\hyperref[\sequencename.#1]{\algostyle{G}^{\advA}_{\ref{\sequencename.#1}.#2}}}}
+\NewDocumentCommand{\gameref}{m}{{\hyperref[\sequencename.#1]{\algostyle{G}_{\ref{\sequencename.#1}}}}}
+\NewDocumentCommand{\gamerefi}{m m}{{\hyperref[\sequencename.#1]{\algostyle{G}_{\ref{\sequencename.#1}.#2}}}}
+\NewDocumentCommand{\gamerefA}{m}{{\hyperref[\sequencename.#1]{\algostyle{G}^{\advA}_{\ref{\sequencename.#1}}}}}
+\NewDocumentCommand{\gamerefAi}{m m}{{\hyperref[\sequencename.#1]{\algostyle{G}^{\advA}_{\ref{\sequencename.#1}.#2}}}}
 
-\newcommand{\gamedelta}[2]{
+\NewDocumentCommand{\gamedelta}{m m}{
 	\Pr\left[\gamerefA{#1}\Rightarrow 1\right]
 	- \Pr\left[\gamerefA{#2}\Rightarrow 1\right]}
-\newcommand{\gameequal}[2]{
+\NewDocumentCommand{\gameequal}{m m}{
 	\Pr\left[\gamerefA{#1}\Rightarrow 1\right]
 	= \Pr\left[\gamerefA{#2}\Rightarrow 1\right]}
 
@@ -1845,6 +1961,10 @@
 \NewDocumentCommand{\gn}{m}{\hfill{\color{LightSteelBlue3}(\small#1)}}
 \NewDocumentCommand{\gcomment}{m}{\codecomment{#1}}
 \NewDocumentCommand{\gcommentd}{m m}{\codecommentgames{#1}{#2}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Security Notion Names
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newclass{\eufcma}{EUF\textsf{-}CMA}
 \newclass{\eufcmaone}{EUF\textsf{-}CMA1}
@@ -1890,18 +2010,26 @@
 \let\OWCPA\owcpa
 \let\SUFCMA\sufcma
 
-\newcommand{\Algorithmica}{\probstyle{Algorithmica}}
-\newcommand{\Heuristica}{\probstyle{Heuristica}}
-\newcommand{\Pessiland}{\probstyle{Pessiland}}
-\newcommand{\Minicrypt}{\probstyle{Minicrypt}}
-\newcommand{\Cryptomania}{\probstyle{Cryptomania}}
-\newcommand{\Obfustopia}{\probstyle{Obfustopia}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Impagliazzo Worlds and Machine Models
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\DTM}{\mathcal{M}}
-\newcommand{\NDTM}{\mathcal{N}}
-\newcommand{\OTM}{\mathcal{O}}
-\newcommand{\PTM}{\mathcal{M}}
-\newcommand{\TM}{\mathcal{M}}
+\NewDocumentCommand{\Algorithmica}{}{\probstyle{Algorithmica}}
+\NewDocumentCommand{\Heuristica}{}{\probstyle{Heuristica}}
+\NewDocumentCommand{\Pessiland}{}{\probstyle{Pessiland}}
+\NewDocumentCommand{\Minicrypt}{}{\probstyle{Minicrypt}}
+\NewDocumentCommand{\Cryptomania}{}{\probstyle{Cryptomania}}
+\NewDocumentCommand{\Obfustopia}{}{\probstyle{Obfustopia}}
+
+\NewDocumentCommand{\DTM}{}{\mathcal{M}}
+\NewDocumentCommand{\NDTM}{}{\mathcal{N}}
+\NewDocumentCommand{\OTM}{}{\mathcal{O}}
+\NewDocumentCommand{\PTM}{}{\mathcal{M}}
+\NewDocumentCommand{\TM}{}{\mathcal{M}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Circuits and Local Search Graphs
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newfunc{\Circuit}{C}
 \newfunc{\Ckt}{C}
@@ -1915,91 +2043,99 @@
 \newfunc{\PredecessorCircuit}{P}
 \newfunc{\SuccessorCircuit}{S}
 
-\newcommand{\Accept}{\algostyle{accept}}
-\newcommand{\Cert}{\algostyle{cert}}
-\newcommand{\CktClass}{\mathcal{C}}
-\newcommand{\Depth}{\algostyle{depth}}
-\newcommand{\Fail}{\algostyle{fail}}
-\newcommand{\False}{\algostyle{false}}
-\newcommand{\Gates}{\algostyle{gates}}
-\newcommand{\Property}{\mathcal{P}}
-\newcommand{\Size}{\algostyle{size}}
-\newcommand{\True}{\algostyle{true}}
-\newcommand{\Width}{\algostyle{width}}
-\newcommand{\Wires}{\algostyle{wires}}
+\NewDocumentCommand{\Accept}{}{\algostyle{accept}}
+\NewDocumentCommand{\Cert}{}{\algostyle{cert}}
+\NewDocumentCommand{\CktClass}{}{\mathcal{C}}
+\NewDocumentCommand{\Depth}{}{\algostyle{depth}}
+\NewDocumentCommand{\Fail}{}{\algostyle{fail}}
+\NewDocumentCommand{\False}{}{\algostyle{false}}
+\NewDocumentCommand{\Gates}{}{\algostyle{gates}}
+\NewDocumentCommand{\Property}{}{\mathcal{P}}
+\NewDocumentCommand{\Size}{}{\algostyle{size}}
+\NewDocumentCommand{\True}{}{\algostyle{true}}
+\NewDocumentCommand{\Width}{}{\algostyle{width}}
+\NewDocumentCommand{\Wires}{}{\algostyle{wires}}
 
-\newcommand{\Child}{\mathscr{C}}
-\newcommand{\Edge}{\algostyle{E}}
-\newcommand{\EndSolution}{\mathbb{e}}
-\newcommand{\Left}{\mathscr{l}}
-\newcommand{\Neighborhood}{\mathbb{n}}
-\newcommand{\Parent}{\mathscr{p}}
-\newcommand{\Right}{\mathscr{r}}
-\newcommand{\Sink}{\algostyle{snk}}
-\newcommand{\StartSolution}{\mathbb{s}}
-\newcommand{\Vertex}{\algostyle{V}}
+\NewDocumentCommand{\Child}{}{\mathscr{C}}
+\NewDocumentCommand{\Edge}{}{\algostyle{E}}
+\NewDocumentCommand{\EndSolution}{}{\mathbb{e}}
+\NewDocumentCommand{\Left}{}{\mathscr{l}}
+\NewDocumentCommand{\Neighborhood}{}{\mathbb{n}}
+\NewDocumentCommand{\Parent}{}{\mathscr{p}}
+\NewDocumentCommand{\Right}{}{\mathscr{r}}
+\NewDocumentCommand{\Sink}{}{\algostyle{snk}}
+\NewDocumentCommand{\StartSolution}{}{\mathbb{s}}
+\NewDocumentCommand{\Vertex}{}{\algostyle{V}}
 
-\newcommand{\coPATH}{\PATH^{\mathsf{c}}}
-\newcommand{\degree}{\algostyle{deg}}
-\newcommand{\indegree}{\algostyle{in\textsf{-}deg}}
-\newcommand{\leaf}{\algostyle{lf}}
-\newcommand{\node}{\algostyle{nd}}
-\newcommand{\outdegree}{\algostyle{out\textsf{-}deg}}
-\newcommand{\source}{\algostyle{src}}
+\NewDocumentCommand{\coPATH}{}{\PATH^{\mathsf{c}}}
+\NewDocumentCommand{\degree}{}{\algostyle{deg}}
+\NewDocumentCommand{\indegree}{}{\algostyle{in\textsf{-}deg}}
+\NewDocumentCommand{\leaf}{}{\algostyle{lf}}
+\NewDocumentCommand{\node}{}{\algostyle{nd}}
+\NewDocumentCommand{\outdegree}{}{\algostyle{out\textsf{-}deg}}
+\NewDocumentCommand{\source}{}{\algostyle{src}}
 
-\newcommand{\Sone}{\mathsf{S}^1_2}
-\newcommand{\Stwo}{\mathsf{S}^2_2}
-\newcommand{\Si}[1]{\mathsf{S}^{#1}_2}
-\newcommand{\Ti}[1]{\mathsf{T}^{#1}_2}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Bounded Arithmetic, Proof Complexity, and SAT Encodings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\BASIC}{\mathsf{BASIC}}
-\newcommand{\IND}{\mathsf{IND}}
-\newcommand{\LIND}{\mathsf{LIND}}
-\newcommand{\PIND}{\mathsf{PIND}}
-\newcommand{\PiIND}[1]{\Pi^b_{#1}\text{-}\IND}
-\newcommand{\RIND}{\mathsf{RIND}}
-\newcommand{\SigIND}[1]{\Sigma^b_{#1}\text{-}\IND}
-\newcommand{\SigREPL}[1]{\Sigma^b_{#1}\text{-}\mathsf{REPL}}
+\NewDocumentCommand{\Sone}{}{\mathsf{S}^1_2}
+\NewDocumentCommand{\Stwo}{}{\mathsf{S}^2_2}
+\NewDocumentCommand{\Si}{m}{\mathsf{S}^{#1}_2}
+\NewDocumentCommand{\Ti}{m}{\mathsf{T}^{#1}_2}
 
-\newcommand{\AxiomsId}{\mathsf{Id}}
-\newcommand{\Axioms}{\mathsf{Ax}}
-\newcommand{\Clauses}{\mathscr{C}}
-\newcommand{\Contradiction}{\bot}
-\newcommand{\Formula}{\Phi}
-\newcommand{\GateVars}{\mathscr{G}}
-\newcommand{\Neg}[1]{\neg #1}
-\newcommand{\Pos}[1]{#1}
-\newcommand{\Prov}[2]{#1 \proves #2}
-\newcommand{\Restrict}[2]{#1\upharpoonright#2}
-\newcommand{\Seq}[2]{#1 \longmapsto #2}
-\newcommand{\Tseitin}{\mathsf{Ts}}
-\newcommand{\Weakening}{\mathscr{W}}
+\NewDocumentCommand{\BASIC}{}{\mathsf{BASIC}}
+\NewDocumentCommand{\IND}{}{\mathsf{IND}}
+\NewDocumentCommand{\LIND}{}{\mathsf{LIND}}
+\NewDocumentCommand{\PIND}{}{\mathsf{PIND}}
+\NewDocumentCommand{\PiIND}{m}{\Pi^b_{#1}\text{-}\IND}
+\NewDocumentCommand{\RIND}{}{\mathsf{RIND}}
+\NewDocumentCommand{\SigIND}{m}{\Sigma^b_{#1}\text{-}\IND}
+\NewDocumentCommand{\SigREPL}{m}{\Sigma^b_{#1}\text{-}\mathsf{REPL}}
 
-\newcommand{\clause}[1]{\left( #1 \right)}
-\newcommand{\emptyclause}{\bot}
-\newcommand{\formula}[1]{\left\langle #1 \right\rangle}
-\newcommand{\nproves}{\nvdash}
-\newcommand{\pdepth}[1]{\mathrm{d}(#1)}
-\newcommand{\pnsim}{\nleq_p}
-\newcommand{\proves}{\vdash}
-\newcommand{\psimiff}{\equiv_p}
-\newcommand{\psim}{\leq_p}
-\newcommand{\psize}[1]{\lvert #1 \rvert}
-\newcommand{\ptrans}[1]{#1^*}
-\newcommand{\subst}[2]{[#1 / #2]}
+\NewDocumentCommand{\AxiomsId}{}{\mathsf{Id}}
+\NewDocumentCommand{\Axioms}{}{\mathsf{Ax}}
+\NewDocumentCommand{\Clauses}{}{\mathscr{C}}
+\NewDocumentCommand{\Contradiction}{}{\bot}
+\NewDocumentCommand{\Formula}{}{\Phi}
+\NewDocumentCommand{\GateVars}{}{\mathscr{G}}
+\NewDocumentCommand{\Neg}{m}{\neg #1}
+\NewDocumentCommand{\Pos}{m}{#1}
+\NewDocumentCommand{\Prov}{m m}{#1 \proves #2}
+\NewDocumentCommand{\Restrict}{m m}{#1\upharpoonright#2}
+\NewDocumentCommand{\Seq}{m m}{#1 \longmapsto #2}
+\NewDocumentCommand{\Tseitin}{}{\mathsf{Ts}}
+\NewDocumentCommand{\Weakening}{}{\mathscr{W}}
 
-\newcommand{\KC}{\Kolmogorov}
-\newcommand{\KPoly}{\Kolmogorov^{\poly}}
-\newcommand{\KS}{\Kolmogorov{\calS}}
-\newcommand{\Kolmogorov}{\calK}
-\newcommand{\Kt}{\Kolmogorov^{t}}
-\newcommand{\RC}{{r}\Kolmogorov}
-\newcommand{\RKt}{{r}\Kolmogorov^{t}}
-\newcommand{\pKt}{{p}\Kolmogorov^{t}}
-\newcommand{\rKS}{{r}\Kolmogorov{\calS}}
+\NewDocumentCommand{\clause}{m}{\left( #1 \right)}
+\NewDocumentCommand{\emptyclause}{}{\bot}
+\NewDocumentCommand{\formula}{m}{\left\langle #1 \right\rangle}
+\NewDocumentCommand{\nproves}{}{\nvdash}
+\NewDocumentCommand{\pdepth}{m}{\mathrm{d}(#1)}
+\NewDocumentCommand{\pnsim}{}{\nleq_p}
+\NewDocumentCommand{\proves}{}{\vdash}
+\NewDocumentCommand{\psimiff}{}{\equiv_p}
+\NewDocumentCommand{\psim}{}{\leq_p}
+\NewDocumentCommand{\psize}{m}{\lvert #1 \rvert}
+\NewDocumentCommand{\ptrans}{m}{#1^*}
+\NewDocumentCommand{\subst}{m m}{[#1 / #2]}
 
-\newcommand{\SigmaCSAT}[1]{\ensuremath{\Sigma_{#1}\SAT}}
-\newcommand{\PiCSAT}[1]{\ensuremath{\Pi_{#1}\SAT}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Kolmogorov Complexity
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\NewDocumentCommand{\KC}{}{\Kolmogorov}
+\NewDocumentCommand{\KPoly}{}{\Kolmogorov^{\poly}}
+\NewDocumentCommand{\KS}{}{\Kolmogorov{\calS}}
+\NewDocumentCommand{\Kolmogorov}{}{\calK}
+\NewDocumentCommand{\Kt}{}{\Kolmogorov^{t}}
+\NewDocumentCommand{\RC}{}{{r}\Kolmogorov}
+\NewDocumentCommand{\RKt}{}{{r}\Kolmogorov^{t}}
+\NewDocumentCommand{\pKt}{}{{p}\Kolmogorov^{t}}
+\NewDocumentCommand{\rKS}{}{{r}\Kolmogorov{\calS}}
+
+\NewDocumentCommand{\SigmaCSAT}{m}{\ensuremath{\Sigma_{#1}\SAT}}
+\NewDocumentCommand{\PiCSAT}{m}{\ensuremath{\Pi_{#1}\SAT}}
 
 \makeatother
 \endinput

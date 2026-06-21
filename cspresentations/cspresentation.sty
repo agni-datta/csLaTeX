@@ -1,26 +1,42 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% cspresentation — Beamer theme overlay for academic slideshows                %%
-%%                                                                              %%
-%% Author : Agni Datta                                                          %%
-%% GitHub : https://github.com/agni-datta/csLaTeX                               %%
-%% Docs   : See README.md in this directory for full documentation.             %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% cspresentation.sty — Beamer theme overlay for academic slideshows
+%
+% Author  : Agni Datta
+% GitHub  : https://github.com/agni-datta/csLaTeX
+% License : LPPL v1.3c
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{cspresentation}[2026/04/13 v3.0 Beamer-theme overlay for academic slideshows]
+\ProvidesPackage{cspresentation}[2026/06/22 v3.1 Beamer-theme overlay for academic slideshows]
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Core packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{iftex}
+\PassOptionsToPackage{dvipsnames,hyperref,table,x11names}{xcolor}
 
-\RequirePackage[T1]{fontenc}
-\RequirePackage[full]{textcomp}
+\ifPDFTeX
+	\RequirePackage{lmodern}
+\else
+	\RequirePackage{fontspec}
+	\RequirePackage[olddefault]{fontsetup}
+\fi
+
 \RequirePackage{adjustbox}
 \RequirePackage{appendixnumberbeamer}
 \RequirePackage{booktabs}
-\RequirePackage{lmodern}
 \RequirePackage{microtype}
 \RequirePackage{xspace}
 
 \ifcsname mathbfcal\endcsname \let\mathbfcal\relax \fi
 \RequirePackage[cal=cm]{mathalpha}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TikZ
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{tikz}
 \usetikzlibrary{
@@ -36,6 +52,10 @@
 	shapes.geometric
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Beamer theme and metropolis settings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \usetheme{metropolis}
 \metroset{
 	progressbar   = frametitle,
@@ -43,6 +63,10 @@
 	numbering     = counter,
 	block         = fill
 }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Color palette (Nord)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \definecolor{nordDark0}{HTML}{2E3440}
 \definecolor{nordDark1}{HTML}{3B4252}
@@ -68,6 +92,10 @@
 \colorlet{cspr@accentSoft}{nordFrost1}
 \colorlet{cspr@standout}  {nordDark0}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Beamer colors
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \setbeamercolor{alerted text}                  {fg=nordRed}
 \setbeamercolor{author}                        {fg=cspr@accentMid}
 \setbeamercolor{background canvas}             {bg=cspr@bg}
@@ -92,6 +120,10 @@
 \setbeamercolor{block title example}           {bg=nordGreen!80!nordDark0, fg=nordSnow2}
 \setbeamercolor{block body example}            {bg=nordGreen!10,   fg=cspr@fg}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Beamer fonts
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \setbeamerfont{author}             {size=\normalsize}
 \setbeamerfont{block body alerted} {size=\small}
 \setbeamerfont{block body example} {size=\small}
@@ -107,6 +139,10 @@
 \setbeamerfont{subtitle}           {size=\large, series=\normalfont}
 \setbeamerfont{title}              {size=\LARGE, series=\normalfont}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Footline template
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \setbeamertemplate{footline}{%
 	\begin{beamercolorbox}[wd=\textwidth, ht=2ex, dp=1ex, leftskip=1em, rightskip=1em]{palette primary}%
 		\usebeamerfont{author in head/foot}%
@@ -115,6 +151,10 @@
 		\insertframenumber\,/\,\inserttotalframenumber
 	\end{beamercolorbox}%
 }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TikZ node styles
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \tikzset{
 	darrow/.style = {
@@ -153,29 +193,34 @@
 		}
 }
 
-\newcommand{\citeref}[1]{%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Public utilities
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\NewDocumentCommand{\citeref}{m}{%
 	{\footnotesize\textcolor{nordDark3}{[#1]}}%
 }
 
-\newcommand{\kw}[1]{\textcolor{cspr@accent}{\textbf{#1}}}
+\NewDocumentCommand{\kw}{m}{\textcolor{cspr@accent}{\textbf{#1}}}
 
-\newcommand{\bad}[1] {\textcolor{nordRed}{#1}}
-\newcommand{\good}[1]{\textcolor{nordGreen!70!nordDark0}{#1}}
-\newcommand{\warn}[1]{\textcolor{nordOrange}{#1}}
+\NewDocumentCommand{\bad} {m}{\textcolor{nordRed}{#1}}
+\NewDocumentCommand{\good}{m}{\textcolor{nordGreen!70!nordDark0}{#1}}
+\NewDocumentCommand{\warn}{m}{\textcolor{nordOrange}{#1}}
 
-\newcommand{\code}[1]{\textcolor{cspr@accent}{\texttt{#1}}}
+\NewDocumentCommand{\code}{m}{\textcolor{cspr@accent}{\texttt{#1}}}
 
-\newcommand{\source}[1]{%
+\NewDocumentCommand{\source}{m}{%
 	\begin{tikzpicture}[remember picture, overlay]
 		\node[anchor=south west, inner sep=4pt, font=\tiny, text=nordDark3]
 		at (current page.south west) {Source:~#1};
 	\end{tikzpicture}%
 }
 
-\newcommand{\reveal}[2]{\onslide<#1>{\textcolor{cspr@accent}{#2}}}
+\NewDocumentCommand{\reveal}{mm}{\onslide<#1>{\textcolor{cspr@accent}{#2}}}
 
-\newcommand{\csrule}{%
+\NewDocumentCommand{\csrule}{}{%
 	{\color{cspr@accent}\rule{\linewidth}{0.4pt}}%
 }
 
+\makeatother
 \endinput

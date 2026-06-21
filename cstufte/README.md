@@ -18,6 +18,7 @@ Tufte-style layout package with wide margins, side-notes, lattice cryptography m
 - Side-citations require a Biber-compatible bibliography setup (`biblatex` with `backend=biber`).
 - The `nicefonts` option requires the Baskervaldx and Biolinum font packages.
 - Do not load any package that overrides `geometry` after `cstufte`: the margin layout will break.
+- Loads `babel` without language options. Choose document languages through the class options or load `babel` explicitly before `cstufte`.
 
 ### Usage
 
@@ -97,6 +98,10 @@ All delimiters auto-size with `\left`/`\right` semantics:
 
 - `\DLambda`: discrete Gaussian distribution $D_\Lambda$ over a lattice.
 - `\Dzs`: discrete Gaussian $D_{\ZZ^n, s}$ over the integer lattice.
+
+#### Proof environments
+
+`proofsketch` and `proofidea` are available as unnumbered proof-style environments alongside the theorem suite.
 
 ### Caveats
 

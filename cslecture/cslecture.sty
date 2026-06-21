@@ -1,19 +1,23 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% cslecture — Lecture-notes skeleton for the article class                     %%
-%%                                                                              %%
-%% Author : Agni Datta                                                          %%
-%% GitHub : https://github.com/agni-datta/csLaTeX                               %%
-%% Docs   : See README.md in this directory for full documentation.             %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% cslecture.sty — Lecture-notes skeleton for the article class
+%
+% Author  : Agni Datta
+% GitHub  : https://github.com/agni-datta/csLaTeX
+% License : LPPL v1.3c
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \ProvidesPackage{cslecture}[2026/04/13 v3.0 Lecture-notes skeleton for the article class]
 
+\makeatletter
+
 \RequirePackage{iftex}
-\RequirePackage{expl3}
 \RequirePackage{graphicx}
 
-\RequirePackage[T1]{fontenc}
-\RequirePackage{lmodern}
+\ifPDFTeX
+	\RequirePackage{lmodern}
+\else
+	\RequirePackage{fontspec}
+\fi
 
 \RequirePackage{babel}
 \RequirePackage[autostyle=true,csdisplay=true]{csquotes}
@@ -22,7 +26,7 @@
 	\RequirePackage[2.0,objcompress,compress]{bxpdfver}
 }{}
 
-\RequirePackage[margin=2.5cm,headheight=14pt]{geometry}
+\RequirePackage[margin=1in]{geometry}
 
 \IfFileExists{microtype.sty}{
 	\RequirePackage[final,protrusion=true,expansion=true]{microtype}
@@ -34,7 +38,6 @@
 \hbadness=10000
 \vbadness=10000
 
-\RequirePackage[full]{textcomp}
 \RequirePackage[normalem]{ulem}
 \RequirePackage{paralist}
 \RequirePackage{xspace}
@@ -50,7 +53,7 @@
 	\RequirePackage[cal=cm,bb=bboldx,scr=esstix]{mathalpha}
 }{}
 
-\RequirePackage[x11names,dvipsnames,svgnames]{xcolor}
+\RequirePackage[dvipsnames,hyperref,table,x11names]{xcolor}
 
 \RequirePackage{enumitem}
 \setlist{nosep}
@@ -63,11 +66,10 @@
 
 \RequirePackage{framed}
 
-\RequirePackage{nameref}
 \RequirePackage[
 	bookmarksnumbered = true,
 	breaklinks        = true,
-	citecolor         = MidnightBlue,
+	citecolor         = RoyalBlue,
 	colorlinks        = true,
 	linkcolor         = MidnightBlue,
 	pdfencoding       = auto,
@@ -75,11 +77,11 @@
 	pdfstartview      = FitH,
 	pdfusetitle,
 	unicode           = true,
-	urlcolor          = MidnightBlue,
+	urlcolor          = Peach
 ]{hyperref}
 \RequirePackage[capitalize,nameinlink,noabbrev]{cleveref}
 
-\newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1}~\nameref*{#1}}}
+\NewDocumentCommand{\fullref}{m}{\hyperref[{#1}]{\autoref*{#1}~\nameref*{#1}}}
 
 \ExplSyntaxOn
 
@@ -161,11 +163,11 @@
 	\RequirePackage[skipabove=6pt,skipbelow=6pt,framemethod=TikZ]{mdframed}
 }{}
 
-\providecommand{\cs@endsymb}{\ensuremath{\lrcorner}}
+\ProvideDocumentCommand{\cs@endsymb}{}{\ensuremath{\lrcorner}}
 \@ifundefined{qedsymbol}{
-	\newcommand{\qedsymbol}{\ensuremath{\diamond}}
+	\NewDocumentCommand{\qedsymbol}{}{\ensuremath{\diamond}}
 }{
-	\renewcommand{\qedsymbol}{\ensuremath{\diamond}}
+	\RenewDocumentCommand{\qedsymbol}{}{\ensuremath{\diamond}}
 }
 
 \mdfdefinestyle{cs@ruled}{
@@ -264,12 +266,13 @@
 
 \let\proof\relax \let\endproof\relax
 \declaretheorem[style=cs@prooflike, name=Proof]{proof}
+\declaretheorem[style=cs@prooflike, name={Proof~(Sketch)}, numbered=no]{proofsketch}
+\declaretheorem[style=cs@prooflike, name={Proof~(Idea)}, numbered=no]{proofidea}
 
 \AtBeginDocument{
-	\providecommand{\theHtheorem}{\theHsection.\arabic{theorem}}
+	\ProvideDocumentCommand{\theHtheorem}{}{\theHsection.\arabic{theorem}}
 }
 
-\makeatletter
 
 \newif\ifcs@haspunct
 \def\cs@checkchar#1{\ifx\cs@checkchar#1\cs@checkchar\else\cs@haspuncttrue\fi}
@@ -278,7 +281,7 @@
 \def\cs@testexclam#1!\cs@e#2\cs@s  {\cs@checkchar{#2}}
 \def\cs@testcolon #1:\cs@e#2\cs@s  {\cs@checkchar{#2}}
 
-\newcommand{\cs@autopunct}[1]{%
+\NewDocumentCommand{\cs@autopunct}{m}{%
 	\cs@haspunctfalse
 	\cs@testdot   #1\cs@e.\cs@e\cs@s
 	\cs@testquest #1\cs@e?\cs@e\cs@s
@@ -317,7 +320,7 @@
 	\fboxsep\FrameSep
 	\cs@CustomFBox{}{}{#1}{#2}\FrameRule\z@{1em}{0.5em}}
 
-\newenvironment{nestedbar}[1][\hsize]{%
+\NewDocumentEnvironment{nestedbar}{O{\hsize}}{%
 	\@ifundefined{OuterFrameSep}{%
 		\@latex@error{nestedbar~requires~a~recent~framed.sty}\@ehd}{}%
 	\def\FrameCommand     {\cs@OpenFBox\FrameRule\FrameRule}%
@@ -326,12 +329,14 @@
 	\def\LastFrameCommand {\cs@OpenFBox\z@\FrameRule}%
 	\OuterFrameSep=1ex\FrameSep=0pt
 	\MakeFramed{\hsize#1\advance\hsize-\width\FrameRestore}%
-}{\endMakeFramed}
+}{%
+	\endMakeFramed
+}
 
-\newcommand{\course}  [1]{\def\@course{#1}}
-\newcommand{\lecturer}[1]{\def\@lecturer{#1}}
+\NewDocumentCommand{\course}  {m}{\def\@course{#1}}
+\NewDocumentCommand{\lecturer}{m}{\def\@lecturer{#1}}
 
-\renewcommand{\maketitle}{%
+\RenewDocumentCommand{\maketitle}{}{%
 	\thispagestyle{plain}%
 	\@ifundefined{mdframed}{
 		\noindent\rule{\linewidth}{0.4pt}\par\smallskip

@@ -12,6 +12,10 @@ date modified: Tuesday, May 19th 2026, 1:35:34 am
 
 Document class for academic lecture series, built on `book` with boxed chapter headers, automatic indexing, and draft/final annotation modes.
 
+### Requirements
+
+- Loads `babel` without language options. Choose document languages through the class options or load `babel` explicitly before `cslectureseries`.
+
 ### Usage
 
 ```latex
@@ -53,7 +57,7 @@ Document class for academic lecture series, built on `book` with boxed chapter h
 
 #### Theorem environments
 
-`theorem`, `lemma`, `proposition`, `definition`, `remark`, `example`, and the standard suite. Includes `solution` for exercise answers.
+`theorem`, `lemma`, `proposition`, `definition`, `remark`, `example`, and the standard suite. Includes `solution` for exercise answers and `proofsketch`/`proofidea` for unnumbered proof variants.
 
 #### Revision tools (draft mode)
 

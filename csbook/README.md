@@ -16,6 +16,7 @@ Macro framework for textbooks, manuscripts, and large reports. Handles font sele
 
 - Requires a document class that supports `\chapter`: use `book` or `report`. Loading with `article` will cause `titlesec` chapter formatting to fail.
 - Do not load `amsthm` before this package.
+- Loads `babel` without language options. Choose document languages through the class options or load `babel` explicitly before `csbook`.
 
 ### Usage
 
@@ -69,6 +70,10 @@ In `draft` mode the broken reference prints “??” in the text and a margin no
 #### Broken-reference tracking (draft mode)
 
 `csbook` patches `\@setref` so that any `\ref`, `\cref`, or `\cite` that resolves to an undefined label prints a margin note naming the missing label. This is strictly a visual aid during writing: it has no effect on the compiled output in `final` mode.
+
+#### Proof environments
+
+`proofsketch` and `proofidea` are available as unnumbered proof-style environments when the theorem layer is active. Use `csamsmath` alongside `csbook` for the full theorem and mathematics API.
 
 #### Table of contents
 

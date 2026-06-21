@@ -17,6 +17,7 @@ Style package for formal correspondence. Configures colors, margins, line spacin
 - Use with the `article` class (not the `letter` class: this is a style package, not a class replacement).
 - Logo and signature options require external image files on disk.
 - Optimized for LuaLaTeX; pdfLaTeX works with font fallbacks.
+- Loads `babel` without language options. Choose document languages through the class options or load `babel` explicitly before `csletter`.
 
 ### Usage
 
@@ -50,7 +51,7 @@ All options are key-value pairs. Pass them as a comma-separated list to `\usepac
 #### Colors
 
 - `textcolor`: primary body text color. Default: `black`. Accepts any color name known to `xcolor`.
-- `accentcolor`: color used for hyperlinks and highlighted elements. Default: `blue`.
+- `accentcolor`: color used for internal links and highlighted elements. URL links use `Peach`. Default: `blue`.
 - `headercolor`: color of the header text. Default: same as `accentcolor`.
 - `footercolor`: color of the footer text. Default: `black!60`.
 

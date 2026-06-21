@@ -28,6 +28,9 @@
 *.toc
 *.vrb
 *.xdv
+*.pdf
+
+# Test build directories
 
 # Editor temporaries
 *~

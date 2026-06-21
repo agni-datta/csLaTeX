@@ -26,11 +26,11 @@ LaTeX packages for computer science research, technical teaching, and academic d
 | [`cslecture`](cslecture/README.md)            | 3.0     | Skeleton for lecture notes over the `article` class: condensed spacing, boxed title block, and a full theorem suite.                     |
 | [`csletter`](csletter/README.md)              | 3.0     | Professional correspondence with configurable colors, margins, spacing, and optional logo and signature images.                          |
 | [`cspresentation`](cspresentations/README.md) | 3.0     | Beamer theme overlay on Metropolis with the Nord color palette, semantic highlight commands, and TikZ diagram styles.                    |
-| [`csresume`](csresume/README.md)              | 4.2     | Academic CV and resume with chronological entries, BibLaTeX publications, compact lists, and reference block layouts.                   |
+| [`csresume`](csresume/README.md)              | 4.2     | Academic CV and resume with chronological entries, BibLaTeX publications, compact lists, and reference block layouts.                    |
 | [`csthm`](csthm/README.md)                    | 3.0     | Theorem suite with three visual modes (`normal`, `fancy`, `oldschool`), dynamic accent colors, and full `cleveref` integration.          |
 | [`cstufte`](cstufte/README.md)                | 3.0     | Tufte-style wide-margin layout with side-citations, marginalia, and a lattice cryptography notation library.                             |
 | [`cswhitepaper`](cswhitepaper/README.md)      | 5.0     | Style for technical reports with per-author annotation commands, revision tracking, and ruled theorem aesthetics.                        |
-| [`llncscrypto`](llncscrypto/README.md)        | 3.2     | LLNCS-compatible research-paper extensions: theorem support, author notes, boxes, captions, references, and preprint utilities.           |
+| [`llncscrypto`](llncscrypto/README.md)        | 3.2     | LLNCS-compatible research-paper extensions: theorem support, author notes, boxes, captions, references, and preprint utilities.          |
 | [`tcscrypto`](tcscrypto/README.md)            | 3.3     | Notation and environment library for TCS and cryptography: sampling, complexity, circuits, graphs, proof complexity, and protocol boxes. |
 
 ### Installation
@@ -44,6 +44,10 @@ Copy the desired `.sty` file into your project directory alongside your main `.t
 ```
 
 No global installation or `texmf` tree manipulation required. Each package directory contains a `README.md` with full documentation, all options, the complete API, and caveats.
+
+### Language and Encoding Policy
+
+csLaTeX packages do not select document languages. Packages that need Babel load it as `\RequirePackage{babel}` without language options; choose languages through the document class options or by loading `babel` explicitly before the csLaTeX package. Input encoding and font encoding are likewise document-level decisions.
 
 ### Typical use cases
 

@@ -42,7 +42,7 @@ Typography, theorem environments, author tooling, and lightweight research-paper
 | Option      | Default | Description                                                                                                |
 | ----------- | ------- | ---------------------------------------------------------------------------------------------------------- |
 | `captions`  | off     | Load `caption` and `subcaption` with styled figure and table formatting.                                   |
-| `colorlinks`| off     | Use colored hyperlinks. Off by default so strict LLNCS output keeps neutral link rendering.                |
+| `colorlinks`| off     | Use colored hyperlinks, with URL links in `Peach`. Off by default so strict LLNCS output keeps neutral link rendering. |
 | `draft`     | off     | Stamp each page with a dated “not for distribution” watermark and enable author notes.                     |
 | `final`     | off     | Camera-ready mode: disable all notes, draft markers, and `\XXX` flags. Incompatible with `draft`.          |
 | `libertine` | off     | Use Libertine body font and Biolinum sans with matching math.                                              |
@@ -68,7 +68,7 @@ When `theorems` is passed, the theorem-like environments are redeclared through 
 
 **Unnumbered:**
 
-`claim*`, `conjecture*`, `corollary*`, `hypothesis*`, `informaltheorem*`, `lemma*`, `openproblem*`, `syntax*`, `theorem*`, `proof`
+`claim*`, `conjecture*`, `corollary*`, `hypothesis*`, `informaltheorem*`, `lemma*`, `openproblem*`, `syntax*`, `theorem*`, `proof`, `proofsketch`, `proofidea`
 
 **Additional:**
 

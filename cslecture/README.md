@@ -16,6 +16,7 @@ Lecture-notes skeleton for the `article` class. Condenses spacing throughout, su
 
 - Use with the `article` document class. Behavior is undefined on `book` or `report`.
 - Do not call `\maketitle` with a custom redefinition: the package replaces it with its own boxed header.
+- Loads `babel` without language options. Choose document languages through the class options or load `babel` explicitly before `cslecture`.
 
 ### Usage
 
@@ -89,6 +90,8 @@ All environments are numbered per section and registered with `cleveref`.
 **Definition-like:** `definition`, `notation`, `protocol`, `problem`, `construction`
 
 **Remark-like:** `remark`, `note`, `example`, `observation`, `openproblem`
+
+**Proof-style:** `proof`, `proofsketch`, `proofidea`
 
 All accept an optional title: `\begin{lemma}[Key Lemma]`.
 
