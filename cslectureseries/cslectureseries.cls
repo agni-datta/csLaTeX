@@ -113,7 +113,7 @@
 % Color, graphics, and floats
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[dvipsnames,hyperref,table,x11names]{xcolor}
+\RequirePackage[dvipsnames,table,x11names]{xcolor}
 \RequirePackage{graphicx}
 \RequirePackage{booktabs}
 \RequirePackage{float}
