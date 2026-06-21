@@ -30,7 +30,7 @@ LaTeX packages for computer science research, technical teaching, and academic d
 | [`csthm`](csthm/README.md)                    | 3.0     | Theorem suite with three visual modes (`normal`, `fancy`, `oldschool`), dynamic accent colors, and full `cleveref` integration.          |
 | [`cstufte`](cstufte/README.md)                | 3.0     | Tufte-style wide-margin layout with side-citations, marginalia, and a lattice cryptography notation library.                             |
 | [`cswhitepaper`](cswhitepaper/README.md)      | 5.0     | Style for technical reports with per-author annotation commands, revision tracking, and ruled theorem aesthetics.                        |
-| [`llncscrypto`](llncscrypto/README.md)        | 3.0     | Full research-paper environment on top of the Springer LLNCS class: theorems, author notes, boxes, and optional TikZ and crypto layers.  |
+| [`llncscrypto`](llncscrypto/README.md)        | 3.2     | LLNCS-compatible research-paper extensions: theorem support, author notes, boxes, captions, references, and preprint utilities.           |
 | [`tcscrypto`](tcscrypto/README.md)            | 3.3     | Notation and environment library for TCS and cryptography: sampling, complexity, circuits, graphs, proof complexity, and protocol boxes. |
 
 ### Installation
@@ -51,7 +51,9 @@ No global installation or `texmf` tree manipulation required. Each package direc
 
 ```latex
 \documentclass[runningheads, a4paper, envcountsect]{llncs}
-\usepackage[crypto, captions, draft, tikz, theorems]{llncscrypto}
+\usepackage[captions, draft, theorems]{llncscrypto}
+\usepackage{tcscrypto}
+\usepackage{tikz}
 \usepackage[appendix=true]{csdeferproofs}
 \NewDeferredThm{theoremE}{theorem}
 \NewDeferredThm{lemmaE}{lemma}

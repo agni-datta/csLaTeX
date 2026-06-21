@@ -12,7 +12,7 @@ date modified: Tuesday, May 19th 2026, 1:35:34 am
 
 Collects theorem proofs and flushes them to a “Missing Proofs” appendix in submission mode; proofs stay inline in eprint mode. No source changes needed between modes: flip one option.
 
-Built on [proof-at-the-end](https://ctan.org/pkg/proof-at-the-end). Compatible with `csamsmath`, `csbook`, `cslecture`, `llncscrypto` (with `theorems`), `csthm`, and any package that declares `proof` via `thmtools` or `amsthm`.
+Built on [proof-at-the-end](https://ctan.org/pkg/proof-at-the-end). Compatible with `csamsmath`, `csbook`, `cslecture`, `llncscrypto` (with `theorems`), `csthm`, and any package that declares a `proof` environment before `\begin{document}`.
 
 ### The idea
 
@@ -206,10 +206,11 @@ Appendix heading: _Proof Sketch of Lemma 3.4_.
 
 #### llncscrypto
 
-`llncscrypto` declares `proof` inside an `\AtEndPreamble` hook (via `thmtools`). Because `csdeferproofs` also uses `\AtEndPreamble` to load `proof-at-the-end`, load order matters: `csdeferproofs` must appear **after** `llncscrypto` so its hook is appended later in the queue.
+`llncscrypto` declares `proof` inside an `\AtEndPreamble` hook using LLNCS theorem declarations. Because `csdeferproofs` also uses `\AtEndPreamble` to load `proof-at-the-end`, load order matters: `csdeferproofs` must appear **after** `llncscrypto` so its hook is appended later in the queue.
 
 ```latex
-\usepackage[crypto, theorems, ...]{llncscrypto}
+\usepackage[theorems, ...]{llncscrypto}
+\usepackage{tcscrypto}                  % optional, load explicitly if needed
 \usepackage[appendix=true]{csdeferproofs}   % must come after
 ```
 
@@ -221,9 +222,9 @@ Both declare `proof` at load time (not in a hook), so `csdeferproofs` can appear
 
 Work without any special treatment.
 
-#### thmtools or amsthm directly
+#### Direct Theorem Declarations
 
-If you declare theorem environments yourself with `\declaretheorem` or `\newtheorem`, `csdeferproofs` works as long as `proof` is defined before `\begin{document}`.
+If you declare theorem environments yourself, `csdeferproofs` works as long as `proof` is defined before `\begin{document}`.
 
 ### Common mistakes
 

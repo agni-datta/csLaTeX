@@ -10,12 +10,12 @@ date modified: Tuesday, May 19th 2026, 1:35:35 am
 
 ## llncscrypto
 
-Typography, theorem environments, author tooling, and optional cryptography support on top of the Springer LLNCS class. Replaces the sparse LLNCS defaults with a fully equipped research-paper environment: a complete theorem suite registered with `cleveref`, per-author color-coded notes with a collected list, missing-content tracking, paragraph headings, list and box environments, and optional TikZ and crypto layers. The entire package is controlled through a single `\usepackage` line with option flags: nothing needs to be wired up manually.
+Typography, theorem environments, author tooling, and lightweight research-paper utilities on top of the Springer LLNCS class. The default mode stays close to LLNCS and keeps opinionated behavior behind explicit option flags: theorem replacement, caption styling, preprint layout, colored links, and draft notes are opt-in. Cryptographic notation, TikZ, and appendix tooling are document-level decisions and should be loaded explicitly by documents that need them.
 
 ### Requirements
 
 - Document class must be `llncs`. This package is not designed for `article` or `book`.
-- Do not load `amsthm` manually. The package manages it internally via `thmtools`. Loading `amsthm` before this package will cause option conflicts.
+- Do not load `thmtools` with this template. The `theorems` option uses the theorem mechanism provided by LLNCS itself, namely `\spnewtheorem` and its related internal declarations.
 - Load `csdeferproofs` after this package if you use it, because `llncscrypto` registers its `proof` environment inside `\AtEndPreamble` and `csdeferproofs` must append its own hook later in the queue.
 
 ### Usage
@@ -29,7 +29,9 @@ Typography, theorem environments, author tooling, and optional cryptography supp
 
 ```latex
 \documentclass[runningheads, a4paper, envcountsect]{llncs}
-\usepackage[crypto, captions, draft, tikz, theorems]{llncscrypto}
+\usepackage[captions, draft, theorems]{llncscrypto}
+\usepackage{tcscrypto}
+\usepackage{tikz}
 \usepackage[appendix=true]{csdeferproofs}
 \NewDeferredThm{theoremE}{theorem}
 \NewDeferredThm{lemmaE}{lemma}
@@ -39,42 +41,49 @@ Typography, theorem environments, author tooling, and optional cryptography supp
 
 | Option      | Default | Description                                                                                                |
 | ----------- | ------- | ---------------------------------------------------------------------------------------------------------- |
-| `appendix`  | off     | Load the `appendix` package configured for LLNCS page geometry.                                            |
 | `captions`  | off     | Load `caption` and `subcaption` with styled figure and table formatting.                                   |
-| `crypto`    | off     | Load `tcscrypto` (if present on disk) and `orcidlink` for ORCID badges.                                    |
+| `colorlinks`| off     | Use colored hyperlinks. Off by default so strict LLNCS output keeps neutral link rendering.                |
 | `draft`     | off     | Stamp each page with a dated “not for distribution” watermark and enable author notes.                     |
 | `final`     | off     | Camera-ready mode: disable all notes, draft markers, and `\XXX` flags. Incompatible with `draft`.          |
 | `libertine` | off     | Use Libertine body font and Biolinum sans with matching math.                                              |
 | `nonotes`   | off     | Suppress author notes without enabling full `final` mode. Useful for anonymous submission review copies.   |
 | `preprint`  | off     | Eprint layout: letter paper, 1.15× line spacing, centered page numbers. Expects the `[11pt]` class option. |
-| `theorems`  | off     | Tear down LLNCS built-in theorem environments and replace with a full standardized set.                    |
-| `tikz`      | off     | Load TikZ, PGFPlots, and tikz-cd with a standard library set.                                              |
+| `theorems`  | off     | Redeclare LLNCS theorem environments with `\spnewtheorem` and upright body text.                           |
 
 ### Theorem environments (`theorems` option)
 
-When `theorems` is passed, all LLNCS built-in theorem-like environments are removed and replaced. The `case` and `solution` environments from LLNCS are dropped entirely.
+When `theorems` is passed, the theorem-like environments are redeclared through the LLNCS-supported `\spnewtheorem` mechanism. The resulting bodies are upright roman text, so theorem, lemma, definition, and related environments do not inherit the default italic LLNCS theorem body. The `case` environment from LLNCS is dropped; `solution` is redeclared as part of the package theorem suite.
 
 **Bold heading, roman body** (numbered per section):
 
-`theorem`, `assertion`, `assumption`, `axiom`, `claim`, `conclusion`, `conjecture`, `corollary`, `criterion`, `fact`, `folklore`, `hypothesis`, `lemma`, `observation`, `postulate`, `property`, `proposition`, `application`, `construction`, `convention`, `definition`, `experiment`, `notation`, `openproblem`, `problem`, `protocol`, `result`
+`theorem`, `assertion`, `assumption`, `axiom`, `claim`, `conclusion`, `conjecture`, `corollary`, `criterion`, `fact`, `folklore`, `hypothesis`, `informaltheorem`, `lemma`, `metatheorem`, `observation`, `postulate`, `property`, `proposition`, `application`, `construction`, `convention`, `definition`, `experiment`, `notation`, `openproblem`, `problem`, `protocol`, `result`, `solution`, `step`
 
 **Small-caps heading, roman body** (numbered per section):
 
-`commentary`, `exercise`, `example`, `motivation`, `notationabuse`, `note`, `question`, `remark`
+`commentary`, `discussion`, `exercise`, `example`, `motivation`, `notationabuse`, `note`, `question`, `remark`, `syntax`
 
 **Sans-serif heading, roman body** (numbered per section):
 
-`guideline`, `important`, `insight`, `keypoint`, `warning`
+`guideline`, `highlight`, `important`, `insight`, `keypoint`, `recall`, `summary`, `takeaway`, `tip`, `warning`
 
 **Unnumbered:**
 
-`claim*`, `corollary*`, `lemma*`, `theorem*`, `proof`
+`claim*`, `conjecture*`, `corollary*`, `hypothesis*`, `informaltheorem*`, `lemma*`, `openproblem*`, `syntax*`, `theorem*`, `proof`
 
 **Additional:**
 
 - `claimproof`: like `proof` but defaults to “Proof of Claim” as the heading. Accepts an optional argument to override the heading text.
 
-All numbered environments are registered with `cleveref`. Use `\cref{label}` for automatic type-aware references.
+All numbered environments are registered with `zref-clever`. The package preserves the standard `\cref{label}` and `\Cref{label}` interfaces for automatic type-aware references.
+
+### Cryptographic notation
+
+`llncscrypto` does not load `tcscrypto`. This avoids hidden package coupling and keeps LLNCS compatibility easier to audit. For cryptographic notation, protocol boxes, complexity macros, sampling notation, proof-complexity commands, or other TCS-specific interfaces, load `tcscrypto` explicitly after `llncscrypto`:
+
+```latex
+\usepackage[theorems,draft]{llncscrypto}
+\usepackage{tcscrypto}
+```
 
 ### Commands
 
@@ -123,7 +132,7 @@ These replace `\paragraph` and `\subparagraph` with typographically consistent a
 
 #### References
 
-- `\fullref{label}`: hyperlinked reference that combines `\autoref` (type name) and `\nameref` (theorem title) into a single clickable span. Produces output like “Theorem 3.1 (Main Result)”.
+- `\fullref{label}`: hyperlinked reference that combines `zref-clever`’s type-aware reference text with `\nameref` into a single clickable span.
 
 #### Text and math
 
@@ -140,6 +149,7 @@ These replace `\paragraph` and `\subparagraph` with typographically consistent a
 
 - `\emailref{address}`: renders a `mailto:` hyperlink. Use in author blocks and correspondence notes.
 - `\httpref{address}`: renders an `http://` hyperlink.
+- `\webpage{address}`: compatibility alias for `\httpref{address}`, defined only if no earlier class or package has already defined it.
 
 #### Preprint mode
 
@@ -154,11 +164,11 @@ These replace `\paragraph` and `\subparagraph` with typographically consistent a
 - `checkbox`: itemize with `□` bullet labels. Use `\checked` on an item to render `✓` instead of `□`. Useful for requirement checklists.
 - `deflist`: description list with a fixed 33%-width label column. Use for notation tables and term definitions.
 
-#### Boxes (all accept an optional title argument)
+#### Boxes
 
-- `constructionbox[title]`: framed box containing a `points` list. Standard container for protocol and construction descriptions.
-- `codelistbox[title]`: framed box containing a `codelist`. Use for numbered algorithm descriptions.
 - `simplebox[title]`: framed box with free content. Use for game definitions, experiments, or any block that needs visual separation.
+
+The box backend uses `mdframed` with its default frame method, so loading `llncscrypto` does not implicitly load TikZ.
 
 #### Other
 
@@ -167,11 +177,12 @@ These replace `\paragraph` and `\subparagraph` with typographically consistent a
 
 ### Caveats
 
-- Do not load `amsthm` before this package. It manages `amsthm` and `thmtools` internally. If you see “option clash for package amsthm”, something loaded it before `llncscrypto`.
-- The `theorems` option tears down LLNCS built-ins. Do not use LLNCS’s own `\spnewtheorem` or `\begin{theorem}` before loading `llncscrypto` with `theorems`, as they will be overwritten.
+- Do not load `thmtools` with this template. It is not part of the LLNCS-supported theorem mechanism and is intentionally not used by `llncscrypto`.
+- The `theorems` option redeclares LLNCS theorem environments. Do not define theorem-like environments with the same names before loading `llncscrypto` with `theorems`, as those definitions will be overwritten.
 - `\XXX` raises a hard error in `final`/`nonotes` mode intentionally. If compilation fails after switching to `final`, search the source for `\XXX` and remove or resolve every occurrence before resubmitting.
 - The `preprint` option changes page geometry and expects the `[11pt]` class option on `\documentclass`. Using it with `[10pt]` will produce lines that are too wide.
-- If you use `csdeferproofs`, always load `llncscrypto` first. The proof environment must exist before `csdeferproofs` hooks into it.
+- If you use `csdeferproofs`, always load `llncscrypto` first and enable the `theorems` option. The proof environment must exist before `csdeferproofs` hooks into it.
+- `crypto`, `appendix`, `backref`, and `tikz` are not `llncscrypto` options. Load `tcscrypto`, `orcidlink`, `appendix`, `tikz`, `pgfplots`, or related packages directly in the document when needed.
 - The broken-reference tracking patches `\@setref` and `\G@refundefinedtrue` at load time. Margin stars on first compile of a new document indicate genuine missing labels, not a bug. They clear on the next compile once labels are defined.
 - The unified annotation commands (`\todo`, `\fixme`, `\added`, `\changed`, `\removed`, etc.) require `ulem` for `\removed`’s strikethrough rendering. The package loads `ulem` automatically with the `[normalem]` option so that `\emph` is not affected.
 - `\notes` is a newly added command that may shadow any `\notes` you defined yourself in the preamble. Rename your own definition if there is a conflict.
