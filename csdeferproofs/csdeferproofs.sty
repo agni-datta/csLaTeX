@@ -1,14 +1,18 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% csdeferproofs — Deferred-proof infrastructure for csLaTeX packages           %%
-%%                                                                              %%
-%% Author : Agni Datta                                                          %%
-%% GitHub : https://github.com/agni-datta/csLaTeX                               %%
-%% Docs   : See README.md in this directory for full documentation.             %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% csdeferproofs -- deferred-proof infrastructure for csLaTeX packages        %%
+%%                                                                            %%
+%% Author : Agni Datta                                                        %%
+%% GitHub : https://github.com/agni-datta/csLaTeX                             %%
+%% Docs   : See README.md in this directory for full documentation.           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{csdeferproofs}[2026/05/19 v1.1 Deferred-proof infrastructure for csLaTeX packages]
+\ProvidesPackage{csdeferproofs}[2026/06/21 v1.2 Deferred-proof infrastructure for csLaTeX packages]
 
 \makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Options                                                                    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{kvoptions}
 \SetupKeyvalOptions{family=csdp, prefix=csdp@}
@@ -19,10 +23,44 @@
 \DeclareStringOption[Proof]{proofname}
 \DeclareStringOption[Proof Sketch]{sketchname}
 
-\newif\ifcsdp@loaded
-\csdp@loadedfalse
-
 \ProcessKeyvalOptions{csdp}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Internal Helpers                                                           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\csdp@ifblank}[3]{%
+    \def\csdp@temp{#1}%
+    \ifx\csdp@temp\@empty
+        #2%
+    \else
+        #3%
+    \fi
+}
+
+\newcommand{\csdp@beginenv}[2]{%
+    \csdp@ifblank{#2}{%
+        \begin{#1}%
+    }{%
+        \begin{#1}[#2]%
+    }%
+}
+
+\newcommand{\csdp@beginproof}[1]{%
+    \csdp@beginenv{proof}{#1}%
+}
+
+\newcommand{\csdp@beginproofsketch}[1]{%
+    \csdp@ifblank{#1}{%
+        \begin{proof}[\csdp@sketchname]%
+    }{%
+        \begin{proof}[#1]%
+    }%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Appendix Mode                                                              %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ifcsdp@appendix
 
@@ -31,88 +69,114 @@
     \AtEndPreamble{%
         \IfFileExists{proof-at-the-end.sty}{%
             \RequirePackage[commandRef=\csdp@commandref, conf={end}]{proof-at-the-end}%
-            \pratendSetGlobal{text proof only theorem, category=\csdp@category}%
+            \pratendSetGlobal{text proof only theorem, no link to proof, category=\csdp@category}%
             \newEndProof{proofE}%
             \newEndProof[text proof only theorem]{proofEsketch}%
-            \let\csdp@proofEsketchSaved\proofEsketch
-            \let\csdp@endproofEsketchSaved\endproofEsketch
+            \let\csdp@proofesketchsaved\proofEsketch
+            \let\csdp@endproofesketchsaved\endproofEsketch
             \renewenvironment{proofEsketch}[1][]{%
                 \def\proofname{\csdp@sketchname}%
-                \csdp@proofEsketchSaved[##1]%
-            }{\csdp@endproofEsketchSaved}%
+                \csdp@proofesketchsaved[##1]%
+            }{%
+                \csdp@endproofesketchsaved
+            }%
             \NewDocumentEnvironment{deferproof}{m O{}}{%
                 \begin{proofE}[##2]%
-            }{\end{proofE}}%
+            }{%
+                \end{proofE}%
+            }%
             \NewDocumentEnvironment{deferproofsketch}{m O{}}{%
                 \begin{proofEsketch}[##2]%
-            }{\end{proofEsketch}}%
-            \csdp@loadedtrue
+            }{%
+                \end{proofEsketch}%
+            }%
         }{%
             \PackageError{csdeferproofs}{%
                 The proof-at-the-end package is required when appendix=true.\MessageBreak
-                Install it via your TeX distribution or from CTAN:%
-                \MessageBreak
+                Install it via your TeX distribution or from CTAN:\MessageBreak
                 https://ctan.org/pkg/proof-at-the-end%
             }{%
-                Either install proof-at-the-end, or load csdeferproofs with%
-                \MessageBreak the option appendix=false to keep proofs in place.%
+                Install proof-at-the-end, or load csdeferproofs with\MessageBreak
+                appendix=false to keep proofs in place.%
             }%
         }%
     }%
 
-    \newcommand{\NewDeferredThm}[3][]{%
+    \NewDocumentCommand{\NewDeferredThm}{O{} m m}{%
         \AtEndPreamble{\newEndThm[#1]{#2}{#3}}%
     }
 
-    \NewDocumentCommand{\printDeferredProofs}{O{Proof of}}{%
+    \NewDocumentCommand{\printDeferredProofs}{O{\csdp@proofname\space of}}{%
         \begingroup
-        \let\csdp@savedproof\proof
-        \let\csdp@savedendproof\endproof
-        \renewenvironment{proof}[1][]{%
-            \subsection{#1~##1}%
+        \RenewDocumentEnvironment{proof}{O{}}{%
+            \subsection*{#1~##1}%
             \noindent\ignorespaces
         }{%
             \qed
         }%
         \printProofs
         \endgroup
-    }%
+    }
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %% Inline Mode                                                                %%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \else
 
     \providecommand{\thmt@shortoptarg}{}
 
-    \newcommand{\NewDeferredThm}[3][]{}
+    \NewDocumentCommand{\NewDeferredThm}{O{} m m}{}
 
-    \newenvironment{proofE}[1][]{\begin{proof}}{\end{proof}}
-    \newenvironment{proofEsketch}[1][]{%
-        \begin{proof}[\csdp@sketchname]%
-    }{\end{proof}}
+    \NewDocumentEnvironment{proofE}{O{}}{%
+        \csdp@beginproof{#1}%
+    }{%
+        \end{proof}%
+    }
 
-    \newenvironment{deferproof}[1]{\begin{proof}}{\end{proof}}
-    \newenvironment{deferproofsketch}[1]{%
-        \begin{proof}[\csdp@sketchname]%
-    }{\end{proof}}
+    \NewDocumentEnvironment{proofEsketch}{O{}}{%
+        \csdp@beginproofsketch{#1}%
+    }{%
+        \end{proof}%
+    }
+
+    \NewDocumentEnvironment{deferproof}{m O{}}{%
+        \csdp@beginproof{#2}%
+    }{%
+        \end{proof}%
+    }
+
+    \NewDocumentEnvironment{deferproofsketch}{m O{}}{%
+        \csdp@beginproofsketch{#2}%
+    }{%
+        \end{proof}%
+    }
 
     \NewDocumentCommand{\printDeferredProofs}{O{}}{}
 
 \fi
 
-\newcommand{\NewDeferredThmAlias}[2]{%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Public Compatibility Interfaces                                            %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\NewDocumentCommand{\NewDeferredThmAlias}{m m}{%
     \ifcsdp@appendix
     \else
-        \newenvironment{#1}[1][]{%
-            \ifx##1\@empty
-                \begin{#2}%
-            \else
-                \begin{#2}[##1]%
-            \fi
-        }{\end{#2}}%
+        \NewDocumentEnvironment{#1}{O{}}{%
+            \csdp@beginenv{#2}{##1}%
+        }{%
+            \end{#2}%
+        }%
     \fi
 }
 
-\newcommand{\IfDeferredProofsActive}[2]{%
-    \ifcsdp@appendix #1\else #2\fi
+\NewDocumentCommand{\IfDeferredProofsActive}{m m}{%
+    \ifcsdp@appendix
+        #1%
+    \else
+        #2%
+    \fi
 }
 
 \makeatother

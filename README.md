@@ -21,7 +21,7 @@ LaTeX packages for computer science research, technical teaching, and academic d
 | [`codelines`](codelines/README.md)            | 1.0     | Algorithmic listing environment with automated line numbering and nesting.                                                               |
 | [`csamsmath`](csamsmath/README.md)            | 3.1     | Math backbone for research papers: fonts, theorem environments, and annotation commands.                                                 |
 | [`csbook`](csbook/README.md)                  | 3.0     | Framework for textbooks and large reports with draft/final modes and broken-reference tracking.                                          |
-| [`csdeferproofs`](csdeferproofs/README.md)    | 1.0     | Deferred-proof infrastructure: collect proofs into a “Missing Proofs” appendix in submission mode; keep them inline in eprint mode.      |
+| [`csdeferproofs`](csdeferproofs/README.md)    | 1.2     | Deferred-proof infrastructure: collect proofs into a “Missing Proofs” appendix in submission mode; keep them inline in eprint mode.      |
 | [`eudoxus`](eudoxus/README.md)                | 1.0     | General-purpose math package: fonts, layout, theorem environments, TikZ, and bibliography styling for `amsart` documents.                |
 | [`cslecture`](cslecture/README.md)            | 3.0     | Skeleton for lecture notes over the `article` class: condensed spacing, boxed title block, and a full theorem suite.                     |
 | [`csletter`](csletter/README.md)              | 3.0     | Professional correspondence with configurable colors, margins, spacing, and optional logo and signature images.                          |
