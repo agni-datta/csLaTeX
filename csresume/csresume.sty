@@ -89,14 +89,14 @@
 	x11names
 ]{xcolor}
 
-\colorlet{accentcolor}{RoyalBlue4}
-\colorlet{secondaccentcolor}{RoyalBlue4!82!black}
-\colorlet{thirdaccentcolor}{RoyalBlue4!70!black}
-\colorlet{fourthaccentcolor}{RoyalBlue4!58!black}
-\colorlet{csrsink}{RoyalBlue4!38!black}
-\colorlet{csrsmuted}{RoyalBlue4!52!black}
-\colorlet{csrsrule}{RoyalBlue4!76!black}
-\colorlet{csrssoftrule}{RoyalBlue4!68!black}
+\colorlet{accentcolor}{DeepSkyBlue4}
+\colorlet{secondaccentcolor}{accentcolor!82!black}
+\colorlet{thirdaccentcolor}{accentcolor!70!black}
+\colorlet{fourthaccentcolor}{accentcolor!58!black}
+\colorlet{csrsink}{accentcolor!38!black}
+\colorlet{csrsmuted}{accentcolor!52!black}
+\colorlet{csrsrule}{accentcolor!76!black}
+\colorlet{csrssoftrule}{accentcolor!68!black}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Typography
@@ -114,7 +114,7 @@
 	protrusion = true,
 	expansion  = true,
 	stretch    = 50,
-	factor     = 1250
+	factor     = 1500
 }
 
 \UseMicrotypeSet[protrusion]{basicmath}
@@ -431,7 +431,7 @@
 	linkcolor         = accentcolor,
 	citecolor         = accentcolor,
 	filecolor         = accentcolor,
-	urlcolor          = Peach,
+	urlcolor          = accentcolor,
 	pdftitle          = {Curriculum Vitae},
 	pdfauthor         = {}
 }
@@ -469,18 +469,6 @@
 	{\color{csrssoftrule}\hrule height 0.35pt\par}%
 }
 
-\NewDocumentCommand{\anonymouscontactblock}{O{ANONYMOUS CANDIDATE} m m}{%
-	{\huge\sffamily\mdseries\color{accentcolor}\textls[170]{#1}\par}%
-	\vspace{0.55em}%
-	{\color{secondaccentcolor}\hrule height 0.45pt\par}%
-	\vspace{0.85em}%
-	{\textit{#2}}\par
-	\vspace{0.25em}%
-	#3\par
-	\vspace{0.85em}%
-	{\color{csrssoftrule}\hrule height 0.35pt\par}%
-}
-
 \NewDocumentCommand{\details}{m m m m}{%
 	\years{#1}%
 	{\itshape #2},\ {#3}\\[2pt]%
@@ -496,15 +484,15 @@
 	\ifcsrsallowbreaks\pagebreak[0]\fi
 }
 
-\NewDocumentCommand{\referals}{m m m m m m}{%
-	\noindent
+\NewDocumentCommand{\referals}{m m m m m m m m}{%
+	\noindent\small
 	\begin{minipage}{\linewidth}
-		{\sffamily\bfseries\color{csrsink}#1}\par
-		\textit{#2}\par
-		#3\par
-		#4\par
-		\href{mailto:#5}{\texttt{#5}}\par
-		\href{https://#6}{\texttt{#6}}
+		{#1~\color{csrsink}#2~{\scshape#3}}\par
+		\textit{#4}\par
+		#5\par
+		#6\par
+		\href{mailto:#7}{\texttt{#7}}\par
+		\href{https://#8}{\texttt{#8}}
 	\end{minipage}%
 	\par\vspace{1.5em}%
 }
@@ -526,7 +514,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NewDocumentEnvironment{refcolumns}{}
-{\begin{multicols}{2}\small}
+{\begin{multicols}{2}}
 {\end{multicols}}
 
 \NewDocumentEnvironment{ditemize}{}
