@@ -256,24 +256,14 @@
 	}
 
 	\def\llncsdeclarenumbered#1#2#3{%
-		\@ifundefined{c@theorem}{%
-			\if@envcntsect
-				\@spxnthm{#1}{#2}[section]{#3}{\rmfamily}%
-			\else
-				\@spynthm{#1}{#2}{#3}{\rmfamily}%
-				\if@envcntreset
-					\@addtoreset{#1}{section}%
-				\else
-					\@addtoreset{#1}{chapter}%
-				\fi
-			\fi
-		}{%
-			\@spothm{#1}[theorem]{#2}{#3}{\rmfamily}%
-		}%
+		\spnewtheorem{#1}[theorem]{#2}{#3}{\rmfamily}%
 	}
 	\def\llncsdeclarebold#1#2{\llncsdeclarenumbered{#1}{#2}{\bfseries}}
 	\def\llncsdeclaresc#1#2{\llncsdeclarenumbered{#1}{#2}{\scshape}}
 	\def\llncsdeclaresf#1#2{\llncsdeclarenumbered{#1}{#2}{\sffamily}}
+	\def\llncsdeclareunnumbered#1#2#3#4{%
+		\spnewtheorem*{#1}{#2}{#3}{#4}%
+	}
 
 	\let\oldproof\proof
 	\let\endoldproof\endproof
@@ -284,16 +274,13 @@
 			assertion,%
 			assumption,%
 			axiom,%
-			claim*,%
 			claim,%
 			claimproof,%
 			commentary,%
 			conclusion,%
-			conjecture*,%
 			conjecture,%
 			construction,%
 			convention,%
-			corollary*,%
 			corollary,%
 			criterion,%
 			definition,%
@@ -305,14 +292,11 @@
 			folklore,%
 			guideline,%
 			highlight,%
-			hypothesis*,%
 			hypothesis,%
 			important,%
-			informaltheorem*,%
 			informaltheorem,%
 			insight,%
 			keypoint,%
-			lemma*,%
 			lemma,%
 			metatheorem,%
 			motivation,%
@@ -320,7 +304,6 @@
 			notationabuse,%
 			note,%
 			observation,%
-			openproblem*,%
 			openproblem,%
 			postulate,%
 			problem,%
@@ -334,10 +317,8 @@
 			solution,%
 			step,%
 			summary,%
-			syntax*,%
 			syntax,%
 			takeaway,%
-			theorem*,%
 			theorem,%
 			tip,%
 			warning,%
@@ -408,20 +389,22 @@
 		\llncsdeclaresf{tip}{Tip}
 		\llncsdeclaresf{warning}{Warning}
 
-		\spnewtheorem*{claim*}{Claim}{\bfseries}{\rmfamily}
-		\spnewtheorem*{conjecture*}{Conjecture}{\bfseries}{\rmfamily}
-		\spnewtheorem*{corollary*}{Corollary}{\bfseries}{\rmfamily}
-		\spnewtheorem*{hypothesis*}{Hypothesis}{\bfseries}{\rmfamily}
-		\spnewtheorem*{informaltheorem*}{Informal Theorem}{\bfseries}{\rmfamily}
-		\spnewtheorem*{lemma*}{Lemma}{\bfseries}{\rmfamily}
-		\spnewtheorem*{openproblem*}{Open Problem}{\scshape}{\rmfamily}
-		\spnewtheorem*{syntax*}{Syntax}{\scshape}{\rmfamily}
-		\spnewtheorem*{theorem*}{Theorem}{\bfseries}{\rmfamily}
+		\llncsdeclareunnumbered{uclaim}{Claim}{\bfseries}{\rmfamily}
+		\llncsdeclareunnumbered{uconjecture}{Conjecture}{\bfseries}{\rmfamily}
+		\llncsdeclareunnumbered{ucorollary}{Corollary}{\bfseries}{\rmfamily}
+		\llncsdeclareunnumbered{uhypothesis}{Hypothesis}{\bfseries}{\rmfamily}
+		\llncsdeclareunnumbered{uinformaltheorem}{Informal Theorem}{\bfseries}{\rmfamily}
+		\llncsdeclareunnumbered{ulemma}{Lemma}{\bfseries}{\rmfamily}
+		\llncsdeclareunnumbered{uopenproblem}{Open Problem}{\scshape}{\rmfamily}
+		\llncsdeclareunnumbered{usyntax}{Syntax}{\scshape}{\rmfamily}
+		\llncsdeclareunnumbered{utheorem}{Theorem}{\bfseries}{\rmfamily}
 
 		\AtEndEnvironment{proof}{\qed}
 
+		\ProvideDocumentCommand{\qedsymbol}{}{\ensuremath{\square}}
 		\ProvideDocumentCommand{\SetQEDSymbol}{m}{ \setqedsymbol{#1} }
 		\ProvideDocumentCommand{\setqedsymbol}{m}{ \RenewDocumentCommand{\qedsymbol}{}{#1} }
+		\ProvideDocumentCommand{\qedhere}{}{\unskip\nobreak\hfill\qedsymbol}
 
 		\NewDocumentEnvironment{proofsketch}{o}
 		{

@@ -46,6 +46,7 @@
 \newif\ifeudoxlayout   \bool_if:NTF \g_eudox_layout_bool   { \eudoxlayouttrue   } { \eudoxlayoutfalse   }
 
 \ExplSyntaxOff
+\makeatletter
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Encoding and language
@@ -111,7 +112,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{enumitem}
-\RequirePackage{paralist}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Environments
@@ -242,12 +242,10 @@
 
 \ifeudoxlayout
 	\@ifclassloaded{amsart}{%
-		\makeatletter
 		\patchcmd{\thebibliography}
 		{\list}
 		{\small\setstretch{1.075}\list}
 		{}{}
-		\makeatother
 	}{}
 \fi
 
@@ -462,4 +460,5 @@
 	}
 \fi
 
+\makeatother
 \endinput
