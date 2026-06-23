@@ -1,0 +1,1525 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% csextras.sty — Optional extensions and patches for csamsmath and csbook
+%
+% Author  : Agni Datta
+% GitHub  : https://github.com/agni-datta/csLaTeX
+% License : LPPL v1.3c
+%
+% Usage   : \usepackage[article,layout,tikz,...]{csextras}
+%           \usepackage[book,layout,index,...]{csextras}
+%
+% All features are opt-in via key=true. Boolean keys accept bare key (= true implied).
+% Keys that only apply to one mode emit a PackageWarning and no-op in the other.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{csextras}[2026/06/23 v1.1 Optional extensions for csamsmath and csbook]
+
+\RequirePackage{l3keys2e}
+
+\makeatletter
+\ExplSyntaxOn
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Engine guard
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\sys_if_engine_xetex:T
+{
+    \PackageError { csextras } { XeLaTeX~is~not~supported }
+    {
+        XeLaTeX~is~superseded~by~LuaLaTeX. \MessageBreak
+        Switch~to~LuaLaTeX~(lualatex)~or~pdfLaTeX~(pdflatex).
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% biblatex guard — incompatible with every bibliography feature here
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\msg_new:nnn { csextras } { biblatex-blocked }
+{
+    biblatex~is~not~compatible~with~csextras. \MessageBreak
+    Use~natbib~via~crazybib=true,~or~the~built-in~bibliography \MessageBreak
+    helpers~(bibliography=true).~Do~not~load~biblatex~alongside~csextras.
+}
+
+\ExplSyntaxOff
+\@ifpackageloaded{biblatex}
+{
+    \PackageError{csextras}{biblatex already loaded}
+    {%
+        biblatex is not compatible with csextras.\MessageBreak
+        Use natbib via crazybib=true, or the built-in bibliography\MessageBreak
+        helpers (bibliography=true). Do not load biblatex alongside csextras.%
+    }
+}{}
+\ExplSyntaxOn
+
+\AddToHook { package / biblatex / before }
+{
+    \PackageError { csextras } { biblatex~load~attempted }
+    { \msg_use:nn { csextras } { biblatex-blocked } }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Internal variables
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\tl_new:N  \g_csextras_mode_tl
+\tl_gset:Nn \g_csextras_mode_tl { unknown }
+
+\tl_new:N  \g_csextras_copyright_tl
+\tl_new:N  \g_csextras_lipsum_tl
+
+\bool_new:N \g_csextras_article_bool
+\bool_new:N \g_csextras_book_bool
+\bool_new:N \g_csextras_tcscrypto_bool
+\bool_new:N \g_csextras_algorithm_bool
+\bool_new:N \g_csextras_tikz_bool
+\bool_new:N \g_csextras_layout_bool
+\bool_new:N \g_csextras_footnotes_bool
+\bool_new:N \g_csextras_orcid_bool
+\bool_new:N \g_csextras_informalheaders_bool
+\bool_new:N \g_csextras_beautify_bool
+\bool_new:N \g_csextras_hyperrefcolors_bool
+\bool_new:N \g_csextras_figureposition_bool
+\bool_new:N \g_csextras_numbering_bool
+\bool_new:N \g_csextras_boxes_bool
+\bool_new:N \g_csextras_titlepage_bool
+\bool_new:N \g_csextras_epigraph_bool
+\bool_new:N \g_csextras_abstract_bool
+\bool_new:N \g_csextras_chapterabstract_bool
+\bool_new:N \g_csextras_acknowledgements_bool
+\bool_new:N \g_csextras_bibliography_bool
+\bool_new:N \g_csextras_watermark_bool
+\bool_new:N \g_csextras_metadata_bool
+\bool_new:N \g_csextras_algorithmtwoe_bool
+\bool_new:N \g_csextras_todonotes_bool
+\bool_new:N \g_csextras_tocbibind_bool
+\bool_new:N \g_csextras_lettrine_bool
+\bool_new:N \g_csextras_index_bool
+\bool_new:N \g_csextras_indentfirst_bool
+\bool_new:N \g_csextras_verbatim_bool
+\bool_new:N \g_csextras_tocspacing_bool
+\bool_new:N \g_csextras_nagmode_bool
+\bool_new:N \g_csextras_siunitx_bool
+\bool_new:N \g_csextras_crazybib_bool
+\bool_new:N \g_csextras_extramath_bool
+\bool_new:N \g_csextras_crazynumbering_bool
+\bool_new:N \g_csextras_tightcaptions_bool
+\bool_new:N \g_csextras_amsaddr_bool
+\bool_new:N \g_csextras_pdftools_bool
+\bool_new:N \g_csextras_exercises_bool
+\bool_new:N \g_csextras_extratables_bool
+\bool_new:N \g_csextras_extralists_bool
+\bool_new:N \g_csextras_loadmacros_bool
+\bool_new:N \g_csextras_parskip_bool
+\bool_new:N \g_csextras_glossary_bool
+\bool_new:N \g_csextras_zcref_bool
+\bool_new:N \g_csextras_minted_bool
+\bool_new:N \g_csextras_listings_bool
+\bool_new:N \g_csextras_hyperxmp_bool
+\bool_new:N \g_csextras_forest_bool
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Key definitions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\keys_define:nn { csextras }
+{
+    article          .bool_gset:N = \g_csextras_article_bool ,
+    article          .initial:n   = false ,
+    book             .bool_gset:N = \g_csextras_book_bool ,
+    book             .initial:n   = false ,
+    tcscrypto        .bool_gset:N = \g_csextras_tcscrypto_bool ,
+    tcscrypto        .initial:n   = false ,
+    algorithm        .bool_gset:N = \g_csextras_algorithm_bool ,
+    algorithm        .initial:n   = false ,
+    tikz             .bool_gset:N = \g_csextras_tikz_bool ,
+    tikz             .initial:n   = false ,
+    layout           .bool_gset:N = \g_csextras_layout_bool ,
+    layout           .initial:n   = false ,
+    footnotes        .bool_gset:N = \g_csextras_footnotes_bool ,
+    footnotes        .initial:n   = false ,
+    orcid            .bool_gset:N = \g_csextras_orcid_bool ,
+    orcid            .initial:n   = false ,
+    beautify         .bool_gset:N = \g_csextras_beautify_bool ,
+    beautify         .initial:n   = false ,
+    hyperrefcolors   .bool_gset:N = \g_csextras_hyperrefcolors_bool ,
+    hyperrefcolors   .initial:n   = false ,
+    figureposition   .bool_gset:N = \g_csextras_figureposition_bool ,
+    figureposition   .initial:n   = false ,
+    numbering        .bool_gset:N = \g_csextras_numbering_bool ,
+    numbering        .initial:n   = false ,
+    boxes            .bool_gset:N = \g_csextras_boxes_bool ,
+    boxes            .initial:n   = false ,
+    epigraph         .bool_gset:N = \g_csextras_epigraph_bool ,
+    epigraph         .initial:n   = false ,
+    acknowledgements .bool_gset:N = \g_csextras_acknowledgements_bool ,
+    acknowledgements .initial:n   = false ,
+    bibliography     .bool_gset:N = \g_csextras_bibliography_bool ,
+    bibliography     .initial:n   = false ,
+    watermark        .bool_gset:N = \g_csextras_watermark_bool ,
+    watermark        .initial:n   = false ,
+    metadata         .bool_gset:N = \g_csextras_metadata_bool ,
+    metadata         .initial:n   = false ,
+    tocbibind        .bool_gset:N = \g_csextras_tocbibind_bool ,
+    tocbibind        .initial:n   = false ,
+    index            .bool_gset:N = \g_csextras_index_bool ,
+    index            .initial:n   = false ,
+    verbatim         .bool_gset:N = \g_csextras_verbatim_bool ,
+    verbatim         .initial:n   = false ,
+    siunitx          .bool_gset:N = \g_csextras_siunitx_bool ,
+    siunitx          .initial:n   = false ,
+    extramath        .bool_gset:N = \g_csextras_extramath_bool ,
+    extramath        .initial:n   = false ,
+    pdftools         .bool_gset:N = \g_csextras_pdftools_bool ,
+    pdftools         .initial:n   = false ,
+    exercises        .bool_gset:N = \g_csextras_exercises_bool ,
+    exercises        .initial:n   = false ,
+    extratables      .bool_gset:N = \g_csextras_extratables_bool ,
+    extratables      .initial:n   = false ,
+    extralists       .bool_gset:N = \g_csextras_extralists_bool ,
+    extralists       .initial:n   = false ,
+    loadmacros       .bool_gset:N = \g_csextras_loadmacros_bool ,
+    loadmacros       .initial:n   = false ,
+    glossary         .bool_gset:N = \g_csextras_glossary_bool ,
+    glossary         .initial:n   = false ,
+    zcref            .bool_gset:N = \g_csextras_zcref_bool ,
+    zcref            .initial:n   = false ,
+    minted           .bool_gset:N = \g_csextras_minted_bool ,
+    minted           .initial:n   = false ,
+    listings         .bool_gset:N = \g_csextras_listings_bool ,
+    listings         .initial:n   = false ,
+    hyperxmp         .bool_gset:N = \g_csextras_hyperxmp_bool ,
+    hyperxmp         .initial:n   = false ,
+    forest           .bool_gset:N = \g_csextras_forest_bool ,
+    forest           .initial:n   = false ,
+
+    informalheaders  .bool_gset:N = \g_csextras_informalheaders_bool ,
+    informalheaders  .initial:n   = false ,
+    titlepage        .bool_gset:N = \g_csextras_titlepage_bool ,
+    titlepage        .initial:n   = false ,
+    abstract         .bool_gset:N = \g_csextras_abstract_bool ,
+    abstract         .initial:n   = false ,
+    tocspacing       .bool_gset:N = \g_csextras_tocspacing_bool ,
+    tocspacing       .initial:n   = false ,
+    amsaddr          .bool_gset:N = \g_csextras_amsaddr_bool ,
+    amsaddr          .initial:n   = false ,
+
+    chapterabstract  .bool_gset:N = \g_csextras_chapterabstract_bool ,
+    chapterabstract  .initial:n   = false ,
+    lettrine         .bool_gset:N = \g_csextras_lettrine_bool ,
+    lettrine         .initial:n   = false ,
+
+    copyright        .tl_gset:N  = \g_csextras_copyright_tl ,
+    copyright        .initial:n  = none ,
+
+    lipsum           .tl_gset:N  = \g_csextras_lipsum_tl ,
+    lipsum           .initial:n  = none ,
+
+    algorithmtwoe    .bool_gset:N = \g_csextras_algorithmtwoe_bool ,
+    algorithmtwoe    .initial:n   = false ,
+    todonotes        .bool_gset:N = \g_csextras_todonotes_bool ,
+    todonotes        .initial:n   = false ,
+    indentfirst      .bool_gset:N = \g_csextras_indentfirst_bool ,
+    indentfirst      .initial:n   = false ,
+    nagmode          .bool_gset:N = \g_csextras_nagmode_bool ,
+    nagmode          .initial:n   = false ,
+    crazybib         .bool_gset:N = \g_csextras_crazybib_bool ,
+    crazybib         .initial:n   = false ,
+    crazynumbering   .bool_gset:N = \g_csextras_crazynumbering_bool ,
+    crazynumbering   .initial:n   = false ,
+    tightcaptions    .bool_gset:N = \g_csextras_tightcaptions_bool ,
+    tightcaptions    .initial:n   = false ,
+    parskip          .bool_gset:N = \g_csextras_parskip_bool ,
+    parskip          .initial:n   = false ,
+
+    unknown          .code:n =
+        { \PackageWarning { csextras } { Unknown~option~`\l_keys_key_str'~ignored } }
+}
+
+\ProcessKeysOptions { csextras }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Mode detection and validation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:nT { \g_csextras_article_bool && \g_csextras_book_bool }
+{
+    \PackageError { csextras } { article~and~book~are~mutually~exclusive }
+    { Use~either~article=true~or~book=true,~not~both. }
+}
+
+\bool_if:NT \g_csextras_article_bool { \tl_gset:Nn \g_csextras_mode_tl { article } }
+\bool_if:NT \g_csextras_book_bool    { \tl_gset:Nn \g_csextras_mode_tl { book    } }
+
+\ExplSyntaxOff
+\@ifpackageloaded{csamsmath}
+{
+    \ExplSyntaxOn
+    \tl_if_eq:NnT \g_csextras_mode_tl { unknown } { \tl_gset:Nn \g_csextras_mode_tl { article } }
+    \tl_if_eq:NnT \g_csextras_mode_tl { book }
+    {
+        \PackageWarning { csextras }
+        { csamsmath~is~already~loaded~but~book=true~was~given. \MessageBreak
+            Reverting~to~article~mode. }
+        \tl_gset:Nn \g_csextras_mode_tl { article }
+    }
+    \ExplSyntaxOff
+}{}
+
+\@ifpackageloaded{csbook}
+{
+    \ExplSyntaxOn
+    \tl_if_eq:NnT \g_csextras_mode_tl { unknown } { \tl_gset:Nn \g_csextras_mode_tl { book } }
+    \tl_if_eq:NnT \g_csextras_mode_tl { article }
+    {
+        \PackageWarning { csextras }
+        { csbook~is~already~loaded~but~article=true~was~given. \MessageBreak
+            Reverting~to~book~mode. }
+        \tl_gset:Nn \g_csextras_mode_tl { book }
+    }
+    \ExplSyntaxOff
+}{}
+\ExplSyntaxOn
+
+\tl_if_eq:NnT \g_csextras_mode_tl { unknown }
+{
+    \PackageWarning { csextras }
+    { No~base~mode~could~be~determined. \MessageBreak
+        Pass~article=true~or~book=true,~or~load~csamsmath/csbook~first. \MessageBreak
+        Mode-specific~features~will~be~silently~skipped. }
+}
+
+\cs_new_protected:Npn \csextras_article_only:nn #1 #2
+{
+    \tl_if_eq:NnTF \g_csextras_mode_tl { article }
+    { #2 }
+    {
+        \PackageWarning { csextras }
+        { `#1'~is~only~available~in~article~mode~(csamsmath). \MessageBreak
+            Ignoring~in~book~mode. }
+    }
+}
+
+\cs_new_protected:Npn \csextras_book_only:nn #1 #2
+{
+    \tl_if_eq:NnTF \g_csextras_mode_tl { book }
+    { #2 }
+    {
+        \PackageWarning { csextras }
+        { `#1'~is~only~available~in~book~mode~(csbook). \MessageBreak
+            Ignoring~in~article~mode. }
+    }
+}
+
+\cs_new_protected:Npn \csextras_nag:nn #1 #2
+{
+    \PackageWarning { csextras }
+    {
+        DISCOURAGED:~you~enabled~`#1'. \MessageBreak
+        #2 \MessageBreak
+        Proceeding~anyway.
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Base loading
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_article_bool
+{
+    \RequirePackage { csamsmath }
+}
+
+\bool_if:NT \g_csextras_book_bool
+{
+    \RequirePackage { csbook }
+}
+
+\bool_if:nF { \g_csextras_article_bool || \g_csextras_book_bool }
+{
+    \RequirePackage { babel }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Color palette — always defined; beautify=true applies them to document elements
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\PassOptionsToPackage { dvipsnames , table , x11names } { xcolor }
+\ExplSyntaxOff
+\@ifpackageloaded{xcolor}{} { \RequirePackage{xcolor} }
+\ExplSyntaxOn
+
+\providecolor { accentcolor      } { named } { SteelBlue4       }
+\providecolor { figurecolor      } { named } { IndianRed4        }
+\providecolor { backgroundcolor  } { named } { LightSteelBlue1   }
+\providecolor { bordercolor      } { named } { SteelBlue3        }
+\providecolor { diagrambackground} { named } { LightCyan3        }
+\providecolor { diagramborder    } { named } { CadetBlue4        }
+\providecolor { draftcolor       } { named } { Coral4            }
+
+\NewDocumentCommand \SetExtraColor { m m } { \colorlet { #1 } { #2 } }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% tcscrypto
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_tcscrypto_bool
+{
+    \RequirePackage { tcscrypto }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% algorithm — newfloat + codelines + cleveref/zref names
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_algorithm_bool
+{
+    \RequirePackage { newfloat }
+    \IfFileExists { codelines.sty } { \RequirePackage { codelines } } {}
+    \DeclareFloatingEnvironment
+    [
+        fileext   = loa ,
+        listname  = { List~of~Algorithms } ,
+        name      = Algorithm ,
+        placement = !hbt
+    ]{ algorithm }
+    \AtBeginDocument
+    {
+        \ExplSyntaxOff
+        \@ifpackageloaded{cleveref}
+        {
+            \Crefname{algorithm}{Algorithm}{Algorithms}
+            \crefname{algorithm}{algorithm}{algorithms}
+            \Crefname{clcodeii}{Line}{Lines}
+            \Crefname{clcodei}{Line}{Lines}
+            \crefname{clcodeii}{line}{lines}
+            \crefname{clcodei}{line}{lines}
+        }
+        {
+            \@ifpackageloaded{zref-clever}
+            {
+                \ExplSyntaxOn
+                \zcRefTypeSetup { algorithm }
+                {
+                    Name-sg = Algorithm ,
+                    name-sg = algorithm ,
+                    Name-pl = Algorithms ,
+                    name-pl = algorithms ,
+                }
+                \zcRefTypeSetup { clcodeii }
+                {
+                    Name-sg = Line ,
+                    name-sg = line ,
+                    Name-pl = Lines ,
+                    name-pl = lines ,
+                }
+                \zcRefTypeSetup { clcodei }
+                {
+                    Name-sg = Line ,
+                    name-sg = line ,
+                    Name-pl = Lines ,
+                    name-pl = lines ,
+                }
+                \ExplSyntaxOff
+            }{}
+        }
+        \ExplSyntaxOn
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% tikz — conservative diagram library suite + pgfplots
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_tikz_bool
+{
+    \ExplSyntaxOff
+    \RequirePackage { tikz }
+    \RequirePackage { tikz-cd }
+    \RequirePackage { tikzscale }
+    \RequirePackage { pgfplots }
+    \pgfplotsset { compat = 1.18 }
+    \usetikzlibrary
+    {
+        arrows.meta,
+        calc,
+        decorations.markings,
+        decorations.pathmorphing,
+        fit,
+        intersections,
+        matrix,
+        patterns,
+        patterns.meta,
+        positioning,
+        shadows,
+        shapes.geometric,
+        tikzmark,
+        trees
+    }
+    \ExplSyntaxOn
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% layout — geometry, spacing, float, equation numbering
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_layout_bool
+{
+    \ExplSyntaxOff
+    \@ifpackageloaded{geometry}
+    { \geometry{letterpaper , margin = 1in} }
+    { \RequirePackage[letterpaper , margin = 1in]{geometry} }
+    \ExplSyntaxOn
+    \linespread { 1.05 }
+    \hbadness   = 10000
+    \vbadness   = 10000
+    \hfuzz      = 10pt
+    \vfuzz      = 10pt
+    \setlength \emergencystretch { 2em }
+    \AtBeginDocument
+    {
+        \ExplSyntaxOff
+        \@ifpackageloaded{amsmath}
+        {
+            \ExplSyntaxOn
+            \numberwithin { equation } { section }
+            \allowdisplaybreaks
+            \ExplSyntaxOff
+        }{}
+        \ExplSyntaxOn
+        \interfootnotelinepenalty = 10000
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% footnotes
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_footnotes_bool
+{
+    \RequirePackage { bigfoot }
+    \RequirePackage { footnote }
+    \RequirePackage [ bottom , multiple , hang ] { footmisc }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% orcid
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_orcid_bool
+{
+    \RequirePackage { orcidlink }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% informalheaders — titlesec section typography (article only)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_informalheaders_bool
+{
+    \csextras_article_only:nn { informalheaders }
+    {
+        \RequirePackage { titlesec }
+        \titleformat { \section }
+        { \normalfont\Large\sffamily\color{accentcolor} }
+        { \thesection }{ 0.75em }{}
+        \titleformat { \subsection }
+        { \normalfont\large\sffamily\color{accentcolor} }
+        { \thesubsection }{ 0.65em }{}
+        \titleformat { \subsubsection } [ runin ]
+        { \normalfont\sffamily\color{accentcolor} }
+        { \thesubsubsection }{ 0.55em }{}[.]
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% beautify — apply color palette to document text elements
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_beautify_bool
+{
+    \AtBeginDocument
+    {
+        \ExplSyntaxOff
+        \@ifpackageloaded{caption}
+        {
+            \captionsetup{labelfont = {color = figurecolor , small , bf}}
+        }{}
+        \ExplSyntaxOn
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% hyperrefcolors — apply standard TCS hyperref palette
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_hyperrefcolors_bool
+{
+    \AtBeginDocument
+    {
+        \ExplSyntaxOff
+        \@ifpackageloaded{hyperref}
+        {
+            \hypersetup
+            {
+                citecolor = RoyalBlue ,
+                linkcolor = MidnightBlue ,
+                urlcolor  = RedOrange ,
+            }
+        }
+        {
+            \PackageWarning{csextras}
+            {hyperrefcolors=true: hyperref is not loaded.\MessageBreak
+                Load hyperref (or a base package that loads it) first.}
+        }
+        \ExplSyntaxOn
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% figureposition — publication-quality float placement parameters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_figureposition_bool
+{
+    \ExplSyntaxOff
+    \renewcommand{\topfraction      }{0.92}
+    \renewcommand{\bottomfraction   }{0.82}
+    \renewcommand{\textfraction     }{0.06}
+    \renewcommand{\floatpagefraction}{0.78}
+    \providecommand{\enit@after}{}
+    \ExplSyntaxOn
+    \setcounter { topnumber    } { 3 }
+    \setcounter { bottomnumber } { 2 }
+    \setcounter { totalnumber  } { 4 }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% numbering — secnumdepth and tocdepth
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_numbering_bool
+{
+    \setcounter { secnumdepth } { 3 }
+    \setcounter { tocdepth    } { 2 }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% boxes — mdframed global setup + named environments
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_boxes_bool
+{
+    \RequirePackage [ framemethod = TikZ ] { mdframed }
+    \mdfsetup
+    {
+        innertopmargin    = 7.5pt ,
+        innerbottommargin = 7.5pt ,
+        innerleftmargin   = 7.5pt ,
+        innerrightmargin  = 7.5pt ,
+        linewidth         = 0.5pt ,
+        nobreak           = true ,
+        roundcorner       = 1.0pt ,
+        skipabove         = 0.75\baselineskip ,
+        skipbelow         = 0.75\baselineskip ,
+    }
+    \newmdenv
+    [
+        linecolor       = accentcolor!30 ,
+        backgroundcolor = accentcolor!5 ,
+    ]{ openproblemframe }
+    \newmdenv
+    [
+        linecolor       = accentcolor!30 ,
+        backgroundcolor = accentcolor!5 ,
+    ]{ questionbox }
+    \newmdenv
+    [
+        linecolor       = accentcolor!30 ,
+        backgroundcolor = accentcolor!5 ,
+    ]{ proofbox }
+    \newmdenv
+    [
+        linecolor       = diagramborder ,
+        backgroundcolor = diagrambackground!15 ,
+    ]{ diagramframe }
+    \newmdenv
+    [
+        linecolor       = diagramborder!50 ,
+        backgroundcolor = white ,
+    ]{ figurebox }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% titlepage — authblk + titling custom style (article only)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_titlepage_bool
+{
+    \csextras_article_only:nn { titlepage }
+    {
+        \RequirePackage { titling }
+        \RequirePackage { authblk }
+        \RenewDocumentCommand \Authfont  {} { \normalfont\large\sffamily\color{accentcolor}    }
+        \RenewDocumentCommand \Affilfont {} { \normalfont\small\sffamily\color{accentcolor!70} }
+        \pretitle  { \begin{flushleft}\normalfont\LARGE\sffamily\color{accentcolor} }
+        \posttitle { \par\end{flushleft}\vspace{-0.35\baselineskip} }
+        \preauthor { \begin{flushleft}\normalfont\Large\sffamily\color{accentcolor!60} }
+        \postauthor{ \par\end{flushleft}\vspace{-0.25\baselineskip} }
+        \predate   { \begin{flushleft}\normalfont\small\sffamily }
+        \postdate  { \par\end{flushleft} }
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% epigraph — styled epigraph, quotation environment, and dedication environment
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_epigraph_bool
+{
+    \RequirePackage { epigraph }
+    \ExplSyntaxOff
+    \renewcommand{\epigraphflush }{flushright}
+    \renewcommand{\textflush     }{flushright}
+    \renewcommand{\sourceflush   }{flushright}
+    \let \csextras@saved@epigraph \epigraph
+    \ExplSyntaxOn
+    \RenewDocumentCommand \epigraph { m m }
+    {
+        \csextras@saved@epigraph { \normalsize\sffamily #1 }
+        { \medskip\footnotesize\scshape #2 }
+    }
+    \RenewDocumentEnvironment { quotation } {}
+    {
+        \par\vspace{0.35\baselineskip}
+        \begin{center}
+        \begin{minipage}{0.78\textwidth}
+        \centering\small\itshape\color{accentcolor}
+        {\Large\color{accentcolor}\textquotedblleft}\hspace{0.12em}\ignorespaces
+    }
+    {
+        \hspace{0.08em}{\Large\color{accentcolor}\textquotedblright}
+        \end{minipage}
+        \end{center}
+        \vspace{0.15\baselineskip}
+    }
+    \NewDocumentEnvironment { dedication } { m m }
+    {
+        \def \csextras@dedic@first { #1 }
+        \def \csextras@dedic@last  { #2 }
+        \clearpage
+        \thispagestyle { empty }
+        \vspace*{\fill}
+        \begin{center}
+        \itshape\ignorespaces
+    }
+    {
+        \par\smallskip
+        { \normalfont\scshape\csextras@dedic@first~{\large\csextras@dedic@last} }
+        \end{center}
+        \vspace*{\fill}
+        \clearpage
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% abstract — patched abstract environment (article only)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_abstract_bool
+{
+    \csextras_article_only:nn { abstract }
+    {
+        \RenewDocumentEnvironment { abstract } {}
+        {
+            \small
+            \addcontentsline { toc } { section } { Abstract }
+            \parhead { Abstract. }~~\ignorespaces
+        }
+        { \par }
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% chapterabstract — per-chapter abstract section (book only)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_chapterabstract_bool
+{
+    \csextras_book_only:nn { chapterabstract }
+    {
+        \NewDocumentEnvironment { chapterabstract } {}
+        {
+            \begin { quotation }
+            \noindent\textbf { Chapter~Abstract. }\enspace\ignorespaces
+        }
+        {
+            \end { quotation }
+            \addcontentsline { toc } { section } { Chapter~Abstract }
+        }
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% acknowledgements
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_acknowledgements_bool
+{
+    \tl_if_eq:NnTF \g_csextras_mode_tl { article }
+    {
+        \ExplSyntaxOff
+        \@ifundefined{acknowledgements}
+        {
+            \ExplSyntaxOn
+            \NewDocumentEnvironment { acknowledgements } {}
+            {
+                \addcontentsline { toc } { section } { Acknowledgements }
+                \bigskip\parhead { Acknowledgements. }~~\ignorespaces
+            }
+            { \par }
+            \ExplSyntaxOff
+        }
+        {
+            \ExplSyntaxOn
+            \RenewDocumentEnvironment { acknowledgements } {}
+            {
+                \addcontentsline { toc } { section } { Acknowledgements }
+                \bigskip\parhead { Acknowledgements. }~~\ignorespaces
+            }
+            { \par }
+            \ExplSyntaxOff
+        }
+        \ExplSyntaxOn
+    }
+    {
+        \NewDocumentEnvironment { acknowledgements } {}
+        {
+            \chapter* { Acknowledgements }
+            \addcontentsline { toc } { chapter } { Acknowledgements }
+        }
+        {}
+    }
+    \ExplSyntaxOff
+    \@ifundefined{acknowledgement}
+    {
+        \ExplSyntaxOn
+        \NewDocumentEnvironment { acknowledgement }
+        {} { \begin{acknowledgements} } { \end{acknowledgements} }
+        \ExplSyntaxOff
+    }{}
+    \ExplSyntaxOn
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% bibliography — \printreferences and \printnotereferences helpers
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_bibliography_bool
+{
+    \RequirePackage { setspace }
+    \ProvideDocumentCommand \printreferences { O{aomalpha} m }
+    {
+        \begingroup
+        \small
+        \setstretch { 1 }
+        \bibliographystyle { #1 }
+        \bibliography { #2 }
+        \endgroup
+    }
+    \ProvideDocumentCommand \printnotereferences {}
+    { \printreferences [ aomalpha ] { abbrev0 , crypto , references } }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% watermark — draftwatermark + \draftwarning footnote helper
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_watermark_bool
+{
+    \RequirePackage { draftwatermark }
+    \SetWatermarkLightness { 0.975 }
+    \SetWatermarkScale     { 0.875 }
+    \NewDocumentCommand \draftwarning {}
+    {
+        \texttt
+        {
+            \textcolor { draftcolor }
+            {
+                Draft~dated~\today.~For~internal~academic~use~only.~
+                Content~is~provisional~and~subject~to~change.~
+                Do~not~distribute~or~cite~without~permission.
+            }
+        }
+    }
+    \IfFileExists { prelim2e.sty }
+    {
+        \RequirePackage { prelim2e }
+        \RenewDocumentCommand \PrelimWords {}
+        { \textcolor { draftcolor } { \small\textsc { Draft~\today } } }
+    }{}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% metadata — version/author helpers + \newguymarker
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_metadata_bool
+{
+    \RequirePackage { datetime2 }
+    \RequirePackage { marginnote }
+
+    \NewDocumentCommand \Email { m }
+    {
+        \par\smallskip
+        \texttt { \href { mailto:#1 } { \textcolor { accentcolor!75!black } {#1} } }
+    }
+
+    \NewDocumentCommand \ORCID { m }
+    {
+        \par\smallskip
+        \textcolor { accentcolor!75!black }
+        {
+            ORCID:~
+            \texttt { \href { https://orcid.org/#1 } { \textcolor { accentcolor!75!black } {#1} } }
+        }
+        \medskip
+    }
+
+    \ProvideDocumentCommand \docversion {} { 0.1 }
+
+    \NewDocumentCommand \NoteVersion { m } { \gdef\docversion{#1} }
+
+    \ProvideDocumentCommand \workingnotethanks {}
+    {
+        Version~\docversion.~This~manuscript~is~a~working~note.~
+        Corrections,~suggestions,~and~references~to~related~work~are~welcome.
+    }
+
+    \NewDocumentCommand \unstabledraftthanks { m }
+    {
+        This~manuscript~is~an~unstable~working~draft.~
+        Comments,~corrections,~missing~references,~and~suggestions~for~
+        improving~the~exposition~are~welcome.~
+        Contact~the~#1~about~inaccuracies,~unclear~arguments,~or~notation~conflicts.
+    }
+
+    \ProvideDocumentCommand \genericnoteacknowledgement {}
+    {
+        I~thank~reviewers~and~readers~of~this~note~for~corrections,~
+        comments,~and~suggestions~that~improve~the~accuracy~of~the~exposition.
+    }
+
+    \ExplSyntaxOff
+    \@ifundefined{newguymarker}
+    {
+        \ExplSyntaxOn
+        \NewDocumentCommand \newguymarker { m m m }
+        {
+            \expandafter\NewDocumentCommand\csname #1\endcsname { m }
+            {
+                \textcolor{#3}{##1~\textsc{#2}}
+                \marginnote{\textcolor{#3}{\LARGE\(\star\)}}
+            }
+        }
+        \ExplSyntaxOff
+    }
+    {
+        \ExplSyntaxOn
+        \RenewDocumentCommand \newguymarker { m m m }
+        {
+            \expandafter\NewDocumentCommand\csname #1\endcsname { m }
+            {
+                \textcolor{#3}{##1~\textsc{#2}}
+                \marginnote{\textcolor{#3}{\LARGE\(\star\)}}
+            }
+        }
+        \ExplSyntaxOff
+    }
+    \ExplSyntaxOn
+
+    \NewDocumentCommand \currenttime {} { \DTMnow }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% tocbibind
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_tocbibind_bool
+{
+    \RequirePackage [ nottoc ] { tocbibind }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% lettrine (book only)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_lettrine_bool
+{
+    \csextras_book_only:nn { lettrine }
+    {
+        \RequirePackage { lettrine }
+        \RenewDocumentCommand \LettrineFontHook {} { \color{accentcolor}           }
+        \RenewDocumentCommand \LettrineTextFont {} { \scshape\color{accentcolor!70} }
+        \NewDocumentCommand \dropcap { m m }
+        { \lettrine[lines=2]{#1}{#2} }
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% index
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_index_bool
+{
+    \RequirePackage [ makeindex ] { imakeidx }
+    \makeindex [ intoc , title = { Index } , columns = 2 ]
+    \tl_if_eq:NnT \g_csextras_mode_tl { book }
+    {
+        \RenewDocumentCommand \seename  {} { \textit{see}      }
+        \RenewDocumentCommand \alsoname {} { \textit{see~also} }
+    }
+    \NewDocumentCommand \indexsee     { m m } { \index{#1|see{#2}}      }
+    \NewDocumentCommand \indexseealso { m m } { \index{#1|seealso{#2}}  }
+    \NewDocumentCommand \term         { m   } { \index{#1}\textit{#1}   }
+    \NewDocumentCommand \annotation   { m   } { \footnote{#1}           }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% verbatim — enhanced verbatim with fancyvrb
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_verbatim_bool
+{
+    \RequirePackage { verbatim }
+    \RequirePackage { fancyvrb }
+    \ExplSyntaxOff
+    \newcommand{\csextras@savedverbatimprocessline}{}
+    \let\csextras@savedverbatimprocessline=\verbatim@processline
+    \renewcommand{\verbatim@processline}{%
+        \let\verbatim@processline=\csextras@savedverbatimprocessline
+        \if\relax\the\verbatim@line\relax\else
+            \the\verbatim@line\par
+        \fi
+    }
+    \ExplSyntaxOn
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% siunitx
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_siunitx_bool
+{
+    \RequirePackage { siunitx }
+    \sisetup
+    {
+        mode             = math ,
+        detect-all ,
+        uncertainty-mode = separate ,
+        range-phrase     = { ~ to ~ } ,
+        range-units      = single ,
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% extramath — nicefrac, upgreek, bbm, bm, braket, esvect, \mathsc, \mathbi, \mathpzc
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_extramath_bool
+{
+    \ExplSyntaxOff
+    \@ifpackageloaded{nicefrac  }{} { \RequirePackage{nicefrac  } }
+    \@ifpackageloaded{mleftright}{} { \RequirePackage{mleftright} }
+    \@ifpackageloaded{upgreek}{}
+    {
+        \ExplSyntaxOn
+        \sys_if_engine_pdftex:TF
+        {
+            \ExplSyntaxOff
+            \RequirePackage[Symbol]{upgreek}
+        }
+        {
+            \PackageWarning { csextras }
+            {
+                extramath:~upgreek~Symbol~option~is~pdfLaTeX-only. \MessageBreak
+                Loading~upgreek~without~Symbol~option~on~non-pdfLaTeX~engine. \MessageBreak
+                For~upright~Greek~on~LuaLaTeX,~consider~unicode-math~instead.
+            }
+            \ExplSyntaxOff
+            \RequirePackage{upgreek}
+        }
+    }
+    \@ifundefined{mathpzc}
+    { \DeclareMathAlphabet\mathpzc{OT1}{pzc}{m}{it} } {}
+    \@ifpackageloaded{bbm   }{} { \RequirePackage{bbm   } }
+    \@ifpackageloaded{bm    }{} { \RequirePackage{bm    } }
+    \@ifpackageloaded{braket}{} { \RequirePackage{braket} }
+    \@ifpackageloaded{esvect}{} { \RequirePackage{esvect} }
+    \ExplSyntaxOn
+    \ProvideDocumentCommand \mathsc { m } { \textnormal{\textsc{#1}} }
+    \ProvideDocumentCommand \mathbi { m } { \textnormal{\textbf{\textit{#1}}} }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% pdftools — pdfpages + pdflscape
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_pdftools_bool
+{
+    \RequirePackage { pdfpages }
+    \RequirePackage { pdflscape }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% exercises — relax csthm's exercise env, then load exercises package
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_exercises_bool
+{
+    \PackageWarning { csextras }
+    {
+        exercises=true:~the~csthm~`exercise'~environment~is~being~replaced \MessageBreak
+        by~the~exercises~package.~Use~\\begin\{exercise\}...\\end\{exercise\} \MessageBreak
+        for~the~new~numbered~exercise~environment.
+    }
+    \ExplSyntaxOff
+    \@ifundefined{exercise}{}
+    {
+        \let\exercise   \relax
+        \let\endexercise\relax
+    }
+    \ExplSyntaxOn
+    \RequirePackage { exercises }
+    \ExerciseSetup
+    {
+        exercise / number-format = \Roman ,
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% copyright — footnote notice or full page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\tl_if_eq:NnT \g_csextras_copyright_tl { footnote }
+{
+    \NewDocumentCommand \copyrightnotice {}
+    {
+        \textcopyright~\@date~by~\@author.~All~rights~reserved.
+    }
+}
+
+\tl_if_eq:NnT \g_csextras_copyright_tl { page }
+{
+    \NewDocumentCommand \makecopyrightpage {}
+    {
+        \pagestyle { empty }
+        \begingroup
+        \begin{flushleft}
+            { \noindent\large\textbf{\@title} }\par\medskip
+            { \noindent\normalsize By~\@author }\par\smallskip
+            { \noindent\normalsize\textcopyright~\@date.~All~Rights~Reserved. }\par
+        \end{flushleft}
+        \vfill
+        \begin{small}
+            This~work~is~licensed~under~a~Creative~Commons~Attribution~4.0
+            International~License~(CC~BY~4.0).~To~view~a~copy,~visit
+            \url{https://creativecommons.org/licenses/by/4.0/}.
+        \end{small}
+        \endgroup
+        \cleardoublepage
+    }
+    \NewDocumentCommand \copyrightnotice {}
+    {
+        \textcopyright~\@date~by~\@author.~All~rights~reserved.
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% extratables — longtable, rotating, makecell, booktabs, multirow, tabularx
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_extratables_bool
+{
+    \RequirePackage [ figuresright ] { rotating }
+    \RequirePackage { array     }
+    \RequirePackage { booktabs  }
+    \RequirePackage { longtable }
+    \RequirePackage { ltxtable  }
+    \RequirePackage { makecell  }
+    \RequirePackage { multirow  }
+    \RequirePackage { tabularx  }
+    \setlength { \tabcolsep    } { 6pt }
+    \ExplSyntaxOff
+    \renewcommand{\arraystretch}{1.2}
+    \ExplSyntaxOn
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% extralists — additional enumitem-based list environments
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_extralists_bool
+{
+    \RequirePackage { enumitem }
+    \newlist  { dashedlist } { itemize   } { 1 }
+    \setlist  [ dashedlist ]
+    {
+        label       = \textendash ,
+        leftmargin  = 1em ,
+        itemsep     = 1pt ,
+        before      = \smallskip ,
+        after       = \smallskip
+    }
+    \newlist  { codelist } { enumerate } { 1 }
+    \setlist  [ codelist , 1 ]
+    {
+        label       = \textcolor{gray}{\texttt{[\arabic*]}} ,
+        leftmargin  = 1em ,
+        itemsep     = 1pt ,
+        before      = \smallskip ,
+        after       = \smallskip
+    }
+    \newlist  { checkboxlist } { itemize } { 1 }
+    \setlist  [ checkboxlist ]
+    {
+        label       = $\square$ ,
+        leftmargin  = 1em
+    }
+    \NewDocumentCommand \checked {} { \item[\checkmark] }
+    \newlist  { deflist } { description } { 1 }
+    \setlist  [ deflist ]
+    {
+        labelwidth  = 0.35\textwidth ,
+        labelsep    = 1em ,
+        leftmargin  = 0.35\textwidth ,
+        font        = \normalfont\bfseries ,
+        style       = nextline ,
+        itemsep     = 5pt
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% loadmacros — auto-input settings.tex, macros.tex, commands.tex at \begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_loadmacros_bool
+{
+    \AtBeginDocument
+    {
+        \IfFileExists { settings.tex }
+        { \input { settings.tex } }
+        { \PackageWarning { csextras } { loadmacros:~settings.tex~not~found } }
+        \IfFileExists { macros.tex }
+        { \input { macros.tex } }
+        { \PackageWarning { csextras } { loadmacros:~macros.tex~not~found } }
+        \IfFileExists { commands.tex }
+        { \input { commands.tex } }
+        { \PackageWarning { csextras } { loadmacros:~commands.tex~not~found } }
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% glossary
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_glossary_bool
+{
+    \RequirePackage [ acronym , toc ] { glossaries }
+    \makeglossaries
+    \NewDocumentCommand \acronymentry  { m m m } { \newacronym{#1}{#2}{#3}              }
+    \NewDocumentCommand \glossaryentry { m m m }
+    { \newglossaryentry{#1}{name={#2},description={#3}} }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% tocspacing — tocloft spacing adjustments (article only, use with caution)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_tocspacing_bool
+{
+    \csextras_article_only:nn { tocspacing }
+    {
+        \csextras_nag:nn { tocspacing }
+        {
+            This~is~usually~not~needed.~Verify~the~result~visually \MessageBreak
+            before~submitting.~Default~TOC~spacing~is~often~fine.
+        }
+        \RequirePackage [ titles ] { tocloft }
+        \RenewDocumentCommand \cftsecafterpnum       {} { \vskip1pt      }
+        \RenewDocumentCommand \cftsubsecafterpnum    {} { \vskip1pt      }
+        \RenewDocumentCommand \cftsubsubsecafterpnum {} { \vskip1pt      }
+        \RenewDocumentCommand \cftsecfont       {} { \large\scshape }
+        \RenewDocumentCommand \cftsubsecfont    {} { \normalsize    }
+        \RenewDocumentCommand \cftsubsubsecfont {} { \normalsize    }
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% amsaddr — author addresses in footnotes (ams cls only, article mode)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_amsaddr_bool
+{
+    \csextras_article_only:nn { amsaddr }
+    {
+        \ExplSyntaxOff
+        \@ifclassloaded{amsart}{ \RequirePackage[foot]{amsaddr} }
+        {
+            \@ifclassloaded{amsbook}{ \RequirePackage[foot]{amsaddr} }
+            {
+                \PackageWarning{csextras}
+                {amsaddr=true is only meaningful with amsart or amsbook class.\MessageBreak
+                    Neither is the active document class. Ignoring.}
+            }
+        }
+        \ExplSyntaxOn
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% zcref — load zref-clever only when cleveref is absent; error if both are requested
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_zcref_bool
+{
+    \ExplSyntaxOff
+    \@ifpackageloaded{cleveref}
+    {
+        \PackageError{csextras}{zcref conflicts with cleveref}
+        {%
+            Both cleveref and zref-clever provide \string\zcref.\MessageBreak
+            Load one or the other, not both.\MessageBreak
+            Remove either zcref=true from csextras or the \string\usepackage\{cleveref\}.%
+        }
+    }
+    {
+        \@ifpackageloaded{zref-clever}
+        {}
+        {
+            \RequirePackage{zref-clever}
+            \RequirePackage{zref-titleref}
+        }
+    }
+    \ExplSyntaxOn
+    \AtBeginDocument
+    {
+        \ProvideDocumentCommand \Zcref { O{} m }
+        { \zcref [ cap , #1 ] { #2 } }
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% minted — syntax-highlighted source code listings (requires --shell-escape)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_minted_bool
+{
+    \sys_if_engine_pdftex:TF
+    { \RequirePackage [ outputdir = . ] { minted } }
+    { \RequirePackage { minted } }
+    \usemintedstyle { friendly }
+    \setminted
+    {
+        fontsize    = \small ,
+        breaklines  = true ,
+        autogobble  = true ,
+        linenos     = false ,
+        frame       = leftline ,
+        framesep    = 2mm ,
+        rulecolor   = \color{bordercolor} ,
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% listings — verbatim source code with lstlisting environment
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_listings_bool
+{
+    \ExplSyntaxOff
+    \@ifpackageloaded{listings}{} { \RequirePackage{listings} }
+    \ExplSyntaxOn
+    \lstset
+    {
+        basicstyle        = \small\ttfamily ,
+        breaklines        = true ,
+        breakatwhitespace = true ,
+        commentstyle      = \color{accentcolor!60}\itshape ,
+        keywordstyle      = \color{accentcolor}\bfseries ,
+        stringstyle       = \color{figurecolor} ,
+        numberstyle       = \tiny\color{gray} ,
+        numbers           = left ,
+        numbersep         = 5pt ,
+        frame             = single ,
+        framerule         = 0.4pt ,
+        frameround        = tttt ,
+        rulecolor         = \color{bordercolor} ,
+        tabsize           = 4 ,
+        showstringspaces  = false ,
+        captionpos        = b ,
+        xleftmargin       = 1em ,
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% hyperxmp — PDF/A XMP metadata (must be loaded after hyperref)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_hyperxmp_bool
+{
+    \ExplSyntaxOff
+    \@ifpackageloaded{hyperref}
+    { \RequirePackage{hyperxmp} }
+    {
+        \AtBeginDocument
+        {
+            \@ifpackageloaded{hyperref}
+            { \RequirePackage{hyperxmp} }
+            {
+                \PackageWarning{csextras}
+                {hyperxmp=true: hyperref was never loaded.\MessageBreak
+                    hyperxmp requires hyperref. Skipping.}
+            }
+        }
+    }
+    \ExplSyntaxOn
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% forest — syntax trees and derivation diagrams
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_forest_bool
+{
+    \ExplSyntaxOff
+    \@ifpackageloaded{forest}{} { \RequirePackage[linguistics]{forest} }
+    \ExplSyntaxOn
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% DISCOURAGED OPTIONS — loaded with stern warnings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_if:NT \g_csextras_algorithmtwoe_bool
+{
+\csextras_nag:nn { algorithmtwoe }
+{
+    algorithm2e~is~legacy~and~poorly~maintained. \MessageBreak
+    Prefer~algorithm=true~(newfloat~+~codelines)~instead.
+}
+\RequirePackage [ algonl , boxed , longend , vlined ] { algorithm2e }
+\SetAlFnt              { \small               }
+\SetAlCapNameFnt       { \normalfont\rmfamily  }
+\SetAlCapFnt           { \normalfont\rmfamily\color{accentcolor} }
+\SetAlgoSkip           { medskip }
+\SetAlgoInsideSkip     { medskip }
+\SetAlCapSkip          { 1em     }
+\SetAlgoNlRelativeSize { -2      }
+\SetNlSty              { texttt } { [ } { ] }
+\SetAlgoCaptionSeparator { .     }
+}
+
+\bool_if:NT \g_csextras_todonotes_bool
+{
+    \csextras_nag:nn { todonotes }
+    {
+        Remove~all~\string\todo~calls~before~submission. \MessageBreak
+        Leaving~todonotes~in~a~submitted~paper~is~embarrassing.
+    }
+    \RequirePackage { todonotes }
+    \setlength { \marginparwidth } { 2cm }
+    \NewDocumentCommand \todoinline { O{} m } { \todo[inline,#1]{#2} }
+    \NewDocumentCommand \todofixed  { O{} m } { \todo[color=green!20,#1]{Fixed:~#2} }
+}
+
+\bool_if:NT \g_csextras_indentfirst_bool
+{
+    \csextras_nag:nn { indentfirst }
+    {
+        Indenting~the~first~paragraph~of~every~section~is~non-standard \MessageBreak
+        in~most~CS~venues.~Are~you~sure?
+    }
+    \RequirePackage { indentfirst }
+}
+
+\bool_if:NT \g_csextras_nagmode_bool
+{
+    \csextras_nag:nn { nagmode }
+    {
+        nag~will~produce~errors~for~many~otherwise-harmless~constructs. \MessageBreak
+        Read~the~nag~documentation~before~enabling~this~in~production.
+    }
+    \RequirePackage [ l2tabu , orthodox ] { nag }
+    \RequirePackage [ all , error ] { onlyamsmath }
+}
+
+\bool_if:NT \g_csextras_crazybib_bool
+{
+    \csextras_nag:nn { crazybib }
+    {
+        natbib+chapterbib+sectionbib~have~many~known~interactions. \MessageBreak
+        Test~thoroughly.~This~configuration~is~not~recommended~for~most~papers.
+    }
+    \RequirePackage [ round , sort , numbers , sectionbib ] { natbib }
+    \RequirePackage [ sectionbib ] { chapterbib }
+    \RequirePackage [ nocompress ] { cite }
+}
+
+\bool_if:NT \g_csextras_crazynumbering_bool
+{
+    \csextras_nag:nn { crazynumbering }
+    {
+        Numbering~to~depth~5~and~TOC~depth~6~is~rarely~appropriate \MessageBreak
+        for~CS~papers.~Reconsider~your~document~structure.
+    }
+    \setcounter { secnumdepth } { 5 }
+    \setcounter { tocdepth    } { 6 }
+}
+
+\bool_if:NT \g_csextras_tightcaptions_bool
+{
+    \csextras_nag:nn { tightcaptions }
+    {
+        Tight~captions~can~violate~venue~formatting~guidelines. \MessageBreak
+        Verify~the~final~result~visually~and~check~with~your~venue.
+    }
+    \setlength { \belowcaptionskip } { -8pt }
+    \setlength { \textfloatsep      } { 4pt plus 16pt minus 2pt }
+    \setlength { \floatsep          } { 4pt plus 2pt  minus 2pt }
+    \setlength { \intextsep         } { 4pt plus 2pt  minus 2pt }
+}
+
+\bool_if:NT \g_csextras_parskip_bool
+{
+    \csextras_nag:nn { parskip }
+    {
+        parskip~changes~inter-paragraph~spacing~globally. \MessageBreak
+        This~often~looks~wrong~with~theorem~environments. \MessageBreak
+        Consider~whether~you~really~need~this.
+    }
+    \RequirePackage { parskip }
+}
+
+\tl_if_eq:NnT \g_csextras_lipsum_tl { paragraph }
+{
+    \RequirePackage { lipsum }
+}
+\tl_if_eq:NnT \g_csextras_lipsum_tl { content }
+{
+    \IfFileExists { duckuments.sty }
+    { \RequirePackage { duckuments } }
+    {
+        \PackageWarning { csextras }
+        { lipsum=content:~duckuments~package~not~found.~Falling~back~to~lipsum. }
+        \RequirePackage { lipsum }
+    }
+}
+
+\ExplSyntaxOff
+\makeatother
+\endinput

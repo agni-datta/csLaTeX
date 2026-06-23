@@ -5,21 +5,21 @@
 % GitHub  : https://github.com/agni-datta/csLaTeX
 % License : LPPL v1.3c
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\NeedsTeXFormat{LaTeX2e}[2022-06-01]
-\ProvidesPackage{codelines}[2026/04/13 v1.0 Algorithmic listing environment with line numbers]
+
+\NeedsTeXFormat{LaTeX2e}[2022/06/01]
+\ProvidesPackage{codelines}[2026/06/23 v1.1 Algorithmic listing environment with line numbers]
 
 \makeatletter
 
 \RequirePackage{enumitem}
 \RequirePackage{pgffor}
-\RequirePackage{forloop}
 \RequirePackage[dvipsnames,table,x11names]{xcolor}
 
 \NewDocumentCommand{\codelineslinenrformat}{}{\normalfont\footnotesize\ttfamily\color{black!50}}
 \NewDocumentCommand{\codelineslinenrdigits}{}{2}
 \NewDocumentCommand{\codelinesrefprefix}{}{}
 \NewDocumentCommand{\codelinesformatnumber}{m}{%
-	\ifnum#1<10 0\fi#1%
+    \ifnum#1<10 0\fi#1%
 }
 
 \newlength{\codelineslinenrsymbolwidth}
@@ -39,87 +39,87 @@
 \newcounter{codelineslinenr}
 
 \NewDocumentCommand{\cl@findmax}{m}{%
-	\setcounter{cl@maxlinenr}{0}%
-	\foreach \x in {#1} {%
-			\setcounter{cl@tempcounter}{\x}%
-			\ifnum\value{cl@tempcounter}>\value{cl@maxlinenr}
-				\setcounter{cl@maxlinenr}{\value{cl@tempcounter}}%
-			\fi
-		}%
+    \setcounter{cl@maxlinenr}{0}%
+    \foreach \x in {#1} {%
+            \setcounter{cl@tempcounter}{\x}%
+            \ifnum\value{cl@tempcounter}>\value{cl@maxlinenr}
+                \setcounter{cl@maxlinenr}{\value{cl@tempcounter}}%
+            \fi
+        }%
 }
 
 \NewDocumentCommand{\codelinessetlinenr}{m}{%
-	\setcounter{codelineslinenr}{#1}%
-	\foreach \suff in {i,ii,iii,iv,v,vi,vii,viii,ix,x} {%
-			\setcounter{clcode\suff}{#1}%
-		}%
+    \setcounter{codelineslinenr}{#1}%
+    \foreach \suff in {i,ii,iii,iv,v,vi,vii,viii,ix,x} {%
+            \setcounter{clcode\suff}{#1}%
+        }%
 }
 
 \NewDocumentCommand{\codelinesresetlinenr}{}{%
-	\codelinessetlinenr{0}%
+    \codelinessetlinenr{0}%
 }
 
 \NewDocumentCommand{\codelinesrightalign}{m}{%
-	\null\hfill{#1\hspace*{\codelinesextraboxwidth}}\null
+    \null\hfill{#1\hspace*{\codelinesextraboxwidth}}\null
 }
 
 \NewDocumentCommand{\codelinescenteralign}{m}{%
-	\null\hfill{#1\hfill\hspace*{\codelinesextraboxwidth}}\null
+    \null\hfill{#1\hfill\hspace*{\codelinesextraboxwidth}}\null
 }
 
 \NewDocumentCommand{\codelinesplus}{}{%
-	\addtolength{\itemindent}{1em}%
-	\addtolength{\labelsep}{1em}%
+    \addtolength{\itemindent}{1em}%
+    \addtolength{\labelsep}{1em}%
 }
 
 \NewDocumentCommand{\codelinesminus}{}{%
-	\addtolength{\itemindent}{-1em}%
-	\addtolength{\labelsep}{-1em}%
+    \addtolength{\itemindent}{-1em}%
+    \addtolength{\labelsep}{-1em}%
 }
 
 \NewDocumentCommand{\codelinesbox}{m m}{%
-	\setlength{\codelinescurrentboxwidth}{#1}%
-	\setlength{\codelinesextraboxwidth}{\linewidth}%
-	\addtolength{\codelinesextraboxwidth}{-\codelinescurrentboxwidth}%
-	\parbox[t]{\codelinescurrentboxwidth}{%
-		\hfuzz\textwidth
-		\begin{minipage}[t]{\textwidth}#2\end{minipage}%
-	}%
+    \setlength{\codelinescurrentboxwidth}{#1}%
+    \setlength{\codelinesextraboxwidth}{\linewidth}%
+    \addtolength{\codelinesextraboxwidth}{-\codelinescurrentboxwidth}%
+    \parbox[t]{\codelinescurrentboxwidth}{%
+        \hfuzz\textwidth
+        \begin{minipage}[t]{\textwidth}#2\end{minipage}%
+    }%
 }
 
 \setlistdepth{10}
 \newlist{clcode}{enumerate}{10}
 
 \setlist[clcode,1]{
-	topsep        = 0ex,
-	label         = {\codelineslinenrformat\makebox[\codelineslinenrwidth][r]{\codelinesformatnumber{\arabic*}}},
-	ref           = \codelinesrefprefix\arabic*,
-	align         = right,
-	leftmargin    = \dimexpr\codelineslinenrwidth+\codelineslinenrsep\relax,
-	itemindent    = 0em,
-	labelindent   = 0em,
-	labelwidth    = \codelineslinenrwidth,
-	labelsep      = \codelineslinenrsep,
-	before        = \raggedright,
-	listparindent = \parindent,
-	noitemsep
+    topsep        = 0ex,
+    label         = {\codelineslinenrformat\makebox[\codelineslinenrwidth][r]{\codelinesformatnumber{\arabic*}}},
+    ref           = \codelinesrefprefix\arabic*,
+    align         = right,
+    leftmargin    = \dimexpr\codelineslinenrwidth+\codelineslinenrsep\relax,
+    itemindent    = 0em,
+    labelindent   = 0em,
+    labelwidth    = \codelineslinenrwidth,
+    labelsep      = \codelineslinenrsep,
+    before        = \raggedright,
+    listparindent = \parindent,
+    noitemsep
 }
 
 \NewDocumentCommand{\cl@deeplevel}{m m m}{%
-	\setlist[clcode,#1]{
-		topsep        = 0ex,
-		label         = {\codelineslinenrformat\makebox[\codelineslinenrwidth][r]{\codelinesformatnumber{\arabic*}}},
-		ref           = \codelinesrefprefix\arabic*,
-		align         = right,
-		leftmargin    = \dimexpr\codelineslinenrwidth+\codelineslinenrsep-.53em\relax,
-		itemindent    = 0em,
-		labelindent   = 0em,
-		labelwidth    = \codelineslinenrwidth,
-		labelsep      = \dimexpr#2em+\codelineslinenrsep\relax,
-		before        = \raggedright,
-		listparindent = \parindent,
-		noitemsep
-	}%
+    \setlist[clcode,#1]{
+        topsep        = 0ex,
+        label         = {\codelineslinenrformat\makebox[\codelineslinenrwidth][r]{\codelinesformatnumber{\arabic*}}},
+        ref           = \codelinesrefprefix\arabic*,
+        align         = right,
+        leftmargin    = \dimexpr\codelineslinenrwidth+\codelineslinenrsep-.53em\relax,
+        itemindent    = 0em,
+        labelindent   = 0em,
+        labelwidth    = \codelineslinenrwidth,
+        labelsep      = \dimexpr#2em+\codelineslinenrsep\relax,
+        before        = \raggedright,
+        listparindent = \parindent,
+        noitemsep
+    }%
 }
 
 \cl@deeplevel{2}{1}{ii}
@@ -133,16 +133,16 @@
 \cl@deeplevel{10}{9}{x}
 
 \NewDocumentEnvironment{codelines}{O{}}{%
-	\if\relax\detokenize{#1}\relax
-		\edef\cl@start{\number\value{codelineslinenr}}%
-		\begin{clcode}[start=\cl@start]%
-	\else
-		\begin{clcode}[start=#1]%
-	\fi
+    \if\relax\detokenize{#1}\relax
+        \edef\cl@start{\number\value{codelineslinenr}}%
+        \begin{clcode}[start=\cl@start]%
+    \else
+        \begin{clcode}[start=#1]%
+    \fi
 }{%
-	\setcounter{codelineslinenr}{\value{clcodei}}%
-	\stepcounter{codelineslinenr}%
-	\end{clcode}%
+    \setcounter{codelineslinenr}{\value{clcodei}}%
+    \stepcounter{codelineslinenr}%
+    \end{clcode}%
 }
 
 \makeatother

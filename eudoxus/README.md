@@ -3,7 +3,7 @@ title: README
 aliases: README
 linter-yaml-title-alias: README
 date created: Saturday, June 7th 2026, 12:00:00 am
-date modified: Saturday, June 7th 2026, 12:00:00 am
+date modified: Tuesday, June 23rd 2026, 12:00:00 am
 ---
 
 <!-- @format -->
@@ -88,7 +88,9 @@ All environments are numbered per section and use small-caps headers. Unnumbered
 
 **Proof-style variants**:
 
-`proof`, `proofsketch`, `proofidea`
+`proof`, `proofsketch`, `proofidea`, `proofofclaim`
+
+`\setqedsymbol{symbol}` changes the proof-end symbol. `\SetQEDSymbol{symbol}` is kept as a compatibility alias.
 
 ### Paragraph headings
 
@@ -102,7 +104,7 @@ All environments are numbered per section and use small-caps headers. Unnumbered
 
 - The bibliography patch (`\small\setstretch{1.075}`) is applied only when the document class is `amsart` **and** `nolayout` is not set. Under `article` or any other class the bibliography renders at its default size.
 - `nolayout` suppresses `geometry`, `setspace`, and the bibliography patch together. Use it when your class or a wrapper package already controls page dimensions.
-- The `tcs` option is off by default. Enable it with `\usepackage[tcs]{eudoxus}` (note: the internal flag name is `eudoxtcs`; the option keyword is `tcs` — but since no `tcs` option is declared, enable TCS support by removing `notcs` from the default or patching as needed; currently the package ships with `\eudoxtcsfalse` as default and the `notcs` option is a no-op when TCS is already off).
+- The `tcs` option is off by default. Enable it with `\usepackage[tcs]{eudoxus}` to load `tcscrypto` when `tcscrypto.sty` is available on the TeX input path.
 - Do not load `amsthm` independently before this package when theorems are enabled: `eudoxus` configures it internally via `\ifeudoxtheorems`.
 
 ### License

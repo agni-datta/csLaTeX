@@ -3,7 +3,7 @@ title: README
 aliases: README
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:22:38 pm
-date modified: Tuesday, May 19th 2026, 1:35:35 am
+date modified: Tuesday, June 23rd 2026, 12:00:00 am
 ---
 
 <!-- @format -->
@@ -96,6 +96,9 @@ All environments are numbered per section and registered with `cleveref`. Every 
 - `proof`: reimplemented with consistent QED markers that respect the current accent color.
 - `proofsketch`: unnumbered proof-style environment headed “Proof (Sketch)”.
 - `proofidea`: unnumbered proof-style environment headed “Proof (Idea)”.
+- `proofofclaim`: unnumbered proof-style environment headed “Proof of Claim”; the optional argument is rendered as “Proof of Claim (id)”.
+- `\setqedsymbol{symbol}`: changes the proof-end symbol. `\SetQEDSymbol{symbol}` is kept as a compatibility alias.
+- `\settheoremendsymbol{symbol}`: changes the theorem-end marker used by theorem styles that display one. `\SetTheoremEndSymbol{symbol}` is kept as a compatibility alias.
 - `case`: list environment for enumerating proof cases. Items are labeled **Case 1:**, **Case 2:**, etc. in bold. Accepts an optional label override per item.
 
 ```latex

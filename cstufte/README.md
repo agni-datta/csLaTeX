@@ -3,7 +3,7 @@ title: README
 aliases: README
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:22:47 pm
-date modified: Tuesday, May 19th 2026, 1:35:35 am
+date modified: Tuesday, June 23rd 2026, 12:00:00 am
 ---
 
 <!-- @format -->
@@ -101,7 +101,9 @@ All delimiters auto-size with `\left`/`\right` semantics:
 
 #### Proof environments
 
-`proofsketch` and `proofidea` are available as unnumbered proof-style environments alongside the theorem suite.
+`proofsketch`, `proofidea`, and `proofofclaim` are available as unnumbered proof-style environments alongside the theorem suite. `proofofclaim` accepts an optional claim identifier, rendered as “Proof of Claim (id)”.
+
+`\setqedsymbol{symbol}` changes the proof-end symbol. `\SetQEDSymbol{symbol}` is kept as a compatibility alias.
 
 ### Caveats
 

@@ -3,7 +3,7 @@ title: README
 aliases: README
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:23:24 pm
-date modified: Tuesday, May 19th 2026, 1:35:35 am
+date modified: Tuesday, June 23rd 2026, 12:00:00 am
 ---
 
 <!-- @format -->
@@ -68,11 +68,13 @@ When `theorems` is passed, the theorem-like environments are redeclared through 
 
 **Unnumbered:**
 
-`claim*`, `conjecture*`, `corollary*`, `hypothesis*`, `informaltheorem*`, `lemma*`, `openproblem*`, `syntax*`, `theorem*`, `proof`, `proofsketch`, `proofidea`
+`claim*`, `conjecture*`, `corollary*`, `hypothesis*`, `informaltheorem*`, `lemma*`, `openproblem*`, `syntax*`, `theorem*`, `proof`, `proofsketch`, `proofidea`, `proofofclaim`
 
 **Additional:**
 
-- `claimproof`: like `proof` but defaults to “Proof of Claim” as the heading. Accepts an optional argument to override the heading text.
+- `proofofclaim`: like `proof` but defaults to “Proof of Claim” as the heading. Its optional argument is rendered as “Proof of Claim (id)”.
+- `claimproof`: compatibility alias for older documents. It accepts an optional full heading string.
+- `\setqedsymbol{symbol}` changes the proof-end symbol. `\SetQEDSymbol{symbol}` remains available as a compatibility alias.
 
 All numbered environments are registered with `zref-clever`. The package preserves the standard `\cref{label}` and `\Cref{label}` interfaces for automatic type-aware references.
 

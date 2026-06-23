@@ -5,26 +5,39 @@
 % GitHub  : https://github.com/agni-datta/csLaTeX
 % License : LPPL v1.3c
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{tcscrypto}[2026/05/02 v3.3 Notations and environments for TCS and Cryptography]
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{tcscrypto}[2026/06/23 v3.4 Notations and environments for TCS and Cryptography]
 
+\RequirePackage{l3keys2e}
 \makeatletter
+\ExplSyntaxOn
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Options
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newif\if@tcscrypto@emphasis\@tcscrypto@emphasisfalse
-\newif\if@tcscrypto@small\@tcscrypto@smallfalse
-\newif\if@tcscrypto@toc\@tcscrypto@toctrue
-\newif\if@tcscrypto@venue\@tcscrypto@venuefalse
+\bool_new:N \g_tcsc_noemph_bool
+\bool_new:N \g_tcsc_small_bool
+\bool_new:N \g_tcsc_toc_bool
+\bool_new:N \g_tcsc_venue_bool
 
-\DeclareOption{noemph}{\@tcscrypto@emphasistrue}
-\DeclareOption{notoc}{\@tcscrypto@tocfalse}
-\DeclareOption{small}{\@tcscrypto@smalltrue}
-\DeclareOption{venuestyle}{\@tcscrypto@venuetrue}
+\keys_define:nn { tcscrypto }
+{
+    noemph     .bool_gset:N = \g_tcsc_noemph_bool , noemph     .initial:n = false ,
+    toc        .bool_gset:N = \g_tcsc_toc_bool    , toc        .initial:n = true  ,
+    notoc      .code:n      = { \bool_gset_false:N \g_tcsc_toc_bool } ,
+    small      .bool_gset:N = \g_tcsc_small_bool  , small      .initial:n = false ,
+    venuestyle .bool_gset:N = \g_tcsc_venue_bool  , venuestyle .initial:n = false ,
+    unknown    .code:n      = { \PackageWarning{tcscrypto}{Unknown~option~`#1'~ignored} } ,
+}
+\ProcessKeysOptions { tcscrypto }
 
-\ProcessOptions\relax
+\newif\if@tcscrypto@emphasis \bool_if:NTF \g_tcsc_noemph_bool { \@tcscrypto@emphasistrue } { \@tcscrypto@emphasisfalse }
+\newif\if@tcscrypto@small    \bool_if:NTF \g_tcsc_small_bool  { \@tcscrypto@smalltrue    } { \@tcscrypto@smallfalse    }
+\newif\if@tcscrypto@toc      \bool_if:NTF \g_tcsc_toc_bool    { \@tcscrypto@toctrue      } { \@tcscrypto@tocfalse      }
+\newif\if@tcscrypto@venue    \bool_if:NTF \g_tcsc_venue_bool  { \@tcscrypto@venuetrue    } { \@tcscrypto@venuefalse    }
+
+\ExplSyntaxOff
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Dependencies
@@ -33,44 +46,43 @@
 \RequirePackage{appendix}
 \RequirePackage{array}
 \if@tcscrypto@small
-	\RequirePackage[full,small]{complexity}
+    \RequirePackage[full,small]{complexity}
 \else
-	\RequirePackage[full]{complexity}
+    \RequirePackage[full]{complexity}
 \fi
 \RequirePackage{derivative}
 \RequirePackage{enumitem}
 \RequirePackage{etoolbox}
 \RequirePackage{mdframed}
 \RequirePackage{physics2}
-\RequirePackage{setspace}
-\RequirePackage{xparse}
+
 \RequirePackage{xspace}
 
 \if@tcscrypto@small
-	\NewDocumentCommand{\tcs@reducesize}{}{%
-		\ifx\@currsize\normalsize\small
-		\else
-			\ifx\@currsize\small\footnotesize
-			\else
-				\ifx\@currsize\large\normalsize
-				\fi
-			\fi
-		\fi
-	}
-	\NewDocumentCommand{\tcs@possiblymakesmaller}{m}{%
-		\mathchoice
-		{\hbox{\tcs@reducesize$#1$}}%
-		{\hbox{\tcs@reducesize$#1$}}%
-		{#1}%
-		{#1}%
-	}%
-	\NewDocumentCommand{\algostyle}{m}{%
-		\ensuremath{\hbox{\tcs@reducesize$\mathsf{#1}$%
-			}%
-		}%
-	}%
+    \NewDocumentCommand{\tcs@reducesize}{}{%
+        \ifx\@currsize\normalsize\small
+        \else
+            \ifx\@currsize\small\footnotesize
+            \else
+                \ifx\@currsize\large\normalsize
+                \fi
+            \fi
+        \fi
+    }
+    \NewDocumentCommand{\tcs@possiblymakesmaller}{m}{%
+        \mathchoice
+        {\hbox{\tcs@reducesize$#1$}}%
+        {\hbox{\tcs@reducesize$#1$}}%
+        {#1}%
+        {#1}%
+    }%
+    \NewDocumentCommand{\algostyle}{m}{%
+        \ensuremath{\hbox{\tcs@reducesize$\mathsf{#1}$%
+            }%
+        }%
+    }%
 \else
-	\NewDocumentCommand{\algostyle}{m}{\ensuremath{\mathsf{#1}}}
+    \NewDocumentCommand{\algostyle}{m}{\ensuremath{\mathsf{#1}}}
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -103,8 +115,8 @@
 
 \cs_new_protected:Npn \__crypto_define_one:nnnn #1#2#3#4
 {
-	\cs_if_free:cT { #1#2 }
-	{ \cs_new:cpn { #1#2 } { \use:c { #4 } { #3 } } }
+    \cs_if_free:cT { #1#2 }
+    { \cs_new:cpn { #1#2 } { \use:c { #4 } { #3 } } }
 }
 
 \cs_new_protected:Npn \__crypto_parse_pair:w #1/#2 \q_stop #3#4
@@ -130,37 +142,39 @@
 
 \NewDocumentCommand{\mbf}{m}
 {
-	\regex_match:nnTF { \A [a-zA-Z0-9] \Z } { #1 }
-	{ \mathbf{#1} }{ \boldsymbol{#1} }
+    \regex_match:nnTF { \A [a-zA-Z0-9] \Z } { #1 }
+    { \mathbf{#1} }{ \boldsymbol{#1} }
+}
+
+\tl_new:N \l_tcsc_letter_tl
+
+\int_step_inline:nnn { 1 } { 26 }
+{
+    \tl_set:Nx \l_tcsc_letter_tl { \int_to_Alph:n { #1 } }
+    \cs_if_free:cT { adv \l_tcsc_letter_tl } { \cs_new:cpx { adv \l_tcsc_letter_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathsf { \l_tcsc_letter_tl } } } } }
+    \cs_if_free:cT { bb \l_tcsc_letter_tl } { \cs_new:cpx { bb \l_tcsc_letter_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathbb { \l_tcsc_letter_tl } } } } }
+    \cs_if_free:cT { bf \l_tcsc_letter_tl } { \cs_new:cpx { bf \l_tcsc_letter_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathbf { \l_tcsc_letter_tl } } } } }
+    \cs_if_free:cT { cal \l_tcsc_letter_tl } { \cs_new:cpx { cal \l_tcsc_letter_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathcal { \l_tcsc_letter_tl } } } } }
+    \cs_if_free:cT { frak \l_tcsc_letter_tl } { \cs_new:cpx { frak \l_tcsc_letter_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathfrak { \l_tcsc_letter_tl } } } } }
+    \cs_if_free:cT { sf \l_tcsc_letter_tl } { \cs_new:cpx { sf \l_tcsc_letter_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathsf { \l_tcsc_letter_tl } } } } }
+    \cs_if_free:cT { scr \l_tcsc_letter_tl } { \cs_new:cpx { scr \l_tcsc_letter_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathscr { \l_tcsc_letter_tl } } } } }
 }
 
 \int_step_inline:nnn { 1 } { 26 }
 {
-	\tl_set:Nx \l_tmpa_tl { \int_to_Alph:n { #1 } }
-	\cs_if_free:cT { adv \l_tmpa_tl } { \cs_new:cpx { adv \l_tmpa_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathsf { \l_tmpa_tl } } } } }
-	\cs_if_free:cT { bb \l_tmpa_tl } { \cs_new:cpx { bb \l_tmpa_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathbb { \l_tmpa_tl } } } } }
-	\cs_if_free:cT { bf \l_tmpa_tl } { \cs_new:cpx { bf \l_tmpa_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathbf { \l_tmpa_tl } } } } }
-	\cs_if_free:cT { cal \l_tmpa_tl } { \cs_new:cpx { cal \l_tmpa_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathcal { \l_tmpa_tl } } } } }
-	\cs_if_free:cT { frak \l_tmpa_tl } { \cs_new:cpx { frak \l_tmpa_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathfrak { \l_tmpa_tl } } } } }
-	\cs_if_free:cT { sf \l_tmpa_tl } { \cs_new:cpx { sf \l_tmpa_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathsf { \l_tmpa_tl } } } } }
-	\cs_if_free:cT { scr \l_tmpa_tl } { \cs_new:cpx { scr \l_tmpa_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathscr { \l_tmpa_tl } } } } }
+    \tl_set:Nx \l_tcsc_letter_tl { \int_to_alph:n { #1 } }
+    \cs_if_free:cT { bb \l_tcsc_letter_tl }   { \cs_new:cpx { bb \l_tcsc_letter_tl }   { \exp_not:N \ensuremath { { \exp_not:N \mathbb   { \l_tcsc_letter_tl } } } } }
+    \cs_if_free:cT { bf \l_tcsc_letter_tl }   { \cs_new:cpx { bf \l_tcsc_letter_tl }   { \exp_not:N \ensuremath { { \exp_not:N \mathbf   { \l_tcsc_letter_tl } } } } }
+    \cs_if_free:cT { cal \l_tcsc_letter_tl }  { \cs_new:cpx { cal \l_tcsc_letter_tl }  { \exp_not:N \ensuremath { { \exp_not:N \mathcal  { \l_tcsc_letter_tl } } } } }
+    \cs_if_free:cT { frak \l_tcsc_letter_tl } { \cs_new:cpx { frak \l_tcsc_letter_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathfrak { \l_tcsc_letter_tl } } } } }
+    \cs_if_free:cT { sf \l_tcsc_letter_tl }   { \cs_new:cpx { sf \l_tcsc_letter_tl }   { \exp_not:N \ensuremath { { \exp_not:N \mathsf   { \l_tcsc_letter_tl } } } } }
+    \cs_if_free:cT { scr \l_tcsc_letter_tl }  { \cs_new:cpx { scr \l_tcsc_letter_tl }  { \exp_not:N \ensuremath { { \exp_not:N \mathscr  { \l_tcsc_letter_tl } } } } }
 }
 
 \int_step_inline:nnn { 1 } { 26 }
 {
-	\tl_set:Nx \l_tmpa_tl { \int_to_alph:n { #1 } }
-	\cs_if_free:cT { bb \l_tmpa_tl }   { \cs_new:cpx { bb \l_tmpa_tl }   { \exp_not:N \ensuremath { { \exp_not:N \mathbb   { \l_tmpa_tl } } } } }
-	\cs_if_free:cT { bf \l_tmpa_tl }   { \cs_new:cpx { bf \l_tmpa_tl }   { \exp_not:N \ensuremath { { \exp_not:N \mathbf   { \l_tmpa_tl } } } } }
-	\cs_if_free:cT { cal \l_tmpa_tl }  { \cs_new:cpx { cal \l_tmpa_tl }  { \exp_not:N \ensuremath { { \exp_not:N \mathcal  { \l_tmpa_tl } } } } }
-	\cs_if_free:cT { frak \l_tmpa_tl } { \cs_new:cpx { frak \l_tmpa_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathfrak { \l_tmpa_tl } } } } }
-	\cs_if_free:cT { sf \l_tmpa_tl }   { \cs_new:cpx { sf \l_tmpa_tl }   { \exp_not:N \ensuremath { { \exp_not:N \mathsf   { \l_tmpa_tl } } } } }
-	\cs_if_free:cT { scr \l_tmpa_tl }  { \cs_new:cpx { scr \l_tmpa_tl }  { \exp_not:N \ensuremath { { \exp_not:N \mathscr  { \l_tmpa_tl } } } } }
-}
-
-\int_step_inline:nnn { 1 } { 26 }
-{
-	\tl_set:Nx \l_tmpa_tl { \int_to_Alph:n { #1 } }
-	\cs_if_free:cT { Mat \l_tmpa_tl } { \cs_new:cpx { Mat \l_tmpa_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathbf { \l_tmpa_tl } } } } }
+    \tl_set:Nx \l_tcsc_letter_tl { \int_to_Alph:n { #1 } }
+    \cs_if_free:cT { Mat \l_tcsc_letter_tl } { \cs_new:cpx { Mat \l_tcsc_letter_tl } { \exp_not:N \ensuremath { { \exp_not:N \mathbf { \l_tcsc_letter_tl } } } } }
 }
 
 \ExplSyntaxOff
@@ -170,39 +184,39 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \if@tcscrypto@emphasis
-	\RenewDocumentCommand{\emph}{m}{\textsf{#1}}
+    \RenewDocumentCommand{\emph}{m}{\textsf{#1}}
 \fi
 
 \if@tcscrypto@venue
-	\setlength{\belowcaptionskip}{-15pt}
-	\setlength{\textfloatsep}{10pt plus 1.0pt minus 2.0pt}
+    \setlength{\belowcaptionskip}{-15pt}
+    \setlength{\textfloatsep}{10pt plus 1.0pt minus 2.0pt}
 \fi
 
 \if@tcscrypto@toc
-	\setcounter{tocdepth}{2}
-	\@ifpackageloaded{tocbibind}{}{%
-		\RequirePackage[nottoc]{tocbibind}%
-	}
-	\@ifclassloaded{llncs}{%
-		\let\tcscrypto@oldmaketitle\maketitle
-		\RenewDocumentCommand{\maketitle}{}{%
-			\let\tcscrypto@oldaddcontentsline\addcontentsline
-			\RenewDocumentCommand{\addcontentsline}{m m m}{}%
-			\tcscrypto@oldmaketitle
-			\let\addcontentsline\tcscrypto@oldaddcontentsline
-		}%
-	}{%
-		\@ifpackageloaded{setspace}{}{%
-			\RequirePackage{setspace}%
-		}
-		\NewDocumentCommand{\toc}{}{%
-			\begin{spacing}{1.075}
-				\begin{small}
-					\tableofcontents%
-				\end{small}
-			\end{spacing}
-		}
-	}%
+    \setcounter{tocdepth}{2}
+    \@ifpackageloaded{tocbibind}{}{%
+        \RequirePackage[nottoc]{tocbibind}%
+    }
+    \@ifclassloaded{llncs}{%
+        \let\tcscrypto@oldmaketitle\maketitle
+        \RenewDocumentCommand{\maketitle}{}{%
+            \let\tcscrypto@oldaddcontentsline\addcontentsline
+            \RenewDocumentCommand{\addcontentsline}{m m m}{}%
+            \tcscrypto@oldmaketitle
+            \let\addcontentsline\tcscrypto@oldaddcontentsline
+        }%
+    }{%
+        \@ifpackageloaded{setspace}{}{%
+            \RequirePackage{setspace}%
+        }
+        \NewDocumentCommand{\toc}{}{%
+            \begin{spacing}{1.075}
+                \begin{small}
+                    \tableofcontents%
+                \end{small}
+            \end{spacing}
+        }
+    }%
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -210,64 +224,63 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \@ifundefined{acknowledgements}{%
-	\NewDocumentEnvironment{acknowledgements}{}%
-	{%
-		\addcontentsline{toc}{section}{\protect\textbf{Acknowledgements}}%
-		\paragraph{Acknowledgements.}%
-		\ignorespaces%
-	}
-	{}
+    \NewDocumentEnvironment{acknowledgements}{}%
+    {%
+        \addcontentsline{toc}{section}{\protect\textbf{Acknowledgements}}%
+        \paragraph{Acknowledgements.}%
+        \ignorespaces%
+    }
+    {}
 }{}
 
 \@ifundefined{printreferences}{%
-	\NewDocumentCommand{\printreferences}{O{aomalpha} m}{%
-		\begin{small}
-			\setstretch{1}%
-			\bibliographystyle{#1}%
-			\bibliography{#2}%
-		\end{small}
-	}%
+    \NewDocumentCommand{\printreferences}{O{aomalpha} m}{%
+        \begin{small}
+            \setstretch{1}%
+            \bibliographystyle{#1}%
+            \bibliography{#2}%
+        \end{small}
+    }%
 }{}
 
 \@ifundefined{researchquestion}{%
-	\NewDocumentCommand{\researchquestionlabel}{m}{\textsc{#1}\hfil}
-	\NewDocumentEnvironment{researchquestion}{}{%
-		\list{}{%
-			\setlength{\labelwidth}{0pt}%
-			\setlength{\labelsep}{0.5em}%
-			\setlength{\leftmargin}{0pt}%
-			\setlength{\itemindent}{\parindent}%
-			\setlength{\parsep}{\parskip}%
-			\setlength{\itemsep}{0.4ex}%
-			\let\makelabel\researchquestionlabel
-		}%
-	}{\endlist}%
+    \NewDocumentCommand{\researchquestionlabel}{m}{\textsc{#1}\hfil}
+    \NewDocumentEnvironment{researchquestion}{}{%
+        \list{}{%
+            \setlength{\labelwidth}{0pt}%
+            \setlength{\labelsep}{0.5em}%
+            \setlength{\leftmargin}{0pt}%
+            \setlength{\itemindent}{\parindent}%
+            \setlength{\parsep}{\parskip}%
+            \setlength{\itemsep}{0.4ex}%
+            \let\makelabel\researchquestionlabel
+        }%
+    }{\endlist}%
 }{}
 
 \@ifundefined{protocolbox}{%
-	\NewDocumentEnvironment{protocolbox}{o}{%
-		\begin{mdframed}[
-			font               = \small,
-			roundcorner        = 1.5pt,
-			linewidth          = 0.5pt,
-			skipabove          = 0.5\baselineskip,
-			skipbelow          = 0.1\baselineskip,
-			leftmargin         = 2pt,
-			rightmargin        = 2pt,
-			innerleftmargin    = 5pt,
-			innerrightmargin   = 5pt,
-			innertopmargin     = 5pt,
-			innerbottommargin  = 5pt,
-			backgroundcolor    = white,
-			linecolor          = black
-		]
-		\IfNoValueF{#1}{%
-			\noindent\textnormal{\textbf{#1}}\par\smallskip
-			\noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}
-		}\noindent
-	}{
-		\end{mdframed}
-	}
+    \NewDocumentEnvironment{protocolbox}{o}{%
+        \begin{mdframed}[
+            font               = \small ,
+            roundcorner        = 1.0pt ,
+            linewidth          = 0.5pt ,
+            nobreak            = true ,
+            skipabove          = 0.75\baselineskip ,
+            skipbelow          = 0.75\baselineskip ,
+            innerleftmargin    = 7.5pt ,
+            innerrightmargin   = 7.5pt ,
+            innertopmargin     = 7.5pt ,
+            innerbottommargin  = 7.5pt ,
+            backgroundcolor    = white ,
+            linecolor          = black
+        ]
+        \IfNoValueF{#1}{%
+            \noindent\textnormal{\textbf{#1}}\par\smallskip
+            \noindent\hrule height 0.4pt\relax\vspace{0.5\baselineskip}
+        }\noindent
+    }{
+        \end{mdframed}
+    }
 }{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -396,43 +409,47 @@
 \NewDocumentCommand{\vspan}{m}{\left(#1\right)}
 
 \NewDocumentCommand{\Exp}{d[]}{
-	\E
-	\IfValueT{#1}{\left[#1\right]}
+    \E
+    \IfValueT{#1}{\left[#1\right]}
 }
 \NewDocumentCommand{\Prob}{d[]}{
-	\Pr
-	\IfValueT{#1}{\left[#1\right]}
+    \Pr
+    \IfValueT{#1}{\left[#1\right]}
 }
 
 \NewDocumentCommand{\bigO}{d() d[]}{
-	\setstyle{O}
-	\IfValueT{#1}{\left(#1\right)}
-	\IfValueT{#2}{\left[#2\right]}
+    \setstyle{O}
+    \IfValueT{#1}{\left(#1\right)}
+    \IfValueT{#2}{\left[#2\right]}
 }
-\let\BigO\bigO
+\NewDocumentCommand{\BigO}{d() d[]}{
+    \setstyle{O}
+    \IfValueT{#1}{\left(#1\right)}
+    \IfValueT{#2}{\left[#2\right]}
+}
 \NewDocumentCommand{\smallO}{d()}{%
-	\mathscr{o}\IfValueT{#1}{\left(#1\right)}%
+    \mathscr{o}\IfValueT{#1}{\left(#1\right)}%
 }
 \NewDocumentCommand{\expon}{d() d[]}{
-	\exp
-	\IfValueT{#1}{\left(#1\right)}
-	\IfValueT{#2}{\left[#2\right]}
+    \exp
+    \IfValueT{#1}{\left(#1\right)}
+    \IfValueT{#2}{\left[#2\right]}
 }
 \NewDocumentCommand{\logof}{d() d[]}{
-	\log
-	\IfValueT{#1}{\left(#1\right)}
-	\IfValueT{#2}{\left[#2\right]}
+    \log
+    \IfValueT{#1}{\left(#1\right)}
+    \IfValueT{#2}{\left[#2\right]}
 }
 \NewDocumentCommand{\multilinePr}{m m}{
-	\Pr\left[
-		\begin{aligned}
-			#1
-		\end{aligned}
-		\;\middle|\;
-		\begin{aligned}
-			#2
-		\end{aligned}
-		\right]
+    \Pr\left[
+        \begin{aligned}
+            #1
+        \end{aligned}
+        \;\middle|\;
+        \begin{aligned}
+            #2
+        \end{aligned}
+        \right]
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -454,17 +471,17 @@
 \DeclareMathOperator*{\xor}{\oplus}
 
 \DeclareMathOperator*{\sample}{
-	\,\mathrel{\vbox{\offinterlineskip\ialign{
-				\hfil##\hfil\cr
-				\hspace{0.1em}$\scalebox{0.5}{$\$$}$\cr
-				$\leftarrow$\cr
-			}}}\,}
+    \,\mathrel{\vbox{\offinterlineskip\ialign{
+                \hfil##\hfil\cr
+                \hspace{0.1em}$\scalebox{0.5}{$\$$}$\cr
+                $\leftarrow$\cr
+            }}}\,}
 \DeclareMathOperator*{\longsample}{
-	\,\mathrel{\vbox{\offinterlineskip\ialign{
-				\hfil##\hfil\cr
-				\hspace{0.1em}$\scalebox{0.5}{$\$$}$\cr
-				$\longleftarrow$\cr
-			}}}\,}
+    \,\mathrel{\vbox{\offinterlineskip\ialign{
+                \hfil##\hfil\cr
+                \hspace{0.1em}$\scalebox{0.5}{$\$$}$\cr
+                $\longleftarrow$\cr
+            }}}\,}
 \DeclareMathOperator*{\getsr}{\sample}
 
 \DeclareMathOperator*{\StatDist}{\Delta}
@@ -558,47 +575,47 @@
 \NewDocumentCommand{\secparam}{}{\lambda}
 \NewDocumentCommand{\secpar}{}{\lambda}
 
-\NewDocumentCommand{\BadEvent}{}{\overbar{\Event}}
 \NewDocumentCommand{\Event}{}{\algostyle{E}}
-\NewDocumentCommand{\GoodEvent}{}{\Event{E}}
+\NewDocumentCommand{\BadEvent}{}{\Event^{\complement}}
+\NewDocumentCommand{\GoodEvent}{}{\Event}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Complexity Classes and Search Problems
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \cryptoDefineClassCSV{
-	ARG/ARG,
-	CLS/CLS,
-	EOL/EOL,
-	EOML/EOML,
-	EOPL/EOPL,
-	GapMCSP/GapMCSP,
-	GapMKTP/GapMKTP,
-	IPP/IPP,
-	MAP/MAP,
-	MCSP/MCSP,
-	MINKT/MINKT,
-	MKTP/MKTP,
-	MKtP/MK^{t}P,
-	MRSP/MRSP,
-	MinPDT/MinPDT,
-	NARG/NARG,
-	NISIP/NISIP,
-	OSS/OSS,
-	PDT/PDT,
-	PHC/PHC,
-	PWPP/PWPP,
-	ParityP/\oplus\P,
-	ParitySAT/\oplus\SAT,
-	RIP/RIP,
-	RSVL/RSVL,
-	SIP/SIP,
-	SOPL/SOPL,
-	SUBEXPSPACE/SUBEXPSPACE,
-	SVL/SVL,
-	SharpP/\#\P,
-	SharpSAT/\#\SAT,
-	UEOPL/UEOPL,
+    ARG/ARG,
+    CLS/CLS,
+    EOL/EOL,
+    EOML/EOML,
+    EOPL/EOPL,
+    GapMCSP/GapMCSP,
+    GapMKTP/GapMKTP,
+    IPP/IPP,
+    MAP/MAP,
+    MCSP/MCSP,
+    MINKT/MINKT,
+    MKTP/MKTP,
+    MKtP/MK^{t}P,
+    MRSP/MRSP,
+    MinPDT/MinPDT,
+    NARG/NARG,
+    NISIP/NISIP,
+    OSS/OSS,
+    PDT/PDT,
+    PHC/PHC,
+    PWPP/PWPP,
+    ParityP/\oplus\P,
+    ParitySAT/\oplus\SAT,
+    RIP/RIP,
+    RSVL/RSVL,
+    SIP/SIP,
+    SOPL/SOPL,
+    SUBEXPSPACE/SUBEXPSPACE,
+    SVL/SVL,
+    SharpP/\#\P,
+    SharpSAT/\#\SAT,
+    UEOPL/UEOPL,
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -606,197 +623,197 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \cryptoDefineSchemeCSV{
-	ABE/ABE,
-	AGM/AGM,
-	AHP/AHP,
-	AI/AI,
-	ARG/ARG,
-	ATP/ATP,
-	ApproxSVP/ApproxSVP,
-	BARG/BARG,
-	BDD/BDD,
-	BDH/BDH,
-	BFS/BFS,
-	Beacon/BC,
-	CDCL/CDCL,
-	CDH/CDH,
-	CH/CH,
-	CI/CI,
-	CIH/CIH,
-	CM/CM,
-	CNF/CNF,
-	CRGapDH/CRGapDH,
-	CRHF/CRHF,
-	CRS/CRS,
-	CVP/CVP,
-	DAG/DAG,
-	DBDH/DBDH,
-	DDH/DDH,
-	DFS/DFS,
-	DH/DH,
-	DL/DL,
-	DLIN/DLIN,
-	DLP/DLP,
-	DLWE/DLWE,
-	DLog/DLog,
-	DNF/DNF,
-	DPF/DPF,
-	DPVW/DPVW,
-	DS/DS,
-	Dlog/Dlog,
-	ELF/ELF,
-	FC/FC,
-	FE/FE,
-	FHE/FHE,
-	FO/FO,
-	FS/FS,
-	FSS/FSS,
-	GCH/GCH,
-	GGM/GGM,
-	GI/GI,
-	GM/GM,
-	GNI/GNI,
-	GRH/GRH,
-	GapCVP/GapCVP,
-	GapDH/GapDH,
-	GapSIVP/GapSIVP,
-	GapSVP/GapSVP,
-	HASH/HASH,
-	HE/HE,
-	HIBE/HIBE,
-	HIS/HIS,
-	HM/HM,
-	HSG/HSG,
-	HSS/HSS,
-	HVZK/HVZK,
-	IBE/IBE,
-	ICM/ICM,
-	IFP/IFP,
-	IOP/IOP,
-	ISIS/ISIS,
-	IVC/IVC,
-	KEM/KEM,
-	KKT/KKT,
-	LDD/LDD,
-	LF/LF,
-	LICQ/LICQ,
-	LPCP/LPCP,
-	LPN/LPN,
-	LRSW/LRSW,
-	LWE/LWE,
-	MAJORITY/MAJORITY,
-	MD/MD,
-	MFCQ/MFCQ,
-	ML/ML,
-	MLFHE/MLFHE,
-	MLWE/MLWE,
-	MPC/MPC,
-	MSIS/MSIS,
-	MT/MT,
-	NARG/NARG,
-	NCP/NCP,
-	NIZK/NIZK,
-	NLP/NLP,
-	NNF/NNF,
-	NTRU/NTRU,
-	NW/NW,
-	OLE/OLE,
-	OPRF/OPRF,
-	OT/OT,
-	OWF/OWF,
-	OWP/OWP,
-	PARITY/PARITY,
-	PATH/PATH,
-	PC/PC,
-	PCG/PCG,
-	PHP/PHP,
-	PIR/PIR,
-	PKE/PKE,
-	PKFE/PKFE,
-	PPRF/PPRF,
-	PPT/PPT,
-	PRF/PRF,
-	PRG/PRG,
-	PSI/PSI,
-	QBF/QBF,
-	QM/QM,
-	QNR/QNR,
-	QPCP/QPCP,
-	QR/QR,
-	QROM/QROM,
-	QSAT/QSAT,
-	RBR/RBR,
-	RH/RH,
-	RLWE/RLWE,
-	RO/RO,
-	ROM/ROM,
-	RR/RR,
-	RSA/RSA,
-	RSIS/RSIS,
-	SAT/SAT,
-	SCC/SCC,
-	SD/SD,
-	SDH/SDH,
-	SDP/SDP,
-	SIG/SIG,
-	SIR/SIR,
-	SIS/SIS,
-	SIVP/SIVP,
-	SKE/SKE,
-	SKFE/SKFE,
-	SLWE/SLWE,
-	SNARG/SNARG,
-	SNARK/SNARK,
-	SPMPC/SPMPC,
-	SQP/SQP,
-	SR/SR,
-	SRS/SRS,
-	SSB/SSB,
-	STCON/STCON,
-	SVP/SVP,
-	SXDH/SXDH,
-	SoK/SoK,
-	TAUT/TAUT,
-	TCR/TCR,
-	TDF/TDF,
-	TDH/TDH,
-	TDP/TDP,
-	TQBF/TQBF,
-	TSP/TSP,
-	UNSAT/UNSAT,
-	UOW/UOW,
-	USAT/USAT,
-	UniqueSVP/UniqueSVP,
-	VC/VC,
-	VDF/VDF,
-	VOLE/VOLE,
-	VRF/VRF,
-	WFF/WFF,
-	XDH/XDH,
-	ZFC/ZFC,
-	ZK/ZK,
-	coCDH/coCDH,
-	coDDH/coDDH,
-	qBDH/qBDH,
-	qSDH/qSDH,
-	uSVP/uSVP,
+    ABE/ABE,
+    AGM/AGM,
+    AHP/AHP,
+    AI/AI,
+    ARG/ARG,
+    ATP/ATP,
+    ApproxSVP/ApproxSVP,
+    BARG/BARG,
+    BDD/BDD,
+    BDH/BDH,
+    BFS/BFS,
+    Beacon/BC,
+    CDCL/CDCL,
+    CDH/CDH,
+    CH/CH,
+    CI/CI,
+    CIH/CIH,
+    CM/CM,
+    CNF/CNF,
+    CRGapDH/CRGapDH,
+    CRHF/CRHF,
+    CRS/CRS,
+    CVP/CVP,
+    DAG/DAG,
+    DBDH/DBDH,
+    DDH/DDH,
+    DFS/DFS,
+    DH/DH,
+    DL/DL,
+    DLIN/DLIN,
+    DLP/DLP,
+    DLWE/DLWE,
+    DLog/DLog,
+    DNF/DNF,
+    DPF/DPF,
+    DPVW/DPVW,
+    DS/DS,
+    Dlog/Dlog,
+    ELF/ELF,
+    FC/FC,
+    FE/FE,
+    FHE/FHE,
+    FO/FO,
+    FS/FS,
+    FSS/FSS,
+    GCH/GCH,
+    GGM/GGM,
+    GI/GI,
+    GM/GM,
+    GNI/GNI,
+    GRH/GRH,
+    GapCVP/GapCVP,
+    GapDH/GapDH,
+    GapSIVP/GapSIVP,
+    GapSVP/GapSVP,
+    HASH/HASH,
+    HE/HE,
+    HIBE/HIBE,
+    HIS/HIS,
+    HM/HM,
+    HSG/HSG,
+    HSS/HSS,
+    HVZK/HVZK,
+    IBE/IBE,
+    ICM/ICM,
+    IFP/IFP,
+    IOP/IOP,
+    ISIS/ISIS,
+    IVC/IVC,
+    KEM/KEM,
+    KKT/KKT,
+    LDD/LDD,
+    LF/LF,
+    LICQ/LICQ,
+    LPCP/LPCP,
+    LPN/LPN,
+    LRSW/LRSW,
+    LWE/LWE,
+    MAJORITY/MAJORITY,
+    MD/MD,
+    MFCQ/MFCQ,
+    ML/ML,
+    MLFHE/MLFHE,
+    MLWE/MLWE,
+    MPC/MPC,
+    MSIS/MSIS,
+    MT/MT,
+    NARG/NARG,
+    NCP/NCP,
+    NIZK/NIZK,
+    NLP/NLP,
+    NNF/NNF,
+    NTRU/NTRU,
+    NW/NW,
+    OLE/OLE,
+    OPRF/OPRF,
+    OT/OT,
+    OWF/OWF,
+    OWP/OWP,
+    PARITY/PARITY,
+    PATH/PATH,
+    PC/PC,
+    PCG/PCG,
+    PHP/PHP,
+    PIR/PIR,
+    PKE/PKE,
+    PKFE/PKFE,
+    PPRF/PPRF,
+    PPT/PPT,
+    PRF/PRF,
+    PRG/PRG,
+    PSI/PSI,
+    QBF/QBF,
+    QM/QM,
+    QNR/QNR,
+    QPCP/QPCP,
+    QR/QR,
+    QROM/QROM,
+    QSAT/QSAT,
+    RBR/RBR,
+    RH/RH,
+    RLWE/RLWE,
+    RO/RO,
+    ROM/ROM,
+    RR/RR,
+    RSA/RSA,
+    RSIS/RSIS,
+    SAT/SAT,
+    SCC/SCC,
+    SD/SD,
+    SDH/SDH,
+    SDP/SDP,
+    SIG/SIG,
+    SIR/SIR,
+    SIS/SIS,
+    SIVP/SIVP,
+    SKE/SKE,
+    SKFE/SKFE,
+    SLWE/SLWE,
+    SNARG/SNARG,
+    SNARK/SNARK,
+    SPMPC/SPMPC,
+    SQP/SQP,
+    SR/SR,
+    SRS/SRS,
+    SSB/SSB,
+    STCON/STCON,
+    SVP/SVP,
+    SXDH/SXDH,
+    SoK/SoK,
+    TAUT/TAUT,
+    TCR/TCR,
+    TDF/TDF,
+    TDH/TDH,
+    TDP/TDP,
+    TQBF/TQBF,
+    TSP/TSP,
+    UNSAT/UNSAT,
+    UOW/UOW,
+    USAT/USAT,
+    UniqueSVP/UniqueSVP,
+    VC/VC,
+    VDF/VDF,
+    VOLE/VOLE,
+    VRF/VRF,
+    WFF/WFF,
+    XDH/XDH,
+    ZFC/ZFC,
+    ZK/ZK,
+    coCDH/coCDH,
+    coDDH/coDDH,
+    qBDH/qBDH,
+    qSDH/qSDH,
+    uSVP/uSVP,
 }
 
 \cryptoDefineSchemeCSV{
-	cFE/cFE,
-	coSZK/coSZK,
-	diO/diO,
-	iO/iO,
-	ihO/ihO,
-	npROM/npROM,
-	osRO/osRO,
-	osROM/osROM,
-	pROM/pROM,
-	rOWF/rOWF,
-	sRO/sRO,
-	sROM/sROM,
-	zkSNARK/zkSNARK,
-	zkSTARK/zkSTARK,
+    cFE/cFE,
+    coSZK/coSZK,
+    diO/diO,
+    iO/iO,
+    ihO/ihO,
+    npROM/npROM,
+    osRO/osRO,
+    osROM/osROM,
+    pROM/pROM,
+    rOWF/rOWF,
+    sRO/sRO,
+    sROM/sROM,
+    zkSNARK/zkSNARK,
+    zkSTARK/zkSTARK,
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -804,176 +821,176 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \cryptoDefineAlgoCSV{
-	AND/AND,
-	Acc/Acc,
-	Adv/Adv,
-	Bad/Bad,
-	Chal/Chal,
-	Challenger/Ch,
-	ChallengerText/Challenger,
-	Clean/Clean,
-	Coins/Coins,
-	Com/Com,
-	Commit/Commit,
-	Cost/Cost,
-	Dec/Dec,
-	Decide/Decide,
-	DistBernoulli/Bernoulli,
-	DistBinary/Binary,
-	DistGaussian/Gaussian,
-	DecideAcc/DecideAcc,
-	Decision/Decision,
-	Decode/Decode,
-	Derive/Derive,
-	Dist/D,
-	Distinguisher/D,
-	Enc/Enc,
-	Encode/Encode,
-	Env/Env,
-	Environment/Z,
-	Equivocate/Equiv,
-	Eval/Eval,
-	EvalPoly/EvalPoly,
-	Exp/Exp,
-	Experiment/Exp,
-	Ext/Ext,
-	ExtFunc/Extract,
-	Extract/Extract,
-	Extractor/Ext,
-	Fake/Fake,
-	Fmt/Fmt,
-	Fold/Fold,
-	Format/Fmt,
-	Functionality/F,
-	GES/GES,
-	GGen/GGen,
-	Gen/Gen,
-	Guess/Guess,
-	Hash/Hash,
-	Hint/Hint,
-	Hyb/Hyb,
-	Hybrid/Hyb,
-	IHO/IHO,
-	Ideal/I,
-	Index/Index,
-	Inf/Inf,
-	Init/Init,
-	Interp/Interp,
-	Inv/Inv,
-	Inverter/Inv,
-	KDF/KDF,
-	Key/K,
-	KeyDeriv/KeyDeriv,
-	KeyGen/KeyGen,
-	KeyGenLT/KeyGenLT,
-	KeyGenSS/KeyGenSS,
-	Literal/Literal,
-	MQ/MQ,
-	Majority/Maj,
-	NAND/NAND,
-	NOR/NOR,
-	NOT/NOT,
-	Next/Next,
-	OR/OR,
-	Obf/O,
-	PAC/PAC,
-	PGen/PGen,
-	Predictor/P,
-	Prog/Prog,
-	ProtocolExec/ProtocolExec,
-	Prove/Prove,
-	Puncture/Puncture,
-	Query/Query,
-	REenc/RE,
-	Rand/Rand,
-	RandFunction/R,
-	Real/Real,
-	Reconstruct/Reconstruct,
-	Reduce/Reduce,
-	Resp/Resp,
-	RevealRand/RevealRand,
-	Run/Run,
-	Sam/Sam,
-	Sample/Sample,
-	SampleRO/SampleRO,
-	Sampler/Sam,
-	Search/Search,
-	Setup/Setup,
-	Share/Share,
-	Sign/Sign,
-	Sim/Sim,
-	SimFunc/Sim,
-	SimProve/SimProve,
-	SimSetup/SimSetup,
-	Simulator/Sim,
-	Solve/Solve,
-	Source/Src,
-	Step/Step,
-	Table/T,
-	Tree/Tree,
-	Tribes/Tribes,
-	Update/Updt,
-	Updt/Updt,
-	VBB/VBB,
-	Var/Var,
-	Verify/Vrfy,
-	VerifyAcc/VerifyAcc,
-	View/View,
-	Vrfy/Vrfy,
-	WE/WE,
-	Win/Win,
-	XNOR/XNOR,
-	XOR/XOR,
+    AND/AND,
+    Acc/Acc,
+    Adv/Adv,
+    Bad/Bad,
+    Chal/Chal,
+    Challenger/Ch,
+    ChallengerText/Challenger,
+    Clean/Clean,
+    Coins/Coins,
+    Com/Com,
+    Commit/Commit,
+    Cost/Cost,
+    Dec/Dec,
+    Decide/Decide,
+    DistBernoulli/Bernoulli,
+    DistBinary/Binary,
+    DistGaussian/Gaussian,
+    DecideAcc/DecideAcc,
+    Decision/Decision,
+    Decode/Decode,
+    Derive/Derive,
+    Dist/D,
+    Distinguisher/D,
+    Enc/Enc,
+    Encode/Encode,
+    Env/Env,
+    Environment/Z,
+    Equivocate/Equiv,
+    Eval/Eval,
+    EvalPoly/EvalPoly,
+    Exp/Exp,
+    Experiment/Exp,
+    Ext/Ext,
+    ExtFunc/Extract,
+    Extract/Extract,
+    Extractor/Ext,
+    Fake/Fake,
+    Fmt/Fmt,
+    Fold/Fold,
+    Format/Fmt,
+    Functionality/F,
+    GES/GES,
+    GGen/GGen,
+    Gen/Gen,
+    Guess/Guess,
+    Hash/Hash,
+    Hint/Hint,
+    Hyb/Hyb,
+    Hybrid/Hyb,
+    IHO/IHO,
+    Ideal/I,
+    Index/Index,
+    Inf/Inf,
+    Init/Init,
+    Interp/Interp,
+    Inv/Inv,
+    Inverter/Inv,
+    KDF/KDF,
+    Key/K,
+    KeyDeriv/KeyDeriv,
+    KeyGen/KeyGen,
+    KeyGenLT/KeyGenLT,
+    KeyGenSS/KeyGenSS,
+    Literal/Literal,
+    MQ/MQ,
+    Majority/Maj,
+    NAND/NAND,
+    NOR/NOR,
+    NOT/NOT,
+    Next/Next,
+    OR/OR,
+    Obf/O,
+    PAC/PAC,
+    PGen/PGen,
+    Predictor/P,
+    Prog/Prog,
+    ProtocolExec/ProtocolExec,
+    Prove/Prove,
+    Puncture/Puncture,
+    Query/Query,
+    REenc/RE,
+    Rand/Rand,
+    RandFunction/R,
+    Real/Real,
+    Reconstruct/Reconstruct,
+    Reduce/Reduce,
+    Resp/Resp,
+    RevealRand/RevealRand,
+    Run/Run,
+    Sam/Sam,
+    Sample/Sample,
+    SampleRO/SampleRO,
+    Sampler/Sam,
+    Search/Search,
+    Setup/Setup,
+    Share/Share,
+    Sign/Sign,
+    Sim/Sim,
+    SimFunc/Sim,
+    SimProve/SimProve,
+    SimSetup/SimSetup,
+    Simulator/Sim,
+    Solve/Solve,
+    Source/Src,
+    Step/Step,
+    Table/T,
+    Tree/Tree,
+    Tribes/Tribes,
+    Update/Updt,
+    Updt/Updt,
+    VBB/VBB,
+    Var/Var,
+    Verify/Vrfy,
+    VerifyAcc/VerifyAcc,
+    View/View,
+    Vrfy/Vrfy,
+    WE/WE,
+    Win/Win,
+    XNOR/XNOR,
+    XOR/XOR,
 }
 
 \cryptoDefineAlgoCSV{
-	ACFrege/AC\textsuperscript{0}\textsf{-}Frege,
-	AltPolyTime/AP,
-	AltTime/ATIME,
-	APC/APC,
-	Assumption/X,
-	CP/CP,
-	CPV/CPV,
-	DAGRes/DAG\textsf{-}Res,
-	DNFF/DNFF,
-	DPLL/DPLL,
-	EQ/EQ,
-	Eq/Eq,
-	EXPCOM/EXPCOM,
-	EF/EF,
-	ExtFrege/ExtFrege,
-	FV/FV,
-	Frege/Frege,
-	G/G,
-	HA/HA,
-	IPS/IPS,
-	LLL/LLL,
-	LJ/LJ,
-	LK/LK,
-	MaxRes/MaxRes,
-	MergeRes/MergeRes,
-	MonRes/Mon\textsf{-}Res,
-	NJ/NJ,
-	NK/NK,
-	NS/NS,
-	PA/PA,
-	PC/PC,
-	PCR/PCR,
-	PV/PV,
-	Post/Post,
-	Reduction/R,
-	RegRes/Reg\textsf{-}Res,
-	Res/Res,
-	ResGraph/ResG,
-	ResTree/ResT,
-	SA/SA,
-	SAplus/SA^{+},
-	SOS/SOS,
-	TCFrege/TC\textsuperscript{0}\textsf{-}Frege,
-	TreeRes/TreeRes,
-	VNC/VNC,
-	VPV/VPV,
-	WRes/W\textsf{-}Res,
+    ACFrege/AC\textsuperscript{0}\textsf{-}Frege,
+    AltPolyTime/AP,
+    AltTime/ATIME,
+    APC/APC,
+    Assumption/X,
+    CP/CP,
+    CPV/CPV,
+    DAGRes/DAG\textsf{-}Res,
+    DNFF/DNFF,
+    DPLL/DPLL,
+    EQ/EQ,
+    Eq/Eq,
+    EXPCOM/EXPCOM,
+    EF/EF,
+    ExtFrege/ExtFrege,
+    FV/FV,
+    Frege/Frege,
+    G/G,
+    HA/HA,
+    IPS/IPS,
+    LLL/LLL,
+    LJ/LJ,
+    LK/LK,
+    MaxRes/MaxRes,
+    MergeRes/MergeRes,
+    MonRes/Mon\textsf{-}Res,
+    NJ/NJ,
+    NK/NK,
+    NS/NS,
+    PA/PA,
+    PC/PC,
+    PCR/PCR,
+    PV/PV,
+    Post/Post,
+    Reduction/R,
+    RegRes/Reg\textsf{-}Res,
+    Res/Res,
+    ResGraph/ResG,
+    ResTree/ResT,
+    SA/SA,
+    SAplus/SA^{+},
+    SOS/SOS,
+    TCFrege/TC\textsuperscript{0}\textsf{-}Frege,
+    TreeRes/TreeRes,
+    VNC/VNC,
+    VPV/VPV,
+    WRes/W\textsf{-}Res,
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -981,24 +998,24 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \cryptoDefineAlgoCSV{
-	CheckExpiry/CheckExpiry,
-	CheckSessionState/CheckSessionState,
-	IsFresh/IsFresh,
-	IsFreshEE/IsFreshEE,
-	IsFreshELT/IsFreshELT,
-	IsFreshESS/IsFreshESS,
-	IsFreshLTE/IsFreshLTE,
-	IsFreshLTLT/IsFreshLTLT,
-	IsFreshLTSS/IsFreshLTSS,
-	IsPartner/IsPartner,
-	IsSessionValid/IsSessionValid,
-	Partner/Partner,
-	SetFreshnessType/SetFreshnessType,
-	ValidateMessage/ValidateMessage,
-	ValidateParty/ValidateParty,
-	ValidateSession/ValidateSession,
-	VerifySessionKey/VerifySessionKey,
-	VerifySignature/VerifySignature,
+    CheckExpiry/CheckExpiry,
+    CheckSessionState/CheckSessionState,
+    IsFresh/IsFresh,
+    IsFreshEE/IsFreshEE,
+    IsFreshELT/IsFreshELT,
+    IsFreshESS/IsFreshESS,
+    IsFreshLTE/IsFreshLTE,
+    IsFreshLTLT/IsFreshLTLT,
+    IsFreshLTSS/IsFreshLTSS,
+    IsPartner/IsPartner,
+    IsSessionValid/IsSessionValid,
+    Partner/Partner,
+    SetFreshnessType/SetFreshnessType,
+    ValidateMessage/ValidateMessage,
+    ValidateParty/ValidateParty,
+    ValidateSession/ValidateSession,
+    VerifySessionKey/VerifySessionKey,
+    VerifySignature/VerifySignature,
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1006,65 +1023,65 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \cryptoDefineProbCSV{
-	BipartiteProb/Bipartite-Matching,
-	BrouwerProb/Brouwer-Fixpoint,
-	CDHProb/Computational-Diffie-Hellman,
-	CRTProb/Chinese-Remainder-Theorem,
-	CVPProb/Closest-Vector,
-	CliqueProb/Clique,
-	CollisionProb/Collision,
-	ColoringProb/Graph-Coloring,
-	CycleProb/Cycle,
-	DDHProb/Decision-Diffie-Hellman,
-	DHProb/Diffie-Hellman,
-	DLPProb/Discrete-Logarithm,
-	DiscreteLogProb/Discrete-Logarithm,
-	EOLProb/End-of-Line,
-	EOMLProb/End-of-Metered-Line,
-	FactoringProb/Factoring,
-	GapCVPProb/Gap-CVP,
-	GapSVPProb/Gap-SVP,
-	HamiltonianCycleProb/Hamiltonian-Cycle,
-	HamiltonianPathProb/Hamiltonian-Path,
-	IndependentSetProb/Independent-Set,
-	InversionProb/Inversion,
-	IterProb/Iterative-Search,
-	KnapsackProb/Knapsack,
-	LPNProb/Learning-Parity-with-Noise,
-	LWEProb/Learning-with-Errors,
-	LeafProb/Leaf,
-	LocalSearchProb/Local-Search,
-	MCSPProb/Minimum-Circuit-Size,
-	MatchingProb/Matching,
-	MaxCutProb/Max-Cut,
-	MaxFlowProb/Max-Flow,
-	MaxSATProb/Max-SAT,
-	MinCutProb/Min-Cut,
-	MinPDTProb/Minimum-Parity-Decision-Tree-Refutation,
-	ModInvProb/Modular-Inverse,
-	MulticollisionProb/Multicollision,
-	NashProb/Nash-Equilibrium,
-	PHProb/Pigeonhole-Circuit,
-	PathFindingProb/Path-Finding,
-	PreimageProb/Preimage,
-	QRAProb/Quadratic-Residuosity,
-	QRProb/Quadratic-Residue,
-	RSAProb/Rivest-Shamir-Adleman,
-	RSVLProb/Relaxed-Sink-of-Verifiable-Line,
-	RootFindingProb/Root-Finding,
-	SATProb/SAT,
-	SISProb/Shortest-Integer-Solution,
-	SVLProb/Sink-of-Verifiable-Line,
-	SVPProb/Shortest-Vector,
-	SecondPreimageProb/Second-Preimage,
-	SourceOrSinkProb/Source-or-Sink,
-	SourceTargetProb/Source-Target,
-	SpernersProb/Sperner-Fixpoint,
-	StrongRSAProb/Strong-RSA,
-	SubsetSumProb/Subset-Sum,
-	VertexCoverProb/Vertex-Cover,
-	WPHProb/Weak-Pigeonhole-Circuit,
-	kSATProb/\ensuremath{k}-SAT,
+    BipartiteProb/Bipartite-Matching,
+    BrouwerProb/Brouwer-Fixpoint,
+    CDHProb/Computational-Diffie-Hellman,
+    CRTProb/Chinese-Remainder-Theorem,
+    CVPProb/Closest-Vector,
+    CliqueProb/Clique,
+    CollisionProb/Collision,
+    ColoringProb/Graph-Coloring,
+    CycleProb/Cycle,
+    DDHProb/Decision-Diffie-Hellman,
+    DHProb/Diffie-Hellman,
+    DLPProb/Discrete-Logarithm,
+    DiscreteLogProb/Discrete-Logarithm,
+    EOLProb/End-of-Line,
+    EOMLProb/End-of-Metered-Line,
+    FactoringProb/Factoring,
+    GapCVPProb/Gap-CVP,
+    GapSVPProb/Gap-SVP,
+    HamiltonianCycleProb/Hamiltonian-Cycle,
+    HamiltonianPathProb/Hamiltonian-Path,
+    IndependentSetProb/Independent-Set,
+    InversionProb/Inversion,
+    IterProb/Iterative-Search,
+    KnapsackProb/Knapsack,
+    LPNProb/Learning-Parity-with-Noise,
+    LWEProb/Learning-with-Errors,
+    LeafProb/Leaf,
+    LocalSearchProb/Local-Search,
+    MCSPProb/Minimum-Circuit-Size,
+    MatchingProb/Matching,
+    MaxCutProb/Max-Cut,
+    MaxFlowProb/Max-Flow,
+    MaxSATProb/Max-SAT,
+    MinCutProb/Min-Cut,
+    MinPDTProb/Minimum-Parity-Decision-Tree-Refutation,
+    ModInvProb/Modular-Inverse,
+    MulticollisionProb/Multicollision,
+    NashProb/Nash-Equilibrium,
+    PHProb/Pigeonhole-Circuit,
+    PathFindingProb/Path-Finding,
+    PreimageProb/Preimage,
+    QRAProb/Quadratic-Residuosity,
+    QRProb/Quadratic-Residue,
+    RSAProb/Rivest-Shamir-Adleman,
+    RSVLProb/Relaxed-Sink-of-Verifiable-Line,
+    RootFindingProb/Root-Finding,
+    SATProb/SAT,
+    SISProb/Shortest-Integer-Solution,
+    SVLProb/Sink-of-Verifiable-Line,
+    SVPProb/Shortest-Vector,
+    SecondPreimageProb/Second-Preimage,
+    SourceOrSinkProb/Source-or-Sink,
+    SourceTargetProb/Source-Target,
+    SpernersProb/Sperner-Fixpoint,
+    StrongRSAProb/Strong-RSA,
+    SubsetSumProb/Subset-Sum,
+    VertexCoverProb/Vertex-Cover,
+    WPHProb/Weak-Pigeonhole-Circuit,
+    kSATProb/\ensuremath{k}-SAT,
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1072,106 +1089,106 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \cryptoDefineKeyCSV{
-	acc/acc,
-	accept/accept,
-	accm/accm,
-	ad/ad,
-	add/add,
-	authentic/authentic,
-	aux/aux,
-	broken/broken,
-	cc/c,
-	cid/cid,
-	cm/cm,
-	corrupted/corrupted,
-	cost/cost,
-	cp/cp,
-	crs/crs,
-	ct/ct,
-	del/del,
-	ee/e,
-	ek/ek,
-	epk/epk,
-	esk/esk,
-	false/false,
-	fk/fk,
-	fresh/fresh,
-	gk/gk,
-	good/good,
-	hash/h,
-	hk/hk,
-	id/id,
-	il/il,
-	insecure/insecure,
-	invalid/invalid,
-	iv/iv,
-	kc/kc,
-	kk/k,
-	kl/kl,
-	len/ln,
-	ll/ll,
-	ltpk/ltpk,
-	ltsk/ltsk,
-	message/msg,
-	messages/msgs,
-	mm/m,
-	mpk/mpk,
-	msk/msk,
-	nl/nl,
-	nn/n,
-	no/no,
-	nparties/n,
-	oid/oid,
-	ol/ol,
-	op/op,
-	owf/F,
-	party/party,
-	peer/peer,
-	pid/pid,
-	pk/pk,
-	pp/pp,
-	prf/F,
-	prg/G,
-	qq/qq,
-	queries/queries,
-	reject/reject,
-	rem/rem,
-	role/role,
-	rounds/rounds,
-	rr/r,
-	rrs/rs,
-	rt/rt,
-	secure/secure,
-	sgn/sgn,
-	sid/sid,
-	sidv/sidv,
-	sk/sk,
-	sr/sr,
-	srs/srs,
-	ssid/ssid,
-	sspk/sspk,
-	sssk/sssk,
-	sst/sst,
-	st/st,
-	stale/stale,
-	td/td,
-	threshold/t,
-	time/time,
-	tmtime/time,
-	tp/tp,
-	tq/tq,
-	trace/tr,
-	trans/tr,
-	trapdoor/td,
-	true/true,
-	unauthentic/unauthentic,
-	uncorrupted/uncorrupted,
-	upd/upd,
-	update/upd,
-	valid/valid,
-	view/view,
-	vk/vk,
-	yes/yes,
+    acc/acc,
+    accept/accept,
+    accm/accm,
+    ad/ad,
+    add/add,
+    authentic/authentic,
+    aux/aux,
+    broken/broken,
+    cc/c,
+    cid/cid,
+    cm/cm,
+    corrupted/corrupted,
+    cost/cost,
+    cp/cp,
+    crs/crs,
+    ct/ct,
+    del/del,
+    ee/e,
+    ek/ek,
+    epk/epk,
+    esk/esk,
+    false/false,
+    fk/fk,
+    fresh/fresh,
+    gk/gk,
+    good/good,
+    hash/h,
+    hk/hk,
+    id/id,
+    il/il,
+    insecure/insecure,
+    invalid/invalid,
+    iv/iv,
+    kc/kc,
+    kk/k,
+    kl/kl,
+    len/ln,
+    ll/ll,
+    ltpk/ltpk,
+    ltsk/ltsk,
+    message/msg,
+    messages/msgs,
+    mm/m,
+    mpk/mpk,
+    msk/msk,
+    nl/nl,
+    nn/n,
+    no/no,
+    nparties/n,
+    oid/oid,
+    ol/ol,
+    op/op,
+    owf/F,
+    party/party,
+    peer/peer,
+    pid/pid,
+    pk/pk,
+    pp/pp,
+    prf/F,
+    prg/G,
+    qq/qq,
+    queries/queries,
+    reject/reject,
+    rem/rem,
+    role/role,
+    rounds/rounds,
+    rr/r,
+    rrs/rs,
+    rt/rt,
+    secure/secure,
+    sgn/sgn,
+    sid/sid,
+    sidv/sidv,
+    sk/sk,
+    sr/sr,
+    srs/srs,
+    ssid/ssid,
+    sspk/sspk,
+    sssk/sssk,
+    sst/sst,
+    st/st,
+    stale/stale,
+    td/td,
+    threshold/t,
+    time/time,
+    tmtime/time,
+    tp/tp,
+    tq/tq,
+    trace/tr,
+    trans/tr,
+    trapdoor/td,
+    true/true,
+    unauthentic/unauthentic,
+    uncorrupted/uncorrupted,
+    upd/upd,
+    update/upd,
+    valid/valid,
+    view/view,
+    vk/vk,
+    yes/yes,
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1179,51 +1196,51 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \cryptoDefineOracleCSV{
-	CDHOracle/CDH,
-	CRGapDHOracle/CRGapDH,
-	CGL/CGL,
-	ChallengeOracle/Challenge,
-	Corrupt/Corrupt,
-	Create/Create,
-	DDHOracle/DDH,
-	DecryptionOracle/Decrypt,
-	EncryptionOracle/Encrypt,
-	EvalOracle/Eval,
-	Execute/Execute,
-	ExposeOracle/Expose,
-	GapDHOracle/GapDH,
-	HashOracle/Hash,
-	IsPartner/IsPartner,
-	KeyConfirm/KeyConfirm,
-	KeyGenOracle/KeyGen,
-	NewKeyOracle/NewKey,
-	Partner/Partner,
-	ProverOracle/Prover,
-	PunctureOracle/Puncture,
-	ROOracle/RO,
-	Reveal/Reveal,
-	Send/Send,
-	SessionExpire/SessionExpire,
-	SessionKey/SessionKey,
-	SessionResync/SessionResync,
-	SessionState/SessionState,
-	SessionTranscript/SessionTranscript,
-	SignOracle/Sign,
-	SimOracle/SimOracle,
-	Test/Test,
-	UnwrapOracle/Unwrap,
-	VerifierOracle/Verifier,
-	VerifyOracle/Vrfy,
-	WrapOracle/Wrap,
+    CDHOracle/CDH,
+    CRGapDHOracle/CRGapDH,
+    CGL/CGL,
+    ChallengeOracle/Challenge,
+    Corrupt/Corrupt,
+    Create/Create,
+    DDHOracle/DDH,
+    DecryptionOracle/Decrypt,
+    EncryptionOracle/Encrypt,
+    EvalOracle/Eval,
+    Execute/Execute,
+    ExposeOracle/Expose,
+    GapDHOracle/GapDH,
+    HashOracle/Hash,
+    IsPartner/IsPartner,
+    KeyConfirm/KeyConfirm,
+    KeyGenOracle/KeyGen,
+    NewKeyOracle/NewKey,
+    Partner/Partner,
+    ProverOracle/Prover,
+    PunctureOracle/Puncture,
+    ROOracle/RO,
+    Reveal/Reveal,
+    Send/Send,
+    SessionExpire/SessionExpire,
+    SessionKey/SessionKey,
+    SessionResync/SessionResync,
+    SessionState/SessionState,
+    SessionTranscript/SessionTranscript,
+    SignOracle/Sign,
+    SimOracle/SimOracle,
+    Test/Test,
+    UnwrapOracle/Unwrap,
+    VerifierOracle/Verifier,
+    VerifyOracle/Vrfy,
+    WrapOracle/Wrap,
 }
 
-\let\SendOracle\oracleSend
-\let\ExecuteOracle\oracleExecute
-\let\RevealOracle\oracleReveal
-\let\CorruptOracle\oracleCorrupt
-\let\TestOracle\oracleTest
-\let\EphemeralKeyOracle\oracleEphemeralKey
-\let\SessionKeyOracle\oracleSessionKey
+\NewDocumentCommand{\CorruptOracle}     {}{\oracleCorrupt}
+\NewDocumentCommand{\EphemeralKeyOracle}{}{\oracleEphemeralKey}
+\NewDocumentCommand{\ExecuteOracle}     {}{\oracleExecute}
+\NewDocumentCommand{\RevealOracle}      {}{\oracleReveal}
+\NewDocumentCommand{\SendOracle}        {}{\oracleSend}
+\NewDocumentCommand{\SessionKeyOracle}  {}{\oracleSessionKey}
+\NewDocumentCommand{\TestOracle}        {}{\oracleTest}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Cryptographic Primitive Interfaces
@@ -1280,63 +1297,63 @@
 \NewDocumentCommand{\FCOpen}{}{\FC.\funct{Open}}
 \NewDocumentCommand{\FCVerify}{}{\FC.\funct{Vrfy}}
 
-\NewDocumentCommand{\VCSetup}{}{\VC.\funct{Setup}}
 \NewDocumentCommand{\VCCommit}{}{\VC.\funct{Commit}}
-\NewDocumentCommand{\VCOpen}{}{\VC.\funct{Open}}
 \NewDocumentCommand{\VCOpenSub}{}{\VC.\funct{OpenSub}}
+\NewDocumentCommand{\VCOpen}{}{\VC.\funct{Open}}
+\NewDocumentCommand{\VCSetup}{}{\VC.\funct{Setup}}
 \NewDocumentCommand{\VCUpdate}{}{\VC.\funct{Update}}
-\NewDocumentCommand{\VCVerify}{}{\VC.\funct{Verify}}
 \NewDocumentCommand{\VCVerifySub}{}{\VC.\funct{VerifySub}}
+\NewDocumentCommand{\VCVerify}{}{\VC.\funct{Verify}}
 \NewDocumentCommand{\VCWitUpdate}{}{\VC.\funct{WitUpdate}}
 
-\NewDocumentCommand{\KZG}{}{\algostyle{KZG}}
-\NewDocumentCommand{\KZGSetup}{}{\KZG.\funct{Setup}}
 \NewDocumentCommand{\KZGCommit}{}{\KZG.\funct{Commit}}
 \NewDocumentCommand{\KZGOpen}{}{\KZG.\funct{Open}}
+\NewDocumentCommand{\KZGSetup}{}{\KZG.\funct{Setup}}
 \NewDocumentCommand{\KZGVerify}{}{\KZG.\funct{Vrfy}}
+\NewDocumentCommand{\KZG}{}{\algostyle{KZG}}
 
 \NewDocumentCommand{\DPFGen}{}{\DPF.\funct{Gen}}
 \NewDocumentCommand{\DPFEval}{}{\DPF.\funct{Eval}}
 
-\NewDocumentCommand{\FESetup}{}{\FE.\funct{Setup}}
-\NewDocumentCommand{\FEKeyGen}{}{\FE.\funct{KeyGen}}
-\NewDocumentCommand{\FEEnc}{}{\FE.\funct{Enc}}
 \NewDocumentCommand{\FEDec}{}{\FE.\funct{Dec}}
+\NewDocumentCommand{\FEEnc}{}{\FE.\funct{Enc}}
 \NewDocumentCommand{\FEGen}{}{\FE.\funct{Gen}}
+\NewDocumentCommand{\FEKeyGen}{}{\FE.\funct{KeyGen}}
+\NewDocumentCommand{\FESetup}{}{\FE.\funct{Setup}}
 
+\NewDocumentCommand{\FHEAdd}{}{\FHE.\funct{Add}}
+\NewDocumentCommand{\FHEDec}{}{\FHE.\funct{Dec}}
+\NewDocumentCommand{\FHEEnc}{}{\FHE.\funct{Enc}}
+\NewDocumentCommand{\FHEEval}{}{\FHE.\funct{Eval}}
 \NewDocumentCommand{\FHEGen}{}{\FHE.\funct{Gen}}
 \NewDocumentCommand{\FHEKeyGen}{}{\FHE.\funct{KeyGen}}
-\NewDocumentCommand{\FHEEnc}{}{\FHE.\funct{Enc}}
-\NewDocumentCommand{\FHEDec}{}{\FHE.\funct{Dec}}
-\NewDocumentCommand{\FHEEval}{}{\FHE.\funct{Eval}}
-\NewDocumentCommand{\FHEAdd}{}{\FHE.\funct{Add}}
 \NewDocumentCommand{\FHEMul}{}{\FHE.\funct{Mul}}
 
-\NewDocumentCommand{\FSSetup}{}{\FS.\funct{Setup}}
+\NewDocumentCommand{\FSChallenge}{}{\FS.\funct{Chal}}
 \NewDocumentCommand{\FSHash}{}{\FS.\funct{Hash}}
 \NewDocumentCommand{\FSProve}{}{\FS.\funct{Prove}}
-\NewDocumentCommand{\FSVerify}{}{\FS.\funct{Vrfy}}
-\NewDocumentCommand{\FSChallenge}{}{\FS.\funct{Chal}}
+\NewDocumentCommand{\FSSetup}{}{\FS.\funct{Setup}}
 \NewDocumentCommand{\FSTranscript}{}{\FS.\funct{Trans}}
+\NewDocumentCommand{\FSVerify}{}{\FS.\funct{Vrfy}}
 
 \NewDocumentCommand{\FSSGen}{}{\FSS.\funct{Gen}}
 \NewDocumentCommand{\FSSEval}{}{\FSS.\funct{Eval}}
 
-\NewDocumentCommand{\HKGen}{}{\Hash.\funct{Gen}}
-\NewDocumentCommand{\HSetup}{}{\Hash.\funct{Setup}}
-\NewDocumentCommand{\HEval}{}{\Hash.\funct{Eval}}
 \NewDocumentCommand{\HCommit}{}{\Hash.\funct{Commit}}
-\NewDocumentCommand{\HOpen}{}{\Hash.\funct{Open}}
+\NewDocumentCommand{\HEval}{}{\Hash.\funct{Eval}}
 \NewDocumentCommand{\HExtract}{}{\Hash.\funct{Extract}}
+\NewDocumentCommand{\HKGen}{}{\Hash.\funct{Gen}}
+\NewDocumentCommand{\HOpen}{}{\Hash.\funct{Open}}
+\NewDocumentCommand{\HSetup}{}{\Hash.\funct{Setup}}
 \NewDocumentCommand{\HVerify}{}{\Hash.\funct{Vrfy}}
 
-\let\HashGen\HKGen
-\let\HashSetup\HSetup
-\let\HashEval\HEval
-\let\HashCommit\HCommit
-\let\HashOpen\HOpen
-\let\HashExtract\HExtract
-\let\HashVerify\HVerify
+\NewDocumentCommand{\HashCommit}{}{\HCommit}
+\NewDocumentCommand{\HashEval}{}{\HEval}
+\NewDocumentCommand{\HashExtract}{}{\HExtract}
+\NewDocumentCommand{\HashGen}{}{\HKGen}
+\NewDocumentCommand{\HashOpen}{}{\HOpen}
+\NewDocumentCommand{\HashSetup}{}{\HSetup}
+\NewDocumentCommand{\HashVerify}{}{\HVerify}
 
 \NewDocumentCommand{\Hone}{}{\funct{H}_1}
 \NewDocumentCommand{\Htwo}{}{\funct{H}_2}
@@ -1594,14 +1611,10 @@
 \NewDocumentCommand{\Red}{}{\algostyle{R}}
 \NewDocumentCommand{\algo}{}{\setstyle{A}}
 \NewDocumentCommand{\game}{}{\setstyle{G}}
-\ifluatex
-	\NewDocumentCommand{\Prot}{}{\ensuremath{\text{\textsf{Π}}}}
+\ifPDFTeX
+    \NewDocumentCommand{\Prot}{}{\ensuremath{\algostyle{\Pi}}}
 \else
-	\ifxetex
-		\NewDocumentCommand{\Prot}{}{\ensuremath{\text{\textsf{Π}}}}
-	\else
-		\NewDocumentCommand{\Prot}{}{\ensuremath{\algostyle{\Pi}}}
-	\fi
+    \NewDocumentCommand{\Prot}{}{\ensuremath{\text{\textsf{Π}}}}
 \fi
 
 \newfunc{\adv}{A}
@@ -1868,10 +1881,10 @@
 \NewDocumentCommand{\pctitle}{m}{\noindent#1\pctitlerule}
 
 \NewDocumentCommand{\makeSectionLabel}{m m}{
-	\expandafter\NewDocumentCommand\csname #1Caption\endcsname{}{\textsf{\textsc{#2\space}}}
-	\expandafter\NewDocumentCommand\csname #1CaptionNoSpace\endcsname{}{\textsf{\textsc{#2}}}
-	\expandafter\NewDocumentCommand\csname #1Heading\endcsname{}{\textbf{\csname #1Caption\endcsname}}
-	\expandafter\NewDocumentCommand\csname #1HeadingNoSpace\endcsname{}{\textbf{\csname #1CaptionNoSpace\endcsname}}
+    \expandafter\NewDocumentCommand\csname #1Caption\endcsname{}{\textsf{\textsc{#2\space}}}
+    \expandafter\NewDocumentCommand\csname #1CaptionNoSpace\endcsname{}{\textsf{\textsc{#2}}}
+    \expandafter\NewDocumentCommand\csname #1Heading\endcsname{}{\textbf{\csname #1Caption\endcsname}}
+    \expandafter\NewDocumentCommand\csname #1HeadingNoSpace\endcsname{}{\textbf{\csname #1CaptionNoSpace\endcsname}}
 }
 
 \makeSectionLabel{adversary}{Adversary}
@@ -1890,47 +1903,47 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NewDocumentCommand{\newsequenceofgames}{m}{
-	\newcounter{#1}
-	\setcounter{#1}{-1}
-	\@ifundefined{sequencename}{%
-		\NewDocumentCommand{\sequencename}{}{#1}%
-	}{%
-		\RenewDocumentCommand{\sequencename}{}{#1}%
-	}
-	\ifx\GameID\undefined
-		\NewDocumentCommand{\GameID}{}{#1}
-	\else
-		\RenewDocumentCommand{\GameID}{}{#1}
-	\fi
-	\ifx\PrevLabel\undefined
-		\NewDocumentCommand{\PrevLabel}{}{\GameID.NULL}
-	\else
-		\RenewDocumentCommand{\PrevLabel}{}{\GameID.NULL}
-	\fi
-	\ifx\ThisLabel\undefined
-		\NewDocumentCommand{\ThisLabel}{}{\GameID.NULL}
-	\else
-		\RenewDocumentCommand{\ThisLabel}{}{\GameID.NULL}
-	\fi
+    \newcounter{#1}
+    \setcounter{#1}{-1}
+    \@ifundefined{sequencename}{%
+        \NewDocumentCommand{\sequencename}{}{#1}%
+    }{%
+        \RenewDocumentCommand{\sequencename}{}{#1}%
+    }
+    \ifx\GameID\undefined
+        \NewDocumentCommand{\GameID}{}{#1}
+    \else
+        \RenewDocumentCommand{\GameID}{}{#1}
+    \fi
+    \ifx\PrevLabel\undefined
+        \NewDocumentCommand{\PrevLabel}{}{\GameID.NULL}
+    \else
+        \RenewDocumentCommand{\PrevLabel}{}{\GameID.NULL}
+    \fi
+    \ifx\ThisLabel\undefined
+        \NewDocumentCommand{\ThisLabel}{}{\GameID.NULL}
+    \else
+        \RenewDocumentCommand{\ThisLabel}{}{\GameID.NULL}
+    \fi
 }
 
 \NewDocumentCommand{\nextgame}{m}{
-	\let\PrevLabel\ThisLabel
-	\RenewDocumentCommand{\ThisLabel}{}{\GameID.#1}
-	\refstepcounter{\GameID}\label{\GameID.#1}
-	\paragraph{Experiment~$\algostyle{Exp}_\arabic{\GameID}.$}
+    \let\PrevLabel\ThisLabel
+    \RenewDocumentCommand{\ThisLabel}{}{\GameID.#1}
+    \refstepcounter{\GameID}\label{\GameID.#1}
+    \paragraph{Experiment~$\algostyle{Exp}_\arabic{\GameID}.$}
 }
 \NewDocumentCommand{\nextgamewithref}{m m}{
-	\let\PrevLabel\ThisLabel
-	\RenewDocumentCommand{\ThisLabel}{}{\GameID.#1}
-	\refstepcounter{\GameID}\label{\GameID.#1}
-	\paragraph{Game~\hyperref[#2]{$\algostyle{G}_{\arabic{\GameID}}$}}
+    \let\PrevLabel\ThisLabel
+    \RenewDocumentCommand{\ThisLabel}{}{\GameID.#1}
+    \refstepcounter{\GameID}\label{\GameID.#1}
+    \paragraph{Game~\hyperref[#2]{$\algostyle{G}_{\arabic{\GameID}}$}}
 }
 \NewDocumentCommand{\nextgamewithrefi}{m m m}{
-	\let\PrevLabel\ThisLabel
-	\RenewDocumentCommand{\ThisLabel}{}{\GameID.#1}
-	\refstepcounter{\GameID}\label{\GameID.#1}
-	\paragraph{Game~\hyperref[#2]{$\algostyle{G}_{\arabic{\GameID}.#3}$}}
+    \let\PrevLabel\ThisLabel
+    \RenewDocumentCommand{\ThisLabel}{}{\GameID.#1}
+    \refstepcounter{\GameID}\label{\GameID.#1}
+    \paragraph{Game~\hyperref[#2]{$\algostyle{G}_{\arabic{\GameID}.#3}$}}
 }
 
 \NewDocumentCommand{\gameref}{m}{{\hyperref[\sequencename.#1]{\algostyle{G}_{\ref{\sequencename.#1}}}}}
@@ -1939,11 +1952,11 @@
 \NewDocumentCommand{\gamerefAi}{m m}{{\hyperref[\sequencename.#1]{\algostyle{G}^{\advA}_{\ref{\sequencename.#1}.#2}}}}
 
 \NewDocumentCommand{\gamedelta}{m m}{
-	\Pr\left[\gamerefA{#1}\Rightarrow 1\right]
-	- \Pr\left[\gamerefA{#2}\Rightarrow 1\right]}
+    \Pr\left[\gamerefA{#1}\Rightarrow 1\right]
+    - \Pr\left[\gamerefA{#2}\Rightarrow 1\right]}
 \NewDocumentCommand{\gameequal}{m m}{
-	\Pr\left[\gamerefA{#1}\Rightarrow 1\right]
-	= \Pr\left[\gamerefA{#2}\Rightarrow 1\right]}
+    \Pr\left[\gamerefA{#1}\Rightarrow 1\right]
+    = \Pr\left[\gamerefA{#2}\Rightarrow 1\right]}
 
 \NewDocumentCommand{\gamerefW}{m}{\Pr[\gamerefA{#1} \Rightarrow 1]}
 \NewDocumentCommand{\gamerefWi}{m m}{\Pr[\gamerefAi{#1}{#2} \Rightarrow 1]}
@@ -1998,17 +2011,17 @@
 \newclass{\kemindcca}{IND\textsf{-}CCA}
 \newclass{\kemindccatwo}{IND\textsf{-}CCA2}
 
-\let\EUFCMA\eufcma
-\let\INDCCA\indcca
-\let\INDCCAtwo\indccatwo
-\let\INDCPA\indcpa
-\let\INDDCCA\inddcca
-\let\INDDCPA\inddcpa
-\let\NMCCA\nmcca
-\let\NMCPA\nmcpa
-\let\OWCCA\owcca
-\let\OWCPA\owcpa
-\let\SUFCMA\sufcma
+\NewDocumentCommand{\EUFCMA}   {}{\eufcma}
+\NewDocumentCommand{\INDCCA}   {}{\indcca}
+\NewDocumentCommand{\INDCCAtwo}{}{\indccatwo}
+\NewDocumentCommand{\INDCPA}   {}{\indcpa}
+\NewDocumentCommand{\INDDCCA}  {}{\inddcca}
+\NewDocumentCommand{\INDDCPA}  {}{\inddcpa}
+\NewDocumentCommand{\NMCCA}    {}{\nmcca}
+\NewDocumentCommand{\NMCPA}    {}{\nmcpa}
+\NewDocumentCommand{\OWCCA}    {}{\owcca}
+\NewDocumentCommand{\OWCPA}    {}{\owcpa}
+\NewDocumentCommand{\SUFCMA}   {}{\sufcma}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Impagliazzo Worlds and Machine Models

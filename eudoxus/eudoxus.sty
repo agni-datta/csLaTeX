@@ -7,24 +7,45 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{eudoxus}[2026/06/07 v1.0.0 Eudoxus Math LaTeX package]
+\ProvidesPackage{eudoxus}[2026/06/23 v1.1 Eudoxus Math LaTeX package]
+
+\RequirePackage{l3keys2e}
+\ExplSyntaxOn
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Options
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newif\ifeudoxmath     \eudoxmathtrue
-\newif\ifeudoxtheorems \eudoxtheoremstrue
-\newif\ifeudoxtcs      \eudoxtcsfalse
-\newif\ifeudoxlayout   \eudoxlayouttrue
+\bool_new:N \g_eudox_math_bool
+\bool_new:N \g_eudox_theorems_bool
+\bool_new:N \g_eudox_tcs_bool
+\bool_new:N \g_eudox_layout_bool
 
-\DeclareOption{nomath}     {\eudoxmathfalse\eudoxtheoremsfalse\eudoxtcsfalse}
-\DeclareOption{notheorems} {\eudoxtheoremsfalse}
-\DeclareOption{notcs}      {\eudoxtcsfalse}
-\DeclareOption{nolayout}   {\eudoxlayoutfalse}
+\keys_define:nn { eudoxus }
+{
+    nomath     .code:n  = { \bool_gset_false:N \g_eudox_math_bool
+            \bool_gset_false:N \g_eudox_theorems_bool
+            \bool_gset_false:N \g_eudox_tcs_bool } ,
+    notheorems .code:n  = { \bool_gset_false:N \g_eudox_theorems_bool } ,
+    tcs        .code:n  = { \bool_gset_true:N  \g_eudox_tcs_bool } ,
+    notcs      .code:n  = { \bool_gset_false:N \g_eudox_tcs_bool } ,
+    nolayout   .code:n  = { \bool_gset_false:N \g_eudox_layout_bool } ,
+    unknown    .code:n  = { \PackageWarning{eudoxus}{Unknown~option~`#1'} } ,
+}
 
-\DeclareOption*{\PackageWarning{eudoxus}{Unknown option `\CurrentOption'}}
-\ProcessOptions\relax
+\bool_gset_true:N  \g_eudox_math_bool
+\bool_gset_true:N  \g_eudox_theorems_bool
+\bool_gset_false:N \g_eudox_tcs_bool
+\bool_gset_true:N  \g_eudox_layout_bool
+
+\ProcessKeysOptions { eudoxus }
+
+\newif\ifeudoxmath     \bool_if:NTF \g_eudox_math_bool     { \eudoxmathtrue     } { \eudoxmathfalse     }
+\newif\ifeudoxtheorems \bool_if:NTF \g_eudox_theorems_bool { \eudoxtheoremstrue } { \eudoxtheoremsfalse }
+\newif\ifeudoxtcs      \bool_if:NTF \g_eudox_tcs_bool      { \eudoxtcstrue      } { \eudoxtcsfalse      }
+\newif\ifeudoxlayout   \bool_if:NTF \g_eudox_layout_bool   { \eudoxlayouttrue   } { \eudoxlayoutfalse   }
+
+\ExplSyntaxOff
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Encoding and language
@@ -37,8 +58,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ifeudoxlayout
-	\RequirePackage[margin=1in]{geometry}
-	\RequirePackage{setspace}
+    \RequirePackage[margin=1in]{geometry}
+    \RequirePackage{setspace}
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -99,7 +120,12 @@
 \RequirePackage{comment}
 \RequirePackage{fancyvrb}
 \RequirePackage{framed}
-\RequirePackage[framemethod=TikZ,skipabove=5pt,skipbelow=5pt,roundcorner=1pt]{mdframed}
+\RequirePackage[
+    framemethod = TikZ ,
+    skipabove   = 0.75\baselineskip ,
+    skipbelow   = 0.75\baselineskip ,
+    roundcorner = 1.0pt
+]{mdframed}
 \RequirePackage{verbatim}
 
 \setcounter{secnumdepth}{4}
@@ -126,22 +152,26 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ifeudoxmath
-	\RequirePackage{amsfonts}
-	\RequirePackage{amsmath}
-	\RequirePackage{amssymb}
-	\RequirePackage{amsthm}
-	\RequirePackage{bbm}
-	\RequirePackage{bm}
-	\RequirePackage{braket}
-	\RequirePackage{esvect}
-	\RequirePackage{lmodern}
-	\RequirePackage{mathrsfs}
-	\RequirePackage{mathtools}
-	\RequirePackage[bb=bboldx,cal=cm,scr=dutchcal]{mathalpha}
-	\RequirePackage[Symbol]{upgreek}
-	\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
-	\numberwithin{equation}{section}
-	\allowdisplaybreaks
+    \RequirePackage{amsfonts}
+    \RequirePackage{amsmath}
+    \RequirePackage{amssymb}
+    \RequirePackage{amsthm}
+    \RequirePackage{bbm}
+    \RequirePackage{bm}
+    \RequirePackage{braket}
+    \RequirePackage{esvect}
+    \RequirePackage{lmodern}
+    \RequirePackage{mathrsfs}
+    \RequirePackage{mathtools}
+    \RequirePackage[bb=bboldx,cal=cm,scr=dutchcal]{mathalpha}
+    \ifPDFTeX
+        \RequirePackage[Symbol]{upgreek}
+    \else
+        \RequirePackage{upgreek}
+    \fi
+    \DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
+    \numberwithin{equation}{section}
+    \allowdisplaybreaks
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -150,17 +180,16 @@
 
 \RequirePackage[final,protrusion=true,expansion=true]{microtype}
 \microtypesetup{%
-	activate   = true,
-	expansion  = true,
-	factor     = 1250,
-	protrusion = true,
-	stretch    = 25
+    activate   = true,
+    expansion  = true,
+    factor     = 1500,
+    protrusion = true,
+    stretch    = 30
 }
 \UseMicrotypeSet[protrusion]{basicmath}
 \UseMicrotypeSet[expansion]{alltext}
-\SetExpansion{encoding=*,family=*}{stretch=25,shrink=25,step=1}
+\SetExpansion{encoding=*,family=*}{stretch=30,shrink=30,step=1}
 \SetProtrusion{encoding=*,family=*}{period={,50},comma={,40},colon={,30},semicolon={,30}}
-\emergencystretch=2em
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % References
@@ -169,20 +198,20 @@
 \RequirePackage[round,numbers]{natbib}
 \RequirePackage{breakcites}
 \RequirePackage[
-	bookmarksnumbered  = true,
-	breaklinks         = true,
-	citecolor          = RoyalBlue,
-	colorlinks         = true,
-	hypertexnames      = true,
-	linkcolor          = MidnightBlue,
-	pagebackref        = true,
-	pdfencoding        = auto,
-	pdfpagelabels      = true,
-	pdfpagelayout      = SinglePage,
-	pdfstartview       = FitH,
-	pdfusetitle,
-	unicode            = true,
-	urlcolor           = Peach
+    bookmarksnumbered  = true,
+    breaklinks         = true,
+    citecolor          = RoyalBlue,
+    colorlinks         = true,
+    hypertexnames      = true,
+    linkcolor          = MidnightBlue,
+    pagebackref        = true,
+    pdfencoding        = auto,
+    pdfpagelabels      = true,
+    pdfpagelayout      = SinglePage,
+    pdfstartview       = FitH,
+    pdfusetitle,
+    unicode            = true,
+    urlcolor           = RedOrange
 ]{hyperref}
 
 \pdfstringdefDisableCommands{%
@@ -206,20 +235,134 @@
 
 \RenewDocumentCommand{\backref}{m}{}
 \RenewDocumentCommand{\backrefalt}{m m m m}{%
-	\ifcase #1\or (Cited on p.~#2).
-	\else (Cited on pp.~#2).
-	\fi
+    \ifcase #1\or (Cited on p.~#2).
+    \else (Cited on pp.~#2).
+    \fi
 }
 
 \ifeudoxlayout
-	\@ifclassloaded{amsart}{%
-		\makeatletter
-		\patchcmd{\thebibliography}
-		{\list}
-		{\small\setstretch{1.075}\list}
-		{}{}
-		\makeatother
-	}{}
+    \@ifclassloaded{amsart}{%
+        \makeatletter
+        \patchcmd{\thebibliography}
+        {\list}
+        {\small\setstretch{1.075}\list}
+        {}{}
+        \makeatother
+    }{}
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Theorem environments
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifeudoxtheorems
+    \newtheoremstyle{theoremlike}
+    {2.5pt}{2.5pt}{\normalfont}{}{\scshape}{.}{0.5em}{}
+    \newtheoremstyle{definitionlike}
+    {2.5pt}{2.5pt}{\normalfont}{}{\scshape}{.}{0.5em}{}
+    \newtheoremstyle{remarklike}
+    {2.5pt}{2.5pt}{\normalfont}{}{\scshape}{.}{0.5em}{}
+
+    \NewDocumentCommand{\edxnewtheoremsection}{m m}{\newtheorem{#1}{#2}[section]}
+    \NewDocumentCommand{\edxnewtheoremsibling}{m m}{\newtheorem{#1}[theorem]{#2}}
+    \NewDocumentCommand{\edxnewtheoremstar}{m m}{\newtheorem*{#1}{#2}}
+
+    \theoremstyle{theoremlike}
+    \edxnewtheoremsection{theorem}{Theorem}
+    \edxnewtheoremsibling{assertion}{Assertion}
+    \edxnewtheoremsibling{assumption}{Assumption}
+    \edxnewtheoremsibling{axiom}{Axiom}
+    \edxnewtheoremsibling{claim}{Claim}
+    \edxnewtheoremsibling{conclusion}{Conclusion}
+    \edxnewtheoremsibling{conjecture}{Conjecture}
+    \edxnewtheoremsibling{corollary}{Corollary}
+    \edxnewtheoremsibling{criterion}{Criterion}
+    \edxnewtheoremsibling{fact}{Fact}
+    \edxnewtheoremsibling{folklore}{Folklore}
+    \edxnewtheoremsibling{hypothesis}{Hypothesis}
+    \edxnewtheoremsibling{informaltheorem}{Informal Theorem}
+    \edxnewtheoremsibling{lemma}{Lemma}
+    \edxnewtheoremsibling{metatheorem}{Meta Theorem}
+    \edxnewtheoremsibling{observation}{Observation}
+    \edxnewtheoremsibling{postulate}{Postulate}
+    \edxnewtheoremsibling{property}{Property}
+    \edxnewtheoremsibling{proposition}{Proposition}
+
+    \theoremstyle{definitionlike}
+    \edxnewtheoremsibling{application}{Application}
+    \edxnewtheoremsibling{construction}{Construction}
+    \edxnewtheoremsibling{convention}{Convention}
+    \edxnewtheoremsibling{definition}{Definition}
+    \edxnewtheoremsibling{example}{Example}
+    \edxnewtheoremsibling{experiment}{Experiment}
+    \edxnewtheoremsibling{notation}{Notation}
+    \edxnewtheoremsibling{problem}{Problem}
+    \edxnewtheoremsibling{protocol}{Protocol}
+    \edxnewtheoremsibling{result}{Result}
+    \edxnewtheoremsibling{solution}{Solution}
+    \edxnewtheoremsibling{step}{Step}
+
+    \theoremstyle{remarklike}
+    \edxnewtheoremsibling{commentary}{Commentary}
+    \edxnewtheoremsibling{discussion}{Discussion}
+    \edxnewtheoremsibling{exercise}{Exercise}
+    \edxnewtheoremsibling{guideline}{Guideline}
+    \edxnewtheoremsibling{highlight}{Highlight}
+    \edxnewtheoremsibling{important}{Important}
+    \edxnewtheoremsibling{insight}{Insight}
+    \edxnewtheoremsibling{keypoint}{Key Point}
+    \edxnewtheoremsibling{motivation}{Motivation}
+    \edxnewtheoremsibling{notationabuse}{Notation Abuse}
+    \edxnewtheoremsibling{note}{Note}
+    \edxnewtheoremsibling{openproblem}{Open Problem}
+    \edxnewtheoremsibling{question}{Question}
+    \edxnewtheoremsibling{recall}{Recall}
+    \edxnewtheoremsibling{remark}{Remark}
+    \edxnewtheoremsibling{summary}{Summary}
+    \edxnewtheoremsibling{syntax}{Syntax}
+    \edxnewtheoremsibling{takeaway}{Takeaway}
+    \edxnewtheoremsibling{tip}{Tip}
+    \edxnewtheoremsibling{warning}{Warning}
+
+    \theoremstyle{theoremlike}
+    \edxnewtheoremstar{theorem*}{Theorem}
+    \edxnewtheoremstar{lemma*}{Lemma}
+    \edxnewtheoremstar{corollary*}{Corollary}
+    \edxnewtheoremstar{hypothesis*}{Hypothesis}
+    \edxnewtheoremstar{claim*}{Claim}
+    \edxnewtheoremstar{conjecture*}{Conjecture}
+
+    \theoremstyle{definitionlike}
+    \edxnewtheoremstar{informaltheorem*}{Informal Theorem}
+
+    \theoremstyle{remarklike}
+    \edxnewtheoremstar{openproblem*}{Open Problem}
+    \edxnewtheoremstar{syntax*}{Syntax}
+
+    \ProvideDocumentCommand{\SetQEDSymbol}{m}{ \setqedsymbol{#1} }
+    \ProvideDocumentCommand{\setqedsymbol}{m}{ \RenewDocumentCommand{\qedsymbol}{}{#1} }
+
+    \NewDocumentEnvironment{proofsketch}{o}
+    {
+        \IfNoValueTF{#1}
+        { \begin{proof}[Proof~(Sketch)] }
+        { \begin{proof}[Proof~(Sketch~#1)] }
+    }
+    { \end{proof} }
+    \NewDocumentEnvironment{proofidea}{o}
+    {
+        \IfNoValueTF{#1}
+        { \begin{proof}[Proof~(Idea)] }
+        { \begin{proof}[Proof~(Idea~#1)] }
+    }
+    { \end{proof} }
+    \NewDocumentEnvironment{proofofclaim}{o}
+    {
+        \IfNoValueTF{#1}
+        { \begin{proof}[Proof~of~Claim] }
+        { \begin{proof}[Proof~of~Claim~(#1)] }
+    }
+    { \end{proof} }
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -229,121 +372,38 @@
 \RequirePackage{zref-clever}
 \RequirePackage{zref-vario}
 \zcsetup{
-	cap        = true,
-	noabbrev,
-	nameinlink = true,
-	lang       = english
+    cap        = true,
+    noabbrev,
+    nameinlink = true,
+    lang       = english
 }
 \zcRefTypeSetup{section}{
-	Name-sg = \textsection,
-	name-sg = \textsection,
-	Name-pl = \textsection\textsection,
-	name-pl = \textsection\textsection
+    Name-sg = \textsection,
+    name-sg = \textsection,
+    Name-pl = \textsection\textsection,
+    name-pl = \textsection\textsection
 }
 \zcRefTypeSetup{subsection}{
-	Name-sg = \textsection,
-	name-sg = \textsection,
-	Name-pl = \textsection\textsection,
-	name-pl = \textsection\textsection
+    Name-sg = \textsection,
+    name-sg = \textsection,
+    Name-pl = \textsection\textsection,
+    name-pl = \textsection\textsection
 }
 \zcRefTypeSetup{subsubsection}{
-	Name-sg = \textsection,
-	name-sg = \textsection,
-	Name-pl = \textsection\textsection,
-	name-pl = \textsection\textsection
+    Name-sg = \textsection,
+    name-sg = \textsection,
+    Name-pl = \textsection\textsection,
+    name-pl = \textsection\textsection
 }
 
 \NewDocumentCommand{\Cref}{O{}m}{\zcref[S,#1]{#2}}
-\let\cref\zcref
-\let\crefrange\zcrefrange
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Theorem environments
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\ifeudoxtheorems
-	\newtheoremstyle{theoremlike}
-	{2.5pt}{2.5pt}{\normalfont}{}{\scshape}{.}{0.5em}{}
-	\newtheoremstyle{definitionlike}
-	{2.5pt}{2.5pt}{\normalfont}{}{\scshape}{.}{0.5em}{}
-	\newtheoremstyle{remarklike}
-	{2.5pt}{2.5pt}{\normalfont}{}{\scshape}{.}{0.5em}{}
-
-	\theoremstyle{theoremlike}
-	\newtheorem{theorem}{Theorem}[section]
-	\newtheorem{assertion}[theorem]{Assertion}
-	\newtheorem{assumption}[theorem]{Assumption}
-	\newtheorem{axiom}[theorem]{Axiom}
-	\newtheorem{claim}[theorem]{Claim}
-	\newtheorem{conclusion}[theorem]{Conclusion}
-	\newtheorem{conjecture}[theorem]{Conjecture}
-	\newtheorem{corollary}[theorem]{Corollary}
-	\newtheorem{criterion}[theorem]{Criterion}
-	\newtheorem{fact}[theorem]{Fact}
-	\newtheorem{folklore}[theorem]{Folklore}
-	\newtheorem{hypothesis}[theorem]{Hypothesis}
-	\newtheorem{informaltheorem}[theorem]{Informal Theorem}
-	\newtheorem{lemma}[theorem]{Lemma}
-	\newtheorem{metatheorem}[theorem]{Meta Theorem}
-	\newtheorem{observation}[theorem]{Observation}
-	\newtheorem{postulate}[theorem]{Postulate}
-	\newtheorem{property}[theorem]{Property}
-	\newtheorem{proposition}[theorem]{Proposition}
-
-	\theoremstyle{definitionlike}
-	\newtheorem{application}[theorem]{Application}
-	\newtheorem{construction}[theorem]{Construction}
-	\newtheorem{convention}[theorem]{Convention}
-	\newtheorem{definition}[theorem]{Definition}
-	\newtheorem{example}[theorem]{Example}
-	\newtheorem{experiment}[theorem]{Experiment}
-	\newtheorem{notation}[theorem]{Notation}
-	\newtheorem{problem}[theorem]{Problem}
-	\newtheorem{protocol}[theorem]{Protocol}
-	\newtheorem{result}[theorem]{Result}
-	\newtheorem{solution}[theorem]{Solution}
-	\newtheorem{step}[theorem]{Step}
-
-	\theoremstyle{remarklike}
-	\newtheorem{commentary}[theorem]{Commentary}
-	\newtheorem{discussion}[theorem]{Discussion}
-	\newtheorem{exercise}[theorem]{Exercise}
-	\newtheorem{guideline}[theorem]{Guideline}
-	\newtheorem{highlight}[theorem]{Highlight}
-	\newtheorem{important}[theorem]{Important}
-	\newtheorem{insight}[theorem]{Insight}
-	\newtheorem{keypoint}[theorem]{Key Point}
-	\newtheorem{motivation}[theorem]{Motivation}
-	\newtheorem{notationabuse}[theorem]{Notation Abuse}
-	\newtheorem{note}[theorem]{Note}
-	\newtheorem{openproblem}[theorem]{Open Problem}
-	\newtheorem{question}[theorem]{Question}
-	\newtheorem{recall}[theorem]{Recall}
-	\newtheorem{remark}[theorem]{Remark}
-	\newtheorem{summary}[theorem]{Summary}
-	\newtheorem{syntax}[theorem]{Syntax}
-	\newtheorem{takeaway}[theorem]{Takeaway}
-	\newtheorem{tip}[theorem]{Tip}
-	\newtheorem{warning}[theorem]{Warning}
-
-	\theoremstyle{theoremlike}
-	\newtheorem*{theorem*}{Theorem}
-	\newtheorem*{lemma*}{Lemma}
-	\newtheorem*{corollary*}{Corollary}
-	\newtheorem*{hypothesis*}{Hypothesis}
-	\newtheorem*{claim*}{Claim}
-	\newtheorem*{conjecture*}{Conjecture}
-
-	\theoremstyle{definitionlike}
-	\newtheorem*{informaltheorem*}{Informal Theorem}
-
-	\theoremstyle{remarklike}
-	\newtheorem*{openproblem*}{Open Problem}
-	\newtheorem*{syntax*}{Syntax}
-
-	\NewDocumentEnvironment{proofsketch}{}{\begin{proof}[Proof (Sketch)]}{\end{proof}}
-	\NewDocumentEnvironment{proofidea}{}{\begin{proof}[Proof (Idea)]}{\end{proof}}
-\fi
+\@ifundefined{crefrange}
+{\NewDocumentCommand{\crefrange}{m m}{\zcrefrange{#1}{#2}}}
+{\RenewDocumentCommand{\crefrange}{m m}{\zcrefrange{#1}{#2}}}
+\@ifundefined{cref}
+{\NewDocumentCommand{\cref}{m}{\zcref{#1}}}
+{\RenewDocumentCommand{\cref}{m}{\zcref{#1}}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Paragraph headings
@@ -351,51 +411,55 @@
 
 \newif\ifedxhaspunct
 
-\NewDocumentCommand{\edxcheckpunct}{m}{%
-	\ifx\edxcheckpunct#1\edxcheckpunct\else\edxhaspuncttrue\fi
-}
+\def\edxcheckpunct{}
 
-\def\edxcheckdot#1.\edxsep#2\edxend{\edxcheckpunct{#2}}
-\def\edxcheckquestion#1?\edxsep#2\edxend{\edxcheckpunct{#2}}
-\def\edxcheckexclam#1!\edxsep#2\edxend{\edxcheckpunct{#2}}
-\def\edxcheckcolon#1:\edxsep#2\edxend{\edxcheckpunct{#2}}
+\def\edx@checkdot#1.\edxsep#2\edxend{\edxcheckpunct{#2}}
+\def\edx@checkquestion#1?\edxsep#2\edxend{\edxcheckpunct{#2}}
+\def\edx@checkexclam#1!\edxsep#2\edxend{\edxcheckpunct{#2}}
+\def\edx@checkcolon#1:\edxsep#2\edxend{\edxcheckpunct{#2}}
 
 \NewDocumentCommand{\edxappendpunct}{m}{%
-	\edxhaspunctfalse
-	\edxcheckdot#1\edxsep.\edxsep\edxend
-	\edxcheckquestion#1\edxsep?\edxsep\edxend
-	\edxcheckexclam#1\edxsep!\edxsep\edxend
-	\edxcheckcolon#1\edxsep:\edxsep\edxend
-	#1\ifedxhaspunct\else.\fi
+    \edxhaspunctfalse
+    \edx@checkdot#1\edxsep.\edxsep\edxend
+    \edx@checkquestion#1\edxsep?\edxsep\edxend
+    \edx@checkexclam#1\edxsep!\edxsep\edxend
+    \edx@checkcolon#1\edxsep:\edxsep\edxend
+    #1\ifedxhaspunct\else.\fi
 }
 
 \NewDocumentCommand{\edxeatnewline}{}{%
-	\begingroup\catcode13=10\endgroup
+    \begingroup\catcode13=10\endgroup
 }
 
 \NewDocumentCommand{\parhead}{m}{%
-	\smallskip\noindent
-	\textbf{\boldmath\ignorespaces\edxappendpunct{#1}}~\edxeatnewline
+    \smallskip\noindent
+    \textbf{\boldmath\ignorespaces\edxappendpunct{#1}}%
+    \hskip 0.30em
+    \ignorespaces
 }
 
 \NewDocumentCommand{\subparhead}{m}{%
-	\smallskip\noindent
-	\textsc{\ignorespaces\edxappendpunct{#1}}~\edxeatnewline
+    \smallskip\noindent
+    \textsc{\ignorespaces\edxappendpunct{#1}}%
+    \hskip 0.30em
+    \ignorespaces
 }
 
-\let\paragraph\parhead
-\let\subparagraph\subparhead
+\AtBeginDocument{%
+    \RenewDocumentCommand{\paragraph}  {m}{\parhead{#1}}%
+    \RenewDocumentCommand{\subparagraph}{m}{\subparhead{#1}}%
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % TCS and cryptography
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ifeudoxtcs
-	\IfFileExists{tcscrypto.sty}{%
-		\RequirePackage[notoc]{tcscrypto}%
-	}{%
-		\PackageWarning{eudoxus}{tcscrypto.sty not found; skipping}%
-	}
+    \IfFileExists{tcscrypto.sty}{%
+        \RequirePackage[notoc]{tcscrypto}%
+    }{%
+        \PackageWarning{eudoxus}{tcscrypto.sty not found; skipping}%
+    }
 \fi
 
 \endinput

@@ -3,7 +3,7 @@ title: README
 aliases: README
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:21:45 pm
-date modified: Tuesday, May 19th 2026, 1:35:34 am
+date modified: Tuesday, June 23rd 2026, 12:00:00 am
 ---
 
 <!-- @format -->
@@ -73,7 +73,9 @@ In `draft` mode the broken reference prints “??” in the text and a margin no
 
 #### Proof environments
 
-`proofsketch` and `proofidea` are available as unnumbered proof-style environments when the theorem layer is active. Use `csamsmath` alongside `csbook` for the full theorem and mathematics API.
+`proofsketch`, `proofidea`, and `proofofclaim` are available as unnumbered proof-style environments when the theorem layer is active. `proofofclaim` accepts an optional claim identifier, rendered as “Proof of Claim (id)”. Use `csamsmath` alongside `csbook` for the full theorem and mathematics API.
+
+`\setqedsymbol{symbol}` changes the proof-end symbol, and `\settheoremendsymbol{symbol}` changes theorem-end markers where those markers are used. The capitalized forms remain available as compatibility aliases.
 
 #### Table of contents
 

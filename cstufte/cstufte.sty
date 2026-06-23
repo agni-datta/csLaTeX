@@ -7,26 +7,52 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{cstufte}[2026/04/13 v3.0 Structural overhaul mimicking the Tufte aesthetic]
+\ProvidesPackage{cstufte}[2026/06/23 v3.1 Structural overhaul mimicking the Tufte aesthetic]
 
+\RequirePackage{l3keys2e}
 \makeatletter
+
+\ProvideDocumentCommand{\@publisher}{}{}
+\ExplSyntaxOn
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Options
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage{kvoptions}
-\SetupKeyvalOptions{family=et,prefix=cstf@}
+\bool_new:N \g_cstf_colorful_bool
+\bool_new:N \g_cstf_draft_bool
+\tl_new:N   \g_cstf_rulerwidth_tl
+\tl_new:N   \g_cstf_framecolor_tl
+\tl_new:N   \g_cstf_font_tl
+\tl_new:N   \g_cstf_backcolor_tl
 
-\DeclareBoolOption[false]{colorful}
-\DeclareBoolOption[false]{draft}
+\keys_define:nn { cstufte }
+{
+    colorful    .bool_gset:N = \g_cstf_colorful_bool ,
+    colorful    .initial:n   = false ,
+    draft       .bool_gset:N = \g_cstf_draft_bool ,
+    draft       .initial:n   = false ,
+    rulerwidth  .tl_gset:N   = \g_cstf_rulerwidth_tl ,
+    rulerwidth  .initial:n   = 2pt ,
+    framecolor  .tl_gset:N   = \g_cstf_framecolor_tl ,
+    framecolor  .initial:n   = black ,
+    font        .tl_gset:N   = \g_cstf_font_tl ,
+    font        .initial:n   = kpfonts ,
+    backcolor   .tl_gset:N   = \g_cstf_backcolor_tl ,
+    backcolor   .initial:n   = white ,
+    unknown     .code:n      = { \PackageWarning{cstufte}{Unknown~option~`#1'~ignored} } ,
+}
+\ProcessKeysOptions { cstufte }
 
-\DeclareStringOption[2pt]{rulerwidth}
-\DeclareStringOption[black]{framecolor}
-\DeclareStringOption[kpfonts]{font}
-\DeclareStringOption[white]{backcolor}
+\tl_set_eq:cN { cstf@rulerwidth  } \g_cstf_rulerwidth_tl
+\tl_set_eq:cN { cstf@framecolor  } \g_cstf_framecolor_tl
+\tl_set_eq:cN { cstf@font        } \g_cstf_font_tl
+\tl_set_eq:cN { cstf@backcolor   } \g_cstf_backcolor_tl
 
-\ProcessKeyvalOptions*
+\newif\ifcstf@colorful  \bool_if:NTF \g_cstf_colorful_bool { \cstf@colorfultrue } { \cstf@colorfulfalse }
+\newif\ifcstf@draft     \bool_if:NTF \g_cstf_draft_bool    { \cstf@drafttrue    } { \cstf@draftfalse    }
+
+\ExplSyntaxOff
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Core packages
@@ -59,12 +85,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage[final,protrusion=true,expansion=true]{microtype}
-\microtypesetup{activate=true,final,protrusion=true,expansion=true,stretch=50,factor=1250}
+\microtypesetup{activate=true,final,protrusion=true,expansion=true,stretch=30,factor=1500}
 \UseMicrotypeSet[protrusion]{basicmath}
 \UseMicrotypeSet[expansion]{alltext}
-\SetExpansion{encoding=*,family=*}{stretch=50,shrink=50,step=1}
+\SetExpansion{encoding=*,family=*}{stretch=30,shrink=30,step=1}
 \SetProtrusion{encoding=*,family=*}{period={,50},comma={,40},colon={,30},semicolon={,30}}
-\emergencystretch=2em
 \DisableLigatures[f]{encoding=T1,family=tt*}
 \SetTracking{encoding=*,shape=sc}{40}
 
@@ -73,46 +98,46 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ifPDFTeX
-	\ifdefstring{\cstf@font}{baskerville}{%
-		\RequirePackage[proportional,tabular]{Baskervaldx}%
-		\RequirePackage[baskervaldx,varbb]{newtxmath}%
-		\RequirePackage{biolinum}%
-	}{%
-		\RequirePackage[nofligatures,oldstylenums]{kpfonts}%
-	}
+    \ifdefstring{\cstf@font}{baskerville}{%
+        \RequirePackage[proportional,tabular]{Baskervaldx}%
+        \RequirePackage[baskervaldx,varbb]{newtxmath}%
+        \RequirePackage{biolinum}%
+    }{%
+        \RequirePackage[nofligatures,oldstylenums]{kpfonts}%
+    }
 \else
-	\RequirePackage{fontspec}
-	\ifdefstring{\cstf@font}{baskerville}{%
-		\setmainfont{Baskervaldx}[
-			Ligatures         = TeX,
-			SmallCapsFeatures = {RawFeature=+smcp},
-			RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]%
-		\setsansfont{Libertinus Sans}[
-			Scale             = MatchUppercase,
-			Ligatures         = TeX,
-			SmallCapsFeatures = {RawFeature=+smcp},
-			RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]%
-		\setmonofont{Inconsolata}[
-			Scale      = MatchLowercase,
-			Ligatures  = TeX,
-			RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]%
-	}{%
-		\RequirePackage[nosf,noDcommand,fakedscripts]{kpfonts-otf}%
-		\setsansfont{Libertinus Sans}[
-			Scale             = MatchUppercase,
-			Ligatures         = TeX,
-			RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum},
-			SmallCapsFeatures = {Letters=SmallCaps}
-		]%
-		\setmonofont{Inconsolata}[
-			Scale      = MatchLowercase,
-			Ligatures  = TeX,
-			RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]%
-	}
+    \RequirePackage{fontspec}
+    \ifdefstring{\cstf@font}{baskerville}{%
+        \setmainfont{Baskervaldx}[
+            Ligatures         = TeX,
+            SmallCapsFeatures = {RawFeature=+smcp},
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]%
+        \setsansfont{Libertinus Sans}[
+            Scale             = MatchUppercase,
+            Ligatures         = TeX,
+            SmallCapsFeatures = {RawFeature=+smcp},
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]%
+        \setmonofont{Anonymous Pro}[
+            Scale      = MatchLowercase,
+            Ligatures  = TeX,
+            RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]%
+    }{%
+        \RequirePackage[nosf,noDcommand,fakedscripts]{kpfonts-otf}%
+        \setsansfont{Libertinus Sans}[
+            Scale             = MatchUppercase,
+            Ligatures         = TeX,
+            RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum},
+            SmallCapsFeatures = {Letters=SmallCaps}
+        ]%
+        \setmonofont{Anonymous Pro}[
+            Scale      = MatchLowercase,
+            Ligatures  = TeX,
+            RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+        ]%
+    }
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -122,13 +147,13 @@
 \RequirePackage[dvipsnames,table,x11names]{xcolor}
 
 \ifcstf@colorful
-	\definecolor{cstf@frame}{RGB}{70,130,180}
-	\definecolor{cstf@back}{RGB}{248,248,255}
-	\definecolor{cstf@title}{RGB}{25,25,112}
+    \definecolor{cstf@frame}{RGB}{70,130,180}
+    \definecolor{cstf@back}{RGB}{248,248,255}
+    \definecolor{cstf@title}{RGB}{25,25,112}
 \else
-	\definecolor{cstf@frame}{named}{\cstf@framecolor}
-	\definecolor{cstf@back}{named}{\cstf@backcolor}
-	\definecolor{cstf@title}{named}{black}
+    \definecolor{cstf@frame}{named}{\cstf@framecolor}
+    \definecolor{cstf@back}{named}{\cstf@backcolor}
+    \definecolor{cstf@title}{named}{black}
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -187,22 +212,22 @@
 \pgfplotsset{compat=1.18}
 
 \usetikzlibrary{
-	3d,%
-	arrows.meta,%
-	backgrounds,%
-	calc,%
-	decorations.markings,%
-	decorations.pathmorphing,%
-	decorations.pathreplacing,%
-	fadings,%
-	intersections,%
-	matrix,%
-	patterns,%
-	positioning,%
-	scopes,%
-	shadows,%
-	shapes.geometric,%
-	shapes.misc%
+    3d,%
+    arrows.meta,%
+    backgrounds,%
+    calc,%
+    decorations.markings,%
+    decorations.pathmorphing,%
+    decorations.pathreplacing,%
+    fadings,%
+    intersections,%
+    matrix,%
+    patterns,%
+    positioning,%
+    scopes,%
+    shadows,%
+    shapes.geometric,%
+    shapes.misc%
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -213,29 +238,29 @@
 \tcbuselibrary{breakable,skins,theorems}
 
 \tcbset{
-	elegantbox/.style={
-			enhanced,
-			breakable,
-			colback         = cstf@back,
-			colframe        = cstf@frame,
-			coltitle        = cstf@title,
-			sharp corners,
-			boxrule         = 0pt,
-			leftrule        = \cstf@rulerwidth,
-			left            = 8pt,
-			right           = 0pt,
-			top             = 4pt,
-			bottom          = 4pt,
-			toptitle        = 2pt,
-			bottomtitle     = 2pt,
-			parbox          = false,
-			fonttitle       = \bfseries\sffamily,
-			fontupper       = \normalfont,
-			attach title to upper = {\ },
-			after title     = {\space},
-			before upper    = {\parindent=15pt},
-			segmentation style = {solid,cstf@frame,line width=0.5pt}
-		}
+    elegantbox/.style={
+            enhanced,
+            breakable,
+            colback         = cstf@back,
+            colframe        = cstf@frame,
+            coltitle        = cstf@title,
+            sharp corners,
+            boxrule         = 0pt,
+            leftrule        = \cstf@rulerwidth,
+            left            = 8pt,
+            right           = 0pt,
+            top             = 4pt,
+            bottom          = 4pt,
+            toptitle        = 2pt,
+            bottomtitle     = 2pt,
+            parbox          = false,
+            fonttitle       = \bfseries\sffamily,
+            fontupper       = \normalfont,
+            attach title to upper = {\ },
+            after title     = {\space},
+            before upper    = {\parindent=15pt},
+            segmentation style = {solid,cstf@frame,line width=0.5pt}
+        }
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -259,16 +284,16 @@
 \RequirePackage{listings}
 
 \lstset{
-	basicstyle       = \ttfamily\small,
-	breaklines       = true,
-	columns          = flexible,
-	keepspaces       = true,
-	showstringspaces = false,
-	frame            = none,
-	numbers          = left,
-	numberstyle      = \tiny\color{black!40},
-	xleftmargin      = 2em,
-	framexleftmargin = 1.5em
+    basicstyle       = \ttfamily\small,
+    breaklines       = true,
+    columns          = flexible,
+    keepspaces       = true,
+    showstringspaces = false,
+    frame            = none,
+    numbers          = left,
+    numberstyle      = \tiny\color{black!40},
+    xleftmargin      = 2em,
+    framexleftmargin = 1.5em
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -276,49 +301,53 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage[
-	backend     = bibtex,
-	style       = oxalph,
-	sorting     = nyt,
-	sortcites   = true,
-	maxbibnames = 99,
-	giveninits  = true,
-	doi         = true,
-	url         = true,
-	eprint      = true
+    backend     = biber,
+    style       = oxalph,
+    sorting     = nyt,
+    sortcites   = true,
+    maxbibnames = 99,
+    giveninits  = true,
+    doi         = true,
+    url         = true,
+    eprint      = true
 ]{biblatex}
 
 \DeclareFieldFormat{url}{\url{#1}}
 \DeclareFieldFormat{doi}{%
-	\ifhyperref
-	{\href{https://doi.org/#1}{\nolinkurl{doi:#1}}}
-	{\nolinkurl{doi:#1}}%
+    \ifhyperref
+    {\href{https://doi.org/#1}{\nolinkurl{doi:#1}}}
+    {\nolinkurl{doi:#1}}%
 }
 
-\RenewDocumentCommand{\cite}{O{0pt} O{} m}{%
-	\sidenote[][#1]{\fullcite[#2]{#3}}%
+\AtBeginDocument{%
+    \@ifundefined{sidenote}{}{%
+        \RenewDocumentCommand{\cite}{O{0pt} O{} m}{%
+            \sidenote[][#1]{\fullcite[#2]{#3}}%
+        }%
+    }%
 }
 \NewDocumentCommand{\margincite}{O{0pt} O{} m}{%
-	\marginnote[][#1]{\fullcite[#2]{#3}}%
+    \marginnote[][#1]{\fullcite[#2]{#3}}%
 }
 
 \RequirePackage[makeindex]{imakeidx}
 \makeindex[intoc,title={Index},columns=2]
 
 \RequirePackage[
-	bookmarksnumbered  = true,
-	bookmarksopen      = true,
-	bookmarksopenlevel = 2,
-	breaklinks         = true,
-	colorlinks         = true,
-	pdfencoding        = auto,
-	pdfpagelayout      = SinglePage,
-	pdfstartview       = FitH,
-	pdfusetitle,
-	unicode            = true,
-	citecolor          = RoyalBlue,
-	filecolor          = NavyBlue,
-	linkcolor          = NavyBlue,
-	urlcolor           = Peach
+    bookmarksnumbered  = true,
+    bookmarksopen      = true,
+    bookmarksopenlevel = 2,
+    breaklinks         = true,
+    colorlinks         = true,
+    pdfencoding        = auto,
+    pdfpagelayout      = SinglePage,
+    pdfstartview       = FitH,
+    pdfusetitle,
+    unicode            = true,
+    citecolor          = RoyalBlue,
+    filecolor          = NavyBlue,
+    linkcolor          = MidnightBlue,
+    urlcolor           = RedOrange
 ]{hyperref}
 
 \RequirePackage[nameinlink,capitalise,noabbrev]{cleveref}
@@ -330,139 +359,194 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \declaretheoremstyle[
-	headfont      = \scshape,
-	notefont      = \normalfont\scshape,
-	bodyfont      = \normalfont,
-	spaceabove    = 3pt,
-	spacebelow    = 3pt,
-	headpunct     = {.},
-	postheadspace = 0.5em
+    headfont      = \scshape,
+    notefont      = \normalfont\scshape,
+    bodyfont      = \normalfont,
+    spaceabove    = 3pt,
+    spacebelow    = 3pt,
+    headpunct     = {.},
+    postheadspace = 0.5em
 ]{cstf@theoremlike}
 
 \declaretheoremstyle[
-	headfont      = \scshape,
-	notefont      = \normalfont\scshape,
-	bodyfont      = \normalfont,
-	spaceabove    = 3pt,
-	spacebelow    = 3pt,
-	headpunct     = {.},
-	postheadspace = 0.5em
+    headfont      = \scshape,
+    notefont      = \normalfont\scshape,
+    bodyfont      = \normalfont,
+    spaceabove    = 3pt,
+    spacebelow    = 3pt,
+    headpunct     = {.},
+    postheadspace = 0.5em
 ]{cstf@definitionlike}
 
 \declaretheoremstyle[
-	headfont      = \normalfont\scshape,
-	bodyfont      = \normalfont,
-	spaceabove    = 3pt,
-	spacebelow    = 3pt,
-	headpunct     = {.},
-	postheadspace = 0.5em
+    headfont      = \normalfont\scshape,
+    bodyfont      = \normalfont,
+    spaceabove    = 3pt,
+    spacebelow    = 3pt,
+    headpunct     = {.},
+    postheadspace = 0.5em
 ]{cstf@remarklike}
 
 \declaretheoremstyle[
-	headfont      = \normalfont\sffamily,
-	bodyfont      = \normalfont,
-	spaceabove    = 3pt,
-	spacebelow    = 3pt,
-	headpunct     = {.},
-	postheadspace = 0.5em
+    headfont      = \normalfont\sffamily,
+    bodyfont      = \normalfont,
+    spaceabove    = 3pt,
+    spacebelow    = 3pt,
+    headpunct     = {.},
+    postheadspace = 0.5em
 ]{cstf@highlightlike}
 
 \declaretheoremstyle[
-	headfont      = \itshape,
-	bodyfont      = \normalfont,
-	spaceabove    = 5pt,
-	spacebelow    = 5pt,
-	headpunct     = {.},
-	postheadspace = 0.5em,
-	qed           = \ensuremath{\scriptstyle\square}
+    headfont      = \itshape,
+    bodyfont      = \normalfont,
+    spaceabove    = 5pt,
+    spacebelow    = 5pt,
+    headpunct     = {.},
+    postheadspace = 0.5em,
+    qed           = \ensuremath{\scriptstyle\square}
 ]{cstf@proofstyle}
 
-\declaretheorem[name=Theorem,style=cstf@theoremlike,numberwithin=section]{theorem}
+\declaretheorem
+[
+    name         = Theorem ,
+    style        = cstf@theoremlike ,
+    numberwithin = section
+]{ theorem }
 
 \NewDocumentCommand{\cstf@declaretheoremfamily}{mm}{%
-	\forcsvlist{\declaretheorem[sibling=theorem,style=#1]}{#2}%
+    \forcsvlist{\declaretheorem[sibling=theorem,style=#1]}{#2}%
 }
 
 \cstf@declaretheoremfamily{cstf@theoremlike}{
-	assertion,%
-	assumption,%
-	axiom,%
-	claim,%
-	conclusion,%
-	conjecture,%
-	corollary,%
-	criterion,%
-	fact,%
-	folklore,%
-	hypothesis,%
-	lemma,%
-	observation,%
-	postulate,%
-	property,%
-	proposition
+    assertion,%
+    assumption,%
+    axiom,%
+    claim,%
+    conclusion,%
+    conjecture,%
+    corollary,%
+    criterion,%
+    fact,%
+    folklore,%
+    hypothesis,%
+    lemma,%
+    observation,%
+    postulate,%
+    property,%
+    proposition
 }
 
-\declaretheorem[name=Informal Theorem, sibling=theorem, style=cstf@theoremlike]{informaltheorem}
-\declaretheorem[name=Meta Theorem,     sibling=theorem, style=cstf@theoremlike]{metatheorem}
+\declaretheorem
+[
+    name    = { Informal~Theorem } ,
+    sibling = theorem ,
+    style   = cstf@theoremlike
+]{ informaltheorem }
+\declaretheorem
+[
+    name    = { Meta~Theorem } ,
+    sibling = theorem ,
+    style   = cstf@theoremlike
+]{ metatheorem }
 
 \cstf@declaretheoremfamily{cstf@definitionlike}{
-	application,%
-	construction,%
-	convention,%
-	definition,%
-	example,%
-	experiment,%
-	notation,%
-	problem,%
-	protocol,%
-	result,%
-	solution,%
-	step
+    application,%
+    construction,%
+    convention,%
+    definition,%
+    example,%
+    experiment,%
+    notation,%
+    problem,%
+    protocol,%
+    result,%
+    solution,%
+    step
 }
 
 \cstf@declaretheoremfamily{cstf@remarklike}{
-	commentary,%
-	discussion,%
-	exercise,%
-	motivation,%
-	note,%
-	question,%
-	remark,%
-	syntax
+    commentary,%
+    discussion,%
+    exercise,%
+    motivation,%
+    note,%
+    question,%
+    remark,%
+    syntax
 }
 
-\declaretheorem[name=Notation Abuse, sibling=theorem, style=cstf@remarklike]{notationabuse}
-\declaretheorem[name=Open Problem,   sibling=theorem, style=cstf@remarklike]{openproblem}
+\declaretheorem
+[
+    name    = { Notation~Abuse } ,
+    sibling = theorem ,
+    style   = cstf@remarklike
+]{ notationabuse }
+\declaretheorem
+[
+    name    = { Open~Problem } ,
+    sibling = theorem ,
+    style   = cstf@remarklike
+]{ openproblem }
 
 \cstf@declaretheoremfamily{cstf@highlightlike}{
-	guideline,%
-	highlight,%
-	important,%
-	insight,%
-	recall,%
-	summary,%
-	takeaway,%
-	tip,%
-	warning
+    guideline,%
+    highlight,%
+    important,%
+    insight,%
+    recall,%
+    summary,%
+    takeaway,%
+    tip,%
+    warning
 }
 
-\declaretheorem[name=Key Point, sibling=theorem, style=cstf@highlightlike]{keypoint}
+\declaretheorem
+[
+    name    = { Key~Point } ,
+    sibling = theorem ,
+    style   = cstf@highlightlike
+]{ keypoint }
 
-\declaretheorem[name=Theorem,         style=cstf@theoremlike,    numbered=no]{theorem*}
-\declaretheorem[name=Lemma,           style=cstf@theoremlike,    numbered=no]{lemma*}
-\declaretheorem[name=Corollary,       style=cstf@theoremlike,    numbered=no]{corollary*}
-\declaretheorem[name=Hypothesis,      style=cstf@theoremlike,    numbered=no]{hypothesis*}
-\declaretheorem[name=Claim,           style=cstf@theoremlike,    numbered=no]{claim*}
-\declaretheorem[name=Conjecture,      style=cstf@theoremlike,    numbered=no]{conjecture*}
-\declaretheorem[name=Informal Theorem,style=cstf@theoremlike,    numbered=no]{informaltheorem*}
-\declaretheorem[name=Open Problem,    style=cstf@remarklike,     numbered=no]{openproblem*}
-\declaretheorem[name=Syntax,          style=cstf@remarklike,     numbered=no]{syntax*}
+\declaretheorem[ name = Claim ,                 style = cstf@theoremlike , numbered = no ]{ claim* }
+\declaretheorem[ name = Conjecture ,            style = cstf@theoremlike , numbered = no ]{ conjecture* }
+\declaretheorem[ name = Corollary ,             style = cstf@theoremlike , numbered = no ]{ corollary* }
+\declaretheorem[ name = Hypothesis ,            style = cstf@theoremlike , numbered = no ]{ hypothesis* }
+\declaretheorem[ name = Lemma ,                 style = cstf@theoremlike , numbered = no ]{ lemma* }
+\declaretheorem[ name = Syntax ,                style = cstf@remarklike  , numbered = no ]{ syntax* }
+\declaretheorem[ name = Theorem ,               style = cstf@theoremlike , numbered = no ]{ theorem* }
+\declaretheorem[ name = { Informal~Theorem } ,  style = cstf@theoremlike , numbered = no ]{ informaltheorem* }
+\declaretheorem[ name = { Open~Problem } ,      style = cstf@remarklike  , numbered = no ]{ openproblem* }
 
-\let\proof\relax
-\let\endproof\relax
-\declaretheorem[name=Proof,style=cstf@proofstyle,numbered=no]{proof}
-\declaretheorem[name=Proof~(Sketch),style=cstf@proofstyle,numbered=no]{proofsketch}
-\declaretheorem[name=Proof~(Idea),style=cstf@proofstyle,numbered=no]{proofidea}
+\ProvideDocumentCommand{\setqedsymbol}{m}{ \RenewDocumentCommand{\qedsymbol}{}{#1} }
+\ProvideDocumentCommand{\SetQEDSymbol}{m}{ \setqedsymbol{#1} }
+
+\NewDocumentEnvironment{proofsketch}{o}
+{
+    \IfNoValueTF{#1}
+    { \begin{proof}[Proof~(Sketch)] }
+    { \begin{proof}[Proof~(Sketch~#1)] }
+}
+{ \end{proof} }
+
+\NewDocumentEnvironment{proofidea}{o}
+{
+    \IfNoValueTF{#1}
+    { \begin{proof}[Proof~(Idea)] }
+    { \begin{proof}[Proof~(Idea~#1)] }
+}
+{ \end{proof} }
+
+\NewDocumentEnvironment{proofofclaim}{o}
+{
+    \IfNoValueTF{#1}
+    { \begin{proof}[Proof~of~Claim] }
+    { \begin{proof}[Proof~of~Claim~(#1)] }
+}
+{ \end{proof} }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Cross-references
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \crefname{section}{\textsection}{\textsection\textsection}
 \Crefname{section}{\textsection}{\textsection\textsection}
@@ -480,56 +564,56 @@
 \def\cstf@setcrefname@parse#1/#2/#3\cstf@nil{\crefname{#1}{#2}{#3}}
 
 \cstf@setcrefnames{%
-	application/Application/Applications,%
-	assertion/Assertion/Assertions,%
-	assumption/Assumption/Assumptions,%
-	axiom/Axiom/Axioms,%
-	claim/Claim/Claims,%
-	commentary/Commentary/Commentaries,%
-	conclusion/Conclusion/Conclusions,%
-	conjecture/Conjecture/Conjectures,%
-	construction/Construction/Constructions,%
-	convention/Convention/Conventions,%
-	corollary/Corollary/Corollaries,%
-	criterion/Criterion/Criteria,%
-	definition/Definition/Definitions,%
-	discussion/Discussion/Discussions,%
-	example/Example/Examples,%
-	exercise/Exercise/Exercises,%
-	experiment/Experiment/Experiments,%
-	fact/Fact/Facts,%
-	folklore/Folklore/Folklore,%
-	guideline/Guideline/Guidelines,%
-	highlight/Highlight/Highlights,%
-	hypothesis/Hypothesis/Hypotheses,%
-	important/Important point/Important points,%
-	insight/Insight/Insights,%
-	keypoint/Key Point/Key Points,%
-	lemma/Lemma/Lemmas,%
-	motivation/Motivation/Motivations,%
-	notation/Notation/Notations,%
-	notationabuse/Notation Abuse/Notation Abuses,%
-	note/Note/Notes,%
-	observation/Observation/Observations,%
-	openproblem/Open Problem/Open Problems,%
-	postulate/Postulate/Postulates,%
-	problem/Problem/Problems,%
-	proof/Proof/Proofs,%
-	property/Property/Properties,%
-	proposition/Proposition/Propositions,%
-	protocol/Protocol/Protocols,%
-	question/Question/Questions,%
-	recall/Recall/Recalls,%
-	remark/Remark/Remarks,%
-	result/Result/Results,%
-	solution/Solution/Solutions,%
-	step/Step/Steps,%
-	summary/Summary/Summaries,%
-	syntax/Syntax/Syntaxes,%
-	takeaway/Takeaway/Takeaways,%
-	theorem/Theorem/Theorems,%
-	tip/Tip/Tips,%
-	warning/Warning/Warnings%
+    application/Application/Applications,%
+    assertion/Assertion/Assertions,%
+    assumption/Assumption/Assumptions,%
+    axiom/Axiom/Axioms,%
+    claim/Claim/Claims,%
+    commentary/Commentary/Commentaries,%
+    conclusion/Conclusion/Conclusions,%
+    conjecture/Conjecture/Conjectures,%
+    construction/Construction/Constructions,%
+    convention/Convention/Conventions,%
+    corollary/Corollary/Corollaries,%
+    criterion/Criterion/Criteria,%
+    definition/Definition/Definitions,%
+    discussion/Discussion/Discussions,%
+    example/Example/Examples,%
+    exercise/Exercise/Exercises,%
+    experiment/Experiment/Experiments,%
+    fact/Fact/Facts,%
+    folklore/Folklore/Folklore,%
+    guideline/Guideline/Guidelines,%
+    highlight/Highlight/Highlights,%
+    hypothesis/Hypothesis/Hypotheses,%
+    important/Important point/Important points,%
+    insight/Insight/Insights,%
+    keypoint/Key Point/Key Points,%
+    lemma/Lemma/Lemmas,%
+    motivation/Motivation/Motivations,%
+    notation/Notation/Notations,%
+    notationabuse/Notation Abuse/Notation Abuses,%
+    note/Note/Notes,%
+    observation/Observation/Observations,%
+    openproblem/Open Problem/Open Problems,%
+    postulate/Postulate/Postulates,%
+    problem/Problem/Problems,%
+    proof/Proof/Proofs,%
+    property/Property/Properties,%
+    proposition/Proposition/Propositions,%
+    protocol/Protocol/Protocols,%
+    question/Question/Questions,%
+    recall/Recall/Recalls,%
+    remark/Remark/Remarks,%
+    result/Result/Results,%
+    solution/Solution/Solutions,%
+    step/Step/Steps,%
+    summary/Summary/Summaries,%
+    syntax/Syntax/Syntaxes,%
+    takeaway/Takeaway/Takeaways,%
+    theorem/Theorem/Theorems,%
+    tip/Tip/Tips,%
+    warning/Warning/Warnings%
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -555,21 +639,21 @@
 {\hfill\textit{\thecontentspage}}
 [\vspace*{2pt}]
 
-\RenewDocumentCommand{\allcapsspacing}{m}{\textls[250]{#1}}
-\RenewDocumentCommand{\allcaps}{m}{\textls[250]{\MakeTextUppercase{#1}}}
-\RenewDocumentCommand{\smallcapsspacing}{m}{\textls[175]{#1}}
-\RenewDocumentCommand{\smallcaps}{m}{\smallcapsspacing{\scshape\MakeTextLowercase{#1}}}
-\RenewDocumentCommand{\textsc}{m}{\smallcapsspacing{\textsmallcaps{#1}}}
+\@ifundefined{allcapsspacing}{}{\RenewDocumentCommand{\allcapsspacing}{m}{\textls[250]{#1}}}
+\@ifundefined{allcaps}{}{\RenewDocumentCommand{\allcaps}{m}{\textls[250]{\MakeTextUppercase{#1}}}}
+\@ifundefined{smallcapsspacing}{}{\RenewDocumentCommand{\smallcapsspacing}{m}{\textls[175]{#1}}}
+\@ifundefined{smallcaps}{}{\RenewDocumentCommand{\smallcaps}{m}{\smallcapsspacing{\scshape\MakeTextLowercase{#1}}}}
+\@ifundefined{textsmallcaps}{}{\RenewDocumentCommand{\textsc}{m}{\smallcapsspacing{\textsmallcaps{#1}}}}
 
 \RenewDocumentCommand{\maketitlepage}{}{%
-	\begingroup
-	\setlength{\parindent}{0pt}
-	{\LARGE\textsc{\@author}\par}
-	\vspace{1.75in}{\HUGE\itshape\@title\par}
-	\vspace{0.5in}{\large\textsf{\smallcaps{\@date}}\par}
-	\vfill{\large\textit{\@publisher}\par}
-	\thispagestyle{empty}
-	\endgroup
+    \begingroup
+    \setlength{\parindent}{0pt}
+    {\LARGE\textsc{\@author}\par}
+    \vspace{1.75in}{\HUGE\itshape\@title\par}
+    \vspace{0.5in}{\large\textsf{\smallcaps{\@date}}\par}
+    \vfill{\large\textit{\@publisher}\par}
+    \thispagestyle{empty}
+    \endgroup
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -579,45 +663,45 @@
 \ProvideDocumentCommand{\cstf@colorize}{}{\color{Firebrick2}}
 
 \NewDocumentCommand{\cstf@brokenrefmark}{m}{%
-	\marginnote[%
-		{\cstf@colorize\normalfont\smash{\LARGE$\star$}\ \tiny\sffamily#1}%
-	]{%
-		{\cstf@colorize\normalfont\smash{\LARGE$\star$}\ \tiny\sffamily#1}%
-	}%
+    \marginnote[%
+        {\cstf@colorize\normalfont\smash{\LARGE$\star$}\ \tiny\sffamily#1}%
+    ]{%
+        {\cstf@colorize\normalfont\smash{\LARGE$\star$}\ \tiny\sffamily#1}%
+    }%
 }
 
 \newbool{cstf@markundef}
 \booltrue{cstf@markundef}
 
 \NewDocumentCommand{\newguymarker}{mmm}{%
-	\ifcstf@draft
-		\expandafter\NewDocumentCommand\csname#1\endcsname{m}{%
-			\textcolor{#3}{##1\ \textsc{#2}}%
-			\marginnote{\textcolor{#3}{\LARGE$\star$}}%
-		}%
-	\else
-		\expandafter\NewDocumentCommand\csname#1\endcsname{m}{}%
-	\fi
+    \ifcstf@draft
+        \expandafter\NewDocumentCommand\csname#1\endcsname{m}{%
+            \textcolor{#3}{##1\ \textsc{#2}}%
+            \marginnote{\textcolor{#3}{\LARGE$\star$}}%
+        }%
+    \else
+        \expandafter\NewDocumentCommand\csname#1\endcsname{m}{}%
+    \fi
 }
 
 \ifcstf@draft
-	\ProvideDocumentCommand{\todo}   {m}{\textcolor{Red}{[\textsc{To-do}: #1]}\marginnote{\textcolor{Red}{\LARGE$\star$}}}
-	\ProvideDocumentCommand{\fixme}  {m}{\textcolor{OrangeRed}{[\textsc{Fix-me}: #1]}\marginnote{\textcolor{OrangeRed}{\LARGE$\star$}}}
-	\ProvideDocumentCommand{\missing}{m}{\textcolor{Crimson}{#1}\marginnote{\textcolor{Crimson}{\LARGE$\star$}}}
-	\ProvideDocumentCommand{\notes}  {m}{\textcolor{ForestGreen}{[\textsc{Note}: #1]}\marginnote{\textcolor{ForestGreen}{\LARGE$\star$}}}
-	\ProvideDocumentCommand{\query}  {m}{\textcolor{Purple}{[\textsc{Q}: #1]}\marginnote{\textcolor{Purple}{\LARGE$\star$}}}
-	\ProvideDocumentCommand{\changed}{m}{\textcolor{blue}{#1}\marginnote{\textcolor{blue}{\LARGE$\star$}}}
-	\ProvideDocumentCommand{\added}  {m}{\textcolor{OliveGreen}{#1}\marginnote{\textcolor{OliveGreen}{\LARGE$\star$}}}
-	\ProvideDocumentCommand{\removed}{m}{\textcolor{Gray}{\sout{#1}}\marginnote{\textcolor{Gray}{\LARGE$\star$}}}
+    \ProvideDocumentCommand{\todo}   {m}{\textcolor{Red}{[\textsc{To-do}: #1]}\marginnote{\textcolor{Red}{\LARGE$\star$}}}
+    \ProvideDocumentCommand{\fixme}  {m}{\textcolor{OrangeRed}{[\textsc{Fix-me}: #1]}\marginnote{\textcolor{OrangeRed}{\LARGE$\star$}}}
+    \ProvideDocumentCommand{\missing}{m}{\textcolor{Crimson}{#1}\marginnote{\textcolor{Crimson}{\LARGE$\star$}}}
+    \ProvideDocumentCommand{\notes}  {m}{\textcolor{ForestGreen}{[\textsc{Note}: #1]}\marginnote{\textcolor{ForestGreen}{\LARGE$\star$}}}
+    \ProvideDocumentCommand{\query}  {m}{\textcolor{Purple}{[\textsc{Q}: #1]}\marginnote{\textcolor{Purple}{\LARGE$\star$}}}
+    \ProvideDocumentCommand{\changed}{m}{\textcolor{blue}{#1}\marginnote{\textcolor{blue}{\LARGE$\star$}}}
+    \ProvideDocumentCommand{\added}  {m}{\textcolor{OliveGreen}{#1}\marginnote{\textcolor{OliveGreen}{\LARGE$\star$}}}
+    \ProvideDocumentCommand{\removed}{m}{\textcolor{Gray}{\sout{#1}}\marginnote{\textcolor{Gray}{\LARGE$\star$}}}
 \else
-	\ProvideDocumentCommand{\added}  {m}{#1}
-	\ProvideDocumentCommand{\changed}{m}{#1}
-	\ProvideDocumentCommand{\fixme}  {m}{}
-	\ProvideDocumentCommand{\missing}{m}{}
-	\ProvideDocumentCommand{\notes}  {m}{}
-	\ProvideDocumentCommand{\query}  {m}{}
-	\ProvideDocumentCommand{\removed}{m}{}
-	\ProvideDocumentCommand{\todo}   {m}{}
+    \ProvideDocumentCommand{\added}  {m}{#1}
+    \ProvideDocumentCommand{\changed}{m}{#1}
+    \ProvideDocumentCommand{\fixme}  {m}{}
+    \ProvideDocumentCommand{\missing}{m}{}
+    \ProvideDocumentCommand{\notes}  {m}{}
+    \ProvideDocumentCommand{\query}  {m}{}
+    \ProvideDocumentCommand{\removed}{m}{}
+    \ProvideDocumentCommand{\todo}   {m}{}
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -627,10 +711,10 @@
 \newif\ifcstf@haspunctuation
 
 \def\cstf@checkpunctuation#1{%
-	\ifx\cstf@checkpunctuation#1\cstf@checkpunctuation
-	\else
-		\cstf@haspunctuationtrue
-	\fi
+    \ifx\cstf@checkpunctuation#1\cstf@checkpunctuation
+    \else
+        \cstf@haspunctuationtrue
+    \fi
 }
 
 \def\cstf@checkdot     #1.\cstf@delim#2\cstf@stop{\cstf@checkpunctuation{#2}}
@@ -639,41 +723,41 @@
 \def\cstf@checkcolon   #1:\cstf@delim#2\cstf@stop{\cstf@checkpunctuation{#2}}
 
 \def\cstf@appendpunctuationifneeded#1{%
-	\cstf@haspunctuationfalse
-	\cstf@checkdot     #1\cstf@delim.\cstf@delim\cstf@stop
-	\cstf@checkquestion#1\cstf@delim?\cstf@delim\cstf@stop
-	\cstf@checkexclam  #1\cstf@delim!\cstf@delim\cstf@stop
-	\cstf@checkcolon   #1\cstf@delim:\cstf@delim\cstf@stop
-	#1\ifcstf@haspunctuation\else.\fi%
+    \cstf@haspunctuationfalse
+    \cstf@checkdot     #1\cstf@delim.\cstf@delim\cstf@stop
+    \cstf@checkquestion#1\cstf@delim?\cstf@delim\cstf@stop
+    \cstf@checkexclam  #1\cstf@delim!\cstf@delim\cstf@stop
+    \cstf@checkcolon   #1\cstf@delim:\cstf@delim\cstf@stop
+    #1\ifcstf@haspunctuation\else.\fi%
 }
 
 \def\cstf@ignorewhitespaceandimplicitpars{%
-	\begingroup
-	\catcode13=10
-	\@ifnextchar\relax{\endgroup}{\endgroup}%
+    \begingroup
+    \catcode13=10
+    \@ifnextchar\relax{\endgroup}{\endgroup}%
 }
 
 \NewDocumentCommand{\cstf@paragraphhead}{m}{%
-	\smallskip\noindent
-	\textbf{\boldmath\ignorespaces\cstf@appendpunctuationifneeded{#1}}%
-	\hskip 0.9em plus 0.3em minus 0.3em
-	\cstf@ignorewhitespaceandimplicitpars
+    \smallskip\noindent
+    \textbf{\boldmath\ignorespaces\cstf@appendpunctuationifneeded{#1}}%
+    \hskip 0.30em
+    \ignorespaces
 }
 
 \NewDocumentCommand{\cstf@subparagraphhead}{m}{%
-	\smallskip\noindent
-	\textsc{\ignorespaces\cstf@appendpunctuationifneeded{#1}}%
-	\hskip 0.9em plus 0.3em minus 0.3em
-	\cstf@ignorewhitespaceandimplicitpars
+    \smallskip\noindent
+    \textsc{\ignorespaces\cstf@appendpunctuationifneeded{#1}}%
+    \hskip 0.30em
+    \ignorespaces
 }
 
 \NewDocumentCommand{\parhead}   {m}{\cstf@paragraphhead{#1}}
 \NewDocumentCommand{\subparhead}{m}{\cstf@subparagraphhead{#1}}
 
 \AtBeginDocument{%
-	\RenewDocumentCommand{\paragraph}  {m}{\parhead{#1}}%
-	\RenewDocumentCommand{\subparagraph}{m}{\subparhead{#1}}%
-	\RenewDocumentCommand{\Pr}         {}{\mathop{\mathsf{Pr}}}%
+    \RenewDocumentCommand{\paragraph}  {m}{\parhead{#1}}%
+    \RenewDocumentCommand{\subparagraph}{m}{\subparhead{#1}}%
+    \RenewDocumentCommand{\Pr}         {}{\mathop{\mathsf{Pr}}}%
 }
 
 \makeatother

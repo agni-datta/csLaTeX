@@ -3,7 +3,7 @@ title: README
 aliases: README
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:21:39 pm
-date modified: Tuesday, May 19th 2026, 1:35:34 am
+date modified: Tuesday, June 23rd 2026, 12:00:00 am
 ---
 
 <!-- @format -->
@@ -81,7 +81,11 @@ All environments are declared via `thmtools` and registered with `cleveref`, so 
 
 #### Proof environments
 
-`proof`, `proofsketch`, and `proofidea` are unnumbered proof-style environments.
+`proof`, `proofsketch`, `proofidea`, and `proofofclaim` are unnumbered proof-style environments. `proofofclaim` defaults to “Proof of Claim” and accepts an optional claim identifier, typeset as “Proof of Claim (id)”.
+
+- `\setqedsymbol{symbol}`: changes the symbol used at the end of proofs.
+- `\settheoremendsymbol{symbol}`: changes the symbol used by theorem-style end markers.
+- `\SetQEDSymbol{symbol}` and `\SetTheoremEndSymbol{symbol}` are compatibility aliases.
 
 #### Annotation commands (active in `draft` mode only)
 

@@ -3,7 +3,7 @@ title: README
 aliases: README
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:22:05 pm
-date modified: Tuesday, May 19th 2026, 1:35:34 am
+date modified: Tuesday, June 23rd 2026, 12:00:00 am
 ---
 
 <!-- @format -->
@@ -57,7 +57,9 @@ Document class for academic lecture series, built on `book` with boxed chapter h
 
 #### Theorem environments
 
-`theorem`, `lemma`, `proposition`, `definition`, `remark`, `example`, and the standard suite. Includes `solution` for exercise answers and `proofsketch`/`proofidea` for unnumbered proof variants.
+`theorem`, `lemma`, `proposition`, `definition`, `remark`, `example`, and the standard suite. Includes `solution` for exercise answers and `proofsketch`, `proofidea`, and `proofofclaim` for unnumbered proof variants.
+
+`\setqedsymbol{symbol}` changes the proof-end symbol. `\SetQEDSymbol{symbol}` is kept as a compatibility alias.
 
 #### Revision tools (draft mode)
 

@@ -3,7 +3,7 @@ title: README
 aliases: README
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:22:54 pm
-date modified: Tuesday, May 19th 2026, 1:35:35 am
+date modified: Tuesday, June 23rd 2026, 12:00:00 am
 ---
 
 <!-- @format -->
@@ -104,9 +104,11 @@ Per-author markers:
 
 **Remark-like:** `remark`, `note`, `example`, `observation`, `openproblem`
 
-**Proof-style:** `proof`, `proofsketch`, `proofidea`
+**Proof-style:** `proof`, `proofsketch`, `proofidea`, `proofofclaim`
 
 All environments are numbered per section, accept optional titles, and are registered with `cleveref`.
+
+`\setqedsymbol{symbol}` changes the proof-end symbol, and `\settheoremendsymbol{symbol}` changes theorem-end markers where those markers are used. The capitalized forms remain available as compatibility aliases.
 
 ### Caveats
 
