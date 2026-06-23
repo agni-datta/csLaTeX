@@ -3,14 +3,14 @@ title: README
 aliases: README
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:22:30 pm
-date modified: Tuesday, June 23rd 2026, 12:00:00 am
+date modified: Tuesday, June 23rd 2026, 8:36:44 pm
 ---
 
 <!-- @format -->
 
 ## csresume
 
-CV and resume package with academic-oriented typography, flexible entry layouts, and BibLaTeX integration for publication lists. Handles the full structure of an academic CV: contact header, chronological entries with margin years, two-column reference blocks, compact interest lists, and a publications section driven by a `.bib` file. Font choices are tuned for print and screen readability, while the default visual palette uses RoyalBlue4 and darker RoyalBlue4 mixtures.
+CV and resume package with academic-oriented typography, flexible entry layouts, and BibLaTeX integration for publication lists. Handles the full structure of an academic CV: contact header, chronological entries with margin years, two-column reference blocks, compact interest lists, and a publications section driven by a `.bib` file. Font choices are tuned for print and screen readability, while the default visual palette uses SteelBlue4 and darker SteelBlue4 mixtures; hyperlink colors follow the active accent palette.
 
 ### Requirements
 

@@ -3,7 +3,7 @@ title: README
 aliases: README
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:22:54 pm
-date modified: Tuesday, June 23rd 2026, 12:00:00 am
+date modified: Tuesday, June 23rd 2026, 8:36:44 pm
 ---
 
 <!-- @format -->
@@ -58,7 +58,7 @@ Style package for technical whitepapers, research reports, and position papers. 
 
 #### Global configuration
 
-- `\documentaccentcolor{color}`: sets the primary accent color used for ruled lines, section headings, and theorem decorations. Call once in the preamble. Accepts any color name known to `xcolor`. Default: a neutral dark blue. URL links use `Peach`.
+- `\documentaccentcolor{color}`: sets the primary accent color used for ruled lines, section headings, theorem decorations, and hyperref links. Call once in the preamble. Accepts any color name known to `xcolor`. Default: `SteelBlue4`.
 
 #### Sectioning
 

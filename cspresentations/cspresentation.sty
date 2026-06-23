@@ -17,18 +17,18 @@
 
 \RequirePackage{iftex}
 \@ifpackageloaded{beamer}{%
-    \PackageWarning{cspresentation}{%
-        Load cspresentation before beamer.\MessageBreak
-        xcolor options (dvipsnames,table,x11names) may not have taken effect.%
-    }%
+	\PackageWarning{cspresentation}{%
+		Load cspresentation before beamer.\MessageBreak
+		xcolor options (dvipsnames,table,x11names) may not have taken effect.%
+	}%
 }{}
 \PassOptionsToPackage{dvipsnames,table,x11names}{xcolor}
 
 \ifPDFTeX
-    \RequirePackage{lmodern}
+	\RequirePackage{lmodern}
 \else
-    \RequirePackage{fontspec}
-    \RequirePackage[olddefault]{fontsetup}
+	\RequirePackage{fontspec}
+	\RequirePackage[olddefault]{fontsetup}
 \fi
 
 \RequirePackage{adjustbox}
@@ -46,16 +46,16 @@
 
 \RequirePackage{tikz}
 \usetikzlibrary{
-    arrows.meta,
-    backgrounds,
-    calc,
-    decorations.markings,
-    decorations.pathreplacing,
-    fit,
-    graphs,
-    matrix,
-    positioning,
-    shapes.geometric
+	arrows.meta,
+	backgrounds,
+	calc,
+	decorations.markings,
+	decorations.pathreplacing,
+	fit,
+	graphs,
+	matrix,
+	positioning,
+	shapes.geometric
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -64,10 +64,10 @@
 
 \usetheme{metropolis}
 \metroset{
-    progressbar   = frametitle,
-    sectionpage   = progressbar,
-    numbering     = counter,
-    block         = fill
+	progressbar   = frametitle,
+	sectionpage   = progressbar,
+	numbering     = counter,
+	block         = fill
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -150,12 +150,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \setbeamertemplate{footline}{%
-    \begin{beamercolorbox}[wd=\textwidth, ht=2ex, dp=1ex, leftskip=1em, rightskip=1em]{palette primary}%
-        \usebeamerfont{author in head/foot}%
-        \insertshortauthor\hfill
-        \insertshorttitle\hfill
-        \insertframenumber\,/\,\inserttotalframenumber
-    \end{beamercolorbox}%
+	\begin{beamercolorbox}[wd=\textwidth, ht=2ex, dp=1ex, leftskip=1em, rightskip=1em]{palette primary}%
+		\usebeamerfont{author in head/foot}%
+		\insertshortauthor\hfill
+		\insertshorttitle\hfill
+		\insertframenumber\,/\,\inserttotalframenumber
+	\end{beamercolorbox}%
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -163,40 +163,40 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \tikzset{
-    darrow/.style = {
-            -Stealth, line width = 0.8pt, color = nordDark3!60
-        },
-    mainnode/.style = {
-            circle,
-            draw         = cspr@accent,
-            fill         = cspr@accent!12,
-            font         = \small,
-            align        = center,
-            text width   = 2.8cm,
-            minimum size = 3.6cm,
-            line width   = 1.0pt
-        },
-    ideabox/.style = {
-            rounded corners = 4pt,
-            fill            = cspr@accentMid!15,
-            draw            = cspr@accentMid!60,
-            font            = \small,
-            align           = left,
-            text width      = 5.8cm,
-            inner xsep      = 6pt,
-            inner ysep      = 5pt,
-            line width      = 0.7pt
-        },
-    keybox/.style = {
-            rounded corners = 3pt,
-            fill            = nordYellow!25,
-            draw            = nordOrange!70,
-            font            = \small,
-            align           = left,
-            inner xsep      = 6pt,
-            inner ysep      = 5pt,
-            line width      = 0.8pt
-        }
+	darrow/.style = {
+			-Stealth, line width = 0.8pt, color = nordDark3!60
+		},
+	mainnode/.style = {
+			circle,
+			draw         = cspr@accent,
+			fill         = cspr@accent!12,
+			font         = \small,
+			align        = center,
+			text width   = 2.8cm,
+			minimum size = 3.6cm,
+			line width   = 1.0pt
+		},
+	ideabox/.style = {
+			rounded corners = 4pt,
+			fill            = cspr@accentMid!15,
+			draw            = cspr@accentMid!60,
+			font            = \small,
+			align           = left,
+			text width      = 5.8cm,
+			inner xsep      = 6pt,
+			inner ysep      = 5pt,
+			line width      = 0.7pt
+		},
+	keybox/.style = {
+			rounded corners = 3pt,
+			fill            = nordYellow!25,
+			draw            = nordOrange!70,
+			font            = \small,
+			align           = left,
+			inner xsep      = 6pt,
+			inner ysep      = 5pt,
+			line width      = 0.8pt
+		}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -204,7 +204,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NewDocumentCommand{\citeref}{m}{%
-    {\footnotesize\textcolor{nordDark3}{[#1]}}%
+	{\footnotesize\textcolor{nordDark3}{[#1]}}%
 }
 
 \NewDocumentCommand{\kw}{m}{\textcolor{cspr@accent}{\textbf{#1}}}
@@ -216,16 +216,16 @@
 \NewDocumentCommand{\code}{m}{\textcolor{cspr@accent}{\texttt{#1}}}
 
 \NewDocumentCommand{\source}{m}{%
-    \begin{tikzpicture}[remember picture, overlay]
-        \node[anchor=south west, inner sep=4pt, font=\tiny, text=nordDark3]
-        at (current page.south west) {Source:~#1};
-    \end{tikzpicture}%
+	\begin{tikzpicture}[remember picture, overlay]
+		\node[anchor=south west, inner sep=4pt, font=\tiny, text=nordDark3]
+		at (current page.south west) {Source:~#1};
+	\end{tikzpicture}%
 }
 
 \NewDocumentCommand{\reveal}{mm}{\onslide<#1>{\textcolor{cspr@accent}{#2}}}
 
 \NewDocumentCommand{\csrule}{}{%
-    {\color{cspr@accent}\rule{\linewidth}{0.4pt}}%
+	{\color{cspr@accent}\rule{\linewidth}{0.4pt}}%
 }
 
 \makeatother

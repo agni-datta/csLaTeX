@@ -3,7 +3,7 @@ title: README
 aliases: README
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:23:24 pm
-date modified: Tuesday, June 23rd 2026, 12:00:00 am
+date modified: Tuesday, June 23rd 2026, 8:36:44 pm
 ---
 
 <!-- @format -->
@@ -42,7 +42,7 @@ Typography, theorem environments, author tooling, and lightweight research-paper
 | Option      | Default | Description                                                                                                |
 | ----------- | ------- | ---------------------------------------------------------------------------------------------------------- |
 | `captions`  | off     | Load `caption` and `subcaption` with styled figure and table formatting.                                   |
-| `colorlinks`| off     | Use colored hyperlinks, with URL links in `Peach`. Off by default so strict LLNCS output keeps neutral link rendering. |
+| `colorlinks`| off     | Use colored hyperlinks in `SteelBlue4`. Off by default so strict LLNCS output keeps neutral link rendering. |
 | `draft`     | off     | Stamp each page with a dated “not for distribution” watermark and enable author notes.                     |
 | `final`     | off     | Camera-ready mode: disable all notes, draft markers, and `\XXX` flags. Incompatible with `draft`.          |
 | `libertine` | off     | Use Libertine body font and Biolinum sans with matching math.                                              |

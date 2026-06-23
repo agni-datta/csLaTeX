@@ -230,9 +230,9 @@
 \RequirePackage{hyperref}
 \hypersetup{
     colorlinks = true,
-    citecolor  = RoyalBlue,
-    linkcolor  = MidnightBlue,
-    urlcolor   = RedOrange,
+    citecolor  = SteelBlue4,
+    linkcolor  = SteelBlue4,
+    urlcolor   = SteelBlue4,
 }
 
 \AtBeginDocument{%

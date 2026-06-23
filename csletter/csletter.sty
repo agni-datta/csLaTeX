@@ -38,25 +38,25 @@
 
 \keys_define:nn { csletter }
 {
-    textcolor     .tl_gset:N   = \g_csltr_textcolor_tl    , textcolor     .initial:n = black ,
-    accentcolor   .tl_gset:N   = \g_csltr_accentcolor_tl  , accentcolor   .initial:n = blue ,
-    footercolor   .tl_gset:N   = \g_csltr_footercolor_tl  , footercolor   .initial:n = gray ,
-    headercolor   .tl_gset:N   = \g_csltr_headercolor_tl  , headercolor   .initial:n = gray ,
-    topmargin     .tl_gset:N   = \g_csltr_topmargin_tl    , topmargin     .initial:n = 2.5cm ,
-    bottommargin  .tl_gset:N   = \g_csltr_bottommargin_tl , bottommargin  .initial:n = 2.5cm ,
-    leftmargin    .tl_gset:N   = \g_csltr_leftmargin_tl   , leftmargin    .initial:n = 2.5cm ,
-    rightmargin   .tl_gset:N   = \g_csltr_rightmargin_tl  , rightmargin   .initial:n = 2.5cm ,
-    header        .bool_gset:N = \g_csltr_header_bool      , header        .initial:n = false ,
-    footer        .bool_gset:N = \g_csltr_footer_bool      , footer        .initial:n = false ,
-    date          .bool_gset:N = \g_csltr_date_bool        , date          .initial:n = false ,
-    logo          .bool_gset:N = \g_csltr_logo_bool        , logo          .initial:n = false ,
-    signature     .bool_gset:N = \g_csltr_signature_bool   , signature     .initial:n = false ,
-    logofile      .tl_gset:N   = \g_csltr_logofile_tl     , logofile      .initial:n = {logo.png} ,
-    signaturefile .tl_gset:N   = \g_csltr_signaturefile_tl, signaturefile .initial:n = {signature.png} ,
-    headerpos     .tl_gset:N   = \g_csltr_headerpos_tl    , headerpos     .initial:n = left ,
-    footerpos     .tl_gset:N   = \g_csltr_footerpos_tl    , footerpos     .initial:n = center ,
-    linespacing   .tl_gset:N   = \g_csltr_linespacing_tl  , linespacing   .initial:n = single ,
-    unknown       .code:n      = { \PackageWarning{csletter}{Unknown~option~`#1'~ignored} } ,
+	textcolor     .tl_gset:N   = \g_csltr_textcolor_tl    , textcolor     .initial:n = black ,
+	accentcolor   .tl_gset:N   = \g_csltr_accentcolor_tl  , accentcolor   .initial:n = blue ,
+	footercolor   .tl_gset:N   = \g_csltr_footercolor_tl  , footercolor   .initial:n = gray ,
+	headercolor   .tl_gset:N   = \g_csltr_headercolor_tl  , headercolor   .initial:n = gray ,
+	topmargin     .tl_gset:N   = \g_csltr_topmargin_tl    , topmargin     .initial:n = 2.5cm ,
+	bottommargin  .tl_gset:N   = \g_csltr_bottommargin_tl , bottommargin  .initial:n = 2.5cm ,
+	leftmargin    .tl_gset:N   = \g_csltr_leftmargin_tl   , leftmargin    .initial:n = 2.5cm ,
+	rightmargin   .tl_gset:N   = \g_csltr_rightmargin_tl  , rightmargin   .initial:n = 2.5cm ,
+	header        .bool_gset:N = \g_csltr_header_bool      , header        .initial:n = false ,
+	footer        .bool_gset:N = \g_csltr_footer_bool      , footer        .initial:n = false ,
+	date          .bool_gset:N = \g_csltr_date_bool        , date          .initial:n = false ,
+	logo          .bool_gset:N = \g_csltr_logo_bool        , logo          .initial:n = false ,
+	signature     .bool_gset:N = \g_csltr_signature_bool   , signature     .initial:n = false ,
+	logofile      .tl_gset:N   = \g_csltr_logofile_tl     , logofile      .initial:n = {logo.png} ,
+	signaturefile .tl_gset:N   = \g_csltr_signaturefile_tl, signaturefile .initial:n = {signature.png} ,
+	headerpos     .tl_gset:N   = \g_csltr_headerpos_tl    , headerpos     .initial:n = left ,
+	footerpos     .tl_gset:N   = \g_csltr_footerpos_tl    , footerpos     .initial:n = center ,
+	linespacing   .tl_gset:N   = \g_csltr_linespacing_tl  , linespacing   .initial:n = single ,
+	unknown       .code:n      = { \PackageWarning{csletter}{Unknown~option~`#1'~ignored} } ,
 }
 \ProcessKeysOptions { csletter }
 
@@ -97,32 +97,32 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ifPDFTeX
-    \RequirePackage{ebgaramond}
-    \RequirePackage[scaled=.95]{ysabeau}
-    \RequirePackage[scaled=.9]{AnonymousPro}
+	\RequirePackage{ebgaramond}
+	\RequirePackage[scaled=.95]{ysabeau}
+	\RequirePackage[scaled=.9]{AnonymousPro}
 \else
-    \RequirePackage{fontspec}
-    \RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
+	\RequirePackage{fontspec}
+	\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
 
-    \setmainfont{GaramondLibre}[
-        Extension      = .otf,
-        UprightFont    = *-Regular,
-        ItalicFont     = *-Italic,
-        BoldFont       = *-Bold,
-        BoldItalicFont = *-BoldItalic,
-        SmallCapsFont  = EBGaramond-Medium.otf,
-        SmallCapsFeatures = {Letters=SmallCaps}
-    ]
-    \setmathfont{Garamond-Math.otf}[
-        AutoFakeBold,
-        StylisticSet = {2,6,7,9}
-    ]
-    \setsansfont{Ysabeau}[Scale=MatchLowercase]
-    \setmonofont{Anonymous Pro}[Scale=MatchLowercase]
+	\setmainfont{GaramondLibre}[
+		Extension      = .otf,
+		UprightFont    = *-Regular,
+		ItalicFont     = *-Italic,
+		BoldFont       = *-Bold,
+		BoldItalicFont = *-BoldItalic,
+		SmallCapsFont  = EBGaramond-Medium.otf,
+		SmallCapsFeatures = {Letters=SmallCaps}
+	]
+	\setmathfont{Garamond-Math.otf}[
+		AutoFakeBold,
+		StylisticSet = {2,6,7,9}
+	]
+	\setsansfont{Ysabeau}[Scale=MatchLowercase]
+	\setmonofont{Anonymous Pro}[Scale=MatchLowercase]
 
-    \let\mathbfcal\relax
-    \let\mathbfscr\relax
-    \RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
+	\let\mathbfcal\relax
+	\let\mathbfscr\relax
+	\RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -132,13 +132,13 @@
 \RequirePackage{geometry}
 \RequirePackage{setspace}
 \geometry{
-    top           = \csltr@topmargin,
-    bottom        = \csltr@bottommargin,
-    left          = \csltr@leftmargin,
-    right         = \csltr@rightmargin,
-    headheight    = 1.25em,
-    heightrounded,
-    a4paper
+	top           = \csltr@topmargin,
+	bottom        = \csltr@bottommargin,
+	left          = \csltr@leftmargin,
+	right         = \csltr@rightmargin,
+	headheight    = 1.25em,
+	heightrounded,
+	a4paper
 }
 
 \setlength{\parindent}{0pt}
@@ -160,15 +160,15 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \AtBeginDocument{%
-    \ifdefstring{\csltr@linespacing}{onehalf}{%
-        \setstretch{1.5}%
-    }{%
-        \ifdefstring{\csltr@linespacing}{double}{%
-            \setstretch{2.0}%
-        }{%
-            \setstretch{1.0}%
-        }%
-    }%
+	\ifdefstring{\csltr@linespacing}{onehalf}{%
+		\setstretch{1.5}%
+	}{%
+		\ifdefstring{\csltr@linespacing}{double}{%
+			\setstretch{2.0}%
+		}{%
+			\setstretch{1.0}%
+		}%
+	}%
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -180,32 +180,32 @@
 \ProvideDocumentCommand{\fromname}{}{}
 
 \ifcsltr@header
-    \pagestyle{fancy}
-    \fancyhf{}
-    \RenewDocumentCommand{\headrulewidth}{}{0.4pt}
-    \ifdefstring{\csltr@headerpos}{left}{%
-        \fancyhead[L]{\color{cslheader}\slshape\fromname}%
-    }{%
-        \ifdefstring{\csltr@headerpos}{right}{%
-            \fancyhead[R]{\color{cslheader}\slshape\fromname}%
-        }{%
-            \fancyhead[C]{\color{cslheader}\slshape\fromname}%
-        }%
-    }
+	\pagestyle{fancy}
+	\fancyhf{}
+	\RenewDocumentCommand{\headrulewidth}{}{0.4pt}
+	\ifdefstring{\csltr@headerpos}{left}{%
+		\fancyhead[L]{\color{cslheader}\slshape\fromname}%
+	}{%
+		\ifdefstring{\csltr@headerpos}{right}{%
+			\fancyhead[R]{\color{cslheader}\slshape\fromname}%
+		}{%
+			\fancyhead[C]{\color{cslheader}\slshape\fromname}%
+		}%
+	}
 \fi
 
 \ifcsltr@footer
-    \ifcsltr@header\else\pagestyle{fancy}\fi
-    \RenewDocumentCommand{\footrulewidth}{}{0.4pt}
-    \ifdefstring{\csltr@footerpos}{left}{%
-        \fancyfoot[L]{\color{cslfooter}\thepage}%
-    }{%
-        \ifdefstring{\csltr@footerpos}{right}{%
-            \fancyfoot[R]{\color{cslfooter}\thepage}%
-        }{%
-            \fancyfoot[C]{\color{cslfooter}\thepage}%
-        }%
-    }
+	\ifcsltr@header\else\pagestyle{fancy}\fi
+	\RenewDocumentCommand{\footrulewidth}{}{0.4pt}
+	\ifdefstring{\csltr@footerpos}{left}{%
+		\fancyfoot[L]{\color{cslfooter}\thepage}%
+	}{%
+		\ifdefstring{\csltr@footerpos}{right}{%
+			\fancyfoot[R]{\color{cslfooter}\thepage}%
+		}{%
+			\fancyfoot[C]{\color{cslfooter}\thepage}%
+		}%
+	}
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -213,21 +213,21 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NewDocumentCommand{\csllogo}{}{%
-    \ifcsltr@logo
-        \ifdefempty{\csltr@logofile}{}{%
-            \includegraphics[height=2cm]{\csltr@logofile}%
-            \vspace{1em}%
-        }%
-    \fi
+	\ifcsltr@logo
+		\ifdefempty{\csltr@logofile}{}{%
+			\includegraphics[height=2cm]{\csltr@logofile}%
+			\vspace{1em}%
+		}%
+	\fi
 }
 
 \NewDocumentCommand{\cslsignature}{}{%
-    \ifcsltr@signature
-        \ifdefempty{\csltr@signaturefile}{}{%
-            \par\vspace{1em}%
-            \includegraphics[height=3em]{\csltr@signaturefile}%
-        }%
-    \fi
+	\ifcsltr@signature
+		\ifdefempty{\csltr@signaturefile}{}{%
+			\par\vspace{1em}%
+			\includegraphics[height=3em]{\csltr@signaturefile}%
+		}%
+	\fi
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -236,11 +236,11 @@
 
 \RequirePackage{hyperref}
 \hypersetup{
-    colorlinks = true,
-    citecolor  = cslaccent,
-    linkcolor  = cslaccent,
-    urlcolor   = cslaccent,
-    pdfborder  = {0 0 0}
+	colorlinks = true,
+	citecolor  = cslaccent,
+	linkcolor  = cslaccent,
+	urlcolor   = cslaccent,
+	pdfborder  = {0 0 0}
 }
 
 \makeatother

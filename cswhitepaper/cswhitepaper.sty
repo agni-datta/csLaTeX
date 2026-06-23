@@ -21,9 +21,9 @@
 
 \keys_define:nn { cswhitepaper }
 {
-    draft   .bool_gset:N = \g_csw_draft_bool ,
-    draft   .initial:n   = false ,
-    unknown .code:n      = { \PackageWarning{cswhitepaper}{Unknown~option~`#1'~ignored} } ,
+	draft   .bool_gset:N = \g_csw_draft_bool ,
+	draft   .initial:n   = false ,
+	unknown .code:n      = { \PackageWarning{cswhitepaper}{Unknown~option~`#1'~ignored} } ,
 }
 \ProcessKeysOptions { cswhitepaper }
 
@@ -78,10 +78,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ifPDFTeX
-    \RequirePackage{lmodern}
+	\RequirePackage{lmodern}
 \else
-    \RequirePackage{fontspec}
-    \RequirePackage[olddefault]{fontsetup}
+	\RequirePackage{fontspec}
+	\RequirePackage[olddefault]{fontsetup}
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -90,7 +90,7 @@
 
 \RequirePackage[dvipsnames,table,x11names]{xcolor}
 
-\colorlet{docucolor}{MidnightBlue}
+\colorlet{docucolor}{SteelBlue4}
 \NewDocumentCommand{\documentaccentcolor}{m}{\colorlet{docucolor}{#1}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -105,13 +105,13 @@
 \RequirePackage{subcaption}
 
 \AtBeginDocument{
-    \captionsetup{
-        font          = {rm,small},
-        labelfont     = {sc,small},
-        labelsep      = {period},
-        skip          = {5pt},
-        justification = {justified}
-    }
+	\captionsetup{
+		font          = {rm,small},
+		labelfont     = {sc,small},
+		labelsep      = {period},
+		skip          = {5pt},
+		justification = {justified}
+	}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -156,10 +156,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage[
-    framemethod = TikZ,
-    ntheorem,
-    skipabove   = 10pt,
-    skipbelow   = 10pt
+	framemethod = TikZ,
+	ntheorem,
+	skipabove   = 10pt,
+	skipbelow   = 10pt
 ]{mdframed}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -187,25 +187,25 @@
 
 \RequirePackage[nocompress]{cite}
 \RequirePackage[
-    bookmarksnumbered = true,
-    breaklinks        = true,
-    citecolor         = docucolor,
-    colorlinks        = true,
-    frenchlinks       = true,
-    linkcolor         = docucolor,
-    pagebackref       = true,
-    pdfencoding       = auto,
-    pdfpagelabels     = true,
-    pdfusetitle,
-    unicode           = true,
-    urlcolor          = Peach,
+	bookmarksnumbered = true,
+	breaklinks        = true,
+	citecolor         = docucolor,
+	colorlinks        = true,
+	frenchlinks       = true,
+	linkcolor         = docucolor,
+	pagebackref       = true,
+	pdfencoding       = auto,
+	pdfpagelabels     = true,
+	pdfusetitle,
+	unicode           = true,
+	urlcolor          = docucolor,
 ]{hyperref}
 \RenewDocumentCommand{\backref}{m}{}
 \RenewDocumentCommand{\backrefalt}{mmmm}{%
-    \ifcase#1
-    \or(Cited on p.~#2).
-    \else(Cited on pp.~#2).
-    \fi
+	\ifcase#1
+	\or(Cited on p.~#2).
+	\else(Cited on pp.~#2).
+	\fi
 }
 
 \RequirePackage[nameinlink,capitalise,noabbrev]{cleveref}
@@ -266,25 +266,25 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newmdenv[
-    topline          = true,
-    bottomline       = true,
-    leftline         = false,
-    rightline        = false,
-    linecolor        = docucolor,
-    linewidth        = 1pt,
-    skipabove        = 1em,
-    skipbelow        = 1em,
-    innerleftmargin  = 0pt,
-    innerrightmargin = 0pt,
-    innertopmargin   = 0.6em,
-    innerbottommargin= 0.6em
+	topline          = true,
+	bottomline       = true,
+	leftline         = false,
+	rightline        = false,
+	linecolor        = docucolor,
+	linewidth        = 1pt,
+	skipabove        = 1em,
+	skipbelow        = 1em,
+	innerleftmargin  = 0pt,
+	innerrightmargin = 0pt,
+	innertopmargin   = 0.6em,
+	innerbottommargin= 0.6em
 ]{docuabstractframe}
 
 \RenewDocumentEnvironment{abstract}{}{%
-    \begin{docuabstractframe}
-    \noindent{\sffamily\color{docucolor}Abstract.\,}\sffamily
+	\begin{docuabstractframe}
+	\noindent{\sffamily\color{docucolor}Abstract.\,}\sffamily
 }{%
-    \end{docuabstractframe}
+	\end{docuabstractframe}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -301,178 +301,178 @@
 \ProvideDocumentCommand{\settheoremendsymbol}{m}{ \RenewDocumentCommand{\commonsymb}{}{#1} }
 
 \mdfdefinestyle{csw@ruled}{%
-    linewidth         = 1pt,%
-    linecolor         = docucolor,%
-    topline           = true,%
-    bottomline        = true,%
-    leftline          = false,%
-    rightline         = false,%
-    innertopmargin    = 6pt,%
-    innerbottommargin = 6pt,%
-    innerleftmargin   = 1pt,%
-    innerrightmargin  = 1pt,%
-    skipabove         = 6pt,%
-    skipbelow         = 6pt%
+	linewidth         = 1pt,%
+	linecolor         = docucolor,%
+	topline           = true,%
+	bottomline        = true,%
+	leftline          = false,%
+	rightline         = false,%
+	innertopmargin    = 6pt,%
+	innerbottommargin = 6pt,%
+	innerleftmargin   = 1pt,%
+	innerrightmargin  = 1pt,%
+	skipabove         = 6pt,%
+	skipbelow         = 6pt%
 }
 
 \declaretheoremstyle[
-    headfont     = \commonheadfont\commonstartsymb,
-    notefont     = \normalfont,
-    bodyfont     = \normalfont,
-    spaceabove   = 0pt,
-    spacebelow   = 0pt,
-    headpunct    = {.},
-    postheadspace = 0.5em ,
-    mdframed      = { style = csw@ruled } ,
-    qed          = \commonsymb
+	headfont     = \commonheadfont\commonstartsymb,
+	notefont     = \normalfont,
+	bodyfont     = \normalfont,
+	spaceabove   = 0pt,
+	spacebelow   = 0pt,
+	headpunct    = {.},
+	postheadspace = 0.5em ,
+	mdframed      = { style = csw@ruled } ,
+	qed          = \commonsymb
 ]{csw@theoremlike}
 
 \declaretheoremstyle[
-    headfont     = \commonheadfont\commonstartsymb,
-    notefont     = \normalfont,
-    bodyfont     = \normalfont,
-    spaceabove   = 0pt,
-    spacebelow   = 0pt,
-    headpunct    = {.},
-    postheadspace = 0.5em ,
-    mdframed      = { style = csw@ruled } ,
-    qed          = \commonsymb
+	headfont     = \commonheadfont\commonstartsymb,
+	notefont     = \normalfont,
+	bodyfont     = \normalfont,
+	spaceabove   = 0pt,
+	spacebelow   = 0pt,
+	headpunct    = {.},
+	postheadspace = 0.5em ,
+	mdframed      = { style = csw@ruled } ,
+	qed          = \commonsymb
 ]{csw@definitionlike}
 
 \declaretheoremstyle[
-    headfont     = \commonheadfont\commonstartsymb,
-    notefont     = \normalfont,
-    bodyfont     = \normalfont,
-    spaceabove   = 0pt,
-    spacebelow   = 0pt,
-    headpunct    = {.},
-    postheadspace = 0.5em ,
-    mdframed      = { style = csw@ruled } ,
-    qed          = \commonsymb
+	headfont     = \commonheadfont\commonstartsymb,
+	notefont     = \normalfont,
+	bodyfont     = \normalfont,
+	spaceabove   = 0pt,
+	spacebelow   = 0pt,
+	headpunct    = {.},
+	postheadspace = 0.5em ,
+	mdframed      = { style = csw@ruled } ,
+	qed          = \commonsymb
 ]{csw@remarklike}
 
 \declaretheoremstyle[
-    headfont     = \commonheadfont\commonstartsymb,
-    notefont     = \normalfont,
-    bodyfont     = \normalfont,
-    spaceabove   = 0pt,
-    spacebelow   = 0pt,
-    headpunct    = {.},
-    postheadspace = 0.5em ,
-    mdframed      = { style = csw@ruled } ,
-    qed          = \commonsymb
+	headfont     = \commonheadfont\commonstartsymb,
+	notefont     = \normalfont,
+	bodyfont     = \normalfont,
+	spaceabove   = 0pt,
+	spacebelow   = 0pt,
+	headpunct    = {.},
+	postheadspace = 0.5em ,
+	mdframed      = { style = csw@ruled } ,
+	qed          = \commonsymb
 ]{csw@highlightlike}
 
 \declaretheoremstyle[
-    headfont      = \itshape,
-    bodyfont      = \normalfont,
-    spaceabove    = 5pt,
-    spacebelow    = 5pt,
-    headpunct     = {.},
-    postheadspace = 0.5em,
-    qed           = {\qedsymbol}
+	headfont      = \itshape,
+	bodyfont      = \normalfont,
+	spaceabove    = 5pt,
+	spacebelow    = 5pt,
+	headpunct     = {.},
+	postheadspace = 0.5em,
+	qed           = {\qedsymbol}
 ]{csw@proofstyle}
 
 \declaretheorem
 [
-    name         = Theorem ,
-    style        = csw@theoremlike ,
-    numberwithin = section
+	name         = Theorem ,
+	style        = csw@theoremlike ,
+	numberwithin = section
 ]{ theorem }
 \RenewDocumentCommand{\qedsymbol}{}{\commonsymb}
 
 \NewDocumentCommand{\csw@declaretheoremfamily}{mm}{%
-    \forcsvlist{\declaretheorem[sibling=theorem,style=#1]}{#2}%
+	\forcsvlist{\declaretheorem[sibling=theorem,style=#1]}{#2}%
 }
 
 \csw@declaretheoremfamily{csw@theoremlike}{
-    assertion,%
-    assumption,%
-    axiom,%
-    claim,%
-    conclusion,%
-    conjecture,%
-    corollary,%
-    criterion,%
-    fact,%
-    folklore,%
-    hypothesis,%
-    lemma,%
-    observation,%
-    postulate,%
-    property,%
-    proposition
+	assertion,%
+	assumption,%
+	axiom,%
+	claim,%
+	conclusion,%
+	conjecture,%
+	corollary,%
+	criterion,%
+	fact,%
+	folklore,%
+	hypothesis,%
+	lemma,%
+	observation,%
+	postulate,%
+	property,%
+	proposition
 }
 
 \declaretheorem
 [
-    name    = { Informal~Theorem } ,
-    sibling = theorem ,
-    style   = csw@theoremlike
+	name    = { Informal~Theorem } ,
+	sibling = theorem ,
+	style   = csw@theoremlike
 ]{ informaltheorem }
 \declaretheorem
 [
-    name    = { Meta~Theorem } ,
-    sibling = theorem ,
-    style   = csw@theoremlike
+	name    = { Meta~Theorem } ,
+	sibling = theorem ,
+	style   = csw@theoremlike
 ]{ metatheorem }
 
 \csw@declaretheoremfamily{csw@definitionlike}{
-    application,%
-    construction,%
-    convention,%
-    definition,%
-    example,%
-    experiment,%
-    notation,%
-    problem,%
-    protocol,%
-    result,%
-    solution,%
-    step
+	application,%
+	construction,%
+	convention,%
+	definition,%
+	example,%
+	experiment,%
+	notation,%
+	problem,%
+	protocol,%
+	result,%
+	solution,%
+	step
 }
 
 \csw@declaretheoremfamily{csw@remarklike}{
-    commentary,%
-    discussion,%
-    exercise,%
-    motivation,%
-    note,%
-    question,%
-    remark,%
-    syntax
+	commentary,%
+	discussion,%
+	exercise,%
+	motivation,%
+	note,%
+	question,%
+	remark,%
+	syntax
 }
 
 \declaretheorem
 [
-    name    = { Notation~Abuse } ,
-    sibling = theorem ,
-    style   = csw@remarklike
+	name    = { Notation~Abuse } ,
+	sibling = theorem ,
+	style   = csw@remarklike
 ]{ notationabuse }
 \declaretheorem
 [
-    name    = { Open~Problem } ,
-    sibling = theorem ,
-    style   = csw@remarklike
+	name    = { Open~Problem } ,
+	sibling = theorem ,
+	style   = csw@remarklike
 ]{ openproblem }
 
 \csw@declaretheoremfamily{csw@highlightlike}{
-    guideline,%
-    highlight,%
-    important,%
-    insight,%
-    recall,%
-    summary,%
-    takeaway,%
-    tip,%
-    warning
+	guideline,%
+	highlight,%
+	important,%
+	insight,%
+	recall,%
+	summary,%
+	takeaway,%
+	tip,%
+	warning
 }
 
 \declaretheorem
 [
-    name    = { Key~Point } ,
-    sibling = theorem ,
-    style   = csw@highlightlike
+	name    = { Key~Point } ,
+	sibling = theorem ,
+	style   = csw@highlightlike
 ]{ keypoint }
 
 \declaretheorem[ name = Claim ,                 style = csw@theoremlike , numbered = no ]{ claim* }
@@ -487,25 +487,25 @@
 
 \NewDocumentEnvironment{proofsketch}{o}
 {
-    \IfNoValueTF{#1}
-    { \begin{proof}[Proof~(Sketch)] }
-    { \begin{proof}[Proof~(Sketch~#1)] }
+	\IfNoValueTF{#1}
+	{ \begin{proof}[Proof~(Sketch)] }
+	{ \begin{proof}[Proof~(Sketch~#1)] }
 }
 { \end{proof} }
 
 \NewDocumentEnvironment{proofidea}{o}
 {
-    \IfNoValueTF{#1}
-    { \begin{proof}[Proof~(Idea)] }
-    { \begin{proof}[Proof~(Idea~#1)] }
+	\IfNoValueTF{#1}
+	{ \begin{proof}[Proof~(Idea)] }
+	{ \begin{proof}[Proof~(Idea~#1)] }
 }
 { \end{proof} }
 
 \NewDocumentEnvironment{proofofclaim}{o}
 {
-    \IfNoValueTF{#1}
-    { \begin{proof}[Proof~of~Claim] }
-    { \begin{proof}[Proof~of~Claim~(#1)] }
+	\IfNoValueTF{#1}
+	{ \begin{proof}[Proof~of~Claim] }
+	{ \begin{proof}[Proof~of~Claim~(#1)] }
 }
 { \end{proof} }
 
@@ -529,56 +529,56 @@
 \def\csw@setcrefname@parse#1/#2/#3\csw@nil{\crefname{#1}{#2}{#3}}
 
 \csw@setcrefnames{%
-    application/Application/Applications,%
-    assertion/Assertion/Assertions,%
-    assumption/Assumption/Assumptions,%
-    axiom/Axiom/Axioms,%
-    claim/Claim/Claims,%
-    commentary/Commentary/Commentaries,%
-    conclusion/Conclusion/Conclusions,%
-    conjecture/Conjecture/Conjectures,%
-    construction/Construction/Constructions,%
-    convention/Convention/Conventions,%
-    corollary/Corollary/Corollaries,%
-    criterion/Criterion/Criteria,%
-    definition/Definition/Definitions,%
-    discussion/Discussion/Discussions,%
-    example/Example/Examples,%
-    exercise/Exercise/Exercises,%
-    experiment/Experiment/Experiments,%
-    fact/Fact/Facts,%
-    folklore/Folklore/Folklore,%
-    guideline/Guideline/Guidelines,%
-    highlight/Highlight/Highlights,%
-    hypothesis/Hypothesis/Hypotheses,%
-    important/Important point/Important points,%
-    insight/Insight/Insights,%
-    keypoint/Key Point/Key Points,%
-    lemma/Lemma/Lemmas,%
-    motivation/Motivation/Motivations,%
-    notation/Notation/Notations,%
-    notationabuse/Notation Abuse/Notation Abuses,%
-    note/Note/Notes,%
-    observation/Observation/Observations,%
-    openproblem/Open Problem/Open Problems,%
-    postulate/Postulate/Postulates,%
-    problem/Problem/Problems,%
-    proof/Proof/Proofs,%
-    property/Property/Properties,%
-    proposition/Proposition/Propositions,%
-    protocol/Protocol/Protocols,%
-    question/Question/Questions,%
-    recall/Recall/Recalls,%
-    remark/Remark/Remarks,%
-    result/Result/Results,%
-    solution/Solution/Solutions,%
-    step/Step/Steps,%
-    summary/Summary/Summaries,%
-    syntax/Syntax/Syntaxes,%
-    takeaway/Takeaway/Takeaways,%
-    theorem/Theorem/Theorems,%
-    tip/Tip/Tips,%
-    warning/Warning/Warnings%
+	application/Application/Applications,%
+	assertion/Assertion/Assertions,%
+	assumption/Assumption/Assumptions,%
+	axiom/Axiom/Axioms,%
+	claim/Claim/Claims,%
+	commentary/Commentary/Commentaries,%
+	conclusion/Conclusion/Conclusions,%
+	conjecture/Conjecture/Conjectures,%
+	construction/Construction/Constructions,%
+	convention/Convention/Conventions,%
+	corollary/Corollary/Corollaries,%
+	criterion/Criterion/Criteria,%
+	definition/Definition/Definitions,%
+	discussion/Discussion/Discussions,%
+	example/Example/Examples,%
+	exercise/Exercise/Exercises,%
+	experiment/Experiment/Experiments,%
+	fact/Fact/Facts,%
+	folklore/Folklore/Folklore,%
+	guideline/Guideline/Guidelines,%
+	highlight/Highlight/Highlights,%
+	hypothesis/Hypothesis/Hypotheses,%
+	important/Important point/Important points,%
+	insight/Insight/Insights,%
+	keypoint/Key Point/Key Points,%
+	lemma/Lemma/Lemmas,%
+	motivation/Motivation/Motivations,%
+	notation/Notation/Notations,%
+	notationabuse/Notation Abuse/Notation Abuses,%
+	note/Note/Notes,%
+	observation/Observation/Observations,%
+	openproblem/Open Problem/Open Problems,%
+	postulate/Postulate/Postulates,%
+	problem/Problem/Problems,%
+	proof/Proof/Proofs,%
+	property/Property/Properties,%
+	proposition/Proposition/Propositions,%
+	protocol/Protocol/Protocols,%
+	question/Question/Questions,%
+	recall/Recall/Recalls,%
+	remark/Remark/Remarks,%
+	result/Result/Results,%
+	solution/Solution/Solutions,%
+	step/Step/Steps,%
+	summary/Summary/Summaries,%
+	syntax/Syntax/Syntaxes,%
+	takeaway/Takeaway/Takeaways,%
+	theorem/Theorem/Theorems,%
+	tip/Tip/Tips,%
+	warning/Warning/Warnings%
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -586,61 +586,61 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ifcsw@draft
-    \ProvideDocumentCommand{\added}{m}{\textcolor{OliveDrab4}{#1}\marginnote{\textcolor{OliveDrab4}{\LARGE$\star$}}}
-    \ProvideDocumentCommand{\changed}{m}{\textcolor{RoyalBlue4}{#1}\marginnote{\textcolor{RoyalBlue4}{\LARGE$\star$}}}
-    \ProvideDocumentCommand{\fixme}{m}{\textcolor{DarkOrange4}{[\textsc{Fix-me}:~#1]}\marginnote{\textcolor{DarkOrange3}{\LARGE$\star$}}}
-    \ProvideDocumentCommand{\missing}{m}{\textcolor{MediumPurple3}{#1}\marginnote{\textcolor{MediumPurple3}{\LARGE$\star$}}}
-    \ProvideDocumentCommand{\notes}{m}{\textcolor{SeaGreen4}{[\textsc{Note}:~#1]}\marginnote{\textcolor{SeaGreen4}{\LARGE$\star$}}}
-    \ProvideDocumentCommand{\query}{m}{\textcolor{DarkOrchid4}{[\textsc{Query}:~#1]}\marginnote{\textcolor{DarkOrchid4}{\LARGE$\star$}}}
-    \ProvideDocumentCommand{\removed}{m}{\textcolor{IndianRed4}{\sout{#1}}\marginnote{\textcolor{IndianRed4}{\LARGE$\star$}}}
-    \ProvideDocumentCommand{\todo}{m}{\textcolor{Firebrick3}{[\textsc{To-do}:~#1]}\marginnote{\textcolor{Firebrick3}{\LARGE$\star$}}}
+	\ProvideDocumentCommand{\added}{m}{\textcolor{OliveDrab4}{#1}\marginnote{\textcolor{OliveDrab4}{\LARGE$\star$}}}
+	\ProvideDocumentCommand{\changed}{m}{\textcolor{RoyalBlue4}{#1}\marginnote{\textcolor{RoyalBlue4}{\LARGE$\star$}}}
+	\ProvideDocumentCommand{\fixme}{m}{\textcolor{DarkOrange4}{[\textsc{Fix-me}:~#1]}\marginnote{\textcolor{DarkOrange3}{\LARGE$\star$}}}
+	\ProvideDocumentCommand{\missing}{m}{\textcolor{MediumPurple3}{#1}\marginnote{\textcolor{MediumPurple3}{\LARGE$\star$}}}
+	\ProvideDocumentCommand{\notes}{m}{\textcolor{SeaGreen4}{[\textsc{Note}:~#1]}\marginnote{\textcolor{SeaGreen4}{\LARGE$\star$}}}
+	\ProvideDocumentCommand{\query}{m}{\textcolor{DarkOrchid4}{[\textsc{Query}:~#1]}\marginnote{\textcolor{DarkOrchid4}{\LARGE$\star$}}}
+	\ProvideDocumentCommand{\removed}{m}{\textcolor{IndianRed4}{\sout{#1}}\marginnote{\textcolor{IndianRed4}{\LARGE$\star$}}}
+	\ProvideDocumentCommand{\todo}{m}{\textcolor{Firebrick3}{[\textsc{To-do}:~#1]}\marginnote{\textcolor{Firebrick3}{\LARGE$\star$}}}
 \else
-    \ProvideDocumentCommand{\added}{m}{#1}
-    \ProvideDocumentCommand{\changed}{m}{#1}
-    \ProvideDocumentCommand{\fixme}{m}{}
-    \ProvideDocumentCommand{\missing}{m}{}
-    \ProvideDocumentCommand{\notes}{m}{}
-    \ProvideDocumentCommand{\query}{m}{}
-    \ProvideDocumentCommand{\removed}{m}{}
-    \ProvideDocumentCommand{\todo}{m}{}
+	\ProvideDocumentCommand{\added}{m}{#1}
+	\ProvideDocumentCommand{\changed}{m}{#1}
+	\ProvideDocumentCommand{\fixme}{m}{}
+	\ProvideDocumentCommand{\missing}{m}{}
+	\ProvideDocumentCommand{\notes}{m}{}
+	\ProvideDocumentCommand{\query}{m}{}
+	\ProvideDocumentCommand{\removed}{m}{}
+	\ProvideDocumentCommand{\todo}{m}{}
 \fi
 
 \NewDocumentCommand{\newguymarker}{mmm}{%
-    \ifcsw@draft
-        \expandafter\NewDocumentCommand\csname#1\endcsname{m}{%
-            \textcolor{#3}{##1\ \textsc{#2}}%
-            \marginnote{\textcolor{#3}{\LARGE$\star$}}%
-        }%
-    \else
-        \expandafter\NewDocumentCommand\csname#1\endcsname{m}{}%
-    \fi
+	\ifcsw@draft
+		\expandafter\NewDocumentCommand\csname#1\endcsname{m}{%
+			\textcolor{#3}{##1\ \textsc{#2}}%
+			\marginnote{\textcolor{#3}{\LARGE$\star$}}%
+		}%
+	\else
+		\expandafter\NewDocumentCommand\csname#1\endcsname{m}{}%
+	\fi
 }
 
 \ProvideDocumentCommand{\csw@colorize}{}{\color{Firebrick2}}
 
 \NewDocumentCommand{\csw@brokenrefmark}{m}{
-    \marginnote[
-        {\csw@colorize\normalfont\smash{\LARGE$\star$}\,\tiny\sffamily#1}
-    ]{
-        {\csw@colorize\normalfont\smash{\LARGE$\star$}\,\tiny\sffamily#1}
-    }
+	\marginnote[
+		{\csw@colorize\normalfont\smash{\LARGE$\star$}\,\tiny\sffamily#1}
+	]{
+		{\csw@colorize\normalfont\smash{\LARGE$\star$}\,\tiny\sffamily#1}
+	}
 }
 
 \newbool{csw@markundef}
 \booltrue{csw@markundef}
 
 \xpretocmd{\G@refundefinedtrue}{
-    \ifbool{csw@markundef}{
-        \csw@brokenrefmark{\@ifundefined{@citeb}{}{\@citeb}}
-    }{}
+	\ifbool{csw@markundef}{
+		\csw@brokenrefmark{\@ifundefined{@citeb}{}{\@citeb}}
+	}{}
 }{}{}
 
 \let\csw@old@setref\@setref
 \RenewDocumentCommand{\@setref}{m m m}{
-    \ifx#1\relax\csw@brokenrefmark{#3}\fi
-    \boolfalse{csw@markundef}%
-    \csw@old@setref{#1}{#2}{#3}%
-    \booltrue{csw@markundef}%
+	\ifx#1\relax\csw@brokenrefmark{#3}\fi
+	\boolfalse{csw@markundef}%
+	\csw@old@setref{#1}{#2}{#3}%
+	\booltrue{csw@markundef}%
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -650,9 +650,9 @@
 \newif\ifcsw@haspunctuation
 
 \def\csw@checkpunctuation#1{%
-    \ifx\csw@checkpunctuation#1\csw@checkpunctuation\else
-        \csw@haspunctuationtrue
-    \fi
+	\ifx\csw@checkpunctuation#1\csw@checkpunctuation\else
+		\csw@haspunctuationtrue
+	\fi
 }
 
 \def\csw@checkdot      #1.\csw@delim#2\csw@stop{\csw@checkpunctuation{#2}}
@@ -661,43 +661,43 @@
 \def\csw@checkcolon    #1:\csw@delim#2\csw@stop{\csw@checkpunctuation{#2}}
 
 \def\csw@appendpunctuationifneeded#1{%
-    \csw@haspunctuationfalse
-    \csw@checkdot      #1\csw@delim.\csw@delim\csw@stop
-    \csw@checkquestion #1\csw@delim?\csw@delim\csw@stop
-    \csw@checkexclam   #1\csw@delim!\csw@delim\csw@stop
-    \csw@checkcolon    #1\csw@delim:\csw@delim\csw@stop
-    #1\ifcsw@haspunctuation\else.\fi
+	\csw@haspunctuationfalse
+	\csw@checkdot      #1\csw@delim.\csw@delim\csw@stop
+	\csw@checkquestion #1\csw@delim?\csw@delim\csw@stop
+	\csw@checkexclam   #1\csw@delim!\csw@delim\csw@stop
+	\csw@checkcolon    #1\csw@delim:\csw@delim\csw@stop
+	#1\ifcsw@haspunctuation\else.\fi
 }
 
 \def\csw@ignorewhitespaceandimplicitpars{%
-    \begingroup
-    \catcode13=10\relax
-    \@ifnextchar\relax{\endgroup}{\endgroup}%
+	\begingroup
+	\catcode13=10\relax
+	\@ifnextchar\relax{\endgroup}{\endgroup}%
 }
 
 \NewDocumentCommand{\csw@paragraphhead}{m}{%
-    \smallskip
-    \noindent
-    \textbf{\ignorespaces\csw@appendpunctuationifneeded{#1}}%
-    \hskip 0.30em
-    \ignorespaces
+	\smallskip
+	\noindent
+	\textbf{\ignorespaces\csw@appendpunctuationifneeded{#1}}%
+	\hskip 0.30em
+	\ignorespaces
 }
 
 \NewDocumentCommand{\csw@subparagraphhead}{m}{%
-    \smallskip
-    \noindent
-    \textsc{\ignorespaces\csw@appendpunctuationifneeded{#1}}%
-    \hskip 0.30em
-    \ignorespaces
+	\smallskip
+	\noindent
+	\textsc{\ignorespaces\csw@appendpunctuationifneeded{#1}}%
+	\hskip 0.30em
+	\ignorespaces
 }
 
 \NewDocumentCommand{\parhead}   {m}{\csw@paragraphhead{#1}}
 \NewDocumentCommand{\subparhead}{m}{\csw@subparagraphhead{#1}}
 
 \AtBeginDocument{%
-    \RenewDocumentCommand{\paragraph}{m}{\parhead{#1}}%
-    \RenewDocumentCommand{\subparagraph}{m}{\subparhead{#1}}%
-    \RenewDocumentCommand{\Pr}{}{\mathop{\mathsf{Pr}}}%
+	\RenewDocumentCommand{\paragraph}{m}{\parhead{#1}}%
+	\RenewDocumentCommand{\subparagraph}{m}{\subparhead{#1}}%
+	\RenewDocumentCommand{\Pr}{}{\mathop{\mathsf{Pr}}}%
 }
 
 \makeatother

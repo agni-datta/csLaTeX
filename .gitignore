@@ -30,10 +30,9 @@
 *.xdv
 *.pdf
 
-# Test build directories
-
 # Editor temporaries
-*~
-*.swp
-*.swo
 *.bak0
+*.bak1
+*.swo
+*.swp
+*~
