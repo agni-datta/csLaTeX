@@ -851,15 +851,15 @@
 % Draft watermark
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\ifllncsdraft
-	\RequirePackage{scrtime}
-	\RequirePackage{prelim2e}
-	\NewDocumentCommand{\llncsdatetime}{}{%
-		\the\year-%
-		\ifnum\the\month<10 0\fi\the\month-%
-		\ifnum\the\day<10 0\fi\the\day\space\thistime
-	}
-	\RenewDocumentCommand{\PrelimText}{}{%
+	\ifllncsdraft
+		\RequirePackage{scrtime}
+		\RequirePackage{prelim2e}
+		\NewDocumentCommand{\llncsdatetime}{}{%
+			\number\year-%
+			\ifnum\month<10 0\fi\number\month-%
+			\ifnum\day<10 0\fi\number\day\space\thistime
+		}
+		\RenewDocumentCommand{\PrelimText}{}{%
 		\normalfont\scshape\footnotesize\color{IndianRed1}%
 		This is a draft made on~\llncsdatetime; not for distribution%
 	}

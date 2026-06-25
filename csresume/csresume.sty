@@ -23,6 +23,8 @@
 \msg_new:nnn { csresume } { unknown-option }
 { Unknown~option~`#1'~ignored. }
 
+\str_gset:Nn \g_csrs_font_str { gfsdidot }
+
 \keys_define:nn { csresume }
 {
 	font        .str_gset:N  = \g_csrs_font_str ,
@@ -36,6 +38,10 @@
 	unknown     .code:n      = { \msg_warning:nnn { csresume } { unknown-option } {#1} } ,
 }
 \ProcessKeysOptions { csresume }
+\str_if_empty:NT \g_csrs_font_str
+{
+	\str_gset:Nn \g_csrs_font_str { gfsdidot }
+}
 
 \newif\if@csrsbaskerville
 \newif\if@csrseuler

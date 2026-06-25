@@ -26,6 +26,11 @@
 \tl_new:N   \g_cstf_font_tl
 \tl_new:N   \g_cstf_backcolor_tl
 
+\tl_gset:Nn \g_cstf_rulerwidth_tl { 2pt }
+\tl_gset:Nn \g_cstf_framecolor_tl { black }
+\tl_gset:Nn \g_cstf_font_tl { kpfonts }
+\tl_gset:Nn \g_cstf_backcolor_tl { white }
+
 \keys_define:nn { cstufte }
 {
 	colorful    .bool_gset:N = \g_cstf_colorful_bool ,
@@ -43,6 +48,22 @@
 	unknown     .code:n      = { \PackageWarning{cstufte}{Unknown~option~`#1'~ignored} } ,
 }
 \ProcessKeysOptions { cstufte }
+\tl_if_blank:VT \g_cstf_rulerwidth_tl
+{
+	\tl_gset:Nn \g_cstf_rulerwidth_tl { 2pt }
+}
+\tl_if_blank:VT \g_cstf_framecolor_tl
+{
+	\tl_gset:Nn \g_cstf_framecolor_tl { black }
+}
+\tl_if_blank:VT \g_cstf_font_tl
+{
+	\tl_gset:Nn \g_cstf_font_tl { kpfonts }
+}
+\tl_if_blank:VT \g_cstf_backcolor_tl
+{
+	\tl_gset:Nn \g_cstf_backcolor_tl { white }
+}
 
 \tl_set_eq:cN { cstf@rulerwidth  } \g_cstf_rulerwidth_tl
 \tl_set_eq:cN { cstf@framecolor  } \g_cstf_framecolor_tl
@@ -645,7 +666,7 @@
 \@ifundefined{smallcaps}{}{\RenewDocumentCommand{\smallcaps}{m}{\smallcapsspacing{\scshape\MakeTextLowercase{#1}}}}
 \@ifundefined{textsmallcaps}{}{\RenewDocumentCommand{\textsc}{m}{\smallcapsspacing{\textsmallcaps{#1}}}}
 
-\RenewDocumentCommand{\maketitlepage}{}{%
+\DeclareDocumentCommand{\maketitlepage}{}{%
 	\begingroup
 	\setlength{\parindent}{0pt}
 	{\LARGE\textsc{\@author}\par}

@@ -23,6 +23,11 @@
 \tl_new:N   \g_csdp_proofname_tl
 \tl_new:N   \g_csdp_sketchname_tl
 
+\tl_gset:Nn \g_csdp_commandref_tl { cref }
+\tl_gset:Nn \g_csdp_category_tl { defaultcategory }
+\tl_gset:Nn \g_csdp_proofname_tl { Proof }
+\tl_gset:Nn \g_csdp_sketchname_tl { Proof~Sketch }
+
 \keys_define:nn { csdeferproofs }
 {
 	appendix    .bool_gset:N = \g_csdp_appendix_bool ,
@@ -38,6 +43,22 @@
 	unknown     .code:n      = { \PackageWarning{csdeferproofs}{Unknown~option~`#1'~ignored} } ,
 }
 \ProcessKeysOptions { csdeferproofs }
+\tl_if_blank:VT \g_csdp_commandref_tl
+{
+	\tl_gset:Nn \g_csdp_commandref_tl { cref }
+}
+\tl_if_blank:VT \g_csdp_category_tl
+{
+	\tl_gset:Nn \g_csdp_category_tl { defaultcategory }
+}
+\tl_if_blank:VT \g_csdp_proofname_tl
+{
+	\tl_gset:Nn \g_csdp_proofname_tl { Proof }
+}
+\tl_if_blank:VT \g_csdp_sketchname_tl
+{
+	\tl_gset:Nn \g_csdp_sketchname_tl { Proof~Sketch }
+}
 
 \tl_set_eq:cN { csdp@commandref } \g_csdp_commandref_tl
 \tl_set_eq:cN { csdp@category   } \g_csdp_category_tl

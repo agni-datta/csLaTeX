@@ -20,6 +20,8 @@
 \tl_new:N  \g_csam_font_tl
 \bool_new:N \g_csam_draft_bool
 
+\tl_gset:Nn \g_csam_font_tl { latinmodern }
+
 \keys_define:nn { csamsmath }
 {
 	font         .tl_gset:N   = \g_csam_font_tl ,
@@ -38,6 +40,10 @@
 	unknown      .code:n      = { \PackageWarning{csamsmath}{Unknown~option~`#1'~ignored} } ,
 }
 \ProcessKeysOptions { csamsmath }
+\tl_if_blank:VT \g_csam_font_tl
+{
+	\tl_gset:Nn \g_csam_font_tl { latinmodern }
+}
 
 \newif\ifcsam@baskervaldx  \tl_if_eq:NnT \g_csam_font_tl { baskervaldx } { \csam@baskervaldxtrue }
 \newif\ifcsam@concrete     \tl_if_eq:NnT \g_csam_font_tl { concrete    } { \csam@concretetrue    }
@@ -984,14 +990,14 @@
 		\marginnote{{\color{PaleVioletRed3}\normalfont$\star$}}%
 		\textcolor{PaleVioletRed3}{\sffamily\bfseries[#1]}%
 	}
-	\IfFileExists{scrtime.sty}{%
-		\RequirePackage{scrtime}%
-		\RequirePackage{prelim2e}%
-		\NewDocumentCommand{\csam@datetime}{}{%
-			\the\year-\ifnum\the\month<10 0\fi\the\month-%
-			\ifnum\the\day<10 0\fi\the\day\space\thistime%
-		}%
-		\RenewDocumentCommand{\PrelimText}{}{%
+		\IfFileExists{scrtime.sty}{%
+			\RequirePackage{scrtime}%
+			\RequirePackage{prelim2e}%
+			\NewDocumentCommand{\csam@datetime}{}{%
+				\number\year-\ifnum\month<10 0\fi\number\month-%
+				\ifnum\day<10 0\fi\number\day\space\thistime%
+			}%
+			\RenewDocumentCommand{\PrelimText}{}{%
 			\normalfont\scshape\footnotesize\color{DeepPink3}%
 			Draft --- {\csam@datetime} --- Not for Distribution%
 		}%

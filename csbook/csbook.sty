@@ -22,6 +22,8 @@
 \bool_new:N \g_csbk_lastpage_bool
 \bool_new:N \g_csbk_noindex_bool
 
+\tl_gset:Nn \g_csbk_font_tl { latinmodern }
+
 \keys_define:nn { csbook }
 {
 	font         .tl_gset:N   = \g_csbk_font_tl ,
@@ -44,6 +46,10 @@
 	unknown      .code:n      = { \PackageWarning{csbook}{Unknown~option~`#1'~ignored} } ,
 }
 \ProcessKeysOptions { csbook }
+\tl_if_blank:VT \g_csbk_font_tl
+{
+	\tl_gset:Nn \g_csbk_font_tl { latinmodern }
+}
 
 \newif\ifcsbk@baskervaldx  \tl_if_eq:NnT \g_csbk_font_tl { baskervaldx } { \csbk@baskervaldxtrue }
 \newif\ifcsbk@concrete     \tl_if_eq:NnT \g_csbk_font_tl { concrete    } { \csbk@concretetrue    }

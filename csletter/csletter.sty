@@ -36,6 +36,20 @@
 \tl_new:N \g_csltr_footerpos_tl
 \tl_new:N \g_csltr_linespacing_tl
 
+\tl_gset:Nn \g_csltr_textcolor_tl { black }
+\tl_gset:Nn \g_csltr_accentcolor_tl { blue }
+\tl_gset:Nn \g_csltr_footercolor_tl { gray }
+\tl_gset:Nn \g_csltr_headercolor_tl { gray }
+\tl_gset:Nn \g_csltr_topmargin_tl { 2.5cm }
+\tl_gset:Nn \g_csltr_bottommargin_tl { 2.5cm }
+\tl_gset:Nn \g_csltr_leftmargin_tl { 2.5cm }
+\tl_gset:Nn \g_csltr_rightmargin_tl { 2.5cm }
+\tl_gset:Nn \g_csltr_logofile_tl { logo.png }
+\tl_gset:Nn \g_csltr_signaturefile_tl { signature.png }
+\tl_gset:Nn \g_csltr_headerpos_tl { left }
+\tl_gset:Nn \g_csltr_footerpos_tl { center }
+\tl_gset:Nn \g_csltr_linespacing_tl { single }
+
 \keys_define:nn { csletter }
 {
 	textcolor     .tl_gset:N   = \g_csltr_textcolor_tl    , textcolor     .initial:n = black ,
@@ -59,6 +73,58 @@
 	unknown       .code:n      = { \PackageWarning{csletter}{Unknown~option~`#1'~ignored} } ,
 }
 \ProcessKeysOptions { csletter }
+\tl_if_blank:VT \g_csltr_textcolor_tl
+{
+	\tl_gset:Nn \g_csltr_textcolor_tl { black }
+}
+\tl_if_blank:VT \g_csltr_accentcolor_tl
+{
+	\tl_gset:Nn \g_csltr_accentcolor_tl { blue }
+}
+\tl_if_blank:VT \g_csltr_footercolor_tl
+{
+	\tl_gset:Nn \g_csltr_footercolor_tl { gray }
+}
+\tl_if_blank:VT \g_csltr_headercolor_tl
+{
+	\tl_gset:Nn \g_csltr_headercolor_tl { gray }
+}
+\tl_if_blank:VT \g_csltr_topmargin_tl
+{
+	\tl_gset:Nn \g_csltr_topmargin_tl { 2.5cm }
+}
+\tl_if_blank:VT \g_csltr_bottommargin_tl
+{
+	\tl_gset:Nn \g_csltr_bottommargin_tl { 2.5cm }
+}
+\tl_if_blank:VT \g_csltr_leftmargin_tl
+{
+	\tl_gset:Nn \g_csltr_leftmargin_tl { 2.5cm }
+}
+\tl_if_blank:VT \g_csltr_rightmargin_tl
+{
+	\tl_gset:Nn \g_csltr_rightmargin_tl { 2.5cm }
+}
+\tl_if_blank:VT \g_csltr_logofile_tl
+{
+	\tl_gset:Nn \g_csltr_logofile_tl { logo.png }
+}
+\tl_if_blank:VT \g_csltr_signaturefile_tl
+{
+	\tl_gset:Nn \g_csltr_signaturefile_tl { signature.png }
+}
+\tl_if_blank:VT \g_csltr_headerpos_tl
+{
+	\tl_gset:Nn \g_csltr_headerpos_tl { left }
+}
+\tl_if_blank:VT \g_csltr_footerpos_tl
+{
+	\tl_gset:Nn \g_csltr_footerpos_tl { center }
+}
+\tl_if_blank:VT \g_csltr_linespacing_tl
+{
+	\tl_gset:Nn \g_csltr_linespacing_tl { single }
+}
 
 \tl_set_eq:cN { csltr@textcolor    } \g_csltr_textcolor_tl
 \tl_set_eq:cN { csltr@accentcolor  } \g_csltr_accentcolor_tl

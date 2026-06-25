@@ -127,6 +127,9 @@
 \bool_new:N \g_csextras_watermark_bool
 \bool_new:N \g_csextras_zcref_bool
 
+\tl_gset:Nn \g_csextras_copyright_tl { none }
+\tl_gset:Nn \g_csextras_lipsum_tl { none }
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Key definitions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -244,6 +247,14 @@
 }
 
 \ProcessKeysOptions { csextras }
+\tl_if_blank:VT \g_csextras_copyright_tl
+{
+	\tl_gset:Nn \g_csextras_copyright_tl { none }
+}
+\tl_if_blank:VT \g_csextras_lipsum_tl
+{
+	\tl_gset:Nn \g_csextras_lipsum_tl { none }
+}
 
 \bool_if:NF \g_csextras_nowarning_bool
 {
