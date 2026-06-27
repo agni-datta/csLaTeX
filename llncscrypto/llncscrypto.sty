@@ -7,7 +7,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{llncscrypto}[2026/06/23 v3.3 LLNCS-compatible research-paper extensions]
+\ProvidesPackage{llncscrypto}[2026/06/27 v3.3.1 LLNCS-compatible research-paper extensions]
 
 \RequirePackage{l3keys2e}
 \makeatletter
@@ -155,46 +155,6 @@
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% References
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\def\llncshypercolorlinks{false}
-\ifllncscolorlinks
-	\def\llncshypercolorlinks{true}
-\fi
-
-\RequirePackage[
-	bookmarksnumbered = true,
-	breaklinks        = true,
-	citecolor         = SteelBlue4,
-	colorlinks        = \llncshypercolorlinks,
-	linkcolor         = SteelBlue4,
-	pdfencoding       = auto,
-	pdfpagelabels     = true,
-	pdfstartview      = FitH,
-	unicode           = true,
-	urlcolor          = SteelBlue4
-]{hyperref}
-
-\pdfstringdefDisableCommands{%
-\def\S{\textsection}%
-\def\langle{<}\def\rangle{>}%
-\def\lceil{[}\def\rceil{]}%
-\def\left{}\def\right{}%
-\def\lfloor{[}\def\rfloor{]}%
-\def\mathbb#1{#1}%
-\def\mathbf#1{#1}%
-\def\mathcal#1{#1}%
-\def\mathfrak#1{#1}%
-\def\mathrm#1{#1}%
-\def\mathscr#1{#1}%
-\def\mathsf#1{#1}%
-\def\mathtt#1{#1}%
-\def\operatorname#1{#1}%
-\def\text#1{#1}%
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Graphics, tables, captions, and lists
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -240,6 +200,45 @@
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% References
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\llncshypercolorlinks{false}
+\ifllncscolorlinks
+	\def\llncshypercolorlinks{true}
+\fi
+
+\RequirePackage[
+	bookmarksnumbered = true,
+	breaklinks        = true,
+	citecolor         = SteelBlue4,
+	colorlinks        = \llncshypercolorlinks,
+	linkcolor         = SteelBlue4,
+	pdfencoding       = auto,
+	pdfpagelabels     = true,
+	pdfstartview      = FitH,
+	unicode           = true,
+	urlcolor          = SteelBlue4
+]{hyperref}
+
+\pdfstringdefDisableCommands{%
+\def\S{\textsection}%
+\def\langle{<}\def\rangle{>}%
+\def\lceil{[}\def\rceil{]}%
+\def\left{}\def\right{}%
+\def\lfloor{[}\def\rfloor{]}%
+\def\mathbb#1{#1}%
+\def\mathbf#1{#1}%
+\def\mathcal#1{#1}%
+\def\mathfrak#1{#1}%
+\def\mathrm#1{#1}%
+\def\mathscr#1{#1}%
+\def\mathsf#1{#1}%
+\def\mathtt#1{#1}%
+\def\operatorname#1{#1}%
+\def\text#1{#1}%
+}
+
 % Theorem environments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
