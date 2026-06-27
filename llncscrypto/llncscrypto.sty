@@ -652,12 +652,12 @@
 }
 \NewDocumentCommand{\newguymarker}{m m m}{%
 	\ifllncsnotes
-		\NewDocumentCommand#1{m}{%
+		\expandafter\NewDocumentCommand\csname#1\endcsname{m}{%
 			\textcolor{#3}{##1\ \textsc{#2}}%
 			\marginnote{\textcolor{#3}{\LARGE$\star$}}%
 		}%
 	\else
-		\NewDocumentCommand#1{m}{}%
+		\expandafter\NewDocumentCommand\csname#1\endcsname{m}{}%
 	\fi
 }
 
