@@ -16,23 +16,23 @@ LaTeX packages for computer science research, technical teaching, and academic d
 
 ### Packages
 
-| Package                                       | Version | Description                                                                                                                              |
-| --------------------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| [`codelines`](codelines/README.md)            | 1.1     | Algorithmic listing environment with automated line numbering and nesting.                                                               |
-| [`csamsmath`](csamsmath/README.md)            | 3.2     | Math backbone for research papers: fonts, theorem environments, proof helpers, and annotation commands.                                  |
-| [`csbook`](csbook/README.md)                  | 3.1     | Framework for textbooks and large reports with draft/final modes, theorem helpers, and broken-reference tracking.                        |
-| [`csdeferproofs`](csdeferproofs/README.md)    | 1.3     | Deferred-proof infrastructure: collect proofs into a “Missing Proofs” appendix in submission mode; keep them inline in eprint mode.      |
-| [`csextras`](csextras/README.md)              | 1.1     | Opt-in extension layer for `csamsmath` and `csbook`, including layout, metadata, boxes, indexing, and optional tooling.                  |
-| [`eudoxus`](eudoxus/README.md)                | 1.1     | General-purpose math package: fonts, layout, theorem environments, TikZ, and bibliography styling for `amsart` documents.                |
-| [`cslecture`](cslecture/README.md)            | 3.2     | Skeleton for lecture notes over the `article` class: condensed spacing, boxed title block, and a full theorem suite.                     |
-| [`csletter`](csletter/README.md)              | 3.2     | Professional correspondence with configurable colors, margins, spacing, and optional logo and signature images.                          |
-| [`cspresentation`](cspresentations/README.md) | 3.2     | Beamer theme overlay on Metropolis with the Nord color palette, semantic highlight commands, and TikZ diagram styles.                    |
-| [`csresume`](csresume/README.md)              | 4.3     | Academic CV and resume with chronological entries, BibLaTeX publications, compact lists, and reference block layouts.                    |
-| [`csthm`](csthm/README.md)                    | 3.2     | Theorem suite with three visual modes (`normal`, `fancy`, `oldschool`), dynamic accent colors, proof helpers, and `cleveref` integration.|
-| [`cstufte`](cstufte/README.md)                | 3.1     | Tufte-style wide-margin layout with side-citations, marginalia, and a lattice cryptography notation library.                             |
-| [`cswhitepaper`](cswhitepaper/README.md)      | 5.1     | Style for technical reports with per-author annotation commands, revision tracking, and ruled theorem aesthetics.                        |
-| [`llncscrypto`](llncscrypto/README.md)        | 3.3     | LLNCS-compatible research-paper extensions: theorem support, author notes, boxes, captions, references, and preprint utilities.          |
-| [`tcscrypto`](tcscrypto/README.md)            | 3.4     | Notation and environment library for TCS and cryptography: sampling, complexity, circuits, graphs, proof complexity, and protocol boxes. |
+| Package                                       | Version | Description                                                                                                                               |
+| --------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| [`codelines`](codelines/README.md)            | 1.1     | Algorithmic listing environment with automated line numbering and nesting.                                                                |
+| [`csamsmath`](csamsmath/README.md)            | 3.2     | Math backbone for research papers: fonts, theorem environments, proof helpers, and annotation commands.                                   |
+| [`csbook`](csbook/README.md)                  | 3.1     | Framework for textbooks and large reports with draft/final modes, theorem helpers, and broken-reference tracking.                         |
+| [`csdeferproofs`](csdeferproofs/README.md)    | 1.3     | Deferred-proof infrastructure: collect proofs into a “Missing Proofs” appendix in submission mode; keep them inline in eprint mode.       |
+| [`csextras`](csextras/README.md)              | 1.1     | Opt-in extension layer for `csamsmath` and `csbook`, including layout, metadata, boxes, indexing, and optional tooling.                   |
+| [`eudoxus`](eudoxus/README.md)                | 1.2     | General-purpose math package: fonts, layout, theorem environments, TikZ, bibliography styling, and optional title/header patching.        |
+| [`cslecture`](cslecture/README.md)            | 3.2     | Skeleton for lecture notes over the `article` class: condensed spacing, boxed title block, and a full theorem suite.                      |
+| [`csletter`](csletter/README.md)              | 3.2     | Professional correspondence with configurable colors, margins, spacing, and optional logo and signature images.                           |
+| [`cspresentation`](cspresentations/README.md) | 3.2     | Beamer theme overlay on Metropolis with the Nord color palette, semantic highlight commands, and TikZ diagram styles.                     |
+| [`csresume`](csresume/README.md)              | 4.3     | Academic CV and resume with chronological entries, BibLaTeX publications, compact lists, and reference block layouts.                     |
+| [`csthm`](csthm/README.md)                    | 3.2     | Theorem suite with three visual modes (`normal`, `fancy`, `oldschool`), dynamic accent colors, proof helpers, and `cleveref` integration. |
+| [`cstufte`](cstufte/README.md)                | 3.1     | Tufte-style wide-margin layout with side-citations, marginalia, and a lattice cryptography notation library.                              |
+| [`cswhitepaper`](cswhitepaper/README.md)      | 5.1     | Style for technical reports with per-author annotation commands, revision tracking, and ruled theorem aesthetics.                         |
+| [`llncscrypto`](llncscrypto/README.md)        | 3.3     | LLNCS-compatible research-paper extensions: theorem support, author notes, boxes, captions, references, and preprint utilities.           |
+| [`tcscrypto`](tcscrypto/README.md)            | 3.4     | Notation and environment library for TCS and cryptography: sampling, complexity, circuits, graphs, proof complexity, and protocol boxes.  |
 
 ### Installation
 

@@ -7,7 +7,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{eudoxus}[2026/06/23 v1.1 Eudoxus Math LaTeX package]
+\ProvidesPackage{eudoxus}[2026/07/04 v1.2 Eudoxus Math LaTeX package]
 
 \RequirePackage{l3keys2e}
 \ExplSyntaxOn
@@ -20,30 +20,35 @@
 \bool_new:N \g_eudox_theorems_bool
 \bool_new:N \g_eudox_tcs_bool
 \bool_new:N \g_eudox_layout_bool
+\bool_new:N \g_eudox_titlepatch_bool
 
 \keys_define:nn { eudoxus }
 {
-	nomath     .code:n  = { \bool_gset_false:N \g_eudox_math_bool
+	nomath     .code:n  	= { \bool_gset_false:N \g_eudox_math_bool
 			\bool_gset_false:N \g_eudox_theorems_bool
 			\bool_gset_false:N \g_eudox_tcs_bool } ,
-	notheorems .code:n  = { \bool_gset_false:N \g_eudox_theorems_bool } ,
-	tcs        .code:n  = { \bool_gset_true:N  \g_eudox_tcs_bool } ,
-	notcs      .code:n  = { \bool_gset_false:N \g_eudox_tcs_bool } ,
-	nolayout   .code:n  = { \bool_gset_false:N \g_eudox_layout_bool } ,
-	unknown    .code:n  = { \PackageWarning{eudoxus}{Unknown~option~`#1'} } ,
+	notheorems .code:n  	= { \bool_gset_false:N \g_eudox_theorems_bool } ,
+	tcs        .code:n  	= { \bool_gset_true:N  \g_eudox_tcs_bool } ,
+	notcs      .code:n  	= { \bool_gset_false:N \g_eudox_tcs_bool } ,
+	nolayout   .code:n  	= { \bool_gset_false:N \g_eudox_layout_bool } ,
+	titlepatch .code:n  	= { \bool_gset_true:N  \g_eudox_titlepatch_bool } ,
+	notitlepatch .code:n 	= { \bool_gset_false:N \g_eudox_titlepatch_bool } ,
+	unknown    .code:n  	= { \PackageWarning{eudoxus}{Unknown~option~`#1'} } ,
 }
 
 \bool_gset_true:N  \g_eudox_math_bool
 \bool_gset_true:N  \g_eudox_theorems_bool
 \bool_gset_false:N \g_eudox_tcs_bool
 \bool_gset_true:N  \g_eudox_layout_bool
+\bool_gset_false:N \g_eudox_titlepatch_bool
 
 \ProcessKeysOptions { eudoxus }
 
-\newif\ifeudoxmath     \bool_if:NTF \g_eudox_math_bool     { \eudoxmathtrue     } { \eudoxmathfalse     }
-\newif\ifeudoxtheorems \bool_if:NTF \g_eudox_theorems_bool { \eudoxtheoremstrue } { \eudoxtheoremsfalse }
-\newif\ifeudoxtcs      \bool_if:NTF \g_eudox_tcs_bool      { \eudoxtcstrue      } { \eudoxtcsfalse      }
-\newif\ifeudoxlayout   \bool_if:NTF \g_eudox_layout_bool   { \eudoxlayouttrue   } { \eudoxlayoutfalse   }
+\newif\ifeudoxmath     		\bool_if:NTF \g_eudox_math_bool     	{ \eudoxmathtrue     } 		{ \eudoxmathfalse     }
+\newif\ifeudoxtheorems 		\bool_if:NTF \g_eudox_theorems_bool 	{ \eudoxtheoremstrue } 		{ \eudoxtheoremsfalse }
+\newif\ifeudoxtcs      		\bool_if:NTF \g_eudox_tcs_bool      	{ \eudoxtcstrue      } 		{ \eudoxtcsfalse      }
+\newif\ifeudoxlayout   		\bool_if:NTF \g_eudox_layout_bool   	{ \eudoxlayouttrue   } 		{ \eudoxlayoutfalse   }
+\newif\ifeudoxtitlepatch 	\bool_if:NTF \g_eudox_titlepatch_bool 	{ \eudoxtitlepatchtrue }	{ \eudoxtitlepatchfalse }
 
 \ExplSyntaxOff
 \makeatletter
@@ -74,6 +79,10 @@
 \RequirePackage{titlecaps}
 \RequirePackage{xspace}
 \RequirePackage{xurl}
+\ifeudoxtitlepatch
+	\RequirePackage{etoolbox}
+	\RequirePackage{sectsty}
+\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Color
@@ -195,7 +204,7 @@
 % References
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[round,numbers]{natbib}
+\RequirePackage[square,numbers]{natbib}
 \RequirePackage{breakcites}
 \RequirePackage[
 	bookmarksnumbered  = true,
@@ -407,6 +416,37 @@
 % Paragraph headings
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\ProvideDocumentCommand{\edxsectionheadingfont}{}{\sffamily\bfseries}
+\ProvideDocumentCommand{\edxparheadingfont}{}{\sffamily\bfseries\boldmath}
+\ProvideDocumentCommand{\edxsubparheadingfont}{}{\sffamily\bfseries}
+\ProvideDocumentCommand{\edxdocumenttitlefont}{}{\sffamily\bfseries}
+
+\ifeudoxtitlepatch
+	\allsectionsfont{\edxsectionheadingfont}
+	\AtBeginDocument{%
+		\@ifundefined{@maketitle}
+		{}
+		{%
+			\patchcmd{\@maketitle}
+			{\LARGE \@title}
+			{\LARGE\edxdocumenttitlefont \@title}
+			{}{}%
+			\patchcmd{\@maketitle}
+			{\LARGE\@title}
+			{\LARGE\edxdocumenttitlefont\@title}
+			{}{}%
+		}%
+		\@ifundefined{@settitle}
+		{}
+		{%
+			\patchcmd{\@settitle}
+			{\normalfont\LARGE\bfseries}
+			{\normalfont\LARGE\edxdocumenttitlefont}
+			{}{}%
+		}%
+	}%
+\fi
+
 \newif\ifedxhaspunct
 
 \def\edxcheckpunct{}
@@ -431,14 +471,22 @@
 
 \NewDocumentCommand{\parhead}{m}{%
 	\smallskip\noindent
+	\ifeudoxtitlepatch
+	{\edxparheadingfont\ignorespaces\edxappendpunct{#1}}%
+	\else
 	\textbf{\boldmath\ignorespaces\edxappendpunct{#1}}%
+	\fi
 	\hskip 0.30em
 	\ignorespaces
 }
 
 \NewDocumentCommand{\subparhead}{m}{%
 	\smallskip\noindent
+	\ifeudoxtitlepatch
+	{\edxsubparheadingfont\ignorespaces\edxappendpunct{#1}}%
+	\else
 	\textsc{\ignorespaces\edxappendpunct{#1}}%
+	\fi
 	\hskip 0.30em
 	\ignorespaces
 }

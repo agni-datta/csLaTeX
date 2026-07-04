@@ -63,8 +63,10 @@ By \cref{thm:fermat}, the equation has no solutions.
 | ------------ | ------- | --------------------------------------------------------------------------------------------- |
 | `nomath`     | off     | Disables all math packages (amsmath, amsthm, mathalpha, …) and implies `notheorems`, `notcs`. |
 | `notheorems` | off     | Skips theorem environment declarations; math packages are still loaded.                       |
+| `tcs`        | off     | Loads `tcscrypto` when `tcscrypto.sty` is available on the TeX input path.                    |
 | `notcs`      | off     | Does not load `tcscrypto` even if the `tcs` flag is set.                                      |
 | `nolayout`   | off     | Suppresses `geometry` and `setspace`; also disables the `amsart` bibliography patch.          |
+| `titlepatch` | off     | Applies bold sans styling to titles, section headings, `\parhead`, and `\subparhead`.         |
 
 ### Theorem environments
 
@@ -95,6 +97,17 @@ All environments are numbered per section and use small-caps headers. Unnumbered
 ### Paragraph headings
 
 `\parhead{Title}` and `\subparhead{Title}` produce bold and small-caps inline headings respectively, with automatic terminal punctuation. They replace `\paragraph` and `\subparagraph`.
+
+With `titlepatch`, `\parhead` and `\subparhead` use bold sans fonts to match the patched section headings. The font commands are exposed as renewable hooks:
+
+```latex
+\renewcommand{\edxsectionheadingfont}{\sffamily\bfseries}
+\renewcommand{\edxparheadingfont}{\sffamily\bfseries\boldmath}
+\renewcommand{\edxsubparheadingfont}{\sffamily\bfseries}
+\renewcommand{\edxdocumenttitlefont}{\sffamily\bfseries}
+```
+
+The same option also patches standard article-style titles and AMS title handling where the class hooks match.
 
 ### Cross-references
 
