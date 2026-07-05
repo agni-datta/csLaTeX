@@ -598,7 +598,7 @@
 	name         = Theorem ,
 	style        = csam@theoremlike ,
 	numberwithin = section
-]{ theorem }
+]{theorem}
 
 \NewDocumentCommand{\csam@declaretheoremfamily}{m m}{%
 	\forcsvlist{\declaretheorem[sibling=theorem,style=#1]}{#2}%
@@ -625,16 +625,16 @@
 
 \declaretheorem
 [
-	name    = { Informal~Theorem } ,
+	name    = {Informal~Theorem} ,
 	sibling = theorem ,
 	style   = csam@theoremlike
-]{ informaltheorem }
+]{informaltheorem}
 \declaretheorem
 [
-	name    = { Meta~Theorem } ,
+	name    = {Meta~Theorem} ,
 	sibling = theorem ,
 	style   = csam@theoremlike
-]{ metatheorem }
+]{metatheorem}
 
 \csam@declaretheoremfamily{csam@definitionlike}{
 	application,%
@@ -664,16 +664,16 @@
 
 \declaretheorem
 [
-	name    = { Notation~Abuse } ,
+	name    = {Notation~Abuse} ,
 	sibling = theorem ,
 	style   = csam@remarklike
-]{ notationabuse }
+]{notationabuse}
 \declaretheorem
 [
-	name    = { Open~Problem } ,
+	name    = {Open~Problem} ,
 	sibling = theorem ,
 	style   = csam@remarklike
-]{ openproblem }
+]{openproblem}
 
 \csam@declaretheoremfamily{csam@highlightlike}{
 	guideline,% 
@@ -689,20 +689,20 @@
 
 \declaretheorem
 [
-	name    = { Key~Point } ,
+	name    = {Key~Point} ,
 	sibling = theorem ,
 	style   = csam@highlightlike
-]{ keypoint }
+]{keypoint}
 
-\declaretheorem[ name = Claim ,                 style = csam@theoremlike , numbered = no ]{ claim* }
-\declaretheorem[ name = Conjecture ,            style = csam@theoremlike , numbered = no ]{ conjecture* }
-\declaretheorem[ name = Corollary ,             style = csam@theoremlike , numbered = no ]{ corollary* }
-\declaretheorem[ name = Hypothesis ,            style = csam@theoremlike , numbered = no ]{ hypothesis* }
-\declaretheorem[ name = Lemma ,                 style = csam@theoremlike , numbered = no ]{ lemma* }
-\declaretheorem[ name = Syntax ,                style = csam@remarklike  , numbered = no ]{ syntax* }
-\declaretheorem[ name = Theorem ,               style = csam@theoremlike , numbered = no ]{ theorem* }
-\declaretheorem[ name = { Informal~Theorem } ,  style = csam@theoremlike , numbered = no ]{ informaltheorem* }
-\declaretheorem[ name = { Open~Problem } ,      style = csam@remarklike  , numbered = no ]{ openproblem* }
+\declaretheorem[ name = Claim ,                 style = csam@theoremlike , numbered = no ]{claim*}
+\declaretheorem[ name = Conjecture ,            style = csam@theoremlike , numbered = no ]{conjecture*}
+\declaretheorem[ name = Corollary ,             style = csam@theoremlike , numbered = no ]{corollary*}
+\declaretheorem[ name = Hypothesis ,            style = csam@theoremlike , numbered = no ]{hypothesis*}
+\declaretheorem[ name = Lemma ,                 style = csam@theoremlike , numbered = no ]{lemma*}
+\declaretheorem[ name = Syntax ,                style = csam@remarklike  , numbered = no ]{syntax*}
+\declaretheorem[ name = Theorem ,               style = csam@theoremlike , numbered = no ]{theorem*}
+\declaretheorem[ name = {Informal~Theorem} ,    style = csam@theoremlike , numbered = no ]{informaltheorem*}
+\declaretheorem[ name = {Open~Problem} ,        style = csam@remarklike  , numbered = no ]{openproblem*}
 
 \NewDocumentEnvironment{proofsketch}{o}
 {
@@ -990,14 +990,14 @@
 		\marginnote{{\color{PaleVioletRed3}\normalfont$\star$}}%
 		\textcolor{PaleVioletRed3}{\sffamily\bfseries[#1]}%
 	}
-		\IfFileExists{scrtime.sty}{%
-			\RequirePackage{scrtime}%
-			\RequirePackage{prelim2e}%
-			\NewDocumentCommand{\csam@datetime}{}{%
-				\number\year-\ifnum\month<10 0\fi\number\month-%
-				\ifnum\day<10 0\fi\number\day\space\thistime%
-			}%
-			\RenewDocumentCommand{\PrelimText}{}{%
+	\IfFileExists{scrtime.sty}{%
+		\RequirePackage{scrtime}%
+		\RequirePackage{prelim2e}%
+		\NewDocumentCommand{\csam@datetime}{}{%
+			\number\year-\ifnum\month<10 0\fi\number\month-%
+			\ifnum\day<10 0\fi\number\day\space\thistime%
+		}%
+		\RenewDocumentCommand{\PrelimText}{}{%
 			\normalfont\scshape\footnotesize\color{DeepPink3}%
 			Draft --- {\csam@datetime} --- Not for Distribution%
 		}%

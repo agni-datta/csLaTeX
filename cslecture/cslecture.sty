@@ -232,12 +232,12 @@
 	style        = cs@thmlike ,
 	name         = Theorem ,
 	numberwithin = section
-]{ theorem }
+]{theorem}
 
 \cs_new_protected:Npn \cslc_declare:nn #1#2 {
 	\str_set:Nx \l_tmpa_str { \str_lowercase:n {#2} }
 	\cs_if_exist:cTF {declaretheorem} {
-		\use:x { \exp_not:N \declaretheorem [style=#1, name=#2, sibling=theorem] { \l_tmpa_str } }
+		\use:x { \exp_not:N \declaretheorem [style=#1, name=#2, sibling=theorem] {\l_tmpa_str} }
 	} {}
 }
 
@@ -263,26 +263,26 @@
 \declaretheorem
 [
 	style   = cs@remarklike ,
-	name    = { Notation~Abuse } ,
+	name    = {Notation~Abuse} ,
 	sibling = theorem
-]{ notationabuse }
+]{notationabuse}
 \declaretheorem
 [
 	style   = cs@remarklike ,
-	name    = { Open~Problem } ,
+	name    = {Open~Problem} ,
 	sibling = theorem
-]{ openproblem }
+]{openproblem}
 \declaretheorem
 [
 	style   = cs@hltlike ,
-	name    = { Key~Point } ,
+	name    = {Key~Point} ,
 	sibling = theorem
-]{ keypoint }
+]{keypoint}
 
 \clist_map_inline:nn { Theorem, Lemma, Corollary, Claim, Conjecture, Hypothesis }{
 	\str_set:Nx \l_tmpa_str { \str_lowercase:n {#1} }
 	\cs_if_exist:cTF {declaretheorem} {
-		\use:x { \exp_not:N \declaretheorem [style=cs@thmlike, name=#1, numbered=no] { \l_tmpa_str * } }
+		\use:x { \exp_not:N \declaretheorem [style=cs@thmlike, name=#1, numbered=no] {\l_tmpa_str*} }
 	} { }
 }
 

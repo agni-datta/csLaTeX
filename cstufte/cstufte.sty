@@ -432,7 +432,7 @@
 	name         = Theorem ,
 	style        = cstf@theoremlike ,
 	numberwithin = section
-]{ theorem }
+]{theorem}
 
 \NewDocumentCommand{\cstf@declaretheoremfamily}{mm}{%
 	\forcsvlist{\declaretheorem[sibling=theorem,style=#1]}{#2}%
@@ -459,16 +459,16 @@
 
 \declaretheorem
 [
-	name    = { Informal~Theorem } ,
+	name    = {Informal~Theorem} ,
 	sibling = theorem ,
 	style   = cstf@theoremlike
-]{ informaltheorem }
+]{informaltheorem}
 \declaretheorem
 [
-	name    = { Meta~Theorem } ,
+	name    = {Meta~Theorem} ,
 	sibling = theorem ,
 	style   = cstf@theoremlike
-]{ metatheorem }
+]{metatheorem}
 
 \cstf@declaretheoremfamily{cstf@definitionlike}{
 	application,%
@@ -498,16 +498,16 @@
 
 \declaretheorem
 [
-	name    = { Notation~Abuse } ,
+	name    = {Notation~Abuse} ,
 	sibling = theorem ,
 	style   = cstf@remarklike
-]{ notationabuse }
+]{notationabuse}
 \declaretheorem
 [
-	name    = { Open~Problem } ,
+	name    = {Open~Problem} ,
 	sibling = theorem ,
 	style   = cstf@remarklike
-]{ openproblem }
+]{openproblem}
 
 \cstf@declaretheoremfamily{cstf@highlightlike}{
 	guideline,%
@@ -523,20 +523,20 @@
 
 \declaretheorem
 [
-	name    = { Key~Point } ,
+	name    = {Key~Point} ,
 	sibling = theorem ,
 	style   = cstf@highlightlike
-]{ keypoint }
+]{keypoint}
 
-\declaretheorem[ name = Claim ,                 style = cstf@theoremlike , numbered = no ]{ claim* }
-\declaretheorem[ name = Conjecture ,            style = cstf@theoremlike , numbered = no ]{ conjecture* }
-\declaretheorem[ name = Corollary ,             style = cstf@theoremlike , numbered = no ]{ corollary* }
-\declaretheorem[ name = Hypothesis ,            style = cstf@theoremlike , numbered = no ]{ hypothesis* }
-\declaretheorem[ name = Lemma ,                 style = cstf@theoremlike , numbered = no ]{ lemma* }
-\declaretheorem[ name = Syntax ,                style = cstf@remarklike  , numbered = no ]{ syntax* }
-\declaretheorem[ name = Theorem ,               style = cstf@theoremlike , numbered = no ]{ theorem* }
-\declaretheorem[ name = { Informal~Theorem } ,  style = cstf@theoremlike , numbered = no ]{ informaltheorem* }
-\declaretheorem[ name = { Open~Problem } ,      style = cstf@remarklike  , numbered = no ]{ openproblem* }
+\declaretheorem[ name = Claim ,                 style = cstf@theoremlike , numbered = no ]{claim*}
+\declaretheorem[ name = Conjecture ,            style = cstf@theoremlike , numbered = no ]{conjecture*}
+\declaretheorem[ name = Corollary ,             style = cstf@theoremlike , numbered = no ]{corollary*}
+\declaretheorem[ name = Hypothesis ,            style = cstf@theoremlike , numbered = no ]{hypothesis*}
+\declaretheorem[ name = Lemma ,                 style = cstf@theoremlike , numbered = no ]{lemma*}
+\declaretheorem[ name = Syntax ,                style = cstf@remarklike  , numbered = no ]{syntax*}
+\declaretheorem[ name = Theorem ,               style = cstf@theoremlike , numbered = no ]{theorem*}
+\declaretheorem[ name = {Informal~Theorem} ,    style = cstf@theoremlike , numbered = no ]{informaltheorem*}
+\declaretheorem[ name = {Open~Problem} ,        style = cstf@remarklike  , numbered = no ]{openproblem*}
 
 \ProvideDocumentCommand{\setqedsymbol}{m}{ \RenewDocumentCommand{\qedsymbol}{}{#1} }
 \ProvideDocumentCommand{\SetQEDSymbol}{m}{ \setqedsymbol{#1} }

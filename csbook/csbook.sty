@@ -757,7 +757,7 @@
 	name         = Theorem ,
 	style        = csbk@theoremlike ,
 	numberwithin = section
-]{ theorem }
+]{theorem}
 
 \NewDocumentCommand{\csbk@declaretheoremfamily}{mm}{%
 	\forcsvlist{\declaretheorem[sibling=theorem,style=#1]}{#2}%
@@ -784,16 +784,16 @@
 
 \declaretheorem
 [
-	name    = { Informal~Theorem } ,
+	name    = {Informal~Theorem} ,
 	sibling = theorem ,
 	style   = csbk@theoremlike
-]{ informaltheorem }
+]{informaltheorem}
 \declaretheorem
 [
-	name    = { Meta~Theorem } ,
+	name    = {Meta~Theorem} ,
 	sibling = theorem ,
 	style   = csbk@theoremlike
-]{ metatheorem }
+]{metatheorem}
 
 \csbk@declaretheoremfamily{csbk@definitionlike}{
 	application,% 
@@ -823,16 +823,16 @@
 
 \declaretheorem
 [
-	name    = { Notation~Abuse } ,
+	name    = {Notation~Abuse} ,
 	sibling = theorem ,
 	style   = csbk@remarklike
-]{ notationabuse }
+]{notationabuse}
 \declaretheorem
 [
-	name    = { Open~Problem } ,
+	name    = {Open~Problem} ,
 	sibling = theorem ,
 	style   = csbk@remarklike
-]{ openproblem }
+]{openproblem}
 
 \csbk@declaretheoremfamily{csbk@highlightlike}{
 	guideline,% 
@@ -848,20 +848,20 @@
 
 \declaretheorem
 [
-	name    = { Key~Point } ,
+	name    = {Key~Point} ,
 	sibling = theorem ,
 	style   = csbk@highlightlike
-]{ keypoint }
+]{keypoint}
 
-\declaretheorem[ name = Claim ,                 style = csbk@theoremlike , numbered = no ]{ claim* }
-\declaretheorem[ name = Conjecture ,            style = csbk@theoremlike , numbered = no ]{ conjecture* }
-\declaretheorem[ name = Corollary ,             style = csbk@theoremlike , numbered = no ]{ corollary* }
-\declaretheorem[ name = Hypothesis ,            style = csbk@theoremlike , numbered = no ]{ hypothesis* }
-\declaretheorem[ name = Lemma ,                 style = csbk@theoremlike , numbered = no ]{ lemma* }
-\declaretheorem[ name = Syntax ,                style = csbk@remarklike  , numbered = no ]{ syntax* }
-\declaretheorem[ name = Theorem ,               style = csbk@theoremlike , numbered = no ]{ theorem* }
-\declaretheorem[ name = { Informal~Theorem } ,  style = csbk@theoremlike , numbered = no ]{ informaltheorem* }
-\declaretheorem[ name = { Open~Problem } ,      style = csbk@remarklike  , numbered = no ]{ openproblem* }
+\declaretheorem[ name = Claim ,                 style = csbk@theoremlike , numbered = no ]{claim*}
+\declaretheorem[ name = Conjecture ,            style = csbk@theoremlike , numbered = no ]{conjecture*}
+\declaretheorem[ name = Corollary ,             style = csbk@theoremlike , numbered = no ]{corollary*}
+\declaretheorem[ name = Hypothesis ,            style = csbk@theoremlike , numbered = no ]{hypothesis*}
+\declaretheorem[ name = Lemma ,                 style = csbk@theoremlike , numbered = no ]{lemma*}
+\declaretheorem[ name = Syntax ,                style = csbk@remarklike  , numbered = no ]{syntax*}
+\declaretheorem[ name = Theorem ,               style = csbk@theoremlike , numbered = no ]{theorem*}
+\declaretheorem[ name = {Informal~Theorem} ,    style = csbk@theoremlike , numbered = no ]{informaltheorem*}
+\declaretheorem[ name = {Open~Problem} ,        style = csbk@remarklike  , numbered = no ]{openproblem*}
 
 \NewDocumentEnvironment{proofsketch}{o}
 {
