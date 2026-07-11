@@ -108,6 +108,7 @@
 \NewDocumentCommand{\newbb}{m m}{\NewDocumentCommand{#1}{}{\ensuremath{\mathbb{#2}}}}
 \NewDocumentCommand{\newcal}{m m}{\NewDocumentCommand{#1}{}{\ensuremath{\mathcal{#2}}}}
 \NewDocumentCommand{\newscr}{m m}{\NewDocumentCommand{#1}{}{\ensuremath{\mathscr{#2}}}}
+\NewDocumentCommand{\newsf}{m m}{\NewDocumentCommand{#1}{}{\ensuremath{\mathsf{#2}}}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % CSV-Based Macro Generators
@@ -129,6 +130,9 @@
 
 \NewDocumentCommand \cryptoDefineClassCSV { m }
 { \clist_map_inline:nn { #1 } { \__crypto_parse_pair:w ##1 \q_stop { } { funcstyle } } }
+
+\NewDocumentCommand \cryptoDefineComplexityClassCSV { m }
+{ \clist_map_inline:nn { #1 } { \__crypto_parse_pair:w ##1 \q_stop { } { ComplexityFont } } }
 
 \NewDocumentCommand \cryptoDefineKeyCSV { m }
 { \clist_map_inline:nn { #1 } { \__crypto_parse_pair:w ##1 \q_stop { } { keystyle } } }
@@ -589,7 +593,7 @@
 % Complexity Classes and Search Problems
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\cryptoDefineClassCSV{
+\cryptoDefineComplexityClassCSV{
 	ACCzero/ACC^0,
 	ACzero/AC^0,
 	ACzerop/AC^0[p],
@@ -1699,16 +1703,16 @@
 \newbb{\OutVal}{Y}
 \newbb{\Witness}{W}
 
-\newbb{\challenge}{c}
-\newbb{\instance}{x}
-\newbb{\instn}{x}
-\newbb{\outval}{y}
-\newbb{\randomness}{r}
-\newbb{\response}{z}
-\newbb{\secret}{s}
-\newbb{\val}{v}
-\newbb{\witness}{w}
-\newbb{\wit}{w}
+\newsf{\challenge}{c}
+\newsf{\instance}{x}
+\newsf{\instn}{x}
+\newsf{\outval}{y}
+\newsf{\randomness}{r}
+\newsf{\response}{z}
+\newsf{\secret}{s}
+\newsf{\val}{v}
+\newsf{\witness}{w}
+\newsf{\wit}{w}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Interactive Proof and Proof-Carrying State
@@ -1790,7 +1794,7 @@
 \NewDocumentCommand{\partner}{}{\var{prt}}
 \NewDocumentCommand{\transcript}{}{\tau}
 
-\NewDocumentCommand{\msg}{}{\algostyle{m}}
+\NewDocumentCommand{\msg}{}{\algostyle{msg}}
 \NewDocumentCommand{\m}{}{\algostyle{m}}
 \NewDocumentCommand{\mprimevar}{}{\msg^{\star}}
 \NewDocumentCommand{\tagv}{}{\algostyle{tag}}
@@ -2036,37 +2040,37 @@
 % Security Notion Names
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newclass{\eufcma}{EUF\textsf{-}CMA}
-\newclass{\eufcmaone}{EUF\textsf{-}CMA1}
-\newclass{\eufcmatwo}{EUF\textsf{-}CMA2}
-\newclass{\eufcmat}{EUF\textsf{-}CMAt}
-\newclass{\sufcma}{SUF\textsf{-}CMA}
-\newclass{\sufcmaone}{SUF\textsf{-}CMA1}
-\newclass{\sufcmatwo}{SUF\textsf{-}CMA2}
-\newclass{\sufcmat}{SUF\textsf{-}CMAt}
+\newsf{\eufcma}{EUF\textsf{-}CMA}
+\newsf{\eufcmaone}{EUF\textsf{-}CMA1}
+\newsf{\eufcmatwo}{EUF\textsf{-}CMA2}
+\newsf{\eufcmat}{EUF\textsf{-}CMAt}
+\newsf{\sufcma}{SUF\textsf{-}CMA}
+\newsf{\sufcmaone}{SUF\textsf{-}CMA1}
+\newsf{\sufcmatwo}{SUF\textsf{-}CMA2}
+\newsf{\sufcmat}{SUF\textsf{-}CMAt}
 
-\newclass{\indcpa}{IND\textsf{-}CPA}
-\newclass{\indcpaone}{IND\textsf{-}CPA1}
-\newclass{\indcpatwo}{IND\textsf{-}CPA2}
-\newclass{\indcpat}{IND\textsf{-}CPAt}
-\newclass{\indcca}{IND\textsf{-}CCA}
-\newclass{\indccatwo}{IND\textsf{-}CCA2}
-\newclass{\inddcpa}{IND\$\textsf{-}CPA}
-\newclass{\inddcca}{IND\$\textsf{-}CCA}
-\newclass{\nmcpa}{NM\textsf{-}CPA}
-\newclass{\nmcca}{NM\textsf{-}CCA}
-\newclass{\nmccatwo}{NM\textsf{-}CCA2}
-\newclass{\owcpa}{OW\textsf{-}CPA}
-\newclass{\owcca}{OW\textsf{-}CCA}
+\newsf{\indcpa}{IND\textsf{-}CPA}
+\newsf{\indcpaone}{IND\textsf{-}CPA1}
+\newsf{\indcpatwo}{IND\textsf{-}CPA2}
+\newsf{\indcpat}{IND\textsf{-}CPAt}
+\newsf{\indcca}{IND\textsf{-}CCA}
+\newsf{\indccatwo}{IND\textsf{-}CCA2}
+\newsf{\inddcpa}{IND\$\textsf{-}CPA}
+\newsf{\inddcca}{IND\$\textsf{-}CCA}
+\newsf{\nmcpa}{NM\textsf{-}CPA}
+\newsf{\nmcca}{NM\textsf{-}CCA}
+\newsf{\nmccatwo}{NM\textsf{-}CCA2}
+\newsf{\owcpa}{OW\textsf{-}CPA}
+\newsf{\owcca}{OW\textsf{-}CCA}
 
-\newclass{\maceufcma}{EUF\textsf{-}CMA}
-\newclass{\maceufcmaone}{EUF\textsf{-}CMA1}
-\newclass{\maceufcmatwo}{EUF\textsf{-}CMA2}
-\newclass{\maceufcmat}{EUF\textsf{-}CMAt}
+\newsf{\maceufcma}{EUF\textsf{-}CMA}
+\newsf{\maceufcmaone}{EUF\textsf{-}CMA1}
+\newsf{\maceufcmatwo}{EUF\textsf{-}CMA2}
+\newsf{\maceufcmat}{EUF\textsf{-}CMAt}
 
-\newclass{\kemindcpa}{IND\textsf{-}CPA}
-\newclass{\kemindcca}{IND\textsf{-}CCA}
-\newclass{\kemindccatwo}{IND\textsf{-}CCA2}
+\newsf{\kemindcpa}{IND\textsf{-}CPA}
+\newsf{\kemindcca}{IND\textsf{-}CCA}
+\newsf{\kemindccatwo}{IND\textsf{-}CCA2}
 
 \NewDocumentCommand{\EUFCMA}   {}{\eufcma}
 \NewDocumentCommand{\INDCCA}   {}{\indcca}
