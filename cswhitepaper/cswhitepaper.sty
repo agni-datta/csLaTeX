@@ -81,6 +81,9 @@
 	\RequirePackage{lmodern}
 \else
 	\RequirePackage{fontspec}
+	\@for\cswp@letter:=A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z\do{%
+		\expandafter\let\csname circled\cswp@letter\endcsname\relax
+	}
 	\RequirePackage[olddefault]{fontsetup}
 \fi
 
@@ -167,7 +170,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{amsmath}
-\RequirePackage{amssymb}
+\ifPDFTeX
+	\RequirePackage{amssymb}
+\fi
 \RequirePackage{amsthm}
 \RequirePackage{bm}
 \RequirePackage{mathrsfs}

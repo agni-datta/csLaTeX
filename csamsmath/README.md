@@ -1,30 +1,30 @@
 ---
-title: README
-aliases: README
-linter-yaml-title-alias: README
+title: "csamsmath"
+aliases: "csamsmath"
+linter-yaml-title-alias: "csamsmath"
 date created: Thursday, May 14th 2026, 10:21:39 pm
-date modified: Tuesday, June 23rd 2026, 8:36:43 pm
+date modified: 2026-07-21
 ---
 
 <!-- @format -->
 
-## csamsmath
+# csamsmath
 
-Mathematical backbone for STEM publications. Handles font selection, a full suite of `thmtools`-based theorem environments, collaborative annotation commands, and various typographic details that would otherwise require a dozen separate `\usepackage` lines. Designed for `article`, `report`, and `book` classes used in research manuscripts and course notes; works with both LuaLaTeX and pdfLaTeX.
+The mathematical foundation for research papers and course notes. It combines font selection, `thmtools` theorem environments, proof helpers, annotations, and reference diagnostics for LuaLaTeX and pdfLaTeX.
 
-### Requirements
+## Requirements
 
 - Optimized for LuaLaTeX. pdfLaTeX is supported with font fallbacks; some font options silently degrade or warn.
 - Do not load `amsthm` manually before this package: it loads and configures `amsthm` internally via `thmtools`. Loading it again afterward is harmless but loading it before will cause option conflicts.
 - Loads `babel` without language options. Choose document languages through the class options or load `babel` explicitly before `csamsmath`.
 
-### Usage
+## Usage
 
 ```latex
 \usepackage[options]{csamsmath}
 ```
 
-### Minimal example
+## Minimal Example
 
 ```latex
 \documentclass{article}
@@ -41,9 +41,9 @@ Mathematical backbone for STEM publications. Handles font selection, a full suit
 \end{document}
 ```
 
-### Options
+## Options
 
-#### Font options (mutually exclusive)
+### Font Options (Mutually Exclusive)
 
 Pass exactly one font option, or omit for the default.
 
@@ -56,30 +56,30 @@ Pass exactly one font option, or omit for the default.
 - `kpfonts`: KP Fonts. Requires LuaLaTeX; on pdfLaTeX a fallback warning is issued and Latin Modern is used instead.
 - `garamond`: TeX Gyre Termes (a Garamond-like face). Elegant for monographs.
 
-#### Mode options
+### Mode Options
 
 - `draft`: enables margin notes, todo markers, annotation rendering, and broken-reference markers. Use during writing.
 - `final`: (default) suppresses all annotations. Use for submission.
 
-### API
+## API
 
-#### Theorem-like environments (numbered per section)
+### Theorem-Like Environments (Numbered per Section)
 
 `theorem`, `lemma`, `corollary`, `proposition`, `conjecture`, `fact`, `claim`
 
 All accept an optional title argument: `\begin{theorem}[My Title]`.
 
-#### Definition-like environments
+### Definition-Like Environments
 
 `definition`, `notation`, `protocol`, `problem`, `construction`
 
-#### Remark-like environments
+### Remark-Like Environments
 
 `remark`, `note`, `example`, `observation`, `openproblem`
 
 All environments are declared via `thmtools` and registered with `cleveref`, so `\cref{thm:fermat}` produces “Theorem 1.1” automatically.
 
-#### Proof environments
+### Proof Environments
 
 `proof`, `proofsketch`, `proofidea`, and `proofofclaim` are unnumbered proof-style environments. `proofofclaim` defaults to “Proof of Claim” and accepts an optional claim identifier, typeset as “Proof of Claim (id)”.
 
@@ -87,7 +87,7 @@ All environments are declared via `thmtools` and registered with `cleveref`, so 
 - `\settheoremendsymbol{symbol}`: changes the symbol used by theorem-style end markers.
 - `\SetQEDSymbol{symbol}` and `\SetTheoremEndSymbol{symbol}` are compatibility aliases.
 
-#### Annotation commands (active in `draft` mode only)
+### Annotation Commands (Active in `draft` Mode Only)
 
 All annotation commands produce colored inline text plus a margin star `★` so you can scan for open items in the margin without reading the body.
 
@@ -103,11 +103,11 @@ All annotation commands produce colored inline text plus a margin star `★` so 
 - `\XXX[label]`: bold red inline flag for severe issues. The optional label defaults to `XXX`. In `final` mode this raises a LaTeX error, forcing you to clear all flags before submission. Never leave `\XXX` in a document you send to collaborators or a venue.
 - `\newguymarker{cmd}{label}{color}`: define a custom per-author annotation command. For example: `\newguymarker{\agni}{Agni}{RoyalBlue}` creates `\agni{text}` that renders the text in `RoyalBlue` with an “Agni” sidebar marker. In `final` mode the command becomes a no-op.
 
-#### Broken-reference tracking (always active)
+### Broken-Reference Tracking (Always Active)
 
 Whenever a `\ref`, `\cref`, or `\cite` target does not exist yet, a red star `★` appears in the margin at that point. This works without any special option: it fires unconditionally so you notice missing labels immediately. The markers disappear as soon as the labels are defined (on the next compile). This is distinct from annotation commands: it cannot be suppressed by `final` mode because the purpose is to catch real compilation problems, not to clean up draft remarks.
 
-### Compatibility and conflicts
+## Compatibility and Conflicts
 
 - Do not load `amsthm` before this package. Loading it after is fine.
 - This package loads `thmtools`, `cleveref`, `hyperref` (if not already present), and several font packages. If you load any of these independently, do so after `csamsmath` or verify there are no option conflicts.
@@ -116,10 +116,10 @@ Whenever a `\ref`, `\cref`, or `\cite` target does not exist yet, a red star `�
 - The broken-reference tracking patches `\@setref` and `\G@refundefinedtrue` at load time. It will fire on every undefined `\ref`, `\cref`, and `\cite` target throughout the document. If you see unexpected margin stars on first compile of a new document, they indicate real missing labels, not a bug in the package.
 - `\XXX` in `final` mode raises a hard `\@latex@error`. This is intentional. If your build pipeline uses `-interaction=nonstopmode` and you accidentally have `\XXX` in the source, the PDF will still be produced but the error will appear in the log. You must resolve it before submission.
 
-### License
+## License
 
 LaTeX Project Public License v1.3c.
 
-### Author
+## Author
 
 Agni Datta: [agni-datta/csLaTeX](https://github.com/agni-datta/csLaTeX)

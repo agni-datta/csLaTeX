@@ -1,31 +1,31 @@
 ---
-title: README
-aliases: README
-linter-yaml-title-alias: README
+title: "csletter"
+aliases: "csletter"
+linter-yaml-title-alias: "csletter"
 date created: Thursday, May 14th 2026, 10:22:12 pm
-date modified: Tuesday, June 23rd 2026, 8:36:43 pm
+date modified: 2026-07-21
 ---
 
 <!-- @format -->
 
-## csletter
+# csletter
 
-Style package for formal correspondence. Configures colors, margins, line spacing, and optional header/footer/signature/logo elements through key-value options. Handles engine-aware font loading: LuaLaTeX gets proper OpenType Garamond; pdfLaTeX falls back gracefully. Designed for one-page formal letters, cover letters, and referee reports where you want a clean professional layout without fighting LaTeX’s default letter class.
+A configurable style for formal letters, cover letters, and referee reports. Key-value options control color, margins, spacing, logos, signatures, and engine-aware fonts.
 
-### Requirements
+## Requirements
 
 - Use with the `article` class (not the `letter` class: this is a style package, not a class replacement).
 - Logo and signature options require external image files on disk.
 - Optimized for LuaLaTeX; pdfLaTeX works with font fallbacks.
 - Loads `babel` without language options. Choose document languages through the class options or load `babel` explicitly before `csletter`.
 
-### Usage
+## Usage
 
 ```latex
 \usepackage[options]{csletter}
 ```
 
-### Minimal example
+## Minimal Example
 
 ```latex
 \documentclass{article}
@@ -44,22 +44,22 @@ I am writing to submit the paper entitled...
 \end{document}
 ```
 
-### Options
+## Options
 
 All options are key-value pairs. Pass them as a comma-separated list to `\usepackage`.
 
-#### Colors
+### Colors
 
 - `textcolor`: primary body text color. Default: `black`. Accepts any color name known to `xcolor`.
 - `accentcolor`: color used for highlighted elements and hyperref links. Default: `blue`.
 - `headercolor`: color of the header text. Default: same as `accentcolor`.
 - `footercolor`: color of the footer text. Default: `black!60`.
 
-#### Spacing
+### Spacing
 
 - `linespacing`: controls body line spacing. Accepted values: `single` (default), `onehalf`, `double`.
 
-#### Margins
+### Margins
 
 All margin options accept a dimension in centimeters.
 
@@ -68,7 +68,7 @@ All margin options accept a dimension in centimeters.
 - `leftmargin`: left page margin. Default: `3cm`.
 - `rightmargin`: right page margin. Default: `3cm`.
 
-#### Boolean elements
+### Boolean elements
 
 These are boolean options (pass without a value to enable, or `option=false` to disable):
 
@@ -78,28 +78,28 @@ These are boolean options (pass without a value to enable, or `option=false` to 
 - `logo`: render the logo image. Default: `false`. Requires `logofile`.
 - `signature`: render the signature image above the sender name. Default: `false`. Requires `signaturefile`.
 
-#### File paths
+### File paths
 
 - `logofile`: path to the logo image file (any format supported by `graphicx`).
 - `signaturefile`: path to the signature image file.
 
-### API
+## API
 
 - `\fromname{text}`: sets the sender name printed in the closing block and used in the header when `header=true`.
 - `\csllogo`: renders the logo at the current position. Only produces output when `logo=true` and `logofile` is set; otherwise silently does nothing. Typically placed at the top of the document.
 - `\cslsignature`: renders the signature image above the sender name at the current position. Only produces output when `signature=true` and `signaturefile` is set. Place this where you want the closing block to appear.
 
-### Caveats
+## Caveats
 
 - The `logo` and `signature` options require image files that exist at compile time. If the file path is wrong or the file is missing, `graphicx` will error. Always use paths relative to the main `.tex` file or absolute paths.
 - `header=true` draws a horizontal rule and sender metadata at the top. If you want a custom letterhead image instead, use `logo=true` with `logofile` and leave `header=false`.
 - Margin options are passed directly to `geometry`. If you load `geometry` yourself after this package, your settings will override the ones set here: either let `csletter` manage geometry or do not pass margin options to it.
 - LuaLaTeX loads Garamond via `fontspec`. On pdfLaTeX, the package falls back to a Garamond-compatible font available in the TeX distribution. If neither is installed, Latin Modern is used silently.
 
-### License
+## License
 
 LaTeX Project Public License v1.3c.
 
-### Author
+## Author
 
 Agni Datta: [agni-datta/csLaTeX](https://github.com/agni-datta/csLaTeX)

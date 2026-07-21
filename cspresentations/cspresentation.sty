@@ -28,6 +28,10 @@
 	\RequirePackage{lmodern}
 \else
 	\RequirePackage{fontspec}
+	% TeX Live 2026 provides several circled-letter commands before fontsetup, whose olddefault font file defines the complete alphabet again.
+	\@for\cspr@letter:=A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z\do{%
+		\expandafter\let\csname circled\cspr@letter\endcsname\relax
+	}
 	\RequirePackage[olddefault]{fontsetup}
 \fi
 

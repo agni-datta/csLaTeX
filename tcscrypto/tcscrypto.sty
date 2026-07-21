@@ -6,7 +6,7 @@
 % License : LPPL v1.3c
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{tcscrypto}[2026/06/23 v3.4 Notations and environments for TCS and Cryptography]
+\ProvidesPackage{tcscrypto}[2026/07/21 v3.5 Notations and environments for TCS and Cryptography]
 
 \RequirePackage{l3keys2e}
 \makeatletter
@@ -45,6 +45,8 @@
 
 \RequirePackage{appendix}
 \RequirePackage{array}
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
 \if@tcscrypto@small
 	\RequirePackage[full,small]{complexity}
 \else
@@ -56,6 +58,7 @@
 \RequirePackage{enumitem}
 \RequirePackage{etoolbox}
 \RequirePackage{mdframed}
+\RequirePackage{mathrsfs}
 \RequirePackage{physics2}
 
 \RequirePackage{xspace}

@@ -1,20 +1,18 @@
 ---
-title: README
-aliases: README
-linter-yaml-title-alias: README
+title: "csLaTeX"
+aliases: "csLaTeX"
+linter-yaml-title-alias: "csLaTeX"
 date created: Thursday, May 14th 2026, 10:21:12 pm
-date modified: Tuesday, June 23rd 2026, 8:36:43 pm
+date modified: 2026-07-21
 ---
 
 <!-- @format -->
 
-## csLaTeX
+# csLaTeX
 
-LaTeX packages for computer science research, technical teaching, and academic document preparation. Each package is self-contained: copy a single `.sty` file into your project and load it. No installation required.
+A collection of self-contained LaTeX packages for computer science research, teaching, and academic documents. Copy the required `.sty` file into a project and load it locally; no system-wide installation is needed.
 
-**Author:** Agni Datta ([agni-datta/csLaTeX](https://github.com/agni-datta/csLaTeX))
-
-### Packages
+## Packages
 
 | Package                                       | Version | Description                                                                                                                               |
 | --------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
@@ -31,10 +29,10 @@ LaTeX packages for computer science research, technical teaching, and academic d
 | [`csthm`](csthm/README.md)                    | 3.2     | Theorem suite with three visual modes (`normal`, `fancy`, `oldschool`), dynamic accent colors, proof helpers, and `cleveref` integration. |
 | [`cstufte`](cstufte/README.md)                | 3.1     | Tufte-style wide-margin layout with side-citations, marginalia, and a lattice cryptography notation library.                              |
 | [`cswhitepaper`](cswhitepaper/README.md)      | 5.1     | Style for technical reports with per-author annotation commands, revision tracking, and ruled theorem aesthetics.                         |
-| [`llncscrypto`](llncscrypto/README.md)        | 3.3     | LLNCS-compatible research-paper extensions: theorem support, author notes, boxes, captions, references, and preprint utilities.           |
-| [`tcscrypto`](tcscrypto/README.md)            | 3.4     | Notation and environment library for TCS and cryptography: sampling, complexity, circuits, graphs, proof complexity, and protocol boxes.  |
+| [`llncscrypto`](llncscrypto/README.md)        | 3.3.1   | LLNCS-compatible research-paper extensions: theorem support, author notes, boxes, captions, references, and preprint utilities.           |
+| [`tcscrypto`](tcscrypto/README.md)            | 3.5     | Notation and environment library for TCS and cryptography: sampling, complexity, circuits, graphs, proof complexity, and protocol boxes.  |
 
-### Installation
+## Installation
 
 Copy the desired `.sty` file into your project directory alongside your main `.tex` file and load it in the preamble:
 
@@ -46,11 +44,15 @@ Copy the desired `.sty` file into your project directory alongside your main `.t
 
 No global installation or `texmf` tree manipulation required. Each package directory contains a `README.md` with full documentation, all options, the complete API, and caveats.
 
-### Language and Encoding Policy
+## Tests
+
+Run the package smoke suite with `bash tests/run-smoke-tests.sh`. The suite compiles every package with LuaLaTeX and recompiles the packages that support pdfLaTeX with that engine; all output is written to a temporary directory and removed afterward.
+
+## Language and Encoding Policy
 
 csLaTeX packages do not select document languages. Packages that need Babel load it as `\RequirePackage{babel}` without language options; choose languages through the document class options or by loading `babel` explicitly before the csLaTeX package. Input encoding and font encoding are likewise document-level decisions.
 
-### Typical use cases
+## Typical Use Cases
 
 **Conference paper (LLNCS):**
 
@@ -89,7 +91,7 @@ csLaTeX packages do not select document languages. Packages that need Babel load
 \SetAccentColor{RoyalBlue}
 ```
 
-### Repository layout
+## Repository Layout
 
 ```
 csLaTeX/
@@ -113,6 +115,6 @@ csLaTeX/
 └── latexmkrc           Repository-wide build configuration
 ```
 
-### License
+## License
 
 LaTeX Project Public License v1.3c.

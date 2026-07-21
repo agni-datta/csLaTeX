@@ -1,18 +1,18 @@
 ---
-title: README
-aliases: README
-linter-yaml-title-alias: README
+title: "csresume"
+aliases: "csresume"
+linter-yaml-title-alias: "csresume"
 date created: Thursday, May 14th 2026, 10:22:30 pm
-date modified: Tuesday, June 23rd 2026, 8:36:44 pm
+date modified: 2026-07-21
 ---
 
 <!-- @format -->
 
-## csresume
+# csresume
 
-CV and resume package with academic-oriented typography, flexible entry layouts, and BibLaTeX integration for publication lists. Handles the full structure of an academic CV: contact header, chronological entries with margin years, two-column reference blocks, compact interest lists, and a publications section driven by a `.bib` file. Font choices are tuned for print and screen readability, while the default visual palette uses SteelBlue4 and darker SteelBlue4 mixtures; hyperlink colors follow the active accent palette.
+An academic CV package with contact headers, dated entries, reference blocks, compact lists, and BibLaTeX publication lists. Font and accent options support both print and screen output.
 
-### Requirements
+## Requirements
 
 - Use with the `article` document class on A4 or letter paper.
 - Requires `biber` as the BibLaTeX backend for publication lists. `bibtex` is not supported.
@@ -20,13 +20,13 @@ CV and resume package with academic-oriented typography, flexible entry layouts,
 - Logo and signature image files must exist on disk if used by surrounding project code.
 - Loads `babel` without language options. Choose document languages through the class options or load `babel` explicitly before `csresume`.
 
-### Usage
+## Usage
 
 ```latex
 \usepackage[options]{csresume}
 ```
 
-### Minimal example
+## Minimal Example
 
 ```latex
 \documentclass[a4paper]{article}
@@ -47,9 +47,9 @@ CV and resume package with academic-oriented typography, flexible entry layouts,
 \end{document}
 ```
 
-### Options
+## Options
 
-#### Font options (mutually exclusive)
+### Font Options (Mutually Exclusive)
 
 - `gfsdidot`: (default) GFS Didot via `fontsetup`. Classical and elegant; works well in print.
 - `libertinus`: Libertinus Serif and Sans with KPMath and Libertinus math ranges. Slightly wider, very readable on screen.
@@ -58,22 +58,22 @@ CV and resume package with academic-oriented typography, flexible entry layouts,
 
 Under LuaLaTeX and XeLaTeX, sans-serif text uses Libertinus Sans and monospace text uses Anonymous Pro.
 
-#### Layout options
+### Layout options
 
 - `allowbreaks`: permits sections to break across pages. By default, section headers try to stay with their first entry. Enable this for very long CVs where page break control is impractical.
 
-### API
+## API
 
-#### Header block
+### Header block
 
 - `\contactblock{Name}{Title}{Institution}{Email}{Website}{ScholarID}{DBLPID}`: generates the full CV header with name, title, institutional affiliation, and contact links.
 
-#### Chronological entries
+### Chronological entries
 
 - `\details{Years}{Degree or Title}{Institution}{Description}`: standard chronological entry. Years appear in the left margin, the rest flows to the right. Use for education, positions, and awards.
 - `\columndetails{Years}{Title}{RightText}`: two-column entry where both `Title` and `RightText` appear side by side on the same line. Use for entries where the right column is short (e.g., a grade or location).
 
-#### Reference blocks
+### Reference blocks
 
 - `\referals{Name}{Title}{Organization}{Address}{Email}{Website}`: formats a single referee entry with contact details.
 - `refcolumns`: two-column layout environment for displaying multiple referees side by side. Wrap `\referals` calls inside this environment.
@@ -85,15 +85,15 @@ Under LuaLaTeX and XeLaTeX, sans-serif text uses Libertinus Sans and monospace t
 \end{refcolumns}
 ```
 
-#### Lists
+### Lists
 
 - `ditemize`: two-column itemized list. Use for skills, programming languages, or other short paired entries where a single-column list would waste space.
 
-#### Footer
+### Footer
 
 - `\finishcv{Date}{URL}`: prints a modern muted footer of the form `Updated Date • URL`. Pass the complete URL, including the scheme, for example `https://example.edu`; the command does not prepend `https://`.
 
-### Publications list (BibLaTeX)
+## Publications list (BibLaTeX)
 
 `csresume` is designed to work with a `\printbibliography` call inside a `publications` section. Set up BibLaTeX in the preamble:
 
@@ -111,7 +111,7 @@ Then in the document:
 
 The `ydnt` sorting order (year descending, name, title) puts the most recent papers first, which is standard for academic CVs. Titles of articles, proceedings papers, theses, and unpublished manuscripts are printed in italics; unpublished manuscripts are not enclosed in quotation marks.
 
-### Caveats
+## Caveats
 
 - `\contactblock` expects all seven fields.
 - `\finishcv` expects a complete URL. Use `\finishcv{\today}{https://example.edu}`, not `\finishcv{\today}{example.edu}`.
@@ -119,10 +119,10 @@ The `ydnt` sorting order (year descending, name, title) puts the most recent pap
 - BibLaTeX requires two compile passes with `biber` between them: `lualatex → biber → lualatex → lualatex`. If you use `latexmk`, add `$bibtex_use = 2;` to your `.latexmkrc`.
 - Font options configure the body, sans, mono, and math stack under LuaLaTeX and XeLaTeX; pdfLaTeX uses the package fallback.
 
-### License
+## License
 
 LaTeX Project Public License v1.3c.
 
-### Repository
+## Repository
 
 [csLaTeX](https://github.com/agni-datta/csLaTeX)

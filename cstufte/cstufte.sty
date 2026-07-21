@@ -289,7 +289,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{amsmath}
-\RequirePackage{amssymb}
+\ifPDFTeX
+	\RequirePackage{amssymb}
+\fi
 \RequirePackage{amsthm}
 \RequirePackage{mathrsfs}
 \RequirePackage{mathtools}

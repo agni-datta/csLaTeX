@@ -1,23 +1,23 @@
 ---
-title: README
-aliases: README
-linter-yaml-title-alias: README
+title: "csthm"
+aliases: "csthm"
+linter-yaml-title-alias: "csthm"
 date created: Thursday, May 14th 2026, 10:22:38 pm
-date modified: Tuesday, June 23rd 2026, 8:36:44 pm
+date modified: 2026-07-21
 ---
 
 <!-- @format -->
 
-## csthm
+# csthm
 
-Theorem environment suite for theoretical computer science. Provides three visual design modes (`normal`, `fancy`, `oldschool`), dynamic accent color control, a comprehensive set of named theorem environments covering every style used in TCS papers, and full `cleveref` integration so `\cref` produces the right capitalized name automatically. Standalone: does not depend on any other csLaTeX package, though it pairs well with `csamsmath` and `llncscrypto`.
+A standalone theorem suite for theoretical computer science. Its `normal`, `fancy`, and `oldschool` modes share configurable accent colors, proof helpers, and `cleveref` names.
 
-### Requirements
+## Requirements
 
 - Load `hyperref` **before** `csthm`. Because `csthm` loads `cleveref` internally, and `cleveref` must come after `hyperref`, you must load `hyperref` first. If you load `csthm` before `hyperref`, cross-reference capitalization and PDF bookmarks may not work correctly.
 - Do not load `thmtools` manually with conflicting style options: `csthm` configures it internally.
 
-### Usage
+## Usage
 
 ```latex
 \usepackage[mode]{csthm}
@@ -25,7 +25,7 @@ Theorem environment suite for theoretical computer science. Provides three visua
 
 Exactly one mode option should be passed. If none is given, `normal` is the implicit default.
 
-### Minimal example
+## Minimal Example
 
 ```latex
 \documentclass{article}
@@ -49,7 +49,7 @@ By \cref{thm:cook-levin}, every NP problem reduces to SAT.
 \end{document}
 ```
 
-### Options
+## Options
 
 Exactly one of the following:
 
@@ -57,9 +57,9 @@ Exactly one of the following:
 - `fancy`: colored left-bar designs with tinted backgrounds. Each theorem category gets a distinct color derived from the accent color. Visually distinctive; good for lecture notes and textbooks where theorems need to stand out.
 - `oldschool`: classic LaTeX formatting with small-caps headers and no decorative rules. Closest to the look of AMSLaTeX without any visual additions.
 
-### API
+## API
 
-#### Accent color
+### Accent color
 
 - `\SetAccentColor{color}`: sets the global accent color used by theorem markers, left bars, and `fancy` mode backgrounds. Accepts any color name known to `xcolor`. Default: `black`. Change this once in the preamble; avoid calling it mid-document.
 
@@ -67,11 +67,11 @@ Exactly one of the following:
 \SetAccentColor{RoyalBlue}
 ```
 
-#### Utility
+### Utility
 
 - `\emailid{address}`: renders a formatted, clickable `mailto:` hyperlink. Use in author blocks or correspondence notes.
 
-### Theorem environments
+## Theorem Environments
 
 All environments are numbered per section and registered with `cleveref`. Every environment accepts an optional title argument.
 
@@ -112,7 +112,7 @@ All environments are numbered per section and registered with `cleveref`. Every 
 
 **Unnumbered variants:** append `*` to any environment name for an unnumbered version: `theorem*`, `lemma*`, `definition*`, etc.
 
-### cleveref integration
+## cleveref Integration
 
 Every numbered environment is registered with `cleveref` with both lowercase and capitalized names. Use `\cref` for mid-sentence references and `\Cref` at the start of a sentence:
 
@@ -123,17 +123,17 @@ Every numbered environment is registered with `cleveref` with both lowercase and
 \cref{def:circuit}      % → "Definition 1.2"
 ```
 
-### Caveats
+## Caveats
 
 - Load `hyperref` before `csthm`. This is the single most common mistake. If cross-references appear as plain numbers without hyperlinks, or if PDF bookmarks are garbled, this is the cause.
 - The `fancy` mode uses `mdframed` for framed boxes. If you also use `tcolorbox` in the same document, load it with the `most` compatibility option: `\usepackage[most]{tcolorbox}`.
 - `\SetAccentColor` should be called once in the preamble. Calling it mid-document changes the color for all subsequent theorem declarations but does not retroactively recolor earlier ones: the color is baked in at declaration time for some modes.
 - All environments are declared with `thmtools`. Do not use `\newtheorem` to declare environments with the same names, and do not load `amsthm` independently before this package.
 
-### License
+## License
 
 LaTeX Project Public License v1.3c.
 
-### Author
+## Author
 
 Agni Datta: [agni-datta/csLaTeX](https://github.com/agni-datta/csLaTeX)

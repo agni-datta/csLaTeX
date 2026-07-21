@@ -1,25 +1,25 @@
 ---
-title: README
-aliases: README
-linter-yaml-title-alias: README
+title: "eudoxus"
+aliases: "eudoxus"
+linter-yaml-title-alias: "eudoxus"
 date created: Monday, June 22nd 2026, 7:29:06 pm
-date modified: Tuesday, June 23rd 2026, 8:36:44 pm
+date modified: 2026-07-21
 ---
 
 <!-- @format -->
 
-## eudoxus
+# eudoxus
 
-General-purpose mathematics package for research papers and lecture notes. Bundles page layout, typography, color, graphics, tables, TikZ, a full theorem suite with small-caps styles, smart paragraph headings, and hyperlinked cross-references into a single load. Designed primarily around the `amsart` document class, but usable with any class via its option flags.
+A general mathematics package centered on `amsart`. It bundles typography, page layout, tables, graphics, theorem styles, paragraph headings, and linked references.
 
-### Requirements
+## Requirements
 
 - `hyperref` is loaded internally. Do **not** load it again before `\usepackage{eudoxus}`.
 - The `tcs` option requires `tcscrypto.sty` (from the `tcscrypto` package in this repository) to be on the TeX search path. If it is absent, `eudoxus` emits a warning and skips it.
 - `geometry` is loaded under the default `layout` mode. If your class already sets page dimensions (e.g. `amsart` with custom geometry), pass `nolayout` to suppress it.
 - Loads `babel` without language options. Choose document languages through the class options or load `babel` explicitly before `eudoxus`.
 
-### Usage
+## Usage
 
 ```latex
 \usepackage[options]{eudoxus}
@@ -31,7 +31,7 @@ Multiple options may be combined:
 \usepackage[nolayout,notcs]{eudoxus}
 ```
 
-### Minimal example
+## Minimal Example
 
 ```latex
 \documentclass{amsart}
@@ -57,7 +57,7 @@ By \cref{thm:fermat}, the equation has no solutions.
 \end{document}
 ```
 
-### Options
+## Options
 
 | Option       | Default | Effect                                                                                        |
 | ------------ | ------- | --------------------------------------------------------------------------------------------- |
@@ -68,7 +68,7 @@ By \cref{thm:fermat}, the equation has no solutions.
 | `nolayout`   | off     | Suppresses `geometry` and `setspace`; also disables the `amsart` bibliography patch.          |
 | `titlepatch` | off     | Applies bold sans styling to titles, section headings, `\parhead`, and `\subparhead`.         |
 
-### Theorem environments
+## Theorem Environments
 
 All environments are numbered per section and use small-caps headers. Unnumbered variants are available by appending `*`.
 
@@ -94,7 +94,7 @@ All environments are numbered per section and use small-caps headers. Unnumbered
 
 `\setqedsymbol{symbol}` changes the proof-end symbol. `\SetQEDSymbol{symbol}` is kept as a compatibility alias.
 
-### Paragraph headings
+## Paragraph headings
 
 `\parhead{Title}` and `\subparhead{Title}` produce bold and small-caps inline headings respectively, with automatic terminal punctuation. They replace `\paragraph` and `\subparagraph`.
 
@@ -109,21 +109,21 @@ With `titlepatch`, `\parhead` and `\subparhead` use bold sans fonts to match the
 
 The same option also patches standard article-style titles and AMS title handling where the class hooks match.
 
-### Cross-references
+## Cross-references
 
 `\cref{label}` and `\Cref{label}` are powered by `zref-clever`. Section-type references use `§` / `§§` markers. `\crefrange` is also available.
 
-### Caveats
+## Caveats
 
 - The bibliography patch (`\small\setstretch{1.075}`) is applied only when the document class is `amsart` **and** `nolayout` is not set. Under `article` or any other class the bibliography renders at its default size.
 - `nolayout` suppresses `geometry`, `setspace`, and the bibliography patch together. Use it when your class or a wrapper package already controls page dimensions.
 - The `tcs` option is off by default. Enable it with `\usepackage[tcs]{eudoxus}` to load `tcscrypto` when `tcscrypto.sty` is available on the TeX input path.
 - Do not load `amsthm` independently before this package when theorems are enabled: `eudoxus` configures it internally via `\ifeudoxtheorems`.
 
-### License
+## License
 
 LaTeX Project Public License v1.3c.
 
-### Author
+## Author
 
 Agni Datta: [agni-datta/csLaTeX](https://github.com/agni-datta/csLaTeX)

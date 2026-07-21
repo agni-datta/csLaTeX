@@ -1,18 +1,18 @@
 ---
-title: README
-aliases: README
-linter-yaml-title-alias: README
+title: "csextras"
+aliases: "csextras"
+linter-yaml-title-alias: "csextras"
 date created: Monday, June 22nd 2026, 12:00:00 am
-date modified: Tuesday, June 23rd 2026, 8:36:43 pm
+date modified: 2026-07-21
 ---
 
 <!-- @format -->
 
-## csextras
+# csextras
 
-Optional extension and patch package for [`csamsmath`](../csamsmath/) and [`csbook`](../csbook/). Every feature is opt-in via a key-value option; nothing loads unless you ask.
+An opt-in extension layer for [`csamsmath`](../csamsmath/) and [`csbook`](../csbook/). Each key-value option enables one layout, metadata, indexing, box, or tooling feature.
 
-### Power-User Warning
+## Power-User Warning
 
 `csextras` is experimental, unsupported, and not systematically tested. It is provided without guarantees of stability, compatibility, correctness, or long-term maintenance.
 
@@ -22,14 +22,14 @@ If you are unwilling or unable to diagnose package conflicts, compilation failur
 
 The load-time warning is intentional. Advanced users who have accepted the risk may pass `nowarning` to suppress only this experimental-package warning.
 
-### Requirements
+## Requirements
 
 - LaTeX2e ≥ 2020/10/01
 - pdfLaTeX or LuaLaTeX (XeLaTeX triggers a `\PackageError`)
-- biblatex must **not** be loaded—any attempt to load it alongside `csextras` raises a `\PackageError`
+- Do not load biblatex. Using it with `csextras` raises a `\PackageError`.
 - Language selection and font/input encoding are document-level decisions. `csextras` does not load `inputenc`, `fontenc`, `luainputenc`, or pass language options to `babel`.
 
-### Usage
+## Usage
 
 ```latex
 % Article-style workflow
@@ -44,15 +44,15 @@ The load-time warning is intentional. Advanced users who have accepted the risk 
 \usepackage[layout, boxes, hyperrefcolors]{csextras}
 ```
 
-### Options
+## Options
 
 All options are boolean (`key` or `key=true`) unless noted.
 
-#### Base Package Detection
+### Base Package Detection
 
 `csextras` does not load `csamsmath` or `csbook`. It detects whether either package is already loaded and enables dependent functionality accordingly. If an option requires one of those packages and the dependency is absent, `csextras` emits a warning and disables only that dependent feature.
 
-#### Standard features
+### Standard features
 
 | Option             | Packages / Effect                                                                                                                                                           |
 | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -89,7 +89,7 @@ All options are boolean (`key` or `key=true`) unless noted.
 | `verbatim`         | `verbatim`, `fancyvrb`; strips trailing blank lines from verbatim environments                                                                                              |
 | `watermark`        | `draftwatermark` (lightness 0.975, scale 0.875), `\draftwarning` command, `prelim2e` running footer if present                                                              |
 
-#### Article-only features
+### Article-only features
 
 These emit a `\PackageWarning` and no-op when used in book mode.
 
@@ -101,7 +101,7 @@ These emit a `\PackageWarning` and no-op when used in book mode.
 | `titlepage`       | `titling`, `authblk`; custom flush-left title block                              |
 | `tocspacing`      | `tocloft[titles]`; adjust section font and inter-entry spacing. **Discouraged.** |
 
-#### Book-only features
+### Book-only features
 
 These emit a `\PackageWarning` and no-op when used in article mode.
 
@@ -110,14 +110,14 @@ These emit a `\PackageWarning` and no-op when used in article mode.
 | `chapterabstract` | `chapterabstract` environment with TOC entry                                                |
 | `lettrine`        | `lettrine`; `\LettrineFontHook` / `\LettrineTextFont` in accent color; `\dropcap{L}{etter}` |
 
-#### Choice options
+### Choice options
 
 | Option      | Values                                   | Effect                                                                                            |
 | ----------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------- |
 | `copyright` | `none` (default), `footnote`, `page`     | `footnote`: defines `\copyrightnotice`; `page`: defines `\makecopyrightpage` + `\copyrightnotice` |
 | `lipsum`    | `none` (default), `paragraph`, `content` | `paragraph`: loads `lipsum`; `content`: loads `duckuments` (falls back to `lipsum`)               |
 
-#### Discouraged options
+### Discouraged options
 
 These load but emit a loud `\PackageWarning`.
 
@@ -125,14 +125,14 @@ These load but emit a loud `\PackageWarning`.
 | ---------------- | ------------------------------------------------ | -------------------------------------------------- |
 | `algorithmtwoe`  | `algorithm2e[algonl,boxed,longend,vlined]`       | Legacy, poorly maintained; prefer `algorithm=true` |
 | `crazybib`       | `natbib`, `chapterbib`, `cite`                   | Complex interactions; rarely needed                |
-| `crazynumbering` |—| Sets `secnumdepth=5`, `tocdepth=6`                 |
+| `crazynumbering` |--| Sets `secnumdepth=5`, `tocdepth=6`                 |
 | `indentfirst`    | `indentfirst`                                    | Non-standard in most CS venues                     |
 | `nagmode`        | `nag[l2tabu,orthodox]`, `onlyamsmath[all,error]` | Errors on many harmless constructs                 |
 | `parskip`        | `parskip`                                        | Often looks wrong with theorem environments        |
-| `tightcaptions`  |—| Can violate venue guidelines                       |
+| `tightcaptions`  |--| Can violate venue guidelines                       |
 | `todonotes`      | `todonotes`; `\todoinline`, `\todofixed`         | Must be removed before submission                  |
 
-### Color palette
+## Color Palette
 
 Seven colors are always defined (via `\providecolor`). Override after loading with `\SetExtraColor{name}{value}` or `\colorlet{name}{value}`.
 
@@ -146,7 +146,7 @@ Seven colors are always defined (via `\providecolor`). Override after loading wi
 | `diagramborder`     | `CadetBlue4`      |
 | `draftcolor`        | `Coral4`          |
 
-### Key user-facing commands
+## Key User-Facing Commands
 
 | Command                            | Option                     | Description                                   |
 | ---------------------------------- | -------------------------- | --------------------------------------------- |
@@ -169,7 +169,7 @@ Seven colors are always defined (via `\providecolor`). Override after loading wi
 | `\copyrightnotice`                 | `copyright=footnote\|page` | Copyright notice text                         |
 | `\makecopyrightpage`               | `copyright=page`           | Insert copyright page                         |
 
-### Engine and package compatibility
+## Engine and Package Compatibility
 
 - **XeLaTeX**: blocked with `\PackageError`
 - **biblatex**: blocked via `\@ifpackageloaded` + `\AddToHook{package/biblatex/before}`
@@ -177,6 +177,6 @@ Seven colors are always defined (via `\providecolor`). Override after loading wi
 - **minted**: requires `--shell-escape` (pdfLaTeX adds `outputdir=.` automatically)
 - **hyperxmp**: must follow `hyperref`; if `hyperref` is not yet loaded, deferred to `\AtBeginDocument`
 
-### Future extensions
+## Future Extensions
 
 Patches welcome for: `subcaption=true` (subfigures), `complexity=true` (TCS class macros), `clrscode=true` (CLRS pseudocode).

@@ -1,36 +1,34 @@
 ---
-title: README
-aliases: README
-linter-yaml-title-alias: README
+title: "csdeferproofs"
+aliases: "csdeferproofs"
+linter-yaml-title-alias: "csdeferproofs"
 date created: Monday, May 18th 2026, 8:30:22 pm
-date modified: Tuesday, June 23rd 2026, 8:36:43 pm
+date modified: 2026-07-21
 ---
 
 <!-- @format -->
 
-## csdeferproofs
+# csdeferproofs
 
-Collects theorem proofs and flushes them to a “Missing Proofs” appendix in submission mode; proofs stay inline in eprint mode. No source changes needed between modes: flip one option.
+Deferred-proof support for manuscripts with submission and eprint layouts. Submission mode collects selected proofs in an appendix, while eprint mode leaves the same proofs inline.
 
-Built on [proof-at-the-end](https://ctan.org/pkg/proof-at-the-end). Compatible with `csamsmath`, `csbook`, `cslecture`, `llncscrypto` (with `theorems`), `csthm`, and any package that declares a `proof` environment before `\begin{document}`.
-
-### The idea
+## The Idea
 
 You declare a flagged variant of each theorem environment you want to defer (e.g. `theoremE` alongside `theorem`). You write your theorem statement inside `theoremE` and its proof inside `deferproof`. In submission mode the proof is collected silently and flushed at `\printDeferredProofs`, with each proof under its own `\subsection*` heading “Proof of Lemma 3.4”. In eprint mode `deferproof` behaves exactly like a plain `proof` and everything stays in place. Theorem statements are always typeset: only the proofs move.
 
-### Requirements
+## Requirements
 
 - `proof-at-the-end` (CTAN): required when `appendix=true`.
 - `kvoptions`: package-option parsing.
 - `etoolbox`: used only in `appendix=true` mode for end-of-preamble integration.
 
-### Usage
+## Usage
 
 ```latex
 \usepackage[options]{csdeferproofs}
 ```
 
-#### Typical two-mode preamble
+### Typical two-mode preamble
 
 ```latex
 \ifSubmission
@@ -53,7 +51,7 @@ You declare a flagged variant of each theorem environment you want to defer (e.g
 \fi
 ```
 
-#### In the paper body
+### In the paper body
 
 ```latex
 \begin{theoremE}[My Title]
@@ -66,7 +64,7 @@ You declare a flagged variant of each theorem environment you want to defer (e.g
 \end{deferproof}
 ```
 
-#### In the appendix
+### In the appendix
 
 ```latex
 \appendix
@@ -77,7 +75,7 @@ You declare a flagged variant of each theorem environment you want to defer (e.g
 }{}
 ```
 
-### Options
+## Options
 
 | Option       | Type                   | Default           | Description                                                             |
 | ------------ | ---------------------- | ----------------- | ----------------------------------------------------------------------- |
@@ -91,9 +89,9 @@ You declare a flagged variant of each theorem environment you want to defer (e.g
 \usepackage[appendix=true, commandref=cref, sketchname={Proof Outline}]{csdeferproofs}
 ```
 
-### API
+## API
 
-#### `\NewDeferredThm[pratend-options]{envE}{base-env}`
+### `\NewDeferredThm[pratend-options]{envE}{base-env}`
 
 Declares `envE` as a flagged wrapper around the existing environment `base-env`. In `appendix=true` mode the proof is deferred. In `appendix=false` mode this is a no-op: `envE` is not defined (use `\NewDeferredThmAlias` for dual-mode source). The optional first argument passes extra proof-at-the-end pgfkeys to the wrapper, used for sketch variants:
 
@@ -107,7 +105,7 @@ Declares `envE` as a flagged wrapper around the existing environment `base-env`.
 \NewDeferredThm[text proof only theorem]{theoremEsketch}{theorem}
 ```
 
-#### `\NewDeferredThmAlias{envE}{base-env}`
+### `\NewDeferredThmAlias{envE}{base-env}`
 
 Companion to `\NewDeferredThm` for dual-mode source files. Always call it after `\NewDeferredThm` (the two can appear in opposite branches of `\ifSubmission`).
 
@@ -122,7 +120,7 @@ Companion to `\NewDeferredThm` for dual-mode source files. Always call it after 
 \NewDeferredThmAlias{theoremE}{theorem}
 ```
 
-#### `\begin{deferproof}{label}[heading] … \end{deferproof}`
+### `\begin{deferproof}{label}[heading] … \end{deferproof}`
 
 The main environment for deferred proofs. The mandatory `{label}` argument is the label of the theorem being proved (the `\label{…}` inside `theoremE` / `lemmaE` / etc.).
 
@@ -142,7 +140,7 @@ The main environment for deferred proofs. The mandatory `{label}` argument is th
 
 > **Note:** The `{label}` argument is required for source compatibility but does not control where the proof appears: that is determined entirely by the `appendix` option. The label is kept as a design hook for potential future cross-referencing.
 
-#### `\begin{deferproofsketch}{label}[heading] … \end{deferproofsketch}`
+### `\begin{deferproofsketch}{label}[heading] … \end{deferproofsketch}`
 
 Like `deferproof`, but renders with the sketch heading (default: “Proof Sketch”). Use this when you give only a proof sketch and omit the full proof. In the appendix the heading reads: _Proof Sketch of Lemma X.Y_.
 
@@ -152,15 +150,15 @@ Like `deferproof`, but renders with the sketch heading (default: “Proof Sketch
 \end{deferproofsketch}
 ```
 
-#### `\begin{proofE}[options] … \end{proofE}`
+### `\begin{proofE}[options] … \end{proofE}`
 
 Raw proof-at-the-end proof environment, exposed for advanced use. Useful when you need to pass proof-at-the-end options directly. Falls back to a plain `proof` when `appendix=false`.
 
-#### `\begin{proofEsketch}[options] … \end{proofEsketch}`
+### `\begin{proofEsketch}[options] … \end{proofEsketch}`
 
 Raw sketch proof environment.
 
-#### `\printDeferredProofs[heading-prefix]`
+### `\printDeferredProofs[heading-prefix]`
 
 Flushes all collected proofs at the call site. Each proof is typeset under a `\subsection*` heading of the form:
 
@@ -178,7 +176,7 @@ Default heading-prefix is built from the `proofname` option, giving _Proof of Le
 
 Call this exactly once in the appendix. In `appendix=false` mode it is a no-op, so wrapping it in `\IfDeferredProofsActive` (see below) prevents an empty section in eprint.
 
-#### `\IfDeferredProofsActive{true-code}{false-code}`
+### `\IfDeferredProofsActive{true-code}{false-code}`
 
 Conditional on whether `appendix=true`. Use this to gate entire appendix sections, so they do not appear as empty sections in eprint mode.
 
@@ -189,7 +187,7 @@ Conditional on whether `appendix=true`. Use this to gate entire appendix section
 }{}
 ```
 
-### Sketch proofs: complete example
+## Complete Sketch-Proof Example
 
 ```latex
 % Preamble
@@ -208,9 +206,9 @@ Conditional on whether `appendix=true`. Use this to gate entire appendix section
 
 Appendix heading: _Proof Sketch of Lemma 3.4_.
 
-### Compatibility notes
+## Compatibility Notes
 
-#### llncscrypto
+### llncscrypto
 
 `llncscrypto` declares `proof` inside an `\AtEndPreamble` hook using LLNCS theorem declarations. Because `csdeferproofs` also uses `\AtEndPreamble` to load `proof-at-the-end`, load order matters: `csdeferproofs` must appear **after** `llncscrypto` so its hook is appended later in the queue.
 
@@ -220,19 +218,19 @@ Appendix heading: _Proof Sketch of Lemma 3.4_.
 \usepackage[appendix=true]{csdeferproofs}   % must come after
 ```
 
-#### csamsmath / cslecture
+### csamsmath / cslecture
 
 Both declare `proof` at load time (not in a hook), so `csdeferproofs` can appear anywhere after them.
 
-#### csbook / csthm
+### csbook / csthm
 
 Work without any special treatment.
 
-#### Direct Theorem Declarations
+### Direct Theorem Declarations
 
 If you declare theorem environments yourself, `csdeferproofs` works as long as `proof` is defined before `\begin{document}`.
 
-### Common mistakes
+## Common Mistakes
 
 - **Using `theoremE` in eprint mode without `\NewDeferredThmAlias`.** In `appendix=false` mode `\NewDeferredThm` is a no-op and `theoremE` is never defined. If your source uses `theoremE` in eprint mode you must also call `\NewDeferredThmAlias{theoremE}{theorem}`.
 - **Forgetting `\printDeferredProofs`.** If you set `appendix=true` but never call `\printDeferredProofs`, the collected proofs are silently dropped. Always include it in your appendix section.
@@ -241,7 +239,7 @@ If you declare theorem environments yourself, `csdeferproofs` works as long as `
 - **Passing `category` directly to `proof-at-the-end`.** The `category` key is a pgfkey inside `proof-at-the-end`, not a package load-time option. `csdeferproofs` handles this correctly via `\pratendSetGlobal`: do not pass it to `proof-at-the-end` yourself.
 - **`\thmt@shortoptarg` undefined errors on theoremE/lemmaE/corollaryE in eprint mode.** This is a `thmtools` bug: the list-of-theorems tracking code writes `\thmt@shortoptarg` literally into the `.aux` file, but that command is only defined locally inside a running theorem environment. When the `.aux` is read back at `\begin{document}`, the command is undefined. The package pre-defines `\thmt@shortoptarg` to empty in `appendix=false` mode to prevent this. If you see this error with a different theorem package, add `\makeatletter\providecommand{\thmt@shortoptarg}{}\makeatother` to your preamble.
 
-### Full working example (submission + eprint, single file)
+## Full Working Example (Submission and Eprint)
 
 ```latex
 \documentclass{article}
@@ -291,6 +289,6 @@ If you declare theorem environments yourself, `csdeferproofs` works as long as `
 \end{document}
 ```
 
-### License
+## License
 
 LaTeX Project Public License v1.3c.

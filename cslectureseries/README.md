@@ -1,22 +1,22 @@
 ---
-title: README
-aliases: README
-linter-yaml-title-alias: README
+title: "cslectureseries"
+aliases: "cslectureseries"
+linter-yaml-title-alias: "cslectureseries"
 date created: Thursday, May 14th 2026, 10:22:05 pm
-date modified: Tuesday, June 23rd 2026, 8:36:43 pm
+date modified: 2026-07-21
 ---
 
 <!-- @format -->
 
-## cslectureseries
+# cslectureseries
 
-Document class for academic lecture series, built on `book` with boxed chapter headers, automatic indexing, and draft/final annotation modes.
+A `book`-based class for lecture series with boxed chapter headings, indexing, and draft or final modes.
 
-### Requirements
+## Requirements
 
 - Loads `babel` without language options. Choose document languages through the class options or load `babel` explicitly before `cslectureseries`.
 
-### Usage
+## Usage
 
 ```latex
 \documentclass[options]{cslectureseries}
@@ -36,41 +36,41 @@ Document class for academic lecture series, built on `book` with boxed chapter h
 \end{document}
 ```
 
-### Options
+## Options
 
-#### Fonts
+### Fonts
 
 - `kpf`: (Default) KP Fonts.
 - `bsk`: Baskervaldx with math integration.
 
-#### Mode
+### Mode
 
 - `draft`: (Default) enables broken reference markers and collaborative annotations.
 - `final`: suppresses all annotations and markers.
 
-### API
+## API
 
-#### Metadata
+### Metadata
 
 - `\coursetitle{text}`: title for the cover and headers.
 - `\maketitle`: full-page formal title cover.
 
-#### Theorem environments
+### Theorem Environments
 
 `theorem`, `lemma`, `proposition`, `definition`, `remark`, `example`, and the standard suite. Includes `solution` for exercise answers and `proofsketch`, `proofidea`, and `proofofclaim` for unnumbered proof variants.
 
 `\setqedsymbol{symbol}` changes the proof-end symbol. `\SetQEDSymbol{symbol}` is kept as a compatibility alias.
 
-#### Revision tools (draft mode)
+### Revision tools (draft mode)
 
 - `\todo{text}`, `\fixme{text}`, `\added{text}`, `\changed{text}`.
 - `\newguymarker{cmd}{label}{color}`: define custom markers.
 
-### Conflicts
+## Conflicts
 
 - Loads `book` internally; do not pass another base class.
 - LuaLaTeX recommended for best font results.
 
-### License
+## License
 
 LaTeX Project Public License v1.3c.
