@@ -1,24 +1,24 @@
 ---
-title: "tcscrypto"
-aliases: "tcscrypto"
-linter-yaml-title-alias: "tcscrypto"
+title: README
+aliases: README, 'README, "tcscrypto"'
+linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:23:37 pm
-date modified: 2026-07-30
+date modified: Tuesday, August 18th 2026, 10:56:17 am
 ---
 
 <!-- @format -->
 
-# tcscrypto
+## tcscrypto
 
 A notation library for theoretical computer science and cryptography. It standardizes probability, complexity, algebra, circuits, graphs, proof complexity, Kolmogorov complexity, cryptographic entities, and framed protocol or algorithm descriptions.
 
-## Requirements
+### Requirements
 
 - Loads `amsmath` and `mathrsfs`. It loads `amssymb` only when `unicode-math` is absent, so the notation library works independently without redeclaring Unicode mathematics symbols.
 - Loads the `complexity` package internally for complexity class macros. Do not load `complexity` separately with conflicting options.
 - Uses `mdframed` for protocol and algorithm boxes. If you also use `tcolorbox`, load it with the `most` compatibility option.
 
-## Usage
+### Usage
 
 ```latex
 \usepackage{tcscrypto}
@@ -26,14 +26,14 @@ A notation library for theoretical computer science and cryptography. It standar
 
 No options. The full library is always loaded.
 
-### Manuscript Status Marks
+#### Manuscript Status Marks
 
 Use `\manuscriptmark` inside `\title` or `\author` to attach a precise manuscript-status notice through `\thanks`. The bracketed mode is required.
 
 - `\manuscriptmark[pre]` marks a preliminary preprint. The notice states that the manuscript may change and that a conference version may omit or abridge technical material.
 - `\manuscriptmark[final]` marks the full version of the work. The notice identifies the manuscript as containing the complete proofs, extended technical material, and supplementary results.
 
-Both notices state that any separately published version is governed by the copyright, license, and publication terms applicable to that version. The package deliberately does not redefine TeX's primitive `\mark`, which is required by running-header and output-routine machinery.
+Both notices state that any separately published version is governed by the copyright, license, and publication terms applicable to that version. The package deliberately does not redefine TeX’s primitive `\mark`, which is required by running-header and output-routine machinery.
 
 When `hyperref` derives PDF metadata or bookmarks from the title, `tcscrypto` removes the status mark and its option from the PDF string. The printed title footnote remains unchanged.
 
@@ -41,7 +41,7 @@ When `hyperref` derives PDF metadata or bookmarks from the title, `tcscrypto` re
 \title{A Paper Title\manuscriptmark[pre]}
 ```
 
-## Minimal Example
+### Minimal Example
 
 ```latex
 \documentclass{article}
@@ -60,9 +60,9 @@ Let $\secparam$ be the security parameter and $\KeyGen$ be a PPT algorithm. The 
 \end{document}
 ```
 
-## API
+### API
 
-### Security and Probability
+#### Security and Probability
 
 - `\secparam`: security parameter $\lambda$ (or $\kappa$, depending on convention; check the macro definition if needed).
 - `\negl`: negligible function $\negl(\cdot)$.
@@ -73,11 +73,11 @@ Let $\secparam$ be the security parameter and $\KeyGen$ be a PPT algorithm. The 
 - `\longsample`: longer variant of `\getsr` for display math.
 - `\Pr`: probability operator $\Pr[\cdot]$ with correct spacing.
 
-### Number Sets (Blackboard Bold)
+#### Number Sets (Blackboard Bold)
 
 `\NN`, `\ZZ`, `\QQ`, `\RR`, `\CC`, `\FF`: natural numbers, integers, rationals, reals, complex numbers, and a generic field.
 
-### Paired Delimiters (Auto-Sizing)
+#### Paired Delimiters (Auto-Sizing)
 
 - `\abs{x}`: $|x|$
 - `\norm{x}`: $\|x\|$
@@ -85,14 +85,14 @@ Let $\secparam$ be the security parameter and $\KeyGen$ be a PPT algorithm. The 
 - `\set{x}`: $\{x\}$
 - `\ceil{x}`, `\floor{x}`: ceiling and floor brackets
 
-### Circuit Complexity
+#### Circuit Complexity
 
 - `\CktClass{C}`: circuit class name in the standard format.
 - `\Depth(C)`, `\Size(C)`, `\Width(C)`, `\Wires(C)`: circuit resource measures.
 - `\Gates(C)`: gate count.
 - `\fan`: fan-in/fan-out notation.
 
-### Graph Theory
+#### Graph Theory
 
 - `\Vertex(G)`, `\Edge(G)`: vertex and edge sets of graph $G$.
 - `\Neighborhood(v)`: neighborhood of vertex $v$.
@@ -100,7 +100,7 @@ Let $\secparam$ be the security parameter and $\KeyGen$ be a PPT algorithm. The 
 - `\source`, `\Sink`: source and sink vertices.
 - `\leaf`: leaf node.
 
-### Proof Complexity and SAT
+#### Proof Complexity and SAT
 
 - `\Clauses(\phi)`: clause set of formula $\phi$.
 - `\Tseitin(G)`: Tseitin formula for graph $G$.
@@ -108,7 +108,7 @@ Let $\secparam$ be the security parameter and $\KeyGen$ be a PPT algorithm. The 
 - `\proves`: provability relation $\vdash$.
 - `\Restrict(\phi, \rho)`: restriction of formula $\phi$ under assignment $\rho$.
 
-### Kolmogorov Complexity
+#### Kolmogorov Complexity
 
 - `\Kolmogorov(x)`: plain Kolmogorov complexity $K(x)$.
 - `\Kt(x)`: time-bounded Kolmogorov complexity $Kt(x)$.
@@ -116,7 +116,7 @@ Let $\secparam$ be the security parameter and $\KeyGen$ be a PPT algorithm. The 
 - `\KPoly(x)`: polynomial-time variant.
 - `\pKt(x)`: probabilistic variant.
 
-### Syntactic Builders for Algorithm and Oracle Suites
+#### Syntactic Builders for Algorithm and Oracle Suites
 
 These macros define families of commands from a comma-separated list of `key/DisplayName` pairs. Use them once in the preamble to set up a consistent notation for a protocol suite.
 
@@ -125,7 +125,7 @@ These macros define families of commands from a comma-separated list of `key/Dis
 - `\cryptoDefineOracleCSV{Reveal/Reveal, Corrupt/Corrupt}`: defines oracle-style macros with the appropriate formatting.
 - `\cryptoDefineProbCSV{DL/DL, CDH/CDH}`: defines computational problem macros in small caps.
 
-### Semantic Entities
+#### Semantic Entities
 
 - `\Adv`: adversary $\mathcal{A}$.
 - `\Sim`: simulator $\mathcal{S}$.
@@ -134,7 +134,7 @@ These macros define families of commands from a comma-separated list of `key/Dis
 - `\Game{G}`: security game $\mathsf{Game}_{G}$.
 - `\Simulator`: simulator entity (alternate rendering).
 
-### Framed Environments
+#### Framed Environments
 
 Both environments accept an optional title argument in square brackets.
 
@@ -150,7 +150,7 @@ Both environments accept an optional title argument in square brackets.
 \end{protocolbox}
 ```
 
-## Caveats
+### Caveats
 
 - `tcscrypto` loads `complexity` internally. If you load `complexity` yourself with different options (e.g., a different class for `\P` or `\NP`), you will get option clash errors. Let `tcscrypto` manage `complexity` entirely, or load `tcscrypto` first.
 - The syntactic builders (`\cryptoDefineAlgoCSV` etc.) define commands at call time. If you call them twice with overlapping names, the second call overwrites the first. Define all your algorithm suites in one place at the top of the preamble.
@@ -158,10 +158,10 @@ Both environments accept an optional title argument in square brackets.
 - The standard operators `\argmax`, `\argmin`, `\chr`, `\lcm`, `\lg`, and `\log` use ordinary operator placement. In particular, their subscripts remain beside the operator in display mathematics rather than moving underneath it.
 - `mdframed` boxes (`protocolbox`, `algorithmbox`) do not break across pages. If a protocol description is very long, it will overflow into the bottom margin. Split it manually into two boxes if needed.
 
-## License
+### License
 
 LaTeX Project Public License v1.3c.
 
-## Author
+### Author
 
 Agni Datta: [agni-datta/csLaTeX](https://github.com/agni-datta/csLaTeX)

@@ -3,7 +3,7 @@ title: README
 aliases: README
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:22:38 pm
-date modified: Tuesday, May 19th 2026, 1:35:35 am
+date modified: Tuesday, August 18th 2026, 10:56:17 am
 ---
 
 <!-- @format -->
@@ -59,7 +59,7 @@ Exactly one of the following:
 
 ### API
 
-#### Accent color
+### Accent color
 
 - `\SetAccentColor{color}`: sets the global accent color used by theorem markers, left bars, and `fancy` mode backgrounds. Accepts any color name known to `xcolor`. Default: `black`. Change this once in the preamble; avoid calling it mid-document.
 
@@ -67,7 +67,7 @@ Exactly one of the following:
 \SetAccentColor{RoyalBlue}
 ```
 
-#### Utility
+### Utility
 
 - `\emailid{address}`: renders a formatted, clickable `mailto:` hyperlink. Use in author blocks or correspondence notes.
 

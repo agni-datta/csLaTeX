@@ -1,30 +1,30 @@
 ---
-title: "cswhitepaper"
-aliases: "cswhitepaper"
-linter-yaml-title-alias: "cswhitepaper"
+title: README
+aliases: README, 'README, "cswhitepaper"'
+linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:22:54 pm
-date modified: 2026-07-21
+date modified: Tuesday, August 18th 2026, 10:56:17 am
 ---
 
 <!-- @format -->
 
-# cswhitepaper
+## cswhitepaper
 
 A style for collaborative white papers and technical reports. It combines ruled theorem formatting, author notes, revision markers, and draft or final modes.
 
-## Requirements
+### Requirements
 
 - Works with `article` and `report` classes. Not designed for `book` or `beamer`.
 - Do not load `amsthm` before this package.
 - Loads `babel` without language options. Choose document languages through the class options or load `babel` explicitly before `cswhitepaper`.
 
-## Usage
+### Usage
 
 ```latex
 \usepackage[options]{cswhitepaper}
 ```
 
-## Minimal Example
+### Minimal Example
 
 ```latex
 \documentclass{article}
@@ -49,23 +49,23 @@ A style for collaborative white papers and technical reports. It combines ruled 
 \end{document}
 ```
 
-## Options
+### Options
 
 - `draft`: (default) enables all annotations, revision highlights, and margin markers. Use this during writing and review.
 - `final`: suppresses every annotation, highlight, and margin marker. The document body renders as if the annotation commands were never called. Use this for the final submitted or published version. Switching from `draft` to `final` is the only change needed to go from a working draft to a clean document.
 
-## API
+### API
 
-### Global configuration
+#### Global configuration
 
 - `\documentaccentcolor{color}`: sets the primary accent color used for ruled lines, section headings, theorem decorations, and hyperref links. Call once in the preamble. Accepts any color name known to `xcolor`. Default: `SteelBlue4`.
 
-### Sectioning
+#### Sectioning
 
 - `\parhead{text}`: bold inline heading with automatic trailing period. Use in place of `\paragraph` for named steps, cases, or subsections that do not warrant a numbered heading.
 - `\subparhead{text}`: small-caps inline heading with automatic trailing period. Use for finer-grained structure below `\parhead`.
 
-### Annotation commands (active in `draft` mode; no-ops in `final`)
+#### Annotation commands (active in `draft` mode; no-ops in `final`)
 
 General annotations:
 
@@ -94,7 +94,7 @@ Per-author markers:
 \matteo{Agreed, I will handle it.}
 ```
 
-## Theorem Environments
+### Theorem Environments
 
 `cswhitepaper` provides a complete theorem suite with ruled aesthetics controlled by `\documentaccentcolor`:
 
@@ -110,17 +110,17 @@ All environments are numbered per section, accept optional titles, and are regis
 
 `\setqedsymbol{symbol}` changes the proof-end symbol, and `\settheoremendsymbol{symbol}` changes theorem-end markers where those markers are used. The capitalized forms remain available as compatibility aliases.
 
-## Caveats
+### Caveats
 
 - The `final` option suppresses annotations entirely: it does not warn about unfilled `\missing{}` or unresolved `\todo{}` calls. Run a `draft` build and search the PDF for annotation markers before switching to `final`.
 - `\newguymarker` defines a new command at call time. If two authors call it with the same command name, the second definition silently overwrites the first. Use distinct command names per author.
 - Do not load `amsthm` before this package. Loading it after is harmless.
 - Revision tracking commands (`\added`, `\changed`, `\removed`) render in `draft` mode only. In `final` mode, `\added` and `\changed` render their argument as plain text; `\removed` renders nothing. This means `\removed{text}` actually removes the text from the final output, which is intentional but requires care: do not use `\removed` for text you might want to keep.
 
-## License
+### License
 
 LaTeX Project Public License v1.3c.
 
-## Author
+### Author
 
 Agni Datta: [agni-datta/csLaTeX](https://github.com/agni-datta/csLaTeX)

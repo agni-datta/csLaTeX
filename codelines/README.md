@@ -3,7 +3,7 @@ title: README
 aliases: README
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:21:30 pm
-date modified: Tuesday, May 19th 2026, 1:35:34 am
+date modified: Tuesday, August 18th 2026, 10:56:17 am
 ---
 
 <!-- @format -->
@@ -51,16 +51,16 @@ The environment accepts one optional argument: the starting line number for that
 
 ### API
 
-#### Environment
+### Environment
 
 - `codelines`: primary listing environment. Optional argument `[n]` sets the starting line number.
 
-#### Line number management
+### Line number management
 
 - `\codelinessetlinenr{n}`: set the next line number to $n$. Equivalent to using the optional argument but can be called outside the environment, e.g. between two blocks.
 - `\codelinesresetlinenr`: reset the counter to 0. Use at the start of a new algorithm if you want numbering to restart from 1.
 
-#### Layout within a line
+### Layout within a line
 
 - `\codelinesbox{width}{content}`: wraps `content` in a top-aligned `\parbox` of the given width. Use when a single numbered line contains multi-line content that must align with the line number rather than reflow freely. Useful for structured side-by-side annotations.
 - `\codelinesrightalign{text}`: right-aligns `text` within the current line. The canonical use is running-time annotations such as `\codelinesrightalign{// $O(n)$}`.
@@ -68,7 +68,7 @@ The environment accepts one optional argument: the starting line number for that
 - `\codelinesplus`: increase indentation by one level without opening a nested `codelines` environment. Use when you want to visually indent a continuation without incrementing the nesting counter.
 - `\codelinesminus`: decrease indentation by one level.
 
-#### Customization hooks
+### Customization hooks
 
 These are commands you redefine globally with `\renewcommand` to change appearance across the entire document:
 

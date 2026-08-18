@@ -1,18 +1,18 @@
 ---
-title: "csLaTeX"
-aliases: "csLaTeX"
-linter-yaml-title-alias: "csLaTeX"
+title: README
+aliases: README, 'README, "csLaTeX"'
+linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:21:12 pm
-date modified: 2026-07-28
+date modified: Tuesday, August 18th 2026, 10:56:17 am
 ---
 
 <!-- @format -->
 
-# csLaTeX
+## csLaTeX
 
 A collection of self-contained LaTeX packages for computer science research, teaching, and academic documents. Copy the required `.sty` file into a project and load it locally; no system-wide installation is needed.
 
-## Packages
+### Packages
 
 | Package                                       | Version | Description                                                                                                                               |
 | --------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
@@ -30,9 +30,9 @@ A collection of self-contained LaTeX packages for computer science research, tea
 | [`cstufte`](cstufte/README.md)                | 3.1     | Tufte-style wide-margin layout with side-citations, marginalia, and a lattice cryptography notation library.                              |
 | [`cswhitepaper`](cswhitepaper/README.md)      | 5.1     | Style for technical reports with per-author annotation commands, revision tracking, and ruled theorem aesthetics.                         |
 | [`llncscrypto`](llncscrypto/README.md)        | 3.3.1   | LLNCS-compatible research-paper extensions: theorem support, author notes, boxes, captions, references, and preprint utilities.           |
-| [`tcscrypto`](tcscrypto/README.md)            | 3.6     | Notation and environment library for TCS and cryptography: sampling, complexity, circuits, graphs, proof complexity, and protocol boxes.  |
+| [`tcscrypto`](tcscrypto/README.md)            | 3.7.1   | Notation and environment library for TCS and cryptography: sampling, complexity, circuits, graphs, proof complexity, and protocol boxes.  |
 
-## Installation
+### Installation
 
 Copy the desired `.sty` file into your project directory alongside your main `.tex` file and load it in the preamble:
 
@@ -44,7 +44,7 @@ Copy the desired `.sty` file into your project directory alongside your main `.t
 
 No global installation or `texmf` tree manipulation required. Each package directory contains a `README.md` with full documentation, all options, the complete API, and caveats.
 
-## Synchronizing Vendored Core Styles
+### Synchronizing Vendored Core Styles
 
 Use the synchronization script to update every existing downstream copy of every canonical csLaTeX package beneath the repositories root. The script discovers canonical `.sty` files automatically, requires unique basenames, skips the canonical files in this repository, refuses symbolic-link targets, and verifies each applied copy byte-for-byte. Unrelated third-party styles are ignored.
 
@@ -62,13 +62,13 @@ bash scripts/commit-synced-core-styles.sh --dry-run
 bash scripts/commit-synced-core-styles.sh --apply
 ```
 
-## Tests
+### Tests
 
 Run the static core-package audit with `bash tests/check-cs-core-parity.sh`. The audit verifies that `csamsmath` and `csbook` expose the same font options and engine branches, use identical font definitions, resolve every named OpenType file, document the same font matrix, and keep package-private `@` commands on classic LaTeX definitions.
 
 Run the package smoke suite with `bash tests/run-smoke-tests.sh`. The suite runs the static core-package audit first, compiles every package with LuaLaTeX, and recompiles the packages that support pdfLaTeX with that engine; all output is written to a temporary directory and removed afterward.
 
-## Coordinated Core-Package Release
+### Coordinated Core-Package Release
 
 The current coordinated release pairs `csamsmath` 3.8 with `csbook` 3.6. Both packages expose the same eight font options and reject mismatched selections when they are loaded together.
 
@@ -85,11 +85,11 @@ The current coordinated release pairs `csamsmath` 3.8 with `csbook` 3.6. Both pa
 
 All branches request lining, tabular figures. The pdfLaTeX branches load `bm` only after the selected math configuration. Erewhon and Fourier are not supported.
 
-## Language and Encoding Policy
+### Language and Encoding Policy
 
 csLaTeX packages do not select document languages. Packages that need Babel load it as `\RequirePackage{babel}` without language options; choose languages through the document class options or by loading `babel` explicitly before the csLaTeX package. Input encoding and font encoding are likewise document-level decisions.
 
-## Typical Use Cases
+### Typical Use Cases
 
 **Conference paper (LLNCS):**
 
@@ -128,7 +128,7 @@ csLaTeX packages do not select document languages. Packages that need Babel load
 \SetAccentColor{RoyalBlue}
 ```
 
-## Repository Layout
+### Repository Layout
 
 ```
 csLaTeX/
@@ -154,6 +154,6 @@ csLaTeX/
 └── latexmkrc           Repository-wide build configuration
 ```
 
-## License
+### License
 
 LaTeX Project Public License v1.3c.
