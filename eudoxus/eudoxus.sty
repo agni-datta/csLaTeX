@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% eudoxus.sty — Mathematical notation suite for analysis and topology
+% eudoxus.sty: mathematical notation suite for analysis and topology
 %
 % Author  : Agni Datta
 % GitHub  : https://github.com/agni-datta/csLaTeX
@@ -80,7 +80,7 @@
 \newif\ifeudoxtcs      		\bool_if:NTF \g_eudox_tcs_bool      	{ \eudoxtcstrue      } 		{ \eudoxtcsfalse      }
 \newif\ifeudoxlayout   		\bool_if:NTF \g_eudox_layout_bool   	{ \eudoxlayouttrue   } 		{ \eudoxlayoutfalse   }
 \newif\ifeudoxtitlepatch 	\bool_if:NTF \g_eudox_titlepatch_bool 	{ \eudoxtitlepatchtrue }	{ \eudoxtitlepatchfalse }
-\newif\ifeudoxfonts       \bool_if:NTF \g_eudox_fonts_bool       { \eudoxfontstrue      } { \eudoxfontsfalse      }
+\newif\ifeudoxfonts   		\bool_if:NTF \g_eudox_fonts_bool   	{ \eudoxfontstrue    } 		{ \eudoxfontsfalse    }
 \newif\ifeudoxpazobiolinum \bool_if:NTF \g_eudox_pazobiolinum_bool { \eudoxpazobiolinumtrue } { \eudoxpazobiolinumfalse }
 \newif\ifeudoxepigraph    \bool_if:NTF \g_eudox_epigraph_bool    { \eudoxepigraphtrue   } { \eudoxepigraphfalse   }
 \newif\ifeudoxhacks       \bool_if:NTF \g_eudox_hacks_bool       { \eudoxhackstrue      } { \eudoxhacksfalse      }
@@ -289,10 +289,15 @@
 	\fi
 	\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
 	\ifeudoxpazobiolinum
-		\SetMathAlphabet{\mathsf}{normal}{T1}{LinuxBiolinumT-TLF}{m}{n}
-		\SetMathAlphabet{\mathsf}{bold}{T1}{LinuxBiolinumT-TLF}{b}{n}
-		\SetMathAlphabet{\mathtt}{normal}{T1}{AnonymousPro}{m}{n}
-		\SetMathAlphabet{\mathtt}{bold}{T1}{AnonymousPro}{b}{n}
+		\SetMathAlphabet{\mathsf}{normal}{T1}{LinuxBiolinumT-TLF}{m}{n}%
+		\SetMathAlphabet{\mathsf}{bold}{T1}{LinuxBiolinumT-TLF}{b}{n}%
+		\SetMathAlphabet{\mathtt}{normal}{T1}{AnonymousPro}{m}{n}%
+		\SetMathAlphabet{\mathtt}{bold}{T1}{AnonymousPro}{b}{n}%
+	\else
+		\@ifpackageloaded{biolinum}{%
+			\SetMathAlphabet{\mathsf}{normal}{T1}{LinuxBiolinumT-TLF}{m}{n}%
+			\SetMathAlphabet{\mathsf}{bold}{T1}{LinuxBiolinumT-TLF}{b}{n}%
+		}{}%
 	\fi
 	\numberwithin{equation}{section}
 	\allowdisplaybreaks
@@ -322,13 +327,11 @@
 \UseMicrotypeSet[protrusion]{basicmath}
 \UseMicrotypeSet[expansion]{alltext}
 \SetExpansion{encoding=*,family=*}{stretch=30,shrink=30,step=1}
-\SetProtrusion{encoding=*,family=*}{period={,50},comma={,40},colon={,30},semicolon={,30}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % References
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[square,numbers]{natbib}
 \RequirePackage{breakcites}
 \RequirePackage[
 	bookmarksnumbered  = true,
@@ -363,6 +366,7 @@
 \def\mathtt#1{#1}%
 \def\operatorname#1{#1}%
 \def\text#1{#1}%
+\def\textsuperscript#1{#1}%
 \def\var#1{#1}%
 }
 
@@ -388,7 +392,7 @@
 
 \ifeudoxtheorems
 	\newtheoremstyle{theoremlike}
-	{2.5pt}{2.5pt}{\normalfont}{}{\scshape}{.}{0.5em}{}
+	{2.5pt}{2.5pt}{\itshape}{}{\scshape}{.}{0.5em}{}
 	\newtheoremstyle{definitionlike}
 	{2.5pt}{2.5pt}{\normalfont}{}{\scshape}{.}{0.5em}{}
 	\newtheoremstyle{remarklike}
@@ -526,15 +530,22 @@
 	Name-pl = \textsection\textsection,
 	name-pl = \textsection\textsection
 }
+\zcRefTypeSetup{definition}{Name-sg=Definition,name-sg=definition,Name-pl=Definitions,name-pl=definitions}
+\zcRefTypeSetup{fact}{Name-sg=Fact,name-sg=fact,Name-pl=Facts,name-pl=facts}
+\zcRefTypeSetup{lemma}{Name-sg=Lemma,name-sg=lemma,Name-pl=Lemmas,name-pl=lemmas}
+\zcRefTypeSetup{openproblem}{Name-sg=Open Problem,name-sg=open problem,Name-pl=Open Problems,name-pl=open problems}
+\zcRefTypeSetup{proposition}{Name-sg=Proposition,name-sg=proposition,Name-pl=Propositions,name-pl=propositions}
+\zcRefTypeSetup{corollary}{Name-sg=Corollary,name-sg=corollary,Name-pl=Corollaries,name-pl=corollaries}
+\zcRefTypeSetup{theorem}{Name-sg=Theorem,name-sg=theorem,Name-pl=Theorems,name-pl=theorems}
+\zcRefTypeSetup{remark}{Name-sg=Remark,name-sg=remark,Name-pl=Remarks,name-pl=remarks}
 
-\NewDocumentCommand{\Cref}{O{}m}{\zcref[S,#1]{#2}}
-
-\@ifundefined{crefrange}
-{\NewDocumentCommand{\crefrange}{m m}{\zcrefrange{#1}{#2}}}
-{\RenewDocumentCommand{\crefrange}{m m}{\zcrefrange{#1}{#2}}}
-\@ifundefined{cref}
-{\NewDocumentCommand{\cref}{m}{\zcref{#1}}}
-{\RenewDocumentCommand{\cref}{m}{\zcref{#1}}}
+\AddToHook{env/definition/begin}{\zcsetup{countertype={theorem=definition}}}
+\AddToHook{env/fact/begin}{\zcsetup{countertype={theorem=fact}}}
+\AddToHook{env/lemma/begin}{\zcsetup{countertype={theorem=lemma}}}
+\AddToHook{env/openproblem/begin}{\zcsetup{countertype={theorem=openproblem}}}
+\AddToHook{env/proposition/begin}{\zcsetup{countertype={theorem=proposition}}}
+\AddToHook{env/corollary/begin}{\zcsetup{countertype={theorem=corollary}}}
+\AddToHook{env/remark/begin}{\zcsetup{countertype={theorem=remark}}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Paragraph headings
@@ -583,12 +594,12 @@
 \def\edx@checkcolon#1:\edxsep#2\edxend{\edxcheckpunct{#2}}
 
 \NewDocumentCommand{\edxappendpunct}{m}{%
-	\edxhaspunctfalse
-	\edx@checkdot#1\edxsep.\edxsep\edxend
-	\edx@checkquestion#1\edxsep?\edxsep\edxend
-	\edx@checkexclam#1\edxsep!\edxsep\edxend
-	\edx@checkcolon#1\edxsep:\edxsep\edxend
-	#1\ifedxhaspunct\else.\fi
+	\edxhaspunctfalse%
+	\edx@checkdot#1\edxsep.\edxsep\edxend%
+	\edx@checkquestion#1\edxsep?\edxsep\edxend%
+	\edx@checkexclam#1\edxsep!\edxsep\edxend%
+	\edx@checkcolon#1\edxsep:\edxsep\edxend%
+	#1\ifedxhaspunct\else.\fi%
 }
 
 \NewDocumentCommand{\edxeatnewline}{}{%

@@ -3,7 +3,7 @@ title: README
 aliases: README, 'README, "eudoxus"'
 linter-yaml-title-alias: README
 date created: Monday, June 22nd 2026, 7:29:06 pm
-date modified: Tuesday, August 18th 2026, 10:56:17 am
+date modified: Monday, August 24th 2026, 11:00:00 pm
 ---
 
 <!-- @format -->
@@ -15,6 +15,7 @@ A general mathematics package centered on `amsart`. It bundles typography, page 
 ### Requirements
 
 - `hyperref` is loaded internally. Do **not** load it again before `\usepackage{eudoxus}`.
+- The package does not select a citation system. Load `natbib` or another citation package before `eudoxus` when the bibliography style requires one.
 - The `tcs` option requires `tcscrypto.sty` (from the `tcscrypto` package in this repository) to be on the TeX search path. If it is absent, `eudoxus` emits a warning and skips it.
 - `geometry` is loaded under the default `layout` mode. If your class already sets page dimensions (e.g. `amsart` with custom geometry), pass `nolayout` to suppress it.
 - Loads `babel` without language options. Choose document languages through the class options or load `babel` explicitly before `eudoxus`.
@@ -34,7 +35,7 @@ Multiple options may be combined:
 ### Minimal Example
 
 ```latex
-\documentclass{amsart}
+\documentclass[reqno]{amsart}
 \usepackage{eudoxus}
 
 \title{A Short Note}
@@ -52,7 +53,7 @@ Multiple options may be combined:
   Omitted.
 \end{proof}
 
-By \cref{thm:fermat}, the equation has no solutions.
+By~\zcref{thm:fermat}, the equation has no solutions.
 
 \end{document}
 ```
@@ -84,7 +85,7 @@ The `pazobiolinum` option uses only Type 1 and NFSS font interfaces, including u
 \usepackage[ttdefault,scaled=1.03]{AnonymousPro}
 ```
 
-The option also assigns Biolinum to `\mathsf`, Anonymous Pro to `\mathtt`, BBOLDX to `\mathbb`, STIX calligraphic to `\mathcal`, and Dutch Calligraphic to `\mathscr`.
+The option also assigns Biolinum to `\mathsf`, Anonymous Pro to `\mathtt`, BBOLDX to `\mathbb`, STIX calligraphic to `\mathcal`, and Dutch Calligraphic to `\mathscr`. If a document loads Biolinum independently instead, `eudoxus` still assigns Biolinum to `\mathsf`.
 It omits the three `bbm` alphabets and the redundant RSFS, esvect, and upgreek symbol families so that this complete font set stays within pdfTeX's legacy math-family limit.
 
 ### AMS integration and compact layout
@@ -141,7 +142,7 @@ The same option also patches standard article-style titles and AMS title handlin
 
 ### Cross-references
 
-`\cref{label}` and `\Cref{label}` are powered by `zref-clever`. Section-type references use `§` / `§§` markers. `\crefrange` is also available.
+Use `\zcref{label}` for ordinary references, `\zcref[S]{label}` when a sentence requires an initial capital, and `\zcrefrange{first}{last}` for ranges. These commands come directly from `zref-clever`; `eudoxus` does not define `cleveref` compatibility aliases. Section-type references use `§` and `§§` markers. Shared theorem counters retain the displayed environment type for definitions, facts, lemmas, propositions, corollaries, theorems, remarks, and open problems.
 
 ### Caveats
 
