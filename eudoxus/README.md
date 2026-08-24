@@ -73,6 +73,7 @@ By~\zcref{thm:fermat}, the equation has no solutions.
 | `epigraph`       | off     | Loads `epigraph` with right-aligned italic quotations, small-caps sources, width `0.6\textwidth`, and compact vertical spacing. |
 | `hacks`          | off     | Sets line spacing to 1.075, emergency stretch to 2 em, display-break level to 2, and a ragged page bottom.                     |
 | `amshacks`       | off     | Loads `amsaddr[foot]` for AMS article/book classes and enforces right-hand equation tags.                                      |
+| `siam`           | off     | Preserves a loaded SIAM journal class by disabling conflicting layout, font, theorem, microtype, float, and hyperlink setup.   |
 | `titlepatch`     | off     | Applies bold sans styling to titles, section headings, `\parhead`, and `\subparhead`.                                          |
 
 ### Pazo and Biolinum font bundle
@@ -98,6 +99,17 @@ The `amshacks` option loads `amsaddr` with its `foot` option under `amsart` or `
 ```
 
 The `hacks` option remains independent of `layout`, so it also works together with `nolayout`.
+
+### SIAM journal compatibility
+
+The `siam` option keeps the SIAM class in control of the page geometry, fonts, theorem environments, floats, microtypography, hyperlinks, and equation numbering. It retains the `eudoxus` paragraph headings and direct `zref-clever` interface. Optional features such as epigraphs and TCS notation remain explicit:
+
+```latex
+\documentclass[review,hidelinks,onefignum,onetabnum]{siamart251216}
+\usepackage[siam,epigraph,tcs]{eudoxus}
+```
+
+The SIAM class supplies its own theorem system through `ntheorem`. A document that needs additional environments should declare them with `\newsiamthm` or `\newsiamremark` after loading `eudoxus`. SIAM also reserves `\AM` for front matter, so compatibility mode retains that command and exposes the complexity package's version as `\ComplexityAM`.
 
 ### Theorem Environments
 

@@ -7,7 +7,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{eudoxus}[2026/08/24 v1.3 Eudoxus Math LaTeX package]
+\ProvidesPackage{eudoxus}[2026/08/24 v1.4 Eudoxus Math LaTeX package]
 
 \RequirePackage{l3keys2e}
 \ExplSyntaxOn
@@ -26,6 +26,7 @@
 \bool_new:N \g_eudox_epigraph_bool
 \bool_new:N \g_eudox_hacks_bool
 \bool_new:N \g_eudox_amshacks_bool
+\bool_new:N \g_eudox_siam_bool
 
 \keys_define:nn { eudoxus }
 {
@@ -50,6 +51,15 @@
 	nohacks    .code:n   = { \bool_gset_false:N \g_eudox_hacks_bool } ,
 	amshacks   .code:n   = { \bool_gset_true:N  \g_eudox_amshacks_bool } ,
 	noamshacks .code:n   = { \bool_gset_false:N \g_eudox_amshacks_bool } ,
+	siam       .code:n   = { \bool_gset_true:N  \g_eudox_siam_bool
+			\bool_gset_false:N \g_eudox_layout_bool
+			\bool_gset_false:N \g_eudox_titlepatch_bool
+			\bool_gset_false:N \g_eudox_fonts_bool
+			\bool_gset_false:N \g_eudox_pazobiolinum_bool
+			\bool_gset_false:N \g_eudox_theorems_bool
+			\bool_gset_false:N \g_eudox_hacks_bool
+			\bool_gset_false:N \g_eudox_amshacks_bool } ,
+	nosiam     .code:n   = { \bool_gset_false:N \g_eudox_siam_bool } ,
 	titlepatch .code:n  	= { \bool_gset_true:N  \g_eudox_titlepatch_bool } ,
 	notitlepatch .code:n 	= { \bool_gset_false:N \g_eudox_titlepatch_bool } ,
 	unknown    .code:n  	= { \PackageWarning{eudoxus}{Unknown~option~`#1'} } ,
@@ -65,6 +75,7 @@
 \bool_gset_false:N \g_eudox_epigraph_bool
 \bool_gset_false:N \g_eudox_hacks_bool
 \bool_gset_false:N \g_eudox_amshacks_bool
+\bool_gset_false:N \g_eudox_siam_bool
 
 \ProcessKeysOptions { eudoxus }
 
@@ -85,6 +96,7 @@
 \newif\ifeudoxepigraph    \bool_if:NTF \g_eudox_epigraph_bool    { \eudoxepigraphtrue   } { \eudoxepigraphfalse   }
 \newif\ifeudoxhacks       \bool_if:NTF \g_eudox_hacks_bool       { \eudoxhackstrue      } { \eudoxhacksfalse      }
 \newif\ifeudoxamshacks    \bool_if:NTF \g_eudox_amshacks_bool    { \eudoxamshackstrue   } { \eudoxamshacksfalse   }
+\newif\ifeudoxsiam        \bool_if:NTF \g_eudox_siam_bool        { \eudoxsiamtrue       } { \eudoxsiamfalse       }
 
 \ExplSyntaxOff
 \makeatletter
@@ -147,16 +159,18 @@
 % Typography
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[normalem]{ulem}
-\RequirePackage{moresize}
-\RequirePackage{relsize}
-\RequirePackage{soul}
-\RequirePackage{titlecaps}
-\RequirePackage{xspace}
-\RequirePackage{xurl}
-\ifeudoxtitlepatch
-	\RequirePackage{etoolbox}
-	\RequirePackage{sectsty}
+\ifeudoxsiam\else
+	\RequirePackage[normalem]{ulem}
+	\RequirePackage{moresize}
+	\RequirePackage{relsize}
+	\RequirePackage{soul}
+	\RequirePackage{titlecaps}
+	\RequirePackage{xspace}
+	\RequirePackage{xurl}
+	\ifeudoxtitlepatch
+		\RequirePackage{etoolbox}
+		\RequirePackage{sectsty}
+	\fi
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -181,54 +195,66 @@
 % Color
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[dvipsnames,table,x11names]{xcolor}
+\ifeudoxsiam
+	\RequirePackage{xcolor}
+\else
+	\RequirePackage[dvipsnames,table,x11names]{xcolor}
+\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Graphics and floats
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage{adjustbox}
-\RequirePackage{afterpage}
-\RequirePackage{floatrow}
-\RequirePackage{graphicx}
-\RequirePackage{placeins}
-\RequirePackage{subcaption}
-\RequirePackage{wrapfig}
+\ifeudoxsiam\else
+	\RequirePackage{adjustbox}
+	\RequirePackage{afterpage}
+	\RequirePackage{floatrow}
+	\RequirePackage{graphicx}
+	\RequirePackage{placeins}
+	\RequirePackage{subcaption}
+	\RequirePackage{wrapfig}
+\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Tables
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage{array}
-\RequirePackage{booktabs}
-\RequirePackage{colortbl}
-\RequirePackage{hhline}
-\RequirePackage{makecell}
-\RequirePackage{multicol}
-\RequirePackage{multirow}
-\RequirePackage{tabularray}
-\RequirePackage{tabularx}
+\ifeudoxsiam\else
+	\RequirePackage{array}
+	\RequirePackage{booktabs}
+	\RequirePackage{colortbl}
+	\RequirePackage{hhline}
+	\RequirePackage{makecell}
+	\RequirePackage{multicol}
+	\RequirePackage{multirow}
+	\RequirePackage{tabularray}
+	\RequirePackage{tabularx}
+\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Lists
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage{enumitem}
+\ifeudoxsiam\else
+	\RequirePackage{enumitem}
+\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Environments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage{comment}
-\RequirePackage{fancyvrb}
-\RequirePackage{framed}
-\RequirePackage[
-	framemethod = TikZ ,
-	skipabove   = 0.75\baselineskip ,
-	skipbelow   = 0.75\baselineskip ,
-	roundcorner = 1.0pt
-]{mdframed}
-\RequirePackage{verbatim}
+\ifeudoxsiam\else
+	\RequirePackage{comment}
+	\RequirePackage{fancyvrb}
+	\RequirePackage{framed}
+	\RequirePackage[
+		framemethod = TikZ ,
+		skipabove   = 0.75\baselineskip ,
+		skipbelow   = 0.75\baselineskip ,
+		roundcorner = 1.0pt
+	]{mdframed}
+	\RequirePackage{verbatim}
+\fi
 
 \setcounter{secnumdepth}{4}
 \setcounter{tocdepth}{4}
@@ -237,70 +263,81 @@
 % TikZ
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage{pgfplots}
-\RequirePackage{tikz}
-\pgfplotsset{compat=1.18}
+\ifeudoxsiam\else
+	\RequirePackage{pgfplots}
+	\RequirePackage{tikz}
+	\pgfplotsset{compat=1.18}
+\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Annotations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage{marginnote}
-\RequirePackage[draft]{todonotes}
-\RequirePackage{xargs}
+\ifeudoxsiam\else
+	\RequirePackage{marginnote}
+	\RequirePackage[draft]{todonotes}
+	\RequirePackage{xargs}
+\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Mathematics
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ifeudoxmath
-	\RequirePackage{amsfonts}
-	\RequirePackage{amsmath}
-	\RequirePackage{amssymb}
-	\RequirePackage{amsthm}
-	\ifeudoxpazobiolinum\else
-		\RequirePackage{bbm}
-	\fi
-	\RequirePackage{bm}
-	\RequirePackage{braket}
-	\ifeudoxpazobiolinum\else
-		\RequirePackage{esvect}
-	\fi
-	\ifeudoxfonts
-		\RequirePackage{lmodern}
-	\fi
-	\ifeudoxpazobiolinum\else
-		\RequirePackage{mathrsfs}
-	\fi
-	\RequirePackage{mathtools}
-	\ifeudoxpazobiolinum
-		\RequirePackage[bb=bboldx,cal=stixplain,scr=dutchcal]{mathalpha}
+	\ifeudoxsiam
+		\RequirePackage{amsfonts}
+		\RequirePackage{amssymb}
 	\else
+		\RequirePackage{amsfonts}
+		\RequirePackage{amsmath}
+		\RequirePackage{amssymb}
+		\ifeudoxtheorems
+			\RequirePackage{amsthm}
+		\fi
+		\ifeudoxpazobiolinum\else
+			\RequirePackage{bbm}
+		\fi
+		\RequirePackage{bm}
+		\RequirePackage{braket}
+		\ifeudoxpazobiolinum\else
+			\RequirePackage{esvect}
+		\fi
 		\ifeudoxfonts
-			\RequirePackage[bb=bboldx,cal=cm,scr=dutchcal]{mathalpha}
+			\RequirePackage{lmodern}
 		\fi
-	\fi
-	\ifeudoxpazobiolinum\else
-		\ifPDFTeX
-			\RequirePackage[Symbol]{upgreek}
+		\ifeudoxpazobiolinum\else
+			\RequirePackage{mathrsfs}
+		\fi
+		\RequirePackage{mathtools}
+		\ifeudoxpazobiolinum
+			\RequirePackage[bb=bboldx,cal=stixplain,scr=dutchcal]{mathalpha}
 		\else
-			\RequirePackage{upgreek}
+			\ifeudoxfonts
+				\RequirePackage[bb=bboldx,cal=cm,scr=dutchcal]{mathalpha}
+			\fi
 		\fi
-	\fi
-	\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
-	\ifeudoxpazobiolinum
-		\SetMathAlphabet{\mathsf}{normal}{T1}{LinuxBiolinumT-TLF}{m}{n}%
-		\SetMathAlphabet{\mathsf}{bold}{T1}{LinuxBiolinumT-TLF}{b}{n}%
-		\SetMathAlphabet{\mathtt}{normal}{T1}{AnonymousPro}{m}{n}%
-		\SetMathAlphabet{\mathtt}{bold}{T1}{AnonymousPro}{b}{n}%
-	\else
-		\@ifpackageloaded{biolinum}{%
+		\ifeudoxpazobiolinum\else
+			\ifPDFTeX
+				\RequirePackage[Symbol]{upgreek}
+			\else
+				\RequirePackage{upgreek}
+			\fi
+		\fi
+		\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
+		\ifeudoxpazobiolinum
 			\SetMathAlphabet{\mathsf}{normal}{T1}{LinuxBiolinumT-TLF}{m}{n}%
 			\SetMathAlphabet{\mathsf}{bold}{T1}{LinuxBiolinumT-TLF}{b}{n}%
-		}{}%
+			\SetMathAlphabet{\mathtt}{normal}{T1}{AnonymousPro}{m}{n}%
+			\SetMathAlphabet{\mathtt}{bold}{T1}{AnonymousPro}{b}{n}%
+		\else
+			\@ifpackageloaded{biolinum}{%
+				\SetMathAlphabet{\mathsf}{normal}{T1}{LinuxBiolinumT-TLF}{m}{n}%
+				\SetMathAlphabet{\mathsf}{bold}{T1}{LinuxBiolinumT-TLF}{b}{n}%
+			}{}%
+		\fi
+		\numberwithin{equation}{section}
+		\allowdisplaybreaks
 	\fi
-	\numberwithin{equation}{section}
-	\allowdisplaybreaks
 \fi
 
 \ifeudoxhacks
@@ -316,39 +353,45 @@
 % Microtype
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[final,protrusion=true,expansion=true]{microtype}
-\microtypesetup{%
-	activate   = true,
-	expansion  = true,
-	factor     = 1500,
-	protrusion = true,
-	stretch    = 30
-}
-\UseMicrotypeSet[protrusion]{basicmath}
-\UseMicrotypeSet[expansion]{alltext}
-\SetExpansion{encoding=*,family=*}{stretch=30,shrink=30,step=1}
+\ifeudoxsiam\else
+	\RequirePackage[final,protrusion=true,expansion=true]{microtype}
+	\microtypesetup{%
+		activate   = true,
+		expansion  = true,
+		factor     = 1500,
+		protrusion = true,
+		stretch    = 30
+	}
+	\UseMicrotypeSet[protrusion]{basicmath}
+	\UseMicrotypeSet[expansion]{alltext}
+	\SetExpansion{encoding=*,family=*}{stretch=30,shrink=30,step=1}
+\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % References
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage{breakcites}
-\RequirePackage[
-	bookmarksnumbered  = true,
-	breaklinks         = true,
-	citecolor          = SteelBlue4,
-	colorlinks         = true,
-	hypertexnames      = true,
-	linkcolor          = SteelBlue4,
-	pagebackref        = true,
-	pdfencoding        = auto,
-	pdfpagelabels      = true,
-	pdfpagelayout      = SinglePage,
-	pdfstartview       = FitH,
-	pdfusetitle,
-	unicode            = true,
-	urlcolor           = SteelBlue4
-]{hyperref}
+\ifeudoxsiam
+	\@ifpackageloaded{hyperref}{}{\RequirePackage{hyperref}}
+\else
+	\RequirePackage{breakcites}
+	\RequirePackage[
+		bookmarksnumbered  = true,
+		breaklinks         = true,
+		citecolor          = SteelBlue4,
+		colorlinks         = true,
+		hypertexnames      = true,
+		linkcolor          = SteelBlue4,
+		pagebackref        = true,
+		pdfencoding        = auto,
+		pdfpagelabels      = true,
+		pdfpagelayout      = SinglePage,
+		pdfstartview       = FitH,
+		pdfusetitle,
+		unicode            = true,
+		urlcolor           = SteelBlue4
+	]{hyperref}
+\fi
 
 \pdfstringdefDisableCommands{%
 \def\S{\textsection}%
@@ -370,12 +413,14 @@
 \def\var#1{#1}%
 }
 
-\RenewDocumentCommand{\backref}{m}{}
-\RenewDocumentCommand{\backrefalt}{m m m m}{%
-	\ifcase #1\or (Cited on p.~#2).
-	\else (Cited on pp.~#2).
-	\fi
-}
+\ifeudoxsiam\else
+	\RenewDocumentCommand{\backref}{m}{}
+	\RenewDocumentCommand{\backrefalt}{m m m m}{%
+		\ifcase #1\or (Cited on p.~#2).
+		\else (Cited on pp.~#2).
+		\fi
+	}
+\fi
 
 \ifeudoxlayout
 	\@ifclassloaded{amsart}{%
@@ -505,7 +550,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{zref-clever}
-\RequirePackage{zref-vario}
+\ifeudoxsiam\else
+	\RequirePackage{zref-vario}
+\fi
 \zcsetup{
 	cap        = true,
 	noabbrev,
@@ -639,7 +686,15 @@
 
 \ifeudoxtcs
 	\IfFileExists{tcscrypto.sty}{%
-		\RequirePackage[notoc]{tcscrypto}%
+		\ifeudoxsiam
+			\let\edx@siam@AM\AM
+			\let\AM\relax
+			\RequirePackage[notoc]{tcscrypto}%
+			\let\ComplexityAM\AM
+			\let\AM\edx@siam@AM
+		\else
+			\RequirePackage[notoc]{tcscrypto}%
+		\fi
 	}{%
 		\PackageWarning{eudoxus}{tcscrypto.sty not found; skipping}%
 	}
