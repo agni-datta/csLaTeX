@@ -7,7 +7,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{eudoxus}[2026/07/04 v1.2 Eudoxus Math LaTeX package]
+\ProvidesPackage{eudoxus}[2026/08/24 v1.3 Eudoxus Math LaTeX package]
 
 \RequirePackage{l3keys2e}
 \ExplSyntaxOn
@@ -21,16 +21,35 @@
 \bool_new:N \g_eudox_tcs_bool
 \bool_new:N \g_eudox_layout_bool
 \bool_new:N \g_eudox_titlepatch_bool
+\bool_new:N \g_eudox_fonts_bool
+\bool_new:N \g_eudox_pazobiolinum_bool
+\bool_new:N \g_eudox_epigraph_bool
+\bool_new:N \g_eudox_hacks_bool
+\bool_new:N \g_eudox_amshacks_bool
 
 \keys_define:nn { eudoxus }
 {
 	nomath     .code:n  	= { \bool_gset_false:N \g_eudox_math_bool
 			\bool_gset_false:N \g_eudox_theorems_bool
 			\bool_gset_false:N \g_eudox_tcs_bool } ,
+	fonts      .code:n   = { \bool_gset_true:N  \g_eudox_fonts_bool
+			\bool_gset_false:N \g_eudox_pazobiolinum_bool } ,
+	nofonts    .code:n   = { \bool_gset_false:N \g_eudox_fonts_bool
+			\bool_gset_false:N \g_eudox_pazobiolinum_bool } ,
+	pazobiolinum .code:n = { \bool_gset_false:N \g_eudox_fonts_bool
+			\bool_gset_true:N  \g_eudox_pazobiolinum_bool } ,
+	nopazobiolinum .code:n = { \bool_gset_true:N  \g_eudox_fonts_bool
+			\bool_gset_false:N \g_eudox_pazobiolinum_bool } ,
 	notheorems .code:n  	= { \bool_gset_false:N \g_eudox_theorems_bool } ,
 	tcs        .code:n  	= { \bool_gset_true:N  \g_eudox_tcs_bool } ,
 	notcs      .code:n  	= { \bool_gset_false:N \g_eudox_tcs_bool } ,
 	nolayout   .code:n  	= { \bool_gset_false:N \g_eudox_layout_bool } ,
+	epigraph   .code:n   = { \bool_gset_true:N  \g_eudox_epigraph_bool } ,
+	noepigraph .code:n   = { \bool_gset_false:N \g_eudox_epigraph_bool } ,
+	hacks      .code:n   = { \bool_gset_true:N  \g_eudox_hacks_bool } ,
+	nohacks    .code:n   = { \bool_gset_false:N \g_eudox_hacks_bool } ,
+	amshacks   .code:n   = { \bool_gset_true:N  \g_eudox_amshacks_bool } ,
+	noamshacks .code:n   = { \bool_gset_false:N \g_eudox_amshacks_bool } ,
 	titlepatch .code:n  	= { \bool_gset_true:N  \g_eudox_titlepatch_bool } ,
 	notitlepatch .code:n 	= { \bool_gset_false:N \g_eudox_titlepatch_bool } ,
 	unknown    .code:n  	= { \PackageWarning{eudoxus}{Unknown~option~`#1'} } ,
@@ -41,14 +60,31 @@
 \bool_gset_false:N \g_eudox_tcs_bool
 \bool_gset_true:N  \g_eudox_layout_bool
 \bool_gset_false:N \g_eudox_titlepatch_bool
+\bool_gset_true:N  \g_eudox_fonts_bool
+\bool_gset_false:N \g_eudox_pazobiolinum_bool
+\bool_gset_false:N \g_eudox_epigraph_bool
+\bool_gset_false:N \g_eudox_hacks_bool
+\bool_gset_false:N \g_eudox_amshacks_bool
 
 \ProcessKeysOptions { eudoxus }
+
+\bool_if:NF \g_eudox_math_bool
+{
+	\bool_gset_false:N \g_eudox_theorems_bool
+	\bool_gset_false:N \g_eudox_tcs_bool
+	\bool_gset_false:N \g_eudox_pazobiolinum_bool
+}
 
 \newif\ifeudoxmath     		\bool_if:NTF \g_eudox_math_bool     	{ \eudoxmathtrue     } 		{ \eudoxmathfalse     }
 \newif\ifeudoxtheorems 		\bool_if:NTF \g_eudox_theorems_bool 	{ \eudoxtheoremstrue } 		{ \eudoxtheoremsfalse }
 \newif\ifeudoxtcs      		\bool_if:NTF \g_eudox_tcs_bool      	{ \eudoxtcstrue      } 		{ \eudoxtcsfalse      }
 \newif\ifeudoxlayout   		\bool_if:NTF \g_eudox_layout_bool   	{ \eudoxlayouttrue   } 		{ \eudoxlayoutfalse   }
 \newif\ifeudoxtitlepatch 	\bool_if:NTF \g_eudox_titlepatch_bool 	{ \eudoxtitlepatchtrue }	{ \eudoxtitlepatchfalse }
+\newif\ifeudoxfonts       \bool_if:NTF \g_eudox_fonts_bool       { \eudoxfontstrue      } { \eudoxfontsfalse      }
+\newif\ifeudoxpazobiolinum \bool_if:NTF \g_eudox_pazobiolinum_bool { \eudoxpazobiolinumtrue } { \eudoxpazobiolinumfalse }
+\newif\ifeudoxepigraph    \bool_if:NTF \g_eudox_epigraph_bool    { \eudoxepigraphtrue   } { \eudoxepigraphfalse   }
+\newif\ifeudoxhacks       \bool_if:NTF \g_eudox_hacks_bool       { \eudoxhackstrue      } { \eudoxhacksfalse      }
+\newif\ifeudoxamshacks    \bool_if:NTF \g_eudox_amshacks_bool    { \eudoxamshackstrue   } { \eudoxamshacksfalse   }
 
 \ExplSyntaxOff
 \makeatletter
@@ -60,12 +96,51 @@
 \RequirePackage{babel}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Font bundle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifeudoxpazobiolinum
+	\RequirePackage[T1]{fontenc}
+	\RequirePackage[sc,noBBpl]{mathpazo}
+	\RequirePackage[type1,scaled=1.085]{biolinum}
+	\RequirePackage[ttdefault,scaled=1.03]{AnonymousPro}
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Page layout
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ifeudoxlayout
 	\RequirePackage[margin=1in]{geometry}
 	\RequirePackage{setspace}
+\fi
+\ifeudoxhacks
+	\RequirePackage{setspace}
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% AMS class integration
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifeudoxamshacks
+	\@ifclassloaded{amsart}{%
+		\@ifpackageloaded{amsaddr}{%
+			\@ifpackagewith{amsaddr}{foot}{}{%
+				\PackageWarning{eudoxus}{amsaddr was loaded without the foot option}%
+			}%
+		}{\RequirePackage[foot]{amsaddr}}%
+	}{%
+		\@ifclassloaded{amsbook}{%
+			\@ifpackageloaded{amsaddr}{%
+				\@ifpackagewith{amsaddr}{foot}{}{%
+					\PackageWarning{eudoxus}{amsaddr was loaded without the foot option}%
+				}%
+			}{\RequirePackage[foot]{amsaddr}}%
+		}{%
+			\PackageWarning{eudoxus}{amshacks is only meaningful with amsart or amsbook}%
+		}%
+	}%
+	\AtBeginDocument{\@ifundefined{tagsleft@false}{}{\tagsleft@false}}%
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -82,6 +157,24 @@
 \ifeudoxtitlepatch
 	\RequirePackage{etoolbox}
 	\RequirePackage{sectsty}
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Epigraphs
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifeudoxepigraph
+	\RequirePackage{epigraph}
+	\renewcommand{\epigraphflush}{flushright}
+	\renewcommand{\textflush}{flushright}
+	\renewcommand{\sourceflush}{flushright}
+	\setlength{\epigraphwidth}{0.6\textwidth}
+	\setlength{\beforeepigraphskip}{0.2\baselineskip}
+	\setlength{\afterepigraphskip}{0.2\baselineskip}
+	\let\edxoriginalepigraph\epigraph
+	\RenewDocumentCommand{\epigraph}{m m}{%
+		\edxoriginalepigraph{\textit{#1}}{\smallskip\textsc{#2}}%
+	}
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -165,22 +258,53 @@
 	\RequirePackage{amsmath}
 	\RequirePackage{amssymb}
 	\RequirePackage{amsthm}
-	\RequirePackage{bbm}
+	\ifeudoxpazobiolinum\else
+		\RequirePackage{bbm}
+	\fi
 	\RequirePackage{bm}
 	\RequirePackage{braket}
-	\RequirePackage{esvect}
-	\RequirePackage{lmodern}
-	\RequirePackage{mathrsfs}
+	\ifeudoxpazobiolinum\else
+		\RequirePackage{esvect}
+	\fi
+	\ifeudoxfonts
+		\RequirePackage{lmodern}
+	\fi
+	\ifeudoxpazobiolinum\else
+		\RequirePackage{mathrsfs}
+	\fi
 	\RequirePackage{mathtools}
-	\RequirePackage[bb=bboldx,cal=cm,scr=dutchcal]{mathalpha}
-	\ifPDFTeX
-		\RequirePackage[Symbol]{upgreek}
+	\ifeudoxpazobiolinum
+		\RequirePackage[bb=bboldx,cal=stixplain,scr=dutchcal]{mathalpha}
 	\else
-		\RequirePackage{upgreek}
+		\ifeudoxfonts
+			\RequirePackage[bb=bboldx,cal=cm,scr=dutchcal]{mathalpha}
+		\fi
+	\fi
+	\ifeudoxpazobiolinum\else
+		\ifPDFTeX
+			\RequirePackage[Symbol]{upgreek}
+		\else
+			\RequirePackage{upgreek}
+		\fi
 	\fi
 	\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
+	\ifeudoxpazobiolinum
+		\SetMathAlphabet{\mathsf}{normal}{T1}{LinuxBiolinumT-TLF}{m}{n}
+		\SetMathAlphabet{\mathsf}{bold}{T1}{LinuxBiolinumT-TLF}{b}{n}
+		\SetMathAlphabet{\mathtt}{normal}{T1}{AnonymousPro}{m}{n}
+		\SetMathAlphabet{\mathtt}{bold}{T1}{AnonymousPro}{b}{n}
+	\fi
 	\numberwithin{equation}{section}
 	\allowdisplaybreaks
+\fi
+
+\ifeudoxhacks
+	\AtBeginDocument{%
+		\setstretch{1.075}%
+		\setlength{\emergencystretch}{2em}%
+		\@ifundefined{allowdisplaybreaks}{}{\allowdisplaybreaks[2]}%
+		\raggedbottom
+	}
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

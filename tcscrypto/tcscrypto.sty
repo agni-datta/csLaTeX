@@ -6,7 +6,7 @@
 % License : LPPL v1.3c
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{tcscrypto}[2026/07/30 v3.7.1 Notations and environments for TCS and Cryptography]
+\ProvidesPackage{tcscrypto}[2026/08/24 v3.7.2 Notations and environments for TCS and Cryptography]
 
 \RequirePackage{l3keys2e}
 \makeatletter
@@ -57,7 +57,7 @@
 \RequirePackage{enumitem}
 \RequirePackage{etoolbox}
 \RequirePackage{mdframed}
-\RequirePackage{mathrsfs}
+\@ifundefined{mathscr}{\RequirePackage{mathrsfs}}{}
 \RequirePackage{physics2}
 
 \RequirePackage{xspace}

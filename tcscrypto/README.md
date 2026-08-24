@@ -14,7 +14,7 @@ A notation library for theoretical computer science and cryptography. It standar
 
 ### Requirements
 
-- Loads `amsmath` and `mathrsfs`. It loads `amssymb` only when `unicode-math` is absent, so the notation library works independently without redeclaring Unicode mathematics symbols.
+- Loads `amsmath` and supplies `mathrsfs` when no `\mathscr` alphabet is already available. It loads `amssymb` only when `unicode-math` is absent, so the notation library works independently without redeclaring Unicode mathematics symbols.
 - Loads the `complexity` package internally for complexity class macros. Do not load `complexity` separately with conflicting options.
 - Uses `mdframed` for protocol and algorithm boxes. If you also use `tcolorbox`, load it with the `most` compatibility option.
 

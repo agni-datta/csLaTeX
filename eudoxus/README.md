@@ -28,7 +28,7 @@ A general mathematics package centered on `amsart`. It bundles typography, page 
 Multiple options may be combined:
 
 ```latex
-\usepackage[nolayout,notcs]{eudoxus}
+\usepackage[amshacks,epigraph,hacks,pazobiolinum,tcs]{eudoxus}
 ```
 
 ### Minimal Example
@@ -59,14 +59,44 @@ By \cref{thm:fermat}, the equation has no solutions.
 
 ### Options
 
-| Option       | Default | Effect                                                                                        |
-| ------------ | ------- | --------------------------------------------------------------------------------------------- |
-| `nomath`     | off     | Disables all math packages (amsmath, amsthm, mathalpha, …) and implies `notheorems`, `notcs`. |
-| `notheorems` | off     | Skips theorem environment declarations; math packages are still loaded.                       |
-| `tcs`        | off     | Loads `tcscrypto` when `tcscrypto.sty` is available on the TeX input path.                    |
-| `notcs`      | off     | Does not load `tcscrypto` even if the `tcs` flag is set.                                      |
-| `nolayout`   | off     | Suppresses `geometry` and `setspace`; also disables the `amsart` bibliography patch.          |
-| `titlepatch` | off     | Applies bold sans styling to titles, section headings, `\parhead`, and `\subparhead`.         |
+| Option           | Default | Effect                                                                                                                         |
+| ---------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `nomath`         | off     | Disables all math packages (amsmath, amsthm, mathalpha, …) and implies `notheorems`, `notcs`.                                  |
+| `notheorems`     | off     | Skips theorem environment declarations; math packages are still loaded.                                                        |
+| `fonts`          | on      | Uses the original Latin Modern and mathalpha font setup.                                                                        |
+| `nofonts`        | off     | Suppresses both bundled font setups so that the document can load its own fonts.                                                |
+| `pazobiolinum`   | off     | Uses Pazo/Palladio roman and math fonts, scaled Type 1 Biolinum sans, scaled Anonymous Pro mono, and matched math alphabets.    |
+| `tcs`            | off     | Loads `tcscrypto` when `tcscrypto.sty` is available on the TeX input path.                                                     |
+| `notcs`          | off     | Does not load `tcscrypto` even if the `tcs` flag is set.                                                                       |
+| `nolayout`       | off     | Suppresses `geometry` and the default `setspace` load; it also disables the `amsart` bibliography patch.                       |
+| `epigraph`       | off     | Loads `epigraph` with right-aligned italic quotations, small-caps sources, width `0.6\textwidth`, and compact vertical spacing. |
+| `hacks`          | off     | Sets line spacing to 1.075, emergency stretch to 2 em, display-break level to 2, and a ragged page bottom.                     |
+| `amshacks`       | off     | Loads `amsaddr[foot]` for AMS article/book classes and enforces right-hand equation tags.                                      |
+| `titlepatch`     | off     | Applies bold sans styling to titles, section headings, `\parhead`, and `\subparhead`.                                          |
+
+### Pazo and Biolinum font bundle
+
+The `pazobiolinum` option uses only Type 1 and NFSS font interfaces, including under LuaLaTeX. It never loads `fontspec`. The sans and monospaced scales match their x-heights to 11 pt Palladio:
+
+```latex
+\usepackage[sc,noBBpl]{mathpazo}
+\usepackage[type1,scaled=1.085]{biolinum}
+\usepackage[ttdefault,scaled=1.03]{AnonymousPro}
+```
+
+The option also assigns Biolinum to `\mathsf`, Anonymous Pro to `\mathtt`, BBOLDX to `\mathbb`, STIX calligraphic to `\mathcal`, and Dutch Calligraphic to `\mathscr`.
+It omits the three `bbm` alphabets and the redundant RSFS, esvect, and upgreek symbol families so that this complete font set stays within pdfTeX's legacy math-family limit.
+
+### AMS integration and compact layout
+
+The `amshacks` option loads `amsaddr` with its `foot` option under `amsart` or `amsbook` and sets AMS equation tags on the right. Class options are processed before packages, so an `amsart` document should still state `reqno` in its class line:
+
+```latex
+\documentclass[reqno]{amsart}
+\usepackage[amshacks,hacks]{eudoxus}
+```
+
+The `hacks` option remains independent of `layout`, so it also works together with `nolayout`.
 
 ### Theorem Environments
 
