@@ -449,7 +449,9 @@
 
 \newif\ifedxhaspunct
 
-\def\edxcheckpunct{}
+\def\edxcheckpunct#1{%
+	\if\relax\detokenize{#1}\relax\else\edxhaspuncttrue\fi
+}
 
 \def\edx@checkdot#1.\edxsep#2\edxend{\edxcheckpunct{#2}}
 \def\edx@checkquestion#1?\edxsep#2\edxend{\edxcheckpunct{#2}}
