@@ -1,9 +1,9 @@
 ---
 title: README
-aliases: README, 'README, "llncscrypto"'
+aliases: [README, 'README, "llncscrypto"']
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:23:24 pm
-date modified: Tuesday, August 18th 2026, 10:56:17 am
+date modified: Tuesday, August 25th 2026, 6:45:11 pm
 ---
 
 <!-- @format -->
@@ -45,7 +45,7 @@ Research-paper extensions for the Springer LLNCS class. Optional features cover 
 | `colorlinks`| off     | Use colored hyperlinks in `SteelBlue4`. Off by default so strict LLNCS output keeps neutral link rendering. |
 | `draft`     | off     | Stamp each page with a dated “not for distribution” watermark and enable author notes.                     |
 | `final`     | off     | Camera-ready mode: disable all notes, draft markers, and `\XXX` flags. Incompatible with `draft`.          |
-| `libertine` | off     | Use Libertine body font and Biolinum sans with matching math.                                              |
+| `libertine` | off     | Use Libertine body font, Biolinum sans, Inconsolata mono, and matching math.                               |
 | `nonotes`   | off     | Suppress author notes without enabling full `final` mode. Useful for anonymous submission review copies.   |
 | `preprint`  | off     | Eprint layout: letter paper, 1.15× line spacing, centered page numbers. Expects the `[11pt]` class option. |
 | `theorems`  | off     | Redeclare LLNCS theorem environments with `\spnewtheorem` and upright body text.                           |

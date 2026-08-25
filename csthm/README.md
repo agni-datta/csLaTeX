@@ -3,7 +3,7 @@ title: README
 aliases: README
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:22:38 pm
-date modified: Tuesday, August 18th 2026, 10:56:17 am
+date modified: Tuesday, August 25th 2026, 6:44:57 pm
 ---
 
 <!-- @format -->
@@ -15,7 +15,7 @@ Theorem environment suite for theoretical computer science. Provides three visua
 ### Requirements
 
 - Load `hyperref` **before** `csthm`. Because `csthm` loads `cleveref` internally, and `cleveref` must come after `hyperref`, you must load `hyperref` first. If you load `csthm` before `hyperref`, cross-reference capitalization and PDF bookmarks may not work correctly.
-- Do not load `thmtools` manually with conflicting style options: `csthm` configures it internally.
+- Do not load `amsthm` or `thmtools`. `csthm` contains its own `ntheorem` setup with AMS-compatible proof commands and the TeX Live 2026 end-mark correction.
 
 ### Usage
 
@@ -123,7 +123,7 @@ Every numbered environment is registered with `cleveref` with both lowercase and
 - Load `hyperref` before `csthm`. This is the single most common mistake. If cross-references appear as plain numbers without hyperlinks, or if PDF bookmarks are garbled, this is the cause.
 - The `fancy` mode uses `mdframed` for framed boxes. If you also use `tcolorbox` in the same document, load it with the `most` compatibility option: `\usepackage[most]{tcolorbox}`.
 - `\SetAccentColor` should be called once in the preamble. Calling it mid-document changes the color for all subsequent theorem declarations but does not retroactively recolor earlier ones: the color is baked in at declaration time for some modes.
-- All environments are declared with `thmtools`. Do not use `\newtheorem` to declare environments with the same names, and do not load `amsthm` independently before this package.
+- All environments are declared directly with `ntheorem`. Do not use `\newtheorem` to redeclare the same names, and do not load `amsthm` or `thmtools` independently.
 
 ### License
 

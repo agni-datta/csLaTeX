@@ -1,9 +1,9 @@
 ---
 title: README
-aliases: README, 'README, "csextras"'
+aliases: [README, 'README, "csextras"']
 linter-yaml-title-alias: README
 date created: Monday, June 22nd 2026, 12:00:00 am
-date modified: Tuesday, August 18th 2026, 10:56:17 am
+date modified: Tuesday, August 25th 2026, 6:44:56 pm
 ---
 
 <!-- @format -->
@@ -62,7 +62,7 @@ All options are boolean (`key` or `key=true`) unless noted.
 | `bibliography`     | `\printreferences[style]{bibfile}` and `\printnotereferences` helpers                                                                                                       |
 | `boxes`            | `mdframed[TikZ]` + five named environments: `openproblemframe`, `questionbox`, `proofbox`, `diagramframe`, `figurebox`                                                      |
 | `epigraph`         | `epigraph` (styled), `quotation` (restyled), `dedication{First}{Last}` environment                                                                                          |
-| `exercises`        | `exercises` package (resets csthm’s `exercise` env first; emits `\PackageWarning`)                                                                                          |
+| `exercises`        | Replaces any existing `exercise`/`solution` theorem environments with the legacy `exercises` package, configured through its `exercisenumberformat=Roman` load-time option; emits `\PackageWarning` |
 | `extralists`       | `enumitem`; adds `dashedlist`, `codelist`, `checkboxlist`, `deflist`, `\checked`                                                                                            |
 | `extramath`        | `nicefrac`, `mleftright`, `upgreek[Symbol]` (pdfLaTeX) / `upgreek` (LuaLaTeX), `\mathpzc`, `bbm`, `bm`, `braket`, `esvect`, `\mathsc`, `\mathbi`                            |
 | `extratables`      | `longtable`, `ltxtable`, `rotating`, `makecell`, `booktabs`, `multirow`, `tabularx`, `array`                                                                                |

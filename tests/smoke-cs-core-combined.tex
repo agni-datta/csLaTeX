@@ -1,0 +1,18 @@
+\documentclass{book}
+\usepackage[latinmodern,final]{csbook}
+\usepackage[latinmodern,final]{csamsmath}
+\docufont{theoremhdr={\sffamily\bfseries},definitionhdr=smallcaps,remarkhdr=italics}
+\makeatletter
+\@ifpackageloaded{ntheorem}{}{\PackageError{smoke-cs-core-combined}{ntheorem was not loaded}{}}
+\@ifpackageloaded{amsthm}{\PackageError{smoke-cs-core-combined}{amsthm.sty was loaded}{}}{}
+\@ifpackageloaded{thmtools}{\PackageError{smoke-cs-core-combined}{thmtools was loaded}{}}{}
+\makeatother
+\begin{document}
+\chapter{Combined Core Packages}
+\section{Theorem Layer}
+\begin{theorem}\label{thm:combined-smoke}The packages share one theorem layer.\end{theorem}
+\begin{definition}The document-font command reaches the definition family.\end{definition}
+\begin{remark}The document-font command reaches the remark family.\end{remark}
+\begin{proof}We can load both packages without duplicating the theorem environments.\end{proof}
+We can reference~\cref{thm:combined-smoke}.
+\end{document}

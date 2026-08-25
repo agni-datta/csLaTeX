@@ -1,5 +1,20 @@
 \documentclass{article}
 \usepackage[latinmodern,final,sanshdr]{csamsmath}
+\docufont{
+	sections      = {\normalfont\bfseries\Large},
+	parhead       = {\sffamily\bfseries\boldmath},
+	subparhead    = smallcaps,
+	theoremhdr    = {\sffamily\bfseries},
+	defintionhdr  = smallcaps,
+	remarkhdr     = italics,
+	highlighthdr  = sans
+}
+\makeatletter
+\@ifpackageloaded{ntheorem}{}{\PackageError{smoke-csamsmath}{ntheorem was not loaded}{}}
+\@ifpackagewith{ntheorem}{amsthm}{}{\PackageError{smoke-csamsmath}{ntheorem lacks amsthm compatibility}{}}
+\@ifpackageloaded{amsthm}{\PackageError{smoke-csamsmath}{amsthm.sty was loaded}{}}{}
+\@ifpackageloaded{thmtools}{\PackageError{smoke-csamsmath}{thmtools was loaded}{}}{}
+\makeatother
 \title{Smoke Test}
 \author{}
 \date{}
@@ -9,6 +24,14 @@
 \parhead{Paragraph Heading} The sans-header option is available.
 \subparhead{Subparagraph Heading} The subordinate heading is available.
 \begin{theorem}\label{thm:smoke}The package loads.\end{theorem}
-\begin{proof}The statement follows from the successful package load.\end{proof}
-Theorem~\cref{thm:smoke} is available.
+\begin{definition}[Configured header]The definition family accepts a custom header font.\end{definition}
+\begin{remark}The remark family accepts the symbolic \texttt{italics} value.\end{remark}
+\begin{highlight}The highlight family remains available.\end{highlight}
+\begin{theorem*}[Unnumbered]The starred form remains unnumbered.\end{theorem*}
+\begin{proof}The statement follows from the successful package load:
+\[
+	1=1.
+\]
+\end{proof}
+We can reference~\cref{thm:smoke}.
 \end{document}

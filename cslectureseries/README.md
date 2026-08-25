@@ -1,9 +1,9 @@
 ---
 title: README
-aliases: README, 'README, "cslectureseries"'
+aliases: [README, 'README, "cslectureseries"']
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:22:05 pm
-date modified: Tuesday, August 18th 2026, 10:56:17 am
+date modified: Tuesday, August 25th 2026, 6:44:56 pm
 ---
 
 <!-- @format -->
@@ -15,6 +15,7 @@ A `book`-based class for lecture series with boxed chapter headings, indexing, a
 ### Requirements
 
 - Loads `babel` without language options. Choose document languages through the class options or load `babel` explicitly before `cslectureseries`.
+- Do not load `amsthm` or `thmtools`. The class contains its own TeX Live 2026-compatible `ntheorem` setup.
 
 ### Usage
 
@@ -43,6 +44,8 @@ A `book`-based class for lecture series with boxed chapter headings, indexing, a
 - `kpf`: (Default) KP Fonts.
 - `bsk`: Baskervaldx with math integration.
 
+Both Unicode-engine branches use Inconsolata for monospaced text.
+
 #### Mode
 
 - `draft`: (Default) enables broken reference markers and collaborative annotations.
@@ -57,7 +60,7 @@ A `book`-based class for lecture series with boxed chapter headings, indexing, a
 
 #### Theorem Environments
 
-`theorem`, `lemma`, `proposition`, `definition`, `remark`, `example`, and the standard suite. Includes `solution` for exercise answers and `proofsketch`, `proofidea`, and `proofofclaim` for unnumbered proof variants.
+`theorem`, `lemma`, `proposition`, `definition`, `remark`, `example`, and the standard suite are declared directly with `ntheorem`. The class includes `solution` for exercise answers and `proofsketch`, `proofidea`, and `proofofclaim` for unnumbered proof variants.
 
 `\setqedsymbol{symbol}` changes the proof-end symbol. `\SetQEDSymbol{symbol}` is kept as a compatibility alias.
 

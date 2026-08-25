@@ -33,6 +33,15 @@ run_smoke() {
 			tail -80 smoke.log >&2
 			exit 1
 		fi
+		case "$source" in
+			smoke-csbook.tex|smoke-cs-core-combined.tex|smoke-cs-core-palatino.tex)
+				if ! "$engine" -halt-on-error -interaction=nonstopmode "$SCRIPT_DIR/$source" >>smoke.log 2>&1; then
+					printf 'Third smoke-test pass failed for %s with %s.\n' "$source" "$engine" >&2
+					tail -80 smoke.log >&2
+					exit 1
+				fi
+				;;
+		esac
 	)
 	printf 'passed %-10s %s\n' "$engine" "$source"
 }
@@ -41,9 +50,12 @@ lua_documents=(
 	smoke-codelines.tex
 	smoke-csamsmath.tex
 	smoke-csbook.tex
+	smoke-cs-core-combined.tex
 	smoke-csdeferproofs.tex
+	smoke-csdeferproofs-appendix.tex
 	smoke-csextras.tex
 	smoke-cslecture.tex
+	smoke-cslectureseries.tex
 	smoke-csletter.tex
 	smoke-cspresentation.tex
 	smoke-csresume.tex
@@ -51,6 +63,7 @@ lua_documents=(
 	smoke-cstufte.tex
 	smoke-cswhitepaper.tex
 	smoke-eudoxus.tex
+	smoke-llncscrypto-deferproofs.tex
 	smoke-llncscrypto.tex
 	smoke-tcscrypto.tex
 )
@@ -59,9 +72,20 @@ pdf_documents=(
 	smoke-codelines.tex
 	smoke-csamsmath.tex
 	smoke-csbook.tex
+	smoke-cs-core-combined.tex
+	smoke-cs-core-palatino.tex
 	smoke-csdeferproofs.tex
+	smoke-csdeferproofs-appendix.tex
 	smoke-csextras.tex
+	smoke-cslecture.tex
+	smoke-cslectureseries.tex
+	smoke-csletter.tex
 	smoke-csthm.tex
+	smoke-cstufte.tex
+	smoke-cswhitepaper.tex
+	smoke-eudoxus.tex
+	smoke-llncscrypto-deferproofs.tex
+	smoke-llncscrypto.tex
 	smoke-tcscrypto.tex
 )
 

@@ -1,5 +1,12 @@
 \documentclass{article}
 \usepackage{cswhitepaper}
+\makeatletter
+\@ifpackageloaded{ntheorem}{}{\PackageError{smoke-cswhitepaper}{ntheorem was not loaded}{}}
+\@ifpackageloaded{thmtools}{\PackageError{smoke-cswhitepaper}{thmtools was loaded}{}}{}
+\makeatother
 \begin{document}
-The whitepaper package loads.
+\section{Theorem Layer}
+\begin{theorem}The whitepaper package loads.\end{theorem}
+\begin{theorem*}The starred theorem remains unnumbered.\end{theorem*}
+\begin{proof}The proof environment remains available.\end{proof}
 \end{document}

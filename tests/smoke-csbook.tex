@@ -1,6 +1,22 @@
 \documentclass{book}
 \usepackage[latinmodern,final]{csbook}
+\makeatletter
+\@ifpackageloaded{ntheorem}{}{\PackageError{smoke-csbook}{ntheorem was not loaded}{}}
+\@ifpackagewith{ntheorem}{amsthm}{}{\PackageError{smoke-csbook}{ntheorem lacks amsthm compatibility}{}}
+\@ifpackageloaded{amsthm}{\PackageError{smoke-csbook}{amsthm.sty was loaded}{}}{}
+\@ifpackageloaded{thmtools}{\PackageError{smoke-csbook}{thmtools was loaded}{}}{}
+\makeatother
 \begin{document}
 \chapter{Smoke Test}
 \parhead{Package Load} The package loads in a book document.
+\section{Theorem Layer}
+\begin{theorem}[Framed theorem]\label{thm:csbook-smoke}The theorem layer loads.\end{theorem}
+\begin{definition}The definition family remains available.\end{definition}
+\begin{theorem*}The starred form remains unnumbered.\end{theorem*}
+\begin{proof}The proof marker survives display mathematics:
+\[
+	1=1.
+\]
+\end{proof}
+We can reference~\cref{thm:csbook-smoke}.
 \end{document}

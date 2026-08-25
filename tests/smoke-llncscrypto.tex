@@ -1,6 +1,11 @@
 \documentclass[runningheads]{llncs}
 \usepackage[final,theorems]{llncscrypto}
+\makeatletter
+\@ifpackageloaded{ntheorem}{\PackageError{smoke-llncscrypto}{ntheorem is not Springer-compatible here}{}}{}
+\@ifpackageloaded{thmtools}{\PackageError{smoke-llncscrypto}{thmtools was loaded}{}}{}
+\makeatother
 \begin{document}
 \begin{theorem}\label{thm:llncs-smoke}The LLNCS package loads.\end{theorem}
+\begin{proof}The proof environment is supplied through the LLNCS theorem mechanism.\end{proof}
 Theorem~\cref{thm:llncs-smoke} is available.
 \end{document}

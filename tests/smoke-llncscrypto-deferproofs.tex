@@ -1,0 +1,17 @@
+\documentclass[runningheads,envcountsect]{llncs}
+\usepackage[final,theorems]{llncscrypto}
+\usepackage[appendix=true]{csdeferproofs}
+\NewDeferredThm{theoremE}{theorem}
+\makeatletter
+\@ifpackageloaded{ntheorem}{\PackageError{smoke-llncscrypto-deferproofs}{ntheorem is not Springer-compatible here}{}}{}
+\@ifpackageloaded{thmtools}{\PackageError{smoke-llncscrypto-deferproofs}{thmtools was loaded}{}}{}
+\@ifpackageloaded{proof-at-the-end}{\PackageError{smoke-llncscrypto-deferproofs}{proof-at-the-end was loaded}{}}{}
+\makeatother
+\begin{document}
+\section{Statement}
+\begin{theoremE}\label{thm:llncs-deferred}The Springer theorem statement remains inline.\end{theoremE}
+\begin{deferproof}{thm:llncs-deferred}The proof is captured without replacing the LLNCS theorem mechanism.\end{deferproof}
+\appendix
+\section{Deferred Proofs}
+\printDeferredProofs
+\end{document}

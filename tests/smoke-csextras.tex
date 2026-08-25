@@ -1,6 +1,16 @@
 \documentclass{article}
 \usepackage[latinmodern,final]{csamsmath}
-\usepackage{csextras}
+\usepackage[exercises=true]{csextras}
+\makeatletter
+\@ifpackageloaded{exercises}{}{\PackageError{smoke-csextras}{exercises was not loaded}{}}
+\@ifpackageloaded{thmtools}{\PackageError{smoke-csextras}{thmtools was loaded}{}}{}
+\makeatother
 \begin{document}
 \parhead{Extension Load} The optional extension layer loads.
+\begin{exercise}[5]
+The legacy exercises package replaces the theorem environment without a backend conflict.
+\end{exercise}
+\begin{solution}
+The package-level Roman-number option is accepted.
+\end{solution}
 \end{document}

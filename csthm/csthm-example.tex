@@ -11,7 +11,7 @@
 
 % Essential packages
 \usepackage[T1]{fontenc}
-\usepackage{amsmath,amssymb,amsthm}
+\usepackage{amsmath,amssymb}
 
 % Engine-specific packages (requires XeLaTeX or LuaLaTeX)
 \usepackage{fontspec}
@@ -39,7 +39,7 @@
 \begin{document}
 
 \begin{abstract}
-	The \textsf{csthm} package delivers a robust and accessible suite of theorem-like environments tailored to the needs of computer science and related technical disciplines. It provides three distinct visual styles, modern (\texttt{fancy}), standard (\texttt{normal}), and traditional (\texttt{oldschool}), each supporting both numbered and unnumbered forms to address diverse formal documentation requirements. Designed for minimal configuration, the package integrates seamlessly with established tools such as \textsf{amsthm}, \textsf{thmtools}, \textsf{mdframed}, and \textsf{cleveref}, facilitating advanced cross-referencing, customizable headers, and polished presentation with minimal user intervention. By balancing flexibility and simplicity, \textsf{csthm} enables efficient creation of well-structured and visually consistent theorem environments without introducing unnecessary complexity, making it particularly suitable for users prioritizing streamlined usage and uniform formatting in technical manuscripts. This release is a major revision, superseding prior versions and benefiting from more extensive testing. Nonetheless, as with any evolving software, ongoing refinement is anticipated. User feedback regarding any issues or bugs is welcome to ensure prompt resolution. While the traditional (\texttt{oldschool}) style remains the most widely adopted, continued improvements are especially needed for the \texttt{fancy} and \texttt{normal} styles.
+	The \textsf{csthm} package provides theorem-like environments for computer science and related technical disciplines. It offers three visual styles, modern (\texttt{fancy}), standard (\texttt{normal}), and traditional (\texttt{oldschool}), each with numbered and unnumbered forms. The package declares its theorem layer directly with \textsf{ntheorem} and integrates it with \textsf{mdframed} and \textsf{cleveref} for cross-references, configurable headers, and consistent presentation. The traditional style is the most conservative choice, while the fancy and normal styles provide progressively stronger visual structure.
 \end{abstract}
 
 \maketitle
@@ -79,7 +79,7 @@ workflows, eliminating the need for extensive customization or intricate
 technical configuration. Each environment is visually distinct, featuring a
 unique bullet or marker, and adheres to one of three predefined styles that
 govern font choices, framing, and color usage. Building upon the
-\textsf{amsthm, thmtools} foundation, the package replaces and extends its
+\textsf{ntheorem} foundation, the package configures and extends its
 stylistic model, ensuring syntactic consistency across environments while
 maintaining semantic distinction through visual indicators. Additionally, it
 supports per-environment numbering and section-based numbering schemes, and is
@@ -154,13 +154,11 @@ of them, particularly if you encounter compilation errors or are configuring a
 custom setup. The following packages are required:
 
 \begin{itemize}[label={--}]
-	\item \textsf{amsmath}, \textsf{amssymb}, \textsf{amsthm}: These foundational packages are essential for mathematical typesetting. They provide core environments and symbol sets that underpin virtually all mathematical documents written in \LaTeX\. The \textsf{csthm} package builds directly on top of these.
+	\item \textsf{amsmath}, \textsf{amssymb}, and \textsf{ntheorem}: These packages provide mathematical typesetting, symbols, AMS-compatible proof commands, and the theorem infrastructure used by \textsf{csthm}.
 
 	\item \textsf{sansmath}: This package enables the use of sans-serif fonts in mathematical environments. It is specifically required to render mathematics in stylistic alignment with the \texttt{normal} style option provided by \textsf{csthm}, which opts for a sans-serif aesthetic throughout.
 
 	\item \textsf{enumitem}: For customizing and controlling the layout of lists, \textsf{enumitem} is necessary. Within \textsf{csthm}, it is used to adjust spacing, labeling, and indentation of itemized structures embedded within theorem environments.
-
-	\item \textsf{thmtools}: This package extends the standard theorem infrastructure in \LaTeX\, providing more flexible and powerful ways to define, customize, and manage theorem-like environments. It is used internally to ensure consistency and modularity in how environments behave across different styles.
 
 	\item \textsf{mdframed}: This package is required only when the \texttt{fancy} style is selected. It enables the construction of framed and colored boxes around theorem environments using highly customizable framed layouts. If you do not intend to use the \texttt{fancy} style, this dependency may not be invoked.
 
@@ -341,8 +339,7 @@ If you are inclined to experiment with deeper adjustments, such as modifying
 the structure of theorem environments, changing symbol behavior, or redefining
 internal macros, those hooks are available in the source, though no official
 interface is provided. In such cases, it may be more appropriate to use
-lower-level packages like \textsf{thmtools}, \textsf{ntheorem}, or
-\textsf{amsthm} directly, which offer finer-grained control and a broader API
+the lower-level \textsf{ntheorem} package directly, which offers finer-grained control and a broader API
 surface for theorem management.
 
 That said, tweaks like accent color and QED symbol adjustments are intended to
@@ -451,9 +448,7 @@ allows authors to present their work most effectively.
 
 \subsection{Technical Details}
 
-The \textsf{csthm} package leverages the powerful and flexible
-\textsf{thmtools} package to implement all theorem-like environments, making
-extensive use of the \verb|\declaretheorem| command. This approach ensures that
+The \textsf{csthm} package uses \textsf{ntheorem} directly to implement all theorem-like environments. This approach ensures that
 the environments are defined with precision, consistency, and full
 configurability, allowing for robust customization downstream. In particular,
 the \texttt{fancy} style introduces advanced framed environments which require
@@ -467,9 +462,7 @@ insertion of QED symbols at the end of proof-like environments, reducing the
 need for manual commands and enhancing consistency.
 
 \begin{itemize}[label={--}]
-	\item All theorem-like environments are meticulously implemented using
-	      \textsf{thmtools}' \verb|\declaretheorem| facility to guarantee extensibility
-	      and uniform behavior.
+	\item All theorem-like environments use native \textsf{ntheorem} declarations for uniform behavior.
 	\item The \texttt{fancy} style depends critically on \textsf{mdframed} with the
 	      \textsf{TikZ} backend to render modern framed environments with aesthetic
 	      precision.

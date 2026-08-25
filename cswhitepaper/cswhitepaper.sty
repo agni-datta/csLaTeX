@@ -7,7 +7,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}[2022/06/01]
-\ProvidesPackage{cswhitepaper}[2026/06/23 v5.1 Style for professional whitepapers and reports]
+\ProvidesPackage{cswhitepaper}[2026/08/25 v5.2 Style for professional whitepapers and reports]
 
 \RequirePackage{l3keys2e}
 \makeatletter
@@ -173,11 +173,65 @@
 \ifPDFTeX
 	\RequirePackage{amssymb}
 \fi
-\RequirePackage{amsthm}
+\@ifpackageloaded{ntheorem}{%
+	\@ifpackagewith{ntheorem}{amsmath}{}{%
+		\PackageError{csLaTeX}{ntheorem was loaded without its amsmath option}
+		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
+	}
+	\@ifpackagewith{ntheorem}{amsthm}{}{%
+		\PackageError{csLaTeX}{ntheorem was loaded without its amsthm option}
+		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
+	}
+	\@ifpackagewith{ntheorem}{hyperref}{}{%
+		\PackageError{csLaTeX}{ntheorem was loaded without its hyperref option}
+		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
+	}
+	\@ifpackagewith{ntheorem}{thmmarks}{}{%
+		\PackageError{csLaTeX}{ntheorem was loaded without its thmmarks option}
+		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
+	}
+}{%
+	\@ifpackageloaded{amsthm}{%
+		\@ifclassloaded{amsart}{}{%
+			\@ifclassloaded{amsbook}{}{%
+				\PackageError{csLaTeX}{amsthm.sty is incompatible with this ntheorem backend}
+				{Remove the explicit amsthm package load.}%
+			}%
+		}%
+	}{}
+	% AMS classes predefine these styles and proof commands. ntheorem owns them after this point.
+	\@ifclassloaded{amsart}{\let\th@plain\relax\let\th@definition\relax\let\th@remark\relax}{}
+	\@ifclassloaded{amsbook}{\let\th@plain\relax\let\th@definition\relax\let\th@remark\relax}{}
+	\let\proof\relax
+	\let\endproof\relax
+	\let\proofname\relax
+	\let\openbox\relax
+	\RequirePackage[amsmath,amsthm,hyperref,thmmarks]{ntheorem}%
+}
+
+% TeX Live 2026's ntheorem drops an end mark after ordinary text when no trailing skip is present.
+\@ifundefined{cslatex@ntheoremendmarkpatched}{%
+	\gdef\@endtrivlist#1{%
+		\if@inlabel \indent\fi
+		\if@newlist \@noitemerr\fi
+		\ifhmode
+			\ifdim\lastskip >\z@ \unskip\fi
+			#1\unskip\par
+		\fi
+		\if@noparlist\else
+			\ifdim\lastskip >\z@
+				\@tempskipa\lastskip \vskip-\lastskip
+				\advance\@tempskipa\parskip \advance\@tempskipa-\@outerparskip
+				\vskip\@tempskipa
+			\fi
+			\@endparenv
+		\fi
+	}%
+	\global\let\cslatex@ntheoremendmarkpatched\@empty
+}{}
 \RequirePackage{bm}
 \RequirePackage{mathrsfs}
 \RequirePackage{mathtools}
-\RequirePackage{thmtools}
 
 \let\mathbfcal\relax
 \let\mathbfscr\relax
@@ -300,9 +354,9 @@
 \NewDocumentCommand{\commonstartsymb}{}{\ensuremath{\color{docucolor}\diamond}~}
 \NewDocumentCommand{\commonsymb}     {}{\ensuremath{\color{docucolor}\lrcorner}}
 
-\ProvideDocumentCommand{\SetQEDSymbol}{m}{ \setqedsymbol{#1} }
-\ProvideDocumentCommand{\SetTheoremEndSymbol}{m}{ \settheoremendsymbol{#1} }
-\ProvideDocumentCommand{\setqedsymbol}{m}{ \RenewDocumentCommand{\qedsymbol}{}{#1} }
+\ProvideDocumentCommand{\SetQEDSymbol}{m}{\setqedsymbol{#1}}
+\ProvideDocumentCommand{\SetTheoremEndSymbol}{m}{\settheoremendsymbol{#1}}
+\ProvideDocumentCommand{\setqedsymbol}{m}{\global\qedsymbol{#1}}
 \ProvideDocumentCommand{\settheoremendsymbol}{m}{ \RenewDocumentCommand{\commonsymb}{}{#1} }
 
 \mdfdefinestyle{csw@ruled}{%
@@ -320,175 +374,60 @@
 	skipbelow         = 6pt%
 }
 
-\declaretheoremstyle[
-	headfont     = \commonheadfont\commonstartsymb,
-	notefont     = \normalfont,
-	bodyfont     = \normalfont,
-	spaceabove   = 0pt,
-	spacebelow   = 0pt,
-	headpunct    = {.},
-	postheadspace = 0.5em ,
-	mdframed      = { style = csw@ruled } ,
-	qed          = \commonsymb
-]{csw@theoremlike}
+\newtheoremstyle{cswplain}
+{\item[\hskip\labelsep\theorem@headerfont ##1\ ##2\unskip\theorem@separator]}
+{\item[\hskip\labelsep\theorem@headerfont ##1\ ##2\ {\normalfont(##3)}\unskip\theorem@separator]}
+\newtheoremstyle{nonumbercswplain}
+{\item[\hskip\labelsep\theorem@headerfont ##1\unskip\theorem@separator]}
+{\item[\hskip\labelsep\theorem@headerfont ##1\ {\normalfont(##3)}\unskip\theorem@separator]}
 
-\declaretheoremstyle[
-	headfont     = \commonheadfont\commonstartsymb,
-	notefont     = \normalfont,
-	bodyfont     = \normalfont,
-	spaceabove   = 0pt,
-	spacebelow   = 0pt,
-	headpunct    = {.},
-	postheadspace = 0.5em ,
-	mdframed      = { style = csw@ruled } ,
-	qed          = \commonsymb
-]{csw@definitionlike}
-
-\declaretheoremstyle[
-	headfont     = \commonheadfont\commonstartsymb,
-	notefont     = \normalfont,
-	bodyfont     = \normalfont,
-	spaceabove   = 0pt,
-	spacebelow   = 0pt,
-	headpunct    = {.},
-	postheadspace = 0.5em ,
-	mdframed      = { style = csw@ruled } ,
-	qed          = \commonsymb
-]{csw@remarklike}
-
-\declaretheoremstyle[
-	headfont     = \commonheadfont\commonstartsymb,
-	notefont     = \normalfont,
-	bodyfont     = \normalfont,
-	spaceabove   = 0pt,
-	spacebelow   = 0pt,
-	headpunct    = {.},
-	postheadspace = 0.5em ,
-	mdframed      = { style = csw@ruled } ,
-	qed          = \commonsymb
-]{csw@highlightlike}
-
-\declaretheoremstyle[
-	headfont      = \itshape,
-	bodyfont      = \normalfont,
-	spaceabove    = 5pt,
-	spacebelow    = 5pt,
-	headpunct     = {.},
-	postheadspace = 0.5em,
-	qed           = {\qedsymbol}
-]{csw@proofstyle}
-
-\declaretheorem
-[
-	name         = Theorem ,
-	style        = csw@theoremlike ,
-	numberwithin = section
-]{theorem}
-\RenewDocumentCommand{\qedsymbol}{}{\commonsymb}
-
-\NewDocumentCommand{\csw@declaretheoremfamily}{mm}{%
-	\forcsvlist{\declaretheorem[sibling=theorem,style=#1]}{#2}%
+\def\csw@configuretheorem{%
+	\theoremstyle{cswplain}%
+	\theoremheaderfont{\commonheadfont\commonstartsymb}%
+	\theorembodyfont{\normalfont}%
+	\theoremseparator{.}%
+	\theorempreskip{0pt}%
+	\theorempostskip{0pt}%
+	\theoremsymbol{\commonsymb}%
+}
+\def\csw@surroundtheorem#1{\surroundwithmdframed[style=csw@ruled]{#1}}
+\def\csw@newtheorem#1{\expandafter\csw@newtheorem@parse#1\csw@nil}
+\def\csw@newtheorem@parse#1/#2\csw@nil{%
+	\newtheorem{#1}[theorem]{#2}%
+	\csw@surroundtheorem{#1}%
+}
+\def\csw@newtheoremfamily#1{\forcsvlist{\csw@newtheorem}{#1}}
+\def\csw@renewtheoremstar#1{\expandafter\csw@renewtheoremstar@parse#1\csw@nil}
+\def\csw@renewtheoremstar@parse#1/#2\csw@nil{%
+	\renewtheorem*{#1}{#2}%
+	\csw@surroundtheorem{#1}%
 }
 
-\csw@declaretheoremfamily{csw@theoremlike}{
-	assertion,%
-	assumption,%
-	axiom,%
-	claim,%
-	conclusion,%
-	conjecture,%
-	corollary,%
-	criterion,%
-	fact,%
-	folklore,%
-	hypothesis,%
-	lemma,%
-	observation,%
-	postulate,%
-	property,%
-	proposition
+\csw@configuretheorem
+\newtheorem{theorem}{Theorem}[section]
+\csw@surroundtheorem{theorem}
+\csw@newtheoremfamily{
+	assertion/Assertion,assumption/Assumption,axiom/Axiom,claim/Claim,
+	conclusion/Conclusion,conjecture/Conjecture,corollary/Corollary,
+	criterion/Criterion,fact/Fact,folklore/Folklore,hypothesis/Hypothesis,
+	informaltheorem/Informal Theorem,lemma/Lemma,metatheorem/Meta Theorem,
+	observation/Observation,postulate/Postulate,property/Property,proposition/Proposition,
+	application/Application,construction/Construction,convention/Convention,
+	definition/Definition,example/Example,experiment/Experiment,notation/Notation,
+	problem/Problem,protocol/Protocol,result/Result,solution/Solution,step/Step,
+	commentary/Commentary,discussion/Discussion,exercise/Exercise,motivation/Motivation,
+	notationabuse/Notation Abuse,note/Note,openproblem/Open Problem,question/Question,
+	remark/Remark,syntax/Syntax,guideline/Guideline,highlight/Highlight,
+	important/Important,insight/Insight,keypoint/Key Point,recall/Recall,
+	summary/Summary,takeaway/Takeaway,tip/Tip,warning/Warning
 }
-
-\declaretheorem
-[
-	name    = {Informal~Theorem} ,
-	sibling = theorem ,
-	style   = csw@theoremlike
-]{informaltheorem}
-\declaretheorem
-[
-	name    = {Meta~Theorem} ,
-	sibling = theorem ,
-	style   = csw@theoremlike
-]{metatheorem}
-
-\csw@declaretheoremfamily{csw@definitionlike}{
-	application,%
-	construction,%
-	convention,%
-	definition,%
-	example,%
-	experiment,%
-	notation,%
-	problem,%
-	protocol,%
-	result,%
-	solution,%
-	step
+\forcsvlist{\csw@renewtheoremstar}{
+	claim*/Claim,conjecture*/Conjecture,corollary*/Corollary,hypothesis*/Hypothesis,
+	lemma*/Lemma,syntax*/Syntax,theorem*/Theorem,informaltheorem*/Informal Theorem,
+	openproblem*/Open Problem
 }
-
-\csw@declaretheoremfamily{csw@remarklike}{
-	commentary,%
-	discussion,%
-	exercise,%
-	motivation,%
-	note,%
-	question,%
-	remark,%
-	syntax
-}
-
-\declaretheorem
-[
-	name    = {Notation~Abuse} ,
-	sibling = theorem ,
-	style   = csw@remarklike
-]{notationabuse}
-\declaretheorem
-[
-	name    = {Open~Problem} ,
-	sibling = theorem ,
-	style   = csw@remarklike
-]{openproblem}
-
-\csw@declaretheoremfamily{csw@highlightlike}{
-	guideline,%
-	highlight,%
-	important,%
-	insight,%
-	recall,%
-	summary,%
-	takeaway,%
-	tip,%
-	warning
-}
-
-\declaretheorem
-[
-	name    = {Key~Point} ,
-	sibling = theorem ,
-	style   = csw@highlightlike
-]{keypoint}
-
-\declaretheorem[ name = Claim ,                 style = csw@theoremlike , numbered = no ]{claim*}
-\declaretheorem[ name = Conjecture ,            style = csw@theoremlike , numbered = no ]{conjecture*}
-\declaretheorem[ name = Corollary ,             style = csw@theoremlike , numbered = no ]{corollary*}
-\declaretheorem[ name = Hypothesis ,            style = csw@theoremlike , numbered = no ]{hypothesis*}
-\declaretheorem[ name = Lemma ,                 style = csw@theoremlike , numbered = no ]{lemma*}
-\declaretheorem[ name = Syntax ,                style = csw@remarklike  , numbered = no ]{syntax*}
-\declaretheorem[ name = Theorem ,               style = csw@theoremlike , numbered = no ]{theorem*}
-\declaretheorem[ name = {Informal~Theorem} ,    style = csw@theoremlike , numbered = no ]{informaltheorem*}
-\declaretheorem[ name = {Open~Problem} ,        style = csw@remarklike  , numbered = no ]{openproblem*}
+\global\qedsymbol{\commonsymb}
+\renewcommand{\proofSymbol}{\the\qedsymbol}
 
 \NewDocumentEnvironment{proofsketch}{o}
 {

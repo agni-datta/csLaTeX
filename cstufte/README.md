@@ -3,7 +3,7 @@ title: README
 aliases: README
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:22:47 pm
-date modified: Tuesday, August 18th 2026, 10:56:17 am
+date modified: Tuesday, August 25th 2026, 6:44:57 pm
 ---
 
 <!-- @format -->
@@ -16,7 +16,8 @@ Tufte-style layout package with wide margins, side-notes, lattice cryptography m
 
 - Works with the `article` class. The margin geometry is not designed for `book` or `beamer`.
 - Side-citations require a Biber-compatible bibliography setup (`biblatex` with `backend=biber`).
-- The `nicefonts` option requires the Baskervaldx and Biolinum font packages.
+- The `nicefonts` option requires the Baskervaldx, Biolinum, and Inconsolata font packages.
+- Do not load `amsthm` or `thmtools`. `cstufte` contains its own TeX Live 2026-compatible `ntheorem` setup.
 - Do not load any package that overrides `geometry` after `cstufte`: the margin layout will break.
 
 ### Usage
@@ -53,7 +54,7 @@ We want to find $\SVP(\Lambda)$.
 
 #### Feature flags (boolean options)
 
-- `nicefonts`: loads Baskervaldx for body text and Biolinum for sans-serif headings. Without this option, Latin Modern is used.
+- `nicefonts`: loads Baskervaldx for body text, Biolinum for sans-serif headings, and Inconsolata for monospaced text. Without this option, the KP font stack remains active, with Inconsolata as its monospaced face under Unicode engines.
 - `mathoperators`: declares a set of TCS-related math operators (`\poly`, `\negl`, `\PPT`, etc.) as `\DeclareMathOperator` commands.
 - `latticenotation`: loads the full lattice cryptography notation library (see API below).
 - `draft`: enables broken-reference markers in the margins. Undefined `\ref` and `\cite` targets produce a marginal warning rather than silently printing “??”.
@@ -102,7 +103,7 @@ All delimiters auto-size with `\left`/`\right` semantics:
 
 - The Tufte margin layout is set via `geometry` with fixed parameters. Any subsequent call to `\geometry{…}` or loading of a geometry package with different parameters will destroy the margin column. If you need to adjust margins, pass the change through `cstufte`‘s own options or patch the package.
 - Side-citations via `\cite` produce output only in the margin: there is no in-text number. If you also want in-text citation numbers, use `\footcite` from `biblatex` for those entries.
-- The `nicefonts` option requires both `baskervaldx` and `biolinum` packages to be installed. If either is missing, the package will error at font loading time.
+- The `nicefonts` option requires `baskervaldx`, `biolinum`, and `inconsolata` to be installed. A missing font causes an error at font-loading time.
 - `\danger` uses a fixed-width margin box. If used inside a theorem environment or a box environment that has its own margin handling, the symbol may overflow or misalign. Place it at the outermost level of the text body when possible.
 
 ### License

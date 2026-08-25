@@ -1,0 +1,19 @@
+\documentclass{book}
+\usepackage[palatino,final]{csbook}
+\usepackage[palatino,final]{csamsmath}
+\makeatletter
+\@ifpackageloaded{ntheorem}{}{\PackageError{smoke-cs-core-palatino}{ntheorem was not loaded}{}}
+\@ifpackageloaded{amsthm}{\PackageError{smoke-cs-core-palatino}{amsthm.sty was loaded}{}}{}
+\@ifpackageloaded{thmtools}{\PackageError{smoke-cs-core-palatino}{thmtools was loaded}{}}{}
+\@ifpackageloaded{newpx}{\PackageError{smoke-cs-core-palatino}{newpx was loaded}{}}{}
+\@ifpackageloaded{mathpazo}{}{\PackageError{smoke-cs-core-palatino}{mathpazo was not loaded}{}}
+\@ifpackageloaded{biolinum}{}{\PackageError{smoke-cs-core-palatino}{biolinum was not loaded}{}}
+\@ifpackageloaded{inconsolata}{}{\PackageError{smoke-cs-core-palatino}{inconsolata was not loaded}{}}
+\@ifpackageloaded{dirtytalk}{}{\PackageError{smoke-cs-core-palatino}{dirtytalk was not loaded}{}}
+\makeatother
+\begin{document}
+\chapter{Palatino Core Packages}
+\section{Theorem Layer}
+\begin{theorem}The pdfLaTeX Palatino branch uses the shared theorem layer.\end{theorem}
+\begin{proof}The Pazo--Biolinum setup uses $\mathsf{sans}$ and $\mathtt{mono}$ without Computer Modern fallbacks.\end{proof}
+\end{document}

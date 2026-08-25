@@ -7,7 +7,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{eudoxus}[2026/08/24 v1.4 Eudoxus Math LaTeX package]
+\ProvidesPackage{eudoxus}[2026/08/25 v1.5 Eudoxus Math LaTeX package]
 
 \RequirePackage{l3keys2e}
 \ExplSyntaxOn
@@ -86,17 +86,17 @@
 	\bool_gset_false:N \g_eudox_pazobiolinum_bool
 }
 
-\newif\ifeudoxmath     		\bool_if:NTF \g_eudox_math_bool     	{ \eudoxmathtrue     } 		{ \eudoxmathfalse     }
-\newif\ifeudoxtheorems 		\bool_if:NTF \g_eudox_theorems_bool 	{ \eudoxtheoremstrue } 		{ \eudoxtheoremsfalse }
-\newif\ifeudoxtcs      		\bool_if:NTF \g_eudox_tcs_bool      	{ \eudoxtcstrue      } 		{ \eudoxtcsfalse      }
-\newif\ifeudoxlayout   		\bool_if:NTF \g_eudox_layout_bool   	{ \eudoxlayouttrue   } 		{ \eudoxlayoutfalse   }
-\newif\ifeudoxtitlepatch 	\bool_if:NTF \g_eudox_titlepatch_bool 	{ \eudoxtitlepatchtrue }	{ \eudoxtitlepatchfalse }
-\newif\ifeudoxfonts   		\bool_if:NTF \g_eudox_fonts_bool   	{ \eudoxfontstrue    } 		{ \eudoxfontsfalse    }
-\newif\ifeudoxpazobiolinum \bool_if:NTF \g_eudox_pazobiolinum_bool { \eudoxpazobiolinumtrue } { \eudoxpazobiolinumfalse }
-\newif\ifeudoxepigraph    \bool_if:NTF \g_eudox_epigraph_bool    { \eudoxepigraphtrue   } { \eudoxepigraphfalse   }
-\newif\ifeudoxhacks       \bool_if:NTF \g_eudox_hacks_bool       { \eudoxhackstrue      } { \eudoxhacksfalse      }
-\newif\ifeudoxamshacks    \bool_if:NTF \g_eudox_amshacks_bool    { \eudoxamshackstrue   } { \eudoxamshacksfalse   }
-\newif\ifeudoxsiam        \bool_if:NTF \g_eudox_siam_bool        { \eudoxsiamtrue       } { \eudoxsiamfalse       }
+\newif\ifeudoxmath     		\bool_if:NTF \g_eudox_math_bool     	{ \eudoxmathtrue     	 } { \eudoxmathfalse     	}
+\newif\ifeudoxtheorems 		\bool_if:NTF \g_eudox_theorems_bool 	{ \eudoxtheoremstrue 	 } { \eudoxtheoremsfalse 	}
+\newif\ifeudoxtcs      		\bool_if:NTF \g_eudox_tcs_bool      	{ \eudoxtcstrue      	 } { \eudoxtcsfalse      	}
+\newif\ifeudoxlayout   		\bool_if:NTF \g_eudox_layout_bool   	{ \eudoxlayouttrue   	 } { \eudoxlayoutfalse   	}
+\newif\ifeudoxtitlepatch 	\bool_if:NTF \g_eudox_titlepatch_bool 	{ \eudoxtitlepatchtrue 	 } { \eudoxtitlepatchfalse  }
+\newif\ifeudoxfonts   		\bool_if:NTF \g_eudox_fonts_bool   		{ \eudoxfontstrue    	 } { \eudoxfontsfalse    	}
+\newif\ifeudoxpazobiolinum 	\bool_if:NTF \g_eudox_pazobiolinum_bool { \eudoxpazobiolinumtrue } { \eudoxpazobiolinumfalse}
+\newif\ifeudoxepigraph    	\bool_if:NTF \g_eudox_epigraph_bool    	{ \eudoxepigraphtrue   	 } { \eudoxepigraphfalse   	}
+\newif\ifeudoxhacks       	\bool_if:NTF \g_eudox_hacks_bool       	{ \eudoxhackstrue      	 } { \eudoxhacksfalse      	}
+\newif\ifeudoxamshacks    	\bool_if:NTF \g_eudox_amshacks_bool    	{ \eudoxamshackstrue   	 } { \eudoxamshacksfalse   	}
+\newif\ifeudoxsiam        	\bool_if:NTF \g_eudox_siam_bool        	{ \eudoxsiamtrue       	 } { \eudoxsiamfalse       	}
 
 \ExplSyntaxOff
 \makeatletter
@@ -106,6 +106,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{babel}
+\RequirePackage{dirtytalk}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Font bundle
@@ -115,7 +116,7 @@
 	\RequirePackage[T1]{fontenc}
 	\RequirePackage[sc,noBBpl]{mathpazo}
 	\RequirePackage[type1,scaled=1.085]{biolinum}
-	\RequirePackage[ttdefault,scaled=1.03]{AnonymousPro}
+	\RequirePackage[scaled=1.03]{inconsolata}
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -291,9 +292,6 @@
 		\RequirePackage{amsfonts}
 		\RequirePackage{amsmath}
 		\RequirePackage{amssymb}
-		\ifeudoxtheorems
-			\RequirePackage{amsthm}
-		\fi
 		\ifeudoxpazobiolinum\else
 			\RequirePackage{bbm}
 		\fi
@@ -309,13 +307,43 @@
 			\RequirePackage{mathrsfs}
 		\fi
 		\RequirePackage{mathtools}
+		% Direct NFSS declarations for the alphabets formerly selected through
+		% mathalpha.  The Pazo branch uses STIX calligraphic, BBOLDX blackboard
+		% bold, and Dutch script; the Latin Modern branch retains CM calligraphic.
+		\DeclareFontFamily{U}{bboldx}{\skewchar\font=45 }%
+		\DeclareFontShape{U}{bboldx}{m}{n}{<->BBOLDX-Regular}{}%
+		\DeclareFontShape{U}{bboldx}{b}{n}{<->BBOLDX-Bold}{}%
+		\DeclareFontShape{U}{bboldx}{bx}{n}{<->ssub*bboldx/b/n}{}%
+		\let\mathbb\relax
+		\DeclareMathAlphabet{\mathbb}{U}{bboldx}{m}{n}%
+		\SetMathAlphabet{\mathbb}{bold}{U}{bboldx}{b}{n}%
+		\DeclareMathAlphabet{\mathbfbb}{U}{bboldx}{b}{n}%
 		\ifeudoxpazobiolinum
-			\RequirePackage[bb=bboldx,cal=stixplain,scr=dutchcal]{mathalpha}
+			\DeclareFontFamily{U}{stixplain}{\skewchar\font=127 }%
+			\DeclareFontShape{U}{stixplain}{m}{n}{<->stix-mathcal}{}%
+			\DeclareFontShape{U}{stixplain}{b}{n}{<->stix-mathcal-bold}{}%
+			\let\mathcal\relax
+			\DeclareMathAlphabet{\mathcal}{U}{stixplain}{m}{n}%
+			\SetMathAlphabet{\mathcal}{bold}{U}{stixplain}{b}{n}%
+			\DeclareMathAlphabet{\mathbfcal}{U}{stixplain}{b}{n}%
 		\else
 			\ifeudoxfonts
-				\RequirePackage[bb=bboldx,cal=cm,scr=dutchcal]{mathalpha}
+				\DeclareFontFamily{U}{cmsy}{\skewchar\font48 }%
+				\DeclareFontShape{U}{cmsy}{m}{n}{<-5.5>cmsy5<5.5-6.5>cmsy6<6.5-7.5>cmsy7<7.5-8.5>cmsy8<8.5-9.5>cmsy9<9.5->cmsy10}{}%
+				\DeclareFontShape{U}{cmsy}{b}{n}{<-5.5>cmbsy5<5.5-6.5>cmbsy6<6.5-7.5>cmbsy7<7.5-8.5>cmbsy8<8.5-9.5>cmbsy9<9.5->cmbsy10}{}%
+				\let\mathcal\relax
+				\DeclareMathAlphabet{\mathcal}{U}{cmsy}{m}{n}%
+				\SetMathAlphabet{\mathcal}{bold}{U}{cmsy}{b}{n}%
+				\DeclareMathAlphabet{\mathbfcal}{U}{cmsy}{b}{n}%
 			\fi
 		\fi
+		\DeclareFontFamily{U}{dutchscr}{\skewchar\font=45 }%
+		\DeclareFontShape{U}{dutchscr}{m}{n}{<->dutchcal-r}{}%
+		\DeclareFontShape{U}{dutchscr}{b}{n}{<->dutchcal-b}{}%
+		\let\mathscr\relax
+		\DeclareMathAlphabet{\mathscr}{U}{dutchscr}{m}{n}%
+		\SetMathAlphabet{\mathscr}{bold}{U}{dutchscr}{b}{n}%
+		\DeclareMathAlphabet{\mathbfscr}{U}{dutchscr}{b}{n}%
 		\ifeudoxpazobiolinum\else
 			\ifPDFTeX
 				\RequirePackage[Symbol]{upgreek}
@@ -327,8 +355,8 @@
 		\ifeudoxpazobiolinum
 			\SetMathAlphabet{\mathsf}{normal}{T1}{LinuxBiolinumT-TLF}{m}{n}%
 			\SetMathAlphabet{\mathsf}{bold}{T1}{LinuxBiolinumT-TLF}{b}{n}%
-			\SetMathAlphabet{\mathtt}{normal}{T1}{AnonymousPro}{m}{n}%
-			\SetMathAlphabet{\mathtt}{bold}{T1}{AnonymousPro}{b}{n}%
+			\SetMathAlphabet{\mathtt}{normal}{T1}{zi4}{m}{n}%
+			\SetMathAlphabet{\mathtt}{bold}{T1}{zi4}{b}{n}%
 		\else
 			\@ifpackageloaded{biolinum}{%
 				\SetMathAlphabet{\mathsf}{normal}{T1}{LinuxBiolinumT-TLF}{m}{n}%
@@ -343,6 +371,8 @@
 \ifeudoxhacks
 	\AtBeginDocument{%
 		\setstretch{1.075}%
+		\setlength{\parindent}{1.75em}%
+		\setlength{\parskip}{0pt}%
 		\setlength{\emergencystretch}{2em}%
 		\@ifundefined{allowdisplaybreaks}{}{\allowdisplaybreaks[2]}%
 		\raggedbottom
@@ -436,12 +466,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ifeudoxtheorems
+	\RequirePackage{amsthm}
+
 	\newtheoremstyle{theoremlike}
-	{2.5pt}{2.5pt}{\itshape}{}{\scshape}{.}{0.5em}{}
+	{2.5pt}{2.5pt}{\itshape}{1.75em}{\scshape}{.}{0.5em}{}
 	\newtheoremstyle{definitionlike}
-	{2.5pt}{2.5pt}{\normalfont}{}{\scshape}{.}{0.5em}{}
+	{2.5pt}{2.5pt}{\normalfont}{1.75em}{\scshape}{.}{0.5em}{}
 	\newtheoremstyle{remarklike}
-	{2.5pt}{2.5pt}{\normalfont}{}{\scshape}{.}{0.5em}{}
+	{2.5pt}{2.5pt}{\normalfont}{1.75em}{\scshape}{.}{0.5em}{}
 
 	\NewDocumentCommand{\edxnewtheoremsection}{m m}{\newtheorem{#1}{#2}[section]}
 	\NewDocumentCommand{\edxnewtheoremsibling}{m m}{\newtheorem{#1}[theorem]{#2}}
@@ -464,6 +496,7 @@
 	\edxnewtheoremsibling{lemma}{Lemma}
 	\edxnewtheoremsibling{metatheorem}{Meta Theorem}
 	\edxnewtheoremsibling{observation}{Observation}
+	\edxnewtheoremsibling{openproblem}{Open Problem}
 	\edxnewtheoremsibling{postulate}{Postulate}
 	\edxnewtheoremsibling{property}{Property}
 	\edxnewtheoremsibling{proposition}{Proposition}
@@ -494,7 +527,6 @@
 	\edxnewtheoremsibling{motivation}{Motivation}
 	\edxnewtheoremsibling{notationabuse}{Notation Abuse}
 	\edxnewtheoremsibling{note}{Note}
-	\edxnewtheoremsibling{openproblem}{Open Problem}
 	\edxnewtheoremsibling{question}{Question}
 	\edxnewtheoremsibling{recall}{Recall}
 	\edxnewtheoremsibling{remark}{Remark}
@@ -511,16 +543,14 @@
 	\edxnewtheoremstar{hypothesis*}{Hypothesis}
 	\edxnewtheoremstar{claim*}{Claim}
 	\edxnewtheoremstar{conjecture*}{Conjecture}
-
-	\theoremstyle{definitionlike}
 	\edxnewtheoremstar{informaltheorem*}{Informal Theorem}
 
 	\theoremstyle{remarklike}
 	\edxnewtheoremstar{openproblem*}{Open Problem}
 	\edxnewtheoremstar{syntax*}{Syntax}
 
-	\ProvideDocumentCommand{\SetQEDSymbol}{m}{ \setqedsymbol{#1} }
-	\ProvideDocumentCommand{\setqedsymbol}{m}{ \RenewDocumentCommand{\qedsymbol}{}{#1} }
+	\ProvideDocumentCommand{\SetQEDSymbol}{m}{\setqedsymbol{#1}}
+	\ProvideDocumentCommand{\setqedsymbol}{m}{\renewcommand{\qedsymbol}{#1}}
 
 	\NewDocumentEnvironment{proofsketch}{o}
 	{
@@ -654,18 +684,18 @@
 }
 
 \NewDocumentCommand{\parhead}{m}{%
-	\smallskip\noindent
+	\par\smallskip\noindent
 	\ifeudoxtitlepatch
 	{\edxparheadingfont\ignorespaces\edxappendpunct{#1}}%
 	\else
-	\textbf{\boldmath\ignorespaces\edxappendpunct{#1}}%
+	\textsc{\ignorespaces\edxappendpunct{#1}}%
 	\fi
 	\hskip 0.30em
 	\ignorespaces
 }
 
 \NewDocumentCommand{\subparhead}{m}{%
-	\smallskip\noindent
+	\par\smallskip\noindent
 	\ifeudoxtitlepatch
 	{\edxsubparheadingfont\ignorespaces\edxappendpunct{#1}}%
 	\else

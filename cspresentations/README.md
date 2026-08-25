@@ -1,9 +1,9 @@
 ---
 title: README
-aliases: README, 'README, "cspresentation"'
+aliases: [README, 'README, "cspresentation"']
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:22:20 pm
-date modified: Tuesday, August 18th 2026, 10:56:17 am
+date modified: Tuesday, August 25th 2026, 6:44:57 pm
 ---
 
 <!-- @format -->

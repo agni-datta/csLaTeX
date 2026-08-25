@@ -2,6 +2,13 @@
 \usepackage{cslecture}
 \course{Smoke Test}
 \lecturer{Test Lecturer}
+\makeatletter
+\@ifpackageloaded{ntheorem}{}{\PackageError{smoke-cslecture}{ntheorem was not loaded}{}}
+\@ifpackageloaded{thmtools}{\PackageError{smoke-cslecture}{thmtools was loaded}{}}{}
+\makeatother
 \begin{document}
-The lecture package loads.
+\section{Theorem Layer}
+\begin{theorem}The lecture package loads.\end{theorem}
+\begin{theorem*}The starred theorem remains unnumbered.\end{theorem*}
+\begin{proof}The proof environment remains available.\end{proof}
 \end{document}

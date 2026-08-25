@@ -19,7 +19,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{csextras}[2026/06/23 v1.1 Optional extensions for csamsmath and csbook]
+\ProvidesPackage{csextras}[2026/08/25 v1.2 Optional extensions for csamsmath and csbook]
 
 \RequirePackage{l3keys2e}
 
@@ -1034,34 +1034,34 @@
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% exercises — relax csthm's exercise env, then load exercises package
+% exercises — release existing theorem environments, then load exercises package
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \bool_if:NT \g_csextras_exercises_bool
 {
 	\PackageWarning { csextras }
 	{
-		exercises=true:~the~csthm~`exercise'~environment~is~being~replaced \MessageBreak
+		exercises=true:~the~existing~`exercise'~environment~is~being~replaced \MessageBreak
 		by~the~exercises~package.~Use~\\begin\{exercise\}...\\end\{exercise\} \MessageBreak
 		for~the~new~numbered~exercise~environment.
 	}
 	\ExplSyntaxOff
-	\@ifundefined{exercise}{}
-	{
-		\let\exercise   \relax
-		\let\endexercise\relax
+	\def\csextras@releasetheoremenvironment#1{%
+		\expandafter\let\csname #1\endcsname\@undefined
+		\expandafter\let\csname end#1\endcsname\@undefined
+		\expandafter\let\csname #1*\endcsname\@undefined
+		\expandafter\let\csname end#1*\endcsname\@undefined
+		\@ifundefined{c@#1}{}{%
+			\expandafter\let\csname c@#1\endcsname\@undefined
+			\expandafter\let\csname the#1\endcsname\@undefined
+			\expandafter\let\csname p@#1\endcsname\@undefined
+			\expandafter\let\csname cl@#1\endcsname\@undefined
+		}%
 	}
-	\@ifundefined{solution}{}
-	{
-		\let\solution   \relax
-		\let\endsolution\relax
-	}
+	\csextras@releasetheoremenvironment{exercise}
+	\csextras@releasetheoremenvironment{solution}
 	\ExplSyntaxOn
-	\RequirePackage { exercises }
-	\ExerciseSetup
-	{
-		exercise / number-format = \Roman ,
-	}
+	\RequirePackage[exercisenumberformat=Roman] { exercises }
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

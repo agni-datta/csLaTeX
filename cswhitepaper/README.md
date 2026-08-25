@@ -1,9 +1,9 @@
 ---
 title: README
-aliases: README, 'README, "cswhitepaper"'
+aliases: [README, 'README, "cswhitepaper"']
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:22:54 pm
-date modified: Tuesday, August 18th 2026, 10:56:17 am
+date modified: Tuesday, August 25th 2026, 6:44:57 pm
 ---
 
 <!-- @format -->
@@ -15,7 +15,7 @@ A style for collaborative white papers and technical reports. It combines ruled 
 ### Requirements
 
 - Works with `article` and `report` classes. Not designed for `book` or `beamer`.
-- Do not load `amsthm` before this package.
+- Do not load `amsthm` or `thmtools`. The package contains its own `ntheorem` setup.
 - Loads `babel` without language options. Choose document languages through the class options or load `babel` explicitly before `cswhitepaper`.
 
 ### Usage
@@ -106,7 +106,7 @@ Per-author markers:
 
 **Proof-style:** `proof`, `proofsketch`, `proofidea`, `proofofclaim`
 
-All environments are numbered per section, accept optional titles, and are registered with `cleveref`.
+All environments are numbered per section, accept optional titles, and are registered with `cleveref`. The package declares them directly with a self-contained `ntheorem` setup, including the TeX Live 2026 end-mark correction.
 
 `\setqedsymbol{symbol}` changes the proof-end symbol, and `\settheoremendsymbol{symbol}` changes theorem-end markers where those markers are used. The capitalized forms remain available as compatibility aliases.
 
@@ -114,7 +114,7 @@ All environments are numbered per section, accept optional titles, and are regis
 
 - The `final` option suppresses annotations entirely: it does not warn about unfilled `\missing{}` or unresolved `\todo{}` calls. Run a `draft` build and search the PDF for annotation markers before switching to `final`.
 - `\newguymarker` defines a new command at call time. If two authors call it with the same command name, the second definition silently overwrites the first. Use distinct command names per author.
-- Do not load `amsthm` before this package. Loading it after is harmless.
+- Do not load `amsthm` or `thmtools` before or after this package.
 - Revision tracking commands (`\added`, `\changed`, `\removed`) render in `draft` mode only. In `final` mode, `\added` and `\changed` render their argument as plain text; `\removed` renders nothing. This means `\removed{text}` actually removes the text from the final output, which is intentional but requires care: do not use `\removed` for text you might want to keep.
 
 ### License

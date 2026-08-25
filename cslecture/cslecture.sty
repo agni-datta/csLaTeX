@@ -7,7 +7,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{cslecture}[2026/06/23 v3.2 Lecture-notes skeleton for the article class]
+\ProvidesPackage{cslecture}[2026/08/25 v3.3 Lecture-notes skeleton for the article class]
 
 \makeatletter
 
@@ -16,6 +16,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{iftex}
+\RequirePackage{etoolbox}
 
 \ifPDFTeX
 	\RequirePackage{lmodern}
@@ -58,7 +59,6 @@
 
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
-\RequirePackage{amsthm}
 \RequirePackage{bm}
 \RequirePackage{mathtools}
 
@@ -114,7 +114,62 @@
 % Theorem environments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\IfFileExists{thmtools.sty}{\RequirePackage{thmtools}}{}
+\@ifpackageloaded{ntheorem}{%
+	\@ifpackagewith{ntheorem}{amsmath}{}{%
+		\PackageError{csLaTeX}{ntheorem was loaded without its amsmath option}
+		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
+	}
+	\@ifpackagewith{ntheorem}{amsthm}{}{%
+		\PackageError{csLaTeX}{ntheorem was loaded without its amsthm option}
+		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
+	}
+	\@ifpackagewith{ntheorem}{hyperref}{}{%
+		\PackageError{csLaTeX}{ntheorem was loaded without its hyperref option}
+		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
+	}
+	\@ifpackagewith{ntheorem}{thmmarks}{}{%
+		\PackageError{csLaTeX}{ntheorem was loaded without its thmmarks option}
+		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
+	}
+}{%
+	\@ifpackageloaded{amsthm}{%
+		\@ifclassloaded{amsart}{}{%
+			\@ifclassloaded{amsbook}{}{%
+				\PackageError{csLaTeX}{amsthm.sty is incompatible with this ntheorem backend}
+				{Remove the explicit amsthm package load.}%
+			}%
+		}%
+	}{}
+	% AMS classes predefine these styles and proof commands. ntheorem owns them after this point.
+	\@ifclassloaded{amsart}{\let\th@plain\relax\let\th@definition\relax\let\th@remark\relax}{}
+	\@ifclassloaded{amsbook}{\let\th@plain\relax\let\th@definition\relax\let\th@remark\relax}{}
+	\let\proof\relax
+	\let\endproof\relax
+	\let\proofname\relax
+	\let\openbox\relax
+	\RequirePackage[amsmath,amsthm,hyperref,thmmarks]{ntheorem}%
+}
+
+% TeX Live 2026's ntheorem drops an end mark after ordinary text when no trailing skip is present.
+\@ifundefined{cslatex@ntheoremendmarkpatched}{%
+	\gdef\@endtrivlist#1{%
+		\if@inlabel \indent\fi
+		\if@newlist \@noitemerr\fi
+		\ifhmode
+			\ifdim\lastskip >\z@ \unskip\fi
+			#1\unskip\par
+		\fi
+		\if@noparlist\else
+			\ifdim\lastskip >\z@
+				\@tempskipa\lastskip \vskip-\lastskip
+				\advance\@tempskipa\parskip \advance\@tempskipa-\@outerparskip
+				\vskip\@tempskipa
+			\fi
+			\@endparenv
+		\fi
+	}%
+	\global\let\cslatex@ntheoremendmarkpatched\@empty
+}{}
 \RequirePackage{tikz}
 \IfFileExists{mdframed.sty}{%
 	\RequirePackage[
@@ -125,12 +180,9 @@
 }{}
 
 \ProvideDocumentCommand{\cs@endsymb}{}{\ensuremath{\lrcorner}}
-\@ifundefined{qedsymbol}{%
-	\NewDocumentCommand{\qedsymbol}{}{\ensuremath{\diamond}}%
-}{%
-	\RenewDocumentCommand{\qedsymbol}{}{\ensuremath{\diamond}}%
-}
-\ProvideDocumentCommand{\setqedsymbol}{m}{ \RenewDocumentCommand{\qedsymbol}{}{#1} }
+\global\qedsymbol{\ensuremath{\diamond}}
+\renewcommand{\proofSymbol}{\the\qedsymbol}
+\ProvideDocumentCommand{\setqedsymbol}{m}{\global\qedsymbol{#1}}
 \ProvideDocumentCommand{\settheoremendsymbol}{m}{ \RenewDocumentCommand{\cs@endsymb}{}{#1} }
 \ProvideDocumentCommand{\SetQEDSymbol}{m}{ \setqedsymbol{#1} }
 \ProvideDocumentCommand{\SetTheoremEndSymbol}{m}{ \settheoremendsymbol{#1} }
@@ -162,131 +214,58 @@
 	skipbelow         = 20pt  ,
 }
 
-\declaretheoremstyle
-[
-	headfont      = \scshape ,
-	notefont      = \normalfont ,
-	bodyfont      = \normalfont ,
-	spaceabove    = 0pt ,
-	spacebelow    = 0pt ,
-	headpunct     = {.} ,
-	postheadspace = 0.5em ,
-	mdframed      = { style = cs@ruled } ,
-	qed           = \cs@endsymb ,
-]{cs@thmlike}
+\newtheoremstyle{cslcplain}
+{\item[\hskip\labelsep\theorem@headerfont ##1\ ##2\unskip\theorem@separator]}
+{\item[\hskip\labelsep\theorem@headerfont ##1\ ##2\ {\normalfont(##3)}\unskip\theorem@separator]}
+\newtheoremstyle{nonumbercslcplain}
+{\item[\hskip\labelsep\theorem@headerfont ##1\unskip\theorem@separator]}
+{\item[\hskip\labelsep\theorem@headerfont ##1\ {\normalfont(##3)}\unskip\theorem@separator]}
 
-\declaretheoremstyle
-[
-	headfont      = \scshape ,
-	notefont      = \normalfont ,
-	bodyfont      = \normalfont ,
-	spaceabove    = 0pt ,
-	spacebelow    = 0pt ,
-	headpunct     = {.} ,
-	postheadspace = 0.5em ,
-	mdframed      = { style = cs@ruled } ,
-	qed           = \cs@endsymb ,
-]{cs@deflike}
-
-\declaretheoremstyle
-[
-	headfont      = \scshape ,
-	notefont      = \normalfont ,
-	bodyfont      = \normalfont ,
-	spaceabove    = 0pt ,
-	spacebelow    = 0pt ,
-	headpunct     = {.} ,
-	postheadspace = 0.5em ,
-	mdframed      = { style = cs@ruled } ,
-	qed           = \cs@endsymb ,
-]{cs@remarklike}
-
-\declaretheoremstyle
-[
-	headfont      = \sffamily ,
-	notefont      = \normalfont ,
-	bodyfont      = \normalfont\sffamily ,
-	spaceabove    = 0pt ,
-	spacebelow    = 0pt ,
-	headpunct     = {.} ,
-	postheadspace = 0.5em ,
-	mdframed      = { style = cs@ruled } ,
-	qed           = \cs@endsymb ,
-]{cs@hltlike}
-
-\declaretheoremstyle
-[
-	headfont      = \scshape ,
-	bodyfont      = \normalfont ,
-	spaceabove    = 0pt ,
-	spacebelow    = 0pt ,
-	headpunct     = {.} ,
-	postheadspace = 0.5em ,
-	numbered      = no ,
-	qed           = \qedsymbol ,
-]{cs@prooflike}
-
-\ExplSyntaxOn
-\declaretheorem
-[
-	style        = cs@thmlike ,
-	name         = Theorem ,
-	numberwithin = section
-]{theorem}
-
-\cs_new_protected:Npn \cslc_declare:nn #1#2 {
-	\str_set:Nx \l_tmpa_str { \str_lowercase:n {#2} }
-	\cs_if_exist:cTF {declaretheorem} {
-		\use:x { \exp_not:N \declaretheorem [style=#1, name=#2, sibling=theorem] {\l_tmpa_str} }
-	} {}
+\def\cslc@configuretheorem#1#2{%
+	\theoremstyle{cslcplain}%
+	\theoremheaderfont{#1}%
+	\theorembodyfont{#2}%
+	\theoremseparator{.}%
+	\theorempreskip{0pt}%
+	\theorempostskip{0pt}%
+	\theoremsymbol{\cs@endsymb}%
+}
+\def\cslc@surroundtheorem#1{\@ifundefined{surroundwithmdframed}{}{\surroundwithmdframed[style=cs@ruled]{#1}}}
+\def\cslc@newtheorem#1{\expandafter\cslc@newtheorem@parse#1\cslc@nil}
+\def\cslc@newtheorem@parse#1/#2\cslc@nil{%
+	\newtheorem{#1}[theorem]{#2}%
+	\cslc@surroundtheorem{#1}%
+}
+\def\cslc@newtheoremfamily#1#2#3{\cslc@configuretheorem{#1}{#2}\forcsvlist{\cslc@newtheorem}{#3}}
+\def\cslc@renewtheoremstar#1{\expandafter\cslc@renewtheoremstar@parse#1\cslc@nil}
+\def\cslc@renewtheoremstar@parse#1/#2\cslc@nil{%
+	\renewtheorem*{#1}{#2}%
+	\cslc@surroundtheorem{#1}%
 }
 
-\clist_map_inline:nn {
-	Assertion, Assumption, Axiom, Claim, Conclusion, Conjecture,
-	Corollary, Criterion, Fact, Folklore, Hypothesis, Lemma,
-	Observation, Postulate, Property, Proposition
-}{ \cslc_declare:nn {cs@thmlike} {#1} }
-
-\clist_map_inline:nn {
-	Application, Construction, Convention, Definition, Example,
-	Experiment, Notation, Problem, Protocol, Result
-}{ \cslc_declare:nn {cs@deflike} {#1} }
-
-\clist_map_inline:nn {
-	Commentary, Exercise, Motivation, Note, Question, Remark
-}{ \cslc_declare:nn {cs@remarklike} {#1} }
-
-\clist_map_inline:nn {
-	Guideline, Important, Insight, Recall, Summary, Tip, Warning
-}{ \cslc_declare:nn {cs@hltlike} {#1} }
-
-\declaretheorem
-[
-	style   = cs@remarklike ,
-	name    = {Notation~Abuse} ,
-	sibling = theorem
-]{notationabuse}
-\declaretheorem
-[
-	style   = cs@remarklike ,
-	name    = {Open~Problem} ,
-	sibling = theorem
-]{openproblem}
-\declaretheorem
-[
-	style   = cs@hltlike ,
-	name    = {Key~Point} ,
-	sibling = theorem
-]{keypoint}
-
-\clist_map_inline:nn { Theorem, Lemma, Corollary, Claim, Conjecture, Hypothesis }{
-	\str_set:Nx \l_tmpa_str { \str_lowercase:n {#1} }
-	\cs_if_exist:cTF {declaretheorem} {
-		\use:x { \exp_not:N \declaretheorem [style=cs@thmlike, name=#1, numbered=no] {\l_tmpa_str*} }
-	} { }
+\cslc@configuretheorem{\scshape}{\normalfont}
+\newtheorem{theorem}{Theorem}[section]
+\cslc@surroundtheorem{theorem}
+\cslc@newtheoremfamily{\scshape}{\normalfont}{
+	assertion/Assertion,assumption/Assumption,axiom/Axiom,claim/Claim,
+	conclusion/Conclusion,conjecture/Conjecture,corollary/Corollary,
+	criterion/Criterion,fact/Fact,folklore/Folklore,hypothesis/Hypothesis,
+	lemma/Lemma,observation/Observation,postulate/Postulate,property/Property,
+	proposition/Proposition,application/Application,construction/Construction,
+	convention/Convention,definition/Definition,example/Example,experiment/Experiment,
+	notation/Notation,problem/Problem,protocol/Protocol,result/Result,
+	commentary/Commentary,exercise/Exercise,motivation/Motivation,
+	notationabuse/Notation Abuse,note/Note,openproblem/Open Problem,question/Question,remark/Remark
 }
-
-\ExplSyntaxOff
+\cslc@newtheoremfamily{\sffamily}{\normalfont\sffamily}{
+	guideline/Guideline,important/Important,insight/Insight,keypoint/Key Point,
+	recall/Recall,summary/Summary,tip/Tip,warning/Warning
+}
+\cslc@configuretheorem{\scshape}{\normalfont}
+\forcsvlist{\cslc@renewtheoremstar}{
+	theorem*/Theorem,lemma*/Lemma,corollary*/Corollary,claim*/Claim,
+	conjecture*/Conjecture,hypothesis*/Hypothesis
+}
 
 \NewDocumentEnvironment{proofsketch}{o}
 {

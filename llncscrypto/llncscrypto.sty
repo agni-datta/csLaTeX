@@ -7,7 +7,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{llncscrypto}[2026/06/27 v3.3.1 LLNCS-compatible research-paper extensions]
+\ProvidesPackage{llncscrypto}[2026/08/25 v3.3.2 LLNCS-compatible research-paper extensions]
 
 \RequirePackage{l3keys2e}
 \makeatletter
@@ -87,12 +87,19 @@
 		\RequirePackage{libertineRoman}
 		\RequirePackage{biolinum}
 		\RequirePackage[libertine,varbb]{newtxmath}
-		\RequirePackage[scaled=0.92]{AnonymousPro}
+		\RequirePackage[scaled=0.92]{inconsolata}
 	\else
 		\RequirePackage{fontspec}
 		\setmainfont{Linux Libertine O}[Ligatures=TeX]
 		\setsansfont{Biolinum}[Scale=MatchLowercase]
-		\setmonofont{Anonymous Pro}[Scale=MatchLowercase]
+		\setmonofont{Inconsolatazi4-Regular.otf}[
+			BoldFont          = Inconsolatazi4-Bold.otf,
+			ItalicFont        = Inconsolatazi4-Regular.otf,
+			ItalicFeatures    = {FakeSlant=0.2},
+			BoldItalicFont    = Inconsolatazi4-Bold.otf,
+			BoldItalicFeatures = {FakeSlant=0.2},
+			Scale             = MatchLowercase
+		]
 	\fi
 \else
 	\RequirePackage{lmodern}
@@ -111,12 +118,42 @@
 \ifcsname mathbfscr\endcsname \let\mathbfscr\relax \fi
 
 \ifllncslibertine
-	\RequirePackage[cal=cm,bb=bboldx,scr=esstix]{mathalpha}
 \else
 	\RequirePackage{amssymb}
 	\RequirePackage{mathrsfs}
-	\RequirePackage[cal=cm,bb=bboldx,scr=esstix]{mathalpha}
 \fi
+
+% Direct NFSS declarations for the three auxiliary alphabets used here.  These
+% use the same font files as the corresponding alphabet selections without
+% depending on a wrapper package whose interface varies across TeX releases.
+\let\mathbb\relax
+\let\mathbfbb\relax
+\let\mathbfcal\relax
+\let\mathscr\relax
+\let\mathbfscr\relax
+
+\DeclareFontFamily{U}{cmsy}{\skewchar\font48 }
+\DeclareFontShape{U}{cmsy}{m}{n}{%
+	<-5.5>cmsy5<5.5-6.5>cmsy6<6.5-7.5>cmsy7
+	<7.5-8.5>cmsy8<8.5-9.5>cmsy9<9.5->cmsy10}{}
+\DeclareFontShape{U}{cmsy}{b}{n}{%
+	<-5.5>cmbsy5<5.5-6.5>cmbsy6<6.5-7.5>cmbsy7
+	<7.5-8.5>cmbsy8<8.5-9.5>cmbsy9<9.5->cmbsy10}{}
+\DeclareMathAlphabet{\mathcal}{U}{cmsy}{m}{n}
+\SetMathAlphabet{\mathcal}{bold}{U}{cmsy}{b}{n}
+\DeclareMathAlphabet{\mathbfcal}{U}{cmsy}{b}{n}
+
+\DeclareFontFamily{U}{bboldx}{\skewchar\font=45 }
+\DeclareFontShape{U}{bboldx}{m}{n}{<->BBOLDX-Regular}{}
+\DeclareFontShape{U}{bboldx}{b}{n}{<->BBOLDX-Bold}{}
+\DeclareFontShape{U}{bboldx}{bx}{n}{<->ssub*bboldx/b/n}{}
+\DeclareMathAlphabet{\mathbb}{U}{bboldx}{m}{n}
+\SetMathAlphabet{\mathbb}{bold}{U}{bboldx}{b}{n}
+\DeclareMathAlphabet{\mathbfbb}{U}{bboldx}{b}{n}
+
+\DeclareFontFamily{U}{esstixscr}{\skewchar\font=45 }
+\DeclareFontShape{U}{esstixscr}{m}{n}{<->esstixcal}{}
+\DeclareMathAlphabet{\mathscr}{U}{esstixscr}{m}{n}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Preprint layout
@@ -165,7 +202,8 @@
 \RequirePackage{graphicx}
 \RequirePackage{newfloat}
 
-\ProvideDocumentCommand{\caption@documentclass}{}{standard}
+% caption compares this value inside an \edef; it must therefore be expandable.
+\providecommand*{\caption@documentclass}{standard}
 \ifllncscaptions
 	\RequirePackage{caption}
 	\RequirePackage{subcaption}
@@ -400,7 +438,9 @@
 
 		\AtEndEnvironment{proof}{\qed}
 
-		\ProvideDocumentCommand{\qedsymbol}{}{\ensuremath{\square}}
+		\ProvideDocumentCommand{\qedsymbol}{}{}
+		\RenewDocumentCommand{\qedsymbol}{}{{\scriptsize\ensuremath{\square}}}
+		\renewcommand{\squareforqed}{\qedsymbol}
 		\ProvideDocumentCommand{\SetQEDSymbol}{m}{ \setqedsymbol{#1} }
 		\ProvideDocumentCommand{\setqedsymbol}{m}{ \RenewDocumentCommand{\qedsymbol}{}{#1} }
 		\ProvideDocumentCommand{\qedhere}{}{\unskip\nobreak\hfill\qedsymbol}
@@ -681,13 +721,13 @@
 }
 \NewDocumentCommand{\llncseatnewline}{}{\begingroup\catcode13=10\endgroup}
 \NewDocumentCommand{\parheadnoperiod}{m}{%
-	\smallskip\noindent
+	\par\smallskip\noindent
 	{\bfseries\boldmath\ignorespaces#1}%
 	\hskip 0.30em
 	\ignorespaces
 }
 \NewDocumentCommand{\subparheadnoperiod}{m}{%
-	\smallskip\noindent
+	\par\smallskip\noindent
 	{\scshape\ignorespaces#1}%
 	\hskip 0.30em
 	\ignorespaces

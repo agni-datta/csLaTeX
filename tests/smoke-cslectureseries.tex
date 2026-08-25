@@ -1,0 +1,15 @@
+\documentclass[final]{cslectureseries}
+\title{Smoke Test}
+\author{Test Author}
+\makeatletter
+\@ifpackageloaded{ntheorem}{}{\PackageError{smoke-cslectureseries}{ntheorem was not loaded}{}}
+\@ifpackageloaded{thmtools}{\PackageError{smoke-cslectureseries}{thmtools was loaded}{}}{}
+\makeatother
+\begin{document}
+\maketitle
+\chapter{Lecture}
+\section{Theorem Layer}
+\begin{theorem}The lecture-series theorem layer loads.\end{theorem}
+\begin{theorem*}The starred theorem remains unnumbered.\end{theorem*}
+\begin{proof}The proof environment remains available.\end{proof}
+\end{document}

@@ -1,7 +1,13 @@
 \documentclass{article}
 \usepackage{hyperref}
 \usepackage[normal]{csthm}
+\makeatletter
+\@ifpackageloaded{ntheorem}{}{\PackageError{smoke-csthm}{ntheorem was not loaded}{}}
+\@ifpackageloaded{thmtools}{\PackageError{smoke-csthm}{thmtools was loaded}{}}{}
+\makeatother
 \begin{document}
 \begin{theorem}\label{thm:csthm-smoke}The theorem package loads.\end{theorem}
+\begin{theorem*}The unnumbered theorem remains available.\end{theorem*}
+\begin{proof}The proof environment uses the shared backend.\end{proof}
 Theorem~\cref{thm:csthm-smoke} is available.
 \end{document}

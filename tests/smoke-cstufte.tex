@@ -1,5 +1,12 @@
 \documentclass{article}
 \usepackage{cstufte}
+\makeatletter
+\@ifpackageloaded{ntheorem}{}{\PackageError{smoke-cstufte}{ntheorem was not loaded}{}}
+\@ifpackageloaded{thmtools}{\PackageError{smoke-cstufte}{thmtools was loaded}{}}{}
+\makeatother
 \begin{document}
-The Tufte package loads.
+\section{Theorem Layer}
+\begin{theorem}The Tufte package loads.\end{theorem}
+\begin{theorem*}The starred theorem remains unnumbered.\end{theorem*}
+\begin{proof}The proof environment remains available.\end{proof}
 \end{document}

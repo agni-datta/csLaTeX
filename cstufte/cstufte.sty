@@ -7,7 +7,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{cstufte}[2026/06/23 v3.1 Structural overhaul mimicking the Tufte aesthetic]
+\ProvidesPackage{cstufte}[2026/08/25 v3.2 Structural overhaul mimicking the Tufte aesthetic]
 
 \RequirePackage{l3keys2e}
 \makeatletter
@@ -140,10 +140,15 @@
 			SmallCapsFeatures = {RawFeature=+smcp},
 			RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
 		]%
-		\setmonofont{Anonymous Pro}[
-			Scale      = MatchLowercase,
-			Ligatures  = TeX,
-			RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+		\setmonofont{Inconsolatazi4-Regular.otf}[
+			BoldFont          = Inconsolatazi4-Bold.otf,
+			ItalicFont        = Inconsolatazi4-Regular.otf,
+			ItalicFeatures    = {FakeSlant=0.2},
+			BoldItalicFont    = Inconsolatazi4-Bold.otf,
+			BoldItalicFeatures = {FakeSlant=0.2},
+			Scale             = MatchLowercase,
+			Ligatures         = TeX,
+			RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
 		]%
 	}{%
 		\RequirePackage[nosf,noDcommand,fakedscripts]{kpfonts-otf}%
@@ -153,10 +158,15 @@
 			RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum},
 			SmallCapsFeatures = {Letters=SmallCaps}
 		]%
-		\setmonofont{Anonymous Pro}[
-			Scale      = MatchLowercase,
-			Ligatures  = TeX,
-			RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+		\setmonofont{Inconsolatazi4-Regular.otf}[
+			BoldFont          = Inconsolatazi4-Bold.otf,
+			ItalicFont        = Inconsolatazi4-Regular.otf,
+			ItalicFeatures    = {FakeSlant=0.2},
+			BoldItalicFont    = Inconsolatazi4-Bold.otf,
+			BoldItalicFeatures = {FakeSlant=0.2},
+			Scale             = MatchLowercase,
+			Ligatures         = TeX,
+			RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
 		]%
 	}
 \fi
@@ -292,10 +302,64 @@
 \ifPDFTeX
 	\RequirePackage{amssymb}
 \fi
-\RequirePackage{amsthm}
+\@ifpackageloaded{ntheorem}{%
+	\@ifpackagewith{ntheorem}{amsmath}{}{%
+		\PackageError{csLaTeX}{ntheorem was loaded without its amsmath option}
+		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
+	}
+	\@ifpackagewith{ntheorem}{amsthm}{}{%
+		\PackageError{csLaTeX}{ntheorem was loaded without its amsthm option}
+		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
+	}
+	\@ifpackagewith{ntheorem}{hyperref}{}{%
+		\PackageError{csLaTeX}{ntheorem was loaded without its hyperref option}
+		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
+	}
+	\@ifpackagewith{ntheorem}{thmmarks}{}{%
+		\PackageError{csLaTeX}{ntheorem was loaded without its thmmarks option}
+		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
+	}
+}{%
+	\@ifpackageloaded{amsthm}{%
+		\@ifclassloaded{amsart}{}{%
+			\@ifclassloaded{amsbook}{}{%
+				\PackageError{csLaTeX}{amsthm.sty is incompatible with this ntheorem backend}
+				{Remove the explicit amsthm package load.}%
+			}%
+		}%
+	}{}
+	% AMS classes predefine these styles and proof commands. ntheorem owns them after this point.
+	\@ifclassloaded{amsart}{\let\th@plain\relax\let\th@definition\relax\let\th@remark\relax}{}
+	\@ifclassloaded{amsbook}{\let\th@plain\relax\let\th@definition\relax\let\th@remark\relax}{}
+	\let\proof\relax
+	\let\endproof\relax
+	\let\proofname\relax
+	\let\openbox\relax
+	\RequirePackage[amsmath,amsthm,hyperref,thmmarks]{ntheorem}%
+}
+
+% TeX Live 2026's ntheorem drops an end mark after ordinary text when no trailing skip is present.
+\@ifundefined{cslatex@ntheoremendmarkpatched}{%
+	\gdef\@endtrivlist#1{%
+		\if@inlabel \indent\fi
+		\if@newlist \@noitemerr\fi
+		\ifhmode
+			\ifdim\lastskip >\z@ \unskip\fi
+			#1\unskip\par
+		\fi
+		\if@noparlist\else
+			\ifdim\lastskip >\z@
+				\@tempskipa\lastskip \vskip-\lastskip
+				\advance\@tempskipa\parskip \advance\@tempskipa-\@outerparskip
+				\vskip\@tempskipa
+			\fi
+			\@endparenv
+		\fi
+	}%
+	\global\let\cslatex@ntheoremendmarkpatched\@empty
+}{}
 \RequirePackage{mathrsfs}
 \RequirePackage{mathtools}
-\RequirePackage{thmtools}
 
 \numberwithin{equation}{section}
 
@@ -381,167 +445,57 @@
 % Theorem environments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\declaretheoremstyle[
-	headfont      = \scshape,
-	notefont      = \normalfont\scshape,
-	bodyfont      = \normalfont,
-	spaceabove    = 3pt,
-	spacebelow    = 3pt,
-	headpunct     = {.},
-	postheadspace = 0.5em
-]{cstf@theoremlike}
+\newtheoremstyle{cstfplain}
+{\item[\hskip\labelsep\theorem@headerfont ##1\ ##2\unskip\theorem@separator]}
+{\item[\hskip\labelsep\theorem@headerfont ##1\ ##2\ {\normalfont\scshape(##3)}\unskip\theorem@separator]}
+\newtheoremstyle{nonumbercstfplain}
+{\item[\hskip\labelsep\theorem@headerfont ##1\unskip\theorem@separator]}
+{\item[\hskip\labelsep\theorem@headerfont ##1\ {\normalfont\scshape(##3)}\unskip\theorem@separator]}
 
-\declaretheoremstyle[
-	headfont      = \scshape,
-	notefont      = \normalfont\scshape,
-	bodyfont      = \normalfont,
-	spaceabove    = 3pt,
-	spacebelow    = 3pt,
-	headpunct     = {.},
-	postheadspace = 0.5em
-]{cstf@definitionlike}
-
-\declaretheoremstyle[
-	headfont      = \normalfont\scshape,
-	bodyfont      = \normalfont,
-	spaceabove    = 3pt,
-	spacebelow    = 3pt,
-	headpunct     = {.},
-	postheadspace = 0.5em
-]{cstf@remarklike}
-
-\declaretheoremstyle[
-	headfont      = \normalfont\sffamily,
-	bodyfont      = \normalfont,
-	spaceabove    = 3pt,
-	spacebelow    = 3pt,
-	headpunct     = {.},
-	postheadspace = 0.5em
-]{cstf@highlightlike}
-
-\declaretheoremstyle[
-	headfont      = \itshape,
-	bodyfont      = \normalfont,
-	spaceabove    = 5pt,
-	spacebelow    = 5pt,
-	headpunct     = {.},
-	postheadspace = 0.5em,
-	qed           = \ensuremath{\scriptstyle\square}
-]{cstf@proofstyle}
-
-\declaretheorem
-[
-	name         = Theorem ,
-	style        = cstf@theoremlike ,
-	numberwithin = section
-]{theorem}
-
-\NewDocumentCommand{\cstf@declaretheoremfamily}{mm}{%
-	\forcsvlist{\declaretheorem[sibling=theorem,style=#1]}{#2}%
+\def\cstf@configuretheorem#1{%
+	\theoremstyle{cstfplain}%
+	\theoremheaderfont{#1}%
+	\theorembodyfont{\normalfont}%
+	\theoremseparator{.}%
+	\theorempreskip{3pt}%
+	\theorempostskip{3pt}%
+	\theoremsymbol{}%
 }
+\def\cstf@newtheorem#1{\expandafter\cstf@newtheorem@parse#1\cstf@nil}
+\def\cstf@newtheorem@parse#1/#2\cstf@nil{\newtheorem{#1}[theorem]{#2}}
+\def\cstf@newtheoremfamily#1#2{\cstf@configuretheorem{#1}\forcsvlist{\cstf@newtheorem}{#2}}
+\def\cstf@renewtheoremstar#1{\expandafter\cstf@renewtheoremstar@parse#1\cstf@nil}
+\def\cstf@renewtheoremstar@parse#1/#2\cstf@nil{\renewtheorem*{#1}{#2}}
 
-\cstf@declaretheoremfamily{cstf@theoremlike}{
-	assertion,%
-	assumption,%
-	axiom,%
-	claim,%
-	conclusion,%
-	conjecture,%
-	corollary,%
-	criterion,%
-	fact,%
-	folklore,%
-	hypothesis,%
-	lemma,%
-	observation,%
-	postulate,%
-	property,%
-	proposition
+\cstf@configuretheorem{\scshape}
+\newtheorem{theorem}{Theorem}[section]
+\cstf@newtheoremfamily{\scshape}{
+	assertion/Assertion,assumption/Assumption,axiom/Axiom,claim/Claim,
+	conclusion/Conclusion,conjecture/Conjecture,corollary/Corollary,
+	criterion/Criterion,fact/Fact,folklore/Folklore,hypothesis/Hypothesis,
+	informaltheorem/Informal Theorem,lemma/Lemma,metatheorem/Meta Theorem,
+	observation/Observation,postulate/Postulate,property/Property,proposition/Proposition,
+	application/Application,construction/Construction,convention/Convention,
+	definition/Definition,example/Example,experiment/Experiment,notation/Notation,
+	problem/Problem,protocol/Protocol,result/Result,solution/Solution,step/Step,
+	commentary/Commentary,discussion/Discussion,exercise/Exercise,motivation/Motivation,
+	notationabuse/Notation Abuse,note/Note,openproblem/Open Problem,question/Question,
+	remark/Remark,syntax/Syntax
 }
-
-\declaretheorem
-[
-	name    = {Informal~Theorem} ,
-	sibling = theorem ,
-	style   = cstf@theoremlike
-]{informaltheorem}
-\declaretheorem
-[
-	name    = {Meta~Theorem} ,
-	sibling = theorem ,
-	style   = cstf@theoremlike
-]{metatheorem}
-
-\cstf@declaretheoremfamily{cstf@definitionlike}{
-	application,%
-	construction,%
-	convention,%
-	definition,%
-	example,%
-	experiment,%
-	notation,%
-	problem,%
-	protocol,%
-	result,%
-	solution,%
-	step
+\cstf@newtheoremfamily{\normalfont\sffamily}{
+	guideline/Guideline,highlight/Highlight,important/Important,insight/Insight,
+	keypoint/Key Point,recall/Recall,summary/Summary,takeaway/Takeaway,tip/Tip,warning/Warning
 }
-
-\cstf@declaretheoremfamily{cstf@remarklike}{
-	commentary,%
-	discussion,%
-	exercise,%
-	motivation,%
-	note,%
-	question,%
-	remark,%
-	syntax
+\cstf@configuretheorem{\scshape}
+\forcsvlist{\cstf@renewtheoremstar}{
+	claim*/Claim,conjecture*/Conjecture,corollary*/Corollary,hypothesis*/Hypothesis,
+	lemma*/Lemma,syntax*/Syntax,theorem*/Theorem,informaltheorem*/Informal Theorem,
+	openproblem*/Open Problem
 }
-
-\declaretheorem
-[
-	name    = {Notation~Abuse} ,
-	sibling = theorem ,
-	style   = cstf@remarklike
-]{notationabuse}
-\declaretheorem
-[
-	name    = {Open~Problem} ,
-	sibling = theorem ,
-	style   = cstf@remarklike
-]{openproblem}
-
-\cstf@declaretheoremfamily{cstf@highlightlike}{
-	guideline,%
-	highlight,%
-	important,%
-	insight,%
-	recall,%
-	summary,%
-	takeaway,%
-	tip,%
-	warning
-}
-
-\declaretheorem
-[
-	name    = {Key~Point} ,
-	sibling = theorem ,
-	style   = cstf@highlightlike
-]{keypoint}
-
-\declaretheorem[ name = Claim ,                 style = cstf@theoremlike , numbered = no ]{claim*}
-\declaretheorem[ name = Conjecture ,            style = cstf@theoremlike , numbered = no ]{conjecture*}
-\declaretheorem[ name = Corollary ,             style = cstf@theoremlike , numbered = no ]{corollary*}
-\declaretheorem[ name = Hypothesis ,            style = cstf@theoremlike , numbered = no ]{hypothesis*}
-\declaretheorem[ name = Lemma ,                 style = cstf@theoremlike , numbered = no ]{lemma*}
-\declaretheorem[ name = Syntax ,                style = cstf@remarklike  , numbered = no ]{syntax*}
-\declaretheorem[ name = Theorem ,               style = cstf@theoremlike , numbered = no ]{theorem*}
-\declaretheorem[ name = {Informal~Theorem} ,    style = cstf@theoremlike , numbered = no ]{informaltheorem*}
-\declaretheorem[ name = {Open~Problem} ,        style = cstf@remarklike  , numbered = no ]{openproblem*}
-
-\ProvideDocumentCommand{\setqedsymbol}{m}{ \RenewDocumentCommand{\qedsymbol}{}{#1} }
-\ProvideDocumentCommand{\SetQEDSymbol}{m}{ \setqedsymbol{#1} }
+\global\qedsymbol{\ensuremath{\scriptstyle\square}}
+\renewcommand{\proofSymbol}{\the\qedsymbol}
+\ProvideDocumentCommand{\setqedsymbol}{m}{\global\qedsymbol{#1}}
+\ProvideDocumentCommand{\SetQEDSymbol}{m}{\setqedsymbol{#1}}
 
 \NewDocumentEnvironment{proofsketch}{o}
 {

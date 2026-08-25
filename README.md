@@ -1,9 +1,9 @@
 ---
 title: README
-aliases: README, 'README, "csLaTeX"'
+aliases: [README, 'README, "csLaTeX"']
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:21:12 pm
-date modified: Tuesday, August 18th 2026, 10:56:17 am
+date modified: Tuesday, August 25th 2026, 6:44:55 pm
 ---
 
 <!-- @format -->
@@ -17,19 +17,19 @@ A collection of self-contained LaTeX packages for computer science research, tea
 | Package                                       | Version | Description                                                                                                                               |
 | --------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | [`codelines`](codelines/README.md)            | 1.1     | Algorithmic listing environment with automated line numbering and nesting.                                                                |
-| [`csamsmath`](csamsmath/README.md)            | 3.8     | Math backbone for research papers: fonts, theorem environments, proof helpers, and annotation commands.                                   |
-| [`csbook`](csbook/README.md)                  | 3.6     | Framework for textbooks and large reports with draft/final modes, theorem helpers, and broken-reference tracking.                         |
-| [`csdeferproofs`](csdeferproofs/README.md)    | 1.3     | Deferred-proof infrastructure: collect proofs into a “Missing Proofs” appendix in submission mode; keep them inline in eprint mode.       |
-| [`csextras`](csextras/README.md)              | 1.1     | Opt-in extension layer for `csamsmath` and `csbook`, including layout, metadata, boxes, indexing, and optional tooling.                   |
-| [`eudoxus`](eudoxus/README.md)                | 1.2     | General-purpose math package: fonts, layout, theorem environments, TikZ, bibliography styling, and optional title/header patching.        |
-| [`cslecture`](cslecture/README.md)            | 3.2     | Skeleton for lecture notes over the `article` class: condensed spacing, boxed title block, and a full theorem suite.                      |
-| [`csletter`](csletter/README.md)              | 3.2     | Professional correspondence with configurable colors, margins, spacing, and optional logo and signature images.                           |
+| [`csamsmath`](csamsmath/README.md)            | 3.9     | Math backbone for research papers: fonts, theorem environments, proof helpers, and annotation commands.                                   |
+| [`csbook`](csbook/README.md)                  | 3.7     | Framework for textbooks and large reports with draft/final modes, theorem helpers, and broken-reference tracking.                         |
+| [`csdeferproofs`](csdeferproofs/README.md)    | 2.0     | Self-contained deferred-proof queue: collect proofs into an appendix in submission mode or keep them inline in eprint mode.               |
+| [`csextras`](csextras/README.md)              | 1.2     | Opt-in extension layer for `csamsmath` and `csbook`, including layout, metadata, boxes, indexing, and optional tooling.                   |
+| [`eudoxus`](eudoxus/README.md)                | 1.5     | General-purpose math package: fonts, layout, theorem environments, TikZ, bibliography styling, and optional title/header patching.        |
+| [`cslecture`](cslecture/README.md)            | 3.3     | Skeleton for lecture notes over the `article` class: condensed spacing, boxed title block, and a full theorem suite.                      |
+| [`csletter`](csletter/README.md)              | 3.3     | Professional correspondence with configurable colors, margins, spacing, and optional logo and signature images.                           |
 | [`cspresentation`](cspresentations/README.md) | 3.2     | Beamer theme overlay on Metropolis with the Nord color palette, semantic highlight commands, and TikZ diagram styles.                     |
-| [`csresume`](csresume/README.md)              | 4.3     | Academic CV and resume with chronological entries, BibLaTeX publications, compact lists, and reference block layouts.                     |
-| [`csthm`](csthm/README.md)                    | 3.2     | Theorem suite with three visual modes (`normal`, `fancy`, `oldschool`), dynamic accent colors, proof helpers, and `cleveref` integration. |
-| [`cstufte`](cstufte/README.md)                | 3.1     | Tufte-style wide-margin layout with side-citations, marginalia, and a lattice cryptography notation library.                              |
-| [`cswhitepaper`](cswhitepaper/README.md)      | 5.1     | Style for technical reports with per-author annotation commands, revision tracking, and ruled theorem aesthetics.                         |
-| [`llncscrypto`](llncscrypto/README.md)        | 3.3.1   | LLNCS-compatible research-paper extensions: theorem support, author notes, boxes, captions, references, and preprint utilities.           |
+| [`csresume`](csresume/README.md)              | 4.4     | Academic CV and resume with chronological entries, BibLaTeX publications, compact lists, and reference block layouts.                     |
+| [`csthm`](csthm/README.md)                    | 3.3     | Theorem suite with three visual modes (`normal`, `fancy`, `oldschool`), dynamic accent colors, proof helpers, and `cleveref` integration. |
+| [`cstufte`](cstufte/README.md)                | 3.2     | Tufte-style wide-margin layout with side-citations, marginalia, and a lattice cryptography notation library.                              |
+| [`cswhitepaper`](cswhitepaper/README.md)      | 5.2     | Style for technical reports with per-author annotation commands, revision tracking, and ruled theorem aesthetics.                         |
+| [`llncscrypto`](llncscrypto/README.md)        | 3.3.2   | LLNCS-compatible research-paper extensions: theorem support, author notes, boxes, captions, references, and preprint utilities.           |
 | [`tcscrypto`](tcscrypto/README.md)            | 3.7.1   | Notation and environment library for TCS and cryptography: sampling, complexity, circuits, graphs, proof complexity, and protocol boxes.  |
 
 ### Installation
@@ -64,26 +64,26 @@ bash scripts/commit-synced-core-styles.sh --apply
 
 ### Tests
 
-Run the static core-package audit with `bash tests/check-cs-core-parity.sh`. The audit verifies that `csamsmath` and `csbook` expose the same font options and engine branches, use identical font definitions, resolve every named OpenType file, document the same font matrix, and keep package-private `@` commands on classic LaTeX definitions.
+Run the static core-package audit with `bash tests/check-cs-core-parity.sh`. The audit verifies that `csamsmath` and `csbook` expose the same font options and engine branches, use identical font definitions, resolve every named OpenType file, document the same font matrix, contain the same TeX Live 2026-compatible `ntheorem` setup, and keep package-private `@` commands on classic LaTeX definitions. It also checks that no package depends on `thmtools`, that `eudoxus` alone uses plain `amsthm`, and that every former shared monospaced-font selection now uses Inconsolata.
 
 Run the package smoke suite with `bash tests/run-smoke-tests.sh`. The suite runs the static core-package audit first, compiles every package with LuaLaTeX, and recompiles the packages that support pdfLaTeX with that engine; all output is written to a temporary directory and removed afterward.
 
 ### Coordinated Core-Package Release
 
-The current coordinated release pairs `csamsmath` 3.8 with `csbook` 3.6. Both packages expose the same eight font options and reject mismatched selections when they are loaded together.
+The current coordinated release pairs `csamsmath` 3.9 with `csbook` 3.7. Both packages expose the same eight font options, reject mismatched selections when they are loaded together, and keep equivalent self-contained `ntheorem` theorem layers in their own `.sty` files.
 
 | Font option   | LuaLaTeX | pdfLaTeX |
 | ------------- | -------- | -------- |
 | `latinmodern` | Direct OpenType loading | Latin Modern with `amssymb` and `mathtools` |
 | `baskervaldx` | Baskervaldx with KP Math | Baskervaldx with `newtxmath` |
 | `libertine`   | Libertinus with Pagella Math | Libertine with `newtxmath` |
-| `palatino`    | Pagella X with Pagella Math | Integrated `newpx` without `amssymb` or `mathtools` |
+| `palatino`    | Pagella X with Pagella Math | `mathpazo[sc]`, scaled Biolinum, and scaled Inconsolata with explicit `\mathsf` and `\mathtt` alphabets |
 | `concrete`    | CMU Concrete with Euler Math | Warning followed by Latin Modern fallback |
 | `garamond`    | Garamond Libre with Garamond Math | Warning followed by Latin Modern fallback |
 | `gfsdidot`    | GFS Didot with KP Math | Warning followed by Latin Modern fallback |
 | `kpfonts`     | KP Fonts OpenType | Warning followed by Latin Modern fallback |
 
-All branches request lining, tabular figures. The pdfLaTeX branches load `bm` only after the selected math configuration. Erewhon and Fourier are not supported.
+All branches request lining, tabular figures. Branches built around the shared monospaced helper now use Inconsolata for text and `\mathtt`; Latin Modern and Concrete retain the monospaced faces belonging to their own font collections. The pdfLaTeX branches load `bm` only after the selected math configuration. Erewhon and Fourier are not supported.
 
 ### Language and Encoding Policy
 

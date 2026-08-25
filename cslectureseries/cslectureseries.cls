@@ -7,7 +7,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesClass{cslectureseries}[2026/06/23 v1.2 Lecture series class]
+\ProvidesClass{cslectureseries}[2026/08/25 v1.3 Lecture series class]
 
 \RequirePackage{l3keys2e}
 \makeatletter
@@ -79,12 +79,26 @@
     \ifcsls@usekpf
         \setmainfont{KpRoman}[Ligatures=TeX]
         \setsansfont{KpSans}[Scale=MatchLowercase]
-        \setmonofont{Anonymous Pro}[Scale=MatchLowercase]
+        \setmonofont{Inconsolatazi4-Regular.otf}[
+            BoldFont          = Inconsolatazi4-Bold.otf,
+            ItalicFont        = Inconsolatazi4-Regular.otf,
+            ItalicFeatures    = {FakeSlant=0.2},
+            BoldItalicFont    = Inconsolatazi4-Bold.otf,
+            BoldItalicFeatures = {FakeSlant=0.2},
+            Scale             = MatchLowercase
+        ]
     \fi
     \ifcsls@usebsk
         \setmainfont{Libre Baskerville}[Ligatures=TeX,Scale=MatchUppercase]
         \setsansfont{Biolinum}[Scale=MatchLowercase]
-        \setmonofont{Anonymous Pro}[Scale=MatchLowercase]
+        \setmonofont{Inconsolatazi4-Regular.otf}[
+            BoldFont          = Inconsolatazi4-Bold.otf,
+            ItalicFont        = Inconsolatazi4-Regular.otf,
+            ItalicFeatures    = {FakeSlant=0.2},
+            BoldItalicFont    = Inconsolatazi4-Bold.otf,
+            BoldItalicFeatures = {FakeSlant=0.2},
+            Scale             = MatchLowercase
+        ]
     \fi
 \fi
 
@@ -114,7 +128,6 @@
 \RequirePackage{amsmath}
 \RequirePackage{amsfonts}
 \RequirePackage{amssymb}
-\RequirePackage{amsthm}
 \RequirePackage{mathtools}
 \RequirePackage[scr=boondoxo,cal=stixplain,bb=stix]{mathalpha}
 
@@ -250,143 +263,118 @@
     skipbelow   = 0.5\baselineskip ,
     framemethod = default
 ]{mdframed}
-\RequirePackage{thmtools}
-
-\declaretheoremstyle
-[
-    headfont      = \scshape ,
-    notefont      = \normalfont ,
-    bodyfont      = \itshape ,
-    spaceabove    = 1em ,
-    spacebelow    = 1em ,
-    headpunct     = {.} ,
-    postheadspace = 0.5em
-]{csls@theoremlike}
-
-\declaretheoremstyle
-[
-    headfont      = \scshape ,
-    notefont      = \normalfont ,
-    bodyfont      = \normalfont ,
-    spaceabove    = 1em ,
-    spacebelow    = 1em ,
-    headpunct     = {.} ,
-    postheadspace = 0.5em
-]{csls@definitionlike}
-
-\declaretheoremstyle
-[
-    headfont      = \scshape ,
-    notefont      = \normalfont ,
-    bodyfont      = \normalfont ,
-    spaceabove    = 1em ,
-    spacebelow    = 1em ,
-    headpunct     = {.} ,
-    postheadspace = 0.5em
-]{csls@remarklike}
-
-\declaretheoremstyle
-[
-    headfont      = \normalfont\sffamily ,
-    notefont      = \normalfont ,
-    bodyfont      = \normalfont ,
-    spaceabove    = 1em ,
-    spacebelow    = 1em ,
-    headpunct     = {.} ,
-    postheadspace = 0.5em
-]{csls@highlightlike}
-
-\declaretheoremstyle
-[
-    headfont      = \itshape ,
-    bodyfont      = \normalfont ,
-    spaceabove    = 1em ,
-    spacebelow    = 1em ,
-    headpunct     = {.} ,
-    postheadspace = 0.5em ,
-    qed           = \qedsymbol
-]{csls@proofstyle}
-
-\ProvideDocumentCommand{\setqedsymbol}{m}{ \RenewDocumentCommand{\qedsymbol}{}{#1} }
-\ProvideDocumentCommand{\SetQEDSymbol}{m}{ \setqedsymbol{#1} }
-
-\declaretheorem
-[
-    name         = Theorem ,
-    style        = csls@theoremlike ,
-    numberwithin = section
-]{ theorem }
-
-\NewDocumentCommand{\csls@declaretheoremfamily}{mm}{%
-    \forcsvlist{\declaretheorem[sibling=theorem,style=#1]}{#2}%
+\@ifpackageloaded{ntheorem}{%
+	\@ifpackagewith{ntheorem}{amsmath}{}{%
+		\PackageError{csLaTeX}{ntheorem was loaded without its amsmath option}
+		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
+	}
+	\@ifpackagewith{ntheorem}{amsthm}{}{%
+		\PackageError{csLaTeX}{ntheorem was loaded without its amsthm option}
+		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
+	}
+	\@ifpackagewith{ntheorem}{hyperref}{}{%
+		\PackageError{csLaTeX}{ntheorem was loaded without its hyperref option}
+		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
+	}
+	\@ifpackagewith{ntheorem}{thmmarks}{}{%
+		\PackageError{csLaTeX}{ntheorem was loaded without its thmmarks option}
+		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
+	}
+}{%
+	\@ifpackageloaded{amsthm}{%
+		\@ifclassloaded{amsart}{}{%
+			\@ifclassloaded{amsbook}{}{%
+				\PackageError{csLaTeX}{amsthm.sty is incompatible with this ntheorem backend}
+				{Remove the explicit amsthm package load.}%
+			}%
+		}%
+	}{}
+	% AMS classes predefine these styles and proof commands. ntheorem owns them after this point.
+	\@ifclassloaded{amsart}{\let\th@plain\relax\let\th@definition\relax\let\th@remark\relax}{}
+	\@ifclassloaded{amsbook}{\let\th@plain\relax\let\th@definition\relax\let\th@remark\relax}{}
+	\let\proof\relax
+	\let\endproof\relax
+	\let\proofname\relax
+	\let\openbox\relax
+	\RequirePackage[amsmath,amsthm,hyperref,thmmarks]{ntheorem}%
 }
 
-\csls@declaretheoremfamily{csls@theoremlike}{%
-    assertion,%
-    assumption,%
-    axiom,%
-    claim,%
-    conclusion,%
-    conjecture,%
-    corollary,%
-    criterion,%
-    fact,%
-    folklore,%
-    hypothesis,%
-    lemma,%
-    observation,%
-    postulate,%
-    property,%
-    proposition%
-}
-\declaretheorem[name={Informal Theorem},sibling=theorem,style=csls@theoremlike]{informaltheorem}
-\declaretheorem[name={Meta Theorem},sibling=theorem,style=csls@theoremlike]{metatheorem}
-\csls@declaretheoremfamily{csls@definitionlike}{%
-    application,%
-    construction,%
-    convention,%
-    definition,%
-    example,%
-    experiment,%
-    problem,%
-    protocol,%
-    result,%
-    step,%
-    notation%
-}
-\csls@declaretheoremfamily{csls@remarklike}{%
-    commentary,%
-    discussion,%
-    exercise,%
-    motivation,%
-    notationabuse,%
-    note,%
-    openproblem,%
-    question,%
-    remark,%
-    syntax%
-}
-\csls@declaretheoremfamily{csls@highlightlike}{%
-    guideline,%
-    highlight,%
-    important,%
-    insight,%
-    keypoint,%
-    recall,%
-    summary,%
-    takeaway,%
-    tip,%
-    warning%
-}
+% TeX Live 2026's ntheorem drops an end mark after ordinary text when no trailing skip is present.
+\@ifundefined{cslatex@ntheoremendmarkpatched}{%
+	\gdef\@endtrivlist#1{%
+		\if@inlabel \indent\fi
+		\if@newlist \@noitemerr\fi
+		\ifhmode
+			\ifdim\lastskip >\z@ \unskip\fi
+			#1\unskip\par
+		\fi
+		\if@noparlist\else
+			\ifdim\lastskip >\z@
+				\@tempskipa\lastskip \vskip-\lastskip
+				\advance\@tempskipa\parskip \advance\@tempskipa-\@outerparskip
+				\vskip\@tempskipa
+			\fi
+			\@endparenv
+		\fi
+	}%
+	\global\let\cslatex@ntheoremendmarkpatched\@empty
+}{}
 
-\declaretheorem[ name = Claim ,            style = csls@theoremlike , numbered = no ]{ claim* }
-\declaretheorem[ name = Conjecture ,       style = csls@theoremlike , numbered = no ]{ conjecture* }
-\declaretheorem[ name = Corollary ,        style = csls@theoremlike , numbered = no ]{ corollary* }
-\declaretheorem[ name = Hypothesis ,       style = csls@theoremlike , numbered = no ]{ hypothesis* }
-\declaretheorem[ name = Lemma ,            style = csls@theoremlike , numbered = no ]{ lemma* }
-\declaretheorem[ name = Syntax ,           style = csls@remarklike  , numbered = no ]{ syntax* }
-\declaretheorem[ name = Theorem ,          style = csls@theoremlike , numbered = no ]{ theorem* }
-\declaretheorem[ name = { Open~Problem } , style = csls@remarklike  , numbered = no ]{ openproblem* }
+\newtheoremstyle{cslsplain}
+{\item[\hskip\labelsep\theorem@headerfont ##1\ ##2\unskip\theorem@separator]}
+{\item[\hskip\labelsep\theorem@headerfont ##1\ ##2\ {\normalfont(##3)}\unskip\theorem@separator]}
+\newtheoremstyle{nonumbercslsplain}
+{\item[\hskip\labelsep\theorem@headerfont ##1\unskip\theorem@separator]}
+{\item[\hskip\labelsep\theorem@headerfont ##1\ {\normalfont(##3)}\unskip\theorem@separator]}
+
+\def\csls@configuretheorem#1#2{%
+    \theoremstyle{cslsplain}%
+    \theoremheaderfont{#1}%
+    \theorembodyfont{#2}%
+    \theoremseparator{.}%
+    \theorempreskip{1em}%
+    \theorempostskip{1em}%
+    \theoremsymbol{}%
+}
+\def\csls@newtheorem#1{\expandafter\csls@newtheorem@parse#1\csls@nil}
+\def\csls@newtheorem@parse#1/#2\csls@nil{\newtheorem{#1}[theorem]{#2}}
+\def\csls@newtheoremfamily#1#2#3{\csls@configuretheorem{#1}{#2}\forcsvlist{\csls@newtheorem}{#3}}
+\def\csls@renewtheoremstar#1{\expandafter\csls@renewtheoremstar@parse#1\csls@nil}
+\def\csls@renewtheoremstar@parse#1/#2\csls@nil{\renewtheorem*{#1}{#2}}
+
+\csls@configuretheorem{\scshape}{\itshape}
+\newtheorem{theorem}{Theorem}[section]
+\csls@newtheoremfamily{\scshape}{\itshape}{%
+    assertion/Assertion,assumption/Assumption,axiom/Axiom,claim/Claim,
+    conclusion/Conclusion,conjecture/Conjecture,corollary/Corollary,
+    criterion/Criterion,fact/Fact,folklore/Folklore,hypothesis/Hypothesis,
+    informaltheorem/Informal Theorem,lemma/Lemma,metatheorem/Meta Theorem,
+    observation/Observation,postulate/Postulate,property/Property,proposition/Proposition%
+}
+\csls@newtheoremfamily{\scshape}{\normalfont}{%
+    application/Application,construction/Construction,convention/Convention,
+    definition/Definition,example/Example,experiment/Experiment,problem/Problem,
+    protocol/Protocol,result/Result,step/Step,notation/Notation,
+    commentary/Commentary,discussion/Discussion,exercise/Exercise,motivation/Motivation,
+    notationabuse/Notation Abuse,note/Note,openproblem/Open Problem,question/Question,
+    remark/Remark,syntax/Syntax%
+}
+\csls@newtheoremfamily{\normalfont\sffamily}{\normalfont}{%
+    guideline/Guideline,highlight/Highlight,important/Important,insight/Insight,
+    keypoint/Key Point,recall/Recall,summary/Summary,takeaway/Takeaway,tip/Tip,warning/Warning%
+}
+\csls@configuretheorem{\scshape}{\itshape}
+\forcsvlist{\csls@renewtheoremstar}{%
+    claim*/Claim,conjecture*/Conjecture,corollary*/Corollary,hypothesis*/Hypothesis,
+    lemma*/Lemma,theorem*/Theorem%
+}
+\csls@configuretheorem{\scshape}{\normalfont}
+\forcsvlist{\csls@renewtheoremstar}{syntax*/Syntax,openproblem*/Open Problem}
+
+\global\qedsymbol{\ensuremath{\square}}
+\renewcommand{\proofSymbol}{\the\qedsymbol}
+\ProvideDocumentCommand{\setqedsymbol}{m}{\global\qedsymbol{#1}}
+\ProvideDocumentCommand{\SetQEDSymbol}{m}{\setqedsymbol{#1}}
 
 \NewDocumentEnvironment{proofsketch}{o}
 {
@@ -415,7 +403,7 @@
 \NewDocumentEnvironment{solution}{}{%
     \begingroup
     \begin{proof}[\textnormal{\textsc{Solution}}]%
-    \RenewDocumentCommand{\qedsymbol}{}{\ensuremath{\diamond}}%
+    \qedsymbol{\ensuremath{\diamond}}%
 }{%
     \end{proof}%
     \endgroup

@@ -1,21 +1,21 @@
 ---
 title: README
-aliases: README, 'README, "csamsmath"'
+aliases: [README, 'README, "csamsmath"']
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:21:39 pm
-date modified: Tuesday, August 18th 2026, 10:56:17 am
+date modified: Tuesday, August 25th 2026, 6:44:55 pm
 ---
 
 <!-- @format -->
 
 ## csamsmath
 
-The mathematical foundation for research papers and course notes. It combines font selection, `thmtools` theorem environments, proof helpers, annotations, and reference diagnostics for LuaLaTeX and pdfLaTeX.
+The mathematical foundation for research papers and course notes. It combines font selection, `ntheorem` environments with AMS-compatible proof commands, proof helpers, annotations, and reference diagnostics for LuaLaTeX and pdfLaTeX.
 
 ### Requirements
 
 - Optimized for LuaLaTeX. pdfLaTeX supports Latin Modern, Baskervaldx, Libertine, and Palatino; every other font option warns and falls back to Latin Modern.
-- Do not load `amsthm` manually before this package: it loads and configures `amsthm` internally via `thmtools`. Loading it again afterward is harmless but loading it before will cause option conflicts.
+- Do not load `amsthm` manually. The actual `amsthm.sty` package conflicts with `ntheorem`; `csamsmath` loads `ntheorem` with its `amsthm` compatibility option, which supplies the AMS theorem styles and `proof` environment without loading `amsthm.sty`.
 - Loads `babel` without language options. Choose document languages through the class options or load `babel` explicitly before `csamsmath`.
 
 ### Usage
@@ -54,7 +54,7 @@ Pass exactly one font option, or omit it to use Latin Modern. LuaLaTeX supports 
 - `baskervaldx`: LuaLaTeX uses Baskervaldx with KP Math; pdfLaTeX uses Baskervaldx with `newtxmath`.
 - `kpfonts`: KP Fonts OpenType.
 - `garamond`: Garamond Libre with Garamond Math under LuaLaTeX.
-- `palatino`: LuaLaTeX loads TeX Gyre Pagella X and TeX Gyre Pagella Math directly from their OpenType files; pdfLaTeX uses the integrated `newpx` text-and-math package with tabular lining figures.
+- `palatino`: LuaLaTeX loads TeX Gyre Pagella X and TeX Gyre Pagella Math directly from their OpenType files; pdfLaTeX loads `mathpazo[sc]`, scaled Type 1 Biolinum, and scaled Inconsolata.
 
 #### Mode Options
 
@@ -65,12 +65,49 @@ Pass exactly one font option, or omit it to use Latin Modern. LuaLaTeX supports 
 
 - `sanshdr`: typesets the document title, section headings through `\subsubsection`, `\parhead`, and `\subparhead` in bold sans serif while leaving the body font unchanged.
 
+#### Document Font Configuration
+
+Call `\docufont{keys}` after loading `csamsmath` to change section and theorem-family fonts. Every key starts from the package default, so a partial call changes only the keys that it names; later calls likewise retain every setting that they omit.
+
+```latex
+\docufont{
+    sections      = {\normalfont\bfseries\Large},
+    subsection    = {\normalfont\bfseries\large},
+    subsubsection = {\normalfont\bfseries\normalsize},
+    parhead       = {\normalfont\bfseries\boldmath},
+    subparhead    = {\normalfont\scshape},
+    theoremhdr    = bold,
+    definitionhdr = smallcaps,
+    remarkhdr     = italics,
+    highlighthdr  = sans,
+    theorembody   = normal,
+    definitionbody = normal,
+    remarkbody    = normal,
+    highlightbody = normal
+}
+```
+
+The command accepts font switches such as `{\normalfont\bfseries}` verbatim. It also recognizes the short values `normal`, `roman`, `bold`, `italic`, `italics`, `smallcaps`, `sans`, and `boldsans`. The `section` key is an alias for `sections`; `parheadfont` and `subparheadfont` alias `parhead` and `subparhead`; and the misspelling `defintionhdr` remains available as an alias for `definitionhdr`. When `csbook` was loaded first, the theorem-family and paragraph-heading keys update its existing layer as well.
+
+| Key | Default |
+| --- | --- |
+| `sections` | `\normalfont\bfseries\Large`; `sanshdr` changes the family to sans serif |
+| `subsection` | `\normalfont\bfseries\large`; `sanshdr` changes the family to sans serif |
+| `subsubsection` | `\normalfont\bfseries\normalsize`; `sanshdr` changes the family to sans serif |
+| `parhead` | `\normalfont\bfseries\boldmath`; `sanshdr` changes the family to sans serif |
+| `subparhead` | `\normalfont\scshape`; `sanshdr` changes it to bold sans serif |
+| `theoremhdr` | `\bfseries` |
+| `definitionhdr` | `\bfseries` |
+| `remarkhdr` | `\normalfont\scshape` |
+| `highlighthdr` | `\normalfont\sffamily` |
+| `theorembody`, `definitionbody`, `remarkbody`, `highlightbody` | `\normalfont` |
+
 #### Engine and Mathematics Policy
 
 - Every LuaLaTeX branch except `kpfonts` loads explicit OTF or TTF files. The `kpfonts` branch uses `kpfonts-otf` as its native loader.
-- Every branch requests lining, tabular figures. The monospaced figure feature is expressed as `Monospaced` in OpenType configuration.
+- Every branch requests lining, tabular figures. Inconsolata supplies monospaced text and the explicit `\mathtt` alphabet in branches that use the shared mono helper; Latin Modern and Concrete retain their matching mono families. Biolinum supplies `\mathsf` in the non-Latin-Modern pdfLaTeX branches.
 - The pdfLaTeX Latin Modern branch loads `amssymb` and `mathtools`. Baskervaldx and Libertine load `mathtools` after their math packages.
-- The pdfLaTeX Palatino branch loads the integrated `newpx` package with `theoremfont,trueslanted,largesc,tighter,t,lf,amsthm,vvarbb`; it does not load `amssymb` or `mathtools`.
+- The pdfLaTeX Palatino branch loads `mathpazo[sc,noBBpl]`, scaled Type 1 Biolinum, and scaled Inconsolata; it declares the STIX/BBOLDX/Dutch math alphabets directly and explicitly assigns Biolinum to `\mathsf` and Inconsolata to `\mathtt`.
 - `bm` loads after the complete pdfLaTeX math configuration. LuaLaTeX relies on `unicode-math` bold alphabets.
 
 ### API
@@ -89,7 +126,7 @@ All accept an optional title argument: `\begin{theorem}[My Title]`.
 
 `remark`, `note`, `example`, `observation`, `openproblem`
 
-All environments are declared via `thmtools` and registered with `cleveref`, so `\cref{thm:fermat}` produces “Theorem 1.1” automatically.
+All environments are declared via `ntheorem` and registered with `cleveref`, so `\cref{thm:fermat}` produces “Theorem 1.1” automatically. `csamsmath` contains its own `ntheorem` load and TeX Live 2026 end-mark correction; no auxiliary csLaTeX theorem package is required. It uses the `amsmath`, `amsthm`, `hyperref`, and `thmmarks` compatibility options. The `amsthm` name here denotes an `ntheorem` option; the package does not load `amsthm.sty`.
 
 #### Proof Environments
 
@@ -121,8 +158,8 @@ Whenever a `\ref`, `\cref`, or `\cite` target does not exist yet, a red star `�
 
 ### Compatibility and Conflicts
 
-- Do not load `amsthm` before this package. Loading it after is fine.
-- This package loads `thmtools`, `cleveref`, `hyperref` (if not already present), and several font packages. If you load any of these independently, do so after `csamsmath` or verify there are no option conflicts.
+- Do not load `amsthm.sty` before or after this package. Use the AMS-compatible theorem and proof commands supplied through `ntheorem`.
+- This package loads `ntheorem`, `cleveref`, `hyperref` (if not already present), and several font packages. If you load any of these independently, verify that their options and load order agree with `csamsmath`.
 - Font options must match between `csamsmath` and `csbook` if both packages are loaded. A mismatch raises a package error before either package can mix incompatible mathematics fonts.
 - Under pdfLaTeX, only `latinmodern`, `baskervaldx`, `libertine`, and `palatino` are supported. The LuaLaTeX-only font options warn and fall back to Latin Modern rather than approximating the requested family with a different collection of Type 1 packages.
 - Language selection is document-level. If a document needs non-default Babel languages, pass them through the class options or load `babel` explicitly before `csamsmath`.

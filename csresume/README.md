@@ -1,9 +1,9 @@
 ---
 title: README
-aliases: README, 'README, "csresume"'
+aliases: [README, 'README, "csresume"']
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:22:30 pm
-date modified: Tuesday, August 18th 2026, 10:56:18 am
+date modified: Tuesday, August 25th 2026, 6:44:57 pm
 ---
 
 <!-- @format -->
@@ -56,7 +56,7 @@ An academic CV package with contact headers, dated entries, reference blocks, co
 - `baskerville`: Baskervaldx with KPMath and Baskervaldx math ranges. Traditional academic serif with strong contrast.
 - `euler`: Concrete Roman with Euler Math via `fontsetup`.
 
-Under LuaLaTeX and XeLaTeX, sans-serif text uses Libertinus Sans and monospace text uses Anonymous Pro.
+Under LuaLaTeX and XeLaTeX, sans-serif text uses Libertinus Sans and monospaced text and mathematics use Inconsolata.
 
 #### Layout options
 

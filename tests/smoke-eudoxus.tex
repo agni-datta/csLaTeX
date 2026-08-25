@@ -1,5 +1,13 @@
 \documentclass{amsart}
 \usepackage{eudoxus}
+\makeatletter
+\@ifpackageloaded{amsthm}{}{\PackageError{smoke-eudoxus}{amsthm was not loaded}{}}
+\@ifpackageloaded{ntheorem}{\PackageError{smoke-eudoxus}{ntheorem was loaded}{}}{}
+\@ifpackageloaded{thmtools}{\PackageError{smoke-eudoxus}{thmtools was loaded}{}}{}
+\makeatother
 \begin{document}
-The Eudoxus package loads.
+\section{Theorem Layer}
+\begin{theorem}The Eudoxus package loads.\end{theorem}
+\begin{theorem*}The starred theorem remains unnumbered.\end{theorem*}
+\begin{proof}The proof environment remains available.\end{proof}
 \end{document}

@@ -7,7 +7,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{csthm}[2026/06/23 v3.2 Theorem environment suite for theoretical computer science]
+\ProvidesPackage{csthm}[2026/08/25 v3.3 Theorem environment suite for theoretical computer science]
 
 \RequirePackage{l3keys2e}
 \makeatletter
@@ -36,10 +36,64 @@
 
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
-\RequirePackage{amsthm}
+\@ifpackageloaded{ntheorem}{%
+	\@ifpackagewith{ntheorem}{amsmath}{}{%
+		\PackageError{csLaTeX}{ntheorem was loaded without its amsmath option}
+		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
+	}
+	\@ifpackagewith{ntheorem}{amsthm}{}{%
+		\PackageError{csLaTeX}{ntheorem was loaded without its amsthm option}
+		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
+	}
+	\@ifpackagewith{ntheorem}{hyperref}{}{%
+		\PackageError{csLaTeX}{ntheorem was loaded without its hyperref option}
+		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
+	}
+	\@ifpackagewith{ntheorem}{thmmarks}{}{%
+		\PackageError{csLaTeX}{ntheorem was loaded without its thmmarks option}
+		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
+	}
+}{%
+	\@ifpackageloaded{amsthm}{%
+		\@ifclassloaded{amsart}{}{%
+			\@ifclassloaded{amsbook}{}{%
+				\PackageError{csLaTeX}{amsthm.sty is incompatible with this ntheorem backend}
+				{Remove the explicit amsthm package load.}%
+			}%
+		}%
+	}{}
+	% AMS classes predefine these styles and proof commands. ntheorem owns them after this point.
+	\@ifclassloaded{amsart}{\let\th@plain\relax\let\th@definition\relax\let\th@remark\relax}{}
+	\@ifclassloaded{amsbook}{\let\th@plain\relax\let\th@definition\relax\let\th@remark\relax}{}
+	\let\proof\relax
+	\let\endproof\relax
+	\let\proofname\relax
+	\let\openbox\relax
+	\RequirePackage[amsmath,amsthm,hyperref,thmmarks]{ntheorem}%
+}
+
+% TeX Live 2026's ntheorem drops an end mark after ordinary text when no trailing skip is present.
+\@ifundefined{cslatex@ntheoremendmarkpatched}{%
+	\gdef\@endtrivlist#1{%
+		\if@inlabel \indent\fi
+		\if@newlist \@noitemerr\fi
+		\ifhmode
+			\ifdim\lastskip >\z@ \unskip\fi
+			#1\unskip\par
+		\fi
+		\if@noparlist\else
+			\ifdim\lastskip >\z@
+				\@tempskipa\lastskip \vskip-\lastskip
+				\advance\@tempskipa\parskip \advance\@tempskipa-\@outerparskip
+				\vskip\@tempskipa
+			\fi
+			\@endparenv
+		\fi
+	}%
+	\global\let\cslatex@ntheoremendmarkpatched\@empty
+}{}
 \RequirePackage{enumitem}
 \RequirePackage{iftex}
-\RequirePackage{thmtools}
 \RequirePackage[
 	skipabove   = 0.75\baselineskip ,
 	skipbelow   = 0.75\baselineskip ,
@@ -65,8 +119,9 @@
 { \ensuremath{ \color{\g_csthm_accent_tl} \square   } }
 \NewDocumentCommand \CsthmEndMark {}
 { \ensuremath{ \color{\g_csthm_accent_tl} \lrcorner } }
-\RenewDocumentCommand{\qedsymbol}{}{\CsthmQED}
-\ProvideDocumentCommand{\setqedsymbol}{m}{ \RenewDocumentCommand{\qedsymbol}{}{#1} }
+\global\qedsymbol{\CsthmQED}
+\renewcommand{\proofSymbol}{\the\qedsymbol}
+\ProvideDocumentCommand{\setqedsymbol}{m}{\global\qedsymbol{#1}}
 \ProvideDocumentCommand{\settheoremendsymbol}{m}{ \RenewDocumentCommand{\CsthmEndMark}{}{#1} }
 \ProvideDocumentCommand{\SetQEDSymbol}{m}{ \setqedsymbol{#1} }
 \ProvideDocumentCommand{\SetTheoremEndSymbol}{m}{ \settheoremendsymbol{#1} }
@@ -86,103 +141,66 @@
 % Theorem environments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\tl_new:N \l_csthm_cur_style_tl
-\tl_new:N \l_csthm_envkey_tl
-\tl_new:N \l_csthm_envname_tl
-\seq_new:N \l_csthm_pair_seq
+\newtheoremstyle{csthmplain}
+{\item[\hskip\labelsep\theorem@headerfont ##1\ ##2\unskip\theorem@separator]}
+{\item[\hskip\labelsep\theorem@headerfont ##1\ ##2\ {\normalfont(##3)}\unskip\theorem@separator]}
+\newtheoremstyle{nonumbercsthmplain}
+{\item[\hskip\labelsep\theorem@headerfont ##1\unskip\theorem@separator]}
+{\item[\hskip\labelsep\theorem@headerfont ##1\ {\normalfont(##3)}\unskip\theorem@separator]}
 
-\cs_new_protected:Npn \csthm_declare_one:
-{
-	\use:e
-	{
-		\exp_not:N \declaretheorem
-		[
-			style        = \tl_use:N \l_csthm_cur_style_tl ,
-			name         = {\tl_use:N \l_csthm_envname_tl} ,
-			numberwithin = section
-		]
-		{\tl_use:N \l_csthm_envkey_tl}
-		\exp_not:N \declaretheorem
-		[
-			style      = \tl_use:N \l_csthm_cur_style_tl ,
-			name       = {\tl_use:N \l_csthm_envname_tl} ,
-			unnumbered
-		]
-		{\tl_use:N \l_csthm_envkey_tl *}
-	}
+\newif\ifcsthm@useframe
+\def\csthm@preskip{0pt}
+\def\csthm@postskip{0pt}
+\def\csthm@currentframe{}
+
+\def\csthm@configurefamily#1#2#3#4{%
+	\theoremstyle{csthmplain}%
+	\theoremheaderfont{#1}%
+	\theorembodyfont{#2}%
+	\theoremseparator{.}%
+	\theorempreskip{\csthm@preskip}%
+	\theorempostskip{\csthm@postskip}%
+	\theoremsymbol{#3}%
+	\def\csthm@currentframe{#4}%
+}
+\def\csthm@declareone#1{\expandafter\csthm@declareone@parse#1\csthm@nil}
+\def\csthm@declareone@parse#1/#2\csthm@nil{%
+	\newtheorem{#1}{#2}[section]%
+	\renewtheorem*{#1*}{#2}%
+	\ifcsthm@useframe
+		\surroundwithmdframed[style=\csthm@currentframe]{#1}%
+		\surroundwithmdframed[style=\csthm@currentframe]{#1*}%
+	\fi
+}
+\def\csthm@declarefamily#1#2#3#4#5{%
+	\csthm@configurefamily{#1}{#2}{#3}{#4}%
+	\expandafter\csthm@processlist\expandafter{#5}%
+}
+\def\csthm@processlist#1{\forcsvlist{\csthm@declareone}{#1}}
+
+\def\csthm@theoremlist{%
+	theorem/Theorem,assertion/Assertion,assumption/Assumption,axiom/Axiom,
+	claim/Claim,conclusion/Conclusion,conjecture/Conjecture,corollary/Corollary,
+	fact/Fact,folklore/Folklore,hypothesis/Hypothesis,lemma/Lemma,
+	postulate/Postulate,property/Property,proposition/Proposition%
+}
+\def\csthm@definitionlist{%
+	application/Application,construction/Construction,convention/Convention,
+	definition/Definition,experiment/Experiment,notation/Notation,
+	openproblem/Open~Problem,problem/Problem,protocol/Protocol,result/Result%
+}
+\def\csthm@remarklist{%
+	commentary/Commentary,contribution/Contribution,example/Example,exercise/Exercise,
+	motivation/Motivation,notationabuse/Notation~Abuse,note/Note,
+	observation/Observation,question/Question,remark/Remark%
+}
+\def\csthm@highlightlist{%
+	guideline/Guideline,highlight/Highlight,important/Important,insight/Insight,
+	keypoint/Key~Point,recall/Recall,summary/Summary,takeaway/Takeaway,
+	tip/Tip,warning/Warning%
 }
 
-\cs_new_protected:Npn \csthm_declare_list:nn #1 #2
-{
-	\tl_set:Nn \l_csthm_cur_style_tl {#1}
-	\clist_map_inline:nn {#2}
-	{
-		\seq_set_split:Nnn \l_csthm_pair_seq { / } { ##1 }
-		\tl_set:Nx \l_csthm_envkey_tl  { \seq_item:Nn \l_csthm_pair_seq {1} }
-		\tl_set:Nx \l_csthm_envname_tl { \seq_item:Nn \l_csthm_pair_seq {2} }
-		\csthm_declare_one:
-	}
-}
-
-\cs_new_protected:Npn \csthm_declare_envs:
-{
-	\csthm_declare_list:nn { csthm@thmstyle }
-	{
-		theorem/Theorem,%
-		assertion/Assertion,%
-		assumption/Assumption,%
-		axiom/Axiom,%
-		claim/Claim,%
-		conclusion/Conclusion,%
-		conjecture/Conjecture,%
-		corollary/Corollary,%
-		fact/Fact,%
-		folklore/Folklore,%
-		hypothesis/Hypothesis,%
-		lemma/Lemma,%
-		postulate/Postulate,%
-		property/Property,%
-		proposition/Proposition%
-	}
-	\csthm_declare_list:nn { csthm@defstyle }
-	{
-		application/Application,%
-		construction/Construction,%
-		convention/Convention,%
-		definition/Definition,%
-		experiment/Experiment,%
-		notation/Notation,%
-		openproblem/Open~Problem,%
-		problem/Problem,%
-		protocol/Protocol,%
-		result/Result%
-	}
-	\csthm_declare_list:nn { csthm@remarkstyle }
-	{
-		commentary/Commentary,%
-		contribution/Contribution,%
-		example/Example,%
-		exercise/Exercise,%
-		motivation/Motivation,%
-		notationabuse/Notation~Abuse,%
-		note/Note,%
-		observation/Observation,%
-		question/Question,%
-		remark/Remark%
-	}
-	\csthm_declare_list:nn { csthm@hltstyle }
-	{
-		guideline/Guideline,%
-		highlight/Highlight,%
-		important/Important,%
-		insight/Insight,%
-		keypoint/Key~Point,%
-		recall/Recall,%
-		summary/Summary,%
-		takeaway/Takeaway,%
-		tip/Tip,%
-		warning/Warning%
-	}
+\def\csthm@declareproofhelpers{%
 	\NewDocumentEnvironment{proofsketch}{o}
 	{
 		\IfNoValueTF{##1}
@@ -206,216 +224,76 @@
 	{ \end{proof} }
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Style: normal
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\cs_new_protected:Npn \csthm_setup_normal:
-{
-	\mdfdefinestyle { csthm@ruled }
-	{
-		linewidth         = 0.5pt ,
-		topline           = true  ,
-		bottomline        = true  ,
-		leftline          = false ,
-		rightline         = false ,
-		innertopmargin    = 7.5pt ,
-		innerbottommargin = 7.5pt ,
-		innerleftmargin   = 0pt   ,
-		innerrightmargin  = 0pt   ,
-		skipabove         = 0.75\baselineskip ,
+\def\csthm@setupnormal{%
+	\csthm@useframetrue
+	\def\csthm@preskip{0pt}\def\csthm@postskip{0pt}
+	\mdfdefinestyle{csthm@ruled}{
+		linewidth         = 0.5pt,
+		topline           = true,
+		bottomline        = true,
+		leftline          = false,
+		rightline         = false,
+		innertopmargin    = 7.5pt,
+		innerbottommargin = 7.5pt,
+		innerleftmargin   = 0pt,
+		innerrightmargin  = 0pt,
+		skipabove         = 0.75\baselineskip,
 		skipbelow         = 0.75\baselineskip
 	}
-	\declaretheoremstyle
-	[
-		headfont      = \scshape ,
-		notefont      = \normalfont ,
-		bodyfont      = \normalfont ,
-		headpunct     = {.} ,
-		spaceabove    = 0pt ,
-		spacebelow    = 0pt ,
-		postheadspace = 0.5em ,
-		mdframed      = { style = csthm@ruled } ,
-		qed           = \CsthmEndMark
-	]{ csthm@thmstyle }
-	\declaretheoremstyle
-	[
-		headfont      = \scshape ,
-		notefont      = \normalfont ,
-		bodyfont      = \normalfont ,
-		headpunct     = {.} ,
-		spaceabove    = 0pt ,
-		spacebelow    = 0pt ,
-		postheadspace = 0.5em ,
-		mdframed      = { style = csthm@ruled } ,
-		qed           = \CsthmEndMark
-	]{ csthm@defstyle }
-	\declaretheoremstyle
-	[
-		headfont      = \scshape ,
-		notefont      = \normalfont ,
-		bodyfont      = \normalfont ,
-		headpunct     = {.} ,
-		spaceabove    = 0pt ,
-		spacebelow    = 0pt ,
-		postheadspace = 0.5em ,
-		mdframed      = { style = csthm@ruled } ,
-		qed           = \CsthmEndMark
-	]{ csthm@remarkstyle }
-	\declaretheoremstyle
-	[
-		headfont      = \sffamily ,
-		notefont      = \normalfont ,
-		bodyfont      = \normalfont\sffamily ,
-		headpunct     = {.} ,
-		spaceabove    = 0pt ,
-		spacebelow    = 0pt ,
-		postheadspace = 0.5em ,
-		mdframed      = { style = csthm@ruled } ,
-		qed           = \CsthmEndMark
-	]{ csthm@hltstyle }
-	\declaretheoremstyle
-	[
-		headfont      = \scshape ,
-		notefont      = \normalfont ,
-		bodyfont      = \normalfont ,
-		headpunct     = {.} ,
-		spaceabove    = 0pt ,
-		spacebelow    = 0pt ,
-		postheadspace = 0.5em ,
-		numbered      = no ,
-		qed           = \CsthmQED
-	]{ csthm@proofstyle }
-	\csthm_declare_envs:
+	\csthm@declarefamily{\scshape}{\normalfont}{\CsthmEndMark}{csthm@ruled}{\csthm@theoremlist}
+	\csthm@declarefamily{\scshape}{\normalfont}{\CsthmEndMark}{csthm@ruled}{\csthm@definitionlist}
+	\csthm@declarefamily{\scshape}{\normalfont}{\CsthmEndMark}{csthm@ruled}{\csthm@remarklist}
+	\csthm@declarefamily{\sffamily}{\normalfont\sffamily}{\CsthmEndMark}{csthm@ruled}{\csthm@highlightlist}
+	\csthm@declareproofhelpers
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Style: fancy
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\cs_new_protected:Npn \csthm_setup_fancy:
-{
-	\colorlet { csthm@thmcolor    } { SeaGreen4   }
-	\colorlet { csthm@defcolor    } { RoyalBlue2  }
-	\colorlet { csthm@remarkcolor } { Aquamarine4 }
-	\colorlet { csthm@hltcolor    } { DeepPink4   }
-
-	\cs_new_protected:Npn \csthm_fancystyle:nnn ##1 ##2 ##3
-	{
-		\declaretheoremstyle
-		[
-			headfont      = \sffamily\color{##2} ,
-			notefont      = \sffamily\color{##2} ,
-			bodyfont      = ##3 ,
-			headpunct     = {.} ,
-			spaceabove    = 0pt ,
-			spacebelow    = 0pt ,
-			postheadspace = 0.5em ,
-			mdframed      =
-				{
-					linewidth       = 2pt   ,
-					topline         = false ,
-					bottomline      = false ,
-					rightline       = false ,
-					leftline        = true  ,
-					linecolor       = ##2   ,
-					backgroundcolor = ##2!5
-				}
-		]{ ##1 }
+\def\csthm@definefancyframe#1#2{%
+	\mdfdefinestyle{#1}{
+		linewidth       = 2pt,
+		topline         = false,
+		bottomline      = false,
+		rightline       = false,
+		leftline        = true,
+		linecolor       = #2,
+		backgroundcolor = #2!5
 	}
-	\csthm_fancystyle:nnn { csthm@thmstyle }    { csthm@thmcolor    } { \normalfont }
-	\csthm_fancystyle:nnn { csthm@defstyle }    { csthm@defcolor    } { \normalfont }
-	\csthm_fancystyle:nnn { csthm@remarkstyle } { csthm@remarkcolor } { \normalfont }
-	\csthm_fancystyle:nnn { csthm@hltstyle }    { csthm@hltcolor    } { \normalfont\sffamily }
-	\declaretheoremstyle
-	[
-		headfont      = \scshape\color{csthm@thmcolor} ,
-		bodyfont      = \normalfont ,
-		headpunct     = {.} ,
-		spaceabove    = 0pt ,
-		spacebelow    = 0pt ,
-		postheadspace = 0.5em ,
-		numbered      = no ,
-		qed           = \CsthmQED
-	]{ csthm@proofstyle }
-	\csthm_declare_envs:
+}
+\def\csthm@setupfancy{%
+	\csthm@useframetrue
+	\def\csthm@preskip{0pt}\def\csthm@postskip{0pt}
+	\colorlet{csthm@thmcolor}{SeaGreen4}
+	\colorlet{csthm@defcolor}{RoyalBlue2}
+	\colorlet{csthm@remarkcolor}{Aquamarine4}
+	\colorlet{csthm@hltcolor}{DeepPink4}
+	\csthm@definefancyframe{csthm@thmframe}{csthm@thmcolor}
+	\csthm@definefancyframe{csthm@defframe}{csthm@defcolor}
+	\csthm@definefancyframe{csthm@remarkframe}{csthm@remarkcolor}
+	\csthm@definefancyframe{csthm@hltframe}{csthm@hltcolor}
+	\csthm@declarefamily{\sffamily\color{csthm@thmcolor}}{\normalfont}{}{csthm@thmframe}{\csthm@theoremlist}
+	\csthm@declarefamily{\sffamily\color{csthm@defcolor}}{\normalfont}{}{csthm@defframe}{\csthm@definitionlist}
+	\csthm@declarefamily{\sffamily\color{csthm@remarkcolor}}{\normalfont}{}{csthm@remarkframe}{\csthm@remarklist}
+	\csthm@declarefamily{\sffamily\color{csthm@hltcolor}}{\normalfont\sffamily}{}{csthm@hltframe}{\csthm@highlightlist}
+	\csthm@declareproofhelpers
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Style: oldschool
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\cs_new_protected:Npn \csthm_setup_oldschool:
-{
-	\declaretheoremstyle
-	[
-		headfont      = \scshape ,
-		notefont      = \normalfont ,
-		bodyfont      = \normalfont ,
-		headpunct     = {.} ,
-		spaceabove    = \topsep ,
-		spacebelow    = \topsep ,
-		postheadspace = 0.5em
-	]{ csthm@thmstyle }
-	\declaretheoremstyle
-	[
-		headfont      = \scshape ,
-		notefont      = \normalfont ,
-		bodyfont      = \normalfont ,
-		headpunct     = {.} ,
-		spaceabove    = \topsep ,
-		spacebelow    = \topsep ,
-		postheadspace = 0.5em ,
-		qed           = \CsthmEndMark
-	]{ csthm@defstyle }
-	\declaretheoremstyle
-	[
-		headfont      = \scshape ,
-		notefont      = \normalfont ,
-		bodyfont      = \normalfont ,
-		headpunct     = {.} ,
-		spaceabove    = \topsep ,
-		spacebelow    = \topsep ,
-		postheadspace = 0.5em ,
-		qed           = \CsthmEndMark
-	]{ csthm@remarkstyle }
-	\declaretheoremstyle
-	[
-		headfont      = \sffamily ,
-		notefont      = \normalfont ,
-		bodyfont      = \normalfont\sffamily ,
-		headpunct     = {.} ,
-		spaceabove    = \topsep ,
-		spacebelow    = \topsep ,
-		postheadspace = 0.5em ,
-		qed           = \CsthmEndMark
-	]{ csthm@hltstyle }
-	\declaretheoremstyle
-	[
-		headfont      = \scshape ,
-		bodyfont      = \normalfont ,
-		headpunct     = {.} ,
-		spaceabove    = 0pt ,
-		spacebelow    = 0pt ,
-		postheadspace = 0.5em ,
-		numbered      = no ,
-		qed           = \CsthmQED
-	]{ csthm@proofstyle }
-	\csthm_declare_envs:
+\def\csthm@setupoldschool{%
+	\csthm@useframefalse
+	\def\csthm@preskip{\topsep}\def\csthm@postskip{\topsep}
+	\csthm@declarefamily{\scshape}{\normalfont}{}{}{\csthm@theoremlist}
+	\csthm@declarefamily{\scshape}{\normalfont}{\CsthmEndMark}{}{\csthm@definitionlist}
+	\csthm@declarefamily{\scshape}{\normalfont}{\CsthmEndMark}{}{\csthm@remarklist}
+	\csthm@declarefamily{\sffamily}{\normalfont\sffamily}{\CsthmEndMark}{}{\csthm@highlightlist}
+	\csthm@declareproofhelpers
 }
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Style dispatch
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \bool_if:NTF \g_csthm_fancy_bool
-{ \csthm_setup_fancy: }
+{ \csthm@setupfancy }
 {
 	\bool_if:NTF \g_csthm_normal_bool
-	{ \csthm_setup_normal: }
+	{ \csthm@setupnormal }
 	{
 		\bool_if:NTF \g_csthm_oldschool_bool
-		{ \csthm_setup_oldschool: }
+		{ \csthm@setupoldschool }
 		{
 			\PackageInfo{csthm}
 			{ No~style~option~given;~no~theorem~environments~defined. }

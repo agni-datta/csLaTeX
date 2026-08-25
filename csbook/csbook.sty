@@ -7,7 +7,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{csbook}[2026/07/28 v3.6 Macro framework for textbooks, manuscripts, and reports]
+\ProvidesPackage{csbook}[2026/08/25 v3.7 Macro framework for textbooks, manuscripts, and reports]
 
 \RequirePackage{l3keys2e}
 \makeatletter
@@ -110,6 +110,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{babel}
+\RequirePackage{dirtytalk}
 \RequirePackage[autostyle=true,csdisplay=true]{csquotes}
 \RequirePackage{emptypage}
 \RequirePackage{moresize}
@@ -130,8 +131,6 @@
 	\RequirePackage{amssymb}%
 	\RequirePackage{mathtools}%
 }
-\RequirePackage{amsthm}
-\RequirePackage{thmtools}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Color and PDF version
@@ -150,6 +149,9 @@
 % Typography and microtype
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\@ifundefined{cslatex@coremicrotypeloaded}{%
+\global\let\cslatex@coremicrotypeloaded\@empty
+
 \RequirePackage[final,protrusion=true,expansion=true]{microtype}
 \microtypesetup{
 	activate   = true,
@@ -163,11 +165,16 @@
 \SetExpansion{encoding=*,family=*}{stretch=30,shrink=30,step=1}
 \SetProtrusion{encoding=*,family=*}{period={,50},comma={,40},colon={,30},semicolon={,30}}
 
+}{}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Fonts
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newif\ifcsbk@mathalpha@stylish
+\@ifundefined{cslatex@corefontsloaded}{%
+\global\let\cslatex@corefontsloaded\@empty
+
+\newif\ifcsbk@alphabet@stylish
 
 \ifLuaTeX
 
@@ -178,10 +185,12 @@
 	\defaultfontfeatures{Numbers={Lining,Monospaced}}
 
 	\newcommand{\csbk@luamono}{%
-		\setmonofont{AnonymousPro-Regular.ttf}[
-			BoldFont       = AnonymousPro-Bold.ttf,
-			ItalicFont     = AnonymousPro-Italic.ttf,
-			BoldItalicFont = AnonymousPro-BoldItalic.ttf,
+		\setmonofont{Inconsolatazi4-Regular.otf}[
+			BoldFont          = Inconsolatazi4-Bold.otf,
+			ItalicFont        = Inconsolatazi4-Regular.otf,
+			ItalicFeatures    = {FakeSlant=0.2},
+			BoldItalicFont    = Inconsolatazi4-Bold.otf,
+			BoldItalicFeatures = {FakeSlant=0.2},
 			Scale          = MatchLowercase,
 			Ligatures      = TeX,
 			RawFeature     = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
@@ -209,8 +218,8 @@
 		]%
 	}
 	\newcommand{\csbk@luamathtt}{%
-		\setmathfont{AnonymousPro-Regular.ttf}[
-			BoldFont  = AnonymousPro-Bold.ttf,
+		\setmathfont{Inconsolatazi4-Regular.otf}[
+			BoldFont  = Inconsolatazi4-Bold.otf,
 			Scale      = MatchUppercase,
 			range      = {tt/{latin,Latin,num}},
 			RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
@@ -248,7 +257,7 @@
 		]
 		\csbk@luamathsf
 		\csbk@luamathtt
-		\csbk@mathalpha@stylishtrue
+		\csbk@alphabet@stylishtrue
 	\fi
 
 	\ifcsbk@concrete
@@ -285,7 +294,7 @@
 			AutoFakeBold, AutoFakeSlant,
 			RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
 		]
-		\csbk@mathalpha@stylishfalse
+		\csbk@alphabet@stylishfalse
 	\fi
 
 	\ifcsbk@garamond
@@ -319,7 +328,7 @@
 		]
 		\csbk@luamathsf
 		\csbk@luamathtt
-		\csbk@mathalpha@stylishtrue
+		\csbk@alphabet@stylishtrue
 	\fi
 
 	\ifcsbk@gfsdidot
@@ -365,7 +374,7 @@
 		]
 		\csbk@luamathsf
 		\csbk@luamathtt
-		\csbk@mathalpha@stylishtrue
+		\csbk@alphabet@stylishtrue
 	\fi
 
 	\ifcsbk@kpfonts
@@ -381,7 +390,7 @@
 			SmallCapsFeatures = {Letters=SmallCaps}
 		]
 		\csbk@luamono
-		\csbk@mathalpha@stylishtrue
+		\csbk@alphabet@stylishtrue
 	\fi
 
 	\ifcsbk@latinmodern
@@ -413,7 +422,7 @@
 			AutoFakeBold, AutoFakeSlant,
 			RawFeature = {+calt,+case,+kern,+mark,+mkmk,+liga,+lnum,+tnum}
 		]
-		\csbk@mathalpha@stylishfalse
+		\csbk@alphabet@stylishfalse
 	\fi
 
 	\ifcsbk@libertine
@@ -446,7 +455,7 @@
 		]
 		\csbk@luamathsf
 		\csbk@luamathtt
-		\csbk@mathalpha@stylishtrue
+		\csbk@alphabet@stylishtrue
 	\fi
 
 	\ifcsbk@palatino
@@ -469,15 +478,15 @@
 		]
 		\csbk@luamathsf
 		\csbk@luamathtt
-		\csbk@mathalpha@stylishtrue
+		\csbk@alphabet@stylishtrue
 	\fi
 
 \else
 	\RequirePackage[T1]{fontenc}
 	\RequirePackage{sansmath}
 
-	\newcommand{\csbk@pdfmono}{\RequirePackage[varqu,varl]{inconsolata}}
-	\newcommand{\csbk@pdfsans}{\RequirePackage{biolinum}}
+	\newcommand{\csbk@pdfmono}{\RequirePackage[scaled=1.03]{inconsolata}}
+	\newcommand{\csbk@pdfsans}{\RequirePackage[type1,scaled=1.085]{biolinum}}
 
 	\ifcsbk@baskervaldx
 		\RequirePackage[lining,tabular]{Baskervaldx}
@@ -485,13 +494,13 @@
 		\csbk@pdfmono
 		\RequirePackage[baskervaldx,varbb]{newtxmath}
 		\csbk@loadmathtools
-		\csbk@mathalpha@stylishtrue
+		\csbk@alphabet@stylishtrue
 	\fi
 
 	\ifcsbk@latinmodern
 		\RequirePackage{lmodern}
 		\csbk@loadamsmathtools
-		\csbk@mathalpha@stylishfalse
+		\csbk@alphabet@stylishfalse
 	\fi
 
 	\ifcsbk@libertine
@@ -500,26 +509,109 @@
 		\RequirePackage[lining,tabular]{libertineRoman}
 		\RequirePackage[libertine,varbb]{newtxmath}
 		\csbk@loadmathtools
-		\csbk@mathalpha@stylishtrue
+		\csbk@alphabet@stylishtrue
 	\fi
 
 	\ifcsbk@palatino
-		\RequirePackage[theoremfont,trueslanted,largesc,tighter,t,lf,amsthm,vvarbb]{newpx}
-		\csbk@mathalpha@stylishtrue
+		\RequirePackage[sc,noBBpl]{mathpazo}
+		\csbk@pdfsans
+		\csbk@pdfmono
+		\csbk@loadamsmathtools
+		\csbk@alphabet@stylishtrue
 	\fi
 
 \fi
 
+% These NFSS declarations are the small subset of the alphabet setup that this
+% package needs.  Keeping them here avoids a dependency on version-sensitive
+% alphabet-selection wrappers while retaining the same underlying fonts.
+\def\csbk@declare@cmcal{%
+	\DeclareFontFamily{U}{cmsy}{\skewchar\font48 }%
+	\DeclareFontShape{U}{cmsy}{m}{n}{%
+		<-5.5>cmsy5<5.5-6.5>cmsy6<6.5-7.5>cmsy7
+		<7.5-8.5>cmsy8<8.5-9.5>cmsy9<9.5->cmsy10}{}%
+	\DeclareFontShape{U}{cmsy}{b}{n}{%
+		<-5.5>cmbsy5<5.5-6.5>cmbsy6<6.5-7.5>cmbsy7
+		<7.5-8.5>cmbsy8<8.5-9.5>cmbsy9<9.5->cmbsy10}{}%
+	\DeclareMathAlphabet{\mathcal}{U}{cmsy}{m}{n}%
+	\SetMathAlphabet{\mathcal}{bold}{U}{cmsy}{b}{n}%
+	\DeclareMathAlphabet{\mathbfcal}{U}{cmsy}{b}{n}%
+}
+\def\csbk@declare@stixcal{%
+	\DeclareFontFamily{U}{stixplain}{\skewchar\font=127 }%
+	\DeclareFontShape{U}{stixplain}{m}{n}{<->stix-mathcal}{}%
+	\DeclareFontShape{U}{stixplain}{b}{n}{<->stix-mathcal-bold}{}%
+	\DeclareMathAlphabet{\mathcal}{U}{stixplain}{m}{n}%
+	\SetMathAlphabet{\mathcal}{bold}{U}{stixplain}{b}{n}%
+	\DeclareMathAlphabet{\mathbfcal}{U}{stixplain}{b}{n}%
+}
+\def\csbk@declare@stixbb{%
+	\DeclareFontFamily{U}{stixonebb}{\skewchar\font=45 }%
+	\DeclareFontShape{U}{stixonebb}{m}{n}{<->stix-mathbb}{}%
+	\DeclareFontShape{U}{stixonebb}{m}{it}{<->stix-mathbbit}{}%
+	\DeclareFontShape{U}{stixonebb}{b}{n}{<->stix-mathbb-bold}{}%
+	\DeclareFontShape{U}{stixonebb}{b}{it}{<->stix-mathbbit-bold}{}%
+	\DeclareFontSubstitution{U}{stixonebb}{m}{n}%
+	\DeclareMathAlphabet{\mathbb}{U}{stixonebb}{m}{n}%
+	\SetMathAlphabet{\mathbb}{bold}{U}{stixonebb}{b}{n}%
+	\DeclareMathAlphabet{\mathbfbb}{U}{stixonebb}{b}{n}%
+	\DeclareMathAlphabet{\mathbbi}{U}{stixonebb}{m}{it}%
+	\SetMathAlphabet{\mathbbi}{bold}{U}{stixonebb}{b}{it}%
+	\DeclareMathAlphabet{\mathbfbbi}{U}{stixonebb}{b}{it}%
+}
+\def\csbk@declare@bboldxbb{%
+	\DeclareFontFamily{U}{bboldx}{\skewchar\font=45 }%
+	\DeclareFontShape{U}{bboldx}{m}{n}{<->BBOLDX-Regular}{}%
+	\DeclareFontShape{U}{bboldx}{b}{n}{<->BBOLDX-Bold}{}%
+	\DeclareFontShape{U}{bboldx}{bx}{n}{<->ssub*bboldx/b/n}{}%
+	\DeclareMathAlphabet{\mathbb}{U}{bboldx}{m}{n}%
+	\SetMathAlphabet{\mathbb}{bold}{U}{bboldx}{b}{n}%
+	\DeclareMathAlphabet{\mathbfbb}{U}{bboldx}{b}{n}%
+}
+\def\csbk@declare@dutchscr{%
+	\DeclareFontFamily{U}{dutchscr}{\skewchar\font=45 }%
+	\DeclareFontShape{U}{dutchscr}{m}{n}{<->dutchcal-r}{}%
+	\DeclareFontShape{U}{dutchscr}{b}{n}{<->dutchcal-b}{}%
+	\DeclareMathAlphabet{\mathscr}{U}{dutchscr}{m}{n}%
+	\SetMathAlphabet{\mathscr}{bold}{U}{dutchscr}{b}{n}%
+	\DeclareMathAlphabet{\mathbfscr}{U}{dutchscr}{b}{n}%
+}
+
+\let\mathbb\relax
+\let\mathbfbb\relax
+\let\mathbbi\relax
+\let\mathbfbbi\relax
 \let\mathbfcal\relax
+\let\mathscr\relax
 \let\mathbfscr\relax
-\ifcsbk@mathalpha@stylish
-	\RequirePackage[cal=stixplain,bb=stix,scr=dutchcal]{mathalpha}
+\ifcsbk@palatino
+	\csbk@declare@stixcal
+	\csbk@declare@bboldxbb
 \else
-	\RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
+	\ifcsbk@alphabet@stylish
+		\csbk@declare@stixcal
+	\else
+		\csbk@declare@cmcal
+	\fi
+	\csbk@declare@stixbb
 \fi
+\csbk@declare@dutchscr
 \ifPDFTeX
+	\ifcsbk@latinmodern
+		\SetMathAlphabet{\mathsf}{normal}{T1}{lmss}{m}{n}%
+		\SetMathAlphabet{\mathsf}{bold}{T1}{lmss}{b}{n}%
+		\SetMathAlphabet{\mathtt}{normal}{T1}{lmtt}{m}{n}%
+		\SetMathAlphabet{\mathtt}{bold}{T1}{lmtt}{sb}{n}%
+	\else
+		\SetMathAlphabet{\mathsf}{normal}{T1}{LinuxBiolinumT-TLF}{m}{n}%
+		\SetMathAlphabet{\mathsf}{bold}{T1}{LinuxBiolinumT-TLF}{b}{n}%
+		\SetMathAlphabet{\mathtt}{normal}{T1}{zi4}{m}{n}%
+		\SetMathAlphabet{\mathtt}{bold}{T1}{zi4}{b}{n}%
+	\fi
 	\RequirePackage{bm}
 \fi
+
+}{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Graphics, tables, and captions
@@ -770,25 +862,84 @@
 % Theorem environments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\@ifpackageloaded{ntheorem}{%
+	\@ifpackagewith{ntheorem}{amsmath}{}{%
+		\PackageError{csLaTeX}{ntheorem was loaded without its amsmath option}
+		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
+	}
+	\@ifpackagewith{ntheorem}{amsthm}{}{%
+		\PackageError{csLaTeX}{ntheorem was loaded without its amsthm option}
+		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
+	}
+	\@ifpackagewith{ntheorem}{hyperref}{}{%
+		\PackageError{csLaTeX}{ntheorem was loaded without its hyperref option}
+		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
+	}
+	\@ifpackagewith{ntheorem}{thmmarks}{}{%
+		\PackageError{csLaTeX}{ntheorem was loaded without its thmmarks option}
+		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
+	}
+}{%
+	\@ifpackageloaded{amsthm}{%
+		\@ifclassloaded{amsart}{}{%
+			\@ifclassloaded{amsbook}{}{%
+				\PackageError{csLaTeX}{amsthm.sty is incompatible with this ntheorem backend}
+				{Remove the explicit amsthm package load.}%
+			}%
+		}%
+	}{}
+	% AMS classes predefine these styles and proof commands. ntheorem owns them after this point.
+	\@ifclassloaded{amsart}{\let\th@plain\relax\let\th@definition\relax\let\th@remark\relax}{}
+	\@ifclassloaded{amsbook}{\let\th@plain\relax\let\th@definition\relax\let\th@remark\relax}{}
+	\let\proof\relax
+	\let\endproof\relax
+	\let\proofname\relax
+	\let\openbox\relax
+	\RequirePackage[amsmath,amsthm,hyperref,thmmarks]{ntheorem}%
+}
+
+% TeX Live 2026's ntheorem drops an end mark after ordinary text when no trailing skip is present.
+\@ifundefined{cslatex@ntheoremendmarkpatched}{%
+	\gdef\@endtrivlist#1{%
+		\if@inlabel \indent\fi
+		\if@newlist \@noitemerr\fi
+		\ifhmode
+			\ifdim\lastskip >\z@ \unskip\fi
+			#1\unskip\par
+		\fi
+		\if@noparlist\else
+			\ifdim\lastskip >\z@
+				\@tempskipa\lastskip \vskip-\lastskip
+				\advance\@tempskipa\parskip \advance\@tempskipa-\@outerparskip
+				\vskip\@tempskipa
+			\fi
+			\@endparenv
+		\fi
+	}%
+	\global\let\cslatex@ntheoremendmarkpatched\@empty
+}{}
 \RequirePackage[most]{tcolorbox}
-\RequirePackage[
-	framemethod = TikZ ,
-	ntheorem ,
-	skipabove   = 0.75\baselineskip ,
-	skipbelow   = 0.75\baselineskip
-]{mdframed}
+\@ifpackageloaded{mdframed}{}{%
+	\RequirePackage[
+		framemethod = TikZ ,
+		ntheorem ,
+		skipabove   = 0.75\baselineskip ,
+		skipbelow   = 0.75\baselineskip
+	]{mdframed}%
+}
 
 \numberwithin{equation}{section}
 
 \NewDocumentCommand{\commonstartsymb}{}{\ensuremath{\diamond}}
 \NewDocumentCommand{\commonsymb}     {}{\ensuremath{\lrcorner}}
 
-\RenewDocumentCommand{\qedsymbol}{}{\ensuremath{\diamond}}
+\global\qedsymbol{\ensuremath{\diamond}}
+\renewcommand{\proofSymbol}{\the\qedsymbol}
 
 \ProvideDocumentCommand{\SetQEDSymbol}{m}{ \setqedsymbol{#1} }
 \ProvideDocumentCommand{\SetTheoremEndSymbol}{m}{ \settheoremendsymbol{#1} }
 
-\ProvideDocumentCommand{\setqedsymbol}{m}{ \RenewDocumentCommand{\qedsymbol}{}{#1} }
+\ProvideDocumentCommand{\setqedsymbol}{m}{\global\qedsymbol{#1}}
 \ProvideDocumentCommand{\settheoremendsymbol}{m}{ \RenewDocumentCommand{\commonsymb}{}{#1} }
 
 \mdfdefinestyle{csbk@ruled}{
@@ -805,176 +956,141 @@
 	skipbelow         = 0.75\baselineskip ,
 }
 
-\declaretheoremstyle[
-	headfont      = \scshape,
-	notefont      = \normalfont,
-	bodyfont      = \normalfont,
-	spaceabove    = 0pt,
-	spacebelow    = 0pt,
-	headpunct     = {.},
-	postheadspace = 0.5em,
-	mdframed      = { style = csbk@ruled } ,
-	qed           = \commonsymb
-]{csbk@theoremlike}
+\protected\def\csbk@theoremheaderfont{\scshape}
+\protected\def\csbk@definitionheaderfont{\scshape\commonstartsymb~}
+\protected\def\csbk@remarkheaderfont{\normalfont\scshape}
+\protected\def\csbk@highlightheaderfont{\normalfont\sffamily}
+\protected\def\csbk@theorembodyfont{\normalfont}
+\protected\def\csbk@definitionbodyfont{\normalfont}
+\protected\def\csbk@remarkbodyfont{\normalfont}
+\protected\def\csbk@highlightbodyfont{\normalfont}
+\protected\def\csbk@parheadfont{\bfseries\boldmath}
+\protected\def\csbk@subparheadfont{\scshape}
 
-\declaretheoremstyle[
-	headfont      = \scshape\commonstartsymb~,
-	notefont      = \normalfont,
-	bodyfont      = \normalfont,
-	spaceabove    = 0pt,
-	spacebelow    = 0pt,
-	headpunct     = {.},
-	postheadspace = 0.5em,
-	mdframed      = { style = csbk@ruled } ,
-	qed           = \commonsymb
-]{csbk@definitionlike}
+\newtheoremstyle{csbkplain}
+{\item[\hskip\labelsep\theorem@headerfont ##1\ ##2\unskip\theorem@separator]}
+{\item[\hskip\labelsep\theorem@headerfont ##1\ ##2\ {\normalfont(##3)}\unskip\theorem@separator]}
 
-\declaretheoremstyle[
-	headfont      = \normalfont\scshape,
-	notefont      = \normalfont,
-	bodyfont      = \normalfont,
-	spaceabove    = 0pt,
-	spacebelow    = 0pt,
-	headpunct     = {.},
-	postheadspace = 0.5em,
-	mdframed      = { style = csbk@ruled } ,
-	qed           = \commonsymb
-]{csbk@remarklike}
+\newtheoremstyle{nonumbercsbkplain}
+{\item[\hskip\labelsep\theorem@headerfont ##1\unskip\theorem@separator]}
+{\item[\hskip\labelsep\theorem@headerfont ##1\ {\normalfont(##3)}\unskip\theorem@separator]}
 
-\declaretheoremstyle[
-	headfont      = \normalfont\sffamily,
-	notefont      = \normalfont,
-	bodyfont      = \normalfont,
-	spaceabove    = 0pt,
-	spacebelow    = 0pt,
-	headpunct     = {.},
-	postheadspace = 0.5em,
-	mdframed      = { style = csbk@ruled } ,
-	qed           = \commonsymb
-]{csbk@highlightlike}
-
-\declaretheoremstyle[
-	headfont      = \itshape,
-	bodyfont      = \normalfont,
-	spaceabove    = 5pt,
-	spacebelow    = 5pt,
-	headpunct     = {.},
-	postheadspace = 0.5em,
-	qed           = {\qedsymbol}
-]{csbk@proofstyle}
-
-\declaretheorem
-[
-	name         = Theorem ,
-	style        = csbk@theoremlike ,
-	numberwithin = section
-]{theorem}
-
-\newcommand{\csbk@declaretheoremfamily}[2]{%
-	\forcsvlist{\declaretheorem[sibling=theorem,style=#1]}{#2}%
+\newcommand{\csbk@configuretheoremfamily}[2]{%
+	\theoremstyle{csbkplain}%
+	\theoremheaderfont{#1}%
+	\theorembodyfont{#2}%
+	\theoremseparator{.}%
+	\theorempreskip{0pt}%
+	\theorempostskip{0pt}%
+	\theoremsymbol{\commonsymb}%
 }
 
-\csbk@declaretheoremfamily{csbk@theoremlike}{
-	assertion,% 
-	assumption,% 
-	axiom,% 
-	claim,% 
-	conclusion,% 
-	conjecture,% 
-	corollary,% 
-	criterion,% 
-	fact,% 
-	folklore,% 
-	hypothesis,% 
-	lemma,% 
-	observation,% 
-	postulate,% 
-	property,% 
-	proposition
+\def\csbk@surroundtheorem#1{\surroundwithmdframed[style=csbk@ruled]{#1}}
+
+\newcommand{\csbk@newtheoremfamily}[3]{%
+	\csbk@configuretheoremfamily{#1}{#2}%
+	\forcsvlist{\csbk@newtheorem}{#3}%
+}
+\def\csbk@newtheorem#1{\expandafter\csbk@newtheorem@parse#1\csbk@nil}
+\def\csbk@newtheorem@parse#1/#2\csbk@nil{%
+	\newtheorem{#1}[theorem]{#2}%
+	\csbk@surroundtheorem{#1}%
 }
 
-\declaretheorem
-[
-	name    = {Informal~Theorem} ,
-	sibling = theorem ,
-	style   = csbk@theoremlike
-]{informaltheorem}
-\declaretheorem
-[
-	name    = {Meta~Theorem} ,
-	sibling = theorem ,
-	style   = csbk@theoremlike
-]{metatheorem}
-
-\csbk@declaretheoremfamily{csbk@definitionlike}{
-	application,% 
-	construction,% 
-	convention,% 
-	definition,% 
-	example,% 
-	experiment,% 
-	notation,% 
-	problem,% 
-	protocol,% 
-	result,% 
-	solution,% 
-	step
+\newcommand{\csbk@renewunnumberedfamily}[3]{%
+	\csbk@configuretheoremfamily{#1}{#2}%
+	\forcsvlist{\csbk@renewunnumbered}{#3}%
+}
+\def\csbk@renewunnumbered#1{\expandafter\csbk@renewunnumbered@parse#1\csbk@nil}
+\def\csbk@renewunnumbered@parse#1/#2\csbk@nil{%
+	\renewtheorem*{#1}{#2}%
+	\csbk@surroundtheorem{#1}%
 }
 
-\csbk@declaretheoremfamily{csbk@remarklike}{
-	commentary,% 
-	discussion,% 
-	exercise,% 
-	motivation,% 
-	note,% 
-	question,% 
-	remark,% 
-	syntax
-}
+\@ifundefined{theorem}{%
+	\csbk@configuretheoremfamily{\csbk@theoremheaderfont}{\csbk@theorembodyfont}
+	\newtheorem{theorem}{Theorem}[section]
+	\csbk@surroundtheorem{theorem}
 
-\declaretheorem
-[
-	name    = {Notation~Abuse} ,
-	sibling = theorem ,
-	style   = csbk@remarklike
-]{notationabuse}
-\declaretheorem
-[
-	name    = {Open~Problem} ,
-	sibling = theorem ,
-	style   = csbk@remarklike
-]{openproblem}
+	\csbk@newtheoremfamily{\csbk@theoremheaderfont}{\csbk@theorembodyfont}{
+		assertion/Assertion,
+		assumption/Assumption,
+		axiom/Axiom,
+		claim/Claim,
+		conclusion/Conclusion,
+		conjecture/Conjecture,
+		corollary/Corollary,
+		criterion/Criterion,
+		fact/Fact,
+		folklore/Folklore,
+		hypothesis/Hypothesis,
+		informaltheorem/Informal Theorem,
+		lemma/Lemma,
+		metatheorem/Meta Theorem,
+		observation/Observation,
+		postulate/Postulate,
+		property/Property,
+		proposition/Proposition
+	}
 
-\csbk@declaretheoremfamily{csbk@highlightlike}{
-	guideline,% 
-	highlight,% 
-	important,% 
-	insight,% 
-	recall,% 
-	summary,% 
-	takeaway,% 
-	tip,% 
-	warning
-}
+	\csbk@newtheoremfamily{\csbk@definitionheaderfont}{\csbk@definitionbodyfont}{
+		application/Application,
+		construction/Construction,
+		convention/Convention,
+		definition/Definition,
+		example/Example,
+		experiment/Experiment,
+		notation/Notation,
+		problem/Problem,
+		protocol/Protocol,
+		result/Result,
+		solution/Solution,
+		step/Step
+	}
 
-\declaretheorem
-[
-	name    = {Key~Point} ,
-	sibling = theorem ,
-	style   = csbk@highlightlike
-]{keypoint}
+	\csbk@newtheoremfamily{\csbk@remarkheaderfont}{\csbk@remarkbodyfont}{
+		commentary/Commentary,
+		discussion/Discussion,
+		exercise/Exercise,
+		motivation/Motivation,
+		notationabuse/Notation Abuse,
+		note/Note,
+		openproblem/Open Problem,
+		question/Question,
+		remark/Remark,
+		syntax/Syntax
+	}
 
-\declaretheorem[ name = Claim ,                 style = csbk@theoremlike , numbered = no ]{claim*}
-\declaretheorem[ name = Conjecture ,            style = csbk@theoremlike , numbered = no ]{conjecture*}
-\declaretheorem[ name = Corollary ,             style = csbk@theoremlike , numbered = no ]{corollary*}
-\declaretheorem[ name = Hypothesis ,            style = csbk@theoremlike , numbered = no ]{hypothesis*}
-\declaretheorem[ name = Lemma ,                 style = csbk@theoremlike , numbered = no ]{lemma*}
-\declaretheorem[ name = Syntax ,                style = csbk@remarklike  , numbered = no ]{syntax*}
-\declaretheorem[ name = Theorem ,               style = csbk@theoremlike , numbered = no ]{theorem*}
-\declaretheorem[ name = {Informal~Theorem} ,    style = csbk@theoremlike , numbered = no ]{informaltheorem*}
-\declaretheorem[ name = {Open~Problem} ,        style = csbk@remarklike  , numbered = no ]{openproblem*}
+	\csbk@newtheoremfamily{\csbk@highlightheaderfont}{\csbk@highlightbodyfont}{
+		guideline/Guideline,
+		highlight/Highlight,
+		important/Important,
+		insight/Insight,
+		keypoint/Key Point,
+		recall/Recall,
+		summary/Summary,
+		takeaway/Takeaway,
+		tip/Tip,
+		warning/Warning
+	}
 
-\NewDocumentEnvironment{proofsketch}{o}
+	\csbk@renewunnumberedfamily{\csbk@theoremheaderfont}{\csbk@theorembodyfont}{
+		claim*/Claim,
+		conjecture*/Conjecture,
+		corollary*/Corollary,
+		hypothesis*/Hypothesis,
+		informaltheorem*/Informal Theorem,
+		lemma*/Lemma,
+		theorem*/Theorem
+	}
+
+	\csbk@renewunnumberedfamily{\csbk@remarkheaderfont}{\csbk@remarkbodyfont}{
+		openproblem*/Open Problem,
+		syntax*/Syntax
+	}
+}{}
+
+\ProvideDocumentEnvironment{proofsketch}{o}
 {
 	\IfNoValueTF{#1}
 	{ \begin{proof}[Proof~(Sketch)] }
@@ -982,7 +1098,7 @@
 }
 { \end{proof} }
 
-\NewDocumentEnvironment{proofidea}{o}
+\ProvideDocumentEnvironment{proofidea}{o}
 {
 	\IfNoValueTF{#1}
 	{ \begin{proof}[Proof~(Idea)] }
@@ -990,7 +1106,7 @@
 }
 { \end{proof} }
 
-\NewDocumentEnvironment{proofofclaim}{o}
+\ProvideDocumentEnvironment{proofofclaim}{o}
 {
 	\IfNoValueTF{#1}
 	{ \begin{proof}[Proof~of~Claim] }
@@ -1101,14 +1217,14 @@
 \def\csbk@ignorewhitespaceandimplicitpars{\begingroup\catcode13=10\endgroup}
 
 \newcommand{\csbk@paragraphhead}[1]{%
-	\smallskip\noindent
-	\textbf{\boldmath\ignorespaces\csbk@appendpunctuationifneeded{#1}}%
+	\par\smallskip\noindent
+	{\csbk@parheadfont\ignorespaces\csbk@appendpunctuationifneeded{#1}}%
 	\hskip 0.30em
 	\ignorespaces
 }
 \newcommand{\csbk@subparagraphhead}[1]{%
-	\smallskip\noindent
-	\textsc{\ignorespaces\csbk@appendpunctuationifneeded{#1}}%
+	\par\smallskip\noindent
+	{\csbk@subparheadfont\ignorespaces\csbk@appendpunctuationifneeded{#1}}%
 	\hskip 0.30em
 	\ignorespaces
 }
@@ -1376,6 +1492,15 @@
 
 \RenewDocumentCommand{\Authfont}{}{\@authorfont}
 \RenewDocumentCommand{\Affilfont}{}{\@institutefont}
+
+\AtBeginDocument{%
+	% unicode-math deliberately leaves a few legacy AMS names unavailable.
+	% Keep the source-level interface identical between LuaLaTeX and pdfLaTeX.
+	\ifLuaTeX
+		\let\leadsto\rightsquigarrow
+		\let\square\mdlgwhtsquare
+	\fi
+}
 
 \makeatother
 \endinput

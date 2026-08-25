@@ -1,9 +1,9 @@
 ---
 title: README
-aliases: README, 'README, "csletter"'
+aliases: [README, 'README, "csletter"']
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:22:12 pm
-date modified: Tuesday, August 18th 2026, 10:56:17 am
+date modified: Tuesday, August 25th 2026, 6:44:56 pm
 ---
 
 <!-- @format -->
@@ -94,7 +94,7 @@ These are boolean options (pass without a value to enable, or `option=false` to 
 - The `logo` and `signature` options require image files that exist at compile time. If the file path is wrong or the file is missing, `graphicx` will error. Always use paths relative to the main `.tex` file or absolute paths.
 - `header=true` draws a horizontal rule and sender metadata at the top. If you want a custom letterhead image instead, use `logo=true` with `logofile` and leave `header=false`.
 - Margin options are passed directly to `geometry`. If you load `geometry` yourself after this package, your settings will override the ones set here: either let `csletter` manage geometry or do not pass margin options to it.
-- LuaLaTeX loads Garamond via `fontspec`. On pdfLaTeX, the package falls back to a Garamond-compatible font available in the TeX distribution. If neither is installed, Latin Modern is used silently.
+- LuaLaTeX loads Garamond via `fontspec`, and both engine branches use Inconsolata for monospaced text. On pdfLaTeX, the package falls back to a Garamond-compatible font available in the TeX distribution. If neither is installed, Latin Modern is used silently.
 
 ### License
 

@@ -1,9 +1,9 @@
 ---
 title: README
-aliases: README, 'README, "eudoxus"'
+aliases: [README, 'README, "eudoxus"']
 linter-yaml-title-alias: README
 date created: Monday, June 22nd 2026, 7:29:06 pm
-date modified: Monday, August 24th 2026, 11:00:00 pm
+date modified: Tuesday, August 25th 2026, 6:44:58 pm
 ---
 
 <!-- @format -->
@@ -19,6 +19,7 @@ A general mathematics package centered on `amsart`. It bundles typography, page 
 - The `tcs` option requires `tcscrypto.sty` (from the `tcscrypto` package in this repository) to be on the TeX search path. If it is absent, `eudoxus` emits a warning and skips it.
 - `geometry` is loaded under the default `layout` mode. If your class already sets page dimensions (e.g. `amsart` with custom geometry), pass `nolayout` to suppress it.
 - Loads `babel` without language options. Choose document languages through the class options or load `babel` explicitly before `eudoxus`.
+- When theorem support is enabled, `eudoxus` loads plain `amsthm` directly. It does not use `ntheorem` or `thmtools` outside the separate `siam` compatibility mode, where the SIAM class remains responsible for its own theorem system.
 
 ### Usage
 
@@ -60,34 +61,35 @@ By~\zcref{thm:fermat}, the equation has no solutions.
 
 ### Options
 
-| Option           | Default | Effect                                                                                                                         |
-| ---------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `nomath`         | off     | Disables all math packages (amsmath, amsthm, mathalpha, …) and implies `notheorems`, `notcs`.                                  |
-| `notheorems`     | off     | Skips theorem environment declarations; math packages are still loaded.                                                        |
-| `fonts`          | on      | Uses the original Latin Modern and mathalpha font setup.                                                                        |
-| `nofonts`        | off     | Suppresses both bundled font setups so that the document can load its own fonts.                                                |
-| `pazobiolinum`   | off     | Uses Pazo/Palladio roman and math fonts, scaled Type 1 Biolinum sans, scaled Anonymous Pro mono, and matched math alphabets.    |
-| `tcs`            | off     | Loads `tcscrypto` when `tcscrypto.sty` is available on the TeX input path.                                                     |
-| `notcs`          | off     | Does not load `tcscrypto` even if the `tcs` flag is set.                                                                       |
-| `nolayout`       | off     | Suppresses `geometry` and the default `setspace` load; it also disables the `amsart` bibliography patch.                       |
-| `epigraph`       | off     | Loads `epigraph` with right-aligned italic quotations, small-caps sources, width `0.6\textwidth`, and compact vertical spacing. |
-| `hacks`          | off     | Sets line spacing to 1.075, emergency stretch to 2 em, display-break level to 2, and a ragged page bottom.                     |
-| `amshacks`       | off     | Loads `amsaddr[foot]` for AMS article/book classes and enforces right-hand equation tags.                                      |
-| `siam`           | off     | Preserves a loaded SIAM journal class by disabling conflicting layout, font, theorem, microtype, float, and hyperlink setup.   |
-| `titlepatch`     | off     | Applies bold sans styling to titles, section headings, `\parhead`, and `\subparhead`.                                          |
+| Option         | Default | Effect                                                                                                                          |
+| -------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `nomath`       | off     | Disables all math packages and implies `notheorems`, `notcs`.                                                                  |
+| `notheorems`   | off     | Skips theorem environment declarations; math packages are still loaded.                                                         |
+| `fonts`        | on      | Uses Latin Modern with directly declared mathematical alphabets.                                                                |
+| `nofonts`      | off     | Suppresses both bundled font setups so that the document can load its own fonts.                                                |
+| `pazobiolinum` | off     | Uses Pazo/Palladio roman and math fonts, scaled Type 1 Biolinum sans, scaled Inconsolata mono, and matched math alphabets.      |
+| `tcs`          | off     | Loads `tcscrypto` when `tcscrypto.sty` is available on the TeX input path.                                                      |
+| `notcs`        | off     | Does not load `tcscrypto` even if the `tcs` flag is set.                                                                        |
+| `nolayout`     | off     | Suppresses `geometry` and the default `setspace` load; it also disables the `amsart` bibliography patch.                        |
+| `epigraph`     | off     | Loads `epigraph` with right-aligned italic quotations, small-caps sources, width `0.6\textwidth`, and compact vertical spacing. |
+| `hacks`        | off     | Sets line spacing to 1.075, emergency stretch to 2 em, display-break level to 2, and a ragged page bottom.                      |
+| `amshacks`     | off     | Loads `amsaddr[foot]` for AMS article/book classes and enforces right-hand equation tags.                                       |
+| `siam`         | off     | Preserves a loaded SIAM journal class by disabling conflicting layout, font, theorem, microtype, float, and hyperlink setup.    |
+| `titlepatch`   | off     | Applies bold sans styling to titles, section headings, `\parhead`, and `\subparhead`.                                           |
 
 ### Pazo and Biolinum font bundle
 
 The `pazobiolinum` option uses only Type 1 and NFSS font interfaces, including under LuaLaTeX. It never loads `fontspec`. The sans and monospaced scales match their x-heights to 11 pt Palladio:
 
 ```latex
-\usepackage[sc,noBBpl]{mathpazo}
+\usepackage[sc]{mathpazo}
 \usepackage[type1,scaled=1.085]{biolinum}
-\usepackage[ttdefault,scaled=1.03]{AnonymousPro}
+\usepackage[scaled=1.03]{inconsolata}
 ```
 
-The option also assigns Biolinum to `\mathsf`, Anonymous Pro to `\mathtt`, BBOLDX to `\mathbb`, STIX calligraphic to `\mathcal`, and Dutch Calligraphic to `\mathscr`. If a document loads Biolinum independently instead, `eudoxus` still assigns Biolinum to `\mathsf`.
-It omits the three `bbm` alphabets and the redundant RSFS, esvect, and upgreek symbol families so that this complete font set stays within pdfTeX's legacy math-family limit.
+The option also assigns Biolinum to `\mathsf`, Inconsolata to `\mathtt`, BBOLDX to `\mathbb`, STIX calligraphic to `\mathcal`, and Dutch Calligraphic to `\mathscr`. If a document loads Biolinum independently instead, `eudoxus` still assigns Biolinum to `\mathsf`.
+
+It omits the three `bbm` alphabets and the redundant RSFS, esvect, and upgreek symbol families so that this complete font set stays within pdfTeX’s legacy math-family limit.
 
 ### AMS integration and compact layout
 
@@ -109,15 +111,15 @@ The `siam` option keeps the SIAM class in control of the page geometry, fonts, t
 \usepackage[siam,epigraph,tcs]{eudoxus}
 ```
 
-The SIAM class supplies its own theorem system through `ntheorem`. A document that needs additional environments should declare them with `\newsiamthm` or `\newsiamremark` after loading `eudoxus`. SIAM also reserves `\AM` for front matter, so compatibility mode retains that command and exposes the complexity package's version as `\ComplexityAM`.
+The SIAM class supplies its own theorem system through `ntheorem`. A document that needs additional environments should declare them with `\newsiamthm` or `\newsiamremark` after loading `eudoxus`. SIAM also reserves `\AM` for front matter, so compatibility mode retains that command and exposes the complexity package’s version as `\ComplexityAM`.
 
 ### Theorem Environments
 
-All environments are numbered per section and use small-caps headers. Unnumbered variants are available by appending `*`.
+All environments are declared with plain `amsthm`, numbered per section, and use small-caps headers. Unnumbered variants are available by appending `*`.
 
 **Theorem-like** (italic body):
 
-`theorem`, `assertion`, `assumption`, `axiom`, `claim`, `conclusion`, `conjecture`, `corollary`, `criterion`, `fact`, `folklore`, `hypothesis`, `informaltheorem`, `lemma`, `metatheorem`, `observation`, `postulate`, `property`, `proposition`
+`theorem`, `assertion`, `assumption`, `axiom`, `claim`, `conclusion`, `conjecture`, `corollary`, `criterion`, `fact`, `folklore`, `hypothesis`, `informaltheorem`, `lemma`, `metatheorem`, `observation`, `openproblem`, `postulate`, `property`, `proposition`
 
 **Definition-like** (roman body):
 
@@ -125,7 +127,7 @@ All environments are numbered per section and use small-caps headers. Unnumbered
 
 **Remark-like** (roman body, lighter weight):
 
-`commentary`, `discussion`, `exercise`, `guideline`, `highlight`, `important`, `insight`, `keypoint`, `motivation`, `notationabuse`, `note`, `openproblem`, `question`, `recall`, `remark`, `summary`, `syntax`, `takeaway`, `tip`, `warning`
+`commentary`, `discussion`, `exercise`, `guideline`, `highlight`, `important`, `insight`, `keypoint`, `motivation`, `notationabuse`, `note`, `question`, `recall`, `remark`, `summary`, `syntax`, `takeaway`, `tip`, `warning`
 
 **Unnumbered theorem variants**:
 
@@ -161,7 +163,7 @@ Use `\zcref{label}` for ordinary references, `\zcref[S]{label}` when a sentence 
 - The bibliography patch (`\small\setstretch{1.075}`) is applied only when the document class is `amsart` **and** `nolayout` is not set. Under `article` or any other class the bibliography renders at its default size.
 - `nolayout` suppresses `geometry`, `setspace`, and the bibliography patch together. Use it when your class or a wrapper package already controls page dimensions.
 - The `tcs` option is off by default. Enable it with `\usepackage[tcs]{eudoxus}` to load `tcscrypto` when `tcscrypto.sty` is available on the TeX input path.
-- Do not load `amsthm` independently before this package when theorems are enabled: `eudoxus` configures it internally via `\ifeudoxtheorems`.
+- Do not combine `eudoxus` theorem support with another theorem backend. It loads and configures plain `amsthm` internally via `\ifeudoxtheorems`.
 
 ### License
 

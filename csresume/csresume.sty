@@ -7,7 +7,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}[2022/06/01]
-\ProvidesPackage{csresume}[2026/06/23 v4.3 CV and resume templating package]
+\ProvidesPackage{csresume}[2026/08/25 v4.4 CV and resume templating package]
 
 \RequirePackage{l3keys2e}
 \makeatletter
@@ -163,17 +163,20 @@
 	\RequirePackage{unicode-math}
 
 	\NewDocumentCommand{\csrssetmonofont}{}{%
-		\setmonofont{AnonymousPro-Regular.ttf}[
-			BoldFont       = AnonymousPro-Bold.ttf,
-			ItalicFont     = AnonymousPro-Italic.ttf,
-			BoldItalicFont = AnonymousPro-BoldItalic.ttf,
+		\setmonofont{Inconsolatazi4-Regular.otf}[
+			BoldFont          = Inconsolatazi4-Bold.otf,
+			ItalicFont        = Inconsolatazi4-Regular.otf,
+			ItalicFeatures    = {FakeSlant=0.2},
+			BoldItalicFont    = Inconsolatazi4-Bold.otf,
+			BoldItalicFeatures = {FakeSlant=0.2},
 			Scale          = MatchLowercase,
 			Ligatures      = TeX,
 			RawFeature     = { +calt,+case,+kern,+mark,+mkmk,+liga,+lnum,+tnum }
 		]%
 	}
 	\NewDocumentCommand{\csrssetmonomathfont}{}{%
-		\setmathfont{AnonymousPro-Regular.ttf}[
+		\setmathfont{Inconsolatazi4-Regular.otf}[
+			BoldFont   = Inconsolatazi4-Bold.otf,
 			Scale      = MatchUppercase,
 			range      = { tt/{latin,Latin,num} },
 			RawFeature = { +calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum }

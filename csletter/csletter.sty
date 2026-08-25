@@ -7,7 +7,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{csletter}[2026/06/23 v3.2 Letter-formatting package for formal correspondence]
+\ProvidesPackage{csletter}[2026/08/25 v3.3 Letter-formatting package for formal correspondence]
 
 \RequirePackage{l3keys2e}
 \makeatletter
@@ -165,7 +165,7 @@
 \ifPDFTeX
 	\RequirePackage{ebgaramond}
 	\RequirePackage[scaled=.95]{ysabeau}
-	\RequirePackage[scaled=.9]{AnonymousPro}
+	\RequirePackage[scaled=.9]{inconsolata}
 \else
 	\RequirePackage{fontspec}
 	\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
@@ -184,7 +184,14 @@
 		StylisticSet = {2,6,7,9}
 	]
 	\setsansfont{Ysabeau}[Scale=MatchLowercase]
-	\setmonofont{Anonymous Pro}[Scale=MatchLowercase]
+	\setmonofont{Inconsolatazi4-Regular.otf}[
+		BoldFont          = Inconsolatazi4-Bold.otf,
+		ItalicFont        = Inconsolatazi4-Regular.otf,
+		ItalicFeatures    = {FakeSlant=0.2},
+		BoldItalicFont    = Inconsolatazi4-Bold.otf,
+		BoldItalicFeatures = {FakeSlant=0.2},
+		Scale             = MatchLowercase
+	]
 
 	\let\mathbfcal\relax
 	\let\mathbfscr\relax

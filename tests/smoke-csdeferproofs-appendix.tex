@@ -1,0 +1,16 @@
+\documentclass{article}
+\usepackage[latinmodern,final]{csamsmath}
+\usepackage[appendix=true]{csdeferproofs}
+\NewDeferredThm{theoremE}{theorem}
+\makeatletter
+\@ifpackageloaded{thmtools}{\PackageError{smoke-csdeferproofs-appendix}{thmtools was loaded}{}}{}
+\@ifpackageloaded{proof-at-the-end}{\PackageError{smoke-csdeferproofs-appendix}{proof-at-the-end was loaded}{}}{}
+\makeatother
+\begin{document}
+\section{Statement}
+\begin{theoremE}\label{thm:deferred-appendix-smoke}The statement remains inline.\end{theoremE}
+\begin{deferproof}{thm:deferred-appendix-smoke}The proof is collected for the appendix.\end{deferproof}
+\appendix
+\section{Deferred Proofs}
+\printDeferredProofs
+\end{document}

@@ -7,7 +7,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{csamsmath}[2026/07/28 v3.8 Absolute mathematical backbone for layout and proofs]
+\ProvidesPackage{csamsmath}[2026/08/25 v3.9 Absolute mathematical backbone for layout and proofs]
 
 \RequirePackage{l3keys2e}
 \makeatletter
@@ -17,7 +17,7 @@
 % Options
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\tl_new:N  \g_csam_font_tl
+\tl_new:N   \g_csam_font_tl
 \bool_new:N \g_csam_draft_bool
 \bool_new:N \g_csam_sanshdr_bool
 
@@ -54,16 +54,16 @@
 	}
 }
 
-\newif\ifcsam@baskervaldx  \tl_if_eq:NnT \g_csam_font_tl { baskervaldx } { \csam@baskervaldxtrue }
-\newif\ifcsam@concrete     \tl_if_eq:NnT \g_csam_font_tl { concrete    } { \csam@concretetrue    }
-\newif\ifcsam@garamond     \tl_if_eq:NnT \g_csam_font_tl { garamond    } { \csam@garamondtrue    }
-\newif\ifcsam@gfsdidot     \tl_if_eq:NnT \g_csam_font_tl { gfsdidot    } { \csam@gfsdidottrue    }
-\newif\ifcsam@kpfonts      \tl_if_eq:NnT \g_csam_font_tl { kpfonts     } { \csam@kpfontstrue     }
-\newif\ifcsam@latinmodern  \tl_if_eq:NnT \g_csam_font_tl { latinmodern } { \csam@latinmoderntrue }
-\newif\ifcsam@libertine    \tl_if_eq:NnT \g_csam_font_tl { libertine   } { \csam@libertinetrue   }
-\newif\ifcsam@palatino     \tl_if_eq:NnT \g_csam_font_tl { palatino    } { \csam@palatinotrue    }
-\newif\ifcsam@draft        \bool_if:NTF \g_csam_draft_bool { \csam@drafttrue }{ \csam@draftfalse }
-\newif\ifcsam@sanshdr      \bool_if:NTF \g_csam_sanshdr_bool { \csam@sanshdrtrue }{ \csam@sanshdrfalse }
+\newif\ifcsam@baskervaldx  \tl_if_eq:NnT \g_csam_font_tl      { baskervaldx       }{ \csam@baskervaldxtrue }
+\newif\ifcsam@concrete     \tl_if_eq:NnT \g_csam_font_tl      { concrete          }{ \csam@concretetrue    }
+\newif\ifcsam@garamond     \tl_if_eq:NnT \g_csam_font_tl      { garamond          }{ \csam@garamondtrue    }
+\newif\ifcsam@gfsdidot     \tl_if_eq:NnT \g_csam_font_tl      { gfsdidot          }{ \csam@gfsdidottrue    }
+\newif\ifcsam@kpfonts      \tl_if_eq:NnT \g_csam_font_tl      { kpfonts           }{ \csam@kpfontstrue     }
+\newif\ifcsam@latinmodern  \tl_if_eq:NnT \g_csam_font_tl      { latinmodern       }{ \csam@latinmoderntrue }
+\newif\ifcsam@libertine    \tl_if_eq:NnT \g_csam_font_tl 	  { libertine         }{ \csam@libertinetrue   }
+\newif\ifcsam@palatino     \tl_if_eq:NnT \g_csam_font_tl 	  { palatino          }{ \csam@palatinotrue    }
+\newif\ifcsam@draft        \bool_if:NTF  \g_csam_draft_bool   { \csam@drafttrue   }{ \csam@draftfalse 	   }
+\newif\ifcsam@sanshdr      \bool_if:NTF  \g_csam_sanshdr_bool { \csam@sanshdrtrue }{ \csam@sanshdrfalse    }
 
 \ExplSyntaxOff
 
@@ -71,6 +71,74 @@
 \ifcsam@sanshdr
 	\def\csam@headingfamily{\sffamily}
 \fi
+
+\protected\def\csam@sectionfont{\csam@headingfamily\bfseries\Large}
+\protected\def\csam@subsectionfont{\csam@headingfamily\bfseries\large}
+\protected\def\csam@subsubsectionfont{\csam@headingfamily\bfseries\normalsize}
+\protected\def\csam@parheadfont{\csam@headingfamily\bfseries\boldmath}
+\protected\def\csam@subparheadfont{\csam@headingfamily\ifcsam@sanshdr\bfseries\else\scshape\fi}
+\protected\def\csam@theoremheaderfont{\bfseries}
+\protected\def\csam@definitionheaderfont{\bfseries}
+\protected\def\csam@remarkheaderfont{\normalfont\scshape}
+\protected\def\csam@highlightheaderfont{\normalfont\sffamily}
+\protected\def\csam@theorembodyfont{\normalfont}
+\protected\def\csam@definitionbodyfont{\normalfont}
+\protected\def\csam@remarkbodyfont{\normalfont}
+\protected\def\csam@highlightbodyfont{\normalfont}
+
+\def\csam@setdocufont#1#2{\protected\gdef#1{#2}}
+
+\ExplSyntaxOn
+\cs_new_protected:Npn \csam_docufont_set:Nn #1#2
+{
+	\str_case:nnF { #2 }
+	{
+		{ bold }     { \csam@setdocufont#1{\bfseries} }
+		{ boldsans } { \csam@setdocufont#1{\sffamily\bfseries} }
+		{ italic }   { \csam@setdocufont#1{\itshape} }
+		{ italics }  { \csam@setdocufont#1{\itshape} }
+		{ normal }   { \csam@setdocufont#1{\normalfont} }
+		{ roman }    { \csam@setdocufont#1{\normalfont} }
+		{ sans }     { \csam@setdocufont#1{\sffamily} }
+		{ smallcaps }{ \csam@setdocufont#1{\scshape} }
+	}
+	{ \csam@setdocufont#1{#2} }
+}
+
+\cs_new_protected:Npn \csam_docufont_set_pair:NNn #1#2#3
+{
+	\csam_docufont_set:Nn #1 { #3 }
+	\cs_if_exist:NT #2 { \csam_docufont_set:Nn #2 { #3 } }
+}
+
+\keys_define:nn { csamsmath / docufont }
+{
+	definitionbody .code:n = { \csam_docufont_set_pair:NNn \csam@definitionbodyfont \csbk@definitionbodyfont { #1 } } ,
+	definitionhdr  .code:n = { \csam_docufont_set_pair:NNn \csam@definitionheaderfont \csbk@definitionheaderfont { #1 } } ,
+	defintionhdr   .code:n = { \csam_docufont_set_pair:NNn \csam@definitionheaderfont \csbk@definitionheaderfont { #1 } } ,
+	highlightbody  .code:n = { \csam_docufont_set_pair:NNn \csam@highlightbodyfont \csbk@highlightbodyfont { #1 } } ,
+	highlighthdr   .code:n = { \csam_docufont_set_pair:NNn \csam@highlightheaderfont \csbk@highlightheaderfont { #1 } } ,
+	parhead        .code:n = { \csam_docufont_set_pair:NNn \csam@parheadfont \csbk@parheadfont { #1 } } ,
+	parheadfont    .code:n = { \csam_docufont_set_pair:NNn \csam@parheadfont \csbk@parheadfont { #1 } } ,
+	remarkbody     .code:n = { \csam_docufont_set_pair:NNn \csam@remarkbodyfont \csbk@remarkbodyfont { #1 } } ,
+	remarkhdr      .code:n = { \csam_docufont_set_pair:NNn \csam@remarkheaderfont \csbk@remarkheaderfont { #1 } } ,
+	section        .code:n = { \csam_docufont_set:Nn \csam@sectionfont { #1 } } ,
+	sections       .code:n = { \csam_docufont_set:Nn \csam@sectionfont { #1 } } ,
+	subparhead     .code:n = { \csam_docufont_set_pair:NNn \csam@subparheadfont \csbk@subparheadfont { #1 } } ,
+	subparheadfont .code:n = { \csam_docufont_set_pair:NNn \csam@subparheadfont \csbk@subparheadfont { #1 } } ,
+	subsection     .code:n = { \csam_docufont_set:Nn \csam@subsectionfont { #1 } } ,
+	subsubsection  .code:n = { \csam_docufont_set:Nn \csam@subsubsectionfont { #1 } } ,
+	theorembody    .code:n = { \csam_docufont_set_pair:NNn \csam@theorembodyfont \csbk@theorembodyfont { #1 } } ,
+	theoremhdr     .code:n = { \csam_docufont_set_pair:NNn \csam@theoremheaderfont \csbk@theoremheaderfont { #1 } } ,
+	unknown        .code:n =
+		{
+			\PackageError{csamsmath}{Unknown~docufont~key~`\l_keys_key_str'}
+			{Use~a~documented~\string\docufont~key.}
+		} ,
+}
+
+\NewDocumentCommand{\docufont}{m}{\keys_set:nn { csamsmath / docufont } { #1 }}
+\ExplSyntaxOff
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Diagnostics and compatibility
@@ -111,6 +179,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{babel}
+\RequirePackage{dirtytalk}
 \RequirePackage[autostyle=true,csdisplay=true]{csquotes}
 \RequirePackage{emptypage}
 \RequirePackage{moresize}
@@ -131,8 +200,6 @@
 	\RequirePackage{amssymb}%
 	\RequirePackage{mathtools}%
 }
-\RequirePackage{amsthm}
-\RequirePackage{thmtools}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Color and PDF version
@@ -151,370 +218,463 @@
 % Typography and microtype
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[final,protrusion=true,expansion=true]{microtype}
-\microtypesetup{activate=true,expansion=true,factor=1500,protrusion=true,stretch=30}
-\UseMicrotypeSet[protrusion]{basicmath}
-\UseMicrotypeSet[expansion]{alltext}
-\SetExpansion{encoding=*,family=*}{stretch=30,shrink=30,step=1}
-\SetProtrusion{encoding=*,family=*}{period={,50},comma={,40},colon={,30},semicolon={,30}}
+\@ifundefined{cslatex@coremicrotypeloaded}{%
+	\global\let\cslatex@coremicrotypeloaded\@empty
+
+	\RequirePackage[final,protrusion=true,expansion=true]{microtype}
+	\microtypesetup{activate=true,expansion=true,factor=1500,protrusion=true,stretch=30}
+	\UseMicrotypeSet[protrusion]{basicmath}
+	\UseMicrotypeSet[expansion]{alltext}
+	\SetExpansion{encoding=*,family=*}{stretch=30,shrink=30,step=1}
+	\SetProtrusion{encoding=*,family=*}{period={,50},comma={,40},colon={,30},semicolon={,30}}
+
+}{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Fonts
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newif\ifcsam@mathalpha@stylish
+\@ifundefined{cslatex@corefontsloaded}{%
+	\global\let\cslatex@corefontsloaded\@empty
 
-\ifLuaTeX
+	\newif\ifcsam@alphabet@stylish
 
-	\RequirePackage{fontspec}
-	\RequirePackage{sansmath}
-	\csam@loadmathtools
-	\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket,no-alphabet}]{unicode-math}
-	\defaultfontfeatures{Numbers={Lining,Monospaced}}
+	\ifLuaTeX
 
-	\newcommand{\csam@luamono}{%
-		\setmonofont{AnonymousPro-Regular.ttf}[
-			BoldFont       = AnonymousPro-Bold.ttf,
-			ItalicFont     = AnonymousPro-Italic.ttf,
-			BoldItalicFont = AnonymousPro-BoldItalic.ttf,
-			Scale          = MatchLowercase,
-			Ligatures      = TeX,
-			RawFeature     = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]%
-	}
-	\newcommand{\csam@luasans}[1][MatchUppercase]{%
-		\setsansfont{LibertinusSans-Regular.otf}[
-			BoldFont          = LibertinusSans-Bold.otf,
-			ItalicFont        = LibertinusSans-Italic.otf,
-			BoldItalicFont    = LibertinusSans-Bold.otf,
-			BoldItalicFeatures = {FakeSlant=0.2},
-			Scale             = #1,
-			Ligatures         = TeX,
-			SmallCapsFeatures = {RawFeature=+smcp},
-			RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]%
-	}
-	\newcommand{\csam@luamathsf}{%
-		\setmathfont{LibertinusSans-Regular.otf}[
-			BoldFont  = LibertinusSans-Bold.otf,
-			Scale      = MatchUppercase,
-			range      = {sfup/{latin,Latin,num},sfit/{latin,Latin}},
-			Ligatures  = TeX,
-			RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]%
-	}
-	\newcommand{\csam@luamathtt}{%
-		\setmathfont{AnonymousPro-Regular.ttf}[
-			BoldFont  = AnonymousPro-Bold.ttf,
-			Scale      = MatchUppercase,
-			range      = {tt/{latin,Latin,num}},
-			RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]%
-	}
-
-	\ifcsam@baskervaldx
-		\setmainfont{Baskervaldx-Reg.otf}[
-			BoldFont          = Baskervaldx-Bol.otf,
-			ItalicFont        = Baskervaldx-Ita.otf,
-			BoldItalicFont    = Baskervaldx-BolIta.otf,
-			Ligatures         = TeX,
-			SmallCapsFeatures = {RawFeature=+smcp},
-			RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]
-		\csam@luasans
-		\csam@luamono
-		\setmathfont{KpMath-Regular.otf}[
-			BoldFont = KpMath-Bold.otf,
-			AutoFakeSlant,
-			Scale      = MatchUppercase,
-			RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]
-		\setmathfont{Baskervaldx-Reg.otf}[
-			Scale      = MatchUppercase,
-			range      = {up/{latin,Latin,num}},
-			Ligatures  = TeX,
-			RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]
-		\setmathfont{Baskervaldx-Ita.otf}[
-			Scale      = MatchUppercase,
-			range      = {it/{latin,Latin}},
-			Ligatures  = TeX,
-			RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]
-		\csam@luamathsf
-		\csam@luamathtt
-		\csam@mathalpha@stylishtrue
-	\fi
-
-	\ifcsam@concrete
-		\setmainfont{cmunorm.otf}[
-			BoldFont       = cmunobx.otf,
-			ItalicFont     = cmunoti.otf,
-			BoldItalicFont = cmunobi.otf,
-			Ligatures      = TeX,
-			RawFeature     = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]
-		\setsansfont{NewCMSans10-Book.otf}[
-			BoldFont          = NewCMSans10-Bold.otf,
-			ItalicFont        = NewCMSans10-BookOblique.otf,
-			BoldItalicFont    = NewCMSans10-BoldOblique.otf,
-			SlantedFont       = NewCMSans10-BookOblique.otf,
-			BoldSlantedFont   = NewCMSans10-BoldOblique.otf,
-			Ligatures         = TeX,
-			RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum},
-			SmallCapsFeatures = {RawFeature=+smcp}
-		]
-		\setmonofont{NewCMMono10-Book.otf}[
-			BoldFont           = NewCMMono10-Bold.otf,
-			ItalicFont         = NewCMMono10-BookItalic.otf,
-			BoldItalicFont     = NewCMMono10-BoldOblique.otf,
-			SlantedFont        = NewCMMono10-Book.otf,
-			SlantedFeatures    = {FakeSlant=0.25},
-			BoldSlantedFont    = NewCMMono10-Bold.otf,
-			BoldSlantedFeatures = {FakeSlant=0.25},
-			Ligatures          = TeX,
-			RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum},
-			SmallCapsFeatures  = {RawFeature=+smcp}
-		]
-		\setmathfont{Euler-Math.otf}[
-			AutoFakeBold, AutoFakeSlant,
-			RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]
-		\csam@mathalpha@stylishfalse
-	\fi
-
-	\ifcsam@garamond
-		\setmainfont{GaramondLibre-Regular.otf}[
-			Ligatures         = TeX,
-			BoldFont          = GaramondLibre-Bold.otf,
-			BoldItalicFont    = GaramondLibre-BoldItalic.otf,
-			ItalicFont        = GaramondLibre-Italic.otf,
-			SmallCapsFont     = GaramondLibre-Regular.otf,
-			SmallCapsFeatures = {RawFeature={+smcp,+lnum,+tnum}},
-			RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]
-		\csam@luasans[MatchLowercase]
-		\csam@luamono
-		\setmathfont{Garamond-Math.otf}[
-			AutoFakeBold, AutoFakeSlant,
-			Scale      = MatchUppercase,
-			RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]
-		\setmathfont{GaramondLibre-Regular.otf}[
-			Scale      = MatchUppercase,
-			range      = {up/{latin,Latin,num}},
-			Ligatures  = TeX,
-			RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]
-		\setmathfont{GaramondLibre-Italic.otf}[
-			Scale      = MatchUppercase,
-			range      = {it/{latin,Latin}},
-			Ligatures  = TeX,
-			RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]
-		\csam@luamathsf
-		\csam@luamathtt
-		\csam@mathalpha@stylishtrue
-	\fi
-
-	\ifcsam@gfsdidot
-		\setmainfont{GFSDidot.otf}[
-			BoldFont       = GFSDidotBold.otf,
-			ItalicFont     = GFSDidotItalic.otf,
-			BoldItalicFont = GFSDidotBoldItalic.otf,
-			SlantedFont    = GFSDidotItalic.otf,
-			Ligatures      = TeX,
-			RawFeature     = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]
-		\csam@luasans
-		\csam@luamono
-		\setmathfont{KpMath-Regular.otf}[
-			BoldFont = KpMath-Bold.otf,
-			AutoFakeSlant,
-			Scale      = MatchUppercase,
-			RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]
-		\setmathfont{GFSDidot.otf}[
-			Scale      = MatchUppercase,
-			range      = {up/{latin,Latin,num}},
-			Ligatures  = TeX,
-			RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]
-		\setmathfont{GFSDidotItalic.otf}[
-			Scale      = MatchUppercase,
-			range      = {it/{latin,Latin}},
-			Ligatures  = TeX,
-			RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]
-		\setmathfont{GFSDidotBold.otf}[
-			Scale      = MatchUppercase,
-			range      = {bfup/{latin,Latin,num}},
-			Ligatures  = TeX,
-			RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]
-		\setmathfont{GFSDidotBoldItalic.otf}[
-			Scale      = MatchUppercase,
-			range      = {bfit/{latin,Latin}},
-			Ligatures  = TeX,
-			RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]
-		\csam@luamathsf
-		\csam@luamathtt
-		\csam@mathalpha@stylishtrue
-	\fi
-
-	\ifcsam@kpfonts
-		\RequirePackage[nosf,noDcommand,fakedscripts]{kpfonts-otf}
-		\setsansfont{LibertinusSans-Regular.otf}[
-			BoldFont          = LibertinusSans-Bold.otf,
-			ItalicFont        = LibertinusSans-Italic.otf,
-			BoldItalicFont    = LibertinusSans-Bold.otf,
-			BoldItalicFeatures = {FakeSlant=0.2},
-			Scale             = MatchUppercase,
-			Ligatures         = TeX,
-			RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum},
-			SmallCapsFeatures = {Letters=SmallCaps}
-		]
-		\csam@luamono
-		\csam@mathalpha@stylishtrue
-	\fi
-
-	\ifcsam@latinmodern
-		\setmainfont{lmroman10-regular.otf}[
-			BoldFont          = lmroman10-bold.otf,
-			ItalicFont        = lmroman10-italic.otf,
-			BoldItalicFont    = lmroman10-bolditalic.otf,
-			Ligatures         = TeX,
-			SmallCapsFont     = lmromancaps10-regular.otf,
-			SmallCapsFeatures = {RawFeature=+smcp},
-			RawFeature        = {+calt,+case,+kern,+mark,+mkmk,+liga,+lnum,+tnum}
-		]
-		\setsansfont{lmsans10-regular.otf}[
-			BoldFont          = lmsans10-bold.otf,
-			ItalicFont        = lmsans10-oblique.otf,
-			BoldItalicFont    = lmsans10-boldoblique.otf,
-			Scale             = MatchUppercase,
-			Ligatures         = TeX,
-			SmallCapsFeatures = {Letters=SmallCaps},
-			RawFeature        = {+calt,+case,+kern,+mark,+mkmk,+liga,+lnum,+tnum}
-		]
-		\setmonofont{lmmono10-regular.otf}[
-			ItalicFont = lmmono10-italic.otf,
-			Scale      = MatchLowercase,
-			Ligatures  = TeX,
-			RawFeature = {+calt,+case,+kern,+mark,+mkmk,+liga,+lnum,+tnum}
-		]
-		\setmathfont{latinmodern-math.otf}[
-			AutoFakeBold, AutoFakeSlant,
-			RawFeature = {+calt,+case,+kern,+mark,+mkmk,+liga,+lnum,+tnum}
-		]
-		\csam@mathalpha@stylishfalse
-	\fi
-
-	\ifcsam@libertine
-		\setmainfont{LibertinusSerif-Regular.otf}[
-			BoldFont          = LibertinusSerif-Bold.otf,
-			ItalicFont        = LibertinusSerif-Italic.otf,
-			BoldItalicFont    = LibertinusSerif-BoldItalic.otf,
-			Ligatures         = TeX,
-			SmallCapsFeatures = {RawFeature=+smcp},
-			RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]
-		\csam@luasans
-		\csam@luamono
-		\setmathfont{texgyrepagella-math.otf}[
-			AutoFakeBold, AutoFakeSlant,
-			Scale      = MatchUppercase,
-			RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]
-		\setmathfont{LibertinusSerif-Regular.otf}[
-			Scale      = MatchUppercase,
-			range      = {up/{latin,Latin,num}},
-			Ligatures  = TeX,
-			RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]
-		\setmathfont{LibertinusSerif-Italic.otf}[
-			Scale      = MatchUppercase,
-			range      = {it/{latin,Latin}},
-			Ligatures  = TeX,
-			RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]
-		\csam@luamathsf
-		\csam@luamathtt
-		\csam@mathalpha@stylishtrue
-	\fi
-
-	\ifcsam@palatino
-		\setmainfont{TeXGyrePagellaX-Regular.otf}[
-			BoldFont          = TeXGyrePagellaX-Bold.otf,
-			ItalicFont        = TeXGyrePagellaX-Italic.otf,
-			BoldItalicFont    = TeXGyrePagellaX-BoldItalic.otf,
-			SlantedFont       = TeXGyrePagellaX-Slanted.otf,
-			BoldSlantedFont   = TeXGyrePagellaX-BoldSlanted.otf,
-			Ligatures         = TeX,
-			SmallCapsFeatures = {RawFeature=+smcp},
-			RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]
-		\csam@luasans
-		\csam@luamono
-		\setmathfont{texgyrepagella-math.otf}[
-			AutoFakeBold, AutoFakeSlant,
-			Scale      = MatchUppercase,
-			RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
-		]
-		\csam@luamathsf
-		\csam@luamathtt
-		\csam@mathalpha@stylishtrue
-	\fi
-
-\else
-	\RequirePackage[T1]{fontenc}
-	\RequirePackage{sansmath}
-
-	\newcommand{\csam@pdfmono}{\RequirePackage[varqu,varl]{inconsolata}}
-	\newcommand{\csam@pdfsans}{\RequirePackage{biolinum}}
-
-	\ifcsam@baskervaldx
-		\RequirePackage[lining,tabular]{Baskervaldx}
-		\csam@pdfsans
-		\csam@pdfmono
-		\RequirePackage[baskervaldx,varbb]{newtxmath}
+		\RequirePackage{fontspec}
+		\RequirePackage{sansmath}
 		\csam@loadmathtools
-		\csam@mathalpha@stylishtrue
+		\RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket,no-alphabet}]{unicode-math}
+		\defaultfontfeatures{Numbers={Lining,Monospaced}}
+
+		\newcommand{\csam@luamono}{%
+			\setmonofont{Inconsolatazi4-Regular.otf}[
+				BoldFont          = Inconsolatazi4-Bold.otf,
+				ItalicFont        = Inconsolatazi4-Regular.otf,
+				ItalicFeatures    = {FakeSlant=0.2},
+				BoldItalicFont    = Inconsolatazi4-Bold.otf,
+				BoldItalicFeatures = {FakeSlant=0.2},
+				Scale          = MatchLowercase,
+				Ligatures      = TeX,
+				RawFeature     = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+			]%
+		}
+		\newcommand{\csam@luasans}[1][MatchUppercase]{%
+			\setsansfont{LibertinusSans-Regular.otf}[
+				BoldFont          = LibertinusSans-Bold.otf,
+				ItalicFont        = LibertinusSans-Italic.otf,
+				BoldItalicFont    = LibertinusSans-Bold.otf,
+				BoldItalicFeatures = {FakeSlant=0.2},
+				Scale             = #1,
+				Ligatures         = TeX,
+				SmallCapsFeatures = {RawFeature=+smcp},
+				RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+			]%
+		}
+		\newcommand{\csam@luamathsf}{%
+			\setmathfont{LibertinusSans-Regular.otf}[
+				BoldFont  = LibertinusSans-Bold.otf,
+				Scale      = MatchUppercase,
+				range      = {sfup/{latin,Latin,num},sfit/{latin,Latin}},
+				Ligatures  = TeX,
+				RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+			]%
+		}
+		\newcommand{\csam@luamathtt}{%
+			\setmathfont{Inconsolatazi4-Regular.otf}[
+				BoldFont  = Inconsolatazi4-Bold.otf,
+				Scale      = MatchUppercase,
+				range      = {tt/{latin,Latin,num}},
+				RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+			]%
+		}
+
+		\ifcsam@baskervaldx
+			\setmainfont{Baskervaldx-Reg.otf}[
+				BoldFont          = Baskervaldx-Bol.otf,
+				ItalicFont        = Baskervaldx-Ita.otf,
+				BoldItalicFont    = Baskervaldx-BolIta.otf,
+				Ligatures         = TeX,
+				SmallCapsFeatures = {RawFeature=+smcp},
+				RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+			]
+			\csam@luasans
+			\csam@luamono
+			\setmathfont{KpMath-Regular.otf}[
+				BoldFont = KpMath-Bold.otf,
+				AutoFakeSlant,
+				Scale      = MatchUppercase,
+				RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+			]
+			\setmathfont{Baskervaldx-Reg.otf}[
+				Scale      = MatchUppercase,
+				range      = {up/{latin,Latin,num}},
+				Ligatures  = TeX,
+				RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+			]
+			\setmathfont{Baskervaldx-Ita.otf}[
+				Scale      = MatchUppercase,
+				range      = {it/{latin,Latin}},
+				Ligatures  = TeX,
+				RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+			]
+			\csam@luamathsf
+			\csam@luamathtt
+			\csam@alphabet@stylishtrue
+		\fi
+
+		\ifcsam@concrete
+			\setmainfont{cmunorm.otf}[
+				BoldFont       = cmunobx.otf,
+				ItalicFont     = cmunoti.otf,
+				BoldItalicFont = cmunobi.otf,
+				Ligatures      = TeX,
+				RawFeature     = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+			]
+			\setsansfont{NewCMSans10-Book.otf}[
+				BoldFont          = NewCMSans10-Bold.otf,
+				ItalicFont        = NewCMSans10-BookOblique.otf,
+				BoldItalicFont    = NewCMSans10-BoldOblique.otf,
+				SlantedFont       = NewCMSans10-BookOblique.otf,
+				BoldSlantedFont   = NewCMSans10-BoldOblique.otf,
+				Ligatures         = TeX,
+				RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum},
+				SmallCapsFeatures = {RawFeature=+smcp}
+			]
+			\setmonofont{NewCMMono10-Book.otf}[
+				BoldFont           = NewCMMono10-Bold.otf,
+				ItalicFont         = NewCMMono10-BookItalic.otf,
+				BoldItalicFont     = NewCMMono10-BoldOblique.otf,
+				SlantedFont        = NewCMMono10-Book.otf,
+				SlantedFeatures    = {FakeSlant=0.25},
+				BoldSlantedFont    = NewCMMono10-Bold.otf,
+				BoldSlantedFeatures = {FakeSlant=0.25},
+				Ligatures          = TeX,
+				RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum},
+				SmallCapsFeatures  = {RawFeature=+smcp}
+			]
+			\setmathfont{Euler-Math.otf}[
+				AutoFakeBold, AutoFakeSlant,
+				RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+			]
+			\csam@alphabet@stylishfalse
+		\fi
+
+		\ifcsam@garamond
+			\setmainfont{GaramondLibre-Regular.otf}[
+				Ligatures         = TeX,
+				BoldFont          = GaramondLibre-Bold.otf,
+				BoldItalicFont    = GaramondLibre-BoldItalic.otf,
+				ItalicFont        = GaramondLibre-Italic.otf,
+				SmallCapsFont     = GaramondLibre-Regular.otf,
+				SmallCapsFeatures = {RawFeature={+smcp,+lnum,+tnum}},
+				RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+			]
+			\csam@luasans[MatchLowercase]
+			\csam@luamono
+			\setmathfont{Garamond-Math.otf}[
+				AutoFakeBold, AutoFakeSlant,
+				Scale      = MatchUppercase,
+				RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+			]
+			\setmathfont{GaramondLibre-Regular.otf}[
+				Scale      = MatchUppercase,
+				range      = {up/{latin,Latin,num}},
+				Ligatures  = TeX,
+				RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+			]
+			\setmathfont{GaramondLibre-Italic.otf}[
+				Scale      = MatchUppercase,
+				range      = {it/{latin,Latin}},
+				Ligatures  = TeX,
+				RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+			]
+			\csam@luamathsf
+			\csam@luamathtt
+			\csam@alphabet@stylishtrue
+		\fi
+
+		\ifcsam@gfsdidot
+			\setmainfont{GFSDidot.otf}[
+				BoldFont       = GFSDidotBold.otf,
+				ItalicFont     = GFSDidotItalic.otf,
+				BoldItalicFont = GFSDidotBoldItalic.otf,
+				SlantedFont    = GFSDidotItalic.otf,
+				Ligatures      = TeX,
+				RawFeature     = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+			]
+			\csam@luasans
+			\csam@luamono
+			\setmathfont{KpMath-Regular.otf}[
+				BoldFont = KpMath-Bold.otf,
+				AutoFakeSlant,
+				Scale      = MatchUppercase,
+				RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+			]
+			\setmathfont{GFSDidot.otf}[
+				Scale      = MatchUppercase,
+				range      = {up/{latin,Latin,num}},
+				Ligatures  = TeX,
+				RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+			]
+			\setmathfont{GFSDidotItalic.otf}[
+				Scale      = MatchUppercase,
+				range      = {it/{latin,Latin}},
+				Ligatures  = TeX,
+				RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+			]
+			\setmathfont{GFSDidotBold.otf}[
+				Scale      = MatchUppercase,
+				range      = {bfup/{latin,Latin,num}},
+				Ligatures  = TeX,
+				RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+			]
+			\setmathfont{GFSDidotBoldItalic.otf}[
+				Scale      = MatchUppercase,
+				range      = {bfit/{latin,Latin}},
+				Ligatures  = TeX,
+				RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+			]
+			\csam@luamathsf
+			\csam@luamathtt
+			\csam@alphabet@stylishtrue
+		\fi
+
+		\ifcsam@kpfonts
+			\RequirePackage[nosf,noDcommand,fakedscripts]{kpfonts-otf}
+			\setsansfont{LibertinusSans-Regular.otf}[
+				BoldFont          = LibertinusSans-Bold.otf,
+				ItalicFont        = LibertinusSans-Italic.otf,
+				BoldItalicFont    = LibertinusSans-Bold.otf,
+				BoldItalicFeatures = {FakeSlant=0.2},
+				Scale             = MatchUppercase,
+				Ligatures         = TeX,
+				RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum},
+				SmallCapsFeatures = {Letters=SmallCaps}
+			]
+			\csam@luamono
+			\csam@alphabet@stylishtrue
+		\fi
+
+		\ifcsam@latinmodern
+			\setmainfont{lmroman10-regular.otf}[
+				BoldFont          = lmroman10-bold.otf,
+				ItalicFont        = lmroman10-italic.otf,
+				BoldItalicFont    = lmroman10-bolditalic.otf,
+				Ligatures         = TeX,
+				SmallCapsFont     = lmromancaps10-regular.otf,
+				SmallCapsFeatures = {RawFeature=+smcp},
+				RawFeature        = {+calt,+case,+kern,+mark,+mkmk,+liga,+lnum,+tnum}
+			]
+			\setsansfont{lmsans10-regular.otf}[
+				BoldFont          = lmsans10-bold.otf,
+				ItalicFont        = lmsans10-oblique.otf,
+				BoldItalicFont    = lmsans10-boldoblique.otf,
+				Scale             = MatchUppercase,
+				Ligatures         = TeX,
+				SmallCapsFeatures = {Letters=SmallCaps},
+				RawFeature        = {+calt,+case,+kern,+mark,+mkmk,+liga,+lnum,+tnum}
+			]
+			\setmonofont{lmmono10-regular.otf}[
+				ItalicFont = lmmono10-italic.otf,
+				Scale      = MatchLowercase,
+				Ligatures  = TeX,
+				RawFeature = {+calt,+case,+kern,+mark,+mkmk,+liga,+lnum,+tnum}
+			]
+			\setmathfont{latinmodern-math.otf}[
+				AutoFakeBold, AutoFakeSlant,
+				RawFeature = {+calt,+case,+kern,+mark,+mkmk,+liga,+lnum,+tnum}
+			]
+			\csam@alphabet@stylishfalse
+		\fi
+
+		\ifcsam@libertine
+			\setmainfont{LibertinusSerif-Regular.otf}[
+				BoldFont          = LibertinusSerif-Bold.otf,
+				ItalicFont        = LibertinusSerif-Italic.otf,
+				BoldItalicFont    = LibertinusSerif-BoldItalic.otf,
+				Ligatures         = TeX,
+				SmallCapsFeatures = {RawFeature=+smcp},
+				RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+			]
+			\csam@luasans
+			\csam@luamono
+			\setmathfont{texgyrepagella-math.otf}[
+				AutoFakeBold, AutoFakeSlant,
+				Scale      = MatchUppercase,
+				RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+			]
+			\setmathfont{LibertinusSerif-Regular.otf}[
+				Scale      = MatchUppercase,
+				range      = {up/{latin,Latin,num}},
+				Ligatures  = TeX,
+				RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+			]
+			\setmathfont{LibertinusSerif-Italic.otf}[
+				Scale      = MatchUppercase,
+				range      = {it/{latin,Latin}},
+				Ligatures  = TeX,
+				RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+			]
+			\csam@luamathsf
+			\csam@luamathtt
+			\csam@alphabet@stylishtrue
+		\fi
+
+		\ifcsam@palatino
+			\setmainfont{TeXGyrePagellaX-Regular.otf}[
+				BoldFont          = TeXGyrePagellaX-Bold.otf,
+				ItalicFont        = TeXGyrePagellaX-Italic.otf,
+				BoldItalicFont    = TeXGyrePagellaX-BoldItalic.otf,
+				SlantedFont       = TeXGyrePagellaX-Slanted.otf,
+				BoldSlantedFont   = TeXGyrePagellaX-BoldSlanted.otf,
+				Ligatures         = TeX,
+				SmallCapsFeatures = {RawFeature=+smcp},
+				RawFeature        = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+			]
+			\csam@luasans
+			\csam@luamono
+			\setmathfont{texgyrepagella-math.otf}[
+				AutoFakeBold, AutoFakeSlant,
+				Scale      = MatchUppercase,
+				RawFeature = {+calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum}
+			]
+			\csam@luamathsf
+			\csam@luamathtt
+			\csam@alphabet@stylishtrue
+		\fi
+
+	\else
+		\RequirePackage[T1]{fontenc}
+		\RequirePackage{sansmath}
+
+		\newcommand{\csam@pdfmono}{\RequirePackage[scaled=1.03]{inconsolata}}
+		\newcommand{\csam@pdfsans}{\RequirePackage[type1,scaled=1.085]{biolinum}}
+
+		\ifcsam@baskervaldx
+			\RequirePackage[lining,tabular]{Baskervaldx}
+			\csam@pdfsans
+			\csam@pdfmono
+			\RequirePackage[baskervaldx,varbb]{newtxmath}
+			\csam@loadmathtools
+			\csam@alphabet@stylishtrue
+		\fi
+
+		\ifcsam@latinmodern
+			\RequirePackage{lmodern}
+			\csam@loadamsmathtools
+			\csam@alphabet@stylishfalse
+		\fi
+
+		\ifcsam@libertine
+			\csam@pdfsans
+			\csam@pdfmono
+			\RequirePackage[lining,tabular]{libertineRoman}
+			\RequirePackage[libertine,varbb]{newtxmath}
+			\csam@loadmathtools
+			\csam@alphabet@stylishtrue
+		\fi
+
+		\ifcsam@palatino
+			\RequirePackage[sc,noBBpl]{mathpazo}
+			\csam@pdfsans
+			\csam@pdfmono
+			\csam@loadamsmathtools
+			\csam@alphabet@stylishtrue
+		\fi
+
 	\fi
 
-	\ifcsam@latinmodern
-		\RequirePackage{lmodern}
-		\csam@loadamsmathtools
-		\csam@mathalpha@stylishfalse
-	\fi
+	% These NFSS declarations are the small subset of the alphabet setup that this
+	% package needs.  Keeping them here avoids a dependency on version-sensitive
+	% alphabet-selection wrappers while retaining the same underlying fonts.
+	\def\csam@declare@cmcal{%
+		\DeclareFontFamily{U}{cmsy}{\skewchar\font48 }%
+		\DeclareFontShape{U}{cmsy}{m}{n}{%
+			<-5.5>cmsy5<5.5-6.5>cmsy6<6.5-7.5>cmsy7
+			<7.5-8.5>cmsy8<8.5-9.5>cmsy9<9.5->cmsy10}{}%
+		\DeclareFontShape{U}{cmsy}{b}{n}{%
+			<-5.5>cmbsy5<5.5-6.5>cmbsy6<6.5-7.5>cmbsy7
+			<7.5-8.5>cmbsy8<8.5-9.5>cmbsy9<9.5->cmbsy10}{}%
+		\DeclareMathAlphabet{\mathcal}{U}{cmsy}{m}{n}%
+		\SetMathAlphabet{\mathcal}{bold}{U}{cmsy}{b}{n}%
+		\DeclareMathAlphabet{\mathbfcal}{U}{cmsy}{b}{n}%
+	}
+	\def\csam@declare@stixcal{%
+		\DeclareFontFamily{U}{stixplain}{\skewchar\font=127 }%
+		\DeclareFontShape{U}{stixplain}{m}{n}{<->stix-mathcal}{}%
+		\DeclareFontShape{U}{stixplain}{b}{n}{<->stix-mathcal-bold}{}%
+		\DeclareMathAlphabet{\mathcal}{U}{stixplain}{m}{n}%
+		\SetMathAlphabet{\mathcal}{bold}{U}{stixplain}{b}{n}%
+		\DeclareMathAlphabet{\mathbfcal}{U}{stixplain}{b}{n}%
+	}
+	\def\csam@declare@stixbb{%
+		\DeclareFontFamily{U}{stixonebb}{\skewchar\font=45 }%
+		\DeclareFontShape{U}{stixonebb}{m}{n}{<->stix-mathbb}{}%
+		\DeclareFontShape{U}{stixonebb}{m}{it}{<->stix-mathbbit}{}%
+		\DeclareFontShape{U}{stixonebb}{b}{n}{<->stix-mathbb-bold}{}%
+		\DeclareFontShape{U}{stixonebb}{b}{it}{<->stix-mathbbit-bold}{}%
+		\DeclareFontSubstitution{U}{stixonebb}{m}{n}%
+		\DeclareMathAlphabet{\mathbb}{U}{stixonebb}{m}{n}%
+		\SetMathAlphabet{\mathbb}{bold}{U}{stixonebb}{b}{n}%
+		\DeclareMathAlphabet{\mathbfbb}{U}{stixonebb}{b}{n}%
+		\DeclareMathAlphabet{\mathbbi}{U}{stixonebb}{m}{it}%
+		\SetMathAlphabet{\mathbbi}{bold}{U}{stixonebb}{b}{it}%
+		\DeclareMathAlphabet{\mathbfbbi}{U}{stixonebb}{b}{it}%
+	}
+	\def\csam@declare@bboldxbb{%
+		\DeclareFontFamily{U}{bboldx}{\skewchar\font=45 }%
+		\DeclareFontShape{U}{bboldx}{m}{n}{<->BBOLDX-Regular}{}%
+		\DeclareFontShape{U}{bboldx}{b}{n}{<->BBOLDX-Bold}{}%
+		\DeclareFontShape{U}{bboldx}{bx}{n}{<->ssub*bboldx/b/n}{}%
+		\DeclareMathAlphabet{\mathbb}{U}{bboldx}{m}{n}%
+		\SetMathAlphabet{\mathbb}{bold}{U}{bboldx}{b}{n}%
+		\DeclareMathAlphabet{\mathbfbb}{U}{bboldx}{b}{n}%
+	}
+	\def\csam@declare@dutchscr{%
+		\DeclareFontFamily{U}{dutchscr}{\skewchar\font=45 }%
+		\DeclareFontShape{U}{dutchscr}{m}{n}{<->dutchcal-r}{}%
+		\DeclareFontShape{U}{dutchscr}{b}{n}{<->dutchcal-b}{}%
+		\DeclareMathAlphabet{\mathscr}{U}{dutchscr}{m}{n}%
+		\SetMathAlphabet{\mathscr}{bold}{U}{dutchscr}{b}{n}%
+		\DeclareMathAlphabet{\mathbfscr}{U}{dutchscr}{b}{n}%
+	}
 
-	\ifcsam@libertine
-		\csam@pdfsans
-		\csam@pdfmono
-		\RequirePackage[lining,tabular]{libertineRoman}
-		\RequirePackage[libertine,varbb]{newtxmath}
-		\csam@loadmathtools
-		\csam@mathalpha@stylishtrue
-	\fi
-
+	\let\mathbb\relax
+	\let\mathbfbb\relax
+	\let\mathbbi\relax
+	\let\mathbfbbi\relax
+	\let\mathbfcal\relax
+	\let\mathscr\relax
+	\let\mathbfscr\relax
 	\ifcsam@palatino
-		\RequirePackage[theoremfont,trueslanted,largesc,tighter,t,lf,amsthm,vvarbb]{newpx}
-		\csam@mathalpha@stylishtrue
+		\csam@declare@stixcal
+		\csam@declare@bboldxbb
+	\else
+		\ifcsam@alphabet@stylish
+			\csam@declare@stixcal
+		\else
+			\csam@declare@cmcal
+		\fi
+		\csam@declare@stixbb
+	\fi
+	\csam@declare@dutchscr
+	\ifPDFTeX
+		\ifcsam@latinmodern
+			\SetMathAlphabet{\mathsf}{normal}{T1}{lmss}{m}{n}%
+			\SetMathAlphabet{\mathsf}{bold}{T1}{lmss}{b}{n}%
+			\SetMathAlphabet{\mathtt}{normal}{T1}{lmtt}{m}{n}%
+			\SetMathAlphabet{\mathtt}{bold}{T1}{lmtt}{sb}{n}%
+		\else
+			\SetMathAlphabet{\mathsf}{normal}{T1}{LinuxBiolinumT-TLF}{m}{n}%
+			\SetMathAlphabet{\mathsf}{bold}{T1}{LinuxBiolinumT-TLF}{b}{n}%
+			\SetMathAlphabet{\mathtt}{normal}{T1}{zi4}{m}{n}%
+			\SetMathAlphabet{\mathtt}{bold}{T1}{zi4}{b}{n}%
+		\fi
+		\RequirePackage{bm}
 	\fi
 
-\fi
-
-\let\mathbfcal\relax
-\let\mathbfscr\relax
-\ifcsam@mathalpha@stylish
-	\RequirePackage[cal=stixplain,bb=stix,scr=dutchcal]{mathalpha}
-\else
-	\RequirePackage[cal=cm,bb=stix,scr=dutchcal]{mathalpha}
-\fi
-\ifPDFTeX
-	\RequirePackage{bm}
-\fi
+}{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Graphics, tables, and captions
@@ -631,199 +791,220 @@
 \RequirePackage{titlesec}
 
 \titleformat{\section}
-{\csam@headingfamily\bfseries\Large}
+{\csam@sectionfont}
 {\thesection\quad}{0pt}{}[]
 
 \titleformat{\subsection}
-{\csam@headingfamily\bfseries\large}
+{\csam@subsectionfont}
 {\thesubsection\quad}{0pt}{}[]
 
 \titleformat{\subsubsection}[runin]
-{\csam@headingfamily\bfseries\normalsize}
+{\csam@subsubsectionfont}
 {\thesubsubsection.}{0.5em}{}[.]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Theorem environments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\@ifpackageloaded{ntheorem}{%
+	\@ifpackagewith{ntheorem}{amsmath}{}{%
+		\PackageError{csLaTeX}{ntheorem was loaded without its amsmath option}
+		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
+	}
+	\@ifpackagewith{ntheorem}{amsthm}{}{%
+		\PackageError{csLaTeX}{ntheorem was loaded without its amsthm option}
+		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
+	}
+	\@ifpackagewith{ntheorem}{hyperref}{}{%
+		\PackageError{csLaTeX}{ntheorem was loaded without its hyperref option}
+		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
+	}
+	\@ifpackagewith{ntheorem}{thmmarks}{}{%
+		\PackageError{csLaTeX}{ntheorem was loaded without its thmmarks option}
+		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
+	}
+}{%
+	\@ifpackageloaded{amsthm}{%
+		\@ifclassloaded{amsart}{}{%
+			\@ifclassloaded{amsbook}{}{%
+				\PackageError{csLaTeX}{amsthm.sty is incompatible with this ntheorem backend}
+				{Remove the explicit amsthm package load.}%
+			}%
+		}%
+	}{}
+	% AMS classes predefine these styles and proof commands. ntheorem owns them after this point.
+	\@ifclassloaded{amsart}{\let\th@plain\relax\let\th@definition\relax\let\th@remark\relax}{}
+	\@ifclassloaded{amsbook}{\let\th@plain\relax\let\th@definition\relax\let\th@remark\relax}{}
+	\let\proof\relax
+	\let\endproof\relax
+	\let\proofname\relax
+	\let\openbox\relax
+	\RequirePackage[amsmath,amsthm,hyperref,thmmarks]{ntheorem}%
+}
+
+% TeX Live 2026's ntheorem drops an end mark after ordinary text when no trailing skip is present.
+\@ifundefined{cslatex@ntheoremendmarkpatched}{%
+	\gdef\@endtrivlist#1{%
+		\if@inlabel \indent\fi
+		\if@newlist \@noitemerr\fi
+		\ifhmode
+			\ifdim\lastskip >\z@ \unskip\fi
+			#1\unskip\par
+		\fi
+		\if@noparlist\else
+			\ifdim\lastskip >\z@
+				\@tempskipa\lastskip \vskip-\lastskip
+				\advance\@tempskipa\parskip \advance\@tempskipa-\@outerparskip
+				\vskip\@tempskipa
+			\fi
+			\@endparenv
+		\fi
+	}%
+	\global\let\cslatex@ntheoremendmarkpatched\@empty
+}{}
 \RequirePackage[most]{tcolorbox}
-\RequirePackage[
-	framemethod = TikZ ,
-	ntheorem ,
-	skipabove   = 10pt ,
-	skipbelow   = 10pt
-]{mdframed}
+\@ifpackageloaded{mdframed}{}{%
+	\RequirePackage[
+		framemethod = TikZ ,
+		ntheorem ,
+		skipabove   = 10pt ,
+		skipbelow   = 10pt
+	]{mdframed}%
+}
 
 \numberwithin{equation}{section}
 
 \NewDocumentCommand{\thmendsymb}{}{\ensuremath{\scriptstyle\lrcorner}}
-\ProvideDocumentCommand{\setqedsymbol}{m}{ \RenewDocumentCommand{\qedsymbol}{}{#1} }
+\ProvideDocumentCommand{\setqedsymbol}{m}{\global\qedsymbol{#1}}
 \ProvideDocumentCommand{\settheoremendsymbol}{m}{ \RenewDocumentCommand{\thmendsymb}{}{#1} }
 \ifLuaTeX
-	\RenewDocumentCommand{\qedsymbol}{}{\ensuremath{\scriptstyle\mdlgwhtsquare}}
+	\global\qedsymbol{\ensuremath{\scriptstyle\mdlgwhtsquare}}
 \else
-	\RenewDocumentCommand{\qedsymbol}{}{\ensuremath{\scriptstyle\square}}
+	\global\qedsymbol{\ensuremath{\scriptstyle\square}}
 \fi
+\renewcommand{\proofSymbol}{\the\qedsymbol}
 
 \ProvideDocumentCommand{\SetQEDSymbol}{m}{ \setqedsymbol{#1} }
 \ProvideDocumentCommand{\SetTheoremEndSymbol}{m}{ \settheoremendsymbol{#1} }
-
-\declaretheoremstyle[
-	headfont      = \bfseries,
-	notefont      = \normalfont,
-	bodyfont      = \normalfont,
-	spaceabove    = 3pt,
-	spacebelow    = 3pt,
-	headpunct     = {.},
-	postheadspace = 0.5em,
-	qed           = {\thmendsymb}
-]{csam@theoremlike}
-
-\declaretheoremstyle[
-	headfont      = \bfseries,
-	notefont      = \normalfont,
-	bodyfont      = \normalfont,
-	spaceabove    = 3pt,
-	spacebelow    = 3pt,
-	headpunct     = {.},
-	postheadspace = 0.5em,
-	qed           = {\thmendsymb}
-]{csam@definitionlike}
-
-\declaretheoremstyle[
-	headfont      = \normalfont\scshape,
-	notefont      = \normalfont,
-	bodyfont      = \normalfont,
-	spaceabove    = 3pt,
-	spacebelow    = 3pt,
-	headpunct     = {.},
-	postheadspace = 0.5em,
-	qed           = {\thmendsymb}
-]{csam@remarklike}
-
-\declaretheoremstyle[
-	headfont      = \normalfont\sffamily,
-	notefont      = \normalfont,
-	bodyfont      = \normalfont,
-	spaceabove    = 3pt,
-	spacebelow    = 3pt,
-	headpunct     = {.},
-	postheadspace = 0.5em,
-	qed           = {\thmendsymb}
-]{csam@highlightlike}
-
-\declaretheorem
-[
-	name         = Theorem ,
-	style        = csam@theoremlike ,
-	numberwithin = section
-]{theorem}
-
-\newcommand{\csam@declaretheoremfamily}[2]{%
-	\forcsvlist{\declaretheorem[sibling=theorem,style=#1]}{#2}%
+\ProvideDocumentCommand{\qedhere}{}{%
+	\unskip\nobreak\hfill\the\qedsymbol\NoEndMark
 }
 
-\csam@declaretheoremfamily{csam@theoremlike}{
-	assertion,%
-	assumption,%
-	axiom,%
-	claim,%
-	conclusion,%
-	conjecture,%
-	corollary,%
-	criterion,%
-	fact,%
-	folklore,%
-	hypothesis,%
-	lemma,%
-	observation,%
-	postulate,%
-	property,%
-	proposition
+\newtheoremstyle{csamplain}
+{\item[\hskip\labelsep\theorem@headerfont ##1\ ##2\unskip\theorem@separator]}
+{\item[\hskip\labelsep\theorem@headerfont ##1\ ##2\ {\normalfont(##3)}\unskip\theorem@separator]}
+
+\newtheoremstyle{nonumbercsamplain}
+{\item[\hskip\labelsep\theorem@headerfont ##1\unskip\theorem@separator]}
+{\item[\hskip\labelsep\theorem@headerfont ##1\ {\normalfont(##3)}\unskip\theorem@separator]}
+
+\newcommand{\csam@configuretheoremfamily}[2]{%
+	\theoremstyle{csamplain}%
+	\theoremheaderfont{#1}%
+	\theorembodyfont{#2}%
+	\theoremseparator{.}%
+	\theorempreskip{3pt}%
+	\theorempostskip{3pt}%
+	\theoremsymbol{\thmendsymb}%
 }
 
-\declaretheorem
-[
-	name    = {Informal~Theorem} ,
-	sibling = theorem ,
-	style   = csam@theoremlike
-]{informaltheorem}
-\declaretheorem
-[
-	name    = {Meta~Theorem} ,
-	sibling = theorem ,
-	style   = csam@theoremlike
-]{metatheorem}
-
-\csam@declaretheoremfamily{csam@definitionlike}{
-	application,%
-	construction,%
-	convention,%
-	definition,%
-	example,%
-	experiment,%
-	notation,%
-	problem,%
-	protocol,%
-	result,%
-	solution,%
-	step
+\newcommand{\csam@newtheoremfamily}[3]{%
+	\csam@configuretheoremfamily{#1}{#2}%
+	\forcsvlist{\csam@newtheorem}{#3}%
 }
+\def\csam@newtheorem#1{\expandafter\csam@newtheorem@parse#1\csam@nil}
+\def\csam@newtheorem@parse#1/#2\csam@nil{\newtheorem{#1}[theorem]{#2}}
 
-\csam@declaretheoremfamily{csam@remarklike}{
-	commentary,%
-	discussion,%
-	exercise,%
-	motivation,%
-	note,%
-	question,%
-	remark,%
-	syntax
+\newcommand{\csam@renewunnumberedfamily}[3]{%
+	\csam@configuretheoremfamily{#1}{#2}%
+	\forcsvlist{\csam@renewunnumbered}{#3}%
 }
+\def\csam@renewunnumbered#1{\expandafter\csam@renewunnumbered@parse#1\csam@nil}
+\def\csam@renewunnumbered@parse#1/#2\csam@nil{\renewtheorem*{#1}{#2}}
 
-\declaretheorem
-[
-	name    = {Notation~Abuse} ,
-	sibling = theorem ,
-	style   = csam@remarklike
-]{notationabuse}
-\declaretheorem
-[
-	name    = {Open~Problem} ,
-	sibling = theorem ,
-	style   = csam@remarklike
-]{openproblem}
+\@ifundefined{theorem}{%
+	\csam@configuretheoremfamily{\csam@theoremheaderfont}{\csam@theorembodyfont}
+	\newtheorem{theorem}{Theorem}[section]
 
-\csam@declaretheoremfamily{csam@highlightlike}{
-	guideline,% 
-	highlight,% 
-	important,% 
-	insight,% 
-	recall,% 
-	summary,% 
-	takeaway,% 
-	tip,% 
-	warning
-}
+	\csam@newtheoremfamily{\csam@theoremheaderfont}{\csam@theorembodyfont}{
+		assertion/Assertion,
+		assumption/Assumption,
+		axiom/Axiom,
+		claim/Claim,
+		conclusion/Conclusion,
+		conjecture/Conjecture,
+		corollary/Corollary,
+		criterion/Criterion,
+		fact/Fact,
+		folklore/Folklore,
+		hypothesis/Hypothesis,
+		informaltheorem/Informal Theorem,
+		lemma/Lemma,
+		metatheorem/Meta Theorem,
+		observation/Observation,
+		postulate/Postulate,
+		property/Property,
+		proposition/Proposition
+	}
 
-\declaretheorem
-[
-	name    = {Key~Point} ,
-	sibling = theorem ,
-	style   = csam@highlightlike
-]{keypoint}
+	\csam@newtheoremfamily{\csam@definitionheaderfont}{\csam@definitionbodyfont}{
+		application/Application,
+		construction/Construction,
+		convention/Convention,
+		definition/Definition,
+		example/Example,
+		experiment/Experiment,
+		notation/Notation,
+		problem/Problem,
+		protocol/Protocol,
+		result/Result,
+		solution/Solution,
+		step/Step
+	}
 
-\declaretheorem[ name = Claim ,                 style = csam@theoremlike , numbered = no ]{claim*}
-\declaretheorem[ name = Conjecture ,            style = csam@theoremlike , numbered = no ]{conjecture*}
-\declaretheorem[ name = Corollary ,             style = csam@theoremlike , numbered = no ]{corollary*}
-\declaretheorem[ name = Hypothesis ,            style = csam@theoremlike , numbered = no ]{hypothesis*}
-\declaretheorem[ name = Lemma ,                 style = csam@theoremlike , numbered = no ]{lemma*}
-\declaretheorem[ name = Syntax ,                style = csam@remarklike  , numbered = no ]{syntax*}
-\declaretheorem[ name = Theorem ,               style = csam@theoremlike , numbered = no ]{theorem*}
-\declaretheorem[ name = {Informal~Theorem} ,    style = csam@theoremlike , numbered = no ]{informaltheorem*}
-\declaretheorem[ name = {Open~Problem} ,        style = csam@remarklike  , numbered = no ]{openproblem*}
+	\csam@newtheoremfamily{\csam@remarkheaderfont}{\csam@remarkbodyfont}{
+		commentary/Commentary,
+		discussion/Discussion,
+		exercise/Exercise,
+		motivation/Motivation,
+		notationabuse/Notation Abuse,
+		note/Note,
+		openproblem/Open Problem,
+		question/Question,
+		remark/Remark,
+		syntax/Syntax
+	}
 
-\NewDocumentEnvironment{proofsketch}{o}
+	\csam@newtheoremfamily{\csam@highlightheaderfont}{\csam@highlightbodyfont}{
+		guideline/Guideline,
+		highlight/Highlight,
+		important/Important,
+		insight/Insight,
+		keypoint/Key Point,
+		recall/Recall,
+		summary/Summary,
+		takeaway/Takeaway,
+		tip/Tip,
+		warning/Warning
+	}
+
+	\csam@renewunnumberedfamily{\csam@theoremheaderfont}{\csam@theorembodyfont}{
+		claim*/Claim,
+		conjecture*/Conjecture,
+		corollary*/Corollary,
+		hypothesis*/Hypothesis,
+		informaltheorem*/Informal Theorem,
+		lemma*/Lemma,
+		theorem*/Theorem
+	}
+
+	\csam@renewunnumberedfamily{\csam@remarkheaderfont}{\csam@remarkbodyfont}{
+		openproblem*/Open Problem,
+		syntax*/Syntax
+	}
+}{}
+
+\ProvideDocumentEnvironment{proofsketch}{o}
 {
 	\IfNoValueTF{#1}
 	{ \begin{proof}[Proof~(Sketch)] }
@@ -831,7 +1012,7 @@
 }
 { \end{proof} }
 
-\NewDocumentEnvironment{proofidea}{o}
+\ProvideDocumentEnvironment{proofidea}{o}
 {
 	\IfNoValueTF{#1}
 	{ \begin{proof}[Proof~(Idea)] }
@@ -839,7 +1020,7 @@
 }
 { \end{proof} }
 
-\NewDocumentEnvironment{proofofclaim}{o}
+\ProvideDocumentEnvironment{proofofclaim}{o}
 {
 	\IfNoValueTF{#1}
 	{ \begin{proof}[Proof~of~Claim] }
@@ -950,20 +1131,20 @@
 \def\csam@ignorewhitespaceandimplicitpars{\begingroup\catcode13=10\endgroup}
 
 \newcommand{\csam@paragraphhead}[1]{%
-	\smallskip\noindent
-	{\csam@headingfamily\bfseries\boldmath\ignorespaces\csam@appendpunctuationifneeded{#1}}%
+	\par\smallskip\noindent
+	{\csam@parheadfont\ignorespaces\csam@appendpunctuationifneeded{#1}}%
 	\hskip 0.30em
 	\ignorespaces
 }
 \newcommand{\csam@subparagraphhead}[1]{%
-	\smallskip\noindent
-	{\csam@headingfamily\ifcsam@sanshdr\bfseries\else\scshape\fi\ignorespaces\csam@appendpunctuationifneeded{#1}}%
+	\par\smallskip\noindent
+	{\csam@subparheadfont\ignorespaces\csam@appendpunctuationifneeded{#1}}%
 	\hskip 0.30em
 	\ignorespaces
 }
 
-\NewDocumentCommand{\parhead}   {m}{\csam@paragraphhead{#1}}
-\NewDocumentCommand{\subparhead}{m}{\csam@subparagraphhead{#1}}
+\ProvideDocumentCommand{\parhead}   {m}{\csam@paragraphhead{#1}}
+\ProvideDocumentCommand{\subparhead}{m}{\csam@subparagraphhead{#1}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Structural environments
@@ -990,7 +1171,7 @@
 	\csam@CustomFBox{}{}{#1}{#2}\FrameRule\z@{1em}{0.4em}%
 }
 
-\NewDocumentEnvironment{nestedbar}{O{\hsize}}{%
+\ProvideDocumentEnvironment{nestedbar}{O{\hsize}}{%
 	\@ifundefined{OuterFrameSep}{\@latex@error{nestedbar requires a recent framed.sty}\@ehd}{}%
 	\def\FrameCommand     {\csam@OpenFBox\FrameRule\FrameRule}%
 	\def\FirstFrameCommand{\csam@OpenFBox\FrameRule\z@}%
@@ -1013,36 +1194,36 @@
 	\csam@infootnotetrue\csam@oldfootnote{#1}\csam@infootnotefalse
 }
 
-\BeforeBeginEnvironment{tabular}  {\csam@intabulartrue}  \AfterEndEnvironment{tabular}  {\csam@intabularfalse}
 \BeforeBeginEnvironment{longtable}{\csam@intabulartrue}  \AfterEndEnvironment{longtable}{\csam@intabularfalse}
 \BeforeBeginEnvironment{tabularx} {\csam@intabulartrue}  \AfterEndEnvironment{tabularx} {\csam@intabularfalse}
+\BeforeBeginEnvironment{tabular}  {\csam@intabulartrue}  \AfterEndEnvironment{tabular}  {\csam@intabularfalse}
 \BeforeBeginEnvironment{tblr}     {\csam@intabulartrue}  \AfterEndEnvironment{tblr}     {\csam@intabularfalse}
 
 \BeforeBeginEnvironment{minipage} {\csam@inminipagetrue} \AfterEndEnvironment{minipage} {\csam@inminipagefalse}
 \BeforeBeginEnvironment{multicols}{\csam@inminipagetrue} \AfterEndEnvironment{multicols}{\csam@inminipagefalse}
 
-\BeforeBeginEnvironment{mdframed} {\csam@inframedtrue}   \AfterEndEnvironment{mdframed} {\csam@inframedfalse}
-\BeforeBeginEnvironment{tcolorbox}{\csam@inframedtrue}   \AfterEndEnvironment{tcolorbox}{\csam@inframedfalse}
 \BeforeBeginEnvironment{framed}   {\csam@inframedtrue}   \AfterEndEnvironment{framed}   {\csam@inframedfalse}
-\BeforeBeginEnvironment{shaded}   {\csam@inframedtrue}   \AfterEndEnvironment{shaded}   {\csam@inframedfalse}
 \BeforeBeginEnvironment{leftbar}  {\csam@inframedtrue}   \AfterEndEnvironment{leftbar}  {\csam@inframedfalse}
+\BeforeBeginEnvironment{mdframed} {\csam@inframedtrue}   \AfterEndEnvironment{mdframed} {\csam@inframedfalse}
+\BeforeBeginEnvironment{shaded}   {\csam@inframedtrue}   \AfterEndEnvironment{shaded}   {\csam@inframedfalse}
+\BeforeBeginEnvironment{tcolorbox}{\csam@inframedtrue}   \AfterEndEnvironment{tcolorbox}{\csam@inframedfalse}
 
 \let\csam@origMakeFramed\MakeFramed
 \let\csam@origEndMakeFramed\endMakeFramed
 \RenewDocumentCommand{\MakeFramed}{}{\csam@inframedtrue\csam@origMakeFramed}
 \RenewDocumentCommand{\endMakeFramed}{}{\csam@origEndMakeFramed\csam@inframedfalse}
 
-\BeforeBeginEnvironment{enumerate}  {\csam@inlisttrue}   \AfterEndEnvironment{enumerate}  {\csam@inlistfalse}
-\BeforeBeginEnvironment{itemize}    {\csam@inlisttrue}   \AfterEndEnvironment{itemize}    {\csam@inlistfalse}
-\BeforeBeginEnvironment{description}{\csam@inlisttrue}   \AfterEndEnvironment{description}{\csam@inlistfalse}
+\BeforeBeginEnvironment{compactdesc}{\csam@inlisttrue}   \AfterEndEnvironment{compactdesc}{\csam@inlistfalse}
 \BeforeBeginEnvironment{compactenum}{\csam@inlisttrue}   \AfterEndEnvironment{compactenum}{\csam@inlistfalse}
 \BeforeBeginEnvironment{compactitem}{\csam@inlisttrue}   \AfterEndEnvironment{compactitem}{\csam@inlistfalse}
-\BeforeBeginEnvironment{compactdesc}{\csam@inlisttrue}   \AfterEndEnvironment{compactdesc}{\csam@inlistfalse}
+\BeforeBeginEnvironment{description}{\csam@inlisttrue}   \AfterEndEnvironment{description}{\csam@inlistfalse}
+\BeforeBeginEnvironment{enumerate}  {\csam@inlisttrue}   \AfterEndEnvironment{enumerate}  {\csam@inlistfalse}
+\BeforeBeginEnvironment{itemize}    {\csam@inlisttrue}   \AfterEndEnvironment{itemize}    {\csam@inlistfalse}
 
-\BeforeBeginEnvironment{figure} {\csam@infloattrue}  \AfterEndEnvironment{figure} {\csam@infloatfalse}
-\BeforeBeginEnvironment{table}  {\csam@infloattrue}  \AfterEndEnvironment{table}  {\csam@infloatfalse}
 \BeforeBeginEnvironment{figure*}{\csam@infloattrue}  \AfterEndEnvironment{figure*}{\csam@infloatfalse}
+\BeforeBeginEnvironment{figure} {\csam@infloattrue}  \AfterEndEnvironment{figure} {\csam@infloatfalse}
 \BeforeBeginEnvironment{table*} {\csam@infloattrue}  \AfterEndEnvironment{table*} {\csam@infloatfalse}
+\BeforeBeginEnvironment{table}  {\csam@infloattrue}  \AfterEndEnvironment{table}  {\csam@infloatfalse}
 
 \AtBeginEnvironment{subfigure}{\csam@incaptiontrue}
 \AtEndEnvironment  {subfigure}{\csam@incaptionfalse}
@@ -1084,7 +1265,7 @@
 % Draft annotations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\NewDocumentCommand{\newguymarker}{m m m}{%
+\ProvideDocumentCommand{\newguymarker}{m m m}{%
 	\ifcsam@draft
 		\expandafter\NewDocumentCommand\csname #1\endcsname{m}{%
 			\textcolor{#3}{##1\ \textsc{#2}}%
@@ -1096,16 +1277,16 @@
 }
 
 \ifcsam@draft
-	\NewDocumentCommand{\added}    {m}{\textcolor{OliveGreen}{#1}\marginnote{\textcolor{OliveGreen}{\LARGE$\star$}}}
-	\NewDocumentCommand{\changed}  {m}{\textcolor{PineGreen}{#1}\marginnote{\textcolor{PineGreen}{\LARGE$\star$}}}
-	\NewDocumentCommand{\citelater}{m}{\textcolor{WildStrawberry}{[#1]}\marginnote{\textcolor{WildStrawberry}{\LARGE$\star$}}}
-	\NewDocumentCommand{\fixme}    {m}{\textcolor{OrangeRed}{[\textsc{Fix-me}: #1]}\marginnote{\textcolor{OrangeRed}{\LARGE$\star$}}}
-	\NewDocumentCommand{\missing}  {m}{\textcolor{Crimson}{#1}\marginnote{\textcolor{Crimson}{\LARGE$\star$}}}
-	\NewDocumentCommand{\notes}    {m}{\textcolor{ForestGreen}{[\textsc{Note}: #1]}\marginnote{\textcolor{ForestGreen}{\LARGE$\star$}}}
-	\NewDocumentCommand{\query}    {m}{\textcolor{RoyalPurple}{[\textsc{Query}: #1]}\marginnote{\textcolor{RoyalPurple}{\LARGE$\star$}}}
-	\NewDocumentCommand{\removed}  {m}{\textcolor{Periwinkle}{\sout{#1}}\marginnote{\textcolor{Periwinkle}{\LARGE$\star$}}}
-	\NewDocumentCommand{\todo}     {m}{\textcolor{Mahogany}{[\textsc{To-do}: #1]}\marginnote{\textcolor{Mahogany}{\LARGE$\star$}}}
-	\NewDocumentCommand{\XXX}{O{XXX}}{%
+	\ProvideDocumentCommand{\added}    {m}{\textcolor{OliveGreen}{#1}\marginnote{\textcolor{OliveGreen}{\LARGE$\star$}}}
+	\ProvideDocumentCommand{\changed}  {m}{\textcolor{PineGreen}{#1}\marginnote{\textcolor{PineGreen}{\LARGE$\star$}}}
+	\ProvideDocumentCommand{\citelater}{m}{\textcolor{WildStrawberry}{[#1]}\marginnote{\textcolor{WildStrawberry}{\LARGE$\star$}}}
+	\ProvideDocumentCommand{\fixme}    {m}{\textcolor{OrangeRed}{[\textsc{Fix-me}: #1]}\marginnote{\textcolor{OrangeRed}{\LARGE$\star$}}}
+	\ProvideDocumentCommand{\missing}  {m}{\textcolor{Crimson}{#1}\marginnote{\textcolor{Crimson}{\LARGE$\star$}}}
+	\ProvideDocumentCommand{\notes}    {m}{\textcolor{ForestGreen}{[\textsc{Note}: #1]}\marginnote{\textcolor{ForestGreen}{\LARGE$\star$}}}
+	\ProvideDocumentCommand{\query}    {m}{\textcolor{RoyalPurple}{[\textsc{Query}: #1]}\marginnote{\textcolor{RoyalPurple}{\LARGE$\star$}}}
+	\ProvideDocumentCommand{\removed}  {m}{\textcolor{Periwinkle}{\sout{#1}}\marginnote{\textcolor{Periwinkle}{\LARGE$\star$}}}
+	\ProvideDocumentCommand{\todo}     {m}{\textcolor{Mahogany}{[\textsc{To-do}: #1]}\marginnote{\textcolor{Mahogany}{\LARGE$\star$}}}
+	\ProvideDocumentCommand{\XXX}{O{XXX}}{%
 		\marginnote{{\color{PaleVioletRed3}\normalfont$\star$}}%
 		\textcolor{PaleVioletRed3}{\sffamily\bfseries[#1]}%
 	}
@@ -1118,25 +1299,31 @@
 		}%
 		\RenewDocumentCommand{\PrelimText}{}{%
 			\normalfont\scshape\footnotesize\color{DeepPink3}%
-			Draft --- {\csam@datetime} --- Not for Distribution%
+			Draft --- {\csam@datetime} --- Not for Distribution.%
 		}%
 	}{}%
 \else
-	\NewDocumentCommand{\added}     {m}{}
-	\NewDocumentCommand{\changed}   {m}{}
-	\NewDocumentCommand{\citelater} {m}{}
-	\NewDocumentCommand{\fixme}     {m}{}
-	\NewDocumentCommand{\missing}   {m}{}
-	\NewDocumentCommand{\notes}     {m}{}
-	\NewDocumentCommand{\query}     {m}{}
-	\NewDocumentCommand{\removed}   {m}{}
-	\NewDocumentCommand{\todo}      {m}{}
-	\NewDocumentCommand{\XXX}{O{XXX}}{%
+	\ProvideDocumentCommand{\added}     {m}{}
+	\ProvideDocumentCommand{\changed}   {m}{}
+	\ProvideDocumentCommand{\citelater} {m}{}
+	\ProvideDocumentCommand{\fixme}     {m}{}
+	\ProvideDocumentCommand{\missing}   {m}{}
+	\ProvideDocumentCommand{\notes}     {m}{}
+	\ProvideDocumentCommand{\query}     {m}{}
+	\ProvideDocumentCommand{\removed}   {m}{}
+	\ProvideDocumentCommand{\todo}      {m}{}
+	\ProvideDocumentCommand{\XXX}{O{XXX}}{%
 		\@latex@error{\string\XXX{} found in final mode — remove all \string\XXX before submission}\@ehd
 	}
 \fi
 
 \AtBeginDocument{%
+	% unicode-math deliberately leaves a few legacy AMS names unavailable.
+	% Keep the source-level interface identical between LuaLaTeX and pdfLaTeX.
+	\ifLuaTeX
+		\let\leadsto\rightsquigarrow
+		\let\square\mdlgwhtsquare
+	\fi
 	\RenewDocumentCommand{\Pr}{}{\mathop{\mathsf{Pr}}}%
 	\RenewDocumentCommand{\paragraph}{m}{\parhead{#1}}%
 	\RenewDocumentCommand{\subparagraph}{m}{\subparhead{#1}}%

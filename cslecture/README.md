@@ -1,9 +1,9 @@
 ---
 title: README
-aliases: README, 'README, "cslecture"'
+aliases: [README, 'README, "cslecture"']
 linter-yaml-title-alias: README
 date created: Thursday, May 14th 2026, 10:21:58 pm
-date modified: Tuesday, August 18th 2026, 10:56:17 am
+date modified: Tuesday, August 25th 2026, 6:44:56 pm
 ---
 
 <!-- @format -->
@@ -16,6 +16,7 @@ A compact lecture-note framework for the `article` class. It provides course met
 
 - Use with the `article` document class. Behavior is undefined on `book` or `report`.
 - Do not call `\maketitle` with a custom redefinition: the package replaces it with its own boxed header.
+- Do not load `amsthm` or `thmtools`. The package contains its own TeX Live 2026-compatible `ntheorem` setup.
 - Loads `babel` without language options. Choose document languages through the class options or load `babel` explicitly before `cslecture`.
 
 ### Usage
@@ -83,7 +84,7 @@ No options: the package is opinionated. Font, spacing, and theorem styles are fi
 
 #### Theorem Environments
 
-All environments are numbered per section and registered with `cleveref`.
+All environments are declared directly with `ntheorem`, numbered per section, and registered with `cleveref`.
 
 **Theorem-like:** `theorem`, `lemma`, `corollary`, `proposition`, `conjecture`, `fact`, `claim`
 

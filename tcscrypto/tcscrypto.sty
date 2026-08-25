@@ -43,7 +43,9 @@
 % Dependencies
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage{appendix}
+\if@tcscrypto@venue\else
+	\RequirePackage{appendix}
+\fi
 \RequirePackage{array}
 \RequirePackage{amsmath}
 \if@tcscrypto@small
@@ -325,7 +327,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newlength{\strutdepth}
-\settodepth{\strutdepth}{\strutbox}
+\settodepth{\strutdepth}{\strut}
 \newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 
 \NewDocumentCommand{\mathcolorbox}{m m}{\colorbox{#1}{$\displaystyle#2$}}
@@ -426,7 +428,7 @@
 \NewDocumentCommand{\unary}{m}{1^{#1}}
 \NewDocumentCommand{\eps}{}{\epsilon}
 
-\NewDocumentCommand{\Description}{m}{\left\langle#1\right\rangle}
+\ProvideDocumentCommand{\Description}{m}{\left\langle#1\right\rangle}
 
 \NewDocumentCommand{\abs}{m}{\left\lvert#1\right\rvert}
 \NewDocumentCommand{\ceil}{m}{\left\lceil#1\right\rceil}
@@ -1749,7 +1751,7 @@
 % Interactive Proof and Proof-Carrying State
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\NewDocumentCommand{\state}{}{\algostyle{st}}
+\ProvideDocumentCommand{\state}{}{\algostyle{st}}
 \NewDocumentCommand{\stateP}{}{\state_\Prover}
 \NewDocumentCommand{\stateV}{}{\state_\Verifier}
 \NewDocumentCommand{\stateA}{}{\state_\Adv}
