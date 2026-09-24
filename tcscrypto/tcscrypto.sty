@@ -265,7 +265,6 @@
 \@ifundefined{acknowledgements}{%
 	\NewDocumentEnvironment{acknowledgements}{}%
 	{%
-		\addcontentsline{toc}{section}{\protect\textbf{Acknowledgements}}%
 		\paragraph{Acknowledgements.}%
 		\ignorespaces%
 	}
@@ -273,7 +272,7 @@
 }{}
 
 \@ifundefined{printreferences}{%
-	\NewDocumentCommand{\printreferences}{O{aomalpha} m}{%
+	\NewDocumentCommand{\printreferences}{O{alphaurl} m}{%
 		\begin{small}
 			\setstretch{1}%
 			\bibliographystyle{#1}%
