@@ -1,38 +1,46 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% cspresentation.sty — Beamer theme overlay for academic slideshows
-%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Cspresentation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Author  : Agni Datta
 % GitHub  : https://github.com/agni-datta/csLaTeX
 % License : LPPL v1.3c
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \ProvidesPackage{cspresentation}[2026/06/23 v3.2 Beamer-theme overlay for academic slideshows]
 
 \makeatletter
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Core packages
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{iftex}
-\@ifpackageloaded{beamer}{%
-	\PackageWarning{cspresentation}{%
-		Load cspresentation before beamer.\MessageBreak
-		xcolor options (dvipsnames,table,x11names) may not have taken effect.%
-	}%
+\@ifpackageloaded{beamer}%
+{%
+    \PackageWarning{cspresentation}%
+    {%
+        Load cspresentation before beamer.\MessageBreak
+        xcolor options (dvipsnames,%
+        table,%
+        x11names) may not have taken effect.%
+    }%
 }{}
-\PassOptionsToPackage{dvipsnames,table,x11names}{xcolor}
+\PassOptionsToPackage
+{%
+    dvipsnames,%
+    table,%
+    x11names%
+}{xcolor}
 
 \ifPDFTeX
-	\RequirePackage{lmodern}
+    \RequirePackage{lmodern}
 \else
-	\RequirePackage{fontspec}
-	% TeX Live 2026 provides several circled-letter commands before fontsetup, whose olddefault font file defines the complete alphabet again.
-	\@for\cspr@letter:=A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z\do{%
-		\expandafter\let\csname circled\cspr@letter\endcsname\relax
-	}
-	\RequirePackage[olddefault]{fontsetup}
+    \RequirePackage{fontspec}
+    \@for \cspr@letter :=A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z\do
+    {%
+        \expandafter \let \csname circled\cspr@letter \endcsname \relax
+    }
+    \RequirePackage[olddefault]{fontsetup}
 \fi
 
 \RequirePackage{adjustbox}
@@ -41,42 +49,44 @@
 \RequirePackage{microtype}
 \RequirePackage{xspace}
 
-\ifcsname mathbfcal\endcsname \let\mathbfcal\relax \fi
+\ifcsname mathbfcal\endcsname \let \mathbfcal \relax \fi
 \RequirePackage[cal=cm]{mathalpha}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % TikZ
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{tikz}
-\usetikzlibrary{
-	arrows.meta,
-	backgrounds,
-	calc,
-	decorations.markings,
-	decorations.pathreplacing,
-	fit,
-	graphs,
-	matrix,
-	positioning,
-	shapes.geometric
+\usetikzlibrary
+{ %
+    arrows.meta, %
+    backgrounds, %
+    calc, %
+    decorations.markings, %
+    decorations.pathreplacing, %
+    fit, %
+    graphs, %
+    matrix, %
+    positioning, %
+    shapes.geometric
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Beamer theme and metropolis settings
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \usetheme{metropolis}
-\metroset{
-	progressbar   = frametitle,
-	sectionpage   = progressbar,
-	numbering     = counter,
-	block         = fill
+\metroset
+{ %
+    progressbar = frametitle, %
+    sectionpage = progressbar, %
+    numbering = counter, %
+    block = fill
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Color palette (Nord)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \definecolor{nordDark0}{HTML}{2E3440}
 \definecolor{nordDark1}{HTML}{3B4252}
@@ -89,147 +99,290 @@
 \definecolor{nordFrost1}{HTML}{88C0D0}
 \definecolor{nordFrost2}{HTML}{81A1C1}
 \definecolor{nordFrost3}{HTML}{5E81AC}
-\definecolor{nordRed}   {HTML}{BF616A}
+\definecolor{nordRed} {HTML}{BF616A}
 \definecolor{nordOrange}{HTML}{D08770}
 \definecolor{nordYellow}{HTML}{EBCB8B}
 \definecolor{nordGreen} {HTML}{A3BE8C}
 \definecolor{nordPurple}{HTML}{B48EAD}
 
-\colorlet{cspr@bg}        {nordSnow2}
-\colorlet{cspr@fg}        {nordDark0}
-\colorlet{cspr@accent}    {nordFrost3}
+\colorlet{cspr@bg} {nordSnow2}
+\colorlet{cspr@fg} {nordDark0}
+\colorlet{cspr@accent} {nordFrost3}
 \colorlet{cspr@accentMid} {nordFrost2}
 \colorlet{cspr@accentSoft}{nordFrost1}
-\colorlet{cspr@standout}  {nordDark0}
+\colorlet{cspr@standout} {nordDark0}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Beamer colors
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\setbeamercolor{alerted text}                  {fg=nordRed}
-\setbeamercolor{author}                        {fg=cspr@accentMid}
-\setbeamercolor{background canvas}             {bg=cspr@bg}
-\setbeamercolor{date}                          {fg=cspr@accent}
-\setbeamercolor{example text}                  {fg=nordGreen!70!nordDark0}
-\setbeamercolor{frametitle}                    {bg=cspr@accent,    fg=nordSnow2}
-\setbeamercolor{institute}                     {fg=cspr@accentMid}
-\setbeamercolor{normal text}                   {fg=cspr@fg,       bg=cspr@bg}
-\setbeamercolor{palette primary}               {bg=cspr@standout,  fg=nordSnow2}
-\setbeamercolor{progress bar in head/foot}     {fg=cspr@accentSoft}
-\setbeamercolor{progress bar in section page}  {fg=cspr@accentSoft}
-\setbeamercolor{progress bar}                  {fg=cspr@accentSoft}
-\setbeamercolor{section in toc}                {fg=cspr@accent}
-\setbeamercolor{standout}                      {bg=cspr@standout,  fg=cspr@accentSoft}
-\setbeamercolor{subtitle}                      {fg=cspr@accentMid}
-\setbeamercolor{title separator}               {fg=cspr@accentSoft}
-\setbeamercolor{title}                         {fg=cspr@accent}
-\setbeamercolor{block title}                   {bg=cspr@accentMid, fg=nordSnow2}
-\setbeamercolor{block body}                    {bg=nordSnow1,      fg=cspr@fg}
-\setbeamercolor{block title alerted}           {bg=nordRed,        fg=nordSnow2}
-\setbeamercolor{block body alerted}            {bg=nordRed!8,      fg=cspr@fg}
-\setbeamercolor{block title example}           {bg=nordGreen!80!nordDark0, fg=nordSnow2}
-\setbeamercolor{block body example}            {bg=nordGreen!10,   fg=cspr@fg}
+\setbeamercolor{alerted text} {fg=nordRed}
+\setbeamercolor{author} {fg=cspr@accentMid}
+\setbeamercolor{background canvas} {bg=cspr@bg}
+\setbeamercolor{date} {fg=cspr@accent}
+\setbeamercolor{example text} {fg=nordGreen!70!nordDark0}
+\setbeamercolor{frametitle}
+{%
+    bg=cspr@accent, %
+    fg=nordSnow2%
+}
+\setbeamercolor{institute} {fg=cspr@accentMid}
+\setbeamercolor{normal text}
+{%
+    fg=cspr@fg, %
+    bg=cspr@bg%
+}
+\setbeamercolor{palette primary}
+{%
+    bg=cspr@standout, %
+    fg=nordSnow2%
+}
+\setbeamercolor{progress bar in head/foot} {fg=cspr@accentSoft}
+\setbeamercolor{progress bar in section page} {fg=cspr@accentSoft}
+\setbeamercolor{progress bar} {fg=cspr@accentSoft}
+\setbeamercolor{section in toc} {fg=cspr@accent}
+\setbeamercolor{standout}
+{%
+    bg=cspr@standout, %
+    fg=cspr@accentSoft%
+}
+\setbeamercolor{subtitle} {fg=cspr@accentMid}
+\setbeamercolor{title separator} {fg=cspr@accentSoft}
+\setbeamercolor{title} {fg=cspr@accent}
+\setbeamercolor{block title}
+{%
+    bg=cspr@accentMid, %
+    fg=nordSnow2%
+}
+\setbeamercolor{block body}
+{%
+    bg=nordSnow1, %
+    fg=cspr@fg%
+}
+\setbeamercolor{block title alerted}
+{%
+    bg=nordRed, %
+    fg=nordSnow2%
+}
+\setbeamercolor{block body alerted}
+{%
+    bg=nordRed!8, %
+    fg=cspr@fg%
+}
+\setbeamercolor{block title example}
+{%
+    bg=nordGreen!80!nordDark0, %
+    fg=nordSnow2%
+}
+\setbeamercolor{block body example}
+{%
+    bg=nordGreen!10, %
+    fg=cspr@fg%
+}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Beamer fonts
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\setbeamerfont{author}             {size=\normalsize}
-\setbeamerfont{block body alerted} {size=\small}
-\setbeamerfont{block body example} {size=\small}
-\setbeamerfont{block body}         {size=\small}
-\setbeamerfont{block title alerted}{size=\small,  series=\bfseries}
-\setbeamerfont{block title example}{size=\small,  series=\bfseries}
-\setbeamerfont{block title}        {size=\small,  series=\bfseries}
-\setbeamerfont{caption}            {size=\footnotesize}
-\setbeamerfont{date}               {size=\normalsize}
-\setbeamerfont{footnote}           {size=\scriptsize}
-\setbeamerfont{frametitle}         {size=\large,  series=\normalfont}
-\setbeamerfont{institute}          {size=\small}
-\setbeamerfont{subtitle}           {size=\large, series=\normalfont}
-\setbeamerfont{title}              {size=\LARGE, series=\normalfont}
+\setbeamerfont{author}
+{%
+    size=\normalsize
+}
+\setbeamerfont{block body alerted}
+{%
+    size=\small
+}
+\setbeamerfont{block body example}
+{%
+    size=\small
+}
+\setbeamerfont{block body}
+{%
+    size=\small
+}
+\setbeamerfont{block title alerted}%
+{%
+    size=\small , %
+    series=\bfseries
+}
+\setbeamerfont{block title example}%
+{%
+    size=\small , %
+    series=\bfseries
+}
+\setbeamerfont{block title}
+{%
+    size=\small , %
+    series=\bfseries
+}
+\setbeamerfont{caption}
+{%
+    size=\footnotesize
+}
+\setbeamerfont{date}
+{%
+    size=\normalsize
+}
+\setbeamerfont{footnote}
+{%
+    size=\scriptsize
+}
+\setbeamerfont{frametitle}
+{%
+    size=\large , %
+    series=\normalfont
+}
+\setbeamerfont{institute}
+{%
+    size=\small
+}
+\setbeamerfont{subtitle}
+{%
+    size=\large , %
+    series=\normalfont
+}
+\setbeamerfont{title}
+{%
+    size=\LARGE , %
+    series=\normalfont
+}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Footline template
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\setbeamertemplate{footline}{%
-	\begin{beamercolorbox}[wd=\textwidth, ht=2ex, dp=1ex, leftskip=1em, rightskip=1em]{palette primary}%
-		\usebeamerfont{author in head/foot}%
-		\insertshortauthor\hfill
-		\insertshorttitle\hfill
-		\insertframenumber\,/\,\inserttotalframenumber
-	\end{beamercolorbox}%
+\setbeamertemplate{footline}%
+{%
+    \begin{beamercolorbox}%
+        [%
+            wd=\textwidth , %
+            ht=2ex, %
+            dp=1ex, %
+            leftskip=1em, %
+            rightskip=1em%
+        ]{palette primary}%
+        \usebeamerfont{author in head/foot}%
+        \insertshortauthor \hfill
+        \insertshorttitle \hfill
+        \insertframenumber \,/\,\inserttotalframenumber
+    \end{beamercolorbox}%
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % TikZ node styles
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\tikzset{
-	darrow/.style = {
-			-Stealth, line width = 0.8pt, color = nordDark3!60
-		},
-	mainnode/.style = {
-			circle,
-			draw         = cspr@accent,
-			fill         = cspr@accent!12,
-			font         = \small,
-			align        = center,
-			text width   = 2.8cm,
-			minimum size = 3.6cm,
-			line width   = 1.0pt
-		},
-	ideabox/.style = {
-			rounded corners = 4pt,
-			fill            = cspr@accentMid!15,
-			draw            = cspr@accentMid!60,
-			font            = \small,
-			align           = left,
-			text width      = 5.8cm,
-			inner xsep      = 6pt,
-			inner ysep      = 5pt,
-			line width      = 0.7pt
-		},
-	keybox/.style = {
-			rounded corners = 3pt,
-			fill            = nordYellow!25,
-			draw            = nordOrange!70,
-			font            = \small,
-			align           = left,
-			inner xsep      = 6pt,
-			inner ysep      = 5pt,
-			line width      = 0.8pt
-		}
+\tikzset
+{ %
+    darrow/.style =
+        { %
+            -Stealth, %
+            line width = 0.8pt, %
+            color = nordDark3!60
+        }, %
+    mainnode/.style =
+        { %
+            circle, %
+            draw = cspr@accent, %
+            fill = cspr@accent!12, %
+            font = \small , %
+            align = center, %
+            text width = 2.8cm, %
+            minimum size = 3.6cm, %
+            line width = 1.0pt
+        }, %
+    ideabox/.style =
+        { %
+            rounded corners = 4pt, %
+            fill = cspr@accentMid!15, %
+            draw = cspr@accentMid!60, %
+            font = \small , %
+            align = left, %
+            text width = 5.8cm, %
+            inner xsep = 6pt, %
+            inner ysep = 5pt, %
+            line width = 0.7pt
+        }, %
+    keybox/.style =
+        { %
+            rounded corners = 3pt, %
+            fill = nordYellow!25, %
+            draw = nordOrange!70, %
+            font = \small , %
+            align = left, %
+            inner xsep = 6pt, %
+            inner ysep = 5pt, %
+            line width = 0.8pt
+        }
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Public utilities
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NewDocumentCommand{\citeref}{m}{%
-	{\footnotesize\textcolor{nordDark3}{[#1]}}%
+    {%
+        \footnotesize \textcolor{nordDark3}{[#1]}%
+    }%
 }
 
-\NewDocumentCommand{\kw}{m}{\textcolor{cspr@accent}{\textbf{#1}}}
-
-\NewDocumentCommand{\bad} {m}{\textcolor{nordRed}{#1}}
-\NewDocumentCommand{\good}{m}{\textcolor{nordGreen!70!nordDark0}{#1}}
-\NewDocumentCommand{\warn}{m}{\textcolor{nordOrange}{#1}}
-
-\NewDocumentCommand{\code}{m}{\textcolor{cspr@accent}{\texttt{#1}}}
-
-\NewDocumentCommand{\source}{m}{%
-	\begin{tikzpicture}[remember picture, overlay]
-		\node[anchor=south west, inner sep=4pt, font=\tiny, text=nordDark3]
-		at (current page.south west) {Source:~#1};
-	\end{tikzpicture}%
+\NewDocumentCommand{\kw}{m}%
+{%
+    \textcolor{cspr@accent}%
+    {%
+        \textbf{#1}%
+    }%
 }
 
-\NewDocumentCommand{\reveal}{mm}{\onslide<#1>{\textcolor{cspr@accent}{#2}}}
+\NewDocumentCommand{\bad} {m}%
+{%
+    \textcolor{nordRed}{#1}%
+}
+\NewDocumentCommand{\good}{m}%
+{%
+    \textcolor{nordGreen!70!nordDark0}{#1}%
+}
+\NewDocumentCommand{\warn}{m}%
+{%
+    \textcolor{nordOrange}{#1}%
+}
+
+\NewDocumentCommand{\code}{m}%
+{%
+    \textcolor{cspr@accent}%
+    {%
+        \texttt{#1}%
+    }%
+}
+
+\NewDocumentCommand{\source}{m}%
+{%
+    \begin{tikzpicture}%
+        [%
+            remember picture, %
+            overlay%
+        ]
+        \node [anchor=south west, %
+            inner sep=4pt, %
+            font=\tiny , %
+            text=nordDark3]
+        at (current page.south west) {Source:~#1};
+    \end{tikzpicture}%
+}
+
+\NewDocumentCommand{\reveal}{mm}%
+{%
+    \onslide <#1>%
+        {%
+            \textcolor{cspr@accent}{#2}%
+        }%
+}
 
 \NewDocumentCommand{\csrule}{}{%
-	{\color{cspr@accent}\rule{\linewidth}{0.4pt}}%
+    {%
+        \color{cspr@accent}%
+        \rule{\linewidth}{0.4pt}%
+    }%
 }
 
 \makeatother

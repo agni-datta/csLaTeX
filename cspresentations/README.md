@@ -1,14 +1,6 @@
----
-title: README
-aliases: [README, 'README, "cspresentation"']
-linter-yaml-title-alias: README
-date created: Thursday, May 14th 2026, 10:22:20 pm
-date modified: Tuesday, August 25th 2026, 6:44:57 pm
----
-
 <!-- @format -->
 
-## cspresentation
+## cspresentation 3.2
 
 A Metropolis-based Beamer overlay using the Nord palette. It configures semantic highlights, layout helpers, TikZ styles, citations, and source attribution.
 
