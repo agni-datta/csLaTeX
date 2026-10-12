@@ -1,734 +1,1671 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% eudoxus.sty: mathematical notation suite for analysis and topology
-%
-% Author  : Agni Datta
-% GitHub  : https://github.com/agni-datta/csLaTeX
-% License : LPPL v1.3c
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{eudoxus}[2026/08/25 v1.5 Eudoxus Math LaTeX package]
-
-\RequirePackage{l3keys2e}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Eudoxus
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Author: Agni Datta -- https://github.com/agni-datta/csLaTeX
+% License: LPPL v1.3c. Independently maintained; no publisher certification.
+\NeedsTeXFormat{LaTeX2e}[2022/06/01]
+\ProvidesPackage{eudoxus}[2026/10/10 v2.0.1 Mathematical writing for pdfLaTeX]
 \ExplSyntaxOn
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Compatibility Guards
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\msg_new:nnn {eudoxus} {engine} {eudoxus~requires~pdfLaTeX.~LuaLaTeX~and~XeLaTeX~are~unsupported.}
+\sys_if_engine_pdftex:F
+{
+    \msg_fatal:nn {eudoxus} {engine}
+}
+
+\msg_new:nnn {eudoxus} {error} {#1}
+\int_compare:nNnF {\pdfoutput}> {0}
+    {
+        \msg_fatal:nnn {eudoxus} {error} {pdfLaTeX~must~produce~PDF~output.}
+    }
+
+\cs_new_protected:Npn \csEudoxError #1
+{
+    \msg_fatal:nnn {eudoxus} {error} {#1}
+}
+\@ifpackageloaded {csmath}
+{
+    \csEudoxError {csmath~cannot~be~loaded~with~eudoxus.}
+} {}
+\AddToHook {package/csmath/before}
+{
+    \csEudoxError {csmath~cannot~be~loaded~with~eudoxus.}
+}
+\@ifpackageloaded {csthm}
+{
+    \csEudoxError {eudoxus~cannot~be~loaded~with~csthm.}
+} {}
+\AddToHook {package/csthm/before}
+{
+    \csEudoxError {eudoxus~cannot~be~loaded~with~csthm.}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Options
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\bool_new:N \g_eudox_math_bool
-\bool_new:N \g_eudox_theorems_bool
-\bool_new:N \g_eudox_tcs_bool
-\bool_new:N \g_eudox_layout_bool
-\bool_new:N \g_eudox_titlepatch_bool
-\bool_new:N \g_eudox_fonts_bool
-\bool_new:N \g_eudox_pazobiolinum_bool
-\bool_new:N \g_eudox_epigraph_bool
-\bool_new:N \g_eudox_hacks_bool
-\bool_new:N \g_eudox_amshacks_bool
-\bool_new:N \g_eudox_siam_bool
-
-\keys_define:nn { eudoxus }
+\prop_new:N \g_csEudoxOptions_prop
+\bool_new:N \g_csEudoxInitialized_bool
+\cs_new_protected:Npn \csEudoxSelect #1#2
 {
-	nomath     .code:n  	= { \bool_gset_false:N \g_eudox_math_bool
-			\bool_gset_false:N \g_eudox_theorems_bool
-			\bool_gset_false:N \g_eudox_tcs_bool } ,
-	fonts      .code:n   = { \bool_gset_true:N  \g_eudox_fonts_bool
-			\bool_gset_false:N \g_eudox_pazobiolinum_bool } ,
-	nofonts    .code:n   = { \bool_gset_false:N \g_eudox_fonts_bool
-			\bool_gset_false:N \g_eudox_pazobiolinum_bool } ,
-	pazobiolinum .code:n = { \bool_gset_false:N \g_eudox_fonts_bool
-			\bool_gset_true:N  \g_eudox_pazobiolinum_bool } ,
-	nopazobiolinum .code:n = { \bool_gset_true:N  \g_eudox_fonts_bool
-			\bool_gset_false:N \g_eudox_pazobiolinum_bool } ,
-	notheorems .code:n  	= { \bool_gset_false:N \g_eudox_theorems_bool } ,
-	tcs        .code:n  	= { \bool_gset_true:N  \g_eudox_tcs_bool } ,
-	notcs      .code:n  	= { \bool_gset_false:N \g_eudox_tcs_bool } ,
-	nolayout   .code:n  	= { \bool_gset_false:N \g_eudox_layout_bool } ,
-	epigraph   .code:n   = { \bool_gset_true:N  \g_eudox_epigraph_bool } ,
-	noepigraph .code:n   = { \bool_gset_false:N \g_eudox_epigraph_bool } ,
-	hacks      .code:n   = { \bool_gset_true:N  \g_eudox_hacks_bool } ,
-	nohacks    .code:n   = { \bool_gset_false:N \g_eudox_hacks_bool } ,
-	amshacks   .code:n   = { \bool_gset_true:N  \g_eudox_amshacks_bool } ,
-	noamshacks .code:n   = { \bool_gset_false:N \g_eudox_amshacks_bool } ,
-	siam       .code:n   = { \bool_gset_true:N  \g_eudox_siam_bool
-			\bool_gset_false:N \g_eudox_layout_bool
-			\bool_gset_false:N \g_eudox_titlepatch_bool
-			\bool_gset_false:N \g_eudox_fonts_bool
-			\bool_gset_false:N \g_eudox_pazobiolinum_bool
-			\bool_gset_false:N \g_eudox_theorems_bool
-			\bool_gset_false:N \g_eudox_hacks_bool
-			\bool_gset_false:N \g_eudox_amshacks_bool } ,
-	nosiam     .code:n   = { \bool_gset_false:N \g_eudox_siam_bool } ,
-	titlepatch .code:n  	= { \bool_gset_true:N  \g_eudox_titlepatch_bool } ,
-	notitlepatch .code:n 	= { \bool_gset_false:N \g_eudox_titlepatch_bool } ,
-	unknown    .code:n  	= { \PackageWarning{eudoxus}{Unknown~option~`#1'} } ,
+    \bool_if:NT \g_csEudoxInitialized_bool
+    {
+        \csEudoxError {Eudoxus~options~are~fixed~after~initialization.}
+    }
+    \prop_get:NnNTF \g_csEudoxOptions_prop {#1} \l_tmpa_tl
+    {
+        \tl_if_eq:NnF \l_tmpa_tl {#2}
+        {
+            \csEudoxError
+            {
+                Contradictory~#1~selections:~\l_tmpa_tl ~and~#2.
+            }
+        }
+    }
+    {
+        \prop_gput:Nnn \g_csEudoxOptions_prop {#1} {#2}
+    }
+    \tl_gset:cn {g_csEudox_#1_tl} {#2}
 }
 
-\bool_gset_true:N  \g_eudox_math_bool
-\bool_gset_true:N  \g_eudox_theorems_bool
-\bool_gset_false:N \g_eudox_tcs_bool
-\bool_gset_true:N  \g_eudox_layout_bool
-\bool_gset_false:N \g_eudox_titlepatch_bool
-\bool_gset_true:N  \g_eudox_fonts_bool
-\bool_gset_false:N \g_eudox_pazobiolinum_bool
-\bool_gset_false:N \g_eudox_epigraph_bool
-\bool_gset_false:N \g_eudox_hacks_bool
-\bool_gset_false:N \g_eudox_amshacks_bool
-\bool_gset_false:N \g_eudox_siam_bool
-
-\ProcessKeysOptions { eudoxus }
-
-\bool_if:NF \g_eudox_math_bool
+\cs_new_protected:Npn \csEudoxChoice #1#2#3
 {
-	\bool_gset_false:N \g_eudox_theorems_bool
-	\bool_gset_false:N \g_eudox_tcs_bool
-	\bool_gset_false:N \g_eudox_pazobiolinum_bool
+    \tl_new:c {g_csEudox_#1_tl}
+    \tl_gset:cn {g_csEudox_#1_tl} {#3}
+    \keys_define:nn {eudoxus}
+    {
+        #1 .choices:nn = {#2}
+            {
+                \exp_args:NnV \csEudoxSelect {#1} \l_keys_choice_tl
+            }
+    }
+}
+\csEudoxChoice {layout}
+{
+    auto,
+    inherit,
+    balanced,
+    compact,
+    spacious,
+    legacy
+} {auto}
+\csEudoxChoice {font}
+{
+    auto,
+    inherit,
+    latinmodern,
+    pazobiolinum
+} {auto}
+\csEudoxChoice {theorems}
+{
+    auto,
+    inherit,
+    extended,
+    none
+} {auto}
+\csEudoxChoice {numberwithin}
+{
+    auto,
+    section,
+    none,
+    inherit
+} {auto}
+\csEudoxChoice {equations}
+{
+    auto,
+    section,
+    none,
+    inherit
+} {auto}
+\csEudoxChoice {references}
+{
+    none,
+    hyperref,
+    cleveref,
+    zref,
+    both,
+    legacy
+} {none}
+\csEudoxChoice {paragraphs}
+{
+    auto,
+    inherit,
+    runin
+} {auto}
+\csEudoxChoice {bibliography}
+{
+    inherit,
+    compact,
+    legacy
+} {inherit}
+\csEudoxChoice {tags}
+{
+    inherit,
+    right
+} {inherit}
+\csEudoxChoice {display-breaks}
+{
+    inherit,
+    0,
+    1,
+    2,
+    3,
+    4
+} {inherit}
+\clist_map_inline:nn
+{
+    math,
+    tcs,
+    epigraph,
+    titlepatch,
+    ams-addresses,
+    graphics,
+    table,
+    caption,
+    float,
+    lists,
+    boxes,
+    diagrams,
+    plots,
+    annotations,
+    microtype,
+    quotes,
+    typography,
+    verbatim,
+    math-tools,
+    bbm,
+    vectors,
+    upright-greek,
+    ragged-bottom,
+    hacks,
+    siam
+}
+{
+    \csEudoxChoice {#1}
+    {
+        true,
+        false
+    } {false}
+    \keys_define:nn {eudoxus} {#1 .default:n = true}
+}
+\tl_gset:cn {g_csEudox_math_tl} {true}
+\clist_map_inline:nn
+{
+    margin,
+    line-stretch,
+    paragraph-indent,
+    paragraph-skip
+}
+{
+    \tl_new:c {g_csEudox_#1_tl}
+    \keys_define:nn {eudoxus}
+    {
+        #1 .code:n = \csEudoxSelect {#1} {##1},
+        #1 .value_required:n = true
+    }
+}
+\keys_define:nn {eudoxus}
+{
+    nomath .meta:n = {math = false},
+    notheorems .meta:n = {theorems = none},
+    fonts .meta:n = {font = latinmodern},
+    nofonts .meta:n = {font = inherit},
+    pazobiolinum .meta:n = {font = pazobiolinum},
+    nopazobiolinum .meta:n = {font = latinmodern},
+    nolayout .meta:n = {layout = inherit},
+    notcs .meta:n = {tcs = false},
+    noepigraph .meta:n = {epigraph = false},
+    notitlepatch .meta:n = {titlepatch = false},
+    nohacks .meta:n = {hacks = false},
+    nosiam .meta:n = {siam = false},
+    amshacks .meta:n =
+        {
+            ams-addresses = true,
+            tags = right
+        },
+    noamshacks .meta:n =
+        {
+            ams-addresses = false,
+            tags = inherit
+        },
+    unknown .code:n =
+        {
+            \csEudoxError
+            {
+                Unknown~option~'\l_keys_key_str '.
+            }
+        }
+}
+\ProcessKeyOptions [eudoxus]
+\prg_new_conditional:Npnn \csEudoxEnabled:n #1
+{
+    T,
+    F,
+    TF
+}
+{
+    \tl_if_eq:cnTF {g_csEudox_#1_tl} {true} {\prg_return_true:} {\prg_return_false:}
+}
+\bool_new:N \g_csEudoxSiam_bool
+\bool_new:N \g_csEudoxArticle_bool
+\@ifclassloaded {article}
+{
+    \bool_gset_true:N \g_csEudoxArticle_bool
+} {}
+\cs_if_exist:NT \newsiamthm
+{
+    \cs_if_exist:NT \newsiamremark
+    {
+        \bool_gset_true:N \g_csEudoxSiam_bool
+    }
+}
+\bool_if:NF \g_csEudoxSiam_bool
+{
+    \@ifclassloaded {article} {}
+    {
+        \@ifclassloaded {amsart} {}
+        {
+            \csEudoxError {Supported~classes~are~article,~amsart,~and~siamart.}
+        }
+    }
+}
+\csEudoxEnabled:nT {siam}
+{
+    \bool_if:NF \g_csEudoxSiam_bool
+    {
+        \csEudoxError {The~siam~alias~requires~the~native~SIAM~class.}
+    }
 }
 
-\newif\ifeudoxmath     		\bool_if:NTF \g_eudox_math_bool     	{ \eudoxmathtrue     	 } { \eudoxmathfalse     	}
-\newif\ifeudoxtheorems 		\bool_if:NTF \g_eudox_theorems_bool 	{ \eudoxtheoremstrue 	 } { \eudoxtheoremsfalse 	}
-\newif\ifeudoxtcs      		\bool_if:NTF \g_eudox_tcs_bool      	{ \eudoxtcstrue      	 } { \eudoxtcsfalse      	}
-\newif\ifeudoxlayout   		\bool_if:NTF \g_eudox_layout_bool   	{ \eudoxlayouttrue   	 } { \eudoxlayoutfalse   	}
-\newif\ifeudoxtitlepatch 	\bool_if:NTF \g_eudox_titlepatch_bool 	{ \eudoxtitlepatchtrue 	 } { \eudoxtitlepatchfalse  }
-\newif\ifeudoxfonts   		\bool_if:NTF \g_eudox_fonts_bool   		{ \eudoxfontstrue    	 } { \eudoxfontsfalse    	}
-\newif\ifeudoxpazobiolinum 	\bool_if:NTF \g_eudox_pazobiolinum_bool { \eudoxpazobiolinumtrue } { \eudoxpazobiolinumfalse}
-\newif\ifeudoxepigraph    	\bool_if:NTF \g_eudox_epigraph_bool    	{ \eudoxepigraphtrue   	 } { \eudoxepigraphfalse   	}
-\newif\ifeudoxhacks       	\bool_if:NTF \g_eudox_hacks_bool       	{ \eudoxhackstrue      	 } { \eudoxhacksfalse      	}
-\newif\ifeudoxamshacks    	\bool_if:NTF \g_eudox_amshacks_bool    	{ \eudoxamshackstrue   	 } { \eudoxamshacksfalse   	}
-\newif\ifeudoxsiam        	\bool_if:NTF \g_eudox_siam_bool        	{ \eudoxsiamtrue       	 } { \eudoxsiamfalse       	}
+\cs_new_protected:Npn \csEudoxResolveAuto #1#2
+{
+    \tl_if_eq:cnT {g_csEudox_#1_tl} {auto}
+    {
+        \tl_gset:cn {g_csEudox_#1_tl} {#2}
+    }
+}
+\bool_if:NTF \g_csEudoxSiam_bool
+{
+    \csEudoxResolveAuto {layout} {inherit}
+    \csEudoxResolveAuto {font} {inherit}
+    \csEudoxResolveAuto {theorems} {inherit}
+    \csEudoxResolveAuto {numberwithin} {inherit}
+    \csEudoxResolveAuto {equations} {inherit}
+}
+{
+    \bool_if:NTF \g_csEudoxArticle_bool
+    {
+        \csEudoxResolveAuto {layout} {balanced}
+    }
+    {
+        \csEudoxResolveAuto {layout} {inherit}
+    }
+    \csEudoxResolveAuto {font} {latinmodern}
+    \csEudoxResolveAuto {theorems} {extended}
+    \csEudoxResolveAuto {numberwithin} {section}
+    \csEudoxResolveAuto {equations} {section}
+}
+\csEudoxEnabled:nF {math}
+{
+    \clist_map_inline:nn
+    {
+        theorems/none,
+        tcs/false,
+        font/inherit,
+        equations/inherit
+    }
+    {
+        \seq_set_split:Nnn \l_tmpa_seq {/} {#1}
+        \exp_args:Nee \csEudoxSelect
+        {
+            \seq_item:Nn \l_tmpa_seq {1}
+        }
+        {
+            \seq_item:Nn \l_tmpa_seq {2}
+        }
+    }
+}
+\tl_if_eq:cnTF {g_csEudox_layout_tl} {inherit}
+{
+    \csEudoxResolveAuto {paragraphs} {inherit}
+    \tl_if_empty:cF {g_csEudox_margin_tl}
+    {
+        \csEudoxError {margin~requires~an~explicit~layout~preset.}
+    }
+}
+{
+    \bool_if:NTF \g_csEudoxArticle_bool
+    {
+        \csEudoxResolveAuto {paragraphs} {runin}
+    }
+    {
+        \csEudoxResolveAuto {paragraphs} {inherit}
+    }
+}
+\bool_if:NT \g_csEudoxSiam_bool
+{
+    \clist_map_inline:nn
+    {
+        layout,
+        font,
+        numberwithin,
+        equations,
+        paragraphs,
+        bibliography,
+        tags
+    }
+    {
+        \tl_if_eq:cnF {g_csEudox_#1_tl} {inherit}
+        {
+            \csEudoxError {SIAM~owns~#1;~select~inherit~and~use~class~options.}
+        }
+    }
+    \clist_map_inline:nn
+    {
+        titlepatch,
+        ams-addresses,
+        hacks,
+        caption,
+        float
+    }
+    {
+        \csEudoxEnabled:nT {#1}
+        {
+            \csEudoxError {Feature~#1~would~replace~SIAM~formatting.}
+        }
+    }
+    \clist_map_inline:nn
+    {
+        line-stretch,
+        paragraph-indent,
+        paragraph-skip
+    }
+    {
+        \tl_if_empty:cF {g_csEudox_#1_tl}
+        {
+            \csEudoxError {SIAM~owns~#1.}
+        }
+    }
+}
+\bool_if:NF \g_csEudoxArticle_bool
+{
+    \tl_if_eq:cnF {g_csEudox_layout_tl} {inherit}
+    {
+        \tl_if_eq:cnF {g_csEudox_layout_tl} {legacy}
+        {
+            \csEudoxError {Mathematical~layout~presets~require~article;~use~layout=inherit.}
+        }
+    }
+    \tl_if_eq:cnT {g_csEudox_paragraphs_tl} {runin}
+    {
+        \csEudoxError {paragraphs=runin~requires~article;~use~parhead~explicitly.}
+    }
+}
 
-\ExplSyntaxOff
-\makeatletter
+\cs_new_protected:Npn \csEudoxCheckTheoremBackend
+{
+    \bool_if:NF \g_csEudoxSiam_bool
+    {
+        \@ifpackageloaded {ntheorem}
+        {
+            \csEudoxError {Use~amsthm~with~eudoxus;~ntheorem~is~reserved~for~native~SIAM.}
+        } {}
+    }
+}
+\csEudoxCheckTheoremBackend
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Encoding and language
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage{babel}
-\RequirePackage{dirtytalk}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Font bundle
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\ifeudoxpazobiolinum
-	\RequirePackage[T1]{fontenc}
-	\RequirePackage[sc,noBBpl]{mathpazo}
-	\RequirePackage[type1,scaled=1.085]{biolinum}
-	\RequirePackage[scaled=1.03]{inconsolata}
-\fi
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Page layout
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\ifeudoxlayout
-	\RequirePackage[margin=1in]{geometry}
-	\RequirePackage{setspace}
-\fi
-\ifeudoxhacks
-	\RequirePackage{setspace}
-\fi
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% AMS class integration
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\ifeudoxamshacks
-	\@ifclassloaded{amsart}{%
-		\@ifpackageloaded{amsaddr}{%
-			\@ifpackagewith{amsaddr}{foot}{}{%
-				\PackageWarning{eudoxus}{amsaddr was loaded without the foot option}%
-			}%
-		}{\RequirePackage[foot]{amsaddr}}%
-	}{%
-		\@ifclassloaded{amsbook}{%
-			\@ifpackageloaded{amsaddr}{%
-				\@ifpackagewith{amsaddr}{foot}{}{%
-					\PackageWarning{eudoxus}{amsaddr was loaded without the foot option}%
-				}%
-			}{\RequirePackage[foot]{amsaddr}}%
-		}{%
-			\PackageWarning{eudoxus}{amshacks is only meaningful with amsart or amsbook}%
-		}%
-	}%
-	\AtBeginDocument{\@ifundefined{tagsleft@false}{}{\tagsleft@false}}%
-\fi
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Typography
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\ifeudoxsiam\else
-	\RequirePackage[normalem]{ulem}
-	\RequirePackage{moresize}
-	\RequirePackage{relsize}
-	\RequirePackage{soul}
-	\RequirePackage{titlecaps}
-	\RequirePackage{xspace}
-	\RequirePackage{xurl}
-	\ifeudoxtitlepatch
-		\RequirePackage{etoolbox}
-		\RequirePackage{sectsty}
-	\fi
-\fi
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Epigraphs
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\ifeudoxepigraph
-	\RequirePackage{epigraph}
-	\renewcommand{\epigraphflush}{flushright}
-	\renewcommand{\textflush}{flushright}
-	\renewcommand{\sourceflush}{flushright}
-	\setlength{\epigraphwidth}{0.6\textwidth}
-	\setlength{\beforeepigraphskip}{0.2\baselineskip}
-	\setlength{\afterepigraphskip}{0.2\baselineskip}
-	\let\edxoriginalepigraph\epigraph
-	\RenewDocumentCommand{\epigraph}{m m}{%
-		\edxoriginalepigraph{\textit{#1}}{\smallskip\textsc{#2}}%
-	}
-\fi
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Color
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\ifeudoxsiam
-	\RequirePackage{xcolor}
-\else
-	\RequirePackage[dvipsnames,table,x11names]{xcolor}
-\fi
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Graphics and floats
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\ifeudoxsiam\else
-	\RequirePackage{adjustbox}
-	\RequirePackage{afterpage}
-	\RequirePackage{floatrow}
-	\RequirePackage{graphicx}
-	\RequirePackage{placeins}
-	\RequirePackage{subcaption}
-	\RequirePackage{wrapfig}
-\fi
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Tables
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\ifeudoxsiam\else
-	\RequirePackage{array}
-	\RequirePackage{booktabs}
-	\RequirePackage{colortbl}
-	\RequirePackage{hhline}
-	\RequirePackage{makecell}
-	\RequirePackage{multicol}
-	\RequirePackage{multirow}
-	\RequirePackage{tabularray}
-	\RequirePackage{tabularx}
-\fi
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Lists
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\ifeudoxsiam\else
-	\RequirePackage{enumitem}
-\fi
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Environments
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\ifeudoxsiam\else
-	\RequirePackage{comment}
-	\RequirePackage{fancyvrb}
-	\RequirePackage{framed}
-	\RequirePackage[
-		framemethod = TikZ ,
-		skipabove   = 0.75\baselineskip ,
-		skipbelow   = 0.75\baselineskip ,
-		roundcorner = 1.0pt
-	]{mdframed}
-	\RequirePackage{verbatim}
-\fi
-
-\setcounter{secnumdepth}{4}
-\setcounter{tocdepth}{4}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% TikZ
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\ifeudoxsiam\else
-	\RequirePackage{pgfplots}
-	\RequirePackage{tikz}
-	\pgfplotsset{compat=1.18}
-\fi
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Annotations
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\ifeudoxsiam\else
-	\RequirePackage{marginnote}
-	\RequirePackage[draft]{todonotes}
-	\RequirePackage{xargs}
-\fi
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Mathematics
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\ifeudoxmath
-	\ifeudoxsiam
-		\RequirePackage{amsfonts}
-		\RequirePackage{amssymb}
-	\else
-		\RequirePackage{amsfonts}
-		\RequirePackage{amsmath}
-		\RequirePackage{amssymb}
-		\ifeudoxpazobiolinum\else
-			\RequirePackage{bbm}
-		\fi
-		\RequirePackage{bm}
-		\RequirePackage{braket}
-		\ifeudoxpazobiolinum\else
-			\RequirePackage{esvect}
-		\fi
-		\ifeudoxfonts
-			\RequirePackage{lmodern}
-		\fi
-		\ifeudoxpazobiolinum\else
-			\RequirePackage{mathrsfs}
-		\fi
-		\RequirePackage{mathtools}
-		% Direct NFSS declarations for the alphabets formerly selected through
-		% mathalpha.  The Pazo branch uses STIX calligraphic, BBOLDX blackboard
-		% bold, and Dutch script; the Latin Modern branch retains CM calligraphic.
-		\DeclareFontFamily{U}{bboldx}{\skewchar\font=45 }%
-		\DeclareFontShape{U}{bboldx}{m}{n}{<->BBOLDX-Regular}{}%
-		\DeclareFontShape{U}{bboldx}{b}{n}{<->BBOLDX-Bold}{}%
-		\DeclareFontShape{U}{bboldx}{bx}{n}{<->ssub*bboldx/b/n}{}%
-		\let\mathbb\relax
-		\DeclareMathAlphabet{\mathbb}{U}{bboldx}{m}{n}%
-		\SetMathAlphabet{\mathbb}{bold}{U}{bboldx}{b}{n}%
-		\DeclareMathAlphabet{\mathbfbb}{U}{bboldx}{b}{n}%
-		\ifeudoxpazobiolinum
-			\DeclareFontFamily{U}{stixplain}{\skewchar\font=127 }%
-			\DeclareFontShape{U}{stixplain}{m}{n}{<->stix-mathcal}{}%
-			\DeclareFontShape{U}{stixplain}{b}{n}{<->stix-mathcal-bold}{}%
-			\let\mathcal\relax
-			\DeclareMathAlphabet{\mathcal}{U}{stixplain}{m}{n}%
-			\SetMathAlphabet{\mathcal}{bold}{U}{stixplain}{b}{n}%
-			\DeclareMathAlphabet{\mathbfcal}{U}{stixplain}{b}{n}%
-		\else
-			\ifeudoxfonts
-				\DeclareFontFamily{U}{cmsy}{\skewchar\font48 }%
-				\DeclareFontShape{U}{cmsy}{m}{n}{<-5.5>cmsy5<5.5-6.5>cmsy6<6.5-7.5>cmsy7<7.5-8.5>cmsy8<8.5-9.5>cmsy9<9.5->cmsy10}{}%
-				\DeclareFontShape{U}{cmsy}{b}{n}{<-5.5>cmbsy5<5.5-6.5>cmbsy6<6.5-7.5>cmbsy7<7.5-8.5>cmbsy8<8.5-9.5>cmbsy9<9.5->cmbsy10}{}%
-				\let\mathcal\relax
-				\DeclareMathAlphabet{\mathcal}{U}{cmsy}{m}{n}%
-				\SetMathAlphabet{\mathcal}{bold}{U}{cmsy}{b}{n}%
-				\DeclareMathAlphabet{\mathbfcal}{U}{cmsy}{b}{n}%
-			\fi
-		\fi
-		\DeclareFontFamily{U}{dutchscr}{\skewchar\font=45 }%
-		\DeclareFontShape{U}{dutchscr}{m}{n}{<->dutchcal-r}{}%
-		\DeclareFontShape{U}{dutchscr}{b}{n}{<->dutchcal-b}{}%
-		\let\mathscr\relax
-		\DeclareMathAlphabet{\mathscr}{U}{dutchscr}{m}{n}%
-		\SetMathAlphabet{\mathscr}{bold}{U}{dutchscr}{b}{n}%
-		\DeclareMathAlphabet{\mathbfscr}{U}{dutchscr}{b}{n}%
-		\ifeudoxpazobiolinum\else
-			\ifPDFTeX
-				\RequirePackage[Symbol]{upgreek}
-			\else
-				\RequirePackage{upgreek}
-			\fi
-		\fi
-		\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
-		\ifeudoxpazobiolinum
-			\SetMathAlphabet{\mathsf}{normal}{T1}{LinuxBiolinumT-TLF}{m}{n}%
-			\SetMathAlphabet{\mathsf}{bold}{T1}{LinuxBiolinumT-TLF}{b}{n}%
-			\SetMathAlphabet{\mathtt}{normal}{T1}{zi4}{m}{n}%
-			\SetMathAlphabet{\mathtt}{bold}{T1}{zi4}{b}{n}%
-		\else
-			\@ifpackageloaded{biolinum}{%
-				\SetMathAlphabet{\mathsf}{normal}{T1}{LinuxBiolinumT-TLF}{m}{n}%
-				\SetMathAlphabet{\mathsf}{bold}{T1}{LinuxBiolinumT-TLF}{b}{n}%
-			}{}%
-		\fi
-		\numberwithin{equation}{section}
-		\allowdisplaybreaks
-	\fi
-\fi
-
-\ifeudoxhacks
-	\AtBeginDocument{%
-		\setstretch{1.075}%
-		\setlength{\parindent}{1.75em}%
-		\setlength{\parskip}{0pt}%
-		\setlength{\emergencystretch}{2em}%
-		\@ifundefined{allowdisplaybreaks}{}{\allowdisplaybreaks[2]}%
-		\raggedbottom
-	}
-\fi
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Microtype
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\ifeudoxsiam\else
-	\RequirePackage[final,protrusion=true,expansion=true]{microtype}
-	\microtypesetup{%
-		activate   = true,
-		expansion  = true,
-		factor     = 1500,
-		protrusion = true,
-		stretch    = 30
-	}
-	\UseMicrotypeSet[protrusion]{basicmath}
-	\UseMicrotypeSet[expansion]{alltext}
-	\SetExpansion{encoding=*,family=*}{stretch=30,shrink=30,step=1}
-\fi
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% References
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\ifeudoxsiam
-	\@ifpackageloaded{hyperref}{}{\RequirePackage{hyperref}}
-\else
-	\RequirePackage{breakcites}
-	\RequirePackage[
-		bookmarksnumbered  = true,
-		breaklinks         = true,
-		citecolor          = SteelBlue4,
-		colorlinks         = true,
-		hypertexnames      = true,
-		linkcolor          = SteelBlue4,
-		pagebackref        = true,
-		pdfencoding        = auto,
-		pdfpagelabels      = true,
-		pdfpagelayout      = SinglePage,
-		pdfstartview       = FitH,
-		pdfusetitle,
-		unicode            = true,
-		urlcolor           = SteelBlue4
-	]{hyperref}
-\fi
-
-\pdfstringdefDisableCommands{%
-\def\S{\textsection}%
-\def\langle{<}\def\rangle{>}%
-\def\lceil{[}\def\rceil{]}%
-\def\left{}\def\right{}%
-\def\lfloor{[}\def\rfloor{]}%
-\def\mathbb#1{#1}%
-\def\mathbf#1{#1}%
-\def\mathcal#1{#1}%
-\def\mathfrak#1{#1}%
-\def\mathrm#1{#1}%
-\def\mathscr#1{#1}%
-\def\mathsf#1{#1}%
-\def\mathtt#1{#1}%
-\def\operatorname#1{#1}%
-\def\text#1{#1}%
-\def\textsuperscript#1{#1}%
-\def\var#1{#1}%
+\csEudoxEnabled:nT {math}
+{
+    \RequirePackage {amsmath}
+    \RequirePackage {amssymb}
 }
 
-\ifeudoxsiam\else
-	\RenewDocumentCommand{\backref}{m}{}
-	\RenewDocumentCommand{\backrefalt}{m m m m}{%
-		\ifcase #1\or (Cited on p.~#2).
-		\else (Cited on pp.~#2).
-		\fi
-	}
-\fi
-
-\ifeudoxlayout
-	\@ifclassloaded{amsart}{%
-		\patchcmd{\thebibliography}
-		{\list}
-		{\small\setstretch{1.075}\list}
-		{}{}
-	}{}
-\fi
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Theorem environments
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\ifeudoxtheorems
-	\RequirePackage{amsthm}
-
-	\newtheoremstyle{theoremlike}
-	{2.5pt}{2.5pt}{\itshape}{1.75em}{\scshape}{.}{0.5em}{}
-	\newtheoremstyle{definitionlike}
-	{2.5pt}{2.5pt}{\normalfont}{1.75em}{\scshape}{.}{0.5em}{}
-	\newtheoremstyle{remarklike}
-	{2.5pt}{2.5pt}{\normalfont}{1.75em}{\scshape}{.}{0.5em}{}
-
-	\NewDocumentCommand{\edxnewtheoremsection}{m m}{\newtheorem{#1}{#2}[section]}
-	\NewDocumentCommand{\edxnewtheoremsibling}{m m}{\newtheorem{#1}[theorem]{#2}}
-	\NewDocumentCommand{\edxnewtheoremstar}{m m}{\newtheorem*{#1}{#2}}
-
-	\theoremstyle{theoremlike}
-	\edxnewtheoremsection{theorem}{Theorem}
-	\edxnewtheoremsibling{assertion}{Assertion}
-	\edxnewtheoremsibling{assumption}{Assumption}
-	\edxnewtheoremsibling{axiom}{Axiom}
-	\edxnewtheoremsibling{claim}{Claim}
-	\edxnewtheoremsibling{conclusion}{Conclusion}
-	\edxnewtheoremsibling{conjecture}{Conjecture}
-	\edxnewtheoremsibling{corollary}{Corollary}
-	\edxnewtheoremsibling{criterion}{Criterion}
-	\edxnewtheoremsibling{fact}{Fact}
-	\edxnewtheoremsibling{folklore}{Folklore}
-	\edxnewtheoremsibling{hypothesis}{Hypothesis}
-	\edxnewtheoremsibling{informaltheorem}{Informal Theorem}
-	\edxnewtheoremsibling{lemma}{Lemma}
-	\edxnewtheoremsibling{metatheorem}{Meta Theorem}
-	\edxnewtheoremsibling{observation}{Observation}
-	\edxnewtheoremsibling{openproblem}{Open Problem}
-	\edxnewtheoremsibling{postulate}{Postulate}
-	\edxnewtheoremsibling{property}{Property}
-	\edxnewtheoremsibling{proposition}{Proposition}
-
-	\theoremstyle{definitionlike}
-	\edxnewtheoremsibling{application}{Application}
-	\edxnewtheoremsibling{construction}{Construction}
-	\edxnewtheoremsibling{convention}{Convention}
-	\edxnewtheoremsibling{definition}{Definition}
-	\edxnewtheoremsibling{example}{Example}
-	\edxnewtheoremsibling{experiment}{Experiment}
-	\edxnewtheoremsibling{notation}{Notation}
-	\edxnewtheoremsibling{problem}{Problem}
-	\edxnewtheoremsibling{protocol}{Protocol}
-	\edxnewtheoremsibling{result}{Result}
-	\edxnewtheoremsibling{solution}{Solution}
-	\edxnewtheoremsibling{step}{Step}
-
-	\theoremstyle{remarklike}
-	\edxnewtheoremsibling{commentary}{Commentary}
-	\edxnewtheoremsibling{discussion}{Discussion}
-	\edxnewtheoremsibling{exercise}{Exercise}
-	\edxnewtheoremsibling{guideline}{Guideline}
-	\edxnewtheoremsibling{highlight}{Highlight}
-	\edxnewtheoremsibling{important}{Important}
-	\edxnewtheoremsibling{insight}{Insight}
-	\edxnewtheoremsibling{keypoint}{Key Point}
-	\edxnewtheoremsibling{motivation}{Motivation}
-	\edxnewtheoremsibling{notationabuse}{Notation Abuse}
-	\edxnewtheoremsibling{note}{Note}
-	\edxnewtheoremsibling{question}{Question}
-	\edxnewtheoremsibling{recall}{Recall}
-	\edxnewtheoremsibling{remark}{Remark}
-	\edxnewtheoremsibling{summary}{Summary}
-	\edxnewtheoremsibling{syntax}{Syntax}
-	\edxnewtheoremsibling{takeaway}{Takeaway}
-	\edxnewtheoremsibling{tip}{Tip}
-	\edxnewtheoremsibling{warning}{Warning}
-
-	\theoremstyle{theoremlike}
-	\edxnewtheoremstar{theorem*}{Theorem}
-	\edxnewtheoremstar{lemma*}{Lemma}
-	\edxnewtheoremstar{corollary*}{Corollary}
-	\edxnewtheoremstar{hypothesis*}{Hypothesis}
-	\edxnewtheoremstar{claim*}{Claim}
-	\edxnewtheoremstar{conjecture*}{Conjecture}
-	\edxnewtheoremstar{informaltheorem*}{Informal Theorem}
-
-	\theoremstyle{remarklike}
-	\edxnewtheoremstar{openproblem*}{Open Problem}
-	\edxnewtheoremstar{syntax*}{Syntax}
-
-	\ProvideDocumentCommand{\SetQEDSymbol}{m}{\setqedsymbol{#1}}
-	\ProvideDocumentCommand{\setqedsymbol}{m}{\renewcommand{\qedsymbol}{#1}}
-
-	\NewDocumentEnvironment{proofsketch}{o}
-	{
-		\IfNoValueTF{#1}
-		{ \begin{proof}[Proof~(Sketch)] }
-		{ \begin{proof}[Proof~(Sketch~#1)] }
-	}
-	{ \end{proof} }
-	\NewDocumentEnvironment{proofidea}{o}
-	{
-		\IfNoValueTF{#1}
-		{ \begin{proof}[Proof~(Idea)] }
-		{ \begin{proof}[Proof~(Idea~#1)] }
-	}
-	{ \end{proof} }
-	\NewDocumentEnvironment{proofofclaim}{o}
-	{
-		\IfNoValueTF{#1}
-		{ \begin{proof}[Proof~of~Claim] }
-		{ \begin{proof}[Proof~of~Claim~(#1)] }
-	}
-	{ \end{proof} }
-\fi
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Cross-references (zref-clever)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage{zref-clever}
-\ifeudoxsiam\else
-	\RequirePackage{zref-vario}
-\fi
-\zcsetup{
-	cap        = true,
-	noabbrev,
-	nameinlink = true,
-	lang       = english
-}
-\zcRefTypeSetup{section}{
-	Name-sg = \textsection,
-	name-sg = \textsection,
-	Name-pl = \textsection\textsection,
-	name-pl = \textsection\textsection
-}
-\zcRefTypeSetup{subsection}{
-	Name-sg = \textsection,
-	name-sg = \textsection,
-	Name-pl = \textsection\textsection,
-	name-pl = \textsection\textsection
-}
-\zcRefTypeSetup{subsubsection}{
-	Name-sg = \textsection,
-	name-sg = \textsection,
-	Name-pl = \textsection\textsection,
-	name-pl = \textsection\textsection
-}
-\zcRefTypeSetup{definition}{Name-sg=Definition,name-sg=definition,Name-pl=Definitions,name-pl=definitions}
-\zcRefTypeSetup{fact}{Name-sg=Fact,name-sg=fact,Name-pl=Facts,name-pl=facts}
-\zcRefTypeSetup{lemma}{Name-sg=Lemma,name-sg=lemma,Name-pl=Lemmas,name-pl=lemmas}
-\zcRefTypeSetup{openproblem}{Name-sg=Open Problem,name-sg=open problem,Name-pl=Open Problems,name-pl=open problems}
-\zcRefTypeSetup{proposition}{Name-sg=Proposition,name-sg=proposition,Name-pl=Propositions,name-pl=propositions}
-\zcRefTypeSetup{corollary}{Name-sg=Corollary,name-sg=corollary,Name-pl=Corollaries,name-pl=corollaries}
-\zcRefTypeSetup{theorem}{Name-sg=Theorem,name-sg=theorem,Name-pl=Theorems,name-pl=theorems}
-\zcRefTypeSetup{remark}{Name-sg=Remark,name-sg=remark,Name-pl=Remarks,name-pl=remarks}
-
-\AddToHook{env/definition/begin}{\zcsetup{countertype={theorem=definition}}}
-\AddToHook{env/fact/begin}{\zcsetup{countertype={theorem=fact}}}
-\AddToHook{env/lemma/begin}{\zcsetup{countertype={theorem=lemma}}}
-\AddToHook{env/openproblem/begin}{\zcsetup{countertype={theorem=openproblem}}}
-\AddToHook{env/proposition/begin}{\zcsetup{countertype={theorem=proposition}}}
-\AddToHook{env/corollary/begin}{\zcsetup{countertype={theorem=corollary}}}
-\AddToHook{env/remark/begin}{\zcsetup{countertype={theorem=remark}}}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Paragraph headings
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\ProvideDocumentCommand{\edxsectionheadingfont}{}{\sffamily\bfseries}
-\ProvideDocumentCommand{\edxparheadingfont}{}{\sffamily\bfseries\boldmath}
-\ProvideDocumentCommand{\edxsubparheadingfont}{}{\sffamily\bfseries}
-\ProvideDocumentCommand{\edxdocumenttitlefont}{}{\sffamily\bfseries}
-
-\ifeudoxtitlepatch
-	\allsectionsfont{\edxsectionheadingfont}
-	\AtBeginDocument{%
-		\@ifundefined{@maketitle}
-		{}
-		{%
-			\patchcmd{\@maketitle}
-			{\LARGE \@title}
-			{\LARGE\edxdocumenttitlefont \@title}
-			{}{}%
-			\patchcmd{\@maketitle}
-			{\LARGE\@title}
-			{\LARGE\edxdocumenttitlefont\@title}
-			{}{}%
-		}%
-		\@ifundefined{@settitle}
-		{}
-		{%
-			\patchcmd{\@settitle}
-			{\normalfont\LARGE\bfseries}
-			{\normalfont\LARGE\edxdocumenttitlefont}
-			{}{}%
-		}%
-	}%
-\fi
-
-\newif\ifedxhaspunct
-
-\def\edxcheckpunct#1{%
-	\if\relax\detokenize{#1}\relax\else\edxhaspuncttrue\fi
+\cs_new_protected:Npn \csEudoxInitializeFonts
+{
+    \tl_if_eq:cnT {g_csEudox_font_tl} {latinmodern}
+    {
+        \RequirePackage {lmodern}
+    }
+    \tl_if_eq:cnT {g_csEudox_font_tl} {pazobiolinum}
+    {
+        \RequirePackage [T1] {fontenc}
+        \RequirePackage
+        [
+            sc,
+            noBBpl
+        ] {mathpazo}
+        \RequirePackage
+        [
+            type1,
+            scaled = 1.085
+        ] {biolinum}
+        \RequirePackage [scaled = 1.03] {inconsolata}
+    }
+    \tl_if_eq:cnF {g_csEudox_font_tl} {inherit}
+    {
+        \csEudoxEnabled:nT {math} {\csEudoxInitializeAlphabets}
+    }
 }
 
-\def\edx@checkdot#1.\edxsep#2\edxend{\edxcheckpunct{#2}}
-\def\edx@checkquestion#1?\edxsep#2\edxend{\edxcheckpunct{#2}}
-\def\edx@checkexclam#1!\edxsep#2\edxend{\edxcheckpunct{#2}}
-\def\edx@checkcolon#1:\edxsep#2\edxend{\edxcheckpunct{#2}}
+\cs_new_protected:Npn \csEudoxInitializeAlphabets
+{
 
-\NewDocumentCommand{\edxappendpunct}{m}{%
-	\edxhaspunctfalse%
-	\edx@checkdot#1\edxsep.\edxsep\edxend%
-	\edx@checkquestion#1\edxsep?\edxsep\edxend%
-	\edx@checkexclam#1\edxsep!\edxsep\edxend%
-	\edx@checkcolon#1\edxsep:\edxsep\edxend%
-	#1\ifedxhaspunct\else.\fi%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Math Alphabet Allocation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \cs_if_exist:NT \localmathalphabets
+    {
+        \localmathalphabets = 0\relax
+    }
+    \DeclareFontFamily {U} {bboldx}
+    {
+        \skewchar \font = 45
+    }
+    \DeclareFontShape {U} {bboldx} {m} {n} {<->BBOLDX-Regular} {}
+    \DeclareFontShape {U} {bboldx} {b} {n} {<->BBOLDX-Bold} {}
+    \DeclareMathAlphabet {\mathbb} {U} {bboldx} {m} {n}
+    \SetMathAlphabet {\mathbb} {bold} {U} {bboldx} {b} {n}
+    \tl_if_eq:cnTF {g_csEudox_font_tl} {pazobiolinum}
+    {
+        \DeclareFontFamily {U} {stixplain}
+        {
+            \skewchar \font = 127
+        }
+        \DeclareFontShape {U} {stixplain} {m} {n} {<->stix-mathcal} {}
+        \DeclareFontShape {U} {stixplain} {b} {n} {<->stix-mathcal-bold} {}
+        \DeclareMathAlphabet {\mathcal} {U} {stixplain} {m} {n}
+        \SetMathAlphabet {\mathcal} {bold} {U} {stixplain} {b} {n}
+        \SetMathAlphabet {\mathsf} {normal} {T1} {LinuxBiolinumT-TLF} {m} {n}
+        \SetMathAlphabet {\mathsf} {bold} {T1} {LinuxBiolinumT-TLF} {b} {n}
+        \SetMathAlphabet {\mathtt} {normal} {T1} {zi4} {m} {n}
+        \SetMathAlphabet {\mathtt} {bold} {T1} {zi4} {b} {n}
+    }
+    {
+        \DeclareFontFamily {U} {cmsy}
+        {
+            \skewchar \font 48
+        }
+        \DeclareFontShape {U} {cmsy} {m} {n} {<-5.5>cmsy5<5.5-6.5>cmsy6<6.5-7.5>cmsy7<7.5-8.5>cmsy8<8.5-9.5>cmsy9<9.5->cmsy10} {}
+        \DeclareFontShape {U} {cmsy} {b} {n} {<-5.5>cmbsy5<5.5-6.5>cmbsy6<6.5-7.5>cmbsy7<7.5-8.5>cmbsy8<8.5-9.5>cmbsy9<9.5->cmbsy10} {}
+        \DeclareMathAlphabet {\mathcal} {U} {cmsy} {m} {n}
+        \SetMathAlphabet {\mathcal} {bold} {U} {cmsy} {b} {n}
+        \@ifpackageloaded {biolinum}
+        {
+            \SetMathAlphabet {\mathsf} {normal} {T1} {LinuxBiolinumT-TLF} {m} {n}
+            \SetMathAlphabet {\mathsf} {bold} {T1} {LinuxBiolinumT-TLF} {b} {n}
+        } {}
+    }
+    \DeclareFontFamily {U} {dutchscr}
+    {
+        \skewchar \font = 45
+    }
+    \DeclareFontShape {U} {dutchscr} {m} {n} {<->dutchcal-r} {}
+    \DeclareFontShape {U} {dutchscr} {b} {n} {<->dutchcal-b} {}
+    \DeclareMathAlphabet {\mathscr} {U} {dutchscr} {m} {n}
+    \SetMathAlphabet {\mathscr} {bold} {U} {dutchscr} {b} {n}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Bold Mathematics
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \ProvideDocumentCommand \mathbfbb {m}
+    {
+        \boldsymbol
+        {
+            \mathbb {##1}
+        }
+    }
+    \ProvideDocumentCommand \mathbfcal {m}
+    {
+        \boldsymbol
+        {
+            \mathcal {##1}
+        }
+    }
+    \ProvideDocumentCommand \mathbfscr {m}
+    {
+        \boldsymbol
+        {
+            \mathscr {##1}
+        }
+    }
+    \DeclareMathAlphabet {\mathpzc} {OT1} {pzc} {m} {it}
+}
+\csEudoxInitializeFonts
+\csEudoxEnabled:nT {math}
+{
+    \tl_if_eq:cnT {g_csEudox_equations_tl} {section}
+    {
+        \numberwithin {equation} {section}
+    }
+    \tl_if_eq:cnT {g_csEudox_equations_tl} {none}
+    {
+        \counterwithout {equation} {section}
+    }
 }
 
-\NewDocumentCommand{\edxeatnewline}{}{%
-	\begingroup\catcode13=10\endgroup
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Article Presets
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\tl_new:N \g_csEudoxMargin_tl
+\tl_new:N \g_csEudoxStretch_tl
+\tl_new:N \g_csEudoxHeadingBefore_tl
+\tl_new:N \g_csEudoxHeadingAfter_tl
+\tl_new:N \g_csEudoxTheoremSkip_tl
+\tl_gset:Nn \g_csEudoxTheoremSkip_tl {2.5pt}
+\cs_new_protected:Npn \csEudoxConfigureLayout
+{
+    \str_case:Vn \g_csEudox_layout_tl
+    {
+        {balanced}
+        {
+            \tl_gset:Nn \g_csEudoxMargin_tl
+            {
+                hmargin = 1.25in,
+                vmargin = 1.1in
+            }
+            \tl_gset:Nn \g_csEudoxStretch_tl {1.04}
+            \tl_gset:Nn \g_csEudoxHeadingBefore_tl {1.3}
+            \tl_gset:Nn \g_csEudoxHeadingAfter_tl {.55}
+        }
+        {compact}
+        {
+            \tl_gset:Nn \g_csEudoxMargin_tl {margin = 1in}
+            \tl_gset:Nn \g_csEudoxStretch_tl {1}
+            \tl_gset:Nn \g_csEudoxHeadingBefore_tl {1}
+            \tl_gset:Nn \g_csEudoxHeadingAfter_tl {.4}
+        }
+        {spacious}
+        {
+            \tl_gset:Nn \g_csEudoxMargin_tl
+            {
+                hmargin = 1.5in,
+                vmargin = 1.2in
+            }
+            \tl_gset:Nn \g_csEudoxStretch_tl {1.08}
+            \tl_gset:Nn \g_csEudoxHeadingBefore_tl {1.5}
+            \tl_gset:Nn \g_csEudoxHeadingAfter_tl {.7}
+        }
+        {legacy}
+        {
+            \tl_gset:Nn \g_csEudoxMargin_tl {margin = 1in}
+            \tl_gset:Nn \g_csEudoxStretch_tl {1}
+        }
+    }
+    \tl_if_eq:cnF {g_csEudox_layout_tl} {inherit}
+    {
+        \RequirePackage {geometry}
+        \exp_args:NV \geometry \g_csEudoxMargin_tl
+        \tl_if_empty:cF {g_csEudox_margin_tl}
+        {
+            \exp_args:Ne \geometry
+            {
+                margin = \use:c {g_csEudox_margin_tl}
+            }
+        }
+        \tl_if_eq:cnF {g_csEudox_layout_tl} {legacy} {\csEudoxConfigureArticle}
+    }
+    \csEudoxEnabled:nT {hacks}
+    {
+        \tl_gset:Nn \g_csEudoxStretch_tl {1.075}
+        \AddToHook {begindocument}
+        {
+            \parindent = 1.75em\parskip = 0pt\emergencystretch = 2em\raggedbottom
+            \cs_if_exist:NT \allowdisplaybreaks
+            {
+                \allowdisplaybreaks [2]
+            }
+        }
+    }
+    \tl_if_empty:cF {g_csEudox_line-stretch_tl}
+    {
+        \tl_gset:Nv \g_csEudoxStretch_tl {g_csEudox_line-stretch_tl}
+    }
+    \tl_if_empty:NF \g_csEudoxStretch_tl
+    {
+        \fp_compare:nNnF {\g_csEudoxStretch_tl}> {0}
+            {
+                \csEudoxError {line-stretch~must~be~positive.}
+            }
+        \AddToHook {begindocument}
+        {
+            \renewcommand \baselinestretch {\g_csEudoxStretch_tl}
+            \normalsize
+        }
+    }
+    \tl_if_empty:cF {g_csEudox_paragraph-indent_tl}
+    {
+        \AddToHook {begindocument}
+        {
+            \setlength \parindent
+            {
+                \use:c {g_csEudox_paragraph-indent_tl}
+            }
+        }
+    }
+    \tl_if_empty:cF {g_csEudox_paragraph-skip_tl}
+    {
+        \AddToHook {begindocument}
+        {
+            \setlength \parskip
+            {
+                \use:c {g_csEudox_paragraph-skip_tl}
+            }
+        }
+    }
+    \csEudoxEnabled:nT {ragged-bottom}
+    {
+        \AddToHook {begindocument} {\raggedbottom}
+    }
+}
+\ProvideDocumentCommand \edxsectionheadingfont {}
+{
+    \sffamily \bfseries
+}
+\ProvideDocumentCommand \edxparheadingfont {}
+{
+    \sffamily \bfseries \boldmath
+}
+\ProvideDocumentCommand \edxsubparheadingfont {}
+{
+    \sffamily \bfseries
+}
+\ProvideDocumentCommand \edxdocumenttitlefont {}
+{
+    \sffamily \bfseries
 }
 
-\NewDocumentCommand{\parhead}{m}{%
-	\par\smallskip\noindent
-	\ifeudoxtitlepatch
-	{\edxparheadingfont\ignorespaces\edxappendpunct{#1}}%
-	\else
-	\textsc{\ignorespaces\edxappendpunct{#1}}%
-	\fi
-	\hskip 0.30em
-	\ignorespaces
+\cs_new_protected:Npn \csEudoxSectionFont
+{
+    \normalfont \large \csEudoxEnabled:nTF {titlepatch} {\edxsectionheadingfont} {\bfseries}
 }
 
-\NewDocumentCommand{\subparhead}{m}{%
-	\par\smallskip\noindent
-	\ifeudoxtitlepatch
-	{\edxsubparheadingfont\ignorespaces\edxappendpunct{#1}}%
-	\else
-	\textsc{\ignorespaces\edxappendpunct{#1}}%
-	\fi
-	\hskip 0.30em
-	\ignorespaces
+\cs_new_protected:Npn \csEudoxConfigureArticle
+{
+    \tl_gset:Nn \g_csEudoxTheoremSkip_tl
+    {
+        .45\baselineskip
+    }
+    \AddToHook {begindocument}
+    {
+        \parindent =1.5em\parskip =0pt~plus.3pt\clubpenalty =3000\widowpenalty =3000\emergencystretch =1em
+    }
+    \AddToHook {begindocument/end}
+    {
+        \abovedisplayskip =9pt~plus3pt~minus4pt\belowdisplayskip =\abovedisplayskip
+        \abovedisplayshortskip =0pt~plus3pt\belowdisplayshortskip =5pt~plus3pt~minus3pt
+    }
+    \RenewDocumentCommand \section {}
+     {
+      \@startsection {section} {1} {0pt}
+      {
+          -\g_csEudoxHeadingBefore_tl \baselineskip ~plus-.3\baselineskip ~minus-.2\baselineskip
+      }
+      {
+          \g_csEudoxHeadingAfter_tl \baselineskip
+      } {\csEudoxSectionFont}
+     }
+    \RenewDocumentCommand \subsection {}
+    {
+        \@startsection {subsection} {2} {0pt}
+        {
+            -.9\baselineskip ~plus-.2\baselineskip ~minus-.1\baselineskip
+        }
+        {
+            .35\baselineskip
+        }
+        {
+            \normalfont \normalsize \bfseries
+        }
+    }
+    \if@titlepage \else
+        \cs_set_protected:Npn \@maketitle
+        {
+            \newpage \null \vskip 1em\begin {center}
+            \let \footnote \thanks
+            {
+                \LARGE \bfseries \csEudoxEnabled:nT {titlepatch} {\edxdocumenttitlefont} \@title\par
+            }
+            \vskip 1em
+                {
+                    \normalsize \lineskip .5em\begin {tabular} [t] {c} \@author \end {tabular}
+                    \par
+                }
+            \tl_if_empty:NF \@date
+            {
+                \vskip .65em
+                    {
+                        \normalsize \@date\par
+                    }
+            }
+            \end {center}
+            \par
+            \vskip .65em
+        }
+    \fi
+}
+\csEudoxConfigureLayout
+\csEudoxEnabled:nT {titlepatch}
+{
+    \bool_if:NTF \g_csEudoxArticle_bool
+    {
+        \tl_if_eq:cnT {g_csEudox_layout_tl} {inherit}
+        {
+            \AddToHook {cmd/@maketitle/before}
+            {
+                \cs_set:Npx \@title {
+                    {
+                        \exp_not:N \edxdocumenttitlefont
+                        \exp_not:V \@title
+                    }}
+            }
+        }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Section Fonts
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+        \tl_if_eq:cnT {g_csEudox_layout_tl} {inherit}
+        {
+            \RenewDocumentCommand \section {}
+             {
+              \@startsection {section} {1} {0pt} {-3.5ex~plus-1ex~minus-.2ex} {2.3ex~plus.2ex}
+              {
+                  \normalfont \Large \edxsectionheadingfont
+              }
+             }
+        }
+    }
+    {
+        \csEudoxError {titlepatch~is~supported~only~under~article;~AMS/SIAM~titles~remain~class-owned.}
+    }
 }
 
-\AtBeginDocument{%
-	\RenewDocumentCommand{\paragraph}  {m}{\parhead{#1}}%
-	\RenewDocumentCommand{\subparagraph}{m}{\subparhead{#1}}%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Optional Features
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\csEudoxEnabled:nT {math-tools}
+{
+    \RequirePackage {mathtools}
+    \providecommand \bmmax {0}
+    \providecommand \hmmax {0}
+    \RequirePackage {bm}
+    \RequirePackage {braket}
+}
+\csEudoxEnabled:nT {bbm}
+{
+    \RequirePackage {bbm}
+}
+\csEudoxEnabled:nT {vectors}
+{
+    \RequirePackage {esvect}
+}
+\csEudoxEnabled:nT {upright-greek}
+{
+    \RequirePackage [Symbol] {upgreek}
+}
+\csEudoxEnabled:nT {graphics}
+{
+    \RequirePackage {graphicx}
+    \RequirePackage {adjustbox}
+    \RequirePackage {afterpage}
+    \RequirePackage {placeins}
+    \RequirePackage {wrapfig}
+}
+\csEudoxEnabled:nT {table}
+{
+    \RequirePackage {array}
+    \RequirePackage {booktabs}
+    \RequirePackage {colortbl}
+    \RequirePackage {hhline}
+    \RequirePackage {makecell}
+    \RequirePackage {multicol}
+    \RequirePackage {multirow}
+    \RequirePackage {tabularray}
+    \RequirePackage {tabularx}
+}
+\csEudoxEnabled:nT {caption}
+{
+    \RequirePackage {subcaption}
+}
+\csEudoxEnabled:nT {float}
+{
+    \RequirePackage {floatrow}
+}
+\csEudoxEnabled:nT {lists}
+{
+    \RequirePackage {enumitem}
+}
+\csEudoxEnabled:nT {boxes}
+{
+    \RequirePackage {framed}
+    \RequirePackage {mdframed}
+}
+\csEudoxEnabled:nT {diagrams}
+{
+    \RequirePackage {tikz}
+}
+\csEudoxEnabled:nT {plots}
+{
+    \RequirePackage {pgfplots}
+    \pgfplotsset {compat = 1.18}
+}
+\csEudoxEnabled:nT {annotations}
+{
+    \RequirePackage {marginnote}
+    \RequirePackage {todonotes}
+    \RequirePackage {xargs}
+}
+\csEudoxEnabled:nT {microtype}
+{
+    \RequirePackage {microtype}
+}
+\csEudoxEnabled:nT {quotes}
+{
+    \RequirePackage {dirtytalk}
+}
+\csEudoxEnabled:nT {typography}
+{
+    \RequirePackage [normalem] {ulem}
+    \RequirePackage {moresize}
+    \RequirePackage {relsize}
+    \RequirePackage {soul}
+    \RequirePackage {titlecaps}
+    \RequirePackage {xspace}
+    \RequirePackage {xurl}
+}
+\csEudoxEnabled:nT {verbatim}
+{
+    \RequirePackage {comment}
+    \RequirePackage {fancyvrb}
+    \RequirePackage {verbatim}
+}
+\csEudoxEnabled:nT {epigraph}
+{
+    \RequirePackage {epigraph}
+    \renewcommand \epigraphflush {flushright}
+    \renewcommand \textflush {flushright}
+    \renewcommand \sourceflush {flushright}
+    \setlength \epigraphwidth
+    {
+        .6\textwidth
+    }
+    \setlength \beforeepigraphskip
+    {
+        .2\baselineskip
+    }
+    \setlength \afterepigraphskip
+    {
+        .2\baselineskip
+    }
+    \NewCommandCopy \edxoriginalepigraph \epigraph
+    \RenewDocumentCommand \epigraph {mm}
+    {
+        \edxoriginalepigraph
+        {
+            \textit {#1}
+        }
+        {
+            \smallskip \textsc {#2}
+        }
+    }
+}
+\csEudoxEnabled:nT {ams-addresses}
+{
+    \@ifclassloaded {amsart}
+    {
+        \@ifpackageloaded {amsaddr} {}
+        {
+            \RequirePackage [foot] {amsaddr}
+        }
+    }
+    {
+        \csEudoxError {ams-addresses~requires~amsart.}
+    }
+}
+\tl_if_eq:cnT {g_csEudox_tags_tl} {right}
+{
+    \@ifclassloaded {amsart}
+    {
+        \AddToHook {begindocument} {\tagsleft@false}
+    }
+    {
+        \csEudoxError {tags=right~is~an~AMS~compatibility~setting;~use~class~options~otherwise.}
+    }
+}
+\tl_if_eq:cnF {g_csEudox_display-breaks_tl} {inherit}
+{
+    \csEudoxEnabled:nTF {math}
+    {
+        \AddToHook {begindocument/end}
+        {
+            \allowdisplaybreaks [\use:c {g_csEudox_display-breaks_tl}]
+        }
+    }
+    {
+        \csEudoxError {display-breaks~requires~mathematics.}
+    }
+}
+\tl_if_eq:cnF {g_csEudox_bibliography_tl} {inherit}
+{
+    \cs_if_exist:NT \bibliofont
+    {
+        \renewcommand \bibliofont {\small}
+    }
+    \AddToHook {env/thebibliography/begin}
+    {
+        \small
+        \tl_if_eq:cnT {g_csEudox_bibliography_tl} {legacy}
+        {
+            \renewcommand \baselinestretch {1.075}
+            \selectfont
+        }
+    }
+    \AddToHook {cmd/thebibliography/after}
+    {
+        \setlength \itemsep {0pt}
+        \setlength \parsep {0pt}
+    }
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% TCS and cryptography
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\tl_if_eq:cnT {g_csEudox_theorems_tl} {extended}
+{
+    \bool_if:NF \g_csEudoxSiam_bool
+    {
+        \RequirePackage {amsthm}
+    }
+}
 
-\ifeudoxtcs
-	\IfFileExists{tcscrypto.sty}{%
-		\ifeudoxsiam
-			\let\edx@siam@AM\AM
-			\let\AM\relax
-			\RequirePackage[notoc]{tcscrypto}%
-			\let\ComplexityAM\AM
-			\let\AM\edx@siam@AM
-		\else
-			\RequirePackage[notoc]{tcscrypto}%
-		\fi
-	}{%
-		\PackageWarning{eudoxus}{tcscrypto.sty not found; skipping}%
-	}
-\fi
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Reference Providers
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\makeatother
+\tl_if_eq:cnF {g_csEudox_references_tl} {none}
+{
+    \@ifpackageloaded {hyperref} {}
+    {
+        \RequirePackage {hyperref}
+    }
+}
+\clist_if_in:nVT
+{
+    cleveref,
+    both
+} \g_csEudox_references_tl
+{
+    \@ifpackageloaded {cleveref} {}
+    {
+        \RequirePackage {cleveref}
+    }
+}
+\clist_if_in:nVT
+{
+    zref,
+    both,
+    legacy
+} \g_csEudox_references_tl
+{
+    \RequirePackage {zref-user}
+    \RequirePackage {zref-clever}
+}
+\tl_if_eq:cnT {g_csEudox_references_tl} {legacy}
+{
+    \RequirePackage {zref-vario}
+    \RequirePackage {breakcites}
+    \@ifpackageloaded {backref} {}
+    {
+        \RequirePackage [hyperpageref] {backref}
+    }
+    \RenewDocumentCommand \backref {m} {}
+    \RenewDocumentCommand \backrefalt {mmmm}
+    {
+        \ifcase #1\or (Cited~on~p.~#2).\else (Cited~on~pp.~#2).\fi
+    }
+    \zcsetup
+    {
+        cap = true,
+        noabbrev,
+        nameinlink = true
+    }
+    \clist_map_inline:nn
+    {
+        section,
+        subsection,
+        subsubsection
+    }
+    {
+        \zcRefTypeSetup {#1}
+        {
+            Name-sg = \textsection ,
+            name-sg = \textsection ,
+            Name-pl = \textsection \textsection ,
+            name-pl = \textsection \textsection
+        }
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Theorem Targets
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\box_new:N \l_csEudoxTarget_box
+\int_new:N \g_csEudoxTarget_int
+\cs_new_protected:Npn \csEudoxPrepareTarget
+{
+    \cs_if_exist:NT \crefalias
+    {
+        \cs_if_exist:NT \MakeLinkTarget
+        {
+            \cs_set_eq:NN \csEudoxSavedRefstepcounter \refstepcounter
+            \RenewDocumentCommand \refstepcounter {om}
+            {
+                \cs_set_eq:NN \refstepcounter \csEudoxSavedRefstepcounter
+                \LinkTargetOff
+                \IfNoValueTF {##1}
+                {
+                    \refstepcounter {##2}
+                }
+                {
+                    \refstepcounter [##1] {##2}
+                }
+                \LinkTargetOn
+                \int_gincr:N \g_csEudoxTarget_int
+                \hbox_set:Nn \l_csEudoxTarget_box
+                {
+                    \MakeLinkTarget *
+                    {
+                        eudoxus.statement.\int_use:N \g_csEudoxTarget_int
+                    }
+                }
+                \bool_if:NTF \g_csEudoxSiam_bool
+                {
+                    \AddToHookNext {cmd/item/before}
+                    {
+                        \AddToHookNext {para/begin}
+                        {
+                            \box_use_drop:N \l_csEudoxTarget_box
+                        }
+                    }
+                }
+                {
+                    \AddToHookNext {para/begin}
+                    {
+                        \box_use_drop:N \l_csEudoxTarget_box
+                    }
+                }
+            }
+        }
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Reference Names
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\seq_new:N \g_csEudoxFamilies_seq
+\int_new:N \g_csEudoxStatement_int
+\cs_new_protected:Npn \csEudoxFamilyBegin #1
+{
+    \csEudoxPrepareTarget
+    \cs_if_exist:NT \crefalias
+    {
+        \crefalias {theorem} {#1}
+    }
+    \cs_if_exist:NT \zcsetup
+    {
+        \zcsetup
+        {
+            countertype = {theorem = #1}
+        }
+    }
+}
+
+\cs_new_protected:Npn \csEudoxFamilyNames #1#2#3
+{
+    \cs_if_exist:NT \crefname
+    {
+        \cs_if_exist:cF {cref@#1@name}
+        {
+            \exp_args:Neee \crefname
+            {
+                \exp_not:n {#1}
+            }
+            {
+                \text_lowercase:n {#2}
+            }
+            {
+                \text_lowercase:n {#3}
+            }
+        }
+        \cs_if_exist:cF {Cref@#1@name}
+        {
+            \Crefname {#1} {#2} {#3}
+        }
+    }
+    \cs_if_exist:NT \zcRefTypeSetup
+    {
+        \zcLanguageSetup {english}
+        {
+            type = #1,
+            Name-sg = {#2},
+            name-sg =
+                {
+                    \text_lowercase:n {#2}
+                },
+            Name-pl = {#3},
+            name-pl =
+                {
+                    \text_lowercase:n {#3}
+                }
+        }
+    }
+}
+
+\cs_new_protected:Npn \csEudoxRegisterFamily #1#2#3
+{
+    \seq_gput_right:Nn \g_csEudoxFamilies_seq
+    {
+        \csEudoxFamilyNames {#1} {#2} {#3}
+    }
+    \AddToHook {env/#1/begin} [eudoxus/type]
+    {
+        \csEudoxFamilyBegin {#1}
+    }
+    \bool_if:NF \g_csEudoxSiam_bool
+    {
+        \AddToHook {env/#1/begin} [eudoxus/identity]
+        {
+            \int_gincr:N \g_csEudoxStatement_int
+        }
+    }
+}
+
+\cs_new_protected:Npn \csEudoxDeclareFamily #1#2#3
+{
+    \bool_if:NTF \g_csEudoxSiam_bool
+    {
+        \cs_if_exist:cF {#1}
+        {
+            \tl_if_eq:NnTF \l_csEudoxFamilyStyle_tl {theoremlike}
+            {
+                \newsiamthm {#1} {#2}
+            }
+            {
+                \newsiamremark {#1} {#2}
+            }
+        }
+    }
+    {
+        \cs_if_exist:cTF {#1}
+        {
+            \csEudoxError {Theorem~environment~#1~already~exists;~select~theorems=inherit.}
+        }
+        {
+            \str_if_eq:nnTF {#1} {theorem}
+            {
+                \tl_if_eq:cnTF {g_csEudox_numberwithin_tl} {section}
+                {
+                    \newtheorem {theorem} {Theorem} [section]
+                }
+                {
+                    \newtheorem {theorem} {Theorem}
+                }
+            }
+            {
+                \newtheorem {#1} [theorem] {#2}
+            }
+        }
+    }
+    \csEudoxRegisterFamily {#1} {#2} {#3}
+}
+\tl_new:N \l_csEudoxFamilyStyle_tl
+\cs_new_protected:Npn \csEudoxDeclareGroup #1#2
+{
+    \tl_set:Nn \l_csEudoxFamilyStyle_tl {#1}
+    \bool_if:NF \g_csEudoxSiam_bool
+    {
+        \theoremstyle {#1}
+    }
+    \clist_map_inline:nn {#2}
+    {
+        \csEudoxDeclareEntry ##1\q_stop
+    }
+}
+
+\cs_new_protected:Npn \csEudoxDeclareEntry #1/#2/#3\q_stop
+{
+    \csEudoxDeclareFamily {#1} {#2} {#3}
+}
+
+\cs_new_protected:Npn \csEudoxDeclareStar #1#2#3
+{
+    \cs_if_exist:cF {#1}
+    {
+        \bool_if:NTF \g_csEudoxSiam_bool
+        {
+            \group_begin: \theoremstyle {nonumberplain}
+            \theoremheaderfont
+            {
+                \normalfont \scshape
+            }
+            \theorembodyfont {\normalfont}
+            \theoremsymbol {}
+            \newtheorem * {#1} {#2}
+            \group_end:
+        }
+        {
+            \theoremstyle {#3}
+            \newtheorem * {#1} {#2}
+        }
+    }
+}
+\tl_if_eq:cnT {g_csEudox_theorems_tl} {extended}
+{
+    \bool_if:NF \g_csEudoxSiam_bool
+    {
+        \clist_map_inline:nn
+        {
+            theoremlike,
+            definitionlike,
+            remarklike
+        }
+        {
+            \newtheoremstyle {#1} {\g_csEudoxTheoremSkip_tl} {\g_csEudoxTheoremSkip_tl}
+            {
+                \str_if_eq:nnTF {#1} {theoremlike} {\itshape} {\normalfont}
+            } {1.75em} {\scshape} {.} {.5em} {}
+        }
+    }
+    \csEudoxDeclareGroup {theoremlike}
+    {
+        theorem/Theorem/Theorems,
+        assertion/Assertion/Assertions,
+        assumption/Assumption/Assumptions,
+        axiom/Axiom/Axioms,
+        claim/Claim/Claims,
+        conclusion/Conclusion/Conclusions,
+        conjecture/Conjecture/Conjectures,
+        corollary/Corollary/Corollaries,
+        criterion/Criterion/Criteria,
+        fact/Fact/Facts,
+        folklore/Folklore/Folklores,
+        hypothesis/Hypothesis/Hypotheses,
+        informaltheorem/Informal~Theorem/Informal~Theorems,
+        lemma/Lemma/Lemmas,
+        metatheorem/Meta~Theorem/Meta~Theorems,
+        observation/Observation/Observations,
+        openproblem/Open~Problem/Open~Problems,
+        postulate/Postulate/Postulates,
+        property/Property/Properties,
+        proposition/Proposition/Propositions
+    }
+    \csEudoxDeclareGroup {definitionlike}
+    {
+        application/Application/Applications,
+        construction/Construction/Constructions,
+        convention/Convention/Conventions,
+        definition/Definition/Definitions,
+        example/Example/Examples,
+        experiment/Experiment/Experiments,
+        notation/Notation/Notations,
+        problem/Problem/Problems,
+        protocol/Protocol/Protocols,
+        result/Result/Results,
+        solution/Solution/Solutions,
+        step/Step/Steps
+    }
+    \csEudoxDeclareGroup {remarklike}
+    {
+        commentary/Commentary/Commentaries,
+        discussion/Discussion/Discussions,
+        exercise/Exercise/Exercises,
+        guideline/Guideline/Guidelines,
+        highlight/Highlight/Highlights,
+        important/Important/Importants,
+        insight/Insight/Insights,
+        keypoint/Key~Point/Key~Points,
+        motivation/Motivation/Motivations,
+        notationabuse/Notation~Abuse/Notation~Abuses,
+        note/Note/Notes,
+        question/Question/Questions,
+        recall/Recall/Recalls,
+        remark/Remark/Remarks,
+        summary/Summary/Summaries,
+        syntax/Syntax/Syntaxes,
+        takeaway/Takeaway/Takeaways,
+        tip/Tip/Tips,
+        warning/Warning/Warnings
+    }
+    \bool_if:NF \g_csEudoxSiam_bool
+    {
+        \cs_set:Npn \theHtheorem
+        {
+            edx.\int_use:N \g_csEudoxStatement_int
+        }
+    }
+    \csEudoxDeclareStar {theorem*} {Theorem} {theoremlike}
+    \csEudoxDeclareStar {lemma*} {Lemma} {theoremlike}
+    \csEudoxDeclareStar {corollary*} {Corollary} {theoremlike}
+    \csEudoxDeclareStar {hypothesis*} {Hypothesis} {theoremlike}
+    \csEudoxDeclareStar {claim*} {Claim} {theoremlike}
+    \csEudoxDeclareStar {conjecture*} {Conjecture} {theoremlike}
+    \csEudoxDeclareStar {informaltheorem*} {Informal~Theorem} {theoremlike}
+    \csEudoxDeclareStar {openproblem*} {Open~Problem} {remarklike}
+    \csEudoxDeclareStar {syntax*} {Syntax} {remarklike}
+}
+\bool_if:NT \g_csEudoxSiam_bool
+{
+    \tl_if_eq:cnT {g_csEudox_theorems_tl} {inherit}
+    {
+        \csEudoxRegisterFamily {theorem} {Theorem} {Theorems}
+        \csEudoxRegisterFamily {lemma} {Lemma} {Lemmas}
+        \csEudoxRegisterFamily {corollary} {Corollary} {Corollaries}
+        \csEudoxRegisterFamily {proposition} {Proposition} {Propositions}
+        \csEudoxRegisterFamily {definition} {Definition} {Definitions}
+    }
+}
+
+\cs_new_protected:Npn \csEudoxConfigureReferences
+{
+    \seq_use:Nn \g_csEudoxFamilies_seq {}
+}
+\bool_if:NT \g_csEudoxSiam_bool
+{
+    \clist_map_inline:nn
+    {
+        theorem*,
+        lemma*,
+        corollary*,
+        hypothesis*,
+        claim*,
+        conjecture*,
+        informaltheorem*,
+        openproblem*,
+        syntax*
+    }
+    {
+        \cs_if_exist:cT {#1}
+        {
+            \AddToHook {env/#1/begin}
+            {
+                \PackageWarning {eudoxus} {SIAM~owns~#1;~its~native~starred~form~advances~the~shared~counter}
+            }
+        }
+    }
+}
+\csEudoxConfigureReferences
+\@ifpackageloaded {cleveref} {}
+{
+    \AddToHook {package/cleveref/after} {\csEudoxConfigureReferences}
+}
+\@ifpackageloaded {zref-clever} {}
+{
+    \AddToHook {package/zref-clever/after} {\csEudoxConfigureReferences}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Theorem Helpers
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\NewDocumentCommand \edxnewtheoremsection {mm}
+{
+    \bool_if:NTF \g_csEudoxSiam_bool
+    {
+        \csEudoxError {SIAM~owns~reset~policy;~use~newsiamthm.}
+    }
+    {
+        \newtheorem {#1} {#2} [section]
+    }
+}
+
+\NewDocumentCommand \edxnewtheoremsibling {mm}
+{
+    \cs_if_exist:NTF \theorem
+    {
+        \bool_if:NTF \g_csEudoxSiam_bool
+        {
+            \newsiamthm {#1} {#2}
+        }
+        {
+            \newtheorem {#1} [theorem] {#2}
+        }
+        \csEudoxRegisterFamily {#1} {#2} {#2s}
+        \csEudoxConfigureReferences
+    }
+    {
+        \csEudoxError {edxnewtheoremsibling~requires~a~theorem~counter.}
+    }
+}
+
+\NewDocumentCommand \edxnewtheoremstar {mm}
+{
+    \cs_if_exist:cTF {#1}
+    {
+        \csEudoxError {Theorem~environment~#1~already~exists.}
+    }
+    {
+        \bool_if:NTF \g_csEudoxSiam_bool
+        {
+            \csEudoxDeclareStar {#1} {#2} {theoremlike}
+        }
+        {
+            \newtheorem * {#1} {#2}
+        }
+    }
+}
+\@onlypreamble \edxnewtheoremsection \@onlypreamble \edxnewtheoremsibling \@onlypreamble \edxnewtheoremstar
+\cs_if_exist:NT \proof
+{
+    \ProvideDocumentCommand \setqedsymbol {m}
+    {
+        \bool_if:NTF \g_csEudoxSiam_bool
+        {
+            \renewcommand \proofSymbol {#1}
+        }
+        {
+            \renewcommand \qedsymbol {#1}
+        }
+    }
+    \ProvideDocumentCommand \SetQEDSymbol {m}
+    {
+        \setqedsymbol {#1}
+    }
+    \ProvideDocumentEnvironment {proofsketch} {o}
+    {
+        \IfNoValueTF {#1}
+        {
+            \begin {proof} [Proof~(Sketch)]
+        }
+        {
+            \begin {proof} [Proof~(Sketch~#1)]
+        }
+    }
+    {
+        \end {proof}
+    }
+    \ProvideDocumentEnvironment {proofidea} {o}
+    {
+        \IfNoValueTF {#1}
+        {
+            \begin {proof} [Proof~(Idea)]
+        }
+        {
+            \begin {proof} [Proof~(Idea~#1)]
+        }
+    }
+    {
+        \end {proof}
+    }
+    \ProvideDocumentEnvironment {proofofclaim} {o}
+    {
+        \IfNoValueTF {#1}
+        {
+            \begin {proof} [Proof~of~Claim]
+        }
+        {
+            \begin {proof} [Proof~of~Claim~(#1)]
+        }
+    }
+    {
+        \end {proof}
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Paragraph Headings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\tl_new:N \l_csEudoxHeading_tl
+\NewDocumentCommand \edxappendpunct {m}
+{
+    \tl_set:Nx \l_csEudoxHeading_tl
+    {
+        \text_purify:n {#1}
+    }
+    \tl_trim_spaces:N \l_csEudoxHeading_tl
+    #1\exp_args:NnV \regex_match:nnF
+    {
+        [.?!:] \s *\Z
+    } \l_csEudoxHeading_tl {.}
+}
+
+\NewDocumentCommand \edxeatnewline {} {}
+\cs_new_protected:Npn \csEudoxParagraph #1#2
+{
+    \par
+    \smallskip \noindent \group_begin:
+    \csEudoxEnabled:nTF {titlepatch} {#1} {\scshape}
+    \edxappendpunct {#2}
+    \group_end:
+    \nobreak \hskip .3em\ignorespaces
+}
+\ProvideDocumentCommand \parhead {m}
+{
+    \csEudoxParagraph \edxparheadingfont {#1}
+}
+\ProvideDocumentCommand \subparhead {m}
+{
+    \csEudoxParagraph \edxsubparheadingfont {#1}
+}
+\tl_if_eq:cnT {g_csEudox_paragraphs_tl} {runin}
+{
+    \RenewDocumentCommand \paragraph {som}
+    {
+        \parhead {#3}
+    }
+    \RenewDocumentCommand \subparagraph {som}
+    {
+        \subparhead {#3}
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TCS Notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\csEudoxEnabled:nT {tcs}
+{
+    \IfFileExists {tcscrypto.sty} {}
+    {
+        \csEudoxError {tcs=true~requires~tcscrypto.sty~on~the~TeX~input~path.}
+    }
+    \bool_if:NTF \g_csEudoxSiam_bool
+    {
+        \NewCommandCopy \csEudoxSiamAM \AM
+        \cs_undefine:N \AM
+        \RequirePackage [notoc] {tcscrypto}
+        \NewCommandCopy \ComplexityAM \AM \RenewCommandCopy \AM \csEudoxSiamAM
+    }
+    {
+        \RequirePackage [notoc] {tcscrypto}
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Compatibility Queries
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clist_map_inline:nn
+{
+    math,
+    theorems,
+    tcs,
+    layout,
+    titlepatch,
+    fonts,
+    pazobiolinum,
+    epigraph,
+    hacks,
+    amshacks,
+    siam
+}
+{
+    \cs_new_eq:cN {ifeudox#1}
+    \iffalse
+    \cs_new_protected:cpn {eudox#1true}
+    {
+        \csEudoxError {Set~eudoxus~options~before~loading;~legacy~Boolean~setters~cannot~reinitialize~the~package.}
+    }
+    \cs_new_protected:cpn {eudox#1false}
+    {
+        \csEudoxError {Set~eudoxus~options~before~loading;~legacy~Boolean~setters~cannot~reinitialize~the~package.}
+    }
+}
+\clist_map_inline:nn
+{
+    math,
+    tcs,
+    titlepatch,
+    epigraph,
+    hacks
+}
+{
+    \csEudoxEnabled:nT {#1}
+    {
+        \cs_gset_eq:cN {ifeudox#1}
+        \iftrue
+    }
+}
+\tl_if_eq:cnT {g_csEudox_theorems_tl} {extended}
+{
+    \cs_gset_eq:NN \ifeudoxtheorems \iftrue
+}
+\tl_if_eq:cnF {g_csEudox_layout_tl} {inherit}
+{
+    \cs_gset_eq:NN \ifeudoxlayout \iftrue
+}
+\tl_if_eq:cnF {g_csEudox_font_tl} {inherit}
+{
+    \cs_gset_eq:NN \ifeudoxfonts \iftrue
+}
+\tl_if_eq:cnT {g_csEudox_font_tl} {pazobiolinum}
+{
+    \cs_gset_eq:NN \ifeudoxpazobiolinum \iftrue
+}
+\csEudoxEnabled:nT {ams-addresses}
+{
+    \cs_gset_eq:NN \ifeudoxamshacks \iftrue
+}
+\bool_if:NT \g_csEudoxSiam_bool
+{
+    \cs_gset_eq:NN \ifeudoxsiam \iftrue
+}
+
+\NewExpandableDocumentCommand \EudoxusConfiguration {m}
+{
+    \tl_use:c {g_csEudox_#1_tl}
+}
+\bool_gset_true:N \g_csEudoxInitialized_bool
+\ExplSyntaxOff
 \endinput
