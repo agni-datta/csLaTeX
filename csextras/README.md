@@ -1,182 +1,190 @@
----
-title: README
-aliases: [README, 'README, "csextras"']
-linter-yaml-title-alias: README
-date created: Monday, June 22nd 2026, 12:00:00 am
-date modified: Tuesday, August 25th 2026, 6:44:56 pm
----
-
 <!-- @format -->
 
-## csextras
+# csextras 2.0
 
-An opt-in extension layer for [`csamsmath`](../csamsmath/) and [`csbook`](../csbook/). Each key-value option enables one layout, metadata, indexing, box, or tooling feature.
+Explicit optional features for mathematical and TCS documents. Requires LaTeX 2022-06-01 or later. Supports pdfLaTeX and LuaLaTeX; XeLaTeX is rejected. Optional dependencies can require a newer kernel.
 
-### Power-User Warning
-
-`csextras` is experimental, unsupported, and not systematically tested. It is provided without guarantees of stability, compatibility, correctness, or long-term maintenance.
-
-Use it only if you are comfortable reading compilation logs, debugging package interactions, tracing macro expansions, and resolving low-level TeX and LaTeX failures. Users are expected to have a working knowledge of the LaTeX3 (`expl3`) programming layer, the LaTeX kernel, and modern package-development practices.
-
-If you are unwilling or unable to diagnose package conflicts, compilation failures, or kernel-level problems, do not use this package.
-
-The load-time warning is intentional. Advanced users who have accepted the risk may pass `nowarning` to suppress only this experimental-package warning.
-
-### Requirements
-
-- LaTeX2e ≥ 2020/10/01
-- pdfLaTeX or LuaLaTeX (XeLaTeX triggers a `\PackageError`)
-- Do not load biblatex. Using it with `csextras` raises a `\PackageError`.
-- Language selection and font/input encoding are document-level decisions. `csextras` does not load `inputenc`, `fontenc`, `luainputenc`, or pass language options to `babel`.
-
-### Usage
+A blank `\usepackage{csextras}` loads only xcolor and supplies the historical
+seven-color palette and `\SetExtraColor{name}{color}`. It selects no fonts,
+theorems, layout, citation backend, reference provider, index or algorithm.
+Standalone features do not require csmath.
 
 ```latex
-% Article-style workflow
-\usepackage{csamsmath}
-\usepackage[layout, tikz, extramath, metadata]{csextras}
-
-% Book-style workflow
-\usepackage{csbook}
-\usepackage[layout, index, lettrine, epigraph]{csextras}
-
-% Patch-only (csamsmath or csbook already loaded)
-\usepackage[layout, boxes, hyperrefcolors]{csextras}
+\documentclass{article}
+\usepackage[references,table,index]{csmath}
+\usepackage{tcscrypto}
+\usepackage[algorithm,extratables,index,siunitx,references=both]{csextras}
+\begin{document}
+\section{Procedure}
+\begin{algorithm}
+  \caption{A procedure}\label{alg:first}\zlabel{zalg:first}
+  \begin{codelines}[1]
+    \item\label{line:init}\zlabel{zline:init} Initialize $x=1$.
+    \item Return $x$.\codecomment{The accepted result.}
+  \end{codelines}
+\end{algorithm}
+See \cref{alg:first,line:init} and \zcref{zalg:first,zline:init}.
+\end{document}
 ```
 
-### Options
+## Configuration
 
-All options are boolean (`key` or `key=true`) unless noted.
+All Boolean options default to false. A bare name means true; `=false` disables
+it. Identical repetitions work. Unknown keys, invalid/missing values,
+contradictions and unavailable prerequisites produce errors. Explicit requests
+never silently disappear. Third-party packages must be installed when selected.
 
-#### Base Package Detection
+Csmath must precede csextras for features depending on its resolved mode or
+already initialized providers. Detection uses only `\CsmathConfiguration{mode}`
+and `\CsmathCheckConfiguration{...}`. Article and manuscript both support the
+article conveniences. Book features also require actual chapter support.
+Lecture modes are recognized by their resolved csmath configuration.
+A request cannot turn on a csmath feature after initialization: select `table`
+or `index` on csmath first. Indexed article documents select `index=true`
+on csmath, plus their required font and features. Csextras cannot change
+the initialized configuration. No separate font/theorem resolver exists here.
 
-`csextras` does not load `csamsmath` or `csbook`. It detects whether either package is already loaded and enables dependent functionality accordingly. If an option requires one of those packages and the dependency is absent, `csextras` emits a warning and disables only that dependent feature.
+Venue inheritance rejects layout, beautify, figureposition, footnotes,
+informalheaders, titlepage, tocspacing, numbering, crazynumbering, tightcaptions,
+parskip, indentfirst, tocbibind, abstract and epigraph. Independent utilities
+remain available.
 
-#### Standard features
+## Options and direct dependencies
 
-| Option             | Packages / Effect                                                                                                                                                           |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `acknowledgements` | `acknowledgements` / `acknowledgement` environment (article: `\parhead`; book: `\chapter*`)                                                                                 |
-| `algorithm`        | `newfloat` + `codelines` (if present); declares `algorithm` float with cleveref names                                                                                       |
-| `beautify`         | Activates color palette in `caption` labels; more hooks planned                                                                                                             |
-| `bibliography`     | `\printreferences[style]{bibfile}` and `\printnotereferences` helpers                                                                                                       |
-| `boxes`            | `mdframed[TikZ]` + five named environments: `openproblemframe`, `questionbox`, `proofbox`, `diagramframe`, `figurebox`                                                      |
-| `epigraph`         | `epigraph` (styled), `quotation` (restyled), `dedication{First}{Last}` environment                                                                                          |
-| `exercises`        | Replaces any existing `exercise`/`solution` theorem environments with the legacy `exercises` package, configured through its `exercisenumberformat=Roman` load-time option; emits `\PackageWarning` |
-| `extralists`       | `enumitem`; adds `dashedlist`, `codelist`, `checkboxlist`, `deflist`, `\checked`                                                                                            |
-| `extramath`        | `nicefrac`, `mleftright`, `upgreek[Symbol]` (pdfLaTeX) / `upgreek` (LuaLaTeX), `\mathpzc`, `bbm`, `bm`, `braket`, `esvect`, `\mathsc`, `\mathbi`                            |
-| `extratables`      | `longtable`, `ltxtable`, `rotating`, `makecell`, `booktabs`, `multirow`, `tabularx`, `array`                                                                                |
-| `figureposition`   | Tunes `\topfraction`, `\bottomfraction`, `\textfraction`, `\floatpagefraction`                                                                                              |
-| `footnotes`        | `bigfoot`, `footnote`, `footmisc[bottom,multiple,hang]`                                                                                                                     |
-| `forest`           | `forest[linguistics]`                                                                                                                                                       |
-| `glossary`         | `glossaries[acronym,toc]`, `\makeglossaries`, `\acronymentry`, `\glossaryentry`                                                                                             |
-| `hyperrefcolors`   | Sets `citecolor`, `linkcolor`, `urlcolor` to `SteelBlue4` in `hyperref` at `\begin{document}`                                                                               |
-| `hyperxmp`         | `hyperxmp` loaded after `hyperref`; defers to `\AtBeginDocument` if `hyperref` not yet present                                                                              |
-| `index`            | `imakeidx`, `\makeindex`, `\indexsee`, `\indexseealso`, `\term`, `\annotation`                                                                                              |
-| `layout`           | `geometry` (letterpaper, 1 in margins), `linespread{1.05}`, `allowdisplaybreaks`, `numberwithin{equation}{section}`                                                         |
-| `listings`         | `listings` with color-coded defaults (accent, figure, border palette)                                                                                                       |
-| `loadmacros`       | Inputs `settings.tex`, `macros.tex`, `commands.tex` at `\begin{document}` if they exist                                                                                     |
-| `metadata`         | `datetime2`, `marginnote`; `\Email`, `\ORCID`, `\NoteVersion`, `\workingnotethanks`, `\unstabledraftthanks`, `\genericnoteacknowledgement`, `\newguymarker`, `\currenttime` |
-| `minted`           | `minted` (pdfLaTeX: `outputdir=.`), `\usemintedstyle{friendly}`, `\setminted` defaults. Requires `--shell-escape`.                                                          |
-| `nowarning`        | Suppresses the experimental unsupported-package load-time warning only                                                                                                      |
-| `numbering`        | `secnumdepth=3`, `tocdepth=2`                                                                                                                                               |
-| `orcid`            | `orcidlink`                                                                                                                                                                 |
-| `pdftools`         | `pdfpages`, `pdflscape`                                                                                                                                                     |
-| `siunitx`          | `siunitx` with math mode, `detect-all`, separate uncertainty                                                                                                                |
-| `tcscrypto`        | `tcscrypto`                                                                                                                                                                 |
-| `tikz`             | `tikz`, `tikz-cd`, `tikzscale`, `pgfplots`, full tikzlibrary suite                                                                                                          |
-| `tocbibind`        | `tocbibind[nottoc]`                                                                                                                                                         |
-| `verbatim`         | `verbatim`, `fancyvrb`; strips trailing blank lines from verbatim environments                                                                                              |
-| `watermark`        | `draftwatermark` (lightness 0.975, scale 0.875), `\draftwarning` command, `prelim2e` running footer if present                                                              |
+The packages below are direct feature requests; those packages may load their
+own dependencies. An existing compatible provider is reused. Default xcolor
+applies to every row. No broad xcolor palette options are forced.
 
-#### Article-only features
+| Option                                            | Effect and direct packages                                                                                                                                                                                              |
+| ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `acknowledgements`                                | Both acknowledgement spellings; local heading fallback, existing environment preserved. No extra package.                                                                                                               |
+| `algorithm`                                       | `newfloat`, `codelines`; optional algorithm float only.                                                                                                                                                                 |
+| `algorithmtwoe`                                   | Explicit alternative: `algorithm2e[algonl,boxed,longend,vlined]`, historical styling. Conflicts with algorithm.                                                                                                         |
+| `beautify`                                        | Caption label color/font; requires an already selected `caption` provider.                                                                                                                                              |
+| `bibliography`                                    | BibTeX helpers; `setspace`. Conflicts with biblatex.                                                                                                                                                                    |
+| `boxes`                                           | `mdframed`, ordinary backend when not already configured; five local box styles. No implicit TikZ.                                                                                                                      |
+| `epigraph`                                        | `epigraph`; styled quotation and dedication. Quotation respects local width.                                                                                                                                            |
+| `exercises`                                       | `exercises[exercisenumberformat=Roman]`; requires unoccupied exercise and solution names.                                                                                                                               |
+| `extralists`                                      | `enumitem`; legacy mathematics uses `amssymb` if needed. Unicode mathematics uses its square and a local `pifont` checkmark (Garamond-Math lacks that glyph). Four local list types; document math fonts are unchanged. |
+| `extramath`                                       | `nicefrac`, `mleftright`, `upgreek` (Symbol on pdfLaTeX), `bbm`, `bm`, `braket`, `esvect`; mathpzc/mathsc/mathbi helpers without replacing existing definitions.                                                        |
+| `extratables`                                     | With csmath: validate table=true. Standalone: `array,booktabs,longtable,makecell,multirow,tabularx`. Both add `rotating[figuresright],ltxtable`.                                                                        |
+| `figureposition`                                  | Float fractions .92/.82/.06/.78 and top/bottom/total counts 3/2/4. No package.                                                                                                                                          |
+| `footnotes`                                       | `bigfoot`, `footnote`, `footmisc[bottom,multiple,hang]`; explicit global footnote presentation.                                                                                                                         |
+| `forest`                                          | `forest[linguistics]`; diagrams only when selected.                                                                                                                                                                     |
+| `glossary`                                        | `glossaries[acronym,toc]`; author runs makeglossaries explicitly.                                                                                                                                                       |
+| `hyperrefcolors`                                  | `hyperref` if absent; explicitly set cite/link/URL color to accentcolor, retaining other settings. Does not force colorlinks.                                                                                           |
+| `hyperxmp`                                        | Preamble-time `hyperref` then `hyperxmp`. Rejects native DocumentMetadata, which disables hyperxmp itself.                                                                                                              |
+| `index`                                           | Csmath index=true or standalone `imakeidx[makeindex,noautomatic]`; never starts an external process.                                                                                                                    |
+| `layout`                                          | Bare/true means balanced; false means none. See presets below.                                                                                                                                                          |
+| `listings`                                        | `listings`; historical small monospaced, colored, numbered framed presentation.                                                                                                                                         |
+| `loadmacros`                                      | Read settings.tex, macros.tex, commands.tex in the preamble with ordinary catcodes. All three must exist.                                                                                                               |
+| `metadata`                                        | `datetime2`, `hyperref` if absent; `marginnote` only for a new standalone marker provider. Existing newguymarker remains authoritative.                                                                                 |
+| `minted`                                          | Explicit `minted`, friendly style. Requires configured external latexminted support; never enables execution.                                                                                                           |
+| `nowarning`                                       | Deprecated acknowledgment only; warns that diagnostics remain enabled.                                                                                                                                                  |
+| `numbering`                                       | Section numbering depth 3 and TOC depth 2; no equation changes.                                                                                                                                                         |
+| `orcid`                                           | `orcidlink`.                                                                                                                                                                                                            |
+| `pdftools`                                        | `pdfpages`, `pdflscape`.                                                                                                                                                                                                |
+| `siunitx`                                         | `siunitx`; mathematical units, separate uncertainties and single range units. Standalone.                                                                                                                               |
+| `tcscrypto`                                       | Explicit local tcscrypto; uses notoc in venue mode. Load csmath first when used.                                                                                                                                        |
+| `tikz`                                            | `tikz,tikz-cd,tikzscale,pgfplots` (compat=1.18); historical diagram libraries.                                                                                                                                          |
+| `tocbibind`                                       | `tocbibind[nottoc]`.                                                                                                                                                                                                    |
+| `verbatim`                                        | `verbatim,fancyvrb`; native line processing is preserved.                                                                                                                                                               |
+| `watermark`                                       | `draftwatermark,prelim2e`; draftwarning and preliminary footer.                                                                                                                                                         |
+| `zcref`                                           | Legacy alias selecting native zref; upgrades references=cleveref to both.                                                                                                                                               |
+| `abstract`                                        | Article/manuscript csmath; explicit run-in abstract and TOC entry.                                                                                                                                                      |
+| `amsaddr`                                         | Actual amsart/amsbook only; `amsaddr[foot]`.                                                                                                                                                                            |
+| `informalheaders`                                 | Article/manuscript csmath; `titlesec`, colored sans-serif headings.                                                                                                                                                     |
+| `titlepage`                                       | Article/manuscript csmath; `titling,authblk`. Conflicts with cslecture title ownership.                                                                                                                                 |
+| `tocspacing`                                      | Article/manuscript csmath; `tocloft[titles]`, explicit fonts and spacing.                                                                                                                                               |
+| `chapterabstract`                                 | Chapter-capable csmath book mode; quotation/TOC helper.                                                                                                                                                                 |
+| `lettrine`                                        | Chapter-capable csmath book mode; `lettrine`, dropcap helper.                                                                                                                                                           |
+| `crazybib`                                        | `natbib[round,sort,numbers,sectionbib]`, `chapterbib[sectionbib]`; reuses preloaded providers. Rejects cite and biblatex.                                                                                               |
+| `crazynumbering`                                  | Section depth 5, TOC depth 6; conflicts with numbering.                                                                                                                                                                 |
+| `indentfirst`                                     | `indentfirst`; explicit first-paragraph indentation.                                                                                                                                                                    |
+| `nagmode`                                         | `nag[l2tabu,orthodox]`, `onlyamsmath[all,error]`; explicit strict diagnostics.                                                                                                                                          |
+| `parskip`                                         | `parskip`; explicit global paragraph spacing.                                                                                                                                                                           |
+| `tightcaptions`                                   | Historical belowcaptionskip=-8pt and float spacing 4pt with documented stretch/shrink in source; venue-rejected.                                                                                                        |
+| `todonotes`                                       | `todonotes`, marginparwidth=2cm; requires unoccupied todo. Do not combine with csmath-owned annotations.                                                                                                                |
+| `copyright=none\|footnote\|page`                  | Default none. Author/date notice or explicit copyright page. No license is assigned to the content.                                                                                                                     |
+| `lipsum=none\|paragraph\|content`                 | Default none; `lipsum` or `duckuments`.                                                                                                                                                                                 |
+| `references=none\|hyperref\|cleveref\|zref\|both` | Default none; hyperref as needed, cleveref and/or `zref-clever,zref-titleref`.                                                                                                                                          |
+| `layout=none\|balanced\|legacy`                   | Default none; balanced loads geometry[margin=1in], retains paper size, line spread1.05. Legacy additionally sets emergencystretch2em, interfootnotelinepenalty10000, and allowdisplaybreaks when amsmath exists.        |
 
-These emit a `\PackageWarning` and no-op when used in book mode.
+Layout refuses to overwrite an already loaded geometry provider. Neither preset
+changes hbadness/vbadness/hfuzz/vfuzz, equation numbering or section depths.
+The legacy preset intentionally excludes historical warning suppression.
 
-| Option            | Effect                                                                           |
-| ----------------- | -------------------------------------------------------------------------------- |
-| `abstract`        | Redefines `abstract` environment with TOC entry and `\parhead`                   |
-| `amsaddr`         | `amsaddr[foot]` (only meaningful with `amsart`/`amsbook` class)                  |
-| `informalheaders` | `titlesec`; section heads in `\sffamily\color{accentcolor}`                      |
-| `titlepage`       | `titling`, `authblk`; custom flush-left title block                              |
-| `tocspacing`      | `tocloft[titles]`; adjust section font and inter-entry spacing. **Discouraged.** |
+## Commands
 
-#### Book-only features
+- Palette: accentcolor, bordercolor, figurecolor, backgroundcolor,
+  diagrambackground, diagramborder, draftcolor; SetExtraColor changes a named color.
+- Boxes: openproblemframe, questionbox, proofbox, diagramframe, figurebox;
+  optional mdframed settings remain available. Defaults are unbroken boxes with
+  square corners. Override `nobreak=false` for suitable multipage material.
+- Lists: dashedlist, codelist, checkboxlist (with `\checked`), deflist. These do
+  not change standard enumerate/itemize defaults or codelines numbering.
+- Bibliography: `\printreferences[style]{files}`, default aomalpha;
+  `\printnotereferences` requests abbrev0, crypto, references. Supply those files
+  explicitly. Csextras does not supply a research bibliography.
+- Metadata: `\Email{address}`, `\ORCID{id}`, `\NoteVersion{text}`,
+  `\docversion`, `\workingnotethanks`, `\unstabledraftthanks{contact}`,
+  `\genericnoteacknowledgement`, `\newguymarker{name}{label}{color}`,
+  `\currenttime`. These helpers do not overwrite caller PDF title/author fields.
+- Index: `\term{text}`, `\indexsee{entry}{target}`,
+  `\indexseealso{entry}{target}`, ordinary-footnote `\annotation{text}` when
+  not already provided. Run makeindex outside LaTeX and include the .ind when
+  submitting a source bundle that cannot run it.
+- Glossary: `\glossaryentry{label}{name}{description}` and native
+  `\newacronym{label}{short}{long}`. Use the native glossaries formatter for acronym entries.
+- Book/quotation: `\dropcap{initial}{rest}`, chapterabstract,
+  `\epigraph{text}{source}`, quotation, dedication with two author-name
+  arguments, acknowledgements and acknowledgement.
+- Draft: `\draftwarning`, `\todoinline[options]{text}`,
+  `\todofixed[options]{text}`. Existing csmath final-mode accepted-content
+  semantics remain untouched. Standalone metadata markers are explicitly visible
+  whenever that feature is requested; there is no separate csextras draft mode.
+- Native references: `\Zcref[options]{labels}` is a capitalized zcref convenience,
+  never an impersonation of cleveref's Cref.
 
-These emit a `\PackageWarning` and no-op when used in article mode.
+## References, bibliography and execution
 
-| Option            | Effect                                                                                      |
-| ----------------- | ------------------------------------------------------------------------------------------- |
-| `chapterabstract` | `chapterabstract` environment with TOC entry                                                |
-| `lettrine`        | `lettrine`; `\LettrineFontHook` / `\LettrineTextFont` in accent color; `\dropcap{L}{etter}` |
+Ordinary labels and native zref labels are independent. Use both commands at the
+same object if both stores are needed. Codelines owns every line reference type
+and unique anchor. Csextras owns only the algorithm float type, and uses the
+public csthm family iterator for native theorem names. Explicit provider-level
+name overrides retain precedence; register cleveref overrides after its setup.
+Enhanced providers load at the end of csextras initialization, after selected
+mathematical facilities, still in the preamble. Load csmath before csextras when
+combining them with enhanced references. Hyperref's existing options and metadata
+are reused.
 
-#### Choice options
+Biblatex works before or after csextras when bibliography/crazybib are disabled.
+Actual conflicting backend features reject biblatex in either order. Ordinary
+csextras never chooses a citation style. For BibTeX, run LaTeX, BibTeX and enough
+LaTeX passes; for biblatex use the backend selected by the document.
 
-| Option      | Values                                   | Effect                                                                                            |
-| ----------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| `copyright` | `none` (default), `footnote`, `page`     | `footnote`: defines `\copyrightnotice`; `page`: defines `\makecopyrightpage` + `\copyrightnotice` |
-| `lipsum`    | `none` (default), `paragraph`, `content` | `paragraph`: loads `lipsum`; `content`: loads `duckuments` (falls back to `lipsum`)               |
+Minted 3 can use an approved restricted latexminted executable; older versions
+have different requirements. Csextras does not enable shell escape, invoke
+external tools itself, or claim that every minted version works in a disabled
+execution environment. With `-no-shell-escape`, its minted option errors clearly;
+a document needing a frozen-cache workflow should configure minted directly.
+Listings and codelines need no external execution.
 
-#### Discouraged options
+## Installation
 
-These load but emit a loud `\PackageWarning`.
+Select extra X11/DVIPS palettes at the first xcolor load. Boxes use the ordinary backend and square corners by default;
+TikZ diagrams remain explicitly available. Table spacing stays caller-owned.
 
-| Option           | Packages                                         | Why discouraged                                    |
-| ---------------- | ------------------------------------------------ | -------------------------------------------------- |
-| `algorithmtwoe`  | `algorithm2e[algonl,boxed,longend,vlined]`       | Legacy, poorly maintained; prefer `algorithm=true` |
-| `crazybib`       | `natbib`, `chapterbib`, `cite`                   | Complex interactions; rarely needed                |
-| `crazynumbering` |--| Sets `secnumdepth=5`, `tocdepth=6`                 |
-| `indentfirst`    | `indentfirst`                                    | Non-standard in most CS venues                     |
-| `nagmode`        | `nag[l2tabu,orthodox]`, `onlyamsmath[all,error]` | Errors on many harmless constructs                 |
-| `parskip`        | `parskip`                                        | Often looks wrong with theorem environments        |
-| `tightcaptions`  |--| Can violate venue guidelines                       |
-| `todonotes`      | `todonotes`; `\todoinline`, `\todofixed`         | Must be removed before submission                  |
+For an exercises-package workflow use standalone csextras or
+`\usepackage[theorems=inherit]{csmath}` before selecting exercises. For ordinary
+csmath exercises, omit the csextras exercises option. For a lecture title select
+the cslecture title policy. For annotations use the existing csmath provider or
+standalone todonotes, not both definitions of todo.
 
-### Color Palette
+To install: csextras.sty alone suffices for independent installed-package
+features. Algorithm additionally needs codelines.sty. Tcscrypto additionally
+needs tcscrypto.sty. Csmath-dependent features need csmath.sty and csthm.sty; cslecture adds its own canonical closure. See
+the required package files listed above.
 
-Seven colors are always defined (via `\providecolor`). Override after loading with `\SetExtraColor{name}{value}` or `\colorlet{name}{value}`.
-
-| Name                | Default           |
-| ------------------- | ----------------- |
-| `accentcolor`       | `SteelBlue4`      |
-| `figurecolor`       | `IndianRed4`      |
-| `backgroundcolor`   | `LightSteelBlue1` |
-| `bordercolor`       | `SteelBlue4`      |
-| `diagrambackground` | `LightCyan3`      |
-| `diagramborder`     | `CadetBlue4`      |
-| `draftcolor`        | `Coral4`          |
-
-### Key User-Facing Commands
-
-| Command                            | Option                     | Description                                   |
-| ---------------------------------- | -------------------------- | --------------------------------------------- |
-| `\SetExtraColor{name}{value}`      | always                     | Reassign a palette color                      |
-| `\printreferences[style]{bib}`     | `bibliography`             | Print bibliography with optional style        |
-| `\printnotereferences`             | `bibliography`             | Shorthand for `aomalpha` + standard bib files |
-| `\draftwarning`                    | `watermark`                | Draft notice text for `\thanks{}`             |
-| `\Email{addr}`                     | `metadata`                 | Hyperlinked email paragraph                   |
-| `\ORCID{id}`                       | `metadata`                 | Hyperlinked ORCID paragraph                   |
-| `\NoteVersion{x.y}`                | `metadata`                 | Set `\docversion`                             |
-| `\workingnotethanks`               | `metadata`                 | Standard working-note acknowledgement         |
-| `\unstabledraftthanks{contact}`    | `metadata`                 | Unstable-draft acknowledgement                |
-| `\newguymarker{cmd}{label}{color}` | `metadata`                 | Define a margin-note annotation command       |
-| `\currenttime`                     | `metadata`                 | Current timestamp via `datetime2`             |
-| `\dropcap{L}{etter}`               | `lettrine` (book)          | Drop-cap with 2 lines, in accent color        |
-| `\term{word}`                      | `index`                    | Index entry + italic display                  |
-| `\indexsee{a}{b}`                  | `index`                    | “see” cross-reference                         |
-| `\acronymentry{lbl}{short}{long}`  | `glossary`                 | Define an acronym                             |
-| `\glossaryentry{lbl}{name}{desc}`  | `glossary`                 | Define a glossary term                        |
-| `\copyrightnotice`                 | `copyright=footnote\|page` | Copyright notice text                         |
-| `\makecopyrightpage`               | `copyright=page`           | Insert copyright page                         |
-
-### Engine and Package Compatibility
-
-- **XeLaTeX**: blocked with `\PackageError`
-- **biblatex**: blocked via `\@ifpackageloaded` + `\AddToHook{package/biblatex/before}`
-- **upgreek Symbol option**: pdfLaTeX only; LuaLaTeX gets a warning and loads without `Symbol`
-- **minted**: requires `--shell-escape` (pdfLaTeX adds `outputdir=.` automatically)
-- **hyperxmp**: must follow `hyperref`; if `hyperref` is not yet loaded, deferred to `\AtBeginDocument`
-
-### Future Extensions
-
-Patches welcome for: `subcaption=true` (subfigures), `complexity=true` (TCS class macros), `clrscode=true` (CLRS pseudocode).
+Author: Agni Datta. Maintained under LPPL 1.3c or later; see repository LICENSE
+and lppl.txt.
