@@ -1,908 +1,1644 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% llncscrypto.sty — LLNCS-compatible research-paper extensions
-%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Llncscrypto
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Author  : Agni Datta
 % GitHub  : https://github.com/agni-datta/csLaTeX
 % License : LPPL v1.3c
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{llncscrypto}[2026/08/25 v3.3.2 LLNCS-compatible research-paper extensions]
-
-\RequirePackage{l3keys2e}
-\makeatletter
+\NeedsTeXFormat{LaTeX2e}[2022/06/01]
+\ProvidesPackage{llncscrypto}[2026/10/10 v4.0.2 Publisher-preserving LNCS extensions]
 \ExplSyntaxOn
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Options
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\bool_new:N \g_llncs_captions_bool
-\bool_new:N \g_llncs_colorlinks_bool
-\bool_new:N \g_llncs_draft_bool
-\bool_new:N \g_llncs_final_bool
-\bool_new:N \g_llncs_libertine_bool
-\bool_new:N \g_llncs_notes_bool
-\bool_new:N \g_llncs_preprint_bool
-\bool_new:N \g_llncs_theorems_bool
-
-\keys_define:nn { llncscrypto }
+\prop_new:N \l_csLlncsChoices_prop
+\cs_new_protected:Npn \csLlncsSelect #1#2
 {
-	captions   .bool_gset:N = \g_llncs_captions_bool   , captions   .initial:n = false ,
-	colorlinks .bool_gset:N = \g_llncs_colorlinks_bool , colorlinks .initial:n = false ,
-	draft      .bool_gset:N = \g_llncs_draft_bool      , draft      .initial:n = false ,
-	final      .code:n      = { \bool_gset_true:N  \g_llncs_final_bool
-			\bool_gset_false:N \g_llncs_notes_bool
-			\bool_gset_false:N \g_llncs_draft_bool } ,
-	final      .initial:n   = false ,
-	libertine  .bool_gset:N = \g_llncs_libertine_bool  , libertine  .initial:n = false ,
-	nonotes    .code:n      = { \bool_gset_false:N \g_llncs_notes_bool } ,
-	preprint   .bool_gset:N = \g_llncs_preprint_bool   , preprint   .initial:n = false ,
-	theorems   .bool_gset:N = \g_llncs_theorems_bool   , theorems   .initial:n = false ,
-	unknown    .code:n      = { \PackageWarning{llncscrypto}{Unknown~option~`#1'} } ,
+    \prop_get:NnNTF \l_csLlncsChoices_prop {#1} \l_tmpa_tl
+    {
+        \tl_if_eq:NnF \l_tmpa_tl {#2}
+        {
+            \PackageError {llncscrypto} {Contradictory~#1~selections}
+            {
+                Choose~one~value.~Earlier:~\l_tmpa_tl ;~later:~#2.
+            }
+        }
+    }
+    {
+        \prop_put:Nnn \l_csLlncsChoices_prop {#1} {#2}
+    }
 }
-\bool_gset_true:N \g_llncs_notes_bool
-\ProcessKeysOptions { llncscrypto }
 
-\newif\ifllncscaptions   \bool_if:NTF \g_llncs_captions_bool   { \llncscaptionstrue   } { \llncscaptionsfalse   }
-\newif\ifllncscolorlinks \bool_if:NTF \g_llncs_colorlinks_bool { \llncscolorlinkstrue } { \llncscolorlinksfalse }
-\newif\ifllncsdraft      \bool_if:NTF \g_llncs_draft_bool      { \llncsdrafttrue      } { \llncsdraftfalse      }
-\newif\ifllncsfinal      \bool_if:NTF \g_llncs_final_bool      { \llncsfinaltrue      } { \llncsfinalfalse      }
-\newif\ifllncslibertine  \bool_if:NTF \g_llncs_libertine_bool  { \llncslibertinetrue  } { \llncslibertinefalse  }
-\newif\ifllncsnotes      \bool_if:NTF \g_llncs_notes_bool      { \llncsnotestrue      } { \llncsnotesfalse      }
-\newif\ifllncspreprint   \bool_if:NTF \g_llncs_preprint_bool   { \llncspreprinttrue   } { \llncspreprintfalse   }
-\newif\ifllncstheorems   \bool_if:NTF \g_llncs_theorems_bool   { \llncstheoremstrue   } { \llncstheoremsfalse   }
+\cs_new_protected:Npn \csLlncsDefault #1#2
+{
+    \prop_if_in:NnF \l_csLlncsChoices_prop {#1}
+    {
+        \prop_put:Nnn \l_csLlncsChoices_prop {#1} {#2}
+    }
+}
+\keys_define:nn {llncscrypto}
+{
+    format .choices:nn =
+        {
+            camera-ready,
+            preprint
+        }
+        {
+            \csLlncsSelect {format} {#1}
+        },
+    preprint .code:n =
+        {
+            \csLlncsSelect {format} {preprint}
+        },
+    preprint .value_forbidden:n = true,
+    draft .code:n =
+        {
+            \csLlncsSelect {status} {draft}
+        },
+    draft .value_forbidden:n = true,
+    final .code:n =
+        {
+            \csLlncsSelect {status} {final}
+        },
+    final .value_forbidden:n = true,
+    nonotes .code:n =
+        {
+            \csLlncsSelect {annotations} {false}
+        },
+    nonotes .value_forbidden:n = true,
+    theorems .choices:nn =
+        {
+            inherit,
+            extended
+        }
+        {
+            \csLlncsSelect {theorems} {#1}
+        },
+    theorems .default:n = extended,
+    references .choices:nn =
+        {
+            none,
+            hyperref,
+            cleveref,
+            zref,
+            both
+        }
+        {
+            \csLlncsSelect {references} {#1}
+        },
+    references .default:n = cleveref,
+    proof-headings .choices:nn =
+        {
+            native,
+            complete
+        }
+        {
+            \csLlncsSelect {proof-headings} {#1}
+        },
+    reference-names .choices:nn =
+        {
+            inherit,
+            legacy
+        }
+        {
+            \csLlncsSelect {reference-names} {#1}
+        },
+    preprint-margin .code:n =
+        {
+            \csLlncsSelect {preprint-margin} {#1}
+        },
+    preprint-spacing .code:n =
+        {
+            \csLlncsSelect {preprint-spacing} {#1}
+        },
+    unknown .code:n =
+        {
+            \PackageError {llncscrypto}
+            {
+                Unknown~option~'\l_keys_key_str '
+            } {See~the~llncscrypto~option~table.}
+        }
+}
+\clist_map_inline:nn
+{
+    annotations,
+    lists,
+    boxes,
+    captions,
+    subfigures,
+    colorlinks,
+    libertine,
+    microtype,
+    proof-qed,
+    draft-footer
+}
+{
+    \keys_define:nn {llncscrypto}
+    {
+        #1 .choices:nn =
+            {
+                true,
+                false
+            }
+            {
+                \csLlncsSelect {#1} {##1}
+            },
+        #1 .default:n = true
+    }
+}
+\ProcessKeyOptions [llncscrypto]
+\csLlncsDefault {format} {camera-ready}
+\csLlncsDefault {status} {final}
+\csLlncsDefault {theorems} {inherit}
+\csLlncsDefault {references} {none}
+\csLlncsDefault {proof-headings} {native}
+\csLlncsDefault {reference-names} {inherit}
+\csLlncsDefault {preprint-margin} {1in}
+\csLlncsDefault {preprint-spacing} {1}
+\prop_get:NnN \l_csLlncsChoices_prop {format} \l_csLlncsFormat_tl
+\prop_get:NnN \l_csLlncsChoices_prop {status} \l_csLlncsStatus_tl
+\tl_if_eq:NnT \l_csLlncsStatus_tl {draft}
+{
+    \csLlncsDefault {annotations} {true}
+}
+\clist_map_inline:nn
+{
+    annotations,
+    lists,
+    boxes,
+    captions,
+    subfigures,
+    colorlinks,
+    libertine,
+    microtype,
+    proof-qed,
+    draft-footer
+}
+{
+    \csLlncsDefault {#1} {false}
+}
+\prg_new_conditional:Npnn \csLlncsIf:nn #1#2
+{
+    T,
+    F,
+    TF
+}
+{
+    \prop_get:NnN \l_csLlncsChoices_prop {#1} \l_tmpa_tl
+    \tl_if_eq:NnTF \l_tmpa_tl {#2} {\prg_return_true:} {\prg_return_false:}
+}
 
+\cs_new_protected:Npn \csLlncsFeatureError #1
+{
+    \PackageError {llncscrypto} {Feature~'#1'~is~disabled}
+    {Select~#1~when~loading~llncscrypto.~No~package~is~loaded~during~typesetting.}
+}
+
+\cs_new_protected:Npn \csLlncsPreprintOnly #1
+{
+    \csLlncsIf:nnT {format} {camera-ready}
+    {
+        \PackageError {llncscrypto} {#1~requires~format=preprint}
+        {This~feature~changes~publisher-owned~formatting.~Remove~it~or~select~preprint.}
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Class Compatibility
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\@ifclassloaded {llncs} {}
+{
+    \PackageError {llncscrypto} {The~llncs~document~class~is~required}
+    {For~article~or~book~use~csmath~directly.}
+}
+\cs_if_exist:NF \spnewtheorem
+{
+    \PackageError {llncscrypto} {LNCS~theorem~interface~unavailable}
+    {Use~the~official~LNCS~class~with~spnewtheorem.}
+}
+\IfClassAtLeastTF {llncs} {2026/09/03} {}
+{
+    \PackageWarning {llncscrypto}
+    {
+        Class~predates~the~September~2026~template;
+        ~publisher~formatting~is~inherited,~not~upgraded
+    }
+}
+\clist_map_inline:nn
+{
+    csthm,
+    ntheorem,
+    amsthm,
+    thmtools,
+    csamsmath,
+    csbook
+}
+{
+    \@ifpackageloaded {#1}
+    {
+        \PackageError {llncscrypto} {Competing~theorem~provider~#1}
+        {LNCS~owns~theorems.~Use~csmath~with~theorems=inherit.}
+    }
+    {
+        \AddToHook {package/#1/before} [llncscrypto]
+        {
+            \PackageError {llncscrypto} {Competing~theorem~provider~#1}
+            {LNCS~owns~theorems.~Use~csmath~with~theorems=inherit.}
+        }
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Keywords
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\cs_new_protected:Npn \csLlncsPendingKeywords #1
+{
+    \PackageError {llncscrypto} {Keywords~are~available~after~begin-document}
+    {Place~keywords~inside~the~abstract~as~in~the~official~sample.}
+}
+\@ifpackageloaded {tcscrypto}
+{
+    \PackageError {llncscrypto} {Load~llncscrypto~before~tcscrypto}
+    {LNCS~must~retain~ownership~of~its~delayed~keywords~definition.}
+} {}
+\cs_if_exist:NF \keywords
+{
+    \cs_set_eq:NN \keywords \csLlncsPendingKeywords
+    \AddToHook {begindocument/before} [llncscrypto/keywords]
+    {
+        \cs_if_eq:NNT \keywords \csLlncsPendingKeywords
+        {
+            \cs_undefine:N \keywords
+        }
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Foundation Compatibility
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\cs_new_protected:Npn \csLlncsValidateMath
+{
+    \cs_if_exist:NTF \g_csMathChoices_prop
+    {
+        \clist_map_inline:nn
+        {
+            mode/venue,
+            theorems/inherit,
+            paragraphs/inherit
+        }
+        {
+            \csLlncsCheckMathPair ##1\q_stop
+        }
+        \csLlncsIf:nnT {format} {camera-ready}
+        {
+            \csLlncsCheckMathPair font/inherit\q_stop
+            \csLlncsCheckMathPair equations/inherit\q_stop
+            \clist_map_inline:nn
+            {
+                layout,
+                caption,
+                float,
+                lists,
+                microtype
+            }
+            {
+                \prop_get:NnNT \g_csMathChoices_prop {##1} \l_tmpa_tl
+                {
+                    \tl_if_eq:NnT \l_tmpa_tl {true}
+                    {
+                        \PackageError {llncscrypto} {csmath~feature~##1~changes~publisher~formatting}
+                        {Disable~it~for~camera-ready~LNCS;~use~local~LNCS~helpers~where~needed.}
+                    }
+                }
+            }
+        }
+    }
+    {
+        \PackageError {llncscrypto} {Cannot~validate~this~csmath~configuration}
+        {Use~the~tested~csmath~1.1.1~interface~or~load~llncscrypto~standalone.}
+    }
+}
+
+\cs_new_protected:Npn \csLlncsCheckMathPair #1/#2\q_stop
+{
+    \prop_get:NnN \g_csMathChoices_prop {#1} \l_tmpa_tl
+    \tl_if_eq:NnF \l_tmpa_tl {#2}
+    {
+        \PackageError {llncscrypto} {csmath~requires~#1=#2~for~this~LNCS~configuration}
+        {Configure~csmath~before~loading~llncscrypto.}
+    }
+}
+
+\cs_new_protected:Npn \csLlncsValidateCrypto
+{
+    \csLlncsIf:nnT {format} {camera-ready}
+    {
+        \bool_if:NT \g_tcsc_venue_bool
+        {
+            \PackageError {llncscrypto} {tcscrypto~venuestyle~changes~LNCS~caption~spacing}
+            {Omit~venuestyle.~Use~tcscrypto[notoc]~for~camera-ready~LNCS.}
+        }
+        \bool_if:NT \g_tcsc_toc_bool
+        {
+            \PackageError {llncscrypto} {tcscrypto~requires~notoc~for~camera-ready~LNCS}
+            {Its~default~TOC~integration~changes~publisher-owned~structure.}
+        }
+    }
+}
+\@ifpackageloaded {tcscrypto} {\csLlncsValidateCrypto}
+{
+    \AddToHook {package/tcscrypto/after} [llncscrypto] {\csLlncsValidateCrypto}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Dependencies
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clist_map_inline:nn
+{
+    captions,
+    colorlinks,
+    libertine,
+    microtype,
+    draft-footer
+}
+{
+    \csLlncsIf:nnT {#1} {true}
+    {
+        \csLlncsPreprintOnly {#1}
+    }
+}
+\csLlncsIf:nnT {libertine} {true}
+{
+    \@ifpackageloaded {csmath}
+    {
+        \str_if_eq:eeF {\CsmathSelectedFont} {libertine}
+        {
+            \PackageError {llncscrypto} {Preloaded~csmath~font~is~not~libertine}
+            {Select~font=libertine~in~csmath;~fonts~cannot~be~reinitialized.}
+        }
+    }
+    {
+        \RequirePackage
+        [
+            mode = venue,
+            font = libertine,
+            theorems = inherit,
+            paragraphs = inherit,
+            cleveref = false
+        ] {csmath}
+    }
+}
+\@ifpackageloaded {csmath} {\csLlncsValidateMath}
+{
+    \AddToHook {package/csmath/before} [llncscrypto]
+    {
+        \PackageError {llncscrypto} {Load~csmath~before~llncscrypto}
+        {
+            csmath~owns~shared~public~helpers.~Use~mode=venue,font=inherit,
+            ~theorems=inherit,paragraphs=inherit.
+        }
+    }
+}
+\bool_new:N \l_csLlncsNotes_bool
+\csLlncsIf:nnT {annotations} {true}
+{
+    \csLlncsIf:nnT {status} {draft}
+    {
+        \bool_set_true:N \l_csLlncsNotes_bool
+    }
+}
+\bool_if:NT \l_csLlncsNotes_bool
+{
+    \RequirePackage
+    {
+        xcolor,
+        marginnote
+    }
+}
+\csLlncsIf:nnT {lists} {true}
+{
+    \RequirePackage {enumitem}
+}
+\csLlncsIf:nnT {boxes} {true}
+{
+    \RequirePackage {framed}
+}
+\csLlncsIf:nnT {subfigures} {true}
+{
+    \csLlncsIf:nnT {captions} {true}
+    {
+        \PackageError {llncscrypto} {Choose~subfigures~or~captions,~not~both}
+        {subfigures~uses~subfig;~the~legacy~captions~profile~uses~subcaption.}
+    }
+    \@ifpackageloaded {subfig}
+    {
+        \@ifpackageloaded {caption}
+        {
+            \csLlncsPreprintOnly {Preloaded~caption~restyling}
+        } {}
+    }
+    {
+        \RequirePackage
+        [
+            caption = false,
+            font = small
+        ] {subfig}
+    }
+}
+\csLlncsIf:nnT {captions} {true}
+{
+    \RequirePackage
+    {
+        caption,
+        subcaption
+    }
+    \captionsetup
+    {
+        font =
+            {
+                rm,
+                small
+            },
+        labelfont = sc,
+        labelsep = period,
+        skip = 5pt,
+        belowskip = 0pt
+    }
+    \captionsetup [table] {skip = 4pt}
+    \captionsetup [figure] {skip = 4pt}
+}
+\csLlncsIf:nnT {microtype} {true}
+{
+    \RequirePackage {microtype}
+}
+\csLlncsIf:nnT {format} {preprint}
+{
+    \RequirePackage
+    {
+        geometry,
+        setspace,
+        fancyhdr
+    }
+    \prop_get:NnN \l_csLlncsChoices_prop {preprint-margin} \l_tmpa_tl
+    \exp_args:Nx \geometry
+    {
+        margin = \l_tmpa_tl
+    }
+    \prop_get:NnN \l_csLlncsChoices_prop {preprint-spacing} \l_tmpa_tl
+    \exp_args:NnV \regex_match:nnTF {\A [0-9]+(\.[0-9]+)?\Z} \l_tmpa_tl
+    {
+        \fp_compare:nNnTF {\l_tmpa_tl}> {0}
+            {
+                \exp_args:NV \setstretch \l_tmpa_tl
+            }
+            {
+                \PackageError {llncscrypto} {Invalid~preprint-spacing} {Use~a~positive~number.}
+            }
+    }
+    {
+        \PackageError {llncscrypto} {Invalid~preprint-spacing} {Use~a~positive~number.}
+    }
+    \pagestyle {fancy}
+    \fancyhf {}
+    \fancyfoot [C] {\thepage}
+    \renewcommand \headrulewidth {0pt}
+}
+\ProvideDocumentCommand \preprint
+{
+    O {}O {}
+}
+{
+    \csLlncsIf:nnTF {format} {preprint}
+    {
+        \fancyhead [L]
+        {
+            \footnotesize #1
+        }
+        \fancyhead [R]
+        {
+            \footnotesize #2
+        }
+    }
+    {
+        \csLlncsPreprintOnly
+        {
+            \string \preprint
+        }
+    }
+}
+\csLlncsIf:nnT {draft-footer} {true}
+{
+    \csLlncsIf:nnTF {status} {draft}
+    {
+        \RequirePackage
+        {
+            scrtime,
+            prelim2e
+        }
+        \renewcommand \PrelimText
+        {
+            \normalfont \footnotesize
+            Draft~\number \year -\number \month -\number \day {}~\thistime ;~not~for~distribution
+        }
+    }
+    {
+        \PackageError {llncscrypto} {draft-footer~requires~draft} {Editorial~status~and~layout~are~separate.}
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Theorem Families
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clist_const:Nn \c_csLlncsFamilies_clist
+{
+    {application} {Application} {Applications},
+    {assertion} {Assertion} {Assertions},
+    {assumption} {Assumption} {Assumptions},
+    {axiom} {Axiom} {Axioms},
+    {claim} {Claim} {Claims},
+    {commentary} {Commentary} {Commentaries},
+    {conclusion} {Conclusion} {Conclusions},
+    {conjecture} {Conjecture} {Conjectures},
+    {construction} {Construction} {Constructions},
+    {convention} {Convention} {Conventions},
+    {corollary} {Corollary} {Corollaries},
+    {criterion} {Criterion} {Criteria},
+    {definition} {Definition} {Definitions},
+    {discussion} {Discussion} {Discussions},
+    {example} {Example} {Examples},
+    {exercise} {Exercise} {Exercises},
+    {experiment} {Experiment} {Experiments},
+    {fact} {Fact} {Facts},
+    {folklore} {Folklore} {Folklore},
+    {guideline} {Guideline} {Guidelines},
+    {highlight} {Highlight} {Highlights},
+    {hypothesis} {Hypothesis} {Hypotheses},
+    {important} {Important~point} {Important~points},
+    {informaltheorem} {Informal~Theorem} {Informal~Theorems},
+    {insight} {Insight} {Insights},
+    {keypoint} {Key~Point} {Key~Points},
+    {lemma} {Lemma} {Lemmas},
+    {metatheorem} {Meta~Theorem} {Meta~Theorems},
+    {motivation} {Motivation} {Motivations},
+    {notation} {Notation} {Notations},
+    {notationabuse} {Notation~Abuse} {Notation~Abuses},
+    {note} {Note} {Notes},
+    {observation} {Observation} {Observations},
+    {openproblem} {Open~Problem} {Open~Problems},
+    {postulate} {Postulate} {Postulates},
+    {problem} {Problem} {Problems},
+    {case} {Case} {Cases},
+    {property} {Property} {Properties},
+    {proposition} {Proposition} {Propositions},
+    {protocol} {Protocol} {Protocols},
+    {question} {Question} {Questions},
+    {recall} {Recall} {Recalls},
+    {remark} {Remark} {Remarks},
+    {result} {Result} {Results},
+    {solution} {Solution} {Solutions},
+    {step} {Step} {Steps},
+    {summary} {Summary} {Summaries},
+    {syntax} {Syntax} {Syntaxes},
+    {takeaway} {Takeaway} {Takeaways},
+    {theorem} {Theorem} {Theorems},
+    {tip} {Tip} {Tips},
+    {warning} {Warning} {Warnings}
+}
+
+\cs_new_protected:Npn \csLlncsDeclareFamily #1#2#3
+{
+    \cs_if_exist:cF {#1}
+    {
+        \spnewtheorem {#1}[theorem] {#2} {\bfseries} {\itshape}
+    }
+    \cs_if_exist:cF {#1*}
+    {
+        \spnewtheorem * {#1*} {#2} {\bfseries} {\itshape}
+    }
+}
+
+\cs_new_protected:Npn \csLlncsDeclareUnnumbered #1#2
+{
+    \cs_if_exist:cF {#1}
+    {
+        \spnewtheorem * {#1} {#2} {\bfseries} {\itshape}
+    }
+}
+
+\cs_new_protected:Npn \csLlncsDeclareProof #1#2
+{
+    \cs_if_exist:cF {#1}
+    {
+        \spnewtheorem * {#1} {#2} {\itshape} {\rmfamily}
+    }
+}
+\csLlncsIf:nnT {theorems} {extended}
+{
+    \clist_map_inline:Nn \c_csLlncsFamilies_clist
+    {
+        \csLlncsDeclareFamily #1
+    }
+    \clist_map_inline:nn
+    {
+        {uclaim} {Claim},
+        {uconjecture} {Conjecture},
+        {ucorollary} {Corollary},
+        {uhypothesis} {Hypothesis},
+        {uinformaltheorem} {Informal~Theorem},
+        {ulemma} {Lemma},
+        {uopenproblem} {Open~Problem},
+        {usyntax} {Syntax},
+        {utheorem} {Theorem}
+    }
+    {
+        \csLlncsDeclareUnnumbered #1
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Counter Resets
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\cs_new_protected:Npn \csLlncsRegisterSectionReset #1#2#3
+{
+    \cs_if_exist:cT {c@#1}
+    {
+        \counterwithin * {#1} {section}
+    }
+}
+\@ifclasswith {llncs} {envcountreset}
+{
+    \clist_map_inline:Nn \c_csLlncsFamilies_clist
+    {
+        \csLlncsRegisterSectionReset #1
+    }
+} {}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Proof Helpers
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clist_map_inline:nn
+{
+    {proofsketch} {Proof~Sketch},
+    {proofidea} {Proof~Idea},
+    {proofofclaim} {Proof~of~Claim}
+}
+{
+    \csLlncsDeclareProof #1
+}
+\cs_if_exist:NF \claimproof
+{
+    \NewDocumentEnvironment {claimproof}
+    {
+        O {Proof~of~Claim}
+    }
+    {
+        \renewcommand \proofname {#1}
+        \begin {proof}
+    }
+    {
+        \end {proof}
+    }
+}
+\ProvideDocumentCommand \qedsymbol {} {\squareforqed}
+\ProvideDocumentCommand \setqedsymbol {m}
+{
+    \cs_set:Npn \squareforqed {#1}
+}
+\ProvideDocumentCommand \SetQEDSymbol {m}
+{
+    \setqedsymbol {#1}
+}
+
+\cs_new_eq:NN \csLlncsOriginalQed \qed
+\bool_new:N \l_csLlncsQedPlaced_bool
+\ProvideDocumentCommand \qedhere {} {\qed}
+\csLlncsIf:nnT {proof-headings} {complete}
+{
+    \NewCommandCopy \csLlncsNativeProof \proof
+    \RenewDocumentCommand \proof {o}
+    {
+        \IfNoValueF {#1}
+        {
+            \renewcommand \proofname {#1}
+        }
+        \csLlncsNativeProof \relax
+    }
+}
+\csLlncsIf:nnT {proof-qed} {true}
+{
+    \clist_map_inline:nn
+    {
+        proof,
+        proofsketch,
+        proofidea,
+        proofofclaim
+    }
+    {
+        \AddToHook {env/#1/begin} [llncscrypto]
+        {
+            \bool_set_false:N \l_csLlncsQedPlaced_bool
+            \cs_set_protected:Npn \qed
+            {
+                \bool_set_true:N \l_csLlncsQedPlaced_bool \csLlncsOriginalQed
+            }
+        }
+        \AddToHook {env/#1/end} [llncscrypto]
+        {
+            \bool_if:NF \l_csLlncsQedPlaced_bool {\qed}
+        }
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Paragraph Headings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\cs_new_protected:Npn \csLlncsPunctuate #1
+{
+    \tl_set:Nx \l_tmpa_tl
+    {
+        \text_purify:n {#1}
+    }
+    \tl_trim_spaces:N \l_tmpa_tl
+    #1\exp_args:NnV \regex_match:nnTF
+    {
+        [.!?:] \Z
+    } \l_tmpa_tl {} {.}
+}
+\ProvideDocumentCommand \parheadnoperiod {m}
+{
+    \par
+    \smallskip \noindent
+    {
+        \bfseries \boldmath #1
+    }
+    \hskip .30em\ignorespaces
+}
+\ProvideDocumentCommand \subparheadnoperiod {m}
+{
+    \par
+    \smallskip \noindent
+    {
+        \scshape #1
+    }
+    \hskip .30em\ignorespaces
+}
+\ProvideDocumentCommand \parhead {m}
+{
+    \parheadnoperiod
+    {
+        \csLlncsPunctuate {#1}
+    }
+}
+\ProvideDocumentCommand \subparhead {m}
+{
+    \subparheadnoperiod
+    {
+        \csLlncsPunctuate {#1}
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Reference Providers
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\prop_new:N \g_csLlncsReferenceNames_prop
+\cs_new_protected:Npn \csLlncsCleverName #1#2#3
+{
+    \cs_if_exist:cF {cref@#1@name}
+    {
+        \use:e
+        {
+            \exp_not:N \crefname {#1}
+            {
+                \str_lowercase:n {#2}
+            }
+            {
+                \str_lowercase:n {#3}
+            }
+        }
+    }
+    \cs_if_exist:cF {Cref@#1@name}
+    {
+        \Crefname {#1} {#2} {#3}
+    }
+    \csLlncsIf:nnT {reference-names} {legacy}
+    {
+        \crefname {#1} {#2} {#3}
+        \Crefname {#1} {#2} {#3}
+    }
+}
+
+\cs_new_protected:Npn \csLlncsZrefName #1#2#3
+{
+    \zcsetup
+    {
+        countertype = {#1 = #1}
+    }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Reference Names
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \use:e
+    {
+        \exp_not:N \zcLanguageSetup {english}
+        {
+            type = {#1},
+            name-sg =
+                {
+                    \str_lowercase:n {#2}
+                },
+            name-pl =
+                {
+                    \str_lowercase:n {#3}
+                },
+            Name-sg = {#2},
+            Name-pl = {#3}
+        }
+    }
+    \csLlncsIf:nnT {reference-names} {legacy}
+    {
+        \zcRefTypeSetup {#1}
+        {
+            name-sg = {#2},
+            name-pl = {#3},
+            Name-sg = {#2},
+            Name-pl = {#3}
+        }
+    }
+}
+
+\cs_new_protected:Npn \csLlncsApplyName #1#2#3
+{
+    \@ifpackageloaded {cleveref}
+    {
+        \crefname {#1} {#2} {#3}
+        \Crefname {#1} {#2} {#3}
+    } {}
+    \@ifpackageloaded {zref-clever}
+    {
+        \zcRefTypeSetup {#1}
+        {
+            name-sg = {#2},
+            name-pl = {#3},
+            Name-sg = {#2},
+            Name-pl = {#3}
+        }
+    } {}
+}
+
+\cs_new_protected:Npn \csLlncsRegisterCleveref
+{
+    \clist_map_inline:Nn \c_csLlncsFamilies_clist
+    {
+        \csLlncsCleverName ##1
+    }
+    \csLlncsIf:nnT {reference-names} {legacy}
+    {
+        \clist_map_inline:nn
+        {
+            section,
+            subsection,
+            subsubsection
+        }
+        {
+            \crefname {##1} {\textsection}
+            {
+                \textsection \textsection
+            }
+            \Crefname {##1} {\textsection}
+            {
+                \textsection \textsection
+            }
+        }
+    }
+    \prop_map_inline:Nn \g_csLlncsReferenceNames_prop
+    {
+        \csLlncsApplyName {##1}##2
+    }
+}
+
+\cs_new_protected:Npn \csLlncsRegisterZref
+{
+    \clist_map_inline:Nn \c_csLlncsFamilies_clist
+    {
+        \csLlncsZrefName ##1
+    }
+    \csLlncsIf:nnT {reference-names} {legacy}
+    {
+        \clist_map_inline:nn
+        {
+            section,
+            subsection,
+            subsubsection
+        }
+        {
+            \zcRefTypeSetup {##1}
+            {
+                name-sg = \textsection ,
+                name-pl = \textsection \textsection ,
+                Name-sg = \textsection ,
+                Name-pl = \textsection \textsection
+            }
+        }
+    }
+    \prop_map_inline:Nn \g_csLlncsReferenceNames_prop
+    {
+        \csLlncsApplyName {##1}##2
+    }
+}
+
+\NewDocumentCommand \llncsrefname {mmm}
+{
+    \prop_gput:Nnn \g_csLlncsReferenceNames_prop {#1}
+    {
+        {#2} {#3}
+    }
+    \csLlncsApplyName {#1} {#2} {#3}
+}
+
+\cs_new_protected:Npn \csLlncsParseReferenceName #1
+{
+    \seq_set_split:Nnn \l_tmpa_seq {/} {#1}
+    \int_compare:nNnTF
+    {
+        \seq_count:N \l_tmpa_seq
+    } = {3}
+    {
+        \exp_args:Neee \llncsrefname
+        {
+            \seq_item:Nn \l_tmpa_seq {1}
+        }
+        {
+            \seq_item:Nn \l_tmpa_seq {2}
+        }
+        {
+            \seq_item:Nn \l_tmpa_seq {3}
+        }
+    }
+    {
+        \PackageError {llncscrypto} {Invalid~reference-name~entry}
+        {Use~type/singular/plural.~Group~names~containing~a~slash.}
+    }
+}
+
+\NewDocumentCommand \llncssetrefnames {m}
+{
+    \clist_map_function:nN {#1}
+    \csLlncsParseReferenceName
+}
+\@ifpackageloaded {cleveref} {\csLlncsRegisterCleveref}
+{
+    \AddToHook {package/cleveref/after} [llncscrypto] {\csLlncsRegisterCleveref}
+}
+\@ifpackageloaded {zref-clever} {\csLlncsRegisterZref}
+{
+    \AddToHook {package/zref-clever/after} [llncscrypto] {\csLlncsRegisterZref}
+}
+\csLlncsIf:nnF {references} {none}
+{
+    \@ifpackageloaded {hyperref} {}
+    {
+        \RequirePackage {hyperref}
+    }
+}
+\csLlncsIf:nnT {colorlinks} {true}
+{
+    \@ifpackageloaded {hyperref} {}
+    {
+        \RequirePackage {hyperref}
+    }
+    \hypersetup
+    {
+        colorlinks = true,
+        linkcolor = blue,
+        citecolor = blue,
+        urlcolor = blue
+    }
+}
+\clist_map_inline:nn
+{
+    cleveref,
+    both
+}
+{
+    \csLlncsIf:nnT {references} {#1}
+    {
+        \@ifpackageloaded {cleveref} {}
+        {
+            \RequirePackage {cleveref}
+        }
+    }
+}
+\clist_map_inline:nn
+{
+    zref,
+    both
+}
+{
+    \csLlncsIf:nnT {references} {#1}
+    {
+        \@ifpackageloaded {zref-clever} {}
+        {
+            \RequirePackage {zref-clever}
+        }
+    }
+}
+\ProvideDocumentCommand \fullref {m}
+{
+    \@ifpackageloaded {hyperref}
+    {
+        \hyperref [#1]
+        {
+            \ref * {#1}~\nameref * {#1}
+        }
+    }
+    {
+        \ref {#1}
+        \cs_if_exist:NT \nameref
+        {
+            ~\nameref {#1}
+        }
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Theorem Targets
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\box_new:N \l_csLlncsTarget_box
+\int_new:N \g_csLlncsTarget_int
+\cs_new_protected:Npn \csLlncsStepWithTarget #1
+{
+    \cs_set_eq:NN \refstepcounter \csLlncsNativeStep
+    \LinkTargetOff \refstepcounter {#1}
+    \LinkTargetOn
+    \int_gincr:N \g_csLlncsTarget_int
+    \hbox_set:Nn \l_csLlncsTarget_box
+    {
+        \MakeLinkTarget *
+        {
+            #1.llncs.\int_use:N \g_csLlncsTarget_int
+        }
+    }
+    \AddToHookNext {cmd/item/before}
+    {
+        \AddToHookNext {para/begin}
+        {
+            \box_use_drop:N \l_csLlncsTarget_box
+        }
+    }
+}
+
+\cs_new_protected:Npn \csLlncsInitializeTargets
+{
+    \cs_if_exist:cTF {@spthm}
+    {
+        \cs_if_exist:NTF \MakeLinkTarget
+        {
+            \AddToHook {cmd/@spthm/before} [llncscrypto]
+            {
+                \cs_set_eq:NN \csLlncsNativeStep \refstepcounter
+                \cs_set_protected:Npn \refstepcounter ##1
+                {
+                    \csLlncsStepWithTarget {##1}
+                }
+            }
+        }
+        {
+            \PackageError {llncscrypto} {hyperref~public~target~API~unavailable}
+            {Update~hyperref~to~a~version~providing~MakeLinkTarget~and~LinkTargetOff.}
+        }
+    }
+    {
+        \PackageError {llncscrypto} {Unsupported~LNCS~theorem~entry~point}
+        {The~tested~classes~provide~the~spnewtheorem~entry~point.~Use~a~supported~class.}
+    }
+}
+\@ifpackageloaded {hyperref} {\csLlncsInitializeTargets}
+{
+    \AddToHook {package/hyperref/after} [llncscrypto] {\csLlncsInitializeTargets}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Appendices
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\int_new:N \g_csLlncsAppendix_int
+\AddToHook {cmd/appendix/after} [llncscrypto]
+{
+    \int_gincr:N \g_csLlncsAppendix_int
+    \@ifpackageloaded {hyperref}
+    {
+        \cs_gset:Npn \theHsection
+        {
+            appendix.\int_use:N \g_csLlncsAppendix_int .\arabic {section}
+        }
+    } {}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Final-Pass Checks
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\NewDocumentCommand \LlncsCheckReferences {m}
+{
+    \clist_map_inline:nn {#1}
+    {
+        \cs_if_exist:cF {r@##1}
+        {
+            \PackageError {llncscrypto} {Unresolved~ordinary~reference~'##1'}
+            {Run~LaTeX~until~labels~resolve~before~enabling~this~final-pass~check.}
+        }
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Lists
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\csLlncsIf:nnTF {lists} {true}
+{
+    \newlist {points} {itemize} {4}
+    \setlist [points]
+    {
+        label = -,
+        leftmargin = 1em,
+        itemsep = 1pt,
+        before = \smallskip ,
+        after = \smallskip
+    }
+    \newlist {checkbox} {itemize} {4}
+    \setlist [checkbox]
+    {
+        label = \squareforqed ,
+        leftmargin = 1.5em
+    }
+    \newlist {deflist} {description} {4}
+    \setlist [deflist]
+    {
+        font = \normalfont \bfseries ,
+        leftmargin = .33\linewidth ,
+        labelwidth = .30\linewidth ,
+        align = left
+    }
+    \newlist {codelist} {enumerate} {4}
+    \setlist [codelist]
+    {
+        label = \arabic *.,
+        leftmargin = 2em,
+        itemsep = 0pt
+    }
+}
+{
+    \clist_map_inline:nn
+    {
+        points,
+        checkbox,
+        deflist,
+        codelist
+    }
+    {
+        \NewDocumentEnvironment {#1}
+        {
+            O {}
+        }
+        {
+            \csLlncsFeatureError {lists}
+        } {}
+    }
+}
+\ProvideDocumentCommand \checked {}
+{
+    \csLlncsIf:nnTF {lists} {true}
+    {
+        \item [\csLlncsCheckmark ]
+    }
+    {
+        \csLlncsFeatureError {lists}
+    }
+}
+
+\cs_new:Npn \csLlncsCheckmark
+{
+    {
+        \unitlength = 1ex\begin {picture}(1,
+        1)\put (0,
+        .4)
+        {
+            \line (1,
+            -1) {.3}
+        }
+        \put (.3,
+        .1)
+        {
+            \line (1,
+            2) {.6}
+        }
+        \end {picture}
+    }}
+\ProvideDocumentCommand \llncsboxtitle {o}
+{
+    \IfNoValueF {#1}
+    {
+        \noindent \textbf {#1}
+        \par
+        \smallskip
+    }
+}
+\cs_if_exist:NF \simplebox
+{
+    \NewDocumentEnvironment {simplebox} {o}
+    {
+        \csLlncsIf:nnTF {boxes} {true}
+        {
+            \def \FrameCommand {\fbox}
+            \MakeFramed
+            {
+                \advance \hsize -\width \FrameRestore
+            }
+            \llncsboxtitle [#1]
+        }
+        {
+            \csLlncsFeatureError {boxes}
+        }
+    }
+    {
+        \csLlncsIf:nnT {boxes} {true} {\endMakeFramed}
+    }
+}
+\cs_if_exist:NF \nestedbar
+{
+    \NewDocumentEnvironment {nestedbar}
+    {
+        O {\linewidth}
+    }
+    {
+        \csLlncsIf:nnTF {boxes} {true}
+        {
+            \def \FrameCommand ##1
+            {
+                \vrule width.5pt\hspace {.6em}##1
+            }
+            \MakeFramed
+            {
+                \hsize #1\advance \hsize -\width \FrameRestore
+            }
+        }
+        {
+            \csLlncsFeatureError {boxes}
+        }
+    }
+    {
+        \csLlncsIf:nnT {boxes} {true} {\endMakeFramed}
+    }
+}
+\cs_if_exist:NF \acknowledgment
+{
+    \NewDocumentEnvironment {acknowledgment} {o}
+    {
+        \cs_if_exist:NTF \credits
+        {
+            \begin {credits}
+        }
+        {
+            \par
+            \small \noindent
+        }
+        \IfNoValueTF {#1}
+        {
+            \subsubsection {Acknowledgments.}
+        }
+        {
+            \subsubsection {#1}
+        }
+    }
+    {
+        \cs_if_exist:NT \credits
+        {
+            \end {credits}
+        }
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Notes
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\seq_new:N \g_csLlncsNotes_seq
+\seq_new:N \g_csLlncsMissing_seq
+\newcounter {llncsdnote}
+\newcounter {llncsmissing}
+\cs_new_protected:Npn \csLlncsPrintNote #1#2#3
+{
+    \par
+    \noindent
+    \tl_if_blank:nF {#1}
+    {
+        \textbf {#1.}~
+    }#2\hfill (p.~\pageref {llncs:note:#3})\par
+}
+\ProvideDocumentCommand \dtcolornote
+{
+    O {}m+m
+}
+{
+    \bool_if:NT \l_csLlncsNotes_bool
+    {
+        \refstepcounter {llncsdnote}
+        \label
+        {
+            llncs:note:\thellncsdnote
+        }
+        \seq_gput_right:Nx \g_csLlncsNotes_seq
+        {
+            \exp_not:N \csLlncsPrintNote
+            {
+                \exp_not:n {#1}
+            }
+            {
+                \exp_not:n {#3}
+            } {\thellncsdnote}
+        }
+        {
+            \color {#2}[\tl_if_blank:nF {#1} {#1:~}#3]
+        }
+    }
+}
+\ProvideDocumentCommand \dtnote
+{
+    O {}+m
+}
+{
+    \dtcolornote [#1] {violet} {#2}
+}
+\ProvideDocumentCommand \dtignore
+{
+    O {}+m
+}
+{
+    \bool_if:NT \l_csLlncsNotes_bool
+    {
+        \dtnote [#1] {Ignored~passage}
+    }
+}
+\ProvideDocumentCommand \printdtnotes {}
+{
+    \bool_if:NT \l_csLlncsNotes_bool
+    {
+        \seq_if_empty:NF \g_csLlncsNotes_seq
+        {
+            \section * {Author~Notes}
+            \seq_use:Nn \g_csLlncsNotes_seq {}
+        }
+    }
+}
+\ProvideDocumentCommand \newcomment {mmm}
+{
+    \NewDocumentCommand #3 {+m}
+    {
+        \dtcolornote [#1] {#2} {##1}
+    }
+}
+
+\cs_new_protected:Npn \csLlncsMarker #1#2#3
+{
+    \cs_if_exist:cTF {#1}
+    {
+        \PackageError {llncscrypto} {Annotation~command~#1~already~exists} {Choose~a~free~command~name.}
+    }
+    {
+        \exp_args:Nc \NewDocumentCommand {#1} {+m}
+        {
+            \bool_if:NT \l_csLlncsNotes_bool {
+                {
+                    \color {#3}[#2:~##1]
+                }}
+        }
+    }
+}
+\ProvideDocumentCommand \newguymarker {mmm}
+{
+    \tl_set:Nx \l_tmpa_tl
+    {
+        \tl_to_str:n {#1}
+    }
+    \regex_replace_once:nnN
+    {
+        \A \\
+    } {} \l_tmpa_tl
+    \tl_trim_spaces:N \l_tmpa_tl
+    \exp_args:NV \csLlncsMarker \l_tmpa_tl {#2} {#3}
+}
+
+\cs_new_protected:Npn \csLlncsEditorial #1#2
+{
+    \bool_if:NT \l_csLlncsNotes_bool {
+        {
+            \color {violet}[#1:~#2]
+        }}
+}
+\ProvideDocumentCommand \todo {+m}
+{
+    \csLlncsEditorial {To-do} {#1}
+}
+\ProvideDocumentCommand \fixme {+m}
+{
+    \csLlncsEditorial {Fix-me} {#1}
+}
+\ProvideDocumentCommand \query {+m}
+{
+    \csLlncsEditorial {Query} {#1}
+}
+\ProvideDocumentCommand \notes {+m}
+{
+    \csLlncsEditorial {Note} {#1}
+}
+\ProvideDocumentCommand \citelater {+m}
+{
+    \csLlncsEditorial {Citation} {#1}
+}
+\ProvideDocumentCommand \added {+m}
+{
+    \group_begin:
+    \bool_if:NT \l_csLlncsNotes_bool
+    {
+        \color {green!40!black}
+    }#1\group_end:
+}
+\ProvideDocumentCommand \changed {+m}
+{
+    \group_begin:
+    \bool_if:NT \l_csLlncsNotes_bool
+    {
+        \color {blue}
+    }#1\group_end:
+}
+\ProvideDocumentCommand \removed {+m}
+{
+    \csLlncsEditorial {Removed} {#1}
+}
+\ProvideDocumentCommand \XXX
+{
+    O {XXX}
+}
+{
+    \bool_if:NTF \l_csLlncsNotes_bool
+    {
+        \csLlncsEditorial {XXX} {#1}
+    }
+    {
+        \PackageError {llncscrypto} {Unresolved~XXX:~#1} {Resolve~the~flag~before~final~output.}
+    }
+}
+\ProvideDocumentCommand \missing {+m}
+{
+    \bool_if:NT \l_csLlncsNotes_bool
+    {
+        \refstepcounter {llncsmissing}
+        \label
+        {
+            llncs:missing:\thellncsmissing
+        }
+        \seq_gput_right:Nx \g_csLlncsMissing_seq
+        {
+            \par
+            \noindent \thellncsmissing .~\exp_not:n {#1}
+            ~(p.~\exp_not:N \pageref
+            {
+                llncs:missing:\thellncsmissing
+            })\par
+        }
+        \dtnote [Missing] {#1}
+    }
+}
+\ProvideDocumentCommand \printmissing {}
+{
+    \bool_if:NT \l_csLlncsNotes_bool
+    {
+        \seq_if_empty:NF \g_csLlncsMissing_seq
+        {
+            \section * {Missing~Content}
+            \seq_use:Nn \g_csLlncsMissing_seq {}
+        }
+    }
+}
+\ProvideDocumentCommand \sidenote {+m}
+{
+    \bool_if:NT \l_csLlncsNotes_bool
+    {
+        \marginnote
+        {
+            \footnotesize #1
+        }
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Utilities
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ProvideDocumentCommand \code {m}
+{
+    \texttt {#1}
+}
+\ProvideDocumentCommand \mathsc {m}
+{
+    \cs_if_exist:NTF \textnormal
+    {
+        \textnormal
+        {
+            \textsc {#1}
+        }
+    }
+    {
+        \mbox
+        {
+            \normalfont \scshape #1
+        }
+    }
+}
+\ProvideDocumentCommand \highlightcolor {} {black}
+\ProvideDocumentCommand \sethighlightcolor {m}
+{
+    \csLlncsPreprintOnly
+    {
+        \string \sethighlightcolor
+    }
+    \cs_if_exist:NTF \color
+    {
+        \renewcommand \highlightcolor {#1}
+    }
+    {
+        \PackageError {llncscrypto} {Color~support~is~not~loaded} {Load~xcolor~explicitly~in~the~preprint~preamble.}
+    }
+}
+\ProvideDocumentCommand \textem {m}
+{
+    \csLlncsIf:nnTF {format} {preprint}
+    {
+        \cs_if_exist:NTF \textcolor
+        {
+            \textcolor {\highlightcolor} {#1}
+        }
+        {
+            \emph {#1}
+        }
+    }
+    {
+        \emph {#1}
+    }
+}
+\ProvideDocumentCommand \emailref {m}
+{
+    \cs_if_exist:NTF \href
+    {
+        \href {mailto:#1}
+        {
+            \nolinkurl {#1}
+        }
+    }
+    {
+        \texttt
+        {
+            \detokenize {#1}
+        }
+    }
+}
+\ProvideDocumentCommand \httpref {m}
+{
+    \cs_if_exist:NTF \href
+    {
+        \href {http://#1}
+        {
+            \nolinkurl {#1}
+        }
+    }
+    {
+        \texttt
+        {
+            \detokenize {#1}
+        }
+    }
+}
+\ProvideDocumentCommand \webpage {m}
+{
+    \httpref {#1}
+}
+\ProvideDocumentCommand \footnotesymb {m+m}
+{
+    \group_begin: \renewcommand \thefootnote {#1}
+    \footnote [0] {#2}
+    \group_end:
+}
 \ExplSyntaxOff
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Core packages
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage{iftex}
-\RequirePackage[normalem]{ulem}
-\RequirePackage[dvipsnames,table,x11names]{xcolor}
-\RequirePackage{etoolbox}
-\RequirePackage{framed}
-\RequirePackage{marginnote}
-\RequirePackage{xpatch}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Typography and fonts
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage[final,protrusion=true,expansion=true]{microtype}
-\microtypesetup{
-	activate = true,
-	stretch  = 30,
-	factor   = 1500
-}
-\UseMicrotypeSet[protrusion]{basicmath}
-\UseMicrotypeSet[expansion]{alltext}
-\SetExpansion{encoding=*,family=*}{stretch=30,shrink=30,step=1}
-\SetProtrusion{encoding=*,family=*}{period={,50},comma={,40},colon={,30},semicolon={,30}}
-
-\ifllncslibertine
-	\ifPDFTeX
-		\RequirePackage{libertineRoman}
-		\RequirePackage{biolinum}
-		\RequirePackage[libertine,varbb]{newtxmath}
-		\RequirePackage[scaled=0.92]{inconsolata}
-	\else
-		\RequirePackage{fontspec}
-		\setmainfont{Linux Libertine O}[Ligatures=TeX]
-		\setsansfont{Biolinum}[Scale=MatchLowercase]
-		\setmonofont{Inconsolatazi4-Regular.otf}[
-			BoldFont          = Inconsolatazi4-Bold.otf,
-			ItalicFont        = Inconsolatazi4-Regular.otf,
-			ItalicFeatures    = {FakeSlant=0.2},
-			BoldItalicFont    = Inconsolatazi4-Bold.otf,
-			BoldItalicFeatures = {FakeSlant=0.2},
-			Scale             = MatchLowercase
-		]
-	\fi
-\else
-	\RequirePackage{lmodern}
-\fi
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Mathematics
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage{amsmath}
-\RequirePackage{amsfonts}
-\RequirePackage{mathtools}
-\RequirePackage{bm}
-
-\ifcsname mathbfcal\endcsname \let\mathbfcal\relax \fi
-\ifcsname mathbfscr\endcsname \let\mathbfscr\relax \fi
-
-\ifllncslibertine
-\else
-	\RequirePackage{amssymb}
-	\RequirePackage{mathrsfs}
-\fi
-
-% Direct NFSS declarations for the three auxiliary alphabets used here.  These
-% use the same font files as the corresponding alphabet selections without
-% depending on a wrapper package whose interface varies across TeX releases.
-\let\mathbb\relax
-\let\mathbfbb\relax
-\let\mathbfcal\relax
-\let\mathscr\relax
-\let\mathbfscr\relax
-
-\DeclareFontFamily{U}{cmsy}{\skewchar\font48 }
-\DeclareFontShape{U}{cmsy}{m}{n}{%
-	<-5.5>cmsy5<5.5-6.5>cmsy6<6.5-7.5>cmsy7
-	<7.5-8.5>cmsy8<8.5-9.5>cmsy9<9.5->cmsy10}{}
-\DeclareFontShape{U}{cmsy}{b}{n}{%
-	<-5.5>cmbsy5<5.5-6.5>cmbsy6<6.5-7.5>cmbsy7
-	<7.5-8.5>cmbsy8<8.5-9.5>cmbsy9<9.5->cmbsy10}{}
-\DeclareMathAlphabet{\mathcal}{U}{cmsy}{m}{n}
-\SetMathAlphabet{\mathcal}{bold}{U}{cmsy}{b}{n}
-\DeclareMathAlphabet{\mathbfcal}{U}{cmsy}{b}{n}
-
-\DeclareFontFamily{U}{bboldx}{\skewchar\font=45 }
-\DeclareFontShape{U}{bboldx}{m}{n}{<->BBOLDX-Regular}{}
-\DeclareFontShape{U}{bboldx}{b}{n}{<->BBOLDX-Bold}{}
-\DeclareFontShape{U}{bboldx}{bx}{n}{<->ssub*bboldx/b/n}{}
-\DeclareMathAlphabet{\mathbb}{U}{bboldx}{m}{n}
-\SetMathAlphabet{\mathbb}{bold}{U}{bboldx}{b}{n}
-\DeclareMathAlphabet{\mathbfbb}{U}{bboldx}{b}{n}
-
-\DeclareFontFamily{U}{esstixscr}{\skewchar\font=45 }
-\DeclareFontShape{U}{esstixscr}{m}{n}{<->esstixcal}{}
-\DeclareMathAlphabet{\mathscr}{U}{esstixscr}{m}{n}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Preprint layout
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\ifllncspreprint
-	\RequirePackage[margin=1in]{geometry}
-	\RequirePackage{setspace}
-	\RequirePackage{fancyhdr}
-	\fancypagestyle{llncspreprint}{%
-		\fancyhf{}%
-		\fancyfoot[C]{\small\thepage}%
-		\RenewDocumentCommand{\headrulewidth}{}{0pt}%
-		\RenewDocumentCommand{\footrulewidth}{}{0pt}%
-	}
-	\AtBeginDocument{\pagestyle{llncspreprint}}
-	\AtBeginDocument{%
-		\ifnum\@ptsize=1\else
-			\PackageWarning{llncscrypto}{preprint mode expects [11pt] in \string\documentclass}%
-		\fi
-	}
-	\let\llncsoldtitle\title
-	\RenewDocumentCommand{\title}{m}{\llncsoldtitle{\LARGE\normalfont\bfseries#1}}
-	\NewDocumentCommand{\preprint}{O{}O{}}{%
-		\AtEndPreamble{%
-			\fancypagestyle{llncspreprint}{%
-				\fancyhf{}%
-				\IfValueT{#1}{\fancyhead[L]{\small\textsc{#1}}}%
-				\IfValueT{#2}{\fancyhead[R]{\small\textsc{#2}}}%
-				\fancyfoot[C]{\small\thepage}%
-				\RenewDocumentCommand{\headrulewidth}{}{0pt}%
-				\RenewDocumentCommand{\footrulewidth}{}{0pt}%
-			}%
-		}%
-	}
-\fi
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Graphics, tables, captions, and lists
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage{adjustbox}
-\RequirePackage{booktabs}
-\RequirePackage{enumitem}
-\RequirePackage{float}
-\RequirePackage{graphicx}
-\RequirePackage{newfloat}
-
-% caption compares this value inside an \edef; it must therefore be expandable.
-\providecommand*{\caption@documentclass}{standard}
-\ifllncscaptions
-	\RequirePackage{caption}
-	\RequirePackage{subcaption}
-	\AtBeginDocument{%
-		\captionsetup{
-			font      = {rm,small},
-			labelfont = {sc},
-			labelsep  = period,
-			skip      = 5pt,
-			belowskip = 0pt
-		}%
-		\captionsetup[table]{skip=4pt}%
-		\captionsetup[figure]{skip=4pt}%
-	}
-\fi
-
-\newlist{points}{itemize}{1}
-\setlist[points]{label={-},leftmargin=1em,itemsep=1pt,before=\smallskip,after=\smallskip}
-
-\newlist{checkbox}{itemize}{1}
-\setlist[checkbox]{label=$\square$,leftmargin=1em}
-\NewDocumentCommand{\checked}{}{\item[$\checkmark$]}
-
-\newlist{deflist}{description}{1}
-\setlist[deflist]{
-	labelwidth  = 0.33\textwidth,
-	labelsep    = 1em,
-	leftmargin  = 0.33\textwidth,
-	font        = \normalfont\bfseries,
-	style       = nextline,
-	itemsep     = 5pt
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% References
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\def\llncshypercolorlinks{false}
-\ifllncscolorlinks
-	\def\llncshypercolorlinks{true}
-\fi
-
-\RequirePackage[
-	bookmarksnumbered = true,
-	breaklinks        = true,
-	citecolor         = SteelBlue4,
-	colorlinks        = \llncshypercolorlinks,
-	linkcolor         = SteelBlue4,
-	pdfencoding       = auto,
-	pdfpagelabels     = true,
-	pdfstartview      = FitH,
-	unicode           = true,
-	urlcolor          = SteelBlue4
-]{hyperref}
-
-\pdfstringdefDisableCommands{%
-\def\S{\textsection}%
-\def\langle{<}\def\rangle{>}%
-\def\lceil{[}\def\rceil{]}%
-\def\left{}\def\right{}%
-\def\lfloor{[}\def\rfloor{]}%
-\def\mathbb#1{#1}%
-\def\mathbf#1{#1}%
-\def\mathcal#1{#1}%
-\def\mathfrak#1{#1}%
-\def\mathrm#1{#1}%
-\def\mathscr#1{#1}%
-\def\mathsf#1{#1}%
-\def\mathtt#1{#1}%
-\def\operatorname#1{#1}%
-\def\text#1{#1}%
-}
-
-% Theorem environments
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\ifllncstheorems
-	\def\llncsundefenv#1{%
-		\expandafter\let\csname#1\endcsname\@undefined
-		\expandafter\let\csname end#1\endcsname\@undefined
-		\@ifundefined{c@#1}{}{%
-			\expandafter\let\csname c@#1\endcsname\@undefined
-			\expandafter\let\csname the#1\endcsname\@undefined
-			\expandafter\let\csname p@#1\endcsname\@undefined
-			\expandafter\let\csname cl@#1\endcsname\@undefined
-		}%
-	}
-
-	\def\llncsdeclarenumbered#1#2#3{%
-		\spnewtheorem{#1}[theorem]{#2}{#3}{\rmfamily}%
-	}
-	\def\llncsdeclarebold#1#2{\llncsdeclarenumbered{#1}{#2}{\bfseries}}
-	\def\llncsdeclaresc#1#2{\llncsdeclarenumbered{#1}{#2}{\scshape}}
-	\def\llncsdeclaresf#1#2{\llncsdeclarenumbered{#1}{#2}{\sffamily}}
-	\def\llncsdeclareunnumbered#1#2#3#4{%
-		\spnewtheorem*{#1}{#2}{#3}{#4}%
-	}
-
-	\let\oldproof\proof
-	\let\endoldproof\endproof
-
-	\AtEndPreamble{%
-		\forcsvlist{\llncsundefenv}{%
-			application,%
-			assertion,%
-			assumption,%
-			axiom,%
-			claim,%
-			claimproof,%
-			commentary,%
-			conclusion,%
-			conjecture,%
-			construction,%
-			convention,%
-			corollary,%
-			criterion,%
-			definition,%
-			discussion,%
-			example,%
-			exercise,%
-			experiment,%
-			fact,%
-			folklore,%
-			guideline,%
-			highlight,%
-			hypothesis,%
-			important,%
-			informaltheorem,%
-			insight,%
-			keypoint,%
-			lemma,%
-			metatheorem,%
-			motivation,%
-			notation,%
-			notationabuse,%
-			note,%
-			observation,%
-			openproblem,%
-			postulate,%
-			problem,%
-			property,%
-			proposition,%
-			protocol,%
-			question,%
-			recall,%
-			remark,%
-			result,%
-			solution,%
-			step,%
-			summary,%
-			syntax,%
-			takeaway,%
-			theorem,%
-			tip,%
-			warning,%
-		}%
-
-		\if@envcntsect
-			\def\@thmcountersep{.}%
-			\spnewtheorem{theorem}{Theorem}[section]{\bfseries}{\rmfamily}%
-		\else
-			\spnewtheorem{theorem}{Theorem}{\bfseries}{\rmfamily}%
-			\if@envcntreset
-				\@addtoreset{theorem}{section}%
-			\else
-				\@addtoreset{theorem}{chapter}%
-			\fi
-		\fi
-
-		\llncsdeclarebold{application}{Application}
-		\llncsdeclarebold{assertion}{Assertion}
-		\llncsdeclarebold{assumption}{Assumption}
-		\llncsdeclarebold{axiom}{Axiom}
-		\llncsdeclarebold{claim}{Claim}
-		\llncsdeclarebold{conclusion}{Conclusion}
-		\llncsdeclarebold{conjecture}{Conjecture}
-		\llncsdeclarebold{construction}{Construction}
-		\llncsdeclarebold{convention}{Convention}
-		\llncsdeclarebold{corollary}{Corollary}
-		\llncsdeclarebold{criterion}{Criterion}
-		\llncsdeclarebold{definition}{Definition}
-		\llncsdeclarebold{experiment}{Experiment}
-		\llncsdeclarebold{fact}{Fact}
-		\llncsdeclarebold{folklore}{Folklore}
-		\llncsdeclarebold{hypothesis}{Hypothesis}
-		\llncsdeclarebold{informaltheorem}{Informal Theorem}
-		\llncsdeclarebold{lemma}{Lemma}
-		\llncsdeclarebold{metatheorem}{Meta Theorem}
-		\llncsdeclarebold{notation}{Notation}
-		\llncsdeclarebold{observation}{Observation}
-		\llncsdeclarebold{openproblem}{Open Problem}
-		\llncsdeclarebold{postulate}{Postulate}
-		\llncsdeclarebold{problem}{Problem}
-		\llncsdeclarebold{property}{Property}
-		\llncsdeclarebold{proposition}{Proposition}
-		\llncsdeclarebold{protocol}{Protocol}
-		\llncsdeclarebold{result}{Result}
-		\llncsdeclarebold{solution}{Solution}
-		\llncsdeclarebold{step}{Step}
-
-		\llncsdeclaresc{commentary}{Commentary}
-		\llncsdeclaresc{discussion}{Discussion}
-		\llncsdeclaresc{example}{Example}
-		\llncsdeclaresc{exercise}{Exercise}
-		\llncsdeclaresc{motivation}{Motivation}
-		\llncsdeclaresc{notationabuse}{Notation Abuse}
-		\llncsdeclaresc{note}{Note}
-		\llncsdeclaresc{question}{Question}
-		\llncsdeclaresc{remark}{Remark}
-		\llncsdeclaresc{syntax}{Syntax}
-
-		\llncsdeclaresf{guideline}{Guideline}
-		\llncsdeclaresf{highlight}{Highlight}
-		\llncsdeclaresf{important}{Important point}
-		\llncsdeclaresf{insight}{Insight}
-		\llncsdeclaresf{keypoint}{Key Point}
-		\llncsdeclaresf{recall}{Recall}
-		\llncsdeclaresf{summary}{Summary}
-		\llncsdeclaresf{takeaway}{Takeaway}
-		\llncsdeclaresf{tip}{Tip}
-		\llncsdeclaresf{warning}{Warning}
-
-		\llncsdeclareunnumbered{uclaim}{Claim}{\bfseries}{\rmfamily}
-		\llncsdeclareunnumbered{uconjecture}{Conjecture}{\bfseries}{\rmfamily}
-		\llncsdeclareunnumbered{ucorollary}{Corollary}{\bfseries}{\rmfamily}
-		\llncsdeclareunnumbered{uhypothesis}{Hypothesis}{\bfseries}{\rmfamily}
-		\llncsdeclareunnumbered{uinformaltheorem}{Informal Theorem}{\bfseries}{\rmfamily}
-		\llncsdeclareunnumbered{ulemma}{Lemma}{\bfseries}{\rmfamily}
-		\llncsdeclareunnumbered{uopenproblem}{Open Problem}{\scshape}{\rmfamily}
-		\llncsdeclareunnumbered{usyntax}{Syntax}{\scshape}{\rmfamily}
-		\llncsdeclareunnumbered{utheorem}{Theorem}{\bfseries}{\rmfamily}
-
-		\AtEndEnvironment{proof}{\qed}
-
-		\ProvideDocumentCommand{\qedsymbol}{}{}
-		\RenewDocumentCommand{\qedsymbol}{}{{\scriptsize\ensuremath{\square}}}
-		\renewcommand{\squareforqed}{\qedsymbol}
-		\ProvideDocumentCommand{\SetQEDSymbol}{m}{ \setqedsymbol{#1} }
-		\ProvideDocumentCommand{\setqedsymbol}{m}{ \RenewDocumentCommand{\qedsymbol}{}{#1} }
-		\ProvideDocumentCommand{\qedhere}{}{\unskip\nobreak\hfill\qedsymbol}
-
-		\NewDocumentEnvironment{proofsketch}{o}
-		{
-			\IfNoValueTF{#1}
-			{ \begin{proof}[Proof~(Sketch)] }
-			{ \begin{proof}[Proof~(Sketch~#1)] }
-		}
-		{ \end{proof} }
-		\NewDocumentEnvironment{proofidea}{o}
-		{
-			\IfNoValueTF{#1}
-			{ \begin{proof}[Proof~(Idea)] }
-			{ \begin{proof}[Proof~(Idea~#1)] }
-		}
-		{ \end{proof} }
-		\NewDocumentEnvironment{proofofclaim}{o}
-		{
-			\IfNoValueTF{#1}
-			{ \begin{proof}[Proof~of~Claim] }
-			{ \begin{proof}[Proof~of~Claim~(#1)] }
-		}
-		{ \end{proof} }
-		\NewDocumentEnvironment{claimproof}{O{Proof of Claim}}{\begin{proof}[#1]}{\end{proof}}
-	}
-\fi
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Cross-references
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage{zref-clever}
-\RequirePackage{zref-vario}
-\zcsetup{%
-	cap        = true,
-	noabbrev,
-	nameinlink = true,
-	lang       = english
-}
-
-\NewDocumentCommand{\cref}{O{}m}{\zcref[#1]{#2}}
-\NewDocumentCommand{\Cref}{O{}m}{\zcref[S,#1]{#2}}
-\let\crefrange\zcrefrange
-\let\cpageref\zcpageref
-
-\NewDocumentCommand{\crefname}{m m m}{%
-	\zcRefTypeSetup{#1}{name-sg={#2},name-pl={#3}}%
-}
-\NewDocumentCommand{\Crefname}{m m m}{%
-	\zcRefTypeSetup{#1}{Name-sg={#2},Name-pl={#3}}%
-}
-\NewDocumentCommand{\llncsrefname}{m m m}{%
-	\zcRefTypeSetup{#1}{%
-		name-sg={#2},
-		name-pl={#3},
-		Name-sg={#2},
-		Name-pl={#3}%
-	}%
-}
-\NewDocumentCommand{\llncssetrefnames}{m}{\forcsvlist{\llncssetrefnamesingle}{#1}}
-\def\llncssetrefnamesingle#1{\llncsparserefname#1\llncsnil}
-\def\llncsparserefname#1/#2/#3\llncsnil{\llncsrefname{#1}{#2}{#3}}
-
-\@ifundefined{fullref}
-{\NewDocumentCommand{\fullref}{m}{\hyperref[{#1}]{\zcref{#1}~\nameref*{#1}}}}
-{\RenewDocumentCommand{\fullref}{m}{\hyperref[{#1}]{\zcref{#1}~\nameref*{#1}}}}
-
-\crefname{section}{\textsection}{\textsection\textsection}
-\Crefname{section}{\textsection}{\textsection\textsection}
-\crefname{subsection}{\textsection}{\textsection\textsection}
-\Crefname{subsection}{\textsection}{\textsection\textsection}
-\crefname{subsubsection}{\textsection}{\textsection\textsection}
-\Crefname{subsubsection}{\textsection}{\textsection\textsection}
-\crefname{paragraph}{paragraph}{paragraphs}
-\Crefname{paragraph}{Paragraph}{Paragraphs}
-\crefname{subparagraph}{subparagraph}{subparagraphs}
-\Crefname{subparagraph}{Subparagraph}{Subparagraphs}
-
-\llncssetrefnames{%
-	application/Application/Applications,
-	assertion/Assertion/Assertions,
-	assumption/Assumption/Assumptions,
-	axiom/Axiom/Axioms,
-	claim/Claim/Claims,
-	commentary/Commentary/Commentaries,
-	conclusion/Conclusion/Conclusions,
-	conjecture/Conjecture/Conjectures,
-	construction/Construction/Constructions,
-	convention/Convention/Conventions,
-	corollary/Corollary/Corollaries,
-	criterion/Criterion/Criteria,
-	definition/Definition/Definitions,
-	discussion/Discussion/Discussions,
-	example/Example/Examples,
-	exercise/Exercise/Exercises,
-	experiment/Experiment/Experiments,
-	fact/Fact/Facts,
-	folklore/Folklore/Folklore,
-	guideline/Guideline/Guidelines,
-	highlight/Highlight/Highlights,
-	hypothesis/Hypothesis/Hypotheses,
-	important/Important point/Important points,
-	informaltheorem/Informal Theorem/Informal Theorems,
-	insight/Insight/Insights,
-	keypoint/Key Point/Key Points,
-	lemma/Lemma/Lemmas,
-	metatheorem/Meta Theorem/Meta Theorems,
-	motivation/Motivation/Motivations,
-	notation/Notation/Notations,
-	notationabuse/Notation Abuse/Notation Abuses,
-	note/Note/Notes,
-	observation/Observation/Observations,
-	openproblem/Open Problem/Open Problems,
-	postulate/Postulate/Postulates,
-	problem/Problem/Problems,
-	proof/Proof/Proofs,
-	property/Property/Properties,
-	proposition/Proposition/Propositions,
-	protocol/Protocol/Protocols,
-	question/Question/Questions,
-	recall/Recall/Recalls,
-	remark/Remark/Remarks,
-	result/Result/Results,
-	solution/Solution/Solutions,
-	step/Step/Steps,
-	summary/Summary/Summaries,
-	syntax/Syntax/Syntaxes,
-	takeaway/Takeaway/Takeaways,
-	theorem/Theorem/Theorems,
-	tip/Tip/Tips,
-	warning/Warning/Warnings
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Notes and draft annotations
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\definecolor{llncsnotecolor}{rgb}{0.52,0.20,0.52}
-
-\newbool{llncsinfootnote}
-\newbool{llncsintabular}
-\newbool{llncsinminipage}
-\newbool{llncsinframed}
-
-\let\llncsoldfootnote\footnote
-\RenewDocumentCommand{\footnote}{o m}{%
-	{\booltrue{llncsinfootnote}%
-		\IfNoValueTF{#1}{\llncsoldfootnote{#2}}{\llncsoldfootnote[#1]{#2}}}%
-	\boolfalse{llncsinfootnote}%
-}
-
-\BeforeBeginEnvironment{tabular}{\booltrue{llncsintabular}}
-\AfterEndEnvironment{tabular}{\boolfalse{llncsintabular}}
-\BeforeBeginEnvironment{minipage}{\booltrue{llncsinminipage}}
-\AfterEndEnvironment{minipage}{\boolfalse{llncsinminipage}}
-
-\AtBeginDocument{%
-	\@ifpackageloaded{framed}{%
-		\xpretocmd{\MakeFramed}{\booltrue{llncsinframed}}{}{}%
-		\xapptocmd{\endMakeFramed}{\boolfalse{llncsinframed}}{}{}%
-	}{}%
-}
-
-\NewDocumentCommand{\sidenote}{m}{%
-	\ifboolexpr{
-		bool {llncsinfootnote} or
-		bool {llncsintabular} or
-		bool {llncsinminipage} or
-		bool {llncsinframed}
-	}{\marginnote{\tiny#1}}{\marginpar{\tiny#1}}%
-}
-
-\newcounter{llncsdnote}
-\def\llncsdnotelist{}
-\NewDocumentCommand{\llncsappenddnote}{m m m}{%
-	\refstepcounter{llncsdnote}%
-	\label{llncs:note:\thellncsdnote}%
-	\expandafter\gdef\csname llncsnoteauthor\thellncsdnote\endcsname{#1}%
-	\expandafter\gdef\csname llncsnotecolor\thellncsdnote\endcsname{#2}%
-	\expandafter\gdef\csname llncsnotetext\thellncsdnote\endcsname{#3}%
-	\edef\llncscurrentnote{\thellncsdnote}%
-	\expandafter\gappto\expandafter\llncsdnotelist
-	\expandafter{\expandafter\llncsemitdnote\expandafter{\llncscurrentnote}}%
-}
-\NewDocumentCommand{\llncsemitdnote}{m}{%
-	\noindent
-	{\color{\csname llncsnotecolor#1\endcsname}\normalfont$\bigstar$}~%
-	\ifcsvoid{llncsnoteauthor#1}{}{%
-		{\small\itshape\csname llncsnoteauthor#1\endcsname:\enspace}%
-	}%
-	{\color{\csname llncsnotecolor#1\endcsname}\small\sffamily\bfseries
-		\csname llncsnotetext#1\endcsname}%
-	\hfill{\small\normalfont(p.~\pageref{llncs:note:#1})}\par\smallskip
-}
-
-\ifllncsnotes
-	\NewDocumentCommand{\dtcolornote}{O{} m m}{%
-		\llncsappenddnote{#1}{#2}{#3}%
-		\sidenote{{\color{#2}\normalfont$\bigstar$}}%
-		\ifmmode\expandafter\mbox\fi{%
-		{\color{#2}\sffamily\bfseries\boldmath
-			[#3\ifstrempty{#1}{}{{\mdseries\itshape~-- #1}}]}%
-		}%
-	}
-	\NewDocumentCommand{\dtnote}{O{} m}{\dtcolornote[#1]{llncsnotecolor}{#2}}
-	\NewDocumentCommand{\dtignore}{O{} m}{%
-		\sidenote{{\color{llncsnotecolor}\normalfont$\looparrowright$\scriptsize~#1}}%
-	}
-	\NewDocumentCommand{\XXX}{O{XXX}}{%
-		\sidenote{{\color{PaleVioletRed3}\normalfont$\star$}}%
-		{\color{PaleVioletRed3}\sffamily\bfseries[#1]}%
-	}
-	\NewDocumentCommand{\added}{m}{\textcolor{OliveGreen}{#1}\marginnote{\textcolor{OliveGreen}{\LARGE$\star$}}}
-	\NewDocumentCommand{\changed}{m}{\textcolor{PineGreen}{#1}\marginnote{\textcolor{PineGreen}{\LARGE$\star$}}}
-	\NewDocumentCommand{\citelater}{m}{\textcolor{WildStrawberry}{[#1]}\marginnote{\textcolor{WildStrawberry}{\LARGE$\star$}}}
-	\NewDocumentCommand{\fixme}{m}{\textcolor{OrangeRed}{[\textsc{Fix-me}: #1]}\marginnote{\textcolor{OrangeRed}{\LARGE$\star$}}}
-	\NewDocumentCommand{\notes}{m}{\textcolor{ForestGreen}{[\textsc{Note}: #1]}\marginnote{\textcolor{ForestGreen}{\LARGE$\star$}}}
-	\NewDocumentCommand{\query}{m}{\textcolor{RoyalPurple}{[\textsc{Query}: #1]}\marginnote{\textcolor{RoyalPurple}{\LARGE$\star$}}}
-	\NewDocumentCommand{\removed}{m}{\textcolor{Periwinkle}{\sout{#1}}\marginnote{\textcolor{Periwinkle}{\LARGE$\star$}}}
-	\NewDocumentCommand{\todo}{m}{\textcolor{Mahogany}{[\textsc{To-do}: #1]}\marginnote{\textcolor{Mahogany}{\LARGE$\star$}}}
-\else
-	\NewDocumentCommand{\dtcolornote}{O{} m m}{\ignorespaces}
-	\NewDocumentCommand{\dtnote}{O{} m}{\ignorespaces}
-	\NewDocumentCommand{\dtignore}{O{} m}{\ignorespaces}
-	\NewDocumentCommand{\XXX}{O{XXX}}{%
-		\@latex@error{\string\XXX{} found but notes are disabled (final or nonotes option)}\@ehd
-	}
-	\NewDocumentCommand{\added}{m}{}
-	\NewDocumentCommand{\changed}{m}{}
-	\NewDocumentCommand{\citelater}{m}{}
-	\NewDocumentCommand{\fixme}{m}{}
-	\NewDocumentCommand{\notes}{m}{}
-	\NewDocumentCommand{\query}{m}{}
-	\NewDocumentCommand{\removed}{m}{}
-	\NewDocumentCommand{\todo}{m}{}
-\fi
-
-\NewDocumentCommand{\printdtnotes}{}{%
-	\ifnum\value{llncsdnote}>0
-		\section*{Author Notes}%
-		\llncsdnotelist
-	\fi
-}
-\NewDocumentCommand{\newcomment}{m m m}{%
-	\NewDocumentCommand#3{m}{\ifllncsnotes\dtcolornote[#1]{#2}{##1}\fi}%
-}
-\NewDocumentCommand{\newguymarker}{m m m}{%
-	\ifllncsnotes
-		\expandafter\NewDocumentCommand\csname#1\endcsname{m}{%
-			\textcolor{#3}{##1\ \textsc{#2}}%
-			\marginnote{\textcolor{#3}{\LARGE$\star$}}%
-		}%
-	\else
-		\expandafter\NewDocumentCommand\csname#1\endcsname{m}{}%
-	\fi
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Paragraph headings
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newif\ifllncshaspunct
-\def\llncscheckpunct#1{\ifx\llncscheckpunct#1\llncscheckpunct\else\llncshaspuncttrue\fi}
-\def\llncscheckdot#1.\llncssep#2\llncsend{\llncscheckpunct{#2}}
-\def\llncscheckquestion#1?\llncssep#2\llncsend{\llncscheckpunct{#2}}
-\def\llncscheckexclam#1!\llncssep#2\llncsend{\llncscheckpunct{#2}}
-\def\llncscheckcolon#1:\llncssep#2\llncsend{\llncscheckpunct{#2}}
-
-\NewDocumentCommand{\llncsappendpunct}{m}{%
-	\llncshaspunctfalse
-	\llncscheckdot#1\llncssep.\llncssep\llncsend
-	\llncscheckquestion#1\llncssep?\llncssep\llncsend
-	\llncscheckexclam#1\llncssep!\llncssep\llncsend
-	\llncscheckcolon#1\llncssep:\llncssep\llncsend
-	#1\ifllncshaspunct\else.\fi
-}
-\NewDocumentCommand{\llncseatnewline}{}{\begingroup\catcode13=10\endgroup}
-\NewDocumentCommand{\parheadnoperiod}{m}{%
-	\par\smallskip\noindent
-	{\bfseries\boldmath\ignorespaces#1}%
-	\hskip 0.30em
-	\ignorespaces
-}
-\NewDocumentCommand{\subparheadnoperiod}{m}{%
-	\par\smallskip\noindent
-	{\scshape\ignorespaces#1}%
-	\hskip 0.30em
-	\ignorespaces
-}
-\NewDocumentCommand{\parhead}{m}{\parheadnoperiod{\llncsappendpunct{#1}}}
-\NewDocumentCommand{\subparhead}{m}{\subparheadnoperiod{\llncsappendpunct{#1}}}
-\RenewDocumentCommand{\paragraph}  {m}{\parhead{#1}}
-\RenewDocumentCommand{\subparagraph}{m}{\subparhead{#1}}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Boxes and framed environments
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\long\def\llncscustomfbox#1#2#3#4#5#6#7#8#9{%
-	\leavevmode\begingroup
-	\setbox\@tempboxa\hbox{\color@begingroup\kern\fboxsep{#9}\kern\fboxsep\color@endgroup}%
-	\hbox{%
-		\begingroup
-		\@tempdima#4\relax
-		\advance\@tempdima\fboxsep
-		\advance\@tempdima\dp\@tempboxa
-		\expandafter\endgroup\expandafter
-		\lower\the\@tempdima\hbox{\vbox{%
-				\hrule\@height#3\@width#7\relax
-				#1%
-				\hbox{%
-					\vrule\@width#5\relax
-					\hspace{#8}%
-					\vbox{\vskip\fboxsep\copy\@tempboxa\vskip\fboxsep}%
-					\vrule\@width#6\relax}%
-				#2%
-				\hrule\@height#4\@width#7\relax}}%
-	}%
-	\endgroup
-}
-\def\llncsopenfbox#1#2{%
-	\fboxsep\FrameSep
-	\llncscustomfbox{}{}{#1}{#2}\FrameRule\z@{1em}{0.4em}%
-}
-\NewDocumentEnvironment{nestedbar}{O{\hsize}}{%
-	\@ifundefined{OuterFrameSep}{\@latex@error{nestedbar requires a recent framed.sty}\@ehd}{}%
-	\def\FrameCommand{\llncsopenfbox\FrameRule\FrameRule}%
-	\def\FirstFrameCommand{\llncsopenfbox\FrameRule\z@}%
-	\def\MidFrameCommand{\llncsopenfbox\z@\z@}%
-	\def\LastFrameCommand{\llncsopenfbox\z@\FrameRule}%
-	\OuterFrameSep=1ex\FrameSep=0pt
-	\MakeFramed{\hsize#1\advance\hsize-\width\FrameRestore}%
-	\smallskip
-}{%
-	\smallskip
-	\endMakeFramed
-}
-
-\RequirePackage[
-	skipabove   = 0.75\baselineskip ,
-	skipbelow   = 0.75\baselineskip ,
-	framemethod = default
-]{mdframed}
-\mdfdefinestyle{llncsbox}{
-	font              = \small ,
-	roundcorner       = 1.0pt ,
-	linewidth         = 0.5pt ,
-	nobreak           = true ,
-	skipabove         = 0.75\baselineskip ,
-	skipbelow         = 0.75\baselineskip ,
-	innerleftmargin   = 7.5pt ,
-	innerrightmargin  = 7.5pt ,
-	innertopmargin    = 7.5pt ,
-	innerbottommargin = 7.5pt ,
-	backgroundcolor   = white ,
-	linecolor         = black
-}
-\NewDocumentCommand{\llncsboxtitle}{o}{%
-	\IfNoValueF{#1}{%
-		\noindent\textbf{\small#1}\par\smallskip
-		\noindent\hrule height 0.4pt\relax\vspace{0.4\baselineskip}%
-	}%
-}
-\NewDocumentEnvironment{simplebox}{o}{%
-	\begin{mdframed}[style=llncsbox]%
-	\llncsboxtitle[#1]%
-}{%
-	\end{mdframed}%
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Public utilities
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\NewDocumentCommand{\code}{m}{\texttt{#1}}
-\NewDocumentCommand{\emailref}{m}{\href{mailto:#1}{\nolinkurl{#1}}}
-\NewDocumentCommand{\httpref}{m}{\href{http://#1}{\nolinkurl{#1}}}
-\NewDocumentCommand{\mathsc}{m}{\textnormal{\textsc{#1}}}
-\ProvideDocumentCommand{\webpage}{m}{\httpref{#1}}
-
-\NewDocumentCommand{\highlightcolor}{}{DeepPink2}
-\NewDocumentCommand{\sethighlightcolor}{m}{\RenewDocumentCommand{\highlightcolor}{}{#1}}
-\NewDocumentCommand{\textem}{m}{\textcolor{\highlightcolor}{#1}}
-
-\NewDocumentCommand{\footnotesymb}{m m}{%
-	\def\@tempa{#1}%
-	\ifx\@tempa\@empty
-		\let\llncssavedmakefntext\@makefntext
-		\long\def\@makefntext##1{\parindent1em\noindent##1}%
-		{\protected@xdef\@thefnmark{}}%
-		\@footnotetext{#2}%
-		\let\@makefntext\llncssavedmakefntext
-	\else
-		{\protected@xdef\@thefnmark{#1}}\@footnotemark\@footnotetext{#2}%
-	\fi
-}
-\newcounter{llncsmissing}
-\def\llncsmissinglist{}
-\NewDocumentCommand{\missing}{m}{%
-	\refstepcounter{llncsmissing}%
-	\label{llncs:missing:\thellncsmissing}%
-	\gappto\llncsmissinglist{%
-		\noindent\textcolor{DeepPink2}{%
-			$\star$~\thellncsmissing~(p.~\pageref{llncs:missing:\thellncsmissing}):~#1%
-		}\par\medskip
-	}%
-	\ifllncsnotes\llncsappenddnote{Missing}{DeepPink2}{#1}\fi
-	\textcolor{DeepPink2}{#1}%
-}
-\NewDocumentCommand{\printmissing}{}{%
-	\section*{Missing Content}%
-	\llncsmissinglist
-}
-\NewDocumentEnvironment{acknowledgment}{o}{%
-	\IfNoValueTF{#1}{\noindent\paragraph{Acknowledgment.}}{\noindent\paragraph{#1}}%
-}{}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Broken-reference markers
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\NewDocumentCommand{\llncsbrokenrefmark}{m}{%
-	\marginnote[%
-		{\color{DeepPink2}\normalfont\smash{\LARGE$\star$}\,\tiny\sffamily#1}%
-	]{%
-		{\color{DeepPink2}\normalfont\smash{\LARGE$\star$}\,\tiny\sffamily#1}%
-	}%
-}
-\newif\ifllncsmarkundef
-\llncsmarkundeftrue
-\xpretocmd{\G@refundefinedtrue}{%
-	\ifllncsmarkundef
-		\llncsbrokenrefmark{\@ifundefined{@citeb}{}{\@citeb}}%
-	\fi
-}{}{}
-\let\llncsoldsetref\@setref
-\RenewDocumentCommand{\@setref}{m m m}{%
-	\ifx#1\relax\llncsbrokenrefmark{#3}\fi
-	\llncsmarkundeffalse
-	\llncsoldsetref{#1}{#2}{#3}%
-	\llncsmarkundeftrue
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Draft watermark
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-	\ifllncsdraft
-		\RequirePackage{scrtime}
-		\RequirePackage{prelim2e}
-		\NewDocumentCommand{\llncsdatetime}{}{%
-			\number\year-%
-			\ifnum\month<10 0\fi\number\month-%
-			\ifnum\day<10 0\fi\number\day\space\thistime
-		}
-		\RenewDocumentCommand{\PrelimText}{}{%
-		\normalfont\scshape\footnotesize\color{IndianRed1}%
-		This is a draft made on~\llncsdatetime; not for distribution%
-	}
-\fi
-
-\makeatother
 \endinput
