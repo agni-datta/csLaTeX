@@ -143,3 +143,5 @@ Unbreakable formulas can still exceed a narrow line; supply mathematical break p
 ## Dependencies
 
 Codelines requires enumitem and xcolor. Load hyperref, cleveref or zref-clever separately when using their reference commands.
+
+The package owns the shared `\codecomment` callback and accepts an earlier definition from tcscrypto. Loading tcscrypto before or after codelines does not create a duplicate declaration.

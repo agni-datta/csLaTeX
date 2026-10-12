@@ -289,10 +289,10 @@
     \bool_if:NTF \g_csCryptoBuiltIn_bool
     {
         \str_if_eq:nnTF {#1#2} {P}
-        {\cs_set:cpn {#1#2} {\use:c {#4} {#3}}}
-        {\cs_if_free:cTF {#1#2} {\cs_new:cpn {#1#2} {\use:c {#4} {#3}}} {\csCryptoCommandCollision {#1#2}}}
+        {\cs_set:cpx {#1#2} {\exp_not:c {#4} {\exp_not:n {#3}}}}
+        {\cs_if_free:cTF {#1#2} {\cs_new:cpx {#1#2} {\exp_not:c {#4} {\exp_not:n {#3}}}} {\csCryptoCommandCollision {#1#2}}}
     }
-    {\cs_if_free:cT {#1#2} {\cs_new:cpn {#1#2} {\use:c {#4} {#3}}}}
+    {\cs_if_free:cT {#1#2} {\cs_new:cpx {#1#2} {\exp_not:c {#4} {\exp_not:n {#3}}}}}
 }
 
 \cs_new_protected:Npn \__crypto_parse_pair:w #1/#2\q_stop #3#4 {\__crypto_define_one:nnnn {#3} {#1} {#2} {#4}}
@@ -536,13 +536,16 @@
 \newtoks\tcscrypto@generalnotation
 
 \ExplSyntaxOn
+% AMS keeps its original robust implementation when bm replaces the public alias.
+\cs_new_eq:Nc \csCryptoBoldSymbol {boldsymbol~}
+
 \tcscrypto@generalalphabets =
     {
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Generated Mathematical Alphabets
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-        \NewDocumentCommand {\mbf} {m} {\regex_match:nnTF {\A[a-zA-Z0-9]\Z} {#1} {\mathbf {#1}} {\boldsymbol {#1}}}
+        \NewDocumentCommand {\mbf} {m} {\regex_match:nnTF {\A[a-zA-Z0-9]\Z} {#1} {\mathbf {#1}} {\csCryptoBoldSymbol {#1}}}
 
         \tl_new:N \l_tcsc_letter_tl
 
@@ -668,7 +671,8 @@
             \IfValueT{#2}{\left[#2\right]}
         }
         \NewDocumentCommand{\ConditionalBar}{}{\;\middle|\;}
-        \NewDocumentCommand{\Description}{m}{\left\langle#1\right\rangle}
+        \NewDocumentCommand{\DescriptionEncoding}{m}{\left\langle#1\right\rangle}
+        \ProvideDocumentCommand{\Description}{m}{\DescriptionEncoding{#1}}
         \NewDocumentCommand{\abs}{m}{\left\lvert#1\right\rvert}
         \NewDocumentCommand{\bigO}{d() d[]}%
         { %
@@ -2826,7 +2830,8 @@
 \NewDocumentCommand{\stateP}{}{\state_\Prover}
 \NewDocumentCommand{\stateSim}{}{\state_\Sim}
 \NewDocumentCommand{\stateV}{}{\state_\Verifier}
-\NewDocumentCommand{\state}{}{\algostyle{st}}
+\NewDocumentCommand{\StateVar}{}{\algostyle{st}}
+\ProvideDocumentCommand{\state}{}{\StateVar}
 \NewDocumentCommand{\stmt}{}{\algostyle{s}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -3562,7 +3567,7 @@
 
 \NewDocumentCommand{\codecommentgames}{m m}{\codecomment{$\gameref{#1}$-$\gameref{#2}$}}
 \NewDocumentCommand{\codecommentgame}{m}{\codecomment{$\gameref{#1}$}}
-\NewDocumentCommand{\codecomment}{m}{\textcolor{gray}{\texttt{\small\textit{*#1*}}}}
+\ProvideDocumentCommand{\codecomment}{m}{\textcolor{gray}{\texttt{\small\textit{*#1*}}}}
 \NewDocumentCommand{\cqq}{}{\coloneqq}
 \NewDocumentCommand{\gamerefWi}{m m}{\Pr[\gamerefAi{#1}{#2} \Rightarrow1]}
 \NewDocumentCommand{\gamerefW}{m}{\Pr[\gamerefA{#1} \Rightarrow1]}

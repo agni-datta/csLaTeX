@@ -159,3 +159,9 @@ The definitions in `tcscrypto.sty` are grouped by topic:
 `mycomplexity.sty`, when present on the TeX search path, is read between the class catalogue and the later notation. Put ordinary document customizations after `\usepackage{tcscrypto}`.
 
 Author: Agni Datta. License: LPPL 1.3c.
+
+### Class and codelines compatibility
+
+`\DescriptionEncoding{...}` always supplies the mathematical encoding delimiters. The shorter `\Description` name remains available when a class does not already own it; ACM retains its figure-accessibility command. Similarly, `\StateVar` supplies the mathematical state variable while an existing class-owned `\state` remains intact.
+
+When codelines is loaded, it owns the shared `\codecomment` callback. Both package-loading orders are supported.

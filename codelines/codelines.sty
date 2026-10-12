@@ -388,7 +388,8 @@
     \tl_use:N \l_tmpa_tl
 }
 
-\NewDocumentCommand \codecomment {+m}
+% Own the shared comment callback even when tcscrypto was loaded first.
+\DeclareDocumentCommand \codecomment {+m}
 {
     \group_begin:
     \csCodeSize \l_csCodeCommentSize_tl

@@ -390,7 +390,7 @@
 \RequirePackage {amsmath}
 \@ifpackageloaded {unicode-math} {}
 {
-    \RequirePackage {amssymb}
+    \@ifpackageloaded {newtxmath} {} {\RequirePackage {amssymb}}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -430,7 +430,7 @@
 
 \sys_if_engine_pdftex:T
 {
-    \RequirePackage {amssymb}
+    \@ifpackageloaded {newtxmath} {} {\RequirePackage {amssymb}}
 }
 \tl_set_eq:NN \csMathEffectiveFont \csMathFont
 \sys_if_engine_pdftex:T
@@ -566,7 +566,7 @@
 }
 \newcommand{\csMathLoadAMSMathTools}%
 {%
-    \RequirePackage{amssymb}%
+    \@ifpackageloaded{newtxmath}{}{\RequirePackage{amssymb}}%
     \RequirePackage{mathtools}%
 }
 \csMathIfNamedFont
@@ -1630,7 +1630,7 @@
 \RequirePackage {mathtools}
 \@ifpackageloaded {unicode-math} {}
 {
-    \RequirePackage {amssymb}
+    \@ifpackageloaded {newtxmath} {} {\RequirePackage {amssymb}}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
