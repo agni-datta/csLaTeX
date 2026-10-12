@@ -1,113 +1,179 @@
----
-title: README
-aliases: [README, 'README, "cslecture"']
-linter-yaml-title-alias: README
-date created: Thursday, May 14th 2026, 10:21:58 pm
-date modified: Tuesday, August 25th 2026, 6:44:56 pm
----
-
 <!-- @format -->
 
-## cslecture
+# cslecture 4.0.1
 
-A compact lecture-note framework for the `article` class. It provides course metadata, a boxed title, structural helpers, and a ruled theorem suite.
+One lecture framework for individual notes, course books and scribe notes. It uses [csmath](../csmath/README.md) for fonts and [csthm](../csthm/README.md) for theorems. By default, fonts come from the document class and theorems use the unframed `oldschool` style.
 
-### Requirements
+Copy `cslecture.sty`, `csmath.sty` and `csthm.sty` into a vendored project. Optional features require their ordinary TeX distribution packages. LaTeX 2022-06-01 or newer, pdfLaTeX and LuaLaTeX are supported. csmath deliberately rejects XeLaTeX; optional zref-clever has its own newer kernel requirement.
 
-- Use with the `article` document class. Behavior is undefined on `book` or `report`.
-- Do not call `\maketitle` with a custom redefinition: the package replaces it with its own boxed header.
-- Do not load `amsthm` or `thmtools`. The package contains its own TeX Live 2026-compatible `ntheorem` setup.
-- Loads `babel` without language options. Choose document languages through the class options or load `babel` explicitly before `cslecture`.
-
-### Usage
+## Examples
 
 ```latex
-\usepackage{cslecture}
-```
-
-No options: the package is opinionated. Font, spacing, and theorem styles are fixed.
-
-### Minimal Example
-
-```latex
-\documentclass[12pt]{article}
-\usepackage{cslecture}
-
+\documentclass[11pt]{article}
+\usepackage[mode=single]{cslecture}
 \course{Computational Complexity}
-\lecturer{Dr.\ Agni Datta}
-
+\lecturer{Course Instructor}
 \begin{document}
 \maketitle
-
 \section{Circuit Complexity}
-
-\parhead{Definition} A circuit is a directed acyclic graph with labeled gates.
-
-\begin{theorem}[Cook–Levin]
-    \label{thm:cook-levin}
-    SAT is NP-complete.
-\end{theorem}
-
-\begin{proof}
-    Reduce every NP machine to a circuit and encode satisfiability.
-\end{proof}
+\begin{theorem}Every finite circuit has a finite description.\end{theorem}
+\begin{proof}List its gates and wires.\end{proof}
 \end{document}
 ```
 
-### API
-
-#### Metadata commands (call before `\begin{document}`)
-
-- `\course{text}`: course name printed in the title block header.
-- `\lecturer{text}`: lecturer name printed in the title block.
-- `\maketitle`: generates the custom boxed lecture header using the above metadata. Do not redefine this.
-
-#### Sectioning
-
-- `\parhead{text}`: bold inline heading with automatic period. Equivalent to a `\paragraph` but with consistent csLaTeX formatting. Use for named subsections within a proof, a definition breakdown, or a numbered case.
-- `\subparhead{text}`: small-caps inline heading with automatic period. Use for finer-grained structure below `\parhead`.
-
-#### Structural environments
-
-- `nestedbar`: environment that draws a left vertical rule for the full width of the content. Used to visually demarcate a sub-lemma, a nested proof, or a logical block within a long argument. Accepts an optional `[width]` argument (default: `\hsize`).
-
 ```latex
-\begin{nestedbar}
-    \begin{lemma}
-        Sub-lemma statement.
-    \end{lemma}
-    \begin{proof}
-        Sub-lemma proof.
-    \end{proof}
-\end{nestedbar}
+\documentclass[11pt,twoside]{book}
+\usepackage[mode=series,index,solution=proof]{cslecture}
+\coursetitle{Introduction to Algorithms}
+\author{Course Instructor}
+\begin{document}
+\maketitle
+\frontmatter\tableofcontents
+\mainmatter\chapter{Asymptotic Analysis}
+An \emphindex{invariant} is maintained.
+\begin{exercise}Verify the base case.\end{exercise}
+\begin{solution}The initial value satisfies the assertion.\end{solution}
+\backmatter\printindex
+\end{document}
 ```
 
-#### Theorem Environments
+Run `makeindex` explicitly when building an index; automatic external execution is disabled.
 
-All environments are declared directly with `ntheorem`, numbered per section, and registered with `cleveref`.
+```latex
+\documentclass[11pt]{article}
+\usepackage[mode=scribe,references=cleveref,solution=proof]{cslecture}
+\course{Cryptographic Protocol Theory}
+\lecturer{Course Instructor}
+\scribe{Student Name}
+\lecturenumber{7}
+\lecturetitle{Secure Computation}
+\lecturedate{October 2026}
+\lectureterm{Autumn 2026}
+\lectureinstitution{University}
+\begin{document}
+\maketitle
+\section{Preliminaries}
+\begin{definition}\label{state}A state is a finite vector.\end{definition}
+See \cref{state}.
+\end{document}
+```
 
-**Theorem-like:** `theorem`, `lemma`, `corollary`, `proposition`, `conjecture`, `fact`, `claim`
+## Options and defaults
 
-**Definition-like:** `definition`, `notation`, `protocol`, `problem`, `construction`
+Identical repeated selections are harmless; contradictory or unknown selections give errors. Select fonts, theorem settings, and optional presentation features explicitly.
 
-**Remark-like:** `remark`, `note`, `example`, `observation`, `openproblem`
+| Key                | Values                                                                                                          | Default                                                         |
+| ------------------ | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| `mode`             | `single`, `series`, `scribe`                                                                                    | `single`                                                        |
+| `font`             | `inherit`, `baskervaldx`, `concrete`, `garamond`, `gfsdidot`, `kpfonts`, `latinmodern`, `libertine`, `palatino` | `inherit`; inherit preloaded csmath when omitted                |
+| `font-policy`      | `compatible`, `strict`                                                                                          | csmath default `compatible`                                     |
+| `theorems`         | `oldschool`, `normal`, `fancy`, `none`, `inherit`                                                               | csmath default `oldschool`; inherit preloaded provider          |
+| `numberwithin`     | `section`, `chapter`, `none`                                                                                    | section for single/scribe, chapter for series                   |
+| `equations`        | `inherit`, `section`, `chapter`, `none`                                                                         | `inherit`                                                       |
+| `counters`         | `independent`, `shared`                                                                                         | `independent`                                                   |
+| `families`         | `standard`, `extended`                                                                                          | `standard`                                                      |
+| `solution`         | `theorem`, `proof`                                                                                              | `theorem`; numbered family requires extended families           |
+| `family-style`     | csthm group style keys                                                                                          | inherited csthm styles                                          |
+| `paragraphs`       | `runin`, `inherit`                                                                                              | csmath default `runin`                                          |
+| `title`            | `lecture`, `boxed`, `course`, `scribe`, `inherit`                                                               | lecture/scribe/course according to mode                         |
+| `chapters`         | `native`, `boxed`                                                                                               | `native`                                                        |
+| `headers`          | `inherit`, `course`                                                                                             | `inherit`                                                       |
+| `references`       | `none`, `hyperref`, `cleveref`, `zref`, `both`                                                                  | `none`; bare option means cleveref                              |
+| `scribe`           | Boolean                                                                                                         | false; selects a compact title unless another title is selected |
+| `draft`, `final`   | draft Boolean / bare final                                                                                      | final; draft enables annotations                                |
+| Feature keys below | Boolean, bare means true                                                                                        | false                                                           |
 
-**Proof-style:** `proof`, `proofsketch`, `proofidea`, `proofofclaim`
+Single/scribe use article mathematics; series uses book mathematics and requires chapters. Article/book/report, AMS and KOMA equivalents are accepted. A chapter class must use `mode=series`; add `scribe` or use `\makelecturetitle` for an included scribe lecture. Publisher classes, including LNCS and Beamer, are rejected. No publisher formatting is changed. Explicit `theorems=none` or `inherit` leaves theorem ownership disabled/inherited; do not request proof-style solutions or extended declarations without an owning provider.
 
-All accept an optional title: `\begin{lemma}[Key Lemma]`.
+## Optional features
 
-`\setqedsymbol{symbol}` changes the proof-end symbol, and `\settheoremendsymbol{symbol}` changes theorem-end markers where those markers are used. The capitalized forms remain available as compatibility aliases.
+| Feature                     | Provider and packages                                                                                                                                           |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Minimal                     | csmath mathematical core, csthm oldschool, amsmath/mathtools, symbols appropriate to the font, enumitem and xcolor with csthm's retained color-table facilities |
+| `table`                     | csmath: array, booktabs, tabularx, longtable, multirow, makecell, threeparttable, tabularray (and its libraries)                                                |
+| `caption`                   | csmath: caption, subcaption                                                                                                                                     |
+| `float`                     | csmath: floatrow                                                                                                                                                |
+| `graphics`                  | csmath: graphicx, adjustbox                                                                                                                                     |
+| `lists`                     | csmath: enumitem, paralist; compact list conventions                                                                                                            |
+| `boxes`                     | csmath: framed and `nestedbar`                                                                                                                                  |
+| `quotes`                    | csmath: csquotes, dirtytalk, soul, xspace, ulem                                                                                                                 |
+| `annotations`               | csmath: xcolor, marginnote, ulem                                                                                                                                |
+| `microtype`                 | csmath: microtype                                                                                                                                               |
+| `index`                     | csmath: imakeidx with `noautomatic`                                                                                                                             |
+| `layout`                    | lecture-specific geometry (one-inch margins), setspace                                                                                                          |
+| `diagrams`                  | tikz-cd and its TikZ dependencies                                                                                                                               |
+| `chapters=boxed`            | titlesec; chapter boxes use ordinary LaTeX framing                                                                                                              |
+| `headers=course`            | fancyhdr; page numbers, chapter and course running heads                                                                                                        |
+| enhanced references         | hyperref/nameref, plus cleveref and/or zref-clever as selected                                                                                                  |
+| `theorems=normal` / `fancy` | csthm: mdframed with TikZ                                                                                                                                       |
 
-### Caveats
+These are direct feature groups, not exhaustive transitive package lists. The minimal profile does not load indexing, professional tables, captions, geometry, titlesec, hyperref, TikZ or mdframed. csthm's retained xcolor contract includes array/colortbl; mathtools also brings graphicx during document initialization.
 
-- `cslecture` fixes spacing globally: it will override any `\setlength` or `\geometry` calls that come before it. Put custom geometry adjustments after `\usepackage{cslecture}`.
-- The `\maketitle` replacement requires `\course` and `\lecturer` to be set. If either is missing, the header renders with an empty field rather than erroring.
-- Designed for the `article` class. Running it on `book` or `report` will not error immediately but `\parhead` and theorem numbering will behave unexpectedly because `cslecture` assumes no `\chapter` counter.
+## Metadata and titles
 
-### License
+`\course{...}`, `\coursetitle{...}`, `\lecturer{...}`, `\scribe{...}`, `\lecturenumber{...}`, `\lecturetitle{...}`, `\lecturedate{...}`, `\lectureterm{...}` and `\lectureinstitution{...}` are stored once. Metadata assignments respect grouping. Course and lecture titles are distinct. `\title`, `\author` and `\date` retain their ordinary storage meanings; rendering does not clear them. Explicit lecture titles take precedence in compact/single headings. Compact/scribe headings use the supplied `\lecturedate`; ordinary lecture and course titles also render the native `\date`. Optional fields disappear when absent or empty.
 
-LaTeX Project Public License v1.3c.
+`\maketitle` uses the selected renderer. `title=inherit` preserves the class command. `boxed` is a nonbreaking local-width kernel box, without a graphical backend. `course` uses a native title page and leaves subsequent page numbering to the class. `\makelecturetitle` always prints a compact lecture heading, useful within a course:
 
-### Author
+```latex
+\chapter{Secure Computation}
+\begingroup
+\scribe{Student Name}\lecturenumber{7}\lecturetitle{Simulation}
+\makelecturetitle
+% Included scribe body; theorem numbering follows the book configuration.
+\endgroup
+```
 
-Agni Datta: [agni-datta/csLaTeX](https://github.com/agni-datta/csLaTeX)
+A two-sided course cover finishes its blank verso before front matter, without PDF page anchors on those cover pages. Title rendering never changes theorem counters or caller PDF metadata. Long material wraps, but a boxed title must fit on one page. `\maketitle` may be repeated intentionally; it prints the current metadata again.
+
+## Fonts and theorems
+
+The named fonts and engine restrictions are listed in the csmath guide. Under pdfLaTeX, `font=kpfonts` falls back to Latin Modern; `font-policy=strict` makes this an error.
+
+Theorem settings come from csthm. `solution=proof` selects an unnumbered proof with a local diamond and optional complete heading. It does not advance theorem counters and cannot be chosen after numbered solutions have been declared. `families=extended,solution=theorem` supplies the numbered solution family instead. `\SetQEDSymbol`, `\setqedsymbol`, `\SetTheoremEndSymbol`, `\settheoremendsymbol`, proof helpers and `\CsthmSetupFamily` retain their foundation contracts. Family typography changes are preamble-only.
+
+## References and algorithms
+
+Ordinary `\label`/`\ref` need no enhanced provider. Use `references=cleveref` for `\cref`/`\Cref`, or `references=zref` for native `\zlabel`/`\zcref`. `references=both` enables both independent stores. cslecture registers csthm's declared families with zref-clever through its public language/type interface. User type-specific zref names take precedence. Set custom cleveref names after package loading. Existing hyperref options, link colors and PDF metadata are retained.
+
+`\fullref{label}` uses an ordinary label, its enhanced type when available, and its stored name in one outer hyperlink. Without hyperref it prints the ordinary number. No zref facade is installed. The package opts into csthm’s heading-target correction so page-breaking statements link to their actual headings, including with cleveref. Internal anchor strings are independent of displayed numbering.
+
+Load algorithms and deferred proofs explicitly:
+
+```latex
+\usepackage[mode=single,references=both]{cslecture}
+\usepackage[notoc]{tcscrypto}
+\usepackage{codelines}
+\usepackage[appendix=true,commandref=cref]{csdeferproofs}
+\NewDeferredThm{theoremE}{theorem}
+```
+
+Use native `\zlabel` as well as `\label` when both stores are needed. codelines owns unique line identities. Print captured proofs with `\printDeferredProofs`, or select an explicit `unprinted=ignore` policy for deliberate omission. Lecture code never changes the proof queue or algorithm counters.
+
+## Single lecture entry point
+
+Course books use the ordinary `book` class with `mode=series`. Individual
+lectures and scribe notes use `article` with `mode=single` or `mode=scribe`.
+Book dimensions belong to the class; lecture features belong to cslecture.
+Replace `\documentclass{cslectureseries}` with `\documentclass{book}` and load cslecture with `mode=series`.
+
+```latex
+\documentclass[11pt,twoside,openright]{book}
+\usepackage[mode=series,font=palatino,layout,
+  chapters=boxed,headers=course,index,references=cleveref,
+  solution=proof]{cslecture}
+```
+
+Course covers, boxed chapters, running heads, indexes, and proof-style solutions
+remain ordinary options in this package. Theorem stars are unnumbered and do
+not advance counters. Use `counters=shared`, `families=extended`, and explicit
+numbering options when needed. The standard csmath fonts are available in all
+lecture modes.
+
+Csmath annotations retain `\added` and `\changed` text in final output, omit removed text and editorial notes, and retain ordinary `\annotation` footnotes.
+
+Compatible preloaded csmath is checked through its public configuration API. Omitted font/theorem/feature settings inherit the established configuration; explicit conflicts error. Generic csmath layout already owns titles/chapters: use class inheritance or load cslecture first with lecture layout. amsthm and competing theorem systems remain incompatible with csthm. Eudoxus remains incompatible in both orders.
+
+## License
+
+Author: Agni Datta. License: LPPL 1.3c.
