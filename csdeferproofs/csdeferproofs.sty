@@ -1,275 +1,588 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% csdeferproofs.sty — Deferred-proof infrastructure for csLaTeX packages
-%
-% Author  : Agni Datta
-% GitHub  : https://github.com/agni-datta/csLaTeX
-% License : LPPL v1.3c
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Csdeferproofs
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Author: Agni Datta — https://github.com/agni-datta/csLaTeX
+% License: LPPL v1.3c
 
-\NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{csdeferproofs}[2026/08/25 v2.0 Deferred-proof infrastructure for csLaTeX packages]
-
-\RequirePackage{l3keys2e}
-\makeatletter
+\NeedsTeXFormat{LaTeX2e}[2022/06/01]
+\ProvidesPackage{csdeferproofs}[2026/10/10 v3.0.2 Reliable deferred and inline proofs]
 \ExplSyntaxOn
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Options
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\bool_new:N \g_csdp_appendix_bool
-\tl_new:N   \g_csdp_commandref_tl
-\tl_new:N   \g_csdp_category_tl
-\tl_new:N   \g_csdp_proofname_tl
-\tl_new:N   \g_csdp_sketchname_tl
-\seq_new:N  \g_csdp_deferred_proofs_seq
-\int_new:N  \g_csdp_deferred_theorem_int
-\tl_new:N   \g_csdp_pending_label_tl
+\bool_new:N \g_csDeferAppendix_bool
+\tl_new:N \g_csDeferReference_tl
+\tl_new:N \g_csDeferProofName_tl
+\tl_new:N \g_csDeferSketchName_tl
+\tl_new:N \g_csDeferCategory_tl
+\tl_new:N \g_csDeferUnprinted_tl
+\prop_new:N \g_csDeferOptions_prop
 
-\tl_gset:Nn \g_csdp_commandref_tl { cref }
-\tl_gset:Nn \g_csdp_category_tl { defaultcategory }
-\tl_gset:Nn \g_csdp_proofname_tl { Proof }
-\tl_gset:Nn \g_csdp_sketchname_tl { Proof~Sketch }
+\msg_new:nnn {csdeferproofs} {unknown} {Unknown~option~'#1'.}
+\msg_new:nnn {csdeferproofs} {conflict} {Conflicting~values~for~option~'#1'.}
+\msg_new:nnn {csdeferproofs} {association}
+{Ambiguous~deferred~proof:~#1~pending~statements.~Use~deferproof~with~an~explicit~label.}
+\msg_new:nnn {csdeferproofs} {no-statement}
+{No~pending~statement.~Use~deferproof~with~a~label,~or~supply~an~explicit~proofE~heading.}
+\msg_new:nnn {csdeferproofs} {empty-label} {Empty~proof~label~is~not~allowed.}
+\msg_new:nnn {csdeferproofs} {duplicate} {Duplicate~#1~for~statement~'#2'.}
+\msg_new:nnn {csdeferproofs} {reference}
+{Reference~command~'#1'~is~unavailable.~Load~its~provider~or~select~commandref=ref.}
+\msg_new:nnn {csdeferproofs} {invalid-reference}
+{Invalid~commandref~'#1';~use~a~command~name~without~a~backslash.}
+\msg_new:nnn {csdeferproofs} {unprinted}
+{Unprinted~deferred~proofs:~#1.~Call~printDeferredProofs,~or~explicitly~select~unprinted=warning/ignore.}
+\msg_new:nnn {csdeferproofs} {empty} {No~new~deferred~proofs~to~print.}
+\msg_new:nnn {csdeferproofs} {recursive} {Cannot~print~deferred~proofs~while~printing~the~queue.}
+\msg_new:nnn {csdeferproofs} {environment} {Cannot~declare~wrapper~'#1':~#2.}
 
-\keys_define:nn { csdeferproofs }
+\cs_new_protected:Npn \csDeferSetOption #1#2#3
 {
-	appendix    .bool_gset:N = \g_csdp_appendix_bool ,
-	appendix    .initial:n   = true ,
-	commandref  .tl_gset:N   = \g_csdp_commandref_tl ,
-	commandref  .initial:n   = cref ,
-	category    .tl_gset:N   = \g_csdp_category_tl ,
-	category    .initial:n   = defaultcategory ,
-	proofname   .tl_gset:N   = \g_csdp_proofname_tl ,
-	proofname   .initial:n   = Proof ,
-	sketchname  .tl_gset:N   = \g_csdp_sketchname_tl ,
-	sketchname  .initial:n   = {Proof~Sketch} ,
-	unknown     .code:n      = { \PackageWarning{csdeferproofs}{Unknown~option~`#1'~ignored} } ,
-}
-\ProcessKeysOptions { csdeferproofs }
-\tl_if_blank:VT \g_csdp_commandref_tl
-{
-	\tl_gset:Nn \g_csdp_commandref_tl { cref }
-}
-\tl_if_blank:VT \g_csdp_category_tl
-{
-	\tl_gset:Nn \g_csdp_category_tl { defaultcategory }
-}
-\tl_if_blank:VT \g_csdp_proofname_tl
-{
-	\tl_gset:Nn \g_csdp_proofname_tl { Proof }
-}
-\tl_if_blank:VT \g_csdp_sketchname_tl
-{
-	\tl_gset:Nn \g_csdp_sketchname_tl { Proof~Sketch }
+    \prop_get:NnNTF \g_csDeferOptions_prop {#1} \l_tmpa_tl
+    {
+        \tl_if_eq:NnF \l_tmpa_tl {#2}
+        {
+            \msg_error:nnn {csdeferproofs} {conflict} {#1}
+        }
+    }
+    {
+        \prop_gput:Nnn \g_csDeferOptions_prop {#1} {#2}
+        #3
+    }
 }
 
-\tl_set_eq:cN { csdp@commandref } \g_csdp_commandref_tl
-\tl_set_eq:cN { csdp@category   } \g_csdp_category_tl
-\tl_set_eq:cN { csdp@proofname  } \g_csdp_proofname_tl
-\tl_set_eq:cN { csdp@sketchname } \g_csdp_sketchname_tl
+\cs_new_protected:Npn \csDeferTextOption #1#2#3#4
+{
+    \tl_if_blank:nTF {#3}
+    {
+        \csDeferSetOption{#1}{#4}
+        {
+            \tl_gset:Nn #2 {#4}
+        }
+    }
+    {
+        \csDeferSetOption{#1}{#3}
+        {
+            \tl_gset:Nn #2 {#3}
+        }
+    }
+}
 
-\cs_new_protected:Npn \csdp_store_deferred_proof:nnn #1#2#3
+\keys_define:nn {csdeferproofs}
 {
-	\seq_gput_right:Nn \g_csdp_deferred_proofs_seq
-	{ \csdp_print_deferred_proof:nnnn {#1}{#2}{#3} }
+    appendix .choice:,
+    appendix/true .code:n =
+        {
+            \csDeferSetOption{appendix}{true}
+            {
+                \bool_gset_true:N \g_csDeferAppendix_bool
+            }
+        },
+    appendix/false .code:n =
+        {
+            \csDeferSetOption{appendix}{false}
+            {
+                \bool_gset_false:N \g_csDeferAppendix_bool
+            }
+        },
+    appendix .default:n = true,
+    commandref .code:n =
+        {
+            \csDeferTextOption {commandref} \g_csDeferReference_tl {#1} {cref}
+        },
+    proofname .code:n =
+        {
+            \csDeferTextOption {proofname} \g_csDeferProofName_tl {#1} {Proof}
+        },
+    sketchname .code:n =
+        {
+            \csDeferTextOption {sketchname} \g_csDeferSketchName_tl {#1} {Proof~Sketch}
+        },
+    category .code:n =
+        {
+            \csDeferTextOption {category} \g_csDeferCategory_tl {#1} {defaultcategory}
+        },
+    unprinted .choices:nn =
+        {
+            error,
+            warning,
+            ignore
+        }
+        {
+            \exp_args:NnV \csDeferSetOption {unprinted} \l_keys_choice_tl
+            {
+                \tl_gset_eq:NN \g_csDeferUnprinted_tl \l_keys_choice_tl
+            }
+        },
+    unknown .code:n =
+        {
+            \msg_error:nnx {csdeferproofs} {unknown} {\l_keys_key_str}
+        }
 }
-\cs_generate_variant:Nn \csdp_store_deferred_proof:nnn { Vnn }
-\cs_new_protected:Npn \csdp_mark_deferred_theorem:
-{
-	\int_gincr:N \g_csdp_deferred_theorem_int
-	\tl_gset:Nx \g_csdp_pending_label_tl
-	{ csdp:deferred:\int_use:N \g_csdp_deferred_theorem_int }
-	\exp_args:NV \label \g_csdp_pending_label_tl
-}
-\cs_new_protected:Npn \csdp_store_pending_deferred_proof:nn #1#2
-{
-	\tl_if_blank:VTF \g_csdp_pending_label_tl
-	{
-		\tl_if_blank:nTF {#1}
-		{ \csdp_store_deferred_proof:nnn { } { \csdp@proofname } {#2} }
-		{ \csdp_store_deferred_proof:nnn { } {#1} {#2} }
-	}
-	{ \csdp_store_deferred_proof:Vnn \g_csdp_pending_label_tl {#1} {#2} }
-	\tl_gclear:N \g_csdp_pending_label_tl
-}
-\cs_new_protected:Npn \csdp_store_deferred_sketch:nn #1#2
-{
-	\tl_if_blank:nTF {#1}
-	{ \csdp_store_deferred_proof:nnn { } { \csdp@sketchname } {#2} }
-	{
-		\csdp_store_deferred_proof:nnn {#1}
-		{ \csdp@sketchname\space of~\csname\csdp@commandref\endcsname{#1} }
-		{#2}
-	}
-}
-\cs_generate_variant:Nn \csdp_store_deferred_sketch:nn { Vn }
-\cs_new_protected:Npn \csdp_store_pending_deferred_sketch:n #1
-{
-	\csdp_store_deferred_sketch:Vn \g_csdp_pending_label_tl {#1}
-	\tl_gclear:N \g_csdp_pending_label_tl
-}
-\cs_new_protected:Npn \csdp_clear_pending_deferred_theorem:
-{
-	\tl_gclear:N \g_csdp_pending_label_tl
-}
-\cs_new_protected:Npn \csdp_print_deferred_proof:nnnn #1#2#3#4
-{
-	\tl_if_blank:nTF {#2}
-	{
-		\tl_if_blank:nTF {#1}
-		{ \parhead{\normalfont\itshape #4} }
-		{ \parhead{\normalfont\itshape #4~\exp_args:Nv \use:c { csdp@commandref } {#1}} }
-	}
-	{ \parhead{\normalfont\itshape #2} }
-	#3\unskip\nobreak\hfill\csdp_end_symbol:\par
-}
-\cs_new:Npn \csdp_end_symbol:
-{
-	\cs_if_exist:NTF \proofSymbol { \proofSymbol } { \qedsymbol }
-}
-\cs_new_protected:Npn \csdp_print_deferred_proofs:n #1
-{
-	\seq_map_inline:Nn \g_csdp_deferred_proofs_seq { ##1 {#1} }
-}
-\cs_new_eq:NN \csdpstoredeferredproof \csdp_store_deferred_proof:nnn
-\cs_new_eq:NN \csdpprintdeferredproofs \csdp_print_deferred_proofs:n
-\cs_new_eq:NN \csdpmarkdeferredtheorem \csdp_mark_deferred_theorem:
-\cs_new_eq:NN \csdpstorependingdeferredproof \csdp_store_pending_deferred_proof:nn
-\cs_new_eq:NN \csdpstorependingdeferredsketch \csdp_store_pending_deferred_sketch:n
-\cs_new_eq:NN \csdpclearpendingdeferredtheorem \csdp_clear_pending_deferred_theorem:
 
-\newif\ifcsdp@appendix
-\bool_if:NTF \g_csdp_appendix_bool { \csdp@appendixtrue } { \csdp@appendixfalse }
+\clist_map_inline:nn
+{
+    commandref,
+    proofname,
+    sketchname,
+    category,
+    unprinted
+}
+{
+    \keys_define:nn {csdeferproofs}
+    {
+        #1 .value_required:n = true
+    }
+}
+
+\bool_gset_true:N \g_csDeferAppendix_bool
+\tl_gset:Nn \g_csDeferReference_tl {cref}
+\tl_gset:Nn \g_csDeferProofName_tl {Proof}
+\tl_gset:Nn \g_csDeferSketchName_tl {Proof~Sketch}
+\tl_gset:Nn \g_csDeferCategory_tl {defaultcategory}
+\tl_gset:Nn \g_csDeferUnprinted_tl {error}
+\ProcessKeyOptions[csdeferproofs]
+
+\exp_args:NnV \regex_match:nnF {\A[A-Za-z@]+\Z} \g_csDeferReference_tl
+{
+    \msg_error:nnx {csdeferproofs} {invalid-reference} {\g_csDeferReference_tl}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Statement Tracking
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\seq_new:N \g_csDeferPending_seq
+\seq_new:N \g_csDeferProofs_seq
+\prop_new:N \g_csDeferLabels_prop
+\prop_new:N \g_csDeferAssigned_prop
+\prop_new:N \g_csDeferWrappers_prop
+\int_new:N \g_csDeferStatement_int
+\int_new:N \l_csDeferWrapperDepth_int
+\tl_new:N \l_csDeferStatement_tl
+\tl_new:N \l_csDeferStatementValue_tl
+\tl_new:N \l_csDeferStatementCounter_tl
+\tl_new:N \l_csDeferLabel_tl
+\tl_new:N \l_csDeferIdentity_tl
+\tl_new:N \l_csDeferKey_tl
+\bool_new:N \g_csDeferPrinting_bool
+
+\cs_new_protected:Npn \csDeferRememberLabel #1
+{
+    \tl_if_eq:NNT \@currentlabel \l_csDeferStatementValue_tl
+    {
+        \tl_if_eq:NNT \@currentcounter \l_csDeferStatementCounter_tl
+        {
+            \tl_set:Nx \l_csDeferLabel_tl {#1}
+            \prop_gput:NVV \g_csDeferLabels_prop \l_csDeferLabel_tl \l_csDeferStatement_tl
+        }
+    }
+}
+
+\cs_new_protected:Npn \csDeferMarkStatement
+{
+    \int_gincr:N \g_csDeferStatement_int
+    \tl_set:Nx \l_csDeferStatement_tl
+    {
+        csdp:deferred:\int_use:N \g_csDeferStatement_int
+    }
+    \tl_set_eq:NN \l_csDeferStatementValue_tl \@currentlabel
+    \tl_set_eq:NN \l_csDeferStatementCounter_tl \@currentcounter
+    \seq_gput_right:NV \g_csDeferPending_seq \l_csDeferStatement_tl
+    \prop_gput:NVV \g_csDeferLabels_prop \l_csDeferStatement_tl \l_csDeferStatement_tl
+    \int_compare:nNnT {\l_csDeferWrapperDepth_int} = {1}
+    {
+        \NewCommandCopy \csDeferOriginalLabel \label
+        \RenewDocumentCommand \label {o m}
+        {
+            \csDeferRememberLabel{##2}
+            \IfNoValueTF{##1}
+            {
+                \csDeferOriginalLabel{##2}
+            }
+            {
+                \csDeferOriginalLabel[##1]{##2}
+            }
+        }
+        \cs_if_exist:NT \zlabel
+        {
+            \NewCommandCopy \csDeferOriginalZlabel \zlabel
+            \RenewDocumentCommand \zlabel {m}
+            {
+                \csDeferRememberLabel{##1}
+                \csDeferOriginalZlabel{##1}
+            }
+        }
+    }
+    \group_begin:
+    \@ifpackageloaded{zref-clever}
+    {
+        \zcsetup{labelhook=false}
+    }
+    {}
+    \exp_args:NV \csDeferOriginalLabel \l_csDeferStatement_tl
+    \cs_if_exist:NT \csDeferOriginalZlabel
+    {
+        \exp_args:NV \csDeferOriginalZlabel \l_csDeferStatement_tl
+    }
+    \group_end:
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Statement Wrappers
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\cs_new_protected:Npn \csDeferBeginStatement #1#2
+{
+    \int_incr:N \l_csDeferWrapperDepth_int
+    \cs_if_exist:cF {#1}
+    {
+        \msg_error:nnnn {csdeferproofs} {environment} {#1} {base~environment~is~undefined}
+    }
+    \tl_if_blank:nTF {#2}
+    {
+        \begin{#1}
+    }
+    {
+        \begin{#1}[#2]
+    }
+    \bool_if:NT \g_csDeferAppendix_bool
+    {
+        \csDeferMarkStatement
+    }
+}
+
+\cs_new_protected:Npn \csDeferDeclareWrapper #1#2
+{
+    \prop_get:NnNTF \g_csDeferWrappers_prop {#1} \l_tmpa_tl
+    {
+        \tl_if_eq:NnF \l_tmpa_tl {#2}
+        {
+            \msg_error:nnnn {csdeferproofs} {environment} {#1} {different~base~already~selected}
+        }
+    }
+    {
+        \cs_if_exist:cTF {#1}
+        {
+            \msg_error:nnnn {csdeferproofs} {environment} {#1} {environment~already~exists}
+        }
+        {
+            \prop_gput:Nnn \g_csDeferWrappers_prop {#1} {#2}
+            \NewDocumentEnvironment{#1}{O{}}
+            {
+                \csDeferBeginStatement{#2}{##1}
+            }
+            {
+                \end{#2}
+            }
+        }
+    }
+}
+
+\NewDocumentCommand \NewDeferredThm {O{} m m}
+{
+    \csDeferDeclareWrapper{#2}{#3}
+}
+
+\NewDocumentCommand \NewDeferredThmAlias {m m}
+{
+    \csDeferDeclareWrapper{#1}{#2}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Proof Collection
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\cs_new_protected:Npn \csDeferCollectProof #1#2#3#4
+{
+    \tl_set:Nx \l_csDeferLabel_tl {#2}
+    \tl_clear:N \l_csDeferIdentity_tl
+    \tl_if_blank:VF \l_csDeferLabel_tl
+    {
+        \prop_get:NVNTF \g_csDeferLabels_prop \l_csDeferLabel_tl \l_csDeferIdentity_tl
+        {
+            \exp_args:NNV \seq_gremove_all:Nn \g_csDeferPending_seq \l_csDeferIdentity_tl
+        }
+        {
+            \tl_set_eq:NN \l_csDeferIdentity_tl \l_csDeferLabel_tl
+        }
+        \tl_set:Nx \l_csDeferKey_tl
+        {
+            #1/\exp_not:V \l_csDeferIdentity_tl
+        }
+        \prop_if_in:NVTF \g_csDeferAssigned_prop \l_csDeferKey_tl
+        {
+            \msg_error:nnnn {csdeferproofs} {duplicate} {#1} {#2}
+        }
+        {
+            \prop_gput:NVn \g_csDeferAssigned_prop \l_csDeferKey_tl {assigned}
+        }
+    }
+    \seq_gput_right:Nx \g_csDeferProofs_seq
+    {
+        \exp_not:N \csDeferPrintEntry {#1}
+        {
+            \exp_not:V \l_csDeferLabel_tl
+        }
+        {
+            \exp_not:n {#3}
+        }
+        {
+            \exp_not:n {#4}
+        }
+    }
+}
+
+\cs_new_protected:Npn \csDeferCollectImplicit #1#2#3
+{
+    \int_compare:nNnTF {\seq_count:N \g_csDeferPending_seq} > {1}
+        {
+            \msg_error:nnx {csdeferproofs} {association} {\seq_count:N \g_csDeferPending_seq}
+        }
+        {
+            \seq_if_empty:NTF \g_csDeferPending_seq
+            {
+                \tl_if_blank:nTF {#2}
+                {
+                    \msg_error:nn {csdeferproofs} {no-statement}
+                }
+                {
+                    \csDeferCollectProof{#1}{}{#2}{#3}
+                }
+            }
+            {
+                \seq_get_left:NN \g_csDeferPending_seq \l_csDeferLabel_tl
+                \exp_args:NnV \csDeferCollectProof {#1} \l_csDeferLabel_tl {#2} {#3}
+            }
+        }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Proof Rendering
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\cs_new_protected:Npn \csDeferRender #1#2
+{
+    \cs_if_exist:NTF \proof
+    {
+        \begin{proof}[#1]
+            #2
+        \end{proof}
+    }
+    {
+        \cs_if_exist:NTF \parhead
+        {
+            \parhead{\normalfont\itshape #1}
+        }
+        {
+            \par
+            \smallskip
+            \noindent
+            {\itshape #1.}
+            \enspace
+        }
+        #2
+        \unskip
+        \nobreak
+        \hfill
+        \cs_if_exist:NTF \proofSymbol
+        {
+            \proofSymbol
+        }
+        {
+            \cs_if_exist:NTF \qedsymbol
+            {
+                \qedsymbol
+            }
+            {
+                \hbox
+                {
+                    \vrule
+                    \vbox
+                    {
+                        \hrule
+                        \kern4pt
+                        \hbox{\kern4pt}
+                        \hrule
+                    }
+                    \vrule
+                }
+            }
+        }
+        \par
+    }
+}
+
+\tl_new:N \l_csDeferPrefix_tl
+
+\cs_new_protected:Npn \csDeferReference #1
+{
+    \cs_if_exist:cTF {\g_csDeferReference_tl}
+    {
+        \use:c {\g_csDeferReference_tl} {#1}
+    }
+    {
+        \msg_error:nnx {csdeferproofs} {reference} {\g_csDeferReference_tl}
+    }
+}
+
+\cs_new_protected:Npn \csDeferPrintEntry #1#2#3#4
+{
+    \tl_if_blank:nTF {#3}
+    {
+        \csDeferRender
+        {
+            \str_if_eq:nnTF {#1} {sketch}
+            {
+                \g_csDeferSketchName_tl\space of
+            }
+            {
+                \l_csDeferPrefix_tl
+            }
+            \space
+            \csDeferReference{#2}
+        }
+        {#4}
+    }
+    {
+        \csDeferRender{#3}{#4}
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Proof Environments
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\cs_new_protected:Npn \csDeferHandleProof #1#2#3#4#5
+{
+    \bool_if:NTF \g_csDeferAppendix_bool
+    {
+        \str_if_eq:nnTF {#1} {implicit}
+        {
+            \csDeferCollectImplicit{#2}{#4}{#5}
+        }
+        {
+            \tl_set:Nx \l_csDeferLabel_tl {#3}
+            \tl_if_blank:VTF \l_csDeferLabel_tl
+            {
+                \msg_error:nn {csdeferproofs} {empty-label}
+            }
+            {
+                \exp_args:NnV \csDeferCollectProof {#2} \l_csDeferLabel_tl {#4} {#5}
+            }
+        }
+    }
+    {
+        \tl_if_blank:nTF {#4}
+        {
+            \csDeferRender
+            {
+                \str_if_eq:nnTF {#2} {sketch}
+                {
+                    \g_csDeferSketchName_tl
+                }
+                {
+                    \g_csDeferProofName_tl
+                }
+            }
+            {#5}
+        }
+        {
+            \csDeferRender{#4}{#5}
+        }
+    }
+}
+
+\NewDocumentEnvironment{proofE}{O{} +b}
+{
+    \csDeferHandleProof{implicit}{proof}{}{#1}{#2}
+}
+{}
+
+\NewDocumentEnvironment{proofEsketch}{O{} +b}
+{
+    \csDeferHandleProof{implicit}{sketch}{}{#1}{#2}
+}
+{}
+
+\NewDocumentEnvironment{deferproof}{m O{} +b}
+{
+    \csDeferHandleProof{explicit}{proof}{#1}{#2}{#3}
+}
+{}
+
+\NewDocumentEnvironment{deferproofsketch}{m O{} +b}
+{
+    \csDeferHandleProof{explicit}{sketch}{#1}{#2}{#3}
+}
+{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Printing
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\seq_new:N \l_csDeferPrinting_seq
+
+\cs_new_protected:Npn \csDeferPrintProofs #1
+{
+    \bool_if:NT \g_csDeferAppendix_bool
+    {
+        \bool_if:NTF \g_csDeferPrinting_bool
+        {
+            \msg_error:nn {csdeferproofs} {recursive}
+        }
+        {
+            \seq_if_empty:NTF \g_csDeferProofs_seq
+            {
+                \msg_warning:nn {csdeferproofs} {empty}
+            }
+            {
+                \group_begin:
+                \bool_gset_true:N \g_csDeferPrinting_bool
+                \tl_set:Nn \l_csDeferPrefix_tl {#1}
+                \seq_set_eq:NN \l_csDeferPrinting_seq \g_csDeferProofs_seq
+                \seq_gclear:N \g_csDeferProofs_seq
+                \seq_map_inline:Nn \l_csDeferPrinting_seq {##1}
+                \bool_gset_false:N \g_csDeferPrinting_bool
+                \group_end:
+            }
+        }
+    }
+}
+
+\NewDocumentCommand \printDeferredProofs {O{\g_csDeferProofName_tl\space of}}
+{
+    \csDeferPrintProofs{#1}
+}
+
+\NewDocumentCommand \IfDeferredProofsActive {m m}
+{
+    \bool_if:NTF \g_csDeferAppendix_bool {#1} {#2}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Unprinted Proofs
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\AddToHook{enddocument}[csdeferproofs]
+{
+    \seq_if_empty:NF \g_csDeferProofs_seq
+    {
+        \str_case:Vn \g_csDeferUnprinted_tl
+        {
+            {error}
+            {
+                \msg_error:nnx {csdeferproofs} {unprinted} {\seq_count:N \g_csDeferProofs_seq}
+            }
+            {warning}
+            {
+                \msg_warning:nnx {csdeferproofs} {unprinted} {\seq_count:N \g_csDeferProofs_seq}
+            }
+        }
+    }
+}
 
 \ExplSyntaxOff
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Internal Helpers
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\NewDocumentCommand{\csdp@ifblank}{m m m}{%
-	\if\relax\detokenize{#1}\relax
-		#2%
-	\else
-		#3%
-	\fi
-}
-
-\NewDocumentCommand{\csdp@beginenv}{m m}{%
-	\csdp@ifblank{#2}{%
-		\begin{#1}%
-	}{%
-		\begin{#1}[#2]%
-	}%
-}
-
-\NewDocumentCommand{\csdp@beginproof}{m}{%
-	\csdp@beginenv{proof}{#1}%
-}
-
-\NewDocumentCommand{\csdp@beginproofsketch}{m}{%
-	\csdp@ifblank{#1}{%
-		\begin{proof}[\csdp@sketchname]%
-	}{%
-		\begin{proof}[#1]%
-	}%
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Appendix Mode
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\ifcsdp@appendix
-
-	\NewDocumentCommand{\NewDeferredThm}{O{} m m}{%
-		\NewDocumentEnvironment{#2}{O{} +b}{%
-			\csdp@beginenv{#3}{##1}%
-			\csdpmarkdeferredtheorem
-			##2%
-			\end{#3}%
-		}{}%
-	}
-
-	\NewDocumentEnvironment{proofE}{O{} +b}{%
-		\csdpstorependingdeferredproof{#1}{#2}%
-	}{}
-
-	\NewDocumentEnvironment{proofEsketch}{O{} +b}{%
-		\csdp@ifblank{#1}
-		{\csdpstorependingdeferredsketch{#2}}
-		{\csdpstorependingdeferredproof{#1}{#2}}%
-	}{}
-
-	\NewDocumentEnvironment{deferproof}{m O{} +b}{%
-		\csdpstoredeferredproof{#1}{#2}{#3}%
-		\csdpclearpendingdeferredtheorem
-	}{}
-
-	\NewDocumentEnvironment{deferproofsketch}{m O{} +b}{%
-		\csdp@ifblank{#2}
-		{\csdpstoredeferredproof{#1}{\csdp@sketchname\space of~\csname\csdp@commandref\endcsname{#1}}{#3}}
-		{\csdpstoredeferredproof{#1}{#2}{#3}}%
-		\csdpclearpendingdeferredtheorem
-	}{}
-
-	\NewDocumentCommand{\printDeferredProofs}{O{\csdp@proofname\space of}}{%
-		\csdpprintdeferredproofs{#1}%
-	}
-
-\else
-
-	\NewDocumentCommand{\NewDeferredThm}{O{} m m}{}
-
-	\NewDocumentEnvironment{proofE}{O{}}{%
-		\csdp@beginproof{#1}%
-	}{%
-		\end{proof}%
-	}
-
-	\NewDocumentEnvironment{proofEsketch}{O{}}{%
-		\csdp@beginproofsketch{#1}%
-	}{%
-		\end{proof}%
-	}
-
-	\NewDocumentEnvironment{deferproof}{m O{}}{%
-		\csdp@beginproof{#2}%
-	}{%
-		\end{proof}%
-	}
-
-	\NewDocumentEnvironment{deferproofsketch}{m O{}}{%
-		\csdp@beginproofsketch{#2}%
-	}{%
-		\end{proof}%
-	}
-
-	\NewDocumentCommand{\printDeferredProofs}{O{}}{}
-
-\fi
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Public Compatibility Interfaces
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\NewDocumentCommand{\NewDeferredThmAlias}{m m}{%
-	\ifcsdp@appendix
-	\else
-		\NewDocumentEnvironment{#1}{O{}}{%
-			\csdp@beginenv{#2}{##1}%
-		}{%
-			\end{#2}%
-		}%
-	\fi
-}
-
-\NewDocumentCommand{\IfDeferredProofsActive}{m m}{%
-	\ifcsdp@appendix
-		#1%
-	\else
-		#2%
-	\fi
-}
-
-\makeatother
 \endinput
