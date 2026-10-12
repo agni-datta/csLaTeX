@@ -8,21 +8,5 @@ This work has the LPPL maintenance status `maintained'.
 
 The Current Maintainer of this work is Agni Datta <agnidatta.org@gmail.com>.
 
-This work consists of the files:
-  - csamsmath/csamsmath.sty
-  - csbook/csbook.sty
-  - csdirty/csdirty.sty
-  - cslecture/cslecture.sty
-  - csletter/csletter.sty
-  - cspresentations/cspresentation.sty
-  - csresume/csresume.sty
-  - csthm/csthm.sty
-  - csthm/csthm-example.tex
-  - csthm/sample-fancy.tex
-  - csthm/sample-normal.tex
-  - csthm/sample-oldschool.tex
-  - cstufte/cstufte.sty
-  - cswhitepaper/cswhitepaper.sty
-  - llncscrypto/llncscrypto.sty
-  - tcscrypto/tcscrypto.sty
-  - README.md
+This work consists of the package sources, accompanying
+documentation and examples, and repository scripts.

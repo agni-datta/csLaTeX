@@ -36,3 +36,12 @@
 *.swo
 *.swp
 *~
+# Python caches and formatter temporaries
+__pycache__/
+*.py[cod]
+*.bak
+*.bak[0-9]*
+__latexindent_temp_*
+
+# Generated release archives
+csthm/release/*-candidate.zip
