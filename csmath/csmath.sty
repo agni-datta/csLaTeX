@@ -1,0 +1,3315 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Csmath
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Author: Agni Datta | https://github.com/agni-datta/csLaTeX
+% License: LaTeX Project Public License v1.3c
+\NeedsTeXFormat{LaTeX2e}[2022/06/01]
+\ProvidesPackage{csmath}[2026/10/10 v1.2.1 Mathematical foundation and document utilities]
+\makeatletter
+\ExplSyntaxOn
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Options
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\prop_new:N \g_csMathChoices_prop
+\msg_new:nnn {csmath} {conflict}
+{Contradictory~#1~selections:~#2.~Choose~one~value.}
+\msg_new:nnn {csmath} {incompatible}
+{csmath~cannot~be~loaded~with~#1.~Remove~the~overlapping~package~and~configure~csmath~directly.}
+\msg_new:nnn {csmath} {feature}
+{#1~requires~the~csmath~#2~option.}
+\cs_new_protected:Npn \csMathSelect #1#2
+{
+    \prop_get:NnNTF \g_csMathChoices_prop {#1} \l_tmpa_tl
+    {
+        \tl_if_eq:NnF \l_tmpa_tl {#2}
+        {
+            \msg_error:nnxx {csmath} {conflict} {#1}
+            {
+                '\l_tmpa_tl '~and~'#2'
+            }
+        }
+    }
+    {
+        \prop_gput:Nnn \g_csMathChoices_prop {#1} {#2}
+    }
+}
+
+\cs_new_protected:Npn \csMathDefault #1#2
+{
+    \prop_if_in:NnF \g_csMathChoices_prop {#1}
+    {
+        \prop_gput:Nnn \g_csMathChoices_prop {#1} {#2}
+    }
+}
+\keys_define:nn {csmath}
+{
+    mode .choices:nn =
+        {
+            article,
+            manuscript,
+            book,
+            venue
+        }
+        {
+            \exp_args:NnV \csMathSelect {mode} \l_keys_choice_tl
+        },
+    mode .value_required:n = true,
+    font .choices:nn =
+        {
+            inherit,
+            baskervaldx,
+            concrete,
+            garamond,
+            gfsdidot,
+            kpfonts,
+            latinmodern,
+            libertine,
+            palatino
+        }
+        {
+            \exp_args:NnV \csMathSelect {font} \l_keys_choice_tl
+        },
+    font .value_required:n = true,
+    font-policy .choices:nn =
+        {
+            compatible,
+            strict
+        }
+        {
+            \exp_args:NnV \csMathSelect {font-policy} \l_keys_choice_tl
+        },
+    font-policy .value_required:n = true,
+    theorems .choices:nn =
+        {
+            normal,
+            fancy,
+            oldschool,
+            none,
+            inherit
+        }
+        {
+            \exp_args:NnV \csMathSelect {theorems} \l_keys_choice_tl
+        },
+    theorems .value_required:n = true,
+    numberwithin .choices:nn =
+        {
+            section,
+            chapter,
+            none
+        }
+        {
+            \exp_args:NnV \csMathSelect {numberwithin} \l_keys_choice_tl
+        },
+    numberwithin .value_required:n = true,
+    equations .choices:nn =
+        {
+            inherit,
+            section,
+            chapter,
+            none
+        }
+        {
+            \exp_args:NnV \csMathSelect {equations} \l_keys_choice_tl
+        },
+    equations .value_required:n = true,
+    paragraphs .choices:nn =
+        {
+            runin,
+            inherit
+        }
+        {
+            \exp_args:NnV \csMathSelect {paragraphs} \l_keys_choice_tl
+        },
+    paragraphs .value_required:n = true,
+    cleveref .choices:nn =
+        {
+            auto,
+            true,
+            false
+        }
+        {
+            \exp_args:NnV \csMathSelect {cleveref} \l_keys_choice_tl
+        },
+    cleveref .default:n = true,
+    draft .choices:nn =
+        {
+            true,
+            false
+        }
+        {
+            \exp_args:NnV \csMathSelect {draft} \l_keys_choice_tl
+        },
+    draft .default:n = true,
+    final .code:n =
+        {
+            \csMathSelect {draft} {false}
+        },
+    final .value_forbidden:n = true,
+}
+\clist_map_inline:nn
+{
+    baskervaldx,
+    concrete,
+    garamond,
+    gfsdidot,
+    kpfonts,
+    latinmodern,
+    libertine,
+    palatino
+}
+{
+    \keys_define:nn {csmath}
+    {
+        #1 .code:n =
+            {
+                \csMathSelect {font} {#1}
+            },
+        #1 .value_forbidden:n = true
+    }
+}
+\clist_map_inline:nn
+{
+    table,
+    caption,
+    float,
+    graphics,
+    lists,
+    references,
+    layout,
+    microtype,
+    index,
+    annotations,
+    boxes,
+    quotes,
+    lastpage,
+    sanshdr
+}
+{
+    \keys_define:nn {csmath}
+    {
+        #1 .choices:nn =
+            {
+                true,
+                false
+            }
+            {
+                \exp_args:NnV \csMathSelect {#1} \l_keys_choice_tl
+            },
+        #1 .default:n = true
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Legacy Theorem Profiles
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\keys_define:nn {csmath}
+{
+    compatibility .choices:nn =
+        {
+            none,
+            legacy-article,
+            legacy-book
+        }
+        {
+            \exp_args:NnV \csMathSelect {compatibility} \l_keys_choice_tl
+            \str_case:Vn \l_keys_choice_tl
+            {
+                {legacy-article}
+                {
+                    \csMathConfigureLegacyTheorems {article} {oldschool}
+                }
+                {legacy-book}
+                {
+                    \csMathConfigureLegacyTheorems {book} {normal}
+                }
+            }
+        },
+    compatibility .value_required:n = true,
+    counters .choices:nn =
+        {
+            independent,
+            shared
+        }
+        {
+            \exp_args:NnV \csMathSelect {counters} \l_keys_choice_tl
+        },
+    counters .value_required:n = true,
+    families .choices:nn =
+        {
+            standard,
+            extended
+        }
+        {
+            \exp_args:NnV \csMathSelect {families} \l_keys_choice_tl
+        },
+    families .value_required:n = true,
+    starred .choices:nn =
+        {
+            unnumbered,
+            legacy,
+        }
+        {
+            \exp_args:NnV \csMathSelect {starred} \l_keys_choice_tl
+        },
+    starred .value_required:n = true,
+    appearance .choices:nn =
+        {
+            modern,
+            legacy-article,
+            legacy-book,
+        }
+        {
+            \exp_args:NnV \csMathSelect {appearance} \l_keys_choice_tl
+        },
+    appearance .value_required:n = true,
+    solution .choices:nn =
+        {
+            theorem,
+            proof
+        }
+        {
+            \exp_args:NnV \csMathSelect {solution} \l_keys_choice_tl
+        },
+    solution .value_required:n = true,
+    family-style .code:n =
+        {
+            \csMathSelect {family-style} {#1}
+        },
+    family-style .value_required:n = true,
+}
+
+\cs_new_protected:Npn \csMathConfigureLegacyTheorems #1#2
+{
+    \csMathSelect {mode} {#1}
+    \csMathSelect {theorems} {#2}
+    \csMathSelect {numberwithin} {section}
+    \csMathSelect {counters} {shared}
+    \csMathSelect {families} {extended}
+    \csMathSelect {starred} {legacy}
+    \csMathSelect {appearance} {legacy-#1}
+}
+\ProcessKeyOptions [csmath]
+\prop_new:N \g_csMathExplicit_prop
+\prop_gset_eq:NN \g_csMathExplicit_prop \g_csMathChoices_prop
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Package Compatibility
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clist_map_inline:nn
+{
+    csamsmath,
+    csbook,
+    eudoxus
+}
+{
+    \@ifpackageloaded {#1}
+    {
+        \msg_error:nnn {csmath} {incompatible} {#1}
+    }
+    {
+        \AddToHook {package/#1/before} [csmath]
+        {
+            \msg_error:nnn {csmath} {incompatible} {#1}
+        }
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Configuration Queries
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\NewExpandableDocumentCommand \CsmathConfiguration {m}
+{
+    \prop_item:Nn \g_csMathChoices_prop {#1}
+}
+
+\NewDocumentCommand \CsmathCheckConfiguration {m}
+{
+    \keys_set:nn {csmath} {#1}
+}
+\@onlypreamble \CsmathCheckConfiguration
+\sys_if_engine_xetex:T
+{
+    \PackageError {csmath} {XeLaTeX~is~not~supported} {Use~pdfLaTeX~or~LuaLaTeX;~no~unverified~font~branch~is~selected.}
+}
+\csMathDefault {compatibility} {none}
+\csMathDefault {mode} {article}
+\csMathDefault {font} {inherit}
+\csMathDefault {font-policy} {compatible}
+\csMathDefault {equations} {inherit}
+\csMathDefault {cleveref} {auto}
+\csMathDefault {draft} {false}
+\tl_new:N \csMathMode
+\tl_new:N \csMathFont
+\tl_new:N \csMathEffectiveFont
+\tl_new:N \csMathTheorems
+\tl_new:N \csMathNumberWithin
+\tl_new:N \csMathParagraphs
+\tl_new:N \csMathCleveref
+\prop_get:NnN \g_csMathChoices_prop {mode} \csMathMode
+\prop_get:NnN \g_csMathChoices_prop {font} \csMathFont
+\tl_if_eq:NnTF \csMathMode {venue}
+{
+    \csMathDefault {theorems} {inherit}
+    \csMathDefault {paragraphs} {inherit}
+}
+{
+    \@ifpackageloaded {csthm}
+    {
+        \csMathDefault {theorems} {inherit}
+    }
+    {
+        \csMathDefault {theorems} {oldschool}
+    }
+    \csMathDefault {paragraphs} {runin}
+}
+\tl_if_eq:NnTF \csMathMode {book}
+{
+    \cs_if_exist:NTF \chapter
+     {
+      \cs_if_exist:cF {c@chapter}
+      {
+          \PackageError {csmath} {Book~mode~requires~a~chapter~counter} {Use~book~or~report.}
+      }
+     }
+     {
+      \PackageError {csmath} {Book~mode~requires~a~chapter~structure} {Use~book~or~report;~manuscript~supports~article~classes.}
+     }
+    \csMathDefault {numberwithin} {chapter}
+}
+{
+    \csMathDefault {numberwithin} {section}
+}
+\prop_get:NnN \g_csMathChoices_prop {theorems} \csMathTheorems
+\prop_get:NnN \g_csMathChoices_prop {numberwithin} \csMathNumberWithin
+\prop_get:NnN \g_csMathChoices_prop {paragraphs} \csMathParagraphs
+\prop_get:NnN \g_csMathChoices_prop {cleveref} \csMathCleveref
+\cs_new_protected:Npn \csMathIfFeature #1#2
+{
+    \prop_get:NnNT \g_csMathChoices_prop {#1} \l_tmpa_tl
+    {
+        \tl_if_eq:NnT \l_tmpa_tl {true} {#2}
+    }
+}
+\csMathIfFeature {draft}
+{
+    \csMathSelect {annotations} {true}
+}
+\csMathIfFeature {lastpage}
+{
+    \csMathSelect {layout} {true}
+}
+\csMathIfFeature {sanshdr}
+{
+    \csMathSelect {layout} {true}
+}
+
+\cs_new_protected:Npn \csMathRequireFeature #1#2
+{
+    \prop_get:NnNTF \g_csMathChoices_prop {#1} \l_tmpa_tl
+    {
+        \tl_if_eq:NnF \l_tmpa_tl {true}
+        {
+            \msg_error:nnnn {csmath} {feature} {#2} {#1}
+        }
+    }
+    {
+        \msg_error:nnnn {csmath} {feature} {#2} {#1}
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Mathematics and Fonts
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage {amsmath}
+
+\sys_if_engine_pdftex:T
+{
+    \RequirePackage {amssymb}
+}
+\tl_set_eq:NN \csMathEffectiveFont \csMathFont
+\sys_if_engine_pdftex:T
+{
+    \exp_args:NnV \clist_if_in:nnT
+    {
+        concrete,
+        garamond,
+        gfsdidot,
+        kpfonts
+    }
+    \csMathFont
+    {
+        \prop_get:NnN \g_csMathChoices_prop {font-policy} \l_tmpa_tl
+        \tl_if_eq:NnTF \l_tmpa_tl {strict}
+        {
+            \PackageError {csmath}
+            {
+                Requested~font~\csMathFont \space requires~LuaLaTeX
+            }
+            {Use~LuaLaTeX~or~font-policy=compatible~for~an~explicit~Latin~Modern~fallback.}
+        }
+        {
+            \PackageWarning {csmath}
+            {
+                Requested~font~\csMathFont ;~effective~font~latinmodern~(pdfLaTeX~fallback)
+            }
+        }
+        \tl_set:Nn \csMathEffectiveFont {latinmodern}
+    }
+}
+
+\NewExpandableDocumentCommand \CsmathSelectedFont {} {\csMathFont}
+\NewExpandableDocumentCommand \CsmathEffectiveFont {} {\csMathEffectiveFont}
+\cs_new_protected:Npn \csMathCheckFontFile #1
+{
+    \IfFontExistsTF {#1} {}
+    {
+        \PackageError {csmath} {Required~font~file~#1~is~unavailable}
+        {Install~the~corresponding~TeX~font~collection,~or~select~font=inherit.~No~unrelated~font~is~substituted.}
+    }
+}
+
+\cs_new_protected:Npn \csMathIfFont #1#2
+{
+    \tl_if_eq:NnT \csMathEffectiveFont {#1} {#2}
+}
+
+\cs_new_protected:Npn \csMathIfNamedFont #1
+{
+    \exp_args:NnV \clist_if_in:nnF
+    {
+        inherit,
+    }
+    \csMathEffectiveFont {#1}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Font Faces
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ExplSyntaxOn
+\bool_new:N \l_csMathStylishAlphabet_bool
+\cs_new_protected:Npn \csMathSetStylishAlphabet #1
+{
+    \bool_set:Nn \l_csMathStylishAlphabet_bool
+    {
+        \str_if_eq_p:nn {#1} {true}
+    }
+}
+
+\cs_new_protected:Npn \csMathIfStylishAlphabet #1#2
+{
+    \bool_if:NTF \l_csMathStylishAlphabet_bool {#1} {#2}
+}
+
+\cs_new_protected:Npn \csMathIfPDFTeX #1#2
+{
+    \sys_if_engine_pdftex:TF {#1} {#2}
+}
+
+\cs_new_protected:Npn \csMathIfLatinModern #1#2
+{
+    \tl_if_eq:NnTF \csMathEffectiveFont {latinmodern} {#1} {#2}
+}
+
+\cs_new_protected:Npn \csMathIfNotPalatino #1
+{
+    \tl_if_eq:NnF \csMathEffectiveFont {palatino} {#1}
+}
+
+\cs_new_protected:Npn \csMathDefineBoldAlphabets
+{
+    \cs_set_protected:Npn \mathbfcal ##1
+    {
+        \boldsymbol
+        {
+            \mathcal {##1}
+        }
+    }
+    \cs_set_protected:Npn \mathbfbb ##1
+    {
+        \boldsymbol
+        {
+            \mathbb {##1}
+        }
+    }
+    \cs_set_protected:Npn \mathbfbbi ##1
+    {
+        \boldsymbol
+        {
+            \mathbbi {##1}
+        }
+    }
+    \cs_set_protected:Npn \mathbfscr ##1
+    {
+        \boldsymbol
+        {
+            \mathscr {##1}
+        }
+    }
+    \cs_set_protected:Npn \mathbf ##1
+    {
+        \boldsymbol
+        {
+            \mathrm {##1}
+        }
+    }
+}
+\ExplSyntaxOff
+\newcommand{\csMathLoadMathTools}%
+{%
+    \RequirePackage{mathtools}%
+}
+\newcommand{\csMathLoadAMSMathTools}%
+{%
+    \RequirePackage{amssymb}%
+    \RequirePackage{mathtools}%
+}
+\csMathIfNamedFont
+{ %
+    \csMathIfPDFTeX
+    { %
+        \RequirePackage[T1]{fontenc}
+        \RequirePackage{sansmath}
+
+        \newcommand{\csMathPDFMono}%
+        {%
+            \RequirePackage[scaled=1.03]{inconsolata}%
+        }
+        \newcommand{\csMathPDFSans}%
+        {%
+            \RequirePackage
+            [%
+                type1,%
+                scaled=1.085%
+            ]{biolinum}%
+        }
+
+        \csMathIfFont{baskervaldx}%
+        { %
+            \RequirePackage
+            [%
+                lining,%
+                tabular%
+            ]{Baskervaldx}
+            \csMathPDFSans
+            \csMathPDFMono
+            \RequirePackage
+            [%
+                baskervaldx,%
+                varbb%
+            ]{newtxmath}
+            \SetSymbolFont{operators}{bold}{OT1}{Baskervaldx-TLF}{b}{n}
+            \SetMathAlphabet{\mathbf}{normal}{OT1}{Baskervaldx-TLF}{b}{n}
+            \SetMathAlphabet{\mathbf}{bold}{OT1}{Baskervaldx-TLF}{b}{n}
+            \SetMathAlphabet{\mathit}{bold}{OT1}{Baskervaldx-TLF}{b}{it}
+            \csMathLoadMathTools
+            \csMathSetStylishAlphabet{true}
+        }
+
+        \csMathIfFont{latinmodern}%
+        { %
+            \RequirePackage{lmodern}
+            \csMathLoadAMSMathTools
+            \csMathSetStylishAlphabet{false}
+        }
+
+        \csMathIfFont{libertine}%
+        { %
+            \csMathPDFSans
+            \csMathPDFMono
+            \RequirePackage
+            [%
+                lining,%
+                tabular%
+            ]{libertineRoman}
+            \RequirePackage
+            [%
+                libertine,%
+                varbb%
+            ]{newtxmath}
+            \csMathLoadMathTools
+            \csMathSetStylishAlphabet{true}
+        }
+
+        \csMathIfFont{palatino}%
+        { %
+            \RequirePackage
+            [%
+                sc,%
+                noBBpl%
+            ]{mathpazo}
+            \csMathPDFSans
+            \csMathPDFMono
+            \csMathLoadAMSMathTools
+            \csMathSetStylishAlphabet{true}
+        }
+
+    }%
+    { %
+        \RequirePackage{fontspec}
+        \RequirePackage{sansmath}
+        \RequirePackage{mathtools}
+        \RequirePackage{unicode-math}
+        \defaultfontfeatures
+        {%
+            Numbers=%
+                {%
+                    Lining,%
+                    Monospaced%
+                }%
+        }
+        \newcommand{\csMathLuaMono}%
+        {%
+            \csMathCheckFontFile{Inconsolatazi4-Regular.otf}
+            \csMathCheckFontFile{Inconsolatazi4-Bold.otf}
+            \setmonofont{Inconsolatazi4-Regular.otf}[
+                BoldFont = Inconsolatazi4-Bold.otf, %
+                ItalicFont = Inconsolatazi4-Regular.otf, %
+                ItalicFeatures = {FakeSlant=0.2}, %
+                BoldItalicFont = Inconsolatazi4-Bold.otf, %
+                BoldItalicFeatures = {FakeSlant=0.2}, %
+                Scale = MatchLowercase, %
+                Ligatures = TeX, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +liga,%
+                        +mark,%
+                        +mkmk,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]%
+        }
+        \newcommand{\csMathLuaSans}[1][MatchUppercase]%
+        {%
+            \csMathCheckFontFile{LibertinusSans-Regular.otf}
+            \csMathCheckFontFile{LibertinusSans-Bold.otf}
+            \csMathCheckFontFile{LibertinusSans-Italic.otf}
+            \setsansfont{LibertinusSans-Regular.otf}[
+                BoldFont = LibertinusSans-Bold.otf, %
+                ItalicFont = LibertinusSans-Italic.otf, %
+                BoldItalicFont = LibertinusSans-Bold.otf, %
+                BoldItalicFeatures = {FakeSlant=0.2}, %
+                Scale = #1, %
+                Ligatures = TeX, %
+                SmallCapsFeatures = {RawFeature=+smcp}, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +liga,%
+                        +mark,%
+                        +mkmk,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]%
+        }
+        \newcommand{\csMathLuaMathSans}%
+        {%
+            \setmathfont{LibertinusSans-Regular.otf}[
+                BoldFont = LibertinusSans-Bold.otf, %
+                Scale = MatchUppercase, %
+                range =
+                    {%
+                        sfup/%
+                        {%
+                            latin,%
+                            Latin,%
+                            num%
+                        },%
+                        sfit/%
+                        {%
+                            latin,%
+                            Latin%
+                        }%
+                    }, %
+                Ligatures = TeX, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +liga,%
+                        +mark,%
+                        +mkmk,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]%
+        }
+        \newcommand{\csMathLuaMathMono}%
+        {%
+            \setmathfont{Inconsolatazi4-Regular.otf}[
+                BoldFont = Inconsolatazi4-Bold.otf, %
+                Scale = MatchUppercase, %
+                range =
+                    {%
+                        tt/%
+                        {%
+                            latin,%
+                            Latin,%
+                            num%
+                        }%
+                    }, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +liga,%
+                        +mark,%
+                        +mkmk,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]%
+        }
+
+        \csMathIfFont{baskervaldx}%
+        { %
+            \csMathCheckFontFile{Baskervaldx-Bol.otf}
+            \csMathCheckFontFile{Baskervaldx-BolIta.otf}
+            \csMathCheckFontFile{Baskervaldx-Ita.otf}
+            \csMathCheckFontFile{Baskervaldx-Reg.otf}
+            \csMathCheckFontFile{KpMath-Bold.otf}
+            \csMathCheckFontFile{KpMath-Regular.otf}
+
+            \setmainfont{Baskervaldx-Reg.otf}[
+                BoldFont = Baskervaldx-Bol.otf, %
+                ItalicFont = Baskervaldx-Ita.otf, %
+                BoldItalicFont = Baskervaldx-BolIta.otf, %
+                Ligatures = TeX, %
+                SmallCapsFeatures = {RawFeature=+smcp}, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +liga,%
+                        +mark,%
+                        +mkmk,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]
+            \csMathLuaSans
+            \csMathLuaMono
+            \setmathfont{KpMath-Regular.otf}[
+                BoldFont = KpMath-Bold.otf, %
+                AutoFakeSlant, %
+                Scale = MatchUppercase, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +liga,%
+                        +mark,%
+                        +mkmk,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]
+            \setmathfont{Baskervaldx-Reg.otf}[
+                BoldFont = Baskervaldx-Bol.otf, %
+                Scale = MatchUppercase, %
+                range =
+                    {%
+                        up/%
+                        {%
+                            latin,%
+                            Latin,%
+                            num%
+                        }%
+                    }, %
+                Ligatures = TeX, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +liga,%
+                        +mark,%
+                        +mkmk,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]
+            \setmathfont{Baskervaldx-Ita.otf}[
+                BoldFont = Baskervaldx-BolIta.otf, %
+                Scale = MatchUppercase, %
+                range =
+                    {%
+                        it/%
+                        {%
+                            latin,%
+                            Latin%
+                        }%
+                    }, %
+                Ligatures = TeX, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +liga,%
+                        +mark,%
+                        +mkmk,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]
+            \csMathLuaMathSans
+            \csMathLuaMathMono
+            \csMathSetStylishAlphabet{true}
+        }
+
+        \csMathIfFont{concrete}%
+        { %
+            \csMathCheckFontFile{Euler-Math.otf}
+            \csMathCheckFontFile{NewCMMono10-Bold.otf}
+            \csMathCheckFontFile{NewCMMono10-BoldOblique.otf}
+            \csMathCheckFontFile{NewCMMono10-Book.otf}
+            \csMathCheckFontFile{NewCMMono10-BookItalic.otf}
+            \csMathCheckFontFile{NewCMSans10-Bold.otf}
+            \csMathCheckFontFile{NewCMSans10-BoldOblique.otf}
+            \csMathCheckFontFile{NewCMSans10-Book.otf}
+            \csMathCheckFontFile{NewCMSans10-BookOblique.otf}
+            \csMathCheckFontFile{cmunobi.otf}
+            \csMathCheckFontFile{cmunobx.otf}
+            \csMathCheckFontFile{cmunorm.otf}
+            \csMathCheckFontFile{cmunoti.otf}
+
+            \setmainfont{cmunorm.otf}[
+                BoldFont = cmunobx.otf, %
+                ItalicFont = cmunoti.otf, %
+                BoldItalicFont = cmunobi.otf, %
+                Ligatures = TeX, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +liga,%
+                        +mark,%
+                        +mkmk,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]
+            \setsansfont{NewCMSans10-Book.otf}[
+                BoldFont = NewCMSans10-Bold.otf, %
+                ItalicFont = NewCMSans10-BookOblique.otf, %
+                BoldItalicFont = NewCMSans10-BoldOblique.otf, %
+                SlantedFont = NewCMSans10-BookOblique.otf, %
+                BoldSlantedFont = NewCMSans10-BoldOblique.otf, %
+                Ligatures = TeX, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +liga,%
+                        +mark,%
+                        +mkmk,%
+                        +lnum,%
+                        +tnum%
+                    }, %
+                SmallCapsFeatures = {RawFeature=+smcp}
+            ]
+            \setmonofont{NewCMMono10-Book.otf}[
+                BoldFont = NewCMMono10-Bold.otf, %
+                ItalicFont = NewCMMono10-BookItalic.otf, %
+                BoldItalicFont = NewCMMono10-BoldOblique.otf, %
+                SlantedFont = NewCMMono10-Book.otf, %
+                SlantedFeatures = {FakeSlant=0.25}, %
+                BoldSlantedFont = NewCMMono10-Bold.otf, %
+                BoldSlantedFeatures = {FakeSlant=0.25}, %
+                Ligatures = TeX, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +liga,%
+                        +mark,%
+                        +mkmk,%
+                        +lnum,%
+                        +tnum%
+                    }, %
+                SmallCapsFeatures = {RawFeature=+smcp}
+            ]
+            \setmathfont{Euler-Math.otf}[
+                AutoFakeBold, %
+                AutoFakeSlant, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +liga,%
+                        +mark,%
+                        +mkmk,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]
+            \csMathSetStylishAlphabet{false}
+        }
+
+        \csMathIfFont{garamond}%
+        { %
+            \csMathCheckFontFile{Garamond-Math.otf}
+            \csMathCheckFontFile{GaramondLibre-Bold.otf}
+            \csMathCheckFontFile{GaramondLibre-BoldItalic.otf}
+            \csMathCheckFontFile{GaramondLibre-Italic.otf}
+            \csMathCheckFontFile{GaramondLibre-Regular.otf}
+
+            \setmainfont{GaramondLibre-Regular.otf}[
+                Ligatures = TeX, %
+                BoldFont = GaramondLibre-Bold.otf, %
+                BoldItalicFont = GaramondLibre-BoldItalic.otf, %
+                ItalicFont = GaramondLibre-Italic.otf, %
+                SmallCapsFont = GaramondLibre-Regular.otf, %
+                SmallCapsFeatures =
+                    {%
+                        RawFeature=%
+                            {%
+                                +smcp,%
+                                +lnum,%
+                                +tnum%
+                            }%
+                    }, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +liga,%
+                        +mark,%
+                        +mkmk,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]
+            \csMathLuaSans [MatchLowercase]
+            \csMathLuaMono
+            \setmathfont{Garamond-Math.otf}[
+                AutoFakeBold, %
+                AutoFakeSlant, %
+                Scale = MatchUppercase, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +liga,%
+                        +mark,%
+                        +mkmk,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]
+            \setmathfont{GaramondLibre-Regular.otf}[
+                BoldFont = GaramondLibre-Bold.otf, %
+                Scale = MatchUppercase, %
+                range =
+                    {%
+                        up/%
+                        {%
+                            latin,%
+                            Latin,%
+                            num%
+                        }%
+                    }, %
+                Ligatures = TeX, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +liga,%
+                        +mark,%
+                        +mkmk,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]
+            \setmathfont{GaramondLibre-Italic.otf}[
+                BoldFont = GaramondLibre-BoldItalic.otf, %
+                Scale = MatchUppercase, %
+                range =
+                    {%
+                        it/%
+                        {%
+                            latin,%
+                            Latin%
+                        }%
+                    }, %
+                Ligatures = TeX, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +liga,%
+                        +mark,%
+                        +mkmk,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]
+            \csMathLuaMathSans
+            \csMathLuaMathMono
+            \csMathSetStylishAlphabet{true}
+        }
+
+        \csMathIfFont{gfsdidot}%
+        { %
+            \csMathCheckFontFile{GFSDidot.otf}
+            \csMathCheckFontFile{GFSDidotBold.otf}
+            \csMathCheckFontFile{GFSDidotBoldItalic.otf}
+            \csMathCheckFontFile{GFSDidotItalic.otf}
+            \csMathCheckFontFile{KpMath-Bold.otf}
+            \csMathCheckFontFile{KpMath-Regular.otf}
+
+            \setmainfont{GFSDidot.otf}[
+                BoldFont = GFSDidotBold.otf, %
+                ItalicFont = GFSDidotItalic.otf, %
+                BoldItalicFont = GFSDidotBoldItalic.otf, %
+                SlantedFont = GFSDidotItalic.otf, %
+                Ligatures = TeX, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +liga,%
+                        +mark,%
+                        +mkmk,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]
+            \csMathLuaSans
+            \csMathLuaMono
+            \setmathfont{KpMath-Regular.otf}[
+                BoldFont = KpMath-Bold.otf, %
+                AutoFakeSlant, %
+                Scale = MatchUppercase, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +liga,%
+                        +mark,%
+                        +mkmk,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]
+            \setmathfont{GFSDidot.otf}[
+                BoldFont = GFSDidotBold.otf, %
+                Scale = MatchUppercase, %
+                range =
+                    {%
+                        up/%
+                        {%
+                            latin,%
+                            Latin,%
+                            num%
+                        }%
+                    }, %
+                Ligatures = TeX, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +liga,%
+                        +mark,%
+                        +mkmk,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]
+            \setmathfont{GFSDidotItalic.otf}[
+                BoldFont = GFSDidotBoldItalic.otf, %
+                Scale = MatchUppercase, %
+                range =
+                    {%
+                        it/%
+                        {%
+                            latin,%
+                            Latin%
+                        }%
+                    }, %
+                Ligatures = TeX, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +liga,%
+                        +mark,%
+                        +mkmk,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]
+            \setmathfont{GFSDidotBold.otf}[
+                BoldFont = GFSDidotBold.otf, %
+                Scale = MatchUppercase, %
+                range =
+                    {%
+                        bfup/%
+                        {%
+                            latin,%
+                            Latin,%
+                            num%
+                        }%
+                    }, %
+                Ligatures = TeX, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +liga,%
+                        +mark,%
+                        +mkmk,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]
+            \setmathfont{GFSDidotBoldItalic.otf}[
+                BoldFont = GFSDidotBoldItalic.otf, %
+                Scale = MatchUppercase, %
+                range =
+                    {%
+                        bfit/%
+                        {%
+                            latin,%
+                            Latin%
+                        }%
+                    }, %
+                Ligatures = TeX, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +liga,%
+                        +mark,%
+                        +mkmk,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]
+            \csMathLuaMathSans
+            \csMathLuaMathMono
+            \csMathSetStylishAlphabet{true}
+        }
+
+        \csMathIfFont{kpfonts}%
+        { %
+            \csMathCheckFontFile{LibertinusSans-Bold.otf}
+            \csMathCheckFontFile{LibertinusSans-Italic.otf}
+            \csMathCheckFontFile{LibertinusSans-Regular.otf}
+
+            \RequirePackage
+            [%
+                nosf,%
+                noDcommand,%
+                fakedscripts%
+            ]{kpfonts-otf}
+            \setsansfont{LibertinusSans-Regular.otf}[
+                BoldFont = LibertinusSans-Bold.otf, %
+                ItalicFont = LibertinusSans-Italic.otf, %
+                BoldItalicFont = LibertinusSans-Bold.otf, %
+                BoldItalicFeatures = {FakeSlant=0.2}, %
+                Scale = MatchUppercase, %
+                Ligatures = TeX, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +liga,%
+                        +mark,%
+                        +mkmk,%
+                        +lnum,%
+                        +tnum%
+                    }, %
+                SmallCapsFeatures = {Letters=SmallCaps}
+            ]
+            \csMathLuaMono
+            \csMathSetStylishAlphabet{true}
+        }
+
+        \csMathIfFont{latinmodern}%
+        { %
+            \csMathCheckFontFile{latinmodern-math.otf}
+            \csMathCheckFontFile{lmmono10-italic.otf}
+            \csMathCheckFontFile{lmmono10-regular.otf}
+            \csMathCheckFontFile{lmroman10-bold.otf}
+            \csMathCheckFontFile{lmroman10-bolditalic.otf}
+            \csMathCheckFontFile{lmroman10-italic.otf}
+            \csMathCheckFontFile{lmroman10-regular.otf}
+            \csMathCheckFontFile{lmromancaps10-regular.otf}
+            \csMathCheckFontFile{lmsans10-bold.otf}
+            \csMathCheckFontFile{lmsans10-boldoblique.otf}
+            \csMathCheckFontFile{lmsans10-oblique.otf}
+            \csMathCheckFontFile{lmsans10-regular.otf}
+
+            \setmainfont{lmroman10-regular.otf}[
+                BoldFont = lmroman10-bold.otf, %
+                ItalicFont = lmroman10-italic.otf, %
+                BoldItalicFont = lmroman10-bolditalic.otf, %
+                Ligatures = TeX, %
+                SmallCapsFont = lmromancaps10-regular.otf, %
+                SmallCapsFeatures = {RawFeature=+smcp}, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +mark,%
+                        +mkmk,%
+                        +liga,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]
+            \setsansfont{lmsans10-regular.otf}[
+                BoldFont = lmsans10-bold.otf, %
+                ItalicFont = lmsans10-oblique.otf, %
+                BoldItalicFont = lmsans10-boldoblique.otf, %
+                Scale = MatchUppercase, %
+                Ligatures = TeX, %
+                SmallCapsFeatures = {Letters=SmallCaps}, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +mark,%
+                        +mkmk,%
+                        +liga,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]
+            \csMathCheckFontFile{lmmonolt10-bold.otf}
+            \csMathCheckFontFile{lmmonolt10-boldoblique.otf}
+            \setmonofont{lmmono10-regular.otf}[
+                BoldFont = lmmonolt10-bold.otf, %
+                BoldItalicFont = lmmonolt10-boldoblique.otf, %
+                ItalicFont = lmmono10-italic.otf, %
+                Scale = MatchLowercase, %
+                Ligatures = TeX, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +mark,%
+                        +mkmk,%
+                        +liga,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]
+            \setmathfont{latinmodern-math.otf}[
+                AutoFakeBold, %
+                AutoFakeSlant, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +mark,%
+                        +mkmk,%
+                        +liga,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]
+            \csMathSetStylishAlphabet{false}
+        }
+
+        \csMathIfFont{libertine}%
+        { %
+            \csMathCheckFontFile{LibertinusSerif-Bold.otf}
+            \csMathCheckFontFile{LibertinusSerif-BoldItalic.otf}
+            \csMathCheckFontFile{LibertinusSerif-Italic.otf}
+            \csMathCheckFontFile{LibertinusSerif-Regular.otf}
+            \csMathCheckFontFile{texgyrepagella-math.otf}
+
+            \setmainfont{LibertinusSerif-Regular.otf}[
+                BoldFont = LibertinusSerif-Bold.otf, %
+                ItalicFont = LibertinusSerif-Italic.otf, %
+                BoldItalicFont = LibertinusSerif-BoldItalic.otf, %
+                Ligatures = TeX, %
+                SmallCapsFeatures = {RawFeature=+smcp}, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +liga,%
+                        +mark,%
+                        +mkmk,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]
+            \csMathLuaSans
+            \csMathLuaMono
+            \setmathfont{texgyrepagella-math.otf}[
+                AutoFakeBold, %
+                AutoFakeSlant, %
+                Scale = MatchUppercase, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +liga,%
+                        +mark,%
+                        +mkmk,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]
+            \setmathfont{LibertinusSerif-Regular.otf}[
+                BoldFont = LibertinusSerif-Bold.otf, %
+                Scale = MatchUppercase, %
+                range =
+                    {%
+                        up/%
+                        {%
+                            latin,%
+                            Latin,%
+                            num%
+                        }%
+                    }, %
+                Ligatures = TeX, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +liga,%
+                        +mark,%
+                        +mkmk,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]
+            \setmathfont{LibertinusSerif-Italic.otf}[
+                BoldFont = LibertinusSerif-BoldItalic.otf, %
+                Scale = MatchUppercase, %
+                range =
+                    {%
+                        it/%
+                        {%
+                            latin,%
+                            Latin%
+                        }%
+                    }, %
+                Ligatures = TeX, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +liga,%
+                        +mark,%
+                        +mkmk,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]
+            \csMathLuaMathSans
+            \csMathLuaMathMono
+            \csMathSetStylishAlphabet{true}
+        }
+
+        \csMathIfFont{palatino}%
+        { %
+            \csMathCheckFontFile{TeXGyrePagellaX-Bold.otf}
+            \csMathCheckFontFile{TeXGyrePagellaX-BoldItalic.otf}
+            \csMathCheckFontFile{TeXGyrePagellaX-BoldSlanted.otf}
+            \csMathCheckFontFile{TeXGyrePagellaX-Italic.otf}
+            \csMathCheckFontFile{TeXGyrePagellaX-Regular.otf}
+            \csMathCheckFontFile{TeXGyrePagellaX-Slanted.otf}
+            \csMathCheckFontFile{texgyrepagella-math.otf}
+
+            \setmainfont{TeXGyrePagellaX-Regular.otf}[
+                BoldFont = TeXGyrePagellaX-Bold.otf, %
+                ItalicFont = TeXGyrePagellaX-Italic.otf, %
+                BoldItalicFont = TeXGyrePagellaX-BoldItalic.otf, %
+                SlantedFont = TeXGyrePagellaX-Slanted.otf, %
+                BoldSlantedFont = TeXGyrePagellaX-BoldSlanted.otf, %
+                Ligatures = TeX, %
+                SmallCapsFeatures = {RawFeature=+smcp}, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +liga,%
+                        +mark,%
+                        +mkmk,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]
+            \csMathLuaSans
+            \csMathLuaMono
+            \setmathfont{texgyrepagella-math.otf}[
+                AutoFakeBold, %
+                AutoFakeSlant, %
+                Scale = MatchUppercase, %
+                RawFeature =
+                    {%
+                        +calt,%
+                        +case,%
+                        +kern,%
+                        +liga,%
+                        +mark,%
+                        +mkmk,%
+                        +lnum,%
+                        +tnum%
+                    }
+            ]
+            \csMathLuaMathSans
+            \csMathLuaMathMono
+            \csMathSetStylishAlphabet{true}
+        }
+
+    }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Math Alphabets
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \def \csMathDeclareCMCal
+    {%
+        \DeclareFontFamily{U}{cmsy}%
+        {%
+            \skewchar \font 48
+        }%
+        \DeclareFontShape{U}{cmsy}{m}{n}%
+        {%
+            <-5.5>cmsy5<5.5-6.5>cmsy6<6.5-7.5>cmsy7
+            <7.5-8.5>cmsy8<8.5-9.5>cmsy9<9.5->cmsy10%
+        }{}%
+        \DeclareFontShape{U}{cmsy}{b}{n}%
+        {%
+            <-5.5>cmbsy5<5.5-6.5>cmbsy6<6.5-7.5>cmbsy7
+            <7.5-8.5>cmbsy8<8.5-9.5>cmbsy9<9.5->cmbsy10%
+        }{}%
+        \DeclareMathAlphabet{\mathcal}{U}{cmsy}{m}{n}%
+        \SetMathAlphabet{\mathcal}{bold}{U}{cmsy}{b}{n}%
+        \DeclareMathAlphabet{\mathbfcal}{U}{cmsy}{b}{n}%
+    }
+    \def \csMathDeclareSTIXCal
+    {%
+        \DeclareFontFamily{U}{stixplain}%
+        {%
+            \skewchar \font =127
+        }%
+        \DeclareFontShape{U}{stixplain}{m}{n}{<->stix-mathcal}{}%
+        \DeclareFontShape{U}{stixplain}{b}{n}{<->stix-mathcal-bold}{}%
+        \DeclareMathAlphabet{\mathcal}{U}{stixplain}{m}{n}%
+        \SetMathAlphabet{\mathcal}{bold}{U}{stixplain}{b}{n}%
+        \DeclareMathAlphabet{\mathbfcal}{U}{stixplain}{b}{n}%
+    }
+    \def \csMathDeclareSTIXBB
+    {%
+        \DeclareFontFamily{U}{stixonebb}%
+        {%
+            \skewchar \font =45
+        }%
+        \DeclareFontShape{U}{stixonebb}{m}{n}{<->stix-mathbb}{}%
+        \DeclareFontShape{U}{stixonebb}{m}{it}{<->stix-mathbbit}{}%
+        \DeclareFontShape{U}{stixonebb}{b}{n}{<->stix-mathbb-bold}{}%
+        \DeclareFontShape{U}{stixonebb}{b}{it}{<->stix-mathbbit-bold}{}%
+        \DeclareFontSubstitution{U}{stixonebb}{m}{n}%
+        \DeclareMathAlphabet{\mathbb}{U}{stixonebb}{m}{n}%
+        \SetMathAlphabet{\mathbb}{bold}{U}{stixonebb}{b}{n}%
+        \DeclareMathAlphabet{\mathbfbb}{U}{stixonebb}{b}{n}%
+        \DeclareMathAlphabet{\mathbbi}{U}{stixonebb}{m}{it}%
+        \SetMathAlphabet{\mathbbi}{bold}{U}{stixonebb}{b}{it}%
+        \DeclareMathAlphabet{\mathbfbbi}{U}{stixonebb}{b}{it}%
+    }
+    \def \csMathDeclareBBOLDXBB
+    {%
+        \DeclareFontFamily{U}{bboldx}%
+        {%
+            \skewchar \font =45
+        }%
+        \DeclareFontShape{U}{bboldx}{m}{n}{<->BBOLDX-Regular}{}%
+        \DeclareFontShape{U}{bboldx}{b}{n}{<->BBOLDX-Bold}{}%
+        \DeclareFontShape{U}{bboldx}{bx}{n}{<->ssub*bboldx/b/n}{}%
+        \DeclareMathAlphabet{\mathbb}{U}{bboldx}{m}{n}%
+        \SetMathAlphabet{\mathbb}{bold}{U}{bboldx}{b}{n}%
+        \DeclareMathAlphabet{\mathbfbb}{U}{bboldx}{b}{n}%
+    }
+    \def \csMathDeclareDutchScript
+    {%
+        \DeclareFontFamily{U}{dutchscr}%
+        {%
+            \skewchar \font =45
+        }%
+        \DeclareFontShape{U}{dutchscr}{m}{n}{<->dutchcal-r}{}%
+        \DeclareFontShape{U}{dutchscr}{b}{n}{<->dutchcal-b}{}%
+        \DeclareMathAlphabet{\mathscr}{U}{dutchscr}{m}{n}%
+        \SetMathAlphabet{\mathscr}{bold}{U}{dutchscr}{b}{n}%
+        \DeclareMathAlphabet{\mathbfscr}{U}{dutchscr}{b}{n}%
+    }
+
+    \let \mathbb \relax
+    \let \mathbfbb \relax
+    \let \mathbbi \relax
+    \let \mathbfbbi \relax
+    \let \mathbfcal \relax
+    \let \mathscr \relax
+    \let \mathbfscr \relax
+    \csMathIfFont{palatino}%
+    { %
+        \csMathDeclareSTIXCal
+        \csMathDeclareSTIXBB
+        \csMathDeclareBBOLDXBB
+    }
+    \csMathIfNotPalatino
+    { %
+        \csMathIfStylishAlphabet{\csMathDeclareSTIXCal}{\csMathDeclareCMCal}
+        \csMathDeclareSTIXBB
+    }
+    \csMathDeclareDutchScript
+    \csMathIfPDFTeX
+    { %
+        \csMathIfLatinModern
+        { %
+            \SetMathAlphabet{\mathsf}{normal}{T1}{lmss}{m}{n}%
+            \SetMathAlphabet{\mathsf}{bold}{T1}{lmss}{bx}{n}%
+            \SetMathAlphabet{\mathtt}{normal}{T1}{lmtt}{m}{n}%
+            \SetMathAlphabet{\mathtt}{bold}{T1}{lmtt}{b}{n}%
+        }%
+        { %
+            \SetMathAlphabet{\mathsf}{normal}{T1}{LinuxBiolinumT-TLF}{m}{n}%
+            \SetMathAlphabet{\mathsf}{bold}{T1}{LinuxBiolinumT-TLF}{b}{n}%
+            \SetMathAlphabet{\mathtt}{normal}{T1}{zi4}{m}{n}%
+            \SetMathAlphabet{\mathtt}{bold}{T1}{zi4}{b}{n}%
+        }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Alphabet Allocation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        \providecommand \bmmax{0}%
+        \providecommand \hmmax{0}
+        \RequirePackage{bm}
+        \setcounter{localmathalphabets}{0}
+        \csMathDefineBoldAlphabets
+    }{}
+
+}
+
+\ExplSyntaxOn
+\RequirePackage {mathtools}
+\@ifpackageloaded {unicode-math} {}
+{
+    \RequirePackage {amssymb}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Alphabet Configuration
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clist_map_inline:nn
+{
+    mathbfcal,
+    mathbfbb,
+    mathbbi,
+    mathbfbbi,
+    mathscr,
+    mathbfscr
+}
+{
+    \cs_if_exist:cF {#1}
+    {
+        \exp_args:Nc \NewDocumentCommand {#1} {m}
+        {
+            \PackageError {csmath} {Alphabet~#1~is~not~provided~by~the~inherited~font}
+            {Choose~a~named~font~or~define~this~alphabet~in~your~document.}
+        }
+    }
+}
+\@ifpackageloaded {unicode-math}
+{
+    \AddToHook {begindocument} [csmath/unicode-aliases]
+    {
+        \cs_set_eq:NN \leadsto \rightsquigarrow
+        \cs_set_eq:NN \square \mdlgwhtsquare
+    }
+} {}
+\RenewDocumentCommand \Pr {}
+{
+    \mathop
+    {
+        \mathsf {Pr}
+    }
+}
+
+\NewDocumentCommand \annotation {m}
+{
+    \footnote {#1}
+}
+\prop_get:NnN \g_csMathChoices_prop {equations} \l_tmpa_tl
+\str_case:Vn \l_tmpa_tl
+{
+    {section}
+    {
+        \numberwithin {equation} {section}
+    }
+    {chapter}
+    {
+        \cs_if_exist:cTF {c@chapter}
+        {
+            \numberwithin {equation} {chapter}
+        }
+        {
+            \PackageError {csmath} {Chapter~equations~require~a~chapter~counter} {Choose~equations=section~or~none.}
+        }
+    }
+    {none}
+    {
+        \counterwithout * {equation} {section}
+        \cs_if_exist:cT {c@chapter}
+        {
+            \counterwithout * {equation} {chapter}
+        }
+        \renewcommand \theequation
+        {
+            \arabic {equation}
+        }
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% References
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\cs_new_protected:Npn \csMathCheckReferenceOrder
+{
+    \@ifpackageloaded {cleveref}
+    {
+        \if@cref@amsmathloaded \else
+            \PackageError {csmath} {cleveref~must~follow~amsmath} {Load~amsmath~before~cleveref.}
+        \fi
+        \@ifpackageloaded {hyperref}
+        {
+            \if@cref@hyperrefloaded \else \csMathReferenceOrderError \fi
+        } {}
+    } {}
+}
+
+\cs_new_protected:Npn \csMathReferenceOrderError
+{
+    \PackageError {csmath} {hyperref~must~precede~cleveref} {Load~hyperref~before~cleveref~or~use~references.}
+}
+\csMathCheckReferenceOrder
+\@ifpackageloaded {hyperref} {}
+{
+    \AddToHook {package/hyperref/before} [csmath]
+    {
+        \@ifpackageloaded {cleveref} {\csMathReferenceOrderError} {}
+    }
+}
+\bool_new:N \l_csMathConfigureLinks_bool
+\csMathIfFeature {references}
+{
+\RequirePackage {xurl}
+\bool_set_true:N \l_csMathConfigureLinks_bool
+\@ifpackageloaded {hyperref}
+{
+    \str_if_eq:eeF
+    {
+        \prop_item:Nn \g_csMathChoices_prop {compatibility}
+    } {none}
+    {
+        \bool_set_false:N \l_csMathConfigureLinks_bool
+    }
+}
+{
+    \RequirePackage {hyperref}
+    \bool_set_true:N \l_csMathConfigureLinks_bool
+}
+\RequirePackage {nameref}
+\RequirePackage {xr}
+\tl_if_eq:NnF \csMathMode {venue}
+{
+    \RequirePackage
+    [
+        dvipsnames,
+        table,
+        x11names
+    ] {xcolor}
+    \bool_if:NT \l_csMathConfigureLinks_bool
+    {
+        \hypersetup
+        {
+            bookmarksnumbered = true,
+            breaklinks = true,
+            colorlinks = true,
+            linkcolor = SteelBlue4,
+            citecolor = SteelBlue4,
+            urlcolor = SteelBlue4,
+            pdfpagelayout = SinglePage,
+            pdfstartview = FitH
+        }
+    }
+}
+\pdfstringdefDisableCommands
+{
+\def \langle {<}
+\def \rangle {>}
+\def \lceil {[}
+\def \rceil {]}
+\def \lfloor {[}
+\def \rfloor {]}
+\def \left {}
+\def \right {}
+\def \mathbb #1 {#1}
+\def \mathbf #1 {#1}
+\def \mathcal #1 {#1}
+\def \mathfrak #1 {#1}
+\def \mathrm #1 {#1}
+\def \mathscr #1 {#1}
+\def \mathsf #1 {#1}
+\def \mathtt #1 {#1}
+\def \operatorname #1 {#1}
+\def \text #1 {#1}
+}
+\tl_if_eq:NnT \csMathCleveref {auto}
+{
+    \tl_set:Nn \csMathCleveref {true}
+}
+}
+
+\cs_new_protected:Npn \csMathConfigureBackrefs
+{
+    \csMathIfFeature {references}
+    {
+        \renewcommand \backref [1] {}
+        \renewcommand \backrefalt [4]
+        {
+            \ifcase ##1\or (Cited~on~p.~##2).\else (Cited~on~pp.~##2).\fi
+        }
+    }
+}
+\@ifpackageloaded {backref} {\csMathConfigureBackrefs}
+{
+    \AddToHook {package/backref/after} [csmath] {\csMathConfigureBackrefs}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Theorem Configuration
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\cs_new_protected:Npn \csMathCheckTheorems
+{
+    \cs_if_exist:NF \CsthmConfiguration
+    {
+        \PackageError {csmath} {Preloaded~csthm~is~too~old} {Use~csthm~4.1~or~newer.}
+    }
+    \clist_map_inline:nn
+    {
+        numberwithin,
+        cleveref,
+        counters,
+        families,
+        starred,
+        appearance,
+        solution
+    }
+    {
+        \tl_set:Nx \l_tmpb_tl
+        {
+            \CsthmConfiguration {##1}
+        }
+        \prop_get:NnNTF \g_csMathExplicit_prop {##1} \l_tmpa_tl
+        {
+            \tl_if_eq:NNF \l_tmpa_tl \l_tmpb_tl
+            {
+                \str_case:nnF {##1}
+                {
+                    {numberwithin}
+                    {
+                        \PackageError {csmath} {Preloaded~csthm~numbering~conflicts} {Match~the~initial~numberwithin~selection.}
+                    }
+                    {cleveref}
+                    {
+                        \PackageError {csmath} {Preloaded~csthm~cleveref~policy~conflicts} {Match~the~initial~cleveref~selection.}
+                    }
+                }
+                {
+                    \PackageError {csmath} {Preloaded~csthm~##1~conflicts} {Select~the~same~configuration~at~initial~load.}
+                }
+            }
+        }
+        {
+            \prop_gput:NnV \g_csMathChoices_prop {##1} \l_tmpb_tl
+        }
+    }
+    \tl_if_eq:NnTF \csMathTheorems {inherit}
+    {
+        \tl_set:Nx \l_tmpa_tl
+        {
+            \CsthmConfiguration {style}
+        }
+        \tl_if_empty:NT \l_tmpa_tl
+        {
+            \tl_set:Nn \l_tmpa_tl {none}
+        }
+        \prop_gput:NnV \g_csMathChoices_prop {theorems} \l_tmpa_tl
+    }
+    {
+        \tl_set_eq:NN \l_tmpa_tl \csMathTheorems
+        \tl_if_eq:NnT \l_tmpa_tl {none}
+        {
+            \tl_clear:N \l_tmpa_tl
+        }
+        \tl_set:Nx \l_tmpb_tl
+        {
+            \CsthmConfiguration {style}
+        }
+        \tl_if_eq:NNF \l_tmpa_tl \l_tmpb_tl
+        {
+            \PackageError {csmath}
+            {
+                Preloaded~csthm~style~conflicts~with~theorems=\csMathTheorems
+            }
+            {Match~the~existing~style~or~use~theorems=inherit.}
+        }
+    }
+    \prop_get:NnN \g_csMathChoices_prop {numberwithin}
+    \csMathNumberWithin
+    \prop_get:NnN \g_csMathChoices_prop {cleveref}
+    \csMathCleveref
+    \csMathIfFeature {references}
+    {
+        \tl_if_eq:NnT \csMathCleveref {auto}
+        {
+            \tl_set:Nn \csMathCleveref {true}
+        }
+    }
+}
+\keys_define:nn {csmath/families}
+{
+    theorem .code:n =
+        {
+            \CsthmSetupFamily {theorem} {#1}
+        },
+    definition .code:n =
+        {
+            \CsthmSetupFamily {definition} {#1}
+        },
+    remark .code:n =
+        {
+            \CsthmSetupFamily {remark} {#1}
+        },
+    highlight .code:n =
+        {
+            \CsthmSetupFamily {highlight} {#1}
+        },
+}
+\@ifpackageloaded {csthm}
+{
+    \csMathCheckTheorems
+    \prop_get:NnNT \g_csMathChoices_prop {family-style} \l_tmpa_tl
+    {
+        \exp_args:NnV \keys_set:nn {csmath/families} \l_tmpa_tl
+    }
+}
+{
+    \tl_if_eq:NnTF \csMathTheorems {inherit}
+    {
+        \clist_map_inline:nn
+        {
+            counters,
+            families,
+            starred,
+            appearance,
+            solution,
+            family-style
+        }
+        {
+            \prop_if_in:NnT \g_csMathExplicit_prop {#1}
+            {
+                \PackageError {csmath} {Theorem~option~#1~requires~csthm~ownership} {Choose~a~theorem~style.}
+            }
+        }
+    }
+    {
+        \tl_if_eq:NnF \csMathTheorems {none}
+        {
+            \exp_args:Nx \PassOptionsToPackage
+            {
+                style = \csMathTheorems
+            } {csthm}
+        }
+        \exp_args:Nx \PassOptionsToPackage
+        {
+            numberwithin = \csMathNumberWithin ,
+            cleveref = \csMathCleveref
+        } {csthm}
+        \clist_map_inline:nn
+        {
+            counters,
+            families,
+            starred,
+            appearance,
+            solution
+        }
+        {
+            \prop_get:NnNT \g_csMathChoices_prop {#1} \l_tmpa_tl
+            {
+                \exp_args:Nx \PassOptionsToPackage
+                {
+                    #1 = \l_tmpa_tl
+                } {csthm}
+            }
+        }
+        \prop_get:NnNT \g_csMathChoices_prop {family-style} \l_tmpa_tl
+        {
+            \exp_args:Nx \PassOptionsToPackage
+            {
+                family-style =
+                    {
+                        \exp_not:V \l_tmpa_tl
+                    }
+            } {csthm}
+        }
+        \RequirePackage {csthm} [2026/10/08]
+    }
+}
+\csMathDefault {counters} {independent} \csMathDefault {families} {standard}
+\csMathDefault {starred} {unnumbered} \csMathDefault {appearance} {modern}
+\csMathDefault {solution} {theorem} \csMathDefault {family-style} {}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Proof End Marks
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\@ifpackageloaded {csthm}
+{
+    \ProvideDocumentCommand \qedhere {}
+    {
+        \unskip \nobreak \hfill \the \qedsymbol \NoEndMark
+    }
+} {}
+\cs_new_protected:Npn \csMathLoadCleveref
+{
+    \@ifpackageloaded {cleveref} {}
+    {
+        \RequirePackage
+        [
+            nameinlink,
+            noabbrev
+        ] {cleveref}
+    }
+}
+\tl_if_eq:NnT \csMathCleveref {true} {\csMathLoadCleveref}
+\AddToHook {begindocument/before} [csmath]
+{
+    \tl_if_eq:NnT \csMathCleveref {auto}
+    {
+        \@ifpackageloaded {hyperref} {\csMathLoadCleveref} {}
+    }
+}
+
+\cs_new_protected:Npn \csMathRegisterReferences
+{
+    \csMathCheckReferenceOrder
+    \csMathIfFeature {references}
+    {
+        \tl_if_eq:NnF \csMathMode {venue}
+        {
+            \clist_map_inline:nn
+            {
+                section,
+                subsection,
+                subsubsection
+            }
+            {
+                \crefname {##1} {\textsection}
+                {
+                    \textsection \textsection
+                }
+                \Crefname {##1} {\textsection}
+                {
+                    \textsection \textsection
+                }
+            }
+        }
+    }
+}
+\@ifpackageloaded {cleveref} {\csMathRegisterReferences}
+{
+    \AddToHook {package/cleveref/after} [csmath] {\csMathRegisterReferences}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Paragraph Headings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\tl_new:N \l_csMathHeading_tl
+\cs_new_protected:Npn \csMathPunctuate #1
+{
+    \tl_set:Nx \l_csMathHeading_tl
+    {
+        \text_purify:n {#1}
+    }
+    #1\exp_args:NnV \regex_match:nnF
+    {
+        [.!?:] \s *\Z
+    } \l_csMathHeading_tl {.}
+}
+
+\cs_new:Npn \csMathParheadFont
+{
+    \normalfont \bfseries \boldmath
+}
+
+\cs_new:Npn \csMathSubparheadFont
+{
+    \normalfont \scshape
+}
+
+\cs_new:Npn \csMathSectionFont
+{
+    \normalfont \bfseries \Large
+}
+
+\cs_new:Npn \csMathSubsectionFont
+{
+    \normalfont \bfseries \large
+}
+
+\cs_new:Npn \csMathSubsubsectionFont
+{
+    \normalfont \bfseries \normalsize
+}
+
+\cs_new_protected:Npn \csMathParagraph #1#2
+{
+    \par
+    \smallskip \noindent
+    {
+        #1\ignorespaces \csMathPunctuate {#2}
+    }
+    \hskip .30em\ignorespaces
+}
+
+\NewDocumentCommand \parhead {m}
+{
+    \csMathParagraph \csMathParheadFont {#1}
+}
+
+\NewDocumentCommand \subparhead {m}
+{
+    \csMathParagraph \csMathSubparheadFont {#1}
+}
+\tl_if_eq:NnT \csMathParagraphs {runin}
+{
+    \AddToHook {begindocument} [csmath/paragraphs]
+    {
+        \RenewDocumentCommand \paragraph {som}
+        {
+            \parhead {#3}
+        }
+        \RenewDocumentCommand \subparagraph {som}
+        {
+            \subparhead {#3}
+        }
+    }
+}
+
+\cs_new_protected:Npn \csMathHeadingFont #1#2
+{
+    \str_case:nnF {#2}
+    {
+        {normal}
+        {
+            \cs_set:Npn #1 {\normalfont}
+        }
+        {roman}
+        {
+            \cs_set:Npn #1
+            {
+                \normalfont \rmfamily
+            }
+        }
+        {bold}
+        {
+            \cs_set:Npn #1
+            {
+                \normalfont \bfseries
+            }
+        }
+        {italic}
+        {
+            \cs_set:Npn #1
+            {
+                \normalfont \itshape
+            }
+        }
+        {italics}
+        {
+            \cs_set:Npn #1
+            {
+                \normalfont \itshape
+            }
+        }
+        {smallcaps}
+        {
+            \cs_set:Npn #1
+            {
+                \normalfont \scshape
+            }
+        }
+        {sans}
+        {
+            \cs_set:Npn #1
+            {
+                \normalfont \sffamily
+            }
+        }
+        {boldsans}
+        {
+            \cs_set:Npn #1
+            {
+                \normalfont \sffamily \bfseries
+            }
+        }
+    }
+    {
+        \cs_set:Npn #1 {#2}
+    }
+}
+
+\cs_new_protected:Npn \csMathTheoremFont #1#2#3
+{
+    \cs_if_exist:NTF \CsthmSetupFamily
+    {
+        \CsthmSetupFamily {#1}
+        {
+            #2 = {#3}
+        }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Book Headers
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+        \str_if_eq:eeT
+        {
+            \CsthmConfiguration {appearance}
+        } {legacy-book}
+        {
+            \str_if_eq:nnT {#1/#2} {definition/head-font}
+            {
+                \CsthmSetupFamily {definition}
+                {
+                    start-symbol = {}
+                }
+            }
+        }
+    }
+    {
+        \PackageError {csmath} {Theorem~fonts~require~csthm~ownership} {Select~a~theorem~style.}
+    }
+}
+\keys_define:nn {csmath/docufont}
+{
+    parhead .code:n =
+        {
+            \csMathHeadingFont \csMathParheadFont {#1}
+        },
+    parheadfont .meta:n =
+        {
+            parhead = {#1}
+        },
+    subparhead .code:n =
+        {
+            \csMathHeadingFont \csMathSubparheadFont {#1}
+        },
+    subparheadfont .meta:n =
+        {
+            subparhead = {#1}
+        },
+    section .code:n =
+        {
+            \csMathRequireFeature {layout} {docufont/section}
+            \csMathHeadingFont \csMathSectionFont {#1}
+        },
+    sections .meta:n =
+        {
+            section = {#1}
+        },
+    subsection .code:n =
+        {
+            \csMathRequireFeature {layout} {docufont/subsection}
+            \csMathHeadingFont \csMathSubsectionFont {#1}
+        },
+    subsubsection .code:n =
+        {
+            \csMathRequireFeature {layout} {docufont/subsubsection}
+            \csMathHeadingFont \csMathSubsubsectionFont {#1}
+        },
+    theoremhdr .code:n =
+        {
+            \csMathTheoremFont {theorem} {head-font} {#1}
+        },
+    theorembody .code:n =
+        {
+            \csMathTheoremFont {theorem} {body-font} {#1}
+        },
+    definitionhdr .code:n =
+        {
+            \csMathTheoremFont {definition} {head-font} {#1}
+        },
+    defintionhdr .meta:n =
+        {
+            definitionhdr = {#1}
+        },
+    definitionbody .code:n =
+        {
+            \csMathTheoremFont {definition} {body-font} {#1}
+        },
+    remarkhdr .code:n =
+        {
+            \csMathTheoremFont {remark} {head-font} {#1}
+        },
+    remarkbody .code:n =
+        {
+            \csMathTheoremFont {remark} {body-font} {#1}
+        },
+    highlighthdr .code:n =
+        {
+            \csMathTheoremFont {highlight} {head-font} {#1}
+        },
+    highlightbody .code:n =
+        {
+            \csMathTheoremFont {highlight} {body-font} {#1}
+        },
+    unknown .code:n =
+        {
+            \PackageError {csmath}
+            {
+                Unsupported~docufont~key~\l_keys_key_str
+            }
+            {Document~fonts~are~fixed~by~font=...;~use~documented~paragraph,~layout~or~theorem~group~keys.}
+        }
+}
+
+\NewDocumentCommand \docufont {m}
+{
+    \keys_set:nn {csmath/docufont} {#1}
+}
+\@onlypreamble \docufont
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Optional Packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\csMathIfFeature {table}
+{
+    \RequirePackage
+    [
+        dvipsnames,
+        table,
+        x11names
+    ] {xcolor}
+    \RequirePackage
+    {
+        array,
+        booktabs,
+        tabularx,
+        longtable,
+        multirow,
+        makecell,
+        threeparttable,
+        tabularray
+    }
+}
+\csMathIfFeature {caption}
+{
+    \RequirePackage
+    {
+        caption,
+        subcaption
+    }
+    \tl_if_eq:NnF \csMathMode {venue}
+    {
+        \captionsetup
+        {
+            font =
+                {
+                    rm,
+                    small
+                },
+            labelfont =
+                {
+                    sc,
+                    small
+                },
+            labelsep = period,
+            skip = 5pt,
+            justification = justified
+        }
+    }
+}
+\csMathIfFeature {float}
+{
+    \RequirePackage {floatrow}
+}
+\csMathIfFeature {graphics}
+{
+    \RequirePackage
+    {
+        graphicx,
+        adjustbox
+    }
+}
+\csMathIfFeature {lists}
+{
+    \RequirePackage {enumitem}
+    \RequirePackage
+    [
+        oldenum,
+        olditem
+    ] {paralist}
+    \setlist
+    {
+        nosep,
+        noitemsep
+    }
+    \setlist
+    [
+        enumerate,
+        1
+    ]
+    {
+        label = (\arabic *)
+    }
+    \tl_if_eq:NnTF \csMathMode {book}
+    {
+        \setlist
+        [
+            enumerate,
+            2
+        ]
+        {
+            label = (\alph *)
+        }
+    }
+    {
+        \setlist
+        [
+            enumerate,
+            2
+        ]
+        {
+            label = (\roman *)
+        }
+    }
+    \setlist
+    [
+        enumerate,
+        3
+    ]
+    {
+        label = (\Roman *)
+    }
+    \setlist
+    [
+        itemize,
+        1
+    ]
+    {
+        label = \ensuremath {\bullet}
+    }
+    \setlist
+    [
+        itemize,
+        2
+    ]
+    {
+        label = \ensuremath {\circ}
+    }
+    \setlist
+    [
+        itemize,
+        3
+    ]
+    {
+        label = \ensuremath {\star}
+    }
+}
+\csMathIfFeature {quotes}
+{
+    \RequirePackage
+    [
+        autostyle = true,
+        csdisplay = true
+    ] {csquotes}
+    \RequirePackage
+    {
+        dirtytalk,
+        soul,
+        xspace
+    }
+    \RequirePackage [normalem] {ulem}
+}
+\csMathIfFeature {microtype}
+{
+    \RequirePackage {microtype}
+    \microtypesetup
+    {
+        activate = true,
+        expansion = true,
+        factor = 1500,
+        protrusion = true,
+        stretch = 30
+    }
+    \UseMicrotypeSet [protrusion] {basicmath}
+    \UseMicrotypeSet [expansion] {alltext}
+    \SetExpansion
+    {
+        encoding = *,
+        family = *
+    }
+    {
+        stretch = 30,
+        shrink = 30,
+        step = 1
+    }
+    \SetProtrusion
+    {
+        encoding = *,
+        family = *
+    }
+    {
+        period = {,50},
+        comma = {,40},
+        colon = {,30},
+        semicolon = {,30}
+    }
+}
+\csMathIfFeature {index}
+{
+    \RequirePackage
+    [
+        makeindex,
+        noautomatic
+    ] {imakeidx}
+    \makeindex [intoc,
+        title = {Index},
+        columns = 2]
+}
+
+\NewDocumentCommand \term {m}
+{
+    \csMathRequireFeature {index} {term}
+    \index {#1}
+    \textit {#1}
+}
+\ExplSyntaxOff
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Nested Bars
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\csMathIfFeature{boxes}%
+{ %
+    \RequirePackage{framed}
+    \long \def \csMathCustomFBox #1#2#3#4#5#6#7#8#9%
+    {%
+        \leavevmode \begingroup
+        \setbox \@tempboxa \hbox
+        {%
+            \color@begingroup \kern \fboxsep{#9}%
+            \kern \fboxsep \color@endgroup
+        }%
+        \hbox
+        {%
+            \begingroup \@tempdima #4\relax
+            \advance \@tempdima \fboxsep \advance \@tempdima \dp \@tempboxa
+            \expandafter \endgroup \expandafter
+            \lower \the \@tempdima \hbox
+            {%
+                \vbox
+                {%
+                    \hrule \@height #3\@width #7\relax #1%
+                    \hbox
+                    {%
+                        \vrule \@width #5\relax \hspace{#8}%
+                        \vbox
+                        {%
+                            \vskip \fboxsep \copy \@tempboxa \vskip \fboxsep
+                        }%
+                        \vrule \@width #6\relax
+                    }%
+                    #2\hrule \@height #4\@width #7\relax
+                }%
+            }%
+        }%
+        \endgroup
+    }
+
+    \def \csMathOpenFBox #1#2%
+    {%
+        \fboxsep \FrameSep
+        \csMathCustomFBox{}{}{#1}{#2}%
+        \FrameRule \z@{1em}{0.4em}%
+    }
+
+    \NewDocumentEnvironment{nestedbar}%
+    {%
+        O{\hsize}%
+    }%
+    {%
+        \@ifundefined{OuterFrameSep}%
+        {%
+            \@latex@error{nestedbar requires a recent framed.sty}\@ehd
+        }{}%
+        \def \FrameCommand
+        {%
+            \csMathOpenFBox \FrameRule \FrameRule
+        }%
+        \def \FirstFrameCommand
+        {%
+            \csMathOpenFBox \FrameRule \z@
+        }%
+        \def \MidFrameCommand
+        {%
+            \csMathOpenFBox \z@ \z@
+        }%
+        \def \LastFrameCommand
+        {%
+            \csMathOpenFBox \z@ \FrameRule
+        }%
+        \OuterFrameSep =1ex\FrameSep =0pt
+        \MakeFramed
+        {%
+            \hsize #1\advance \hsize -\width \FrameRestore
+        }%
+        \smallskip
+    }%
+    {%
+        \smallskip \endMakeFramed
+    }
+
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Document Layout
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ExplSyntaxOn
+\cs_new_protected:Npn \csMathIfBook #1#2
+{
+    \tl_if_eq:NnTF \csMathMode {book} {#1} {#2}
+}
+\ExplSyntaxOff
+\csMathIfFeature{layout}%
+{ %
+    \RequirePackage[margin=1in]{geometry}
+    \RequirePackage
+    {%
+        titlesec,%
+        titling,%
+        setspace,%
+        emptypage,%
+        moresize,%
+        multicol%
+    }
+    \RequirePackage[auth-sc]{authblk}
+    \def \csMathPartFont
+    {%
+        \normalfont \raggedleft
+    }
+    \def \csMathPartLabelFont
+    {%
+        \huge \scshape
+    }
+    \def \csMathChapterFont
+    {%
+        \huge \sffamily \raggedleft
+    }
+    \def \csMathChapterLabelFont
+    {%
+        \normalfont \scshape
+    }
+    \def \csMathSectionNumberFont{\normalfont}
+
+    \NewDocumentCommand{\partfont} {m}%
+    {%
+        \def \csMathPartFont{#1}%
+    }
+    \NewDocumentCommand{\partlabelfont} {m}%
+    {%
+        \def \csMathPartLabelFont{#1}%
+    }
+    \NewDocumentCommand{\chapterfont} {m}%
+    {%
+        \def \csMathChapterFont{#1}%
+    }
+    \NewDocumentCommand{\chapterlabelfont} {m}%
+    {%
+        \def \csMathChapterLabelFont{#1}%
+    }
+    \NewDocumentCommand{\sectionfont} {m}%
+    {%
+        \def \csMathSectionFont{#1}%
+    }
+    \NewDocumentCommand{\sectionnumfont} {m}%
+    {%
+        \def \csMathSectionNumberFont{#1}%
+    }
+    \NewDocumentCommand{\subsectionfont} {m}%
+    {%
+        \def \csMathSubsectionFont{#1}%
+    }
+    \NewDocumentCommand{\subsubsectionfont}{m}%
+    {%
+        \def \csMathSubsubsectionFont{#1}%
+    }
+
+    \def \csMathInstitute{}
+    \def \csMathSubtitle{}
+    \NewDocumentCommand{\institute}{m}%
+    {%
+        \def \csMathInstitute{#1}%
+    }
+    \NewDocumentCommand{\subtitle} {m}%
+    {%
+        \def \csMathSubtitle{#1}%
+    }
+
+    \def \csMathAuthorFont
+    {%
+        \normalsize \scshape
+    }
+    \def \csMathInstituteFont
+    {%
+        \small \normalfont
+    }
+    \def \csMathDateFont{\normalfont}
+    \def \csMathSubtitleFont{\normalfont}
+    \def \csMathTitleFont{\normalfont}
+    \NewDocumentCommand{\authorfont} {m}%
+    {%
+        \def \csMathAuthorFont{#1}%
+    }
+    \NewDocumentCommand{\institutefont}{m}%
+    {%
+        \def \csMathInstituteFont{#1}%
+    }
+    \NewDocumentCommand{\datefont} {m}%
+    {%
+        \def \csMathDateFont{#1}%
+    }
+    \NewDocumentCommand{\subtitlefont} {m}%
+    {%
+        \def \csMathSubtitleFont{#1}%
+    }
+    \NewDocumentCommand{\titlefont} {m}%
+    {%
+        \def \csMathTitleFont{#1}%
+    }
+
+    \newlength{\goldenunit}
+    \setlength{\goldenunit}{1cm}
+
+
+    \csMathIfBook
+    { %
+        \RequirePackage{fancyhdr}
+        \pagestyle{fancy}
+        \fancyhf{}
+        \RenewDocumentCommand{\headrulewidth}{}{0.5pt}
+        \RenewDocumentCommand{\chaptermark}{m}%
+        {%
+            \markboth
+            {%
+                \scshape #1%
+            }{}%
+        }
+        \RenewDocumentCommand{\sectionmark}{m}%
+        {%
+            \markright
+            {%
+                \scshape #1%
+            }%
+        }
+
+        \newcommand{\csMathPageNumber}{\thepage}
+        \csMathIfFeature{lastpage}%
+        {%
+            \RequirePackage{lastpage}
+            \renewcommand{\csMathPageNumber}%
+            {%
+                \thepage \,/\,\pageref{LastPage}%
+            }%
+        }
+
+        \AtBeginDocument
+        {%
+            \fancyhead[CE]%
+            {%
+                \small \scshape \@title
+            }
+            \fancyhead[CO]%
+            {%
+                \small \scshape \rightmark
+            }
+            \fancyhead
+            [%
+                LE,%
+                RO%
+            ]%
+            {%
+                \small \csMathPageNumber
+            }
+            \fancyfoot[C]{}%
+        }
+
+        \def \csMathSectionFont
+        {%
+            \large \centering \scshape
+        }
+        \def \csMathSubsectionFont
+        {%
+            \normalfont \normalsize \scshape \centering
+        }
+        \def \csMathSubsubsectionFont
+        {%
+            \normalfont \normalsize \scshape
+        }
+        \titleformat{\part}[display]
+        {\csMathPartFont}
+        {%
+            \csMathPartLabelFont \partname \enspace \thepart
+        }
+        {8pt}
+        {%
+            \titlerule [1pt]\bigskip \Huge
+        }
+        [%
+            {%
+                \bigskip \titlerule [1pt]%
+            }]
+
+        \titlespacing *{\part}{0pt}{\fill}{\fill}
+
+        \titleformat{\chapter}[display]
+        {\filcenter}
+        {%
+            \raggedleft \csMathChapterLabelFont
+            {%
+                \enspace \chaptername
+            }%
+            \enspace
+            {%
+                \Huge \thechapter
+            }%
+            \medskip
+        }
+        {0.3ex}
+        {%
+            \titlerule [1pt]\vskip 2.5ex\csMathChapterFont
+        }
+        [%
+            {%
+                \medskip \titlerule [1pt]%
+            }]
+
+        \titleformat{\section}[block]
+        {\csMathSectionFont}
+        {}
+        {1em}
+        {%
+            {%
+                \csMathSectionNumberFont \textsection \;\thesection
+            }%
+            \enspace
+        }
+        []
+
+        \titleformat{\subsection}[runin]
+        {\csMathSubsectionFont}
+        {%
+            \textsection \textsection \;\thesubsection
+        }
+        {1em}
+        {}[.]
+
+        \titleformat{\subsubsection}[runin]
+        {\csMathSubsubsectionFont}
+        {%
+            \thesubsubsection .%
+        }
+        {1em}
+        {}[.]
+
+        \titlespacing *{\subsubsection}{0pt}{1em}{1em}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Table of contents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+        \RequirePackage{etoc}
+        \RequirePackage[nottoc]{tocbibind}
+
+        \etocsetstyle{part}
+        {%
+            \addvspace
+            {%
+                2.618\baselineskip
+            }%
+            \etocskipfirstprefix
+        }
+        {%
+            \addvspace
+            {%
+                0.382\baselineskip
+            }%
+        }
+        { %
+            \vskip 0.618\baselineskip
+            \titlerule
+            \vskip 0.382\baselineskip
+            \noindent \normalsize \scshape \etocnumber \enspace \etocname\par
+            \vskip 0.382\baselineskip
+            \titlerule
+            \addvspace
+            {%
+                0.618\baselineskip
+            }
+        }
+        {}
+
+        \etocsetstyle{chapter}
+        {}
+        {%
+            \addvspace
+            {%
+                0.382\baselineskip
+            }%
+        }
+        { %
+            \noindent \normalsize \normalfont
+            \makebox [2em][l]{\etocnumber}
+            \scshape \etocname \nobreak
+            \leaders \hbox
+            {%
+                $\m@th \mkern 4.5mu.\mkern 4.5mu$%
+            }%
+            \hfill
+            \nobreak
+            \makebox [1.5em][r]%
+            {%
+                \normalfont \small \etocpage
+            }
+            \par
+        }
+        {}
+
+        \etocsetstyle{section}
+        {}
+        {}
+        { %
+            \noindent \small \normalfont \hspace{2.15em}
+            \makebox [2em][l]{\etocnumber}
+            \etocname \nobreak
+            \leaders \hbox
+            {%
+                $\m@th \mkern 4.5mu.\mkern 4.5mu$%
+            }%
+            \hfill
+            \nobreak
+            \makebox [1.5em][r]{\etocpage}
+            \par
+        }
+        {}
+
+        \etocsetstyle{subsection}{}{}{}{}
+
+        \etocsettocstyle
+        {%
+            \chapter *{\contentsname}%
+            \addvspace
+            {%
+                1.618\baselineskip
+            }%
+        }
+        {}
+
+        \RenewDocumentCommand{\maketitlehooka}{}%
+        {%
+            \thispagestyle{empty}%
+            \null \vskip 0.12\textheight \relax
+            \begin{flushleft}%
+            \rule{\textwidth}{1pt}%
+            \par
+            \vspace
+            {%
+                0.618\goldenunit
+            }%
+        }
+        \RenewDocumentCommand{\maketitlehookd}{}%
+        {%
+            \end{flushleft}%
+            \cleardoublepage
+        }
+
+        \pretitle
+        {%
+            \fontsize{52}{56}%
+            \selectfont \csMathTitleFont
+        }
+        \posttitle
+        {%
+            \par
+            \vspace
+            {%
+                -\goldenunit
+            }%
+            \rule{\textwidth}{1pt}%
+            \par
+            \ifx \csMathSubtitle \@empty
+                \vspace
+                {%
+                    1.618\goldenunit
+                }%
+            \else
+                \vspace{\goldenunit}%
+                {%
+                    \large \csMathSubtitleFont $\diamond $\enspace \csMathSubtitle \enspace $\diamond $\par
+                }%
+                \vspace
+                {%
+                    1.618\goldenunit
+                }%
+            \fi
+        }
+
+        \preauthor
+        {%
+            \large \csMathAuthorFont
+        }
+        \postauthor
+        {%
+            \par
+            {%
+                \csMathInstituteFont \csMathInstitute\par
+            }%
+            \vfill
+        }
+
+        \predate
+        {%
+            \rule{\textwidth}{1pt}%
+            \par
+            \vspace
+            {%
+                0.618\goldenunit
+            }%
+            \large \csMathDateFont
+        }
+        \postdate{\par
+        }
+
+        \RenewDocumentCommand{\Authfont}{}{\csMathAuthorFont}
+        \RenewDocumentCommand{\Affilfont}{}{\csMathInstituteFont}
+
+
+    }%
+    { %
+        \titleformat{\section}{\csMathSectionFont}%
+        {%
+            \thesection \quad
+        }{0pt}{}
+        \titleformat{\subsection}{\csMathSubsectionFont}%
+        {%
+            \thesubsection \quad
+        }{0pt}{}
+        \titleformat{\subsubsection}[runin]{\csMathSubsubsectionFont}%
+        {%
+            \thesubsubsection .%
+        }{.5em}{}[.]
+        \pretitle
+        {%
+            \begin{center}%
+            \csMathTitleFont \bfseries \Large
+        }
+        \posttitle
+        {%
+            \par
+            {%
+                \large \csMathSubtitleFont \csMathSubtitle\par
+            }%
+            \end{center}%
+        }
+        \preauthor
+        {%
+            \begin{center}%
+            \csMathAuthorFont
+        }
+        \postauthor
+        {%
+            \par
+            {%
+                \csMathInstituteFont \csMathInstitute\par
+            }%
+            \end{center}%
+        }
+        \predate
+        {%
+            \begin{center}%
+            \small \csMathDateFont
+        }
+        \postdate
+        {%
+            \par
+            \end{center}%
+        }
+        \renewcommand{\Authfont}{\csMathAuthorFont}
+        \renewcommand{\Affilfont}{\csMathInstituteFont}
+    }
+    \csMathIfFeature{sanshdr}
+    {%
+        \def \csMathParheadFont
+        {%
+            \normalfont \sffamily \bfseries \boldmath
+        }
+        \def \csMathSubparheadFont
+        {%
+            \normalfont \sffamily \bfseries
+        }
+        \def \csMathSectionFont
+        {%
+            \normalfont \sffamily \bfseries \Large
+        }
+        \def \csMathSubsectionFont
+        {%
+            \normalfont \sffamily \bfseries \large
+        }
+        \def \csMathSubsubsectionFont
+        {%
+            \normalfont \sffamily \bfseries \normalsize
+        }
+        \def \csMathTitleFont
+        {%
+            \normalfont \sffamily
+        }%
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Annotations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\csMathIfFeature{annotations}%
+{ %
+    \RequirePackage
+    [%
+        dvipsnames,%
+        table,%
+        x11names%
+    ]{xcolor}
+    \RequirePackage{marginnote}
+    \definecolor{csMathCrimson}{rgb}{.864,.08,.235}
+    \RequirePackage[normalem]{ulem}
+}
+\ExplSyntaxOn
+\cs_new_protected:Npn \csMathAnnotation #1#2
+{
+    \csMathRequireFeature {annotations} {annotation~commands}
+    \csMathIfFeature {draft}
+    {
+        {
+            \color {#1}#2
+        }
+        \marginnote
+        {
+            \textcolor {#1}
+            {
+                \LARGE $\star $
+            }
+        }
+    }
+}
+
+\cs_new_protected:Npn \csMathAcceptedText #1#2
+{
+    \csMathRequireFeature {annotations} {annotation~commands}
+    \prop_get:NnN \g_csMathChoices_prop {draft} \l_tmpa_tl
+    \tl_if_eq:NnTF \l_tmpa_tl {true}
+    {
+        \csMathAnnotation {#1} {#2}
+    } {#2}
+}
+
+\NewDocumentCommand \added {+m}
+{
+    \csMathAcceptedText {OliveGreen} {#1}
+}
+
+\NewDocumentCommand \changed {+m}
+{
+    \csMathAcceptedText {PineGreen} {#1}
+}
+
+\NewDocumentCommand \citelater {+m}
+{
+    \csMathAnnotation {WildStrawberry} {[#1]}
+}
+
+\NewDocumentCommand \fixme {+m}
+{
+    \csMathAnnotation {OrangeRed}
+    {
+        [\textsc {Fix-me}:~#1]
+    }
+}
+
+\NewDocumentCommand \missing {+m}
+{
+    \csMathAnnotation {csMathCrimson} {#1}
+}
+
+\NewDocumentCommand \notes {+m}
+{
+    \csMathAnnotation {ForestGreen}
+    {
+        [\textsc {Note}:~#1]
+    }
+}
+
+\NewDocumentCommand \query {+m}
+{
+    \csMathAnnotation {RoyalPurple}
+    {
+        [\textsc {Query}:~#1]
+    }
+}
+
+\NewDocumentCommand \removed {+m}
+{
+    \csMathAnnotation {Periwinkle}
+    {
+        [\textsc {Removed}:~#1]
+    }
+}
+
+\NewDocumentCommand \todo {+m}
+{
+    \csMathAnnotation {Mahogany}
+    {
+        [\textsc {To-do}:~#1]
+    }
+}
+
+\NewDocumentCommand \XXX
+{
+    O {XXX}
+}
+{
+    \csMathRequireFeature {annotations} {XXX}
+    \prop_get:NnN \g_csMathChoices_prop {draft} \l_tmpa_tl
+    \tl_if_eq:NnTF \l_tmpa_tl {true}
+    {
+        \csMathAnnotation {PaleVioletRed3}
+        {
+            \sffamily \bfseries [#1]
+        }
+    }
+    {
+        \PackageError {csmath} {XXX~found~in~final~mode} {Remove~all~XXX~flags~before~submission.}
+    }
+}
+
+\NewDocumentCommand \newguymarker {mmm}
+{
+    \csMathRequireFeature {annotations} {newguymarker}
+    \tl_if_single_token:nTF {#1}
+    {
+        \token_if_cs:NTF #1
+        {
+            \NewDocumentCommand #1 {+m}
+            {
+                \csMathAnnotation {#3}
+                {
+                    ##1\ \textsc {#2}
+                }
+            }
+        }
+        {
+            \exp_args:Nc \NewDocumentCommand {#1} {+m}
+            {
+                \csMathAnnotation {#3}
+                {
+                    ##1\ \textsc {#2}
+                }
+            }
+        }
+    }
+    {
+        \exp_args:Nc \NewDocumentCommand {#1} {+m}
+        {
+            \csMathAnnotation {#3}
+            {
+                ##1\ \textsc {#2}
+            }
+        }
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Configuration Finalization
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clist_map_inline:nn
+{
+    annotations,
+    boxes,
+    caption,
+    float,
+    graphics,
+    index,
+    lastpage,
+    layout,
+    lists,
+    microtype,
+    quotes,
+    references,
+    sanshdr,
+    table
+}
+{
+    \csMathDefault {#1} {false}
+}
+\ExplSyntaxOff
+\makeatother
+\endinput
