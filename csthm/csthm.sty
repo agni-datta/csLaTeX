@@ -1,370 +1,1398 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% csthm.sty — Theorem environment suite for theoretical computer science
-%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Csthm
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Author  : Agni Datta
 % GitHub  : https://github.com/agni-datta/csLaTeX
 % License : LPPL v1.3c
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{csthm}[2026/08/25 v3.3 Theorem environment suite for theoretical computer science]
+\NeedsTeXFormat{LaTeX2e}[2022/06/01]
+\ProvidesPackage{csthm}[2026/10/10 v4.2.1 Theorem environment suite for theoretical computer science]
 
-\RequirePackage{l3keys2e}
 \makeatletter
 \ExplSyntaxOn
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Options
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\bool_new:N \g_csthm_fancy_bool
-\bool_new:N \g_csthm_normal_bool
-\bool_new:N \g_csthm_oldschool_bool
-
-\keys_define:nn { csthm }
+\tl_new:N \csThmStyle
+\tl_new:N \csThmNumberWithin
+\tl_new:N \csThmCleveref
+\bool_new:N \csThmUseFrame
+\bool_new:N \g_csThmInitialized_bool
+\tl_new:N \csThmCounters
+\tl_new:N \csThmFamilies
+\tl_new:N \csThmStarred
+\tl_new:N \csThmSolution
+\tl_new:N \csThmAppearance
+\tl_new:N \g_csThmFamilyOptions_tl
+\cs_new_protected:Npn \csThmSelectOption #1#2#3
 {
-	normal    .code:n = { \bool_gset_true:N \g_csthm_normal_bool    } ,
-	fancy     .code:n = { \bool_gset_true:N \g_csthm_fancy_bool     } ,
-	oldschool .code:n = { \bool_gset_true:N \g_csthm_oldschool_bool } ,
-	unknown   .code:n = { \PackageWarning{csthm}{Unrecognised~option~`#1'} } ,
-}
-\ProcessKeysOptions { csthm }
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Core packages
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage{amsmath}
-\RequirePackage{amssymb}
-\@ifpackageloaded{ntheorem}{%
-	\@ifpackagewith{ntheorem}{amsmath}{}{%
-		\PackageError{csLaTeX}{ntheorem was loaded without its amsmath option}
-		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
-	}
-	\@ifpackagewith{ntheorem}{amsthm}{}{%
-		\PackageError{csLaTeX}{ntheorem was loaded without its amsthm option}
-		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
-	}
-	\@ifpackagewith{ntheorem}{hyperref}{}{%
-		\PackageError{csLaTeX}{ntheorem was loaded without its hyperref option}
-		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
-	}
-	\@ifpackagewith{ntheorem}{thmmarks}{}{%
-		\PackageError{csLaTeX}{ntheorem was loaded without its thmmarks option}
-		{Load ntheorem with the amsmath, amsthm, hyperref, and thmmarks options.}%
-	}
-}{%
-	\@ifpackageloaded{amsthm}{%
-		\@ifclassloaded{amsart}{}{%
-			\@ifclassloaded{amsbook}{}{%
-				\PackageError{csLaTeX}{amsthm.sty is incompatible with this ntheorem backend}
-				{Remove the explicit amsthm package load.}%
-			}%
-		}%
-	}{}
-	% AMS classes predefine these styles and proof commands. ntheorem owns them after this point.
-	\@ifclassloaded{amsart}{\let\th@plain\relax\let\th@definition\relax\let\th@remark\relax}{}
-	\@ifclassloaded{amsbook}{\let\th@plain\relax\let\th@definition\relax\let\th@remark\relax}{}
-	\let\proof\relax
-	\let\endproof\relax
-	\let\proofname\relax
-	\let\openbox\relax
-	\RequirePackage[amsmath,amsthm,hyperref,thmmarks]{ntheorem}%
+    \bool_if:NTF \g_csThmInitialized_bool
+    {
+        \tl_if_eq:NnF #1 {#3}
+        {
+            \PackageError {csthm} {Theorem~configuration~is~fixed:~#2}
+            {Select~counter,~family,~star~and~appearance~options~at~the~initial~package~load.}
+        }
+    }
+    {
+        \tl_if_empty:NTF #1
+        {
+            \tl_gset:Nn #1 {#3}
+        }
+        {
+            \tl_if_eq:NnF #1 {#3}
+            {
+                \PackageError {csthm} {Conflicting~#2~selections} {Choose~one~value~for~#2.}
+            }
+        }
+    }
 }
 
-% TeX Live 2026's ntheorem drops an end mark after ordinary text when no trailing skip is present.
-\@ifundefined{cslatex@ntheoremendmarkpatched}{%
-	\gdef\@endtrivlist#1{%
-		\if@inlabel \indent\fi
-		\if@newlist \@noitemerr\fi
-		\ifhmode
-			\ifdim\lastskip >\z@ \unskip\fi
-			#1\unskip\par
-		\fi
-		\if@noparlist\else
-			\ifdim\lastskip >\z@
-				\@tempskipa\lastskip \vskip-\lastskip
-				\advance\@tempskipa\parskip \advance\@tempskipa-\@outerparskip
-				\vskip\@tempskipa
-			\fi
-			\@endparenv
-		\fi
-	}%
-	\global\let\cslatex@ntheoremendmarkpatched\@empty
-}{}
-\RequirePackage{enumitem}
-\RequirePackage{iftex}
-\RequirePackage[
-	skipabove   = 0.75\baselineskip ,
-	skipbelow   = 0.75\baselineskip ,
-	framemethod = TikZ
-]{mdframed}
-\RequirePackage[dvipsnames,table,x11names]{xcolor}
+\msg_new:nnn {csthm} {conflicting-styles}
+{Conflicting~styles~'#1'~and~'#2'.~Select~one~csthm~style.}
+\cs_new_protected:Npn \csThmSelectStyle #1
+{
+    \bool_if:NTF \g_csThmInitialized_bool
+    {
+        \tl_if_eq:NnF \csThmStyle {#1}
+        {
+            \PackageError {csthm} {Theorem~configuration~is~fixed:~style}
+            {Select~a~style~at~initial~load.}
+        }
+    }
+    {
+        \tl_if_empty:NTF \csThmStyle
+        {
+            \tl_gset:Nn \csThmStyle {#1}
+        }
+        {
+            \tl_if_eq:NnF \csThmStyle {#1}
+            {
+                \msg_error:nnxx {csthm} {conflicting-styles} {\csThmStyle} {#1}
+            }
+        }
+    }
+}
+\keys_define:nn {csthm}
+{
+    style .choice:,
+    style/normal .code:n =
+        {
+            \csThmSelectStyle {normal}
+        },
+    style/fancy .code:n =
+        {
+            \csThmSelectStyle {fancy}
+        },
+    style/oldschool .code:n =
+        {
+            \csThmSelectStyle {oldschool}
+        },
+    style .value_required:n = true,
+    normal .code:n =
+        {
+            \csThmSelectStyle {normal}
+        },
+    fancy .code:n =
+        {
+            \csThmSelectStyle {fancy}
+        },
+    oldschool .code:n =
+        {
+            \csThmSelectStyle {oldschool}
+        },
+    normal .value_forbidden:n = true,
+    fancy .value_forbidden:n = true,
+    oldschool .value_forbidden:n = true,
+    numberwithin .choices:nn =
+        {
+            section,
+            chapter,
+            none
+        }
+        {
+            \exp_args:NNnV \csThmSelectOption \csThmNumberWithin {numberwithin} \l_keys_choice_tl
+        },
+    numberwithin .value_required:n = true,
+    cleveref .choices:nn =
+        {
+            auto,
+            true,
+            false
+        }
+        {
+            \exp_args:NNnV \csThmSelectOption \csThmCleveref {cleveref} \l_keys_choice_tl
+        },
+    cleveref .default:n = true,
+    counters .choices:nn =
+        {
+            independent,
+            shared
+        }
+        {
+            \exp_args:NNnV \csThmSelectOption \csThmCounters {counters} \l_keys_choice_tl
+        },
+    counters .value_required:n = true,
+    families .choices:nn =
+        {
+            standard,
+            extended
+        }
+        {
+            \exp_args:NNnV \csThmSelectOption \csThmFamilies {families} \l_keys_choice_tl
+        },
+    families .value_required:n = true,
+    starred .choices:nn =
+        {
+            unnumbered,
+            legacy,
+        }
+        {
+            \exp_args:NNnV \csThmSelectOption \csThmStarred {starred} \l_keys_choice_tl
+        },
+    starred .value_required:n = true,
+    appearance .choices:nn =
+        {
+            modern,
+            legacy-article,
+            legacy-book,
+        }
+        {
+            \exp_args:NNnV \csThmSelectOption \csThmAppearance {appearance} \l_keys_choice_tl
+        },
+    appearance .value_required:n = true,
+    solution .choices:nn =
+        {
+            theorem,
+            proof
+        }
+        {
+            \exp_args:NNnV \csThmSelectOption \csThmSolution {solution} \l_keys_choice_tl
+        },
+    solution .value_required:n = true,
+    family-style .code:n =
+        {
+            \bool_if:NTF \g_csThmInitialized_bool
+            {
+                \PackageError {csthm} {Use~CsthmSetupFamily~for~preamble~styling} {Package~configuration~is~already~fixed.}
+            }
+            {
+                \tl_gput_right:Nn \g_csThmFamilyOptions_tl {#1,}
+            }
+        },
+    family-style .value_required:n = true,
+}
+\ProcessKeyOptions [csthm]
+\tl_if_empty:NT \csThmNumberWithin
+{
+    \tl_gset:Nn \csThmNumberWithin {section}
+}
+\tl_if_empty:NT \csThmCleveref
+{
+    \tl_gset:Nn \csThmCleveref {auto}
+}
+\tl_if_empty:NT \csThmCounters
+{
+    \tl_gset:Nn \csThmCounters {independent}
+}
+\tl_if_empty:NT \csThmFamilies
+{
+    \tl_gset:Nn \csThmFamilies {standard}
+}
+\tl_if_empty:NT \csThmStarred
+{
+    \tl_gset:Nn \csThmStarred {unnumbered}
+}
+\tl_if_empty:NT \csThmAppearance
+{
+    \tl_gset:Nn \csThmAppearance {modern}
+}
+\tl_if_empty:NT \csThmSolution
+{
+    \tl_gset:Nn \csThmSolution {theorem}
+}
+\str_case:Vn \csThmAppearance
+{
+    {legacy-article}
+    {
+        \csThmSelectStyle {oldschool}
+    }
+    {legacy-book}
+    {
+        \csThmSelectStyle {normal}
+    }
+}
+\tl_if_empty:NT \csThmStyle
+{
+    \tl_if_eq:NnT \csThmFamilies {extended}
+    {
+        \PackageError {csthm} {Extended~families~require~a~style} {Select~normal,~fancy~or~oldschool.}
+    }
+}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\NewExpandableDocumentCommand \CsthmConfiguration {m}
+{
+    \str_case:nn {#1}
+    {
+        {style} {\csThmStyle} {numberwithin} {\csThmNumberWithin}
+        {cleveref} {\csThmCleveref} {counters} {\csThmCounters}
+        {solution} {\csThmSolution} {families} {\csThmFamilies} {starred} {\csThmStarred} {appearance} {\csThmAppearance}
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Theorem Heading Targets
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_new:N \g_csThmHeadingTargets_bool
+\bool_new:N \g_csThmPendingTarget_bool
+\clist_new:N \g_csThmHeadingFamilies_clist
+\box_new:N \l_csThmTarget_box
+\int_new:N \g_csThmTarget_int
+\NewDocumentCommand \CsthmUseHeadingTargets {}
+{
+    \bool_gset_true:N \g_csThmHeadingTargets_bool
+}
+\@onlypreamble \CsthmUseHeadingTargets
+\cs_new_protected:Npn \csThmUseUniqueTarget #1#2#3
+{
+    \cs_gset:cpn {theH#1}
+    {
+        csthm.\int_use:N \g_csThmTarget_int
+    }
+    \clist_gput_right:Nn \g_csThmHeadingFamilies_clist {#1,#1*}
+}
+
+\NewDocumentCommand \csThmStepWithTarget {om}
+{
+    \cs_set_eq:NN \refstepcounter \csThmNativeStep
+    \exp_args:NNx \clist_if_in:NnTF \g_csThmHeadingFamilies_clist {\InTheoType}
+    {
+        \LinkTargetOff
+        \IfNoValueTF {#1}
+        {
+            \refstepcounter {#2}
+        }
+        {
+            \refstepcounter [#1] {#2}
+        }
+        \LinkTargetOn
+        \hbox_set:Nn \l_csThmTarget_box
+        {
+            \MakeLinkTarget *
+            {
+                #2.csthm.\int_use:N \g_csThmTarget_int
+            }
+        }
+        \bool_gset_true:N \g_csThmPendingTarget_bool
+    }
+    {
+        \IfNoValueTF {#1}
+        {
+            \refstepcounter {#2}
+        }
+        {
+            \refstepcounter [#1] {#2}
+        }
+    }
+}
+
+\cs_new_protected:Npn \csThmPlaceHeadingTarget
+{
+    \bool_if:NT \g_csThmPendingTarget_bool
+    {
+        \bool_gset_false:N \g_csThmPendingTarget_bool
+        \box_use_drop:N \l_csThmTarget_box
+    }
+}
+
+\cs_new_protected:Npn \csThmInstallHeadingTargets
+{
+    \AddToHook {cmd/@thm/before} [csthm/heading-targets]
+    {
+        \cs_set_eq:NN \csThmNativeStep \refstepcounter
+        \cs_set_eq:NN \refstepcounter \csThmStepWithTarget
+    }
+}
+\AddToHook {begindocument/end} [csthm/heading-targets]
+{
+    \bool_if:NT \g_csThmHeadingTargets_bool
+    {
+        \@ifpackageloaded {hyperref}
+        {
+            \CsthmMapFamilies \csThmUseUniqueTarget
+            \AddToHook {cmd/@thm/before} [csthm/unique-targets]
+            {
+                \int_gincr:N \g_csThmTarget_int
+            }
+            \@ifpackageloaded {cleveref} {\csThmInstallHeadingTargets}
+            {
+                \cs_if_exist:NF \Hy@theorem@refstepcounter
+                {\csThmInstallHeadingTargets}
+            }
+        } {}
+    }
+}
+
+\tl_if_eq:NnT \csThmNumberWithin {chapter}
+{
+    \cs_if_exist:cF {c@chapter}
+    {
+        \PackageError {csthm} {Chapter~numbering~requires~a~chapter~counter}
+        {Use~a~chapter-based~class,~or~numberwithin=section~or~none.}
+    }
+}
+\tl_if_eq:NnT \csThmStyle {normal}
+{
+    \bool_gset_true:N \csThmUseFrame
+}
+\tl_if_eq:NnT \csThmStyle {fancy}
+{
+    \bool_gset_true:N \csThmUseFrame
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Reference Integration
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\cs_new_protected:Npn \csThmCheckReferenceOrder
+{
+    \@ifpackageloaded {cleveref}
+    {
+        \if@cref@amsmathloaded \else
+            \PackageError {csthm} {cleveref~was~loaded~before~required~amsmath}
+            {Load~amsmath~before~cleveref,~or~load~csthm~before~cleveref.}
+        \fi
+        \@ifpackageloaded {hyperref}
+        {
+            \if@cref@hyperrefloaded \else \csThmHyperrefOrderError \fi
+        } {}
+    } {}
+}
+
+\cs_new_protected:Npn \csThmHyperrefOrderError
+{
+    \PackageError {csthm} {hyperref~must~be~loaded~before~cleveref}
+    {Move~hyperref~before~cleveref.~With~cleveref=true,~load~hyperref~before~csthm.}
+}
+\csThmCheckReferenceOrder
+
+\@ifpackageloaded {hyperref} {}
+{
+    \AddToHook {package/hyperref/before} [csthm]
+    {
+        \@ifpackageloaded {cleveref} {\csThmHyperrefOrderError} {}
+    }
+}
+
+\RequirePackage {amsmath}
+\@ifpackageloaded {unicode-math} {}
+{
+    \RequirePackage {amssymb}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Color Configuration
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage
+[
+    dvipsnames,
+    table,
+    x11names
+] {xcolor}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Theorem backend and compatibility corrections
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\@ifpackageloaded {ntheorem}
+{
+    \clist_map_inline:nn
+    {
+        amsmath,
+        amsthm,
+        hyperref,
+        thmmarks
+    }
+    {
+        \@ifpackagewith {ntheorem} {#1} {}
+        {
+            \PackageError {csthm} {ntheorem~was~loaded~without~its~#1~option}
+            {Load~ntheorem~with~the~amsmath,~amsthm,~hyperref,~and~thmmarks~options.}
+        }
+    }
+}
+{
+    \@ifpackageloaded {amsthm}
+    {
+        \@ifclassloaded {amsart} {}
+        {
+            \@ifclassloaded {amsbook} {}
+            {
+                \PackageError {csthm} {amsthm.sty~is~incompatible~with~this~ntheorem~backend}
+                {Remove~the~explicit~amsthm~package~load.}
+            }
+        }
+    } {}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Theorem Provider
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \@ifclassloaded {amsart}
+    {
+        \let \th@plain \relax \let \th@definition \relax \let \th@remark \relax
+    } {}
+    \@ifclassloaded {amsbook}
+    {
+        \let \th@plain \relax \let \th@definition \relax \let \th@remark \relax
+    } {}
+    \let \proof \relax
+    \let \endproof \relax
+    \let \proofname \relax
+    \let \openbox \relax
+    \RequirePackage
+    [
+        amsmath,
+        amsthm,
+        hyperref,
+        thmmarks
+    ] {ntheorem}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Theorem End Marks
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\@ifundefined {cslatex@ntheoremendmarkpatched}
+{
+    \gdef \@endtrivlist #1
+    {
+        \if@inlabel \indent \fi
+        \if@newlist \@noitemerr \fi
+        \ifhmode
+            \ifdim \lastskip >\z@ \unskip \fi
+            #1\unskip\par
+        \fi
+        \if@noparlist \else
+            \ifdim \lastskip >\z@
+                \@tempskipa \lastskip \vskip -\lastskip
+                \advance \@tempskipa \parskip \advance \@tempskipa -\@outerparskip
+                \vskip \@tempskipa
+            \fi
+            \@endparenv
+        \fi
+    }
+    \global \let \cslatex@ntheoremendmarkpatched \@empty
+} {}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% List and framing dependencies
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage {enumitem}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Shared Counters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\tl_if_eq:NnT \csThmCounters {shared}
+{
+    \RequirePackage {aliascnt}
+}
+\bool_if:NT \csThmUseFrame
+{
+    \@ifpackageloaded {mdframed}
+    {
+        \int_compare:nNnF
+        {
+            \value {mdf@globalstyle@cnt}
+        } = {1}
+        {
+            \PackageError {csthm} {Framed~styles~require~the~TikZ~mdframed~backend}
+            {Load~mdframed~with~framemethod=TikZ,~or~let~csthm~load~it.}
+        }
+    }
+    {
+        \RequirePackage [framemethod = TikZ] {mdframed}
+    }
+    \mdfsetup
+    {
+        skipabove = 0.75\baselineskip ,
+        skipbelow = 0.75\baselineskip
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Accent color
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\tl_new:N   \g_csthm_accent_tl
-\tl_gset:Nn \g_csthm_accent_tl { black }
+\tl_new:N \csThmAccentColor
+\tl_gset:Nn \csThmAccentColor {black}
 
-\NewDocumentCommand \SetAccentColor { m }
-{ \tl_gset:Nn \g_csthm_accent_tl {#1} }
+\NewDocumentCommand \SetAccentColor {m}
+{
+    \tl_gset:Nn \csThmAccentColor {#1}
+}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\NewDocumentCommand \setaccentcolor {m}
+{
+    \SetAccentColor {#1}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % QED and end-mark symbols
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\NewDocumentCommand \CsthmQED     {}
-{ \ensuremath{ \color{\g_csthm_accent_tl} \square   } }
+\NewDocumentCommand \CsthmQED {}
+{
+    \ensuremath
+    {
+        \color {\csThmAccentColor}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Unicode Symbols
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+        \@ifpackageloaded {unicode-math} {\mdlgwhtsquare} {\square}
+    }
+}
+
 \NewDocumentCommand \CsthmEndMark {}
-{ \ensuremath{ \color{\g_csthm_accent_tl} \lrcorner } }
-\global\qedsymbol{\CsthmQED}
-\renewcommand{\proofSymbol}{\the\qedsymbol}
-\ProvideDocumentCommand{\setqedsymbol}{m}{\global\qedsymbol{#1}}
-\ProvideDocumentCommand{\settheoremendsymbol}{m}{ \RenewDocumentCommand{\CsthmEndMark}{}{#1} }
-\ProvideDocumentCommand{\SetQEDSymbol}{m}{ \setqedsymbol{#1} }
-\ProvideDocumentCommand{\SetTheoremEndSymbol}{m}{ \settheoremendsymbol{#1} }
+{
+    \ensuremath
+    {
+        \color {\csThmAccentColor}
+        \lrcorner
+    }
+}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\NewDocumentCommand \CsthmStartMark {}
+{
+    \ensuremath {\diamond}
+}
+
+\NewDocumentCommand \SetTheoremStartSymbol {m}
+{
+    \RenewDocumentCommand \CsthmStartMark {} {#1}
+}
+\global \qedsymbol {\CsthmQED}
+\renewcommand {\proofSymbol}
+{
+    \the \qedsymbol
+}
+\ProvideDocumentCommand {\setqedsymbol} {m}
+{
+    \global \qedsymbol {#1}
+}
+\ProvideDocumentCommand {\settheoremendsymbol} {m}
+{
+    \RenewDocumentCommand {\CsthmEndMark} {} {#1}
+}
+\ProvideDocumentCommand {\SetQEDSymbol} {m}
+{
+    \setqedsymbol {#1}
+}
+\ProvideDocumentCommand {\SetTheoremEndSymbol} {m}
+{
+    \settheoremendsymbol {#1}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Case environment
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newlist{csthm@caselist}{enumerate}{1}
-\setlist[csthm@caselist]{ label = \textbf{Case~\arabic*:} , leftmargin = * }
+\newlist {csThmCaseList} {enumerate} {1}
+\setlist [csThmCaseList]
+{
+    label = \textbf
+    {
+        Case~\arabic *:
+    },
+    leftmargin = *
+}
 
-\NewDocumentEnvironment{case}{O{}}
-{ \begin{csthm@caselist}[#1] }
-{ \end{csthm@caselist}       }
+\NewDocumentEnvironment {case}
+{
+    O {}
+}
+{
+    \begin {csThmCaseList} [#1]
+}
+{
+    \end {csThmCaseList}
+}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Theorem environments
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newtheoremstyle{csthmplain}
-{\item[\hskip\labelsep\theorem@headerfont ##1\ ##2\unskip\theorem@separator]}
-{\item[\hskip\labelsep\theorem@headerfont ##1\ ##2\ {\normalfont(##3)}\unskip\theorem@separator]}
-\newtheoremstyle{nonumbercsthmplain}
-{\item[\hskip\labelsep\theorem@headerfont ##1\unskip\theorem@separator]}
-{\item[\hskip\labelsep\theorem@headerfont ##1\ {\normalfont(##3)}\unskip\theorem@separator]}
-
-\newif\ifcsthm@useframe
-\def\csthm@preskip{0pt}
-\def\csthm@postskip{0pt}
-\def\csthm@currentframe{}
-
-\def\csthm@configurefamily#1#2#3#4{%
-	\theoremstyle{csthmplain}%
-	\theoremheaderfont{#1}%
-	\theorembodyfont{#2}%
-	\theoremseparator{.}%
-	\theorempreskip{\csthm@preskip}%
-	\theorempostskip{\csthm@postskip}%
-	\theoremsymbol{#3}%
-	\def\csthm@currentframe{#4}%
-}
-\def\csthm@declareone#1{\expandafter\csthm@declareone@parse#1\csthm@nil}
-\def\csthm@declareone@parse#1/#2\csthm@nil{%
-	\newtheorem{#1}{#2}[section]%
-	\renewtheorem*{#1*}{#2}%
-	\ifcsthm@useframe
-		\surroundwithmdframed[style=\csthm@currentframe]{#1}%
-		\surroundwithmdframed[style=\csthm@currentframe]{#1*}%
-	\fi
-}
-\def\csthm@declarefamily#1#2#3#4#5{%
-	\csthm@configurefamily{#1}{#2}{#3}{#4}%
-	\expandafter\csthm@processlist\expandafter{#5}%
-}
-\def\csthm@processlist#1{\forcsvlist{\csthm@declareone}{#1}}
-
-\def\csthm@theoremlist{%
-	theorem/Theorem,assertion/Assertion,assumption/Assumption,axiom/Axiom,
-	claim/Claim,conclusion/Conclusion,conjecture/Conjecture,corollary/Corollary,
-	fact/Fact,folklore/Folklore,hypothesis/Hypothesis,lemma/Lemma,
-	postulate/Postulate,property/Property,proposition/Proposition%
-}
-\def\csthm@definitionlist{%
-	application/Application,construction/Construction,convention/Convention,
-	definition/Definition,experiment/Experiment,notation/Notation,
-	openproblem/Open~Problem,problem/Problem,protocol/Protocol,result/Result%
-}
-\def\csthm@remarklist{%
-	commentary/Commentary,contribution/Contribution,example/Example,exercise/Exercise,
-	motivation/Motivation,notationabuse/Notation~Abuse,note/Note,
-	observation/Observation,question/Question,remark/Remark%
-}
-\def\csthm@highlightlist{%
-	guideline/Guideline,highlight/Highlight,important/Important,insight/Insight,
-	keypoint/Key~Point,recall/Recall,summary/Summary,takeaway/Takeaway,
-	tip/Tip,warning/Warning%
-}
-
-\def\csthm@declareproofhelpers{%
-	\NewDocumentEnvironment{proofsketch}{o}
-	{
-		\IfNoValueTF{##1}
-		{ \begin{proof}[Proof~(Sketch)] }
-		{ \begin{proof}[Proof~(Sketch~##1)] }
-	}
-	{ \end{proof} }
-	\NewDocumentEnvironment{proofidea}{o}
-	{
-		\IfNoValueTF{##1}
-		{ \begin{proof}[Proof~(Idea)] }
-		{ \begin{proof}[Proof~(Idea~##1)] }
-	}
-	{ \end{proof} }
-	\NewDocumentEnvironment{proofofclaim}{o}
-	{
-		\IfNoValueTF{##1}
-		{ \begin{proof}[Proof~of~Claim] }
-		{ \begin{proof}[Proof~of~Claim~(##1)] }
-	}
-	{ \end{proof} }
-}
-
-\def\csthm@setupnormal{%
-	\csthm@useframetrue
-	\def\csthm@preskip{0pt}\def\csthm@postskip{0pt}
-	\mdfdefinestyle{csthm@ruled}{
-		linewidth         = 0.5pt,
-		topline           = true,
-		bottomline        = true,
-		leftline          = false,
-		rightline         = false,
-		innertopmargin    = 7.5pt,
-		innerbottommargin = 7.5pt,
-		innerleftmargin   = 0pt,
-		innerrightmargin  = 0pt,
-		skipabove         = 0.75\baselineskip,
-		skipbelow         = 0.75\baselineskip
-	}
-	\csthm@declarefamily{\scshape}{\normalfont}{\CsthmEndMark}{csthm@ruled}{\csthm@theoremlist}
-	\csthm@declarefamily{\scshape}{\normalfont}{\CsthmEndMark}{csthm@ruled}{\csthm@definitionlist}
-	\csthm@declarefamily{\scshape}{\normalfont}{\CsthmEndMark}{csthm@ruled}{\csthm@remarklist}
-	\csthm@declarefamily{\sffamily}{\normalfont\sffamily}{\CsthmEndMark}{csthm@ruled}{\csthm@highlightlist}
-	\csthm@declareproofhelpers
-}
-
-\def\csthm@definefancyframe#1#2{%
-	\mdfdefinestyle{#1}{
-		linewidth       = 2pt,
-		topline         = false,
-		bottomline      = false,
-		rightline       = false,
-		leftline        = true,
-		linecolor       = #2,
-		backgroundcolor = #2!5
-	}
-}
-\def\csthm@setupfancy{%
-	\csthm@useframetrue
-	\def\csthm@preskip{0pt}\def\csthm@postskip{0pt}
-	\colorlet{csthm@thmcolor}{SeaGreen4}
-	\colorlet{csthm@defcolor}{RoyalBlue2}
-	\colorlet{csthm@remarkcolor}{Aquamarine4}
-	\colorlet{csthm@hltcolor}{DeepPink4}
-	\csthm@definefancyframe{csthm@thmframe}{csthm@thmcolor}
-	\csthm@definefancyframe{csthm@defframe}{csthm@defcolor}
-	\csthm@definefancyframe{csthm@remarkframe}{csthm@remarkcolor}
-	\csthm@definefancyframe{csthm@hltframe}{csthm@hltcolor}
-	\csthm@declarefamily{\sffamily\color{csthm@thmcolor}}{\normalfont}{}{csthm@thmframe}{\csthm@theoremlist}
-	\csthm@declarefamily{\sffamily\color{csthm@defcolor}}{\normalfont}{}{csthm@defframe}{\csthm@definitionlist}
-	\csthm@declarefamily{\sffamily\color{csthm@remarkcolor}}{\normalfont}{}{csthm@remarkframe}{\csthm@remarklist}
-	\csthm@declarefamily{\sffamily\color{csthm@hltcolor}}{\normalfont\sffamily}{}{csthm@hltframe}{\csthm@highlightlist}
-	\csthm@declareproofhelpers
-}
-
-\def\csthm@setupoldschool{%
-	\csthm@useframefalse
-	\def\csthm@preskip{\topsep}\def\csthm@postskip{\topsep}
-	\csthm@declarefamily{\scshape}{\normalfont}{}{}{\csthm@theoremlist}
-	\csthm@declarefamily{\scshape}{\normalfont}{\CsthmEndMark}{}{\csthm@definitionlist}
-	\csthm@declarefamily{\scshape}{\normalfont}{\CsthmEndMark}{}{\csthm@remarklist}
-	\csthm@declarefamily{\sffamily}{\normalfont\sffamily}{\CsthmEndMark}{}{\csthm@highlightlist}
-	\csthm@declareproofhelpers
-}
-
-\bool_if:NTF \g_csthm_fancy_bool
-{ \csthm@setupfancy }
+\newtheoremstyle {csthmplain}
 {
-	\bool_if:NTF \g_csthm_normal_bool
-	{ \csthm@setupnormal }
-	{
-		\bool_if:NTF \g_csthm_oldschool_bool
-		{ \csthm@setupoldschool }
-		{
-			\PackageInfo{csthm}
-			{ No~style~option~given;~no~theorem~environments~defined. }
-		}
-	}
+    \item [\hskip \labelsep \csThmPlaceHeadingTarget \theorem@headerfont ##1\ ##2\unskip \theorem@separator ]
+}
+{
+    \item [\hskip \labelsep \csThmPlaceHeadingTarget \theorem@headerfont ##1\ ##2\ %
+                {
+                    \normalfont (##3)
+                }
+                \unskip \theorem@separator ]
+}
+\newtheoremstyle {nonumbercsthmplain}
+{
+    \item [\hskip \labelsep \csThmPlaceHeadingTarget \theorem@headerfont ##1\unskip \theorem@separator ]
+}
+{
+    \item [\hskip \labelsep \csThmPlaceHeadingTarget \theorem@headerfont ##1\ %
+                {
+                    \normalfont (##3)
+                }
+                \unskip \theorem@separator ]
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Cross-references
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def \csThmPreSkip {0pt}
+\def \csThmPostSkip {0pt}
+\def \csThmCurrentFrame {}
 
-\AtBeginDocument
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Family Typography
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\cs_generate_variant:Nn \prop_gput:Nnn
 {
-	\cs_if_exist:cTF { ver@hyperref.sty }
-	{
-		\RequirePackage[capitalize, nameinlink, noabbrev]{cleveref}
-		\Crefname{important}        {Important}         {Important Points}
-		\Crefname{keypoint}         {Key Point}         {Key Points}
-		\Crefname{notationabuse}    {Notation Abuse}    {Notation Abuses}
-		\Crefname{openproblem}      {Open Problem}      {Open Problems}
-		\crefname{application}      {application}       {applications}
-		\crefname{assertion}        {assertion}         {assertions}
-		\crefname{assumption}       {assumption}        {assumptions}
-		\crefname{axiom}            {axiom}             {axioms}
-		\crefname{claim}            {claim}             {claims}
-		\crefname{commentary}       {commentary}        {commentaries}
-		\crefname{conclusion}       {conclusion}        {conclusions}
-		\crefname{conjecture}       {conjecture}        {conjectures}
-		\crefname{construction}     {construction}      {constructions}
-		\crefname{contribution}     {contribution}      {contributions}
-		\crefname{convention}       {convention}        {conventions}
-		\crefname{corollary}        {corollary}         {corollaries}
-		\crefname{definition}       {definition}        {definitions}
-		\crefname{example}          {example}           {examples}
-		\crefname{exercise}         {exercise}          {exercises}
-		\crefname{experiment}       {experiment}        {experiments}
-		\crefname{fact}             {fact}              {facts}
-		\crefname{folklore}         {folklore}          {folklore}
-		\crefname{guideline}        {guideline}         {guidelines}
-		\crefname{highlight}        {highlight}         {highlights}
-		\crefname{hypothesis}       {hypothesis}        {hypotheses}
-		\crefname{important}        {important}         {important points}
-		\crefname{insight}          {insight}           {insights}
-		\crefname{keypoint}         {key point}         {key points}
-		\crefname{lemma}            {lemma}             {lemmas}
-		\crefname{motivation}       {motivation}        {motivations}
-		\crefname{notationabuse}    {notation abuse}    {notation abuses}
-		\crefname{notation}         {notation}          {notations}
-		\crefname{note}             {note}              {notes}
-		\crefname{observation}      {observation}       {observations}
-		\crefname{openproblem}      {open problem}      {open problems}
-		\crefname{postulate}        {postulate}         {postulates}
-		\crefname{problem}          {problem}           {problems}
-		\crefname{property}         {property}          {properties}
-		\crefname{proposition}      {proposition}       {propositions}
-		\crefname{protocol}         {protocol}          {protocols}
-		\crefname{question}         {question}          {questions}
-		\crefname{recall}           {recall}            {recalls}
-		\crefname{remark}           {remark}            {remarks}
-		\crefname{result}           {result}            {results}
-		\crefname{summary}          {summary}           {summaries}
-		\crefname{takeaway}         {takeaway}          {takeaways}
-		\crefname{theorem}          {theorem}           {theorems}
-		\crefname{tip}              {tip}               {tips}
-		\crefname{warning}          {warning}           {warnings}
-		\NewDocumentCommand \emailid { m } { \href{mailto:#1}{\texttt{#1}} }
-	}
-	{
-		\PackageWarning{csthm}
-		{ hyperref~not~detected.~Load~hyperref~before~csthm~for~cleveref~support. }
-	}
+    Nxn,
+    NxV
+}
+\prop_new:N \g_csThmFamilyStyle_prop
+\tl_new:N \l_csThmFamily_tl
+\cs_new_protected:Npn \csThmSetFamilyFont #1#2
+{
+    \str_case:nnF {#2}
+    {
+        {normal}
+        {
+            \tl_set:Nn \l_tmpa_tl {\normalfont}
+        }
+        {roman}
+        {
+            \tl_set:Nn \l_tmpa_tl {\normalfont}
+        }
+        {bold}
+        {
+            \tl_set:Nn \l_tmpa_tl {\bfseries}
+        }
+        {boldsans}
+        {
+            \tl_set:Nn \l_tmpa_tl
+            {
+                \sffamily \bfseries
+            }
+        }
+        {italic}
+        {
+            \tl_set:Nn \l_tmpa_tl {\itshape}
+        }
+        {italics}
+        {
+            \tl_set:Nn \l_tmpa_tl {\itshape}
+        }
+        {sans}
+        {
+            \tl_set:Nn \l_tmpa_tl {\sffamily}
+        }
+        {smallcaps}
+        {
+            \tl_set:Nn \l_tmpa_tl {\scshape}
+        }
+    }
+    {
+        \tl_set:Nn \l_tmpa_tl {#2}
+    }
+    \prop_gput:NxV \g_csThmFamilyStyle_prop
+    {
+        \l_csThmFamily_tl /#1
+    } \l_tmpa_tl
+}
+\keys_define:nn {csthm/family}
+{
+    head-font .value_required:n = true,
+    head-font .code:n =
+        {
+            \csThmSetFamilyFont {head-font} {#1}
+        },
+    body-font .value_required:n = true,
+    body-font .code:n =
+        {
+            \csThmSetFamilyFont {body-font} {#1}
+        },
+    start-symbol .value_required:n = true,
+    start-symbol .code:n =
+        {
+            \prop_gput:Nxn \g_csThmFamilyStyle_prop
+            {
+                \l_csThmFamily_tl /start-symbol
+            } {#1}
+        },
+    end-symbol .value_required:n = true,
+    end-symbol .code:n =
+        {
+            \prop_gput:Nxn \g_csThmFamilyStyle_prop
+            {
+                \l_csThmFamily_tl /end-symbol
+            } {#1}
+        },
+}
+
+\NewDocumentCommand \CsthmSetupFamily {mm}
+{
+    \clist_if_in:nnTF
+    {
+        theorem,
+        definition,
+        remark,
+        highlight
+    } {#1}
+    {
+        \tl_if_empty:NTF \csThmStyle
+        {
+            \PackageError {csthm} {Family~styling~requires~theorem~ownership} {Select~a~csthm~style.}
+        }
+        {
+            \tl_set:Nn \l_csThmFamily_tl {#1}
+            \keys_set:nn {csthm/family} {#2}
+        }
+    }
+    {
+        \PackageError {csthm} {Unknown~theorem~family~group~#1} {Use~theorem,~definition,~remark~or~highlight.}
+    }
+}
+\@onlypreamble \CsthmSetupFamily
+\clist_map_inline:nn
+{
+    theorem,
+    definition,
+    remark,
+    highlight
+}
+{
+    \keys_define:nn {csthm/families}
+    {
+        #1 .code:n =
+            {
+                \CsthmSetupFamily {#1} {##1}
+            }
+    }
+}
+
+\cs_new_protected:Npn \csThmFamilyValue #1#2
+{
+    \prop_item:Nn \g_csThmFamilyStyle_prop {#1/#2}
+}
+
+\cs_new_protected:Npn \csThmFamilyStart #1
+{
+    \prop_get:NnN \g_csThmFamilyStyle_prop {#1/start-symbol} \l_tmpa_tl
+    \tl_if_empty:NF \l_tmpa_tl
+    {
+        \tl_use:N \l_tmpa_tl \nobreakspace
+    }
+}
+
+\cs_new_protected:Npn \csThmFamilyDefault #1#2#3
+{
+    \prop_if_in:NnF \g_csThmFamilyStyle_prop {#1/#2}
+    {
+        \prop_gput:Nnn \g_csThmFamilyStyle_prop {#1/#2} {#3}
+    }
+}
+
+\cs_new_protected:Npn \csThmConfigureFamily #1#2
+{
+    \theoremstyle {csthmplain}
+    \theoremheaderfont
+    {
+        \csThmFamilyValue {#1} {head-font}
+        \csThmFamilyStart {#1}
+    }
+    \theorembodyfont
+    {
+        \csThmFamilyValue {#1} {body-font}
+    }
+    \theoremseparator {.}
+    \theorempreskip {\csThmPreSkip}
+    \theorempostskip {\csThmPostSkip}
+    \theoremsymbol
+    {
+        \csThmFamilyValue {#1} {end-symbol}
+    }
+    \def \csThmCurrentFrame {#2}
+}
+\clist_const:Nn \csThmLegacyUnnumbered
+{
+    claim,
+    conjecture,
+    corollary,
+    hypothesis,
+    informaltheorem,
+    lemma,
+    theorem,
+    openproblem,
+    syntax
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Starred Environments
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bool_new:N \l_csThmSteppingStar_bool
+\cs_new_protected:Npn \csThmDeclareOne #1#2#3
+{
+    \bool_lazy_and:nnTF
+    {
+        \str_if_eq_p:Vn \csThmCounters {shared}
+    }
+    {
+        !\str_if_eq_p:nn {#1} {theorem}
+    }
+    {
+        \newaliascnt {#1} {theorem}
+        \newtheorem {#1} [#1] {#2}
+        \aliascntresetthe {#1}
+        \tl_if_eq:NnF \csThmNumberWithin {none}
+        {
+            \counterwithin * {#1} {\csThmNumberWithin}
+        }
+        \cs_gset:cpn {theH#1} {\theHtheorem}
+    }
+    {
+        \tl_if_eq:NnTF \csThmNumberWithin {none}
+        {
+            \newtheorem {#1} {#2}
+        }
+        {
+            \newtheorem {#1} {#2} [\csThmNumberWithin]
+        }
+        \tl_if_eq:NnT \csThmCounters {shared}
+        {
+            \tl_if_eq:NnTF \csThmNumberWithin {none}
+            {
+                \cs_gset:Npn \theHtheorem
+                {
+                    \arabic {theorem}
+                }
+            }
+            {
+                \cs_gset:Npx \theHtheorem
+                {
+                    \exp_not:c
+                    {
+                        theH\csThmNumberWithin
+                    }.\exp_not:N \arabic {theorem}
+                }
+            }
+        }
+    }
+    \bool_set_false:N \l_csThmSteppingStar_bool
+    \str_case:Vn \csThmStarred
+    {
+        {legacy}
+        {
+            \clist_if_in:NnF \csThmLegacyUnnumbered {#1}
+            {
+                \str_if_eq:nnF {#1} {contribution}
+                {
+                    \bool_set_true:N \l_csThmSteppingStar_bool
+                }
+            }
+        }
+    }
+    \bool_if:NF \l_csThmSteppingStar_bool
+    {
+        \renewtheorem * {#1*} {#2}
+    }
+    \bool_if:NT \csThmUseFrame
+    {
+        \surroundwithmdframed [style = \csThmCurrentFrame ] {#1}
+        \bool_lazy_and:nnF
+        {
+            \str_if_eq_p:Vn \csThmAppearance {legacy-book}
+        } {\l_csThmSteppingStar_bool}
+        {
+            \surroundwithmdframed [style = \csThmCurrentFrame ] {#1*}
+        }
+    }
+}
+
+\cs_new_protected:Npn \csThmDeclareFamily #1#2#3#4#5#6
+{
+    \csThmFamilyDefault {#1} {head-font} {#2}
+    \csThmFamilyDefault {#1} {body-font} {#3}
+    \csThmFamilyDefault {#1} {end-symbol} {#4}
+    \csThmFamilyDefault {#1} {start-symbol} {}
+    \csThmConfigureFamily {#1} {#5}
+    \clist_map_inline:Nn #6
+    {
+        \csThmDeclareOne ##1
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Environment Inventory
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clist_new:N \csThmTheoremList
+\clist_gset:Nn \csThmTheoremList
+{
+    {theorem} {Theorem} {Theorems},
+    {assertion} {Assertion} {Assertions},
+    {assumption} {Assumption} {Assumptions},
+    {axiom} {Axiom} {Axioms},
+    {claim} {Claim} {Claims},
+    {conclusion} {Conclusion} {Conclusions},
+    {conjecture} {Conjecture} {Conjectures},
+    {corollary} {Corollary} {Corollaries},
+    {fact} {Fact} {Facts},
+    {folklore} {Folklore} {Folklore},
+    {hypothesis} {Hypothesis} {Hypotheses},
+    {lemma} {Lemma} {Lemmas},
+    {postulate} {Postulate} {Postulates},
+    {property} {Property} {Properties},
+    {proposition} {Proposition} {Propositions},
+}
+\clist_new:N \csThmDefinitionList
+\clist_gset:Nn \csThmDefinitionList
+{
+    {application} {Application} {Applications},
+    {construction} {Construction} {Constructions},
+    {convention} {Convention} {Conventions},
+    {definition} {Definition} {Definitions},
+    {experiment} {Experiment} {Experiments},
+    {notation} {Notation} {Notations},
+    {openproblem} {Open~Problem} {Open~Problems},
+    {problem} {Problem} {Problems},
+    {protocol} {Protocol} {Protocols},
+    {result} {Result} {Results},
+}
+\clist_new:N \csThmRemarkList
+\clist_gset:Nn \csThmRemarkList
+{
+    {commentary} {Commentary} {Commentaries},
+    {contribution} {Contribution} {Contributions},
+    {example} {Example} {Examples},
+    {exercise} {Exercise} {Exercises},
+    {motivation} {Motivation} {Motivations},
+    {notationabuse} {Notation~Abuse} {Notation~Abuses},
+    {note} {Note} {Notes},
+    {observation} {Observation} {Observations},
+    {question} {Question} {Questions},
+    {remark} {Remark} {Remarks},
+}
+\clist_new:N \csThmHighlightList
+\clist_gset:Nn \csThmHighlightList
+{
+    {guideline} {Guideline} {Guidelines},
+    {highlight} {Highlight} {Highlights},
+    {important} {Important} {Important~Points},
+    {insight} {Insight} {Insights},
+    {keypoint} {Key~Point} {Key~Points},
+    {recall} {Recall} {Recalls},
+    {summary} {Summary} {Summaries},
+    {takeaway} {Takeaway} {Takeaways},
+    {tip} {Tip} {Tips},
+    {warning} {Warning} {Warnings},
+}
+
+\tl_if_eq:NnT \csThmFamilies {extended}
+{
+    \clist_gput_right:Nn \csThmTheoremList
+    {
+        {criterion} {Criterion} {Criteria},
+        {informaltheorem} {Informal~Theorem} {Informal~Theorems},
+        {metatheorem} {Meta~Theorem} {Meta~Theorems}
+    }
+    \clist_gput_right:Nn \csThmDefinitionList
+    {
+        {solution} {Solution} {Solutions},
+        {step} {Step} {Steps}
+    }
+    \clist_gput_right:Nn \csThmRemarkList
+    {
+        {discussion} {Discussion} {Discussions},
+        {syntax} {Syntax} {Syntaxes}
+    }
+}
+
+\cs_new_protected:Npn \csThmRemoveFamily #1#2
+{
+    \clist_clear:N \l_tmpa_clist
+    \clist_map_inline:Nn #1
+    {
+        \str_if_eq:eeF
+        {
+            \tl_head:n {##1}
+        } {#2}
+        {
+            \clist_put_right:Nn \l_tmpa_clist {##1}
+        }
+    }
+    \clist_gset_eq:NN #1\l_tmpa_clist
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Legacy Families
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\tl_if_eq:NnF \csThmAppearance {modern}
+{
+    \csThmRemoveFamily \csThmRemarkList {observation}
+    \clist_gput_right:Nn \csThmTheoremList
+    {
+        {observation} {Observation} {Observations}
+    }
+    \csThmRemoveFamily \csThmRemarkList {example}
+    \clist_gput_right:Nn \csThmDefinitionList
+    {
+        {example} {Example} {Examples}
+    }
+    \csThmRemoveFamily \csThmDefinitionList {openproblem}
+    \clist_gput_right:Nn \csThmRemarkList
+    {
+        {openproblem} {Open~Problem} {Open~Problems}
+    }
+    \exp_args:NnV \clist_if_in:nnT
+    {
+        legacy-article,
+        legacy-book
+    }
+    \csThmAppearance
+    {
+        \clist_map_inline:nn
+        {
+            theorem,
+            definition,
+            remark,
+            highlight
+        }
+        {
+            \CsthmSetupFamily {#1}
+            {
+                body-font = normal,
+                end-symbol = \CsthmEndMark
+            }
+        }
+        \CsthmSetupFamily {remark}
+        {
+            head-font =
+                {
+                    \normalfont \scshape
+                }
+        }
+        \CsthmSetupFamily {highlight}
+        {
+            head-font =
+                {
+                    \normalfont \sffamily
+                }
+        }
+        \tl_if_eq:NnTF \csThmAppearance {legacy-article}
+        {
+            \CsthmSetupFamily {theorem} {head-font = bold}
+            \CsthmSetupFamily {definition} {head-font = bold}
+            \SetTheoremEndSymbol
+            {
+                \ensuremath
+                {
+                    \scriptstyle \lrcorner
+                }
+            }
+            \SetQEDSymbol
+            {
+                \ensuremath
+                {
+                    \scriptstyle \CsthmQED
+                }
+            }
+        }
+        {
+            \CsthmSetupFamily {definition}
+            {
+                start-symbol = \CsthmStartMark
+            }
+            \SetQEDSymbol
+            {
+                \ensuremath {\diamond}
+            }
+        }
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Environment Declaration
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\tl_if_eq:NnT \csThmSolution {proof}
+{
+    \csThmRemoveFamily \csThmDefinitionList {solution}
+}
+\exp_args:NnV \keys_set:nn {csthm/families} \g_csThmFamilyOptions_tl
+
+\def \csThmDeclareProofHelpers
+{
+    \NewDocumentEnvironment {proofsketch} {o}
+    {
+        \IfNoValueTF {##1}
+        {
+            \begin {proof} [Proof~(Sketch)]
+        }
+        {
+            \begin {proof} [Proof~(Sketch~##1)]
+        }
+    }
+    {
+        \end {proof}
+    }
+    \NewDocumentEnvironment {proofidea} {o}
+    {
+        \IfNoValueTF {##1}
+        {
+            \begin {proof} [Proof~(Idea)]
+        }
+        {
+            \begin {proof} [Proof~(Idea~##1)]
+        }
+    }
+    {
+        \end {proof}
+    }
+    \NewDocumentEnvironment {proofofclaim} {o}
+    {
+        \IfNoValueTF {##1}
+        {
+            \begin {proof} [Proof~of~Claim]
+        }
+        {
+            \begin {proof} [Proof~of~Claim~(##1)]
+        }
+    }
+    {
+        \end {proof}
+    }
+}
+
+\def \csThmSetupNormal
+{
+    \def \csThmPreSkip {0pt}
+    \def \csThmPostSkip {0pt}
+    \mdfdefinestyle {csThmRuled}
+    {
+        linewidth = 0.5pt,
+        topline = true,
+        bottomline = true,
+        leftline = false,
+        rightline = false,
+        innertopmargin = 7.5pt,
+        innerbottommargin = 7.5pt,
+        innerleftmargin = 0pt,
+        innerrightmargin = 0pt,
+        skipabove = 0.75\baselineskip ,
+        skipbelow = 0.75\baselineskip
+    }
+    \csThmDeclareFamily {theorem} {\scshape} {\normalfont} {\CsthmEndMark} {csThmRuled} {\csThmTheoremList}
+    \csThmDeclareFamily {definition} {\scshape} {\normalfont} {\CsthmEndMark} {csThmRuled} {\csThmDefinitionList}
+    \csThmDeclareFamily {remark} {\scshape} {\normalfont} {\CsthmEndMark} {csThmRuled} {\csThmRemarkList}
+    \csThmDeclareFamily {highlight} {\sffamily}
+    {
+        \normalfont \sffamily
+    } {\CsthmEndMark} {csThmRuled} {\csThmHighlightList}
+    \csThmDeclareProofHelpers
+}
+
+\def \csThmDefineFancyFrame #1#2
+{
+    \mdfdefinestyle {#1}
+    {
+        linewidth = 2pt,
+        topline = false,
+        bottomline = false,
+        rightline = false,
+        leftline = true,
+        linecolor = #2,
+        backgroundcolor = #2!5
+    }
+}
+\def \csThmSetupFancy
+{
+    \def \csThmPreSkip {0pt}
+    \def \csThmPostSkip {0pt}
+    \colorlet {csThmTheoremColor} {SeaGreen4}
+    \colorlet {csThmDefinitionColor} {RoyalBlue2}
+    \colorlet {csThmRemarkColor} {Aquamarine4}
+    \colorlet {csThmHighlightColor} {DeepPink4}
+    \csThmDefineFancyFrame {csThmTheoremFrame} {csThmTheoremColor}
+    \csThmDefineFancyFrame {csThmDefinitionFrame} {csThmDefinitionColor}
+    \csThmDefineFancyFrame {csThmRemarkFrame} {csThmRemarkColor}
+    \csThmDefineFancyFrame {csThmHighlightFrame} {csThmHighlightColor}
+    \csThmDeclareFamily {theorem}
+    {
+        \sffamily \color {csThmTheoremColor}
+    } {\normalfont} {} {csThmTheoremFrame} {\csThmTheoremList}
+    \csThmDeclareFamily {definition}
+    {
+        \sffamily \color {csThmDefinitionColor}
+    } {\normalfont} {} {csThmDefinitionFrame} {\csThmDefinitionList}
+    \csThmDeclareFamily {remark}
+    {
+        \sffamily \color {csThmRemarkColor}
+    } {\normalfont} {} {csThmRemarkFrame} {\csThmRemarkList}
+    \csThmDeclareFamily {highlight}
+    {
+        \sffamily \color {csThmHighlightColor}
+    }
+    {
+        \normalfont \sffamily
+    } {} {csThmHighlightFrame} {\csThmHighlightList}
+    \csThmDeclareProofHelpers
+}
+
+\def \csThmSetupOldschool
+{
+    \def \csThmPreSkip {\topsep}
+    \def \csThmPostSkip {\topsep}
+    \tl_if_eq:NnT \csThmAppearance {legacy-article}
+    {
+        \def \csThmPreSkip {3pt}
+        \def \csThmPostSkip {3pt}
+    }
+    \csThmDeclareFamily {theorem} {\scshape} {\normalfont} {} {} {\csThmTheoremList}
+    \csThmDeclareFamily {definition} {\scshape} {\normalfont} {\CsthmEndMark} {} {\csThmDefinitionList}
+    \csThmDeclareFamily {remark} {\scshape} {\normalfont} {\CsthmEndMark} {} {\csThmRemarkList}
+    \csThmDeclareFamily {highlight} {\sffamily}
+    {
+        \normalfont \sffamily
+    } {\CsthmEndMark} {} {\csThmHighlightList}
+    \csThmDeclareProofHelpers
+}
+
+\str_case:VnF \csThmStyle
+{
+    {normal} {\csThmSetupNormal}
+    {fancy} {\csThmSetupFancy}
+    {oldschool} {\csThmSetupOldschool}
+}
+{
+    \PackageInfo {csthm} {No~style~selected;~only~auxiliary~environments~defined}
+}
+
+\tl_if_eq:NnT \csThmSolution {proof}
+{
+    \NewDocumentEnvironment {solution}
+    {
+        O
+            {
+                \textnormal
+                {
+                    \textsc {Solution}
+                }
+            }
+    }
+    {
+        \begin {proof} [#1]
+        \qedsymbol
+        {
+            \ensuremath {\diamond}
+        }
+    }
+    {
+        \end {proof}
+    }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Provider Registration
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\NewDocumentCommand \CsthmMapFamilies {m}
+{
+    \tl_if_empty:NF \csThmStyle
+    {
+        \clist_map_inline:Nn \csThmTheoremList {#1##1}
+        \clist_map_inline:Nn \csThmDefinitionList {#1##1}
+        \clist_map_inline:Nn \csThmRemarkList {#1##1}
+        \clist_map_inline:Nn \csThmHighlightList {#1##1}
+    }
+}
+\bool_gset_true:N \g_csThmInitialized_bool
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Reference Loading
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\cs_new_protected:Npn \csThmRegisterOne #1#2#3
+{
+    \use:x
+    {
+        \exp_not:N \crefname {#1}
+        {
+            \str_lowercase:n {#2}
+        }
+        {
+            \str_lowercase:n {#3}
+        }
+    }
+    \Crefname {#1} {#2} {#3}
+}
+
+\cs_new_protected:Npn \csThmRegisterReferences
+{
+    \csThmCheckReferenceOrder
+    \tl_if_empty:NF \csThmStyle
+    {
+        \clist_map_inline:Nn \csThmTheoremList
+        {
+            \csThmRegisterOne ##1
+        }
+        \clist_map_inline:Nn \csThmDefinitionList
+        {
+            \csThmRegisterOne ##1
+        }
+        \clist_map_inline:Nn \csThmRemarkList
+        {
+            \csThmRegisterOne ##1
+        }
+        \clist_map_inline:Nn \csThmHighlightList
+        {
+            \csThmRegisterOne ##1
+        }
+    }
+}
+
+\@ifpackageloaded {cleveref} {\csThmRegisterReferences}
+{
+    \AddToHook {package/cleveref/after} [csthm] {\csThmRegisterReferences}
+}
+
+\cs_new_protected:Npn \csThmLoadCleveref
+{
+    \@ifpackageloaded {cleveref} {}
+    {
+        \RequirePackage
+        [
+            nameinlink,
+            noabbrev
+        ] {cleveref}
+    }
+}
+\tl_if_eq:NnT \csThmCleveref {true} {\csThmLoadCleveref}
+
+\AddToHook {begindocument/before} [csthm]
+{
+    \tl_if_eq:NnT \csThmCleveref {auto}
+    {
+        \@ifpackageloaded {hyperref} {\csThmLoadCleveref} {}
+    }
 }
 
 \ExplSyntaxOff
