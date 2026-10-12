@@ -815,16 +815,7 @@
 {
     \cs_if_exist:cF {cref@#1@name}
     {
-        \use:e
-        {
-            \exp_not:N \crefname {#1}
-            {
-                \str_lowercase:n {#2}
-            }
-            {
-                \str_lowercase:n {#3}
-            }
-        }
+        \crefname {#1} {#2} {#3}
     }
     \cs_if_exist:cF {Cref@#1@name}
     {
@@ -855,11 +846,11 @@
             type = {#1},
             name-sg =
                 {
-                    \str_lowercase:n {#2}
+                    #2
                 },
             name-pl =
                 {
-                    \str_lowercase:n {#3}
+                    #3
                 },
             Name-sg = {#2},
             Name-pl = {#3}
@@ -1035,7 +1026,7 @@
     {
         \@ifpackageloaded {cleveref} {}
         {
-            \RequirePackage {cleveref}
+            \RequirePackage [capitalize] {cleveref}
         }
     }
 }

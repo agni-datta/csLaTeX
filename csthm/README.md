@@ -98,7 +98,7 @@ Accent changes can occur in the preamble or between environments and affect subs
 
 ### References and package order
 
-Ordinary `\label`/`\ref` works without `hyperref` or `cleveref`. With `cleveref`, all numbered environments have lowercase singular/plural names for `\cref` and title-case names for `\Cref`: “open problem 1.1” / “Open Problem 1.1”, and “open problems 1.1 and 1.2” / “Open Problems 1.1 and 1.2”. Irregular plurals include hypotheses, properties, commentaries, and important points; folklore is unchanged. These explicit names preserve the distinction even if a caller selected cleveref's global `capitalize` option.
+Ordinary `\label`/`\ref` works without `hyperref` or `cleveref`. Both `\cref` and `\Cref` use capitalized singular/plural names for numbered environments: “Open Problem 1.1” and “Open Problems 1.1 and 1.2”. Irregular plurals include Hypotheses, Properties, Commentaries, and Important Points; Folklore is unchanged.
 
 Supported orders include:
 
@@ -121,10 +121,10 @@ Supported orders include:
 % Immediate integration:
 \usepackage{hyperref}
 \usepackage[normal,cleveref=true]{csthm}
-\crefname{theorem}{theorem}{theorems}
+\crefname{theorem}{Theorem}{Theorems}
 ```
 
-With `auto`, `hyperref` may also be loaded after `csthm`. Deferred loading uses the kernel's `begindocument/before` end-of-preamble hook; `\cref` is not available earlier unless `cleveref` was loaded explicitly. Automatic loads request `nameinlink,noabbrev`. Existing cleveref options are never re-requested or changed. Name registration happens once when both packages are available, independently of the loading option; customize names afterward.
+With `auto`, `hyperref` may also be loaded after `csthm`. Deferred loading uses the kernel's `begindocument/before` end-of-preamble hook; `\cref` is not available earlier unless `cleveref` was loaded explicitly. Automatic loads request `capitalize,nameinlink,noabbrev`. Existing cleveref options are never re-requested or changed. Name registration happens once when both packages are available, independently of the loading option; customize names afterward.
 
 `cleveref` must follow `amsmath` and, when used, `hyperref`. `csthm` diagnoses reversed orders, including ones completed before it loads. With `cleveref=true`, load `hyperref` before `csthm` if hyperlinks are wanted. No `hyperref` is required for `cleveref=true`, and no warning is issued for documents without hyperlink integration. Broader `zref` integration is unchanged.
 

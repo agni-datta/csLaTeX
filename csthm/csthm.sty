@@ -1332,16 +1332,7 @@
 
 \cs_new_protected:Npn \csThmRegisterOne #1#2#3
 {
-    \use:x
-    {
-        \exp_not:N \crefname {#1}
-        {
-            \str_lowercase:n {#2}
-        }
-        {
-            \str_lowercase:n {#3}
-        }
-    }
+    \crefname {#1} {#2} {#3}
     \Crefname {#1} {#2} {#3}
 }
 
@@ -1380,6 +1371,7 @@
     {
         \RequirePackage
         [
+            capitalize,
             nameinlink,
             noabbrev
         ] {cleveref}

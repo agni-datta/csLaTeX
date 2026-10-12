@@ -20,7 +20,7 @@ Use pdfLaTeX or LuaLaTeX. Load csmath before tcscrypto when using both. For LNCS
 
 | Option       | Default | Effect                                                                         |
 | ------------ | ------- | ------------------------------------------------------------------------------ |
-| `classfont`  | `sans`  | `sansbold`, `sans` or `bold` for complexity classes.                           |
+| `classfont`  | `sansbold` | `sansbold`, `sans` or `bold` for complexity classes.                        |
 | `small`      | false   | Smaller class, algorithm and problem-acronym lettering.                        |
 | `noemph`     | false   | Sans-serif emphasis.                                                           |
 | `toc`        | true    | Loads tocbibind and, outside LNCS, setspace; defines `\toc`.                   |
@@ -31,7 +31,7 @@ Boolean options accept `=true` and `=false`. The package uses the document's fon
 
 ## Classes and problems
 
-Classes use `\ComplexityClassStyle`; problem acronyms use `\problemacronymstyle`. Both default to sans serif, but their styles can be changed separately. Full problem names use small capitals through `\probstyle`.
+Classes use bold upright sans serif through `\ComplexityClassStyle`; problem acronyms use plain sans serif through `\problemacronymstyle`. Their styles can be changed separately. Full problem names use small capitals through `\probstyle`.
 
 ```latex
 \usepackage[classfont=sansbold]{tcscrypto}
@@ -53,6 +53,8 @@ The setting applies to the whole class name, including `\psdNP`. It does not cha
 `\MKtP` keeps its superscript `t`. Use `\MCSPProb`, `\MKTPProb` and the other `...Prob` commands for full names. For ambiguous abbreviations, descriptive names such as `\ClosestVectorProblem` and `\CircuitValueProblem` specify the problem.
 
 ## Defining notation
+
+`\mbf{...}` and `\vec{...}` use upright bold for vectors and matrices, including Greek letters. With Unicode math they use `\symbfup`; legacy math uses upright Greek glyphs locally, without changing scalar lettering. Generated `\MatA`–`\MatZ` commands remain upright bold.
 
 CSV entries take the form `Name/Display`. Use `Name*/{expression}` for a compound expression with its own styling. Braces protect commas inside a display.
 

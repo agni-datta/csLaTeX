@@ -499,7 +499,7 @@
     {
         \cs_if_exist:cF {cref@algorithm@name}
         {
-            \crefname {algorithm} {algorithm} {algorithms}
+            \crefname {algorithm} {Algorithm} {Algorithms}
         }
         \cs_if_exist:cF {Cref@algorithm@name}
         {
@@ -1798,7 +1798,7 @@
 {
     \@ifpackageloaded {cleveref} {}
     {
-        \RequirePackage {cleveref}
+        \RequirePackage [capitalize] {cleveref}
     }
 }
 \exp_args:NnV \clist_if_in:nnT

@@ -37,7 +37,7 @@
     classfont / sansbold .code:n = {\tl_gset:Nn \g_tcsc_classfont_tl {sansbold}},
     classfont / sans .code:n = {\tl_gset:Nn \g_tcsc_classfont_tl {sans}},
     classfont / bold .code:n = {\tl_gset:Nn \g_tcsc_classfont_tl {bold}},
-    classfont .initial:n = sans,
+    classfont .initial:n = sansbold,
     classfont .value_required:n = true,
     unknown .code:n = {\PackageWarning {tcscrypto} {Unknown~option~`#1'~ignored}},
 }
@@ -93,6 +93,8 @@
 \RequirePackage{enumitem}
 \RequirePackage{etoolbox}
 \RequirePackage{iftex}
+\@ifpackageloaded{unicode-math}{}%
+{\@ifundefined{upalpha}{\RequirePackage{upgreek}}{}}
 \@ifpackageloaded{mdframed}
 {%
     \ifnum\value{mdf@globalstyle@cnt}=0
@@ -224,7 +226,7 @@
         {
             \cs_if_exist:NTF \symbfsfup
             {\symbfsfup {#1}}
-            {\boldsymbol {\mathsf {#1}}}
+            {\csCryptoBoldSymbol {\mathsf {#1}}}
         }
         {sans} {\mathsf {#1}}
         {bold} {\mathbf {#1}}
@@ -539,13 +541,47 @@
 % AMS keeps its original robust implementation when bm replaces the public alias.
 \cs_new_eq:Nc \csCryptoBoldSymbol {boldsymbol~}
 
+% Greek letters need explicit upright glyphs with legacy math fonts.
+% Rebind them only inside vector/matrix notation; scalar notation is unchanged.
+\cs_new_protected:Npn \csCryptoUprightBold #1
+{
+    \cs_if_exist:NTF \symbfup
+    {\symbfup {#1}}
+    {
+        \group_begin:
+        \clist_map_inline:nn
+        {
+            alpha, beta, gamma, delta, epsilon, zeta, eta, theta,
+            iota, kappa, lambda, mu, nu, xi, pi, rho, sigma, tau,
+            upsilon, phi, chi, psi, omega,
+            varepsilon, vartheta, varpi, varrho, varsigma, varphi
+        }
+        {\cs_set_eq:cc {##1} {up##1}}
+        \clist_map_inline:nn
+        {Gamma, Delta, Theta, Lambda, Xi, Pi, Sigma, Upsilon, Phi, Psi, Omega}
+        {
+            \cs_if_exist:cTF {up##1}
+            {\cs_set_eq:cc {##1} {up##1}}
+            {\cs_set_eq:cc {##1} {Up\str_lowercase:n {##1}}}
+            \cs_if_exist:cT {var##1}
+            {\cs_set_eq:cc {var##1} {##1}}
+        }
+        \csCryptoBoldSymbol {\mathrm {#1}}
+        \group_end:
+    }
+}
+
 \tcscrypto@generalalphabets =
     {
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Generated Mathematical Alphabets
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-        \NewDocumentCommand {\mbf} {m} {\regex_match:nnTF {\A[a-zA-Z0-9]\Z} {#1} {\mathbf {#1}} {\csCryptoBoldSymbol {#1}}}
+        \NewDocumentCommand {\mbf} {m}
+        {
+            \regex_match:nnTF {\A[a-zA-Z0-9]+\Z} {#1}
+            {\mathbf {#1}} {\csCryptoUprightBold {#1}}
+        }
 
         \tl_new:N \l_tcsc_letter_tl
 
@@ -903,7 +939,7 @@
 % Vector Notation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-        \NewDocumentCommand{\vec}{m}{\mathbf{#1}}
+        \NewDocumentCommand{\vec}{m}{\mbf{#1}}
         \NewDocumentCommand{\vect}{m}{\algostyle{#1}}
     }
 
