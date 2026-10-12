@@ -1,14 +1,6 @@
----
-title: README
-aliases: [README, 'README, "csresume"']
-linter-yaml-title-alias: README
-date created: Thursday, May 14th 2026, 10:22:30 pm
-date modified: Tuesday, August 25th 2026, 6:44:57 pm
----
-
 <!-- @format -->
 
-## csresume
+## csresume 4.4
 
 An academic CV package with contact headers, dated entries, reference blocks, compact lists, and BibLaTeX publication lists. Font and accent options support both print and screen output.
 

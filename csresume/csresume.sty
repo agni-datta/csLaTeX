@@ -1,10 +1,9 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% csresume.sty — CV and resume templating package
-%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Csresume
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Author  : Agni Datta
 % GitHub  : https://github.com/agni-datta/csLaTeX
 % License : LPPL v1.3c
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}[2022/06/01]
 \ProvidesPackage{csresume}[2026/08/25 v4.4 CV and resume templating package]
@@ -13,34 +12,49 @@
 \makeatletter
 \ExplSyntaxOn
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Package Options
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Package Options
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\str_new:N  \g_csrs_font_str
+\str_new:N \g_csrs_font_str
 \bool_new:N \g_csrs_allowbreaks_bool
 
-\msg_new:nnn { csresume } { unknown-option }
-{ Unknown~option~`#1'~ignored. }
+\msg_new:nnn {csresume} {unknown-option}
+{Unknown~option~`#1'~ignored.}
 
-\str_gset:Nn \g_csrs_font_str { gfsdidot }
+\str_gset:Nn \g_csrs_font_str {gfsdidot}
 
-\keys_define:nn { csresume }
+\keys_define:nn {csresume}
 {
-	font        .str_gset:N  = \g_csrs_font_str ,
-	font        .initial:n   = gfsdidot ,
-	allowbreaks .bool_gset:N = \g_csrs_allowbreaks_bool ,
-	allowbreaks .initial:n   = false ,
-	gfsdidot    .code:n      = { \str_gset:Nn \g_csrs_font_str { gfsdidot    } } ,
-	libertinus  .code:n      = { \str_gset:Nn \g_csrs_font_str { libertinus  } } ,
-	euler       .code:n      = { \str_gset:Nn \g_csrs_font_str { euler       } } ,
-	baskerville .code:n      = { \str_gset:Nn \g_csrs_font_str { baskerville } } ,
-	unknown     .code:n      = { \msg_warning:nnn { csresume } { unknown-option } {#1} } ,
+    font .str_gset:N = \g_csrs_font_str ,
+    font .initial:n = gfsdidot,
+    allowbreaks .bool_gset:N = \g_csrs_allowbreaks_bool ,
+    allowbreaks .initial:n = false,
+    gfsdidot .code:n =
+        {
+            \str_gset:Nn \g_csrs_font_str {gfsdidot}
+        },
+    libertinus .code:n =
+        {
+            \str_gset:Nn \g_csrs_font_str {libertinus}
+        },
+    euler .code:n =
+        {
+            \str_gset:Nn \g_csrs_font_str {euler}
+        },
+    baskerville .code:n =
+        {
+            \str_gset:Nn \g_csrs_font_str {baskerville}
+        },
+    unknown .code:n =
+        {
+            \msg_warning:nnn {csresume} {unknown-option} {#1}
+        },
 }
-\ProcessKeysOptions { csresume }
+\ProcessKeysOptions {csresume}
 \str_if_empty:NT \g_csrs_font_str
 {
-	\str_gset:Nn \g_csrs_font_str { gfsdidot }
+    \str_gset:Nn \g_csrs_font_str {gfsdidot}
 }
 
 \newif\if@csrsbaskerville
@@ -49,36 +63,39 @@
 \newif\if@csrslibertinus
 \newif\if@csrsallowbreaks
 
-\str_if_eq:VnT \g_csrs_font_str { baskerville } { \@csrsbaskervilletrue }
-\str_if_eq:VnT \g_csrs_font_str { euler       } { \@csrseulertrue       }
-\str_if_eq:VnT \g_csrs_font_str { gfsdidot    } { \@csrsgfsdidottrue    }
-\str_if_eq:VnT \g_csrs_font_str { libertinus  } { \@csrslibertinustrue  }
-\bool_if:NTF \g_csrs_allowbreaks_bool { \@csrsallowbreakstrue } { \@csrsallowbreaksfalse }
+\str_if_eq:VnT \g_csrs_font_str {baskerville} {\@csrsbaskervilletrue}
+\str_if_eq:VnT \g_csrs_font_str {euler} {\@csrseulertrue}
+\str_if_eq:VnT \g_csrs_font_str {gfsdidot} {\@csrsgfsdidottrue}
+\str_if_eq:VnT \g_csrs_font_str {libertinus} {\@csrslibertinustrue}
+\bool_if:NTF \g_csrs_allowbreaks_bool {\@csrsallowbreakstrue} {\@csrsallowbreaksfalse}
 
 \ExplSyntaxOff
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Core Packages
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Core Packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[
-	2.0,
-	compress,
-	objcompress
+\RequirePackage
+[ %
+    2.0, %
+    compress, %
+    objcompress
 ]{bxpdfver}
 \RequirePackage{babel}
-\RequirePackage[
-	autostyle = true,
-	csdisplay = true
+\RequirePackage
+[ %
+    autostyle = true, %
+    csdisplay = true
 ]{csquotes}
 \RequirePackage{etoolbox}
 \RequirePackage{graphicx}
 \RequirePackage{setspace}
 \RequirePackage{iftex}
-\RequirePackage[
-	dvipsnames,
-	table,
-	x11names
+\RequirePackage
+[ %
+    dvipsnames, %
+    table, %
+    x11names
 ]{xcolor}
 
 \colorlet{accentcolor}{SteelBlue4}
@@ -90,225 +107,458 @@
 \colorlet{csrsrule}{accentcolor!76!black}
 \colorlet{csrssoftrule}{accentcolor!68!black}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Typography
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Typography
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[
-	final,
-	protrusion = true,
-	expansion  = true
+\RequirePackage
+[ %
+    final, %
+    protrusion = true, %
+    expansion = true
 ]{microtype}
 
-\microtypesetup{
-	activate   = true,
-	final      = true,
-	protrusion = true,
-	expansion  = true,
-	stretch    = 30,
-	factor     = 1500
+\microtypesetup
+{ %
+    activate = true, %
+    final = true, %
+    protrusion = true, %
+    expansion = true, %
+    stretch = 30, %
+    factor = 1500
 }
 
-\UseMicrotypeSet[protrusion]{basicmath}
-\UseMicrotypeSet[expansion]{alltext}
-\SetExpansion{
-	encoding = *,
-	family   = *
-}{
-	stretch = 30,
-	shrink  = 30,
-	step    = 1
+\UseMicrotypeSet [protrusion]{basicmath}
+\UseMicrotypeSet [expansion]{alltext}
+\SetExpansion
+{ %
+    encoding = *, %
+    family = *
+}%
+{ %
+    stretch = 30, %
+    shrink = 30, %
+    step = 1
 }
-\SetProtrusion{
-	encoding = *,
-	family   = *
-}{
-	. = {,50},
-	, = {,40},
-	: = {,30},
-	; = {,30}
+\SetProtrusion
+{ %
+    encoding = *, %
+    family = *
+}%
+{ %
+    . = {,50}, %
+    , %
+        = {,40}, %
+    : = {,30}, %
+    ; = {,30}
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Fonts
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Fonts
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ifPDFTeX
-	\if@csrslibertinus
-		\RequirePackage{libertinus}
-		\RequirePackage[libertine]{newtxmath}
-	\else\if@csrseuler
-			\RequirePackage{eulervm}
-			\RequirePackage{lmodern}
-		\else\if@csrsgfsdidot
-				\RequirePackage{gfsdidot}
-			\else
-				\RequirePackage[
-					proportional,
-					tabular
-				]{Baskervaldx}
-				\RequirePackage{biolinum}
-				\RequirePackage[
-					baskervaldx,
-					varbb
-				]{newtxmath}
-				\RequirePackage[
-					cal = txupr,
-					bb  = stix,
-					scr = dutchcal
-				]{mathalpha}
-			\fi\fi\fi
+    \if@csrslibertinus
+        \RequirePackage{libertinus}
+        \RequirePackage[libertine]{newtxmath}
+    \else \if@csrseuler
+            \RequirePackage{eulervm}
+            \RequirePackage{lmodern}
+        \else \if@csrsgfsdidot
+                \RequirePackage{gfsdidot}
+            \else
+                \RequirePackage
+                [ %
+                    proportional, %
+                    tabular
+                ]{Baskervaldx}
+                \RequirePackage{biolinum}
+                \RequirePackage
+                [ %
+                    baskervaldx, %
+                    varbb
+                ]{newtxmath}
+                \RequirePackage
+                [ %
+                    cal = txupr, %
+                    bb = stix, %
+                    scr = dutchcal
+                ]{mathalpha}
+            \fi \fi \fi
 \else
-	\RequirePackage{fontspec}
-	\RequirePackage{unicode-math}
+    \RequirePackage{fontspec}
+    \RequirePackage{unicode-math}
 
-	\NewDocumentCommand{\csrssetmonofont}{}{%
-		\setmonofont{Inconsolatazi4-Regular.otf}[
-			BoldFont          = Inconsolatazi4-Bold.otf,
-			ItalicFont        = Inconsolatazi4-Regular.otf,
-			ItalicFeatures    = {FakeSlant=0.2},
-			BoldItalicFont    = Inconsolatazi4-Bold.otf,
-			BoldItalicFeatures = {FakeSlant=0.2},
-			Scale          = MatchLowercase,
-			Ligatures      = TeX,
-			RawFeature     = { +calt,+case,+kern,+mark,+mkmk,+liga,+lnum,+tnum }
-		]%
-	}
-	\NewDocumentCommand{\csrssetmonomathfont}{}{%
-		\setmathfont{Inconsolatazi4-Regular.otf}[
-			BoldFont   = Inconsolatazi4-Bold.otf,
-			Scale      = MatchUppercase,
-			range      = { tt/{latin,Latin,num} },
-			RawFeature = { +calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum }
-		]%
-	}
+    \NewDocumentCommand{\csrssetmonofont}{}%
+    {%
+        \setmonofont{Inconsolatazi4-Regular.otf}[
+            BoldFont = Inconsolatazi4-Bold.otf, %
+            ItalicFont = Inconsolatazi4-Regular.otf, %
+            ItalicFeatures = {FakeSlant=0.2}, %
+            BoldItalicFont = Inconsolatazi4-Bold.otf, %
+            BoldItalicFeatures = {FakeSlant=0.2}, %
+            Scale = MatchLowercase, %
+            Ligatures = TeX, %
+            RawFeature =
+                { %
+                    +calt,%
+                    +case,%
+                    +kern,%
+                    +mark,%
+                    +mkmk,%
+                    +liga,%
+                    +lnum,%
+                    +tnum
+                }
+        ]%
+    }
+    \NewDocumentCommand{\csrssetmonomathfont}{}%
+    {%
+        \setmathfont{Inconsolatazi4-Regular.otf}[
+            BoldFont = Inconsolatazi4-Bold.otf, %
+            Scale = MatchUppercase, %
+            range =
+                { %
+                    tt/%
+                    {%
+                        latin,%
+                        Latin,%
+                        num%
+                    }
+                }, %
+            RawFeature =
+                { %
+                    +calt,%
+                    +case,%
+                    +kern,%
+                    +liga,%
+                    +mark,%
+                    +mkmk,%
+                    +lnum,%
+                    +tnum
+                }
+        ]%
+    }
 
-	\setsansfont{Libertinus Sans}[
-		Scale             = MatchUppercase,
-		Ligatures         = TeX,
-		SmallCapsFeatures = { RawFeature = +smcp },
-		RawFeature        = { +calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum }
-	]
-	\csrssetmonofont
+    \setsansfont{Libertinus Sans}[
+        Scale = MatchUppercase,
+        Ligatures = TeX,
+        SmallCapsFeatures = { RawFeature = +smcp },
+        RawFeature =
+            { %
+                +calt,%
+                +case,%
+                +kern,%
+                +liga,%
+                +mark,%
+                +mkmk,%
+                +lnum,%
+                +tnum
+            }
+    ]
+    \csrssetmonofont
 
-	\if@csrsbaskerville
-		\setmainfont{Baskervaldx}[
-			Ligatures         = TeX,
-			SmallCapsFeatures = { RawFeature = +smcp },
-			RawFeature        = { +calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum }
-		]
-		\setmathfont{KPMath-Regular}[
-			Scale = MatchUppercase,
-			AutoFakeBold,
-			AutoFakeSlant
-		]
-		\setmathfont{Baskervaldx-Reg}[
-			Scale      = MatchUppercase,
-			range      = { up/{latin,Latin,num} },
-			Ligatures  = TeX,
-			RawFeature = { +calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum }
-		]
-		\setmathfont{Baskervaldx-Ita}[
-			Scale      = MatchUppercase,
-			range      = { it/{latin,Latin} },
-			Ligatures  = TeX,
-			RawFeature = { +calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum }
-		]
-		\setmathfont{Libertinus Sans}[
-			Scale      = MatchUppercase,
-			range      = { sfup/{latin,Latin,num}, sfit/{latin,Latin} },
-			Ligatures  = TeX,
-			RawFeature = { +calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum }
-		]
-		\csrssetmonomathfont
-	\fi
+    \if@csrsbaskerville
+        \setmainfont{Baskervaldx}[
+            Ligatures = TeX,
+            SmallCapsFeatures = { RawFeature = +smcp },
+            RawFeature =
+                { %
+                    +calt,%
+                    +case,%
+                    +kern,%
+                    +liga,%
+                    +mark,%
+                    +mkmk,%
+                    +lnum,%
+                    +tnum
+                }
+        ]
+        \setmathfont{KPMath-Regular}[
+            Scale = MatchUppercase,
+            AutoFakeBold,
+            AutoFakeSlant
+        ]
+        \setmathfont{Baskervaldx-Reg}[
+            Scale = MatchUppercase,
+            range =
+                { %
+                    up/%
+                    {%
+                        latin,%
+                        Latin,%
+                        num%
+                    }
+                },
+            Ligatures = TeX,
+            RawFeature =
+                { %
+                    +calt,%
+                    +case,%
+                    +kern,%
+                    +liga,%
+                    +mark,%
+                    +mkmk,%
+                    +lnum,%
+                    +tnum
+                }
+        ]
+        \setmathfont{Baskervaldx-Ita}[
+            Scale = MatchUppercase,
+            range =
+                { %
+                    it/%
+                    {%
+                        latin,%
+                        Latin%
+                    }
+                },
+            Ligatures = TeX,
+            RawFeature =
+                { %
+                    +calt,%
+                    +case,%
+                    +kern,%
+                    +liga,%
+                    +mark,%
+                    +mkmk,%
+                    +lnum,%
+                    +tnum
+                }
+        ]
+        \setmathfont{Libertinus Sans}[
+            Scale = MatchUppercase,
+            range =
+                { %
+                    sfup/%
+                    {%
+                        latin,%
+                        Latin,%
+                        num%
+                    }, %
+                    sfit/%
+                    {%
+                        latin,%
+                        Latin%
+                    }
+                },
+            Ligatures = TeX,
+            RawFeature =
+                { %
+                    +calt,%
+                    +case,%
+                    +kern,%
+                    +liga,%
+                    +mark,%
+                    +mkmk,%
+                    +lnum,%
+                    +tnum
+                }
+        ]
+        \csrssetmonomathfont
+    \fi
 
-	\if@csrseuler
-		\RequirePackage[euler]{fontsetup}
-		\csrssetmonofont
-		\csrssetmonomathfont
-		\defaultfontfeatures{
-			SmallCapsFeatures = { RawFeature = +smcp,+lnum,+tnum },
-			RawFeature        = { +calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum }
-		}
-	\fi
+    \if@csrseuler
+        \RequirePackage[euler]{fontsetup}
+        \csrssetmonofont
+        \csrssetmonomathfont
+        \defaultfontfeatures
+        { %
+            SmallCapsFeatures =
+                { %
+                    RawFeature = +smcp,%
+                    +lnum,%
+                    +tnum
+                }, %
+            RawFeature =
+                { %
+                    +calt,%
+                    +case,%
+                    +kern,%
+                    +liga,%
+                    +mark,%
+                    +mkmk,%
+                    +lnum,%
+                    +tnum
+                }
+        }
+    \fi
 
-	\if@csrsgfsdidot
-		\RequirePackage[gfsdidot]{fontsetup}
-		\setsansfont{Libertinus Sans}[
-			Scale      = MatchUppercase,
-			Ligatures  = TeX,
-			RawFeature = { +calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum }
-		]
-		\csrssetmonofont
-	\fi
+    \if@csrsgfsdidot
+        \RequirePackage[gfsdidot]{fontsetup}
+        \setsansfont{Libertinus Sans}[
+            Scale = MatchUppercase,
+            Ligatures = TeX,
+            RawFeature =
+                { %
+                    +calt,%
+                    +case,%
+                    +kern,%
+                    +liga,%
+                    +mark,%
+                    +mkmk,%
+                    +lnum,%
+                    +tnum
+                }
+        ]
+        \csrssetmonofont
+    \fi
 
-	\if@csrslibertinus
-		\setmainfont{Libertinus Serif}[
-			Ligatures         = TeX,
-			SmallCapsFeatures = { RawFeature = +smcp },
-			RawFeature        = { +calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum }
-		]
-		\setsansfont{Libertinus Sans}[
-			Scale             = MatchUppercase,
-			Ligatures         = TeX,
-			SmallCapsFeatures = { RawFeature = +smcp },
-			RawFeature        = { +calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum }
-		]
-		\csrssetmonofont
-		\setmathfont{KPMath-Regular}[
-			AutoFakeBold,
-			AutoFakeSlant,
-			Scale      = MatchUppercase,
-			RawFeature = { +calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum }
-		]
-		\setmathfont{LibertinusSerif-Regular}[
-			Scale      = MatchUppercase,
-			range      = { up/{latin,Latin,num} },
-			Ligatures  = TeX,
-			RawFeature = { +calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum }
-		]
-		\setmathfont{LibertinusSerif-Italic}[
-			Scale      = MatchUppercase,
-			range      = { it/{latin,Latin} },
-			Ligatures  = TeX,
-			RawFeature = { +calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum }
-		]
-		\setmathfont{Libertinus Sans}[
-			Scale      = MatchUppercase,
-			range      = { sfup/{latin,Latin,num}, sfit/{latin,Latin} },
-			Ligatures  = TeX,
-			RawFeature = { +calt,+case,+kern,+liga,+mark,+mkmk,+lnum,+tnum }
-		]
-		\csrssetmonomathfont
-	\fi
+    \if@csrslibertinus
+        \setmainfont{Libertinus Serif}[
+            Ligatures = TeX,
+            SmallCapsFeatures = { RawFeature = +smcp },
+            RawFeature =
+                { %
+                    +calt,%
+                    +case,%
+                    +kern,%
+                    +liga,%
+                    +mark,%
+                    +mkmk,%
+                    +lnum,%
+                    +tnum
+                }
+        ]
+        \setsansfont{Libertinus Sans}[
+            Scale = MatchUppercase,
+            Ligatures = TeX,
+            SmallCapsFeatures = { RawFeature = +smcp },
+            RawFeature =
+                { %
+                    +calt,%
+                    +case,%
+                    +kern,%
+                    +liga,%
+                    +mark,%
+                    +mkmk,%
+                    +lnum,%
+                    +tnum
+                }
+        ]
+        \csrssetmonofont
+        \setmathfont{KPMath-Regular}[
+            AutoFakeBold,
+            AutoFakeSlant,
+            Scale = MatchUppercase,
+            RawFeature =
+                { %
+                    +calt,%
+                    +case,%
+                    +kern,%
+                    +liga,%
+                    +mark,%
+                    +mkmk,%
+                    +lnum,%
+                    +tnum
+                }
+        ]
+        \setmathfont{LibertinusSerif-Regular}[
+            Scale = MatchUppercase,
+            range =
+                { %
+                    up/%
+                    {%
+                        latin,%
+                        Latin,%
+                        num%
+                    }
+                },
+            Ligatures = TeX,
+            RawFeature =
+                { %
+                    +calt,%
+                    +case,%
+                    +kern,%
+                    +liga,%
+                    +mark,%
+                    +mkmk,%
+                    +lnum,%
+                    +tnum
+                }
+        ]
+        \setmathfont{LibertinusSerif-Italic}[
+            Scale = MatchUppercase,
+            range =
+                { %
+                    it/%
+                    {%
+                        latin,%
+                        Latin%
+                    }
+                },
+            Ligatures = TeX,
+            RawFeature =
+                { %
+                    +calt,%
+                    +case,%
+                    +kern,%
+                    +liga,%
+                    +mark,%
+                    +mkmk,%
+                    +lnum,%
+                    +tnum
+                }
+        ]
+        \setmathfont{Libertinus Sans}[
+            Scale = MatchUppercase,
+            range =
+                { %
+                    sfup/%
+                    {%
+                        latin,%
+                        Latin,%
+                        num%
+                    }, %
+                    sfit/%
+                    {%
+                        latin,%
+                        Latin%
+                    }
+                },
+            Ligatures = TeX,
+            RawFeature =
+                { %
+                    +calt,%
+                    +case,%
+                    +kern,%
+                    +liga,%
+                    +mark,%
+                    +mkmk,%
+                    +lnum,%
+                    +tnum
+                }
+        ]
+        \csrssetmonomathfont
+    \fi
 \fi
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Page Layout
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Page Layout
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage[margin=1in]{geometry}
-\geometry{
-	paper          = letterpaper,
-	top            = 2cm,
-	bottom         = 2cm,
-	left           = 4cm,
-	right          = 2cm,
-	heightrounded,
-	marginparwidth = 3.5cm,
-	marginparsep   = 0.5cm,
-	headheight     = 0.75cm,
-	headsep        = 0.75cm,
-	footskip       = 1cm
+\geometry
+{ %
+    paper = letterpaper, %
+    top = 2cm, %
+    bottom = 2cm, %
+    left = 4cm, %
+    right = 2cm, %
+    heightrounded, %
+    marginparwidth = 3.5cm, %
+    marginparsep = 0.5cm, %
+    headheight = 0.75cm, %
+    headsep = 0.75cm, %
+    footskip = 1cm
 }
 
 \setlength{\parindent}{0pt}
 \setcounter{secnumdepth}{0}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Margin Labels
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Margin Labels
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{marginnote}
 \reversemarginpar
@@ -316,80 +566,113 @@
 \setlength{\marginparsep}{-10pt}
 \setlength{\marginparpush}{0.45em}
 
-\NewDocumentCommand{\years}{m}{%
-	\marginnote{\footnotesize\sffamily\scshape\textls[60]{\textcolor{fourthaccentcolor}{#1}}}%
+\NewDocumentCommand{\years}{m}%
+{%
+    \marginnote
+    {%
+        \footnotesize \sffamily \scshape \textls [60]%
+        {%
+            \textcolor{fourthaccentcolor}{#1}%
+        }%
+    }%
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Section Headings
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Section Headings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{titlesec}
 
-\NewDocumentCommand{\csrsspacedsection}{m}{%
-	\textls[170]{\MakeUppercase{#1}}%
+\NewDocumentCommand{\csrsspacedsection}{m}%
+{%
+    \textls [170]%
+    {%
+        \MakeUppercase{#1}%
+    }%
 }
-\NewDocumentCommand{\csrsspacedsubsection}{m}{%
-	\textls[135]{\MakeUppercase{#1}}%
+\NewDocumentCommand{\csrsspacedsubsection}{m}%
+{%
+    \textls [135]%
+    {%
+        \MakeUppercase{#1}%
+    }%
 }
-\NewDocumentCommand{\csrsspacedsubsubsection}{m}{%
-	\textls[110]{\MakeUppercase{#1}}%
+\NewDocumentCommand{\csrsspacedsubsubsection}{m}%
+{%
+    \textls [110]%
+    {%
+        \MakeUppercase{#1}%
+    }%
 }
 
 \titleformat{\section}
-{\large\sffamily\mdseries\color{accentcolor}}
+{%
+    \large \sffamily \mdseries \color{accentcolor}%
+}
 {}
 {0em}
 {\csrsspacedsection}
-[\color{secondaccentcolor}\titlerule]
+[\color{secondaccentcolor}\titlerule ]
 
 \titleformat{\subsection}
-{\normalsize\sffamily\mdseries\color{accentcolor}}
+{%
+    \normalsize \sffamily \mdseries \color{accentcolor}%
+}
 {}
 {0em}
 {\csrsspacedsubsection}
-[\color{csrsrule}\titlerule]
+[\color{csrsrule}\titlerule ]
 
 \titleformat{\subsubsection}
-{\mdseries\sffamily\normalsize\color{csrsink}}
+{%
+    \mdseries \sffamily \normalsize \color{csrsink}%
+}
 {}
 {0em}
 {\csrsspacedsubsubsection}
 
-\titlespacing*{\section}
+\titlespacing *{\section}
 {0pt}
 {2.9ex plus .5ex minus .2ex}
 {1.85ex plus .3ex}
 
-\titlespacing*{\subsection}
+\titlespacing *{\subsection}
 {0pt}
 {2.45ex plus .3ex minus .1ex}
 {1.75ex plus .2ex}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Lists and Columns
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Lists and Columns
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{enumitem}
-\setlist{nosep,noitemsep}
-\setlist[itemize]{label=\textcolor{accentcolor}{\textbullet}}
+\setlist
+{%
+    nosep,%
+    noitemsep%
+}
+\setlist[itemize]%
+{%
+    label=\textcolor{accentcolor}{\textbullet}%
+}
 
 \RequirePackage{multicol}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Bibliography
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Bibliography
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage[
-	hyperref      = true,
-	defernumbers  = true,
-	bibstyle      = alphabetic,
-	maxalphanames = 4,
-	minalphanames = 3,
-	maxnames      = 999,
-	sorting       = ydnt,
-	giveninits    = false,
-	backend       = biber
+\RequirePackage
+[ %
+    hyperref = true, %
+    defernumbers = true, %
+    bibstyle = alphabetic, %
+    maxalphanames = 4, %
+    minalphanames = 3, %
+    maxnames = 999, %
+    sorting = ydnt, %
+    giveninits = false, %
+    backend = biber
 ]{biblatex}
 
 \DeclareFieldFormat{marginlabel}{#1}
@@ -401,126 +684,231 @@
 \setlength{\bibparsep}{0pt}
 \DeclareNameAlias{default}{given-family}
 
-\DeclareFieldFormat[
-	article,
-	inproceedings,
-	incollection,
-	inbook,
-	thesis
-]{title}{\textit{#1}\isdot}
-\DeclareFieldFormat[unpublished]{title}{\textit{#1}\isdot}
-\DeclareFieldFormat[unpublished]{titlecase}{\textit{#1}\isdot}
-
-\renewbibmacro*{begentry}{%
-	\years{[\printfield[marginlabel]{labelalpha}]}%
+\DeclareFieldFormat [
+    article,
+    inproceedings,
+    incollection,
+    inbook,
+    thesis
+]{title}%
+{%
+    \textit{#1}%
+    \isdot
+}
+\DeclareFieldFormat [unpublished]{title}%
+{%
+    \textit{#1}%
+    \isdot
+}
+\DeclareFieldFormat [unpublished]{titlecase}%
+{%
+    \textit{#1}%
+    \isdot
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Hyperlinks and PDF Metadata
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\RequirePackage[bookmarks,colorlinks,breaklinks]{hyperref}
-\hypersetup{
-	bookmarksnumbered = true,
-	breaklinks        = true,
-	colorlinks        = true,
-	frenchlinks       = true,
-	pdfencoding       = auto,
-	pdfpagelayout     = SinglePage,
-	pdfstartview      = FitH,
-	unicode           = true,
-	linkcolor         = accentcolor,
-	citecolor         = accentcolor,
-	filecolor         = accentcolor,
-	urlcolor          = accentcolor,
-	pdftitle          = {Curriculum Vitae},
-	pdfauthor         = {}
+\renewbibmacro *{begentry}%
+{%
+    \years
+    {%
+        [\printfield [marginlabel]{labelalpha}]%
+    }%
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Public CV Commands
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Hyperlinks and PDF Metadata
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\NewDocumentCommand{\csrscontactlabel}{m}{%
-	\textcolor{fourthaccentcolor}{#1}%
+\RequirePackage
+[%
+    bookmarks,%
+    colorlinks,%
+    breaklinks%
+]{hyperref}
+\hypersetup
+{ %
+    bookmarksnumbered = true, %
+    breaklinks = true, %
+    colorlinks = true, %
+    frenchlinks = true, %
+    pdfencoding = auto, %
+    pdfpagelayout = SinglePage, %
+    pdfstartview = FitH, %
+    unicode = true, %
+    linkcolor = accentcolor, %
+    citecolor = accentcolor, %
+    filecolor = accentcolor, %
+    urlcolor = accentcolor, %
+    pdftitle = {Curriculum Vitae}, %
+    pdfauthor = {}
 }
 
-\NewDocumentCommand{\csrscontactseparator}{}{%
-	\quad \textcolor{thirdaccentcolor}{|} \quad
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Public CV Commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\NewDocumentCommand{\csrscontactlabel}{m}%
+{%
+    \textcolor{fourthaccentcolor}{#1}%
 }
 
-\NewDocumentCommand{\contactblock}{m m m m m m m}{%
-	{\huge\sffamily\mdseries\color{accentcolor}\textls[170]{#1}\par}%
-	\vspace{0.55em}%
-	{\color{secondaccentcolor}\hrule height 0.45pt\par}%
-	\vspace{0.85em}%
-	{\textit{#2}}\par
-	\vspace{0.25em}%
-	#3\par
-	\vspace{0.45em}%
-	{%
-		\csrscontactlabel{Email:}~~\texttt{\href{mailto:#4}{#4}}%
-		\csrscontactseparator
-		\csrscontactlabel{Website:}~~\texttt{\href{https://#5}{#5}}\par
-		\csrscontactlabel{Scholar:}~~\texttt{\href{https://scholar.google.com/citations?user=#6}{#6}}%
-		\csrscontactseparator
-		\csrscontactlabel{DBLP:}~~\texttt{\href{https://dblp.org/pid/#7}{#7}}%
-	}%
-	\vspace{0.85em}%
-	{\color{csrssoftrule}\hrule height 0.35pt\par}%
+\NewDocumentCommand{\csrscontactseparator}{}%
+{%
+    \quad \textcolor{thirdaccentcolor}{|}
+    \quad
 }
 
-\NewDocumentCommand{\details}{m m m m}{%
-	\years{#1}%
-	{\itshape #2},\ {#3}\\[2pt]%
-	{#4}\par\addvspace{0.62em}%
-	\if@csrsallowbreaks\pagebreak[0]\fi
+\NewDocumentCommand{\contactblock}{m m m m m m m}%
+{%
+    {%
+        \huge \sffamily \mdseries \color{accentcolor}%
+        \textls [170]{#1}%
+        \par
+    }%
+    \vspace{0.55em}%
+    {%
+        \color{secondaccentcolor}%
+        \hrule height 0.45pt\par
+    }%
+    \vspace{0.85em}%
+    {%
+        \textit{#2}%
+    }%
+    \par
+    \vspace{0.25em}%
+    #3\par
+    \vspace{0.45em}%
+    {%
+        \csrscontactlabel{Email:}~~\texttt
+        {%
+            \href{mailto:#4}{#4}%
+        }%
+        \csrscontactseparator
+        \csrscontactlabel{Website:}~~\texttt
+        {%
+            \href{https://#5}{#5}%
+        }%
+        \par
+        \csrscontactlabel{Scholar:}~~\texttt
+        {%
+            \href{https://scholar.google.com/citations?user=#6}{#6}%
+        }%
+        \csrscontactseparator
+        \csrscontactlabel{DBLP:}~~\texttt
+        {%
+            \href{https://dblp.org/pid/#7}{#7}%
+        }%
+    }%
+    \vspace{0.85em}%
+    {%
+        \color{csrssoftrule}%
+        \hrule height 0.35pt\par
+    }%
 }
 
-\NewDocumentCommand{\columndetails}{m m m}{%
-	\years{#1}%
-	{\itshape #2}%
-	\hfill #3%
-	\par\addvspace{0.36em}%
-	\if@csrsallowbreaks\pagebreak[0]\fi
+\NewDocumentCommand{\details}{m m m m}%
+{%
+    \years{#1}%
+    {%
+        \itshape #2%
+    },%
+    \ {#3}\\[2pt]%
+    {#4}%
+    \par
+    \addvspace{0.62em}%
+    \if@csrsallowbreaks \pagebreak [0]\fi
 }
 
-\NewDocumentCommand{\referals}{m m m m m m m m}{%
-	\noindent\small
-	\begin{minipage}{\linewidth}
-		{#1~\color{csrsink}#2~{\scshape#3}}\par
-		\textit{#4}\par
-		#5\par
-		#6\par
-		\href{mailto:#7}{\texttt{#7}}\par
-		\href{https://#8}{\texttt{#8}}
-	\end{minipage}%
-	\par\vspace{1.5em}%
+\NewDocumentCommand{\columndetails}{m m m}%
+{%
+    \years{#1}%
+    {%
+        \itshape #2%
+    }%
+    \hfill #3%
+    \par
+    \addvspace{0.36em}%
+    \if@csrsallowbreaks \pagebreak [0]\fi
 }
 
-\NewDocumentCommand{\finishcv}{m m}{%
-	\par\vfill
-	\begin{center}
-		\footnotesize\sffamily\color{csrsmuted}%
-		{%
-			Updated~#1%
-			\hspace{0.5em}{\color{secondaccentcolor}\raisebox{0.15ex}{\tiny\textbullet}}\hspace{0.5em}%
-			\href{#2}{\texttt{#2}}%
-		}%
-	\end{center}%
+\NewDocumentCommand{\referals}{m m m m m m m m}%
+{%
+    \noindent \small
+    \begin{minipage}{\linewidth}
+        {%
+            #1~\color{csrsink}#2~%
+            {%
+                \scshape #3%
+            }%
+        }%
+        \par
+        \textit{#4}%
+        \par
+        #5\par
+        #6\par
+        \href{mailto:#7}%
+        {%
+            \texttt{#7}%
+        }%
+        \par
+        \href{https://#8}%
+        {%
+            \texttt{#8}%
+        }
+    \end{minipage}%
+    \par
+    \vspace{1.5em}%
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Public CV Environments
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\NewDocumentCommand{\finishcv}{m m}%
+{%
+    \par
+    \vfill
+    \begin{center}
+        \footnotesize \sffamily \color{csrsmuted}%
+        {%
+            Updated~#1%
+            \hspace{0.5em}%
+            {%
+                \color{secondaccentcolor}%
+                \raisebox{0.15ex}%
+                {%
+                    \tiny \textbullet
+                }%
+            }%
+            \hspace{0.5em}%
+            \href{#2}%
+            {%
+                \texttt{#2}%
+            }%
+        }%
+    \end{center}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Public CV Environments
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NewDocumentEnvironment{refcolumns}{}
-{\begin{multicols}{2}}
-{\end{multicols}}
+{%
+    \begin{multicols}{2}%
+}
+{%
+    \end{multicols}%
+}
 
 \NewDocumentEnvironment{ditemize}{}
-{\begin{multicols}{2}\begin{itemize}[nosep,leftmargin=*]}
-{\end{itemize}\end{multicols}}
+{%
+    \begin{multicols}{2}%
+    \begin{itemize}%
+    [%
+        nosep,%
+        leftmargin=*%
+    ]%
+}
+{%
+    \end{itemize}%
+    \end{multicols}%
+}
 
 \makeatother
 \endinput
