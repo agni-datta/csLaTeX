@@ -1,14 +1,6 @@
----
-title: README
-aliases: [README, 'README, "cswhitepaper"']
-linter-yaml-title-alias: README
-date created: Thursday, May 14th 2026, 10:22:54 pm
-date modified: Tuesday, August 25th 2026, 6:44:57 pm
----
-
 <!-- @format -->
 
-## cswhitepaper
+## cswhitepaper 5.2
 
 A style for collaborative white papers and technical reports. It combines ruled theorem formatting, author notes, revision markers, and draft or final modes.
 
@@ -65,7 +57,7 @@ A style for collaborative white papers and technical reports. It combines ruled 
 - `\parhead{text}`: bold inline heading with automatic trailing period. Use in place of `\paragraph` for named steps, cases, or subsections that do not warrant a numbered heading.
 - `\subparhead{text}`: small-caps inline heading with automatic trailing period. Use for finer-grained structure below `\parhead`.
 
-#### Annotation commands (active in `draft` mode; no-ops in `final`)
+#### Annotation commands
 
 General annotations:
 
@@ -106,7 +98,7 @@ Per-author markers:
 
 **Proof-style:** `proof`, `proofsketch`, `proofidea`, `proofofclaim`
 
-All environments are numbered per section, accept optional titles, and are registered with `cleveref`. The package declares them directly with a self-contained `ntheorem` setup, including the TeX Live 2026 end-mark correction.
+All environments are numbered per section, accept optional titles, and are registered with `cleveref`. The package declares them directly with a self-contained `ntheorem` setup.
 
 `\setqedsymbol{symbol}` changes the proof-end symbol, and `\settheoremendsymbol{symbol}` changes theorem-end markers where those markers are used. The capitalized forms remain available as compatibility aliases.
 
