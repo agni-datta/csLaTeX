@@ -148,6 +148,16 @@ For a protocol title with default settings, use `\begin{protocolbox}[][Title]`. 
 
 `\keywords{alpha \and beta}` prints keywords with centered-dot separators. The heading uses the class's `\keywordname`, or bold “Keywords:” when the class has none. `aidisclosure` starts a paragraph headed “AI Disclosure and Provenance”; write the disclosure text inside the environment.
 
+## Regression check for moving arguments
+
+From this package directory, run:
+
+```sh
+TEXINPUTS="$PWD:" latexmk -cd -pdf -interaction=nonstopmode tests/moving-arguments.tex
+```
+
+The fixture checks bold class names in headings and captions, upright Latin/Greek vectors, and styled vector arguments with `bm` loaded. latexmk repeats compilation so the generated contents and figure lists are read back. The bold wrapper must remain protected in moving arguments; the original AMS implementation supplies the font handling, and PDF-string registration preserves class text in bookmarks.
+
 ## Finding a command
 
 The definitions in `tcscrypto.sty` are grouped by topic:
@@ -167,3 +177,9 @@ Author: Agni Datta. License: LPPL 1.3c.
 `\DescriptionEncoding{...}` always supplies the mathematical encoding delimiters. The shorter `\Description` name remains available when a class does not already own it; ACM retains its figure-accessibility command. Similarly, `\StateVar` supplies the mathematical state variable while an existing class-owned `\state` remains intact.
 
 When codelines is loaded, it owns the shared `\codecomment` callback. Both package-loading orders are supported.
+
+## Protocol glyph and document headings
+
+`\Prot` and `\Protocol` use the native upright sans-serif capital Pi. With pdfLaTeX, a dedicated OT1 math-symbol declaration keeps its Greek slot independent of T1 text/math alphabet choices. Indexed and superscripted protocols retain their math semantics; the Unicode branch remains available without changing global alphabet settings. Protected bold-symbol expansion prevents unsafe moving arguments from corrupting generated contents.
+
+`\TcsDocumentHeading` centralizes document-level heading behavior. Changelog headings add a TOC entry when used; the package does not insert a Changelog into unrelated manuscripts. The Papers common prefix supplies full-version section formatting and compact venue conventions.

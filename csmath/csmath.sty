@@ -351,6 +351,7 @@
 \tl_new:N \csMathParagraphs
 \tl_new:N \csMathCleveref
 \prop_get:NnN \g_csMathChoices_prop {mode} \csMathMode
+
 \prop_get:NnN \g_csMathChoices_prop {font} \csMathFont
 \tl_if_eq:NnTF \csMathMode {venue}
 {
@@ -1815,7 +1816,7 @@
         \renewcommand \backref [1] {}
         \renewcommand \backrefalt [4]
         {
-            \ifcase ##1\or (Cited~on~p.~##2).\else (Cited~on~pp.~##2).\fi
+            \ifcase ##1\or (Cited~on~page\nobreakspace ##2).\else (Cited~on~pages\nobreakspace ##2).\fi
         }
     }
 }
@@ -2639,13 +2640,16 @@
     \RequirePackage
     {%
         titlesec,%
-        titling,%
         setspace,%
         emptypage,%
         moresize,%
         multicol%
     }
-    \RequirePackage[auth-sc]{authblk}
+    %
+        \RequirePackage{titling}%
+        \RequirePackage[auth-sc]{authblk}%
+
+
     \def \csMathPartFont
     {%
         \normalfont \raggedleft
@@ -2703,10 +2707,12 @@
     {%
         \def \csMathInstitute{#1}%
     }
+
     \NewDocumentCommand{\subtitle} {m}%
     {%
         \def \csMathSubtitle{#1}%
     }
+
 
     \def \csMathAuthorFont
     {%
@@ -2719,25 +2725,41 @@
     \def \csMathDateFont{\normalfont}
     \def \csMathSubtitleFont{\normalfont}
     \def \csMathTitleFont{\normalfont}
+
     \NewDocumentCommand{\authorfont} {m}%
     {%
         \def \csMathAuthorFont{#1}%
     }
+
     \NewDocumentCommand{\institutefont}{m}%
     {%
         \def \csMathInstituteFont{#1}%
     }
+
     \NewDocumentCommand{\datefont} {m}%
     {%
         \def \csMathDateFont{#1}%
     }
+
+
     \NewDocumentCommand{\subtitlefont} {m}%
     {%
         \def \csMathSubtitleFont{#1}%
     }
+
+
     \NewDocumentCommand{\titlefont} {m}%
     {%
         \def \csMathTitleFont{#1}%
+    }
+
+
+    % Project-owned title descriptions, deeply inspired by hep-title 1.5.
+    % Native titling/authblk layout remains the owner of author and affiliation rendering.
+    \NewDocumentCommand{\csMathTitleDescription}{m}{%
+        \AddToHook{cmd/maketitle/after}[csmath/title-description]{%
+            \begin{center}\small\normalfont #1\end{center}%
+        }%
     }
 
     \newlength{\goldenunit}
@@ -3060,6 +3082,7 @@
         {%
             \thesubsubsection .%
         }{.5em}{}[.]
+
         \pretitle
         {%
             \begin{center}%
@@ -3098,6 +3121,7 @@
         }
         \renewcommand{\Authfont}{\csMathAuthorFont}
         \renewcommand{\Affilfont}{\csMathInstituteFont}
+
     }
     \csMathIfFeature{sanshdr}
     {%

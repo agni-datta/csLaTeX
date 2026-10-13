@@ -495,14 +495,6 @@
 
 \RequirePackage {enumitem}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Shared Counters
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\tl_if_eq:NnT \csThmCounters {shared}
-{
-    \RequirePackage {aliascnt}
-}
 \bool_if:NT \csThmUseFrame
 {
     \@ifpackageloaded {mdframed}
@@ -848,6 +840,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \bool_new:N \l_csThmSteppingStar_bool
+\cs_new_protected:Npn \csThmSetSharedReferenceType #1
+{
+    \cs_if_exist:NT \crefalias {\crefalias {theorem} {#1}}
+    \cs_if_exist:NT \zcsetup {\zcsetup {countertype = {theorem = #1}}}
+}
 \cs_new_protected:Npn \csThmDeclareOne #1#2#3
 {
     \bool_lazy_and:nnTF
@@ -858,14 +855,7 @@
         !\str_if_eq_p:nn {#1} {theorem}
     }
     {
-        \newaliascnt {#1} {theorem}
-        \newtheorem {#1} [#1] {#2}
-        \aliascntresetthe {#1}
-        \tl_if_eq:NnF \csThmNumberWithin {none}
-        {
-            \counterwithin * {#1} {\csThmNumberWithin}
-        }
-        \cs_gset:cpn {theH#1} {\theHtheorem}
+        \newtheorem {#1} [theorem] {#2}
     }
     {
         \tl_if_eq:NnTF \csThmNumberWithin {none}
@@ -894,6 +884,13 @@
                 }
             }
         }
+    }
+    \tl_if_eq:NnT \csThmCounters {shared}
+    {
+        \AddToHook {env/#1/begin} [csthm/reference-type]
+        {\csThmSetSharedReferenceType {#1}}
+        \AddToHook {env/#1*/begin} [csthm/reference-type]
+        {\csThmSetSharedReferenceType {#1}}
     }
     \bool_set_false:N \l_csThmSteppingStar_bool
     \str_case:Vn \csThmStarred
@@ -1229,8 +1226,8 @@
     \def \csThmPostSkip {0pt}
     \colorlet {csThmTheoremColor} {SeaGreen4}
     \colorlet {csThmDefinitionColor} {RoyalBlue2}
-    \colorlet {csThmRemarkColor} {Aquamarine4}
-    \colorlet {csThmHighlightColor} {DeepPink4}
+    \colorlet {csThmRemarkColor} {SpringGreen4}
+    \colorlet {csThmHighlightColor} {IndianRed4}
     \csThmDefineFancyFrame {csThmTheoremFrame} {csThmTheoremColor}
     \csThmDefineFancyFrame {csThmDefinitionFrame} {csThmDefinitionColor}
     \csThmDefineFancyFrame {csThmRemarkFrame} {csThmRemarkColor}

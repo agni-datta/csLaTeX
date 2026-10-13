@@ -154,7 +154,7 @@ Counter/reset/family/star/appearance configuration is fixed at initial package l
   numberwithin=chapter]{csthm}
 ```
 
-Shared mode adds only `aliascnt`. Theorem, lemma, definition, and proposition then print 1.1, 1.2, 1.3, 1.4 and reset together. Each still steps its own logical counter, so `\cref` retains its type and hyperlinks use distinct type-prefixed destinations. Section/chapter reset links are established before declarations; continuous numbering has no parent reset. This is supported in all documented reference loading orders.
+Shared mode uses ntheorem’s native shared `theorem` counter, without aliascnt. Theorem, lemma, definition, and proposition print 1.1, 1.2, 1.3, 1.4 and reset together. Environment-scoped cleveref and zref-clever aliases retain each logical reference type. Hyperlinks use the master counter’s unique destinations; literal links to older type-prefixed anchors require regeneration. Nested environments restore the enclosing type. Section/chapter reset links are established before declarations; continuous numbering has no parent reset. This is supported in all documented reference loading orders.
 
 The extended families are:
 

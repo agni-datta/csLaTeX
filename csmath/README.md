@@ -140,7 +140,7 @@ A named selection is authoritative. The resolver executes once; `\docufont` cann
 
 `cleveref=auto` loads cleveref at `begindocument/before` only if hyperref is present. `true` makes its commands available during the preamble; load hyperref first if it will be used. `false` prevents implicit cleveref loading. The references feature loads hyperref before theorem setup and makes auto immediate. Existing cleveref options remain untouched. Use `\hypersetup` to change link settings. csthm registers theorem names independently; lowercase `\cref` and title-case `\Cref` are distinct.
 
-Supported orders include hyperref → csmath, csmath → hyperref → cleveref, and amsmath → hyperref → cleveref → csmath. cleveref before amsmath or hyperref after cleveref is diagnosed. References does not force bibliography backreferences, metadata, PDF version, or a language. If the caller enables hyperref's pagebackref, the legacy “Cited on p./pp.” callbacks are configured. Use `\hypersetup` for document metadata.
+Supported orders include hyperref → csmath, csmath → hyperref → cleveref, and amsmath → hyperref → cleveref → csmath. cleveref before amsmath or hyperref after cleveref is diagnosed. References does not force bibliography backreferences, metadata, PDF version, or a language. If the caller enables hyperref's pagebackref, automatic “Cited on page” / “Cited on pages” callbacks are configured with distinct linked citation pages. Use `\hypersetup` for document metadata.
 
 **Numbering migration:** modern defaults use independent counters, while both legacy packages shared `theorem` and reset by section, including in books. Use `compatibility=legacy-article` or `compatibility=legacy-book` for historical theorem semantics. These profiles also reproduce the 42 numbered, stepping starred aliases; ordinary modern stars remain unnumbered and non-stepping. Seven restored families are available through `families=extended`.
 
@@ -151,7 +151,7 @@ These options control theorem numbering and appearance.
 | Option          | Values/default                                      | Effect                                                                            |
 | --------------- | --------------------------------------------------- | --------------------------------------------------------------------------------- |
 | `compatibility` | `none` (default), `legacy-article`, `legacy-book`   | The theorem bundle below; contradictory explicit choices fail.                    |
-| `counters`      | `independent` (default), `shared`                   | Forward to csthm; shared adds `aliascnt` only.                                    |
+| `counters`      | `independent` (default), `shared`                   | Forward to csthm; shared uses native ntheorem counters without aliascnt.                                    |
 | `families`      | `standard` (default), `extended`                    | 45 or 52 family pairs.                                                            |
 | `starred`       | `unnumbered` (default), `legacy`                    | Non-stepping stars, or the historical 42 numbered/stepping stars.                 |
 | `appearance`    | `modern` (default), `legacy-article`, `legacy-book` | Group fonts/symbols/membership; article requires oldschool, book requires normal. |
@@ -222,3 +222,7 @@ With annotations, `\added`, `\changed`, `\missing`, `\removed`, `\citelater`, `\
 Load csmath before tcscrypto and csextras. Use `theorems=inherit` with a class or package that already defines its theorem environments. Eudoxus provides a separate mathematical framework and cannot be loaded with csmath.
 
 `\CsmathConfiguration{key}` returns a resolved option. `\CsmathCheckConfiguration{options}` checks requested settings against an existing configuration; cslecture uses these commands when csmath is already loaded.
+
+## Project-owned title descriptions
+
+With `layout`, csmath retains its own titling/authblk implementation, deeply inspired by hep-title 1.5's metadata/rendering separation. It does not load hep-title or select it as a fallback. `\csMathTitleDescription{content}` adds an optional small, centered publication description after the native article title. Existing title, author, affiliation, institute and date font controls remain available. Venue mode inherits class title ownership. The Papers common prefix supplies explicit `PaperAffiliation`, `PaperAuthor`, `PaperDate` and publication declarations, with class-native adapters and anonymous PDF metadata.

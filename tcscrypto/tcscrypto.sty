@@ -538,8 +538,26 @@
 \newtoks\tcscrypto@generalnotation
 
 \ExplSyntaxOn
-% AMS keeps its original robust implementation when bm replaces the public alias.
-\cs_new_eq:Nc \csCryptoBoldSymbol {boldsymbol~}
+% Keep the original AMS implementation after bm replaces the public alias.
+% Protect the wrapper so moving arguments do not expand its font assignments.
+\cs_new_protected:Npn \csCryptoBoldSymbol #1
+{\use:c {boldsymbol~} {#1}}
+
+\cs_new_protected:Npn \csCryptoRegisterNotationPDFStrings
+{
+    \pdfstringdefDisableCommands
+    {
+        \def \ComplexityFont ##1 {##1}
+        \def \csCryptoBoldSymbol ##1 {##1}
+        \def \Prot {Π}
+        \def \Protocol {Π}
+    }
+}
+\@ifpackageloaded {hyperref} {\csCryptoRegisterNotationPDFStrings}
+{
+    \AddToHook {package/hyperref/after} [tcscrypto-notation]
+    {\csCryptoRegisterNotationPDFStrings}
+}
 
 % Greek letters need explicit upright glyphs with legacy math fonts.
 % Rebind them only inside vector/matrix notation; scalar notation is unchanged.
@@ -2771,10 +2789,16 @@
 % Protocol Parties, Languages, Relations, and Witness Syntax
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\ifPDFTeX
-    \NewDocumentCommand{\Prot}{}{\ensuremath{\algostyle{\Pi}}}
+\ifdefined\symsfup
+    \DeclareSymbolFont{csCryptoProtocol}{TU}{\sfdefault}{m}{n}
+    \SetSymbolFont{csCryptoProtocol}{bold}{TU}{\sfdefault}{\bfdefault}{n}
+    \Umathchardef\csCryptoProtocolSymbol = "0 \symcsCryptoProtocol "03A0
+    \NewDocumentCommand{\Prot}{}{\ensuremath{\algostyle{\csCryptoProtocolSymbol}}}
 \else
-    \NewDocumentCommand{\Prot}{}{\ensuremath{\text{\textsf{Π}}}}
+    \DeclareSymbolFont{csCryptoProtocol}{OT1}{\sfdefault}{m}{n}
+    \SetSymbolFont{csCryptoProtocol}{bold}{OT1}{\sfdefault}{bx}{n}
+    \DeclareMathSymbol{\csCryptoProtocolSymbol}{\mathord}{csCryptoProtocol}{"05}
+    \NewDocumentCommand{\Prot}{}{\ensuremath{\algostyle{\csCryptoProtocolSymbol}}}
 \fi
 
 \NewDocumentCommand{\AdvProb}{}{\var{S}}
@@ -3400,16 +3424,22 @@
 % Document-Level Convenience Environments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\@ifundefined{acknowledgementsname}{\NewDocumentCommand{\acknowledgementsname}{}{Acknowledgements}}{}
-\@ifundefined{aidisclosurename}{\NewDocumentCommand{\aidisclosurename}{}{AI Disclosure and Provenance}}{}
-\@ifundefined{changelogname}{\NewDocumentCommand{\changelogname}{}{Changelog}}{}
+\NewDocumentCommand{\TcsDocumentHeading}{sm}{%
+    \IfBooleanT{#1}{\ifdefined\phantomsection\phantomsection\fi}%
+    \paragraph{#2.}%
+    \IfBooleanT{#1}{\addcontentsline{toc}{section}{#2}}%
+}
+
+\@ifundefined{acknowledgementsname}{\NewExpandableDocumentCommand{\acknowledgementsname}{}{Acknowledgements}}{}
+\@ifundefined{aidisclosurename}{\NewExpandableDocumentCommand{\aidisclosurename}{}{AI Disclosure and Provenance}}{}
+\@ifundefined{changelogname}{\NewExpandableDocumentCommand{\changelogname}{}{Changelog}}{}
 \@ifundefined{keywordname}{\NewDocumentCommand{\keywordname}{}{\textbf{Keywords:}}}{}
 
 \@ifundefined{acknowledgements}%
 {%
     \NewDocumentEnvironment{acknowledgements}{}%
     {%
-        \paragraph{\acknowledgementsname.}%
+        \TcsDocumentHeading{\acknowledgementsname}%
         \ignorespaces
     } {}
 }{}
@@ -3419,7 +3449,7 @@
     \@ifundefined{aidisclosure}
     {%
         \NewDocumentEnvironment{aidisclosure}{}{%
-            \paragraph{\aidisclosurename.}%
+            \TcsDocumentHeading{\aidisclosurename}%
             \ignorespaces
         }{}
     }
@@ -3431,14 +3461,14 @@
     \@ifundefined{changelog}
     {%
         \NewDocumentEnvironment{changelog}{}{%
-            \paragraph{\changelogname.}%
+            \TcsDocumentHeading*{\changelogname}%
             \ignorespaces
         }{}
     }
     {}
     {
         \NewDocumentEnvironment{Changelog}{}{%
-            \paragraph{\changelogname.}%
+            \TcsDocumentHeading*{\changelogname}%
             \ignorespaces
         }{}
     }
@@ -3613,8 +3643,8 @@
 \NewDocumentCommand{\gnote}{m}{\hfill{\color{SteelBlue4}(\small#1)}}
 \NewDocumentCommand{\gn}{m}{\hfill{\color{SteelBlue4}(\small#1)}}
 \NewDocumentCommand{\localprocess}{m}{\color{Chartreuse3}{\blacktriangleright}\:\algostyle{local:}\:#1}
-\NewDocumentCommand{\postprocess}{m}{\color{HotPink2}{\blacktriangleright}\:\algostyle{post:}\:#1}
-\NewDocumentCommand{\preprocess}{m}{\color{HotPink1}{\blacktriangleright}\:\algostyle{pre:}\:#1}
+\NewDocumentCommand{\postprocess}{m}{\color{IndianRed4}{\blacktriangleright}\:\algostyle{post:}\:#1}
+\NewDocumentCommand{\preprocess}{m}{\color{IndianRed4}{\blacktriangleright}\:\algostyle{pre:}\:#1}
 \NewDocumentCommand{\timeA}{m}{t_{#1}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
