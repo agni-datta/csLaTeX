@@ -1,4 +1,4 @@
-# csresume 5.3
+# csresume 5.4
 
 An academic CV package with a compact institutional letterhead, dated entries, referee columns, and BibLaTeX publication lists. It uses the document class’s default Computer Modern roman, sans-serif, and math fonts. There are no font-selection or color options.
 
@@ -55,11 +55,11 @@ Version 5.0 removes `font=...`, `gfsdidot`, `libertinus`, `baskerville`, and `eu
 
 Mark records with `keywords = {randomized-authorship}` to append a parenthesized SteelBlue4 dagger linked to the authorship explanation. Place `\cvauthorshiplegend` exactly once in that explanation to create its destination. `\cvrandomized` prints the linked marker elsewhere. Both commands keep the glyph outside italic title formatting.
 
-`\cvlabel{Text}` sets an education or other item label in roman small capitals. `\&` uses the default Computer Modern italic ampersand, including in sans-serif contexts and math mode. The saved native command prevents recursive expansion, and the local font selection leaves surrounding text unchanged. No Biolinum font files are required.
+`\cvlabel{Text}` sets an education or other item label in roman small capitals. `\&` uses only the upright Biolinum ampersand, including in sans-serif contexts and math mode. The local font selection leaves surrounding text and default fonts unchanged. TeX Live’s `libertine` font files supply this isolated glyph; the package does not load the Biolinum font package.
 
 ## Checks
 
-The real CV checks pdfLaTeX/Biber integration and publication rendering. The fixture `tests/layout.tex` additionally covers both header signatures, omitted optional fields, long entry titles, compact rows, referee columns, the default roman/sans fonts, small-capital labels, the italic text/math ampersand, right-aligned dates, and last-page footer placement in a two-page document.
+The real CV checks pdfLaTeX/Biber integration and publication rendering. The fixture `tests/layout.tex` additionally covers both header signatures, omitted optional fields, long entry titles, compact rows, referee columns, the default roman/sans fonts, small-capital labels, the isolated text/math ampersand, right-aligned dates, and last-page footer placement in a two-page document.
 
 From the csLaTeX repository, use an external output directory:
 

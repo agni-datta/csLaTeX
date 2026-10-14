@@ -4,7 +4,7 @@
 % Author: Agni Datta | https://github.com/agni-datta/csLaTeX
 % License: LaTeX Project Public License v1.3c
 \NeedsTeXFormat{LaTeX2e}[2022/06/01]
-\ProvidesExplPackage{csresume}{2026/10/14}{5.3}{Compact academic CVs}
+\ProvidesExplPackage{csresume}{2026/10/14}{5.4}{Compact academic CVs}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Options
@@ -123,15 +123,16 @@
 {\hypertarget{cv:authorship}{\__csresume_dagger:}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Italic Ampersand
+% Isolated Ampersand Glyph
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\cs_new_eq:NN \__csresume_native_ampersand: \&
+% Select only the upright Biolinum ampersand; keep surrounding fonts unchanged.
 \cs_new_protected:Npn \__csresume_ampersand:
 {
   \group_begin:
-  \rmfamily\mdseries\itshape
-  \__csresume_native_ampersand:
+  \fontencoding{T1}\fontfamily{LinuxBiolinumT-TLF}
+  \fontseries{m}\fontshape{n}\selectfont
+  \char_generate:nn {38}{12}
   \group_end:
 }
 \RenewDocumentCommand{\&}{}
