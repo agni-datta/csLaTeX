@@ -1,128 +1,77 @@
----
-title: README
-aliases: README
-linter-yaml-title-alias: README
-date created: Monday, October 12th 2026, 12:22:57 am
-date modified: Wednesday, October 14th 2026, 3:27:55 am
----
+# csresume 5.3
 
-<!-- @format -->
+An academic CV package with a compact institutional letterhead, dated entries, referee columns, and BibLaTeX publication lists. It uses the document class’s default Computer Modern roman, sans-serif, and math fonts. There are no font-selection or color options.
 
-## csresume 4.4
+## Requirements
 
-An academic CV package with contact headers, dated entries, reference blocks, compact lists, and BibLaTeX publication lists. Font and accent options support both print and screen output.
+Use an 11pt `article` document with pdfLaTeX. Publication lists use BibLaTeX’s numeric style with Biber and descending numbered list labels. Records are sorted by descending year, name, and title. Choose the language and paper size through the document class. The package uses symmetric 0.8in margins and 1.075 line spacing.
 
-### Requirements
+## Example
 
-- Use with the `article` document class on A4 or letter paper.
-- Requires `biber` as the BibLaTeX backend for publication lists. `bibtex` is not supported.
-- LuaLaTeX or XeLaTeX is recommended for the modern font stack. pdfLaTeX is supported through a conservative fallback.
-- Logo and signature image files must exist on disk if used by surrounding project code.
-- Loads `babel` without language options. Choose document languages through the class options or load `babel` explicitly before `csresume`.
-
-### Usage
-
-```latex
-\usepackage[options]{csresume}
-```
-
-### Minimal Example
-
-```latex
-\documentclass[a4paper]{article}
-\usepackage[libertinus]{csresume}
+```tex
+\documentclass[english,letterpaper,11pt]{article}
+\usepackage{csresume}
+\addbibresource{publications.bib}
+\cvbibname{Ada}{Example}
+\finishcv{\today}{https://example.edu}
 
 \begin{document}
-
-\contactblock{Name}{Researcher}{Institution}{name@example.edu}{example.edu}{scholar-id}{dblp-id}
+\cvheader
+  {University}{Department}{Street\\City and postcode}
+  {Name}{Position}{name@example.edu}{example.edu}{scholar-id}{dblp-id}
 
 \section{Education}
-\details{2020--2024}{PhD in Computer Science}{Stanford University}{Thesis: On the Security of Fiat--Shamir}
+\details{2020--2024}{PhD in Computer Science}{University}{Thesis: Title}
 
 \section{Publications}
-% BibLaTeX-driven list goes here
-
-\finishcv{\today}{https://example.edu}
+\nocite{*}
+\printbibliography[heading=none]
 
 \end{document}
 ```
 
-### Options
+## Commands
 
-#### Font Options (Mutually Exclusive)
+- `\cvorcid{Identifier}` declares an optional linked ORCID, displayed on a separate typewriter line in the header. The nine-argument header API is unchanged.
+- `\cvheader{Institution}{Department}{Address}{Name}{Position}{Email}{Website}{ScholarID}{DBLPID}` follows an institutional letterhead layout: a larger, regular sans-serif name at left above a thin rule; position and electronic contacts at left and institution/department/address at right below it. Optional fields may be empty. Use plain text for the name; it also sets the PDF author metadata. Website arguments accept either a complete HTTP(S) URL or a bare domain. Scholar and DBLP links display their service names, not raw identifiers.
+- `\contactblock{Name}{Position}{Address}{Email}{Website}{ScholarID}{DBLPID}` preserves the previous seven-argument API. Use `\cvheader` for the complete institutional letterhead.
+- `\cvbibname{GivenName}{FamilyName}` highlights the exact matching bibliography name in roman small capitals, using BibLaTeX’s name-formatting hooks. Keep author fields in the databases as plain names. No name is highlighted unless declared.
+- `\details{Dates}{Role}{Institution}{Description}` places a wrapping role at left and dates at right, with the institution on the second line and the description below. Empty institution or description fields produce no blank line. Entries can break naturally after their opening lines.
+- `\columndetails{Label}{Description}{RightText}` produces a compact row with an aligned short label, a wrapping description, and a short right-hand field in sans-serif type. `\cvright{Text}` applies the same formatting to other right-aligned metadata.
+- `\years{Text}` prints a right-aligned date on its own line. For a date beside an entry, use `\details` or put the date in the third argument of `\columndetails`.
+- `\referals{Prefix}{GivenName}{FamilyName}{Role}{Organization}{Address}{Email}{Website}` formats one referee. The spelling and eight-argument signature are retained for existing users.
+- `\finishcv{Date}{Website}` declares the update date and website for the actual last page, with the website at left and date at right, keeping the page number centered on every page. Declare it in the preamble. The native `lastpage` label identifies the final page after LaTeX reruns, so moving or adding content does not require moving this command. Run `latexmk` to settle page references.
+- `refcolumns` places referee blocks in two columns. `ditemize` provides a compact two-column itemized list.
 
-- `gfsdidot`: (default) GFS Didot via `fontsetup`. Classical and elegant; works well in print.
-- `libertinus`: Libertinus Serif and Sans with KPMath and Libertinus math ranges. Slightly wider, very readable on screen.
-- `baskerville`: Baskervaldx with KPMath and Baskervaldx math ranges. Traditional academic serif with strong contrast.
-- `euler`: Concrete Roman with Euler Math via `fontsetup`.
+The `allowbreaks` option disables the small space reservation at the start of an entry. By default, entries reserve enough room for their opening lines; long descriptions can still cross a page boundary.
 
-Under LuaLaTeX and XeLaTeX, sans-serif text uses Libertinus Sans and monospaced text and mathematics use Inconsolata.
+## Typography and Migration
 
-#### Layout options
+Text and rules are black; hyperlink text uses the X11 color `SteelBlue4`. URLs, email addresses, Scholar, DBLP, and ORCID use Computer Modern typewriter. Section and subsection headings sit left-aligned between two full-width thin rules and use regular sans-serif type without letter spacing or forced capitals. Sections use `\large`; subsections use `\normalsize`, with `\smallskip` around the rules. Right-aligned appointment dates, postal addresses, and compact metadata use sans-serif type. Publication titles are italic; author punctuation, venue details, and dates use the native numeric bibliography layout. Publication dates remain in the entries rather than a separate right-hand column.
 
-- `allowbreaks`: permits sections to break across pages. By default, section headers try to stay with their first entry. Enable this for very long CVs where page break control is impractical.
+Visible bibliography labels count down across all printed categories in sans-serif parentheses, padded to at least two digits, such as `(09)` through `(01)`. The total is counted from loaded bibliography records; print every loaded record exactly once to obtain a complete descending sequence. This customization applies to the publication-list labels; inline citations retain the native numeric citation labels. Original keys, sorting, author order, and source records are preserved. Deferred native numbering supports split categories without package warnings. ISBNs, ISSNs, and book-series names are omitted from the CV display; bibliography records retain those fields.
 
-### API
+Version 5.0 removes `font=...`, `gfsdidot`, `libertinus`, `baskerville`, and `euler`. Remove those options from existing documents. The package no longer loads fontspec, unicode-math, custom font providers, marginnote, or PDF-version patches. Internal state and helpers use expl3; public commands and environments use the LaTeX document-command interface. Standard geometry, table, heading, and bibliography packages keep their native configuration APIs.
 
-#### Header block
+Mark records with `keywords = {randomized-authorship}` to append a parenthesized SteelBlue4 dagger linked to the authorship explanation. Place `\cvauthorshiplegend` exactly once in that explanation to create its destination. `\cvrandomized` prints the linked marker elsewhere. Both commands keep the glyph outside italic title formatting.
 
-- `\contactblock{Name}{Title}{Institution}{Email}{Website}{ScholarID}{DBLPID}`: generates the full CV header with name, title, institutional affiliation, and contact links.
+`\cvlabel{Text}` sets an education or other item label in roman small capitals. `\&` uses the default Computer Modern italic ampersand, including in sans-serif contexts and math mode. The saved native command prevents recursive expansion, and the local font selection leaves surrounding text unchanged. No Biolinum font files are required.
 
-#### Chronological entries
+## Checks
 
-- `\details{Years}{Degree or Title}{Institution}{Description}`: standard chronological entry. Years appear in the left margin, the rest flows to the right. Use for education, positions, and awards.
-- `\columndetails{Years}{Title}{RightText}`: two-column entry where both `Title` and `RightText` appear side by side on the same line. Use for entries where the right column is short (e.g., a grade or location).
+The real CV checks pdfLaTeX/Biber integration and publication rendering. The fixture `tests/layout.tex` additionally covers both header signatures, omitted optional fields, long entry titles, compact rows, referee columns, the default roman/sans fonts, small-capital labels, the italic text/math ampersand, right-aligned dates, and last-page footer placement in a two-page document.
 
-#### Reference blocks
+From the csLaTeX repository, use an external output directory:
 
-- `\referals{Name}{Title}{Organization}{Address}{Email}{Website}`: formats a single referee entry with contact details.
-- `refcolumns`: two-column layout environment for displaying multiple referees side by side. Wrap `\referals` calls inside this environment.
-
-```latex
-\begin{refcolumns}
-    \referals{Prof.\ A}{Chair}{MIT}{Cambridge, MA}{a@mit.edu}{mit.edu/a}
-    \referals{Prof.\ B}{Director}{ETH}{Zurich}{b@ethz.ch}{ethz.ch/b}
-\end{refcolumns}
+```sh
+mkdir -p /tmp/csresume-check
+TEXINPUTS="$PWD/csresume:" latexmk -norc -pdf \
+  -interaction=nonstopmode -halt-on-error \
+  -outdir=/tmp/csresume-check csresume/tests/layout.tex
 ```
 
-#### Lists
+Inspect the log for unresolved references, missing glyphs, and overfull boxes, then render and inspect the PDF. Rebuild the dependent CV after any output-affecting change.
 
-- `ditemize`: two-column itemized list. Use for skills, programming languages, or other short paired entries where a single-column list would waste space.
-
-#### Footer
-
-- `\finishcv{Date}{URL}`: prints a modern muted footer of the form `Updated Date • URL`. Pass the complete URL, including the scheme, for example `https://example.edu`; the command does not prepend `https://`.
-
-### Publications list (BibLaTeX)
-
-`csresume` is designed to work with a `\printbibliography` call inside a `publications` section. Set up BibLaTeX in the preamble:
-
-```latex
-\usepackage[backend=biber, style=alphabetic, sorting=ydnt]{biblatex}
-\addbibresource{publications.bib}
-```
-
-Then in the document:
-
-```latex
-\section{Publications}
-\printbibliography[heading=none]
-```
-
-The `ydnt` sorting order (year descending, name, title) puts the most recent papers first, which is standard for academic CVs. Titles of articles, proceedings papers, theses, and unpublished manuscripts are printed in italics; unpublished manuscripts are not enclosed in quotation marks.
-
-### Caveats
-
-- `\contactblock` expects all seven fields.
-- `\finishcv` expects a complete URL. Use `\finishcv{\today}{https://example.edu}`, not `\finishcv{\today}{example.edu}`.
-- The `allowbreaks` option changes section penalty values globally. If your CV has only a few sections and you want fine-grained control, it is usually better to insert `\pagebreak` manually rather than enabling this option.
-- BibLaTeX requires two compile passes with `biber` between them: `lualatex → biber → lualatex → lualatex`. If you use `latexmk`, add `$bibtex_use = 2;` to your `.latexmkrc`.
-- Font options configure the body, sans, mono, and math stack under LuaLaTeX and XeLaTeX; pdfLaTeX uses the package fallback.
-
-### License
+## License
 
 LaTeX Project Public License v1.3c.
-
-### Repository
-
-[csLaTeX](https://github.com/agni-datta/csLaTeX)

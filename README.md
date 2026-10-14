@@ -22,7 +22,7 @@ LaTeX packages for mathematics, theoretical computer science, cryptography and t
 | [csextras](csextras/README.md)              | 2.0     | Optional tables, diagrams, lists, bibliography and other utilities.  |
 | [cslecture](cslecture/README.md)            | 4.0.1   | Individual lectures, course books and scribe notes.                  |
 | [cspresentation](cspresentations/README.md) | 3.2     | Beamer theme based on Metropolis and the Nord palette.               |
-| [csresume](csresume/README.md)              | 4.4     | Academic CVs and résumés.                                            |
+| [csresume](csresume/README.md)              | 5.3     | Academic CVs and résumés.                                            |
 | [csthm](csthm/README.md)                    | 4.2.1   | Theorem and proof environments.                                      |
 | [cswhitepaper](cswhitepaper/README.md)      | 5.2     | Technical reports and author annotations.                            |
 | [eudoxus](eudoxus/README.md)                | 2.0.1   | An independent pdfLaTeX mathematics framework.                       |

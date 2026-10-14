@@ -1,0 +1,47 @@
+\documentclass[english,letterpaper,11pt]{article}
+\usepackage[allowbreaks]{csresume}
+\finishcv{October 14, 2026}{example.edu}
+\cvorcid{0000-0000-0000-0000}
+
+\ExplSyntaxOn
+\msg_new:nnn {csresume-test}{font}{Expected~the~default~Computer~Modern~#1~font.}
+\str_if_eq:eeF {\rmdefault}{cmr}{\msg_error:nnn {csresume-test}{font}{roman}}
+\str_if_eq:eeF {\sfdefault}{cmss}{\msg_error:nnn {csresume-test}{font}{sans}}
+\ExplSyntaxOff
+
+\begin{document}
+\cvheader{Example University}{Department of Computer Science}
+  {1 Example Street\\Example City}
+  {Ada Example}{Researcher}{ada@example.edu}{https://example.edu}{}{}
+
+\section{Appointments}
+\details{2024--Present}
+  {A deliberately long research appointment that must wrap before reaching the date column}
+  {Example University}{Work on algorithms and proof systems.}
+\details{2020--2024}{Research Fellow}{Example Institute}{}
+\details{2019}{Visiting Researcher}{}{A description without an institution.}
+
+\section{Languages}
+\columndetails{English}{Professional proficiency}{ILR 4}
+\columndetails{French}{Working proficiency}{ILR 2}
+\columndetails{TCC}{Theory of Cryptography Conference}{2026}
+\cvlabel{Supervisor:} Dr.\ Ada Example (U.\ of Example).
+Roman \& sans {\sffamily \&} and math $A\&B$ ampersands.
+
+\section{References}
+\begin{refcolumns}
+\referals{Dr.}{Ada}{Example}{Professor}{Example University}{Example City}{ada@example.edu}{https://example.edu/ada}
+\referals{Prof.}{Alex}{Example}{Research Director}{Example Institute}{Another City}{}{example.edu/alex}
+\end{refcolumns}
+
+\newpage
+\contactblock{Avery Example}{Researcher}{Example University}{}{}{}{}
+\section{Legacy Header}
+\years{2026} A right-aligned date with no margin note.
+\begin{ditemize}
+\item Algorithms
+\item Complexity
+\item Cryptography
+\item Proof systems
+\end{ditemize}
+\end{document}
