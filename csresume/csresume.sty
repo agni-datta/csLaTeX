@@ -67,10 +67,10 @@
 {\titleline{\titlerule[0.25pt]}\smallskip}%
 [{\smallskip\titleline{\titlerule[0.25pt]}\smallskip}]
 \titleformat{\subsubsection}{\normalsize\sffamily\mdseries}{}{0pt}{}
-\titlespacing*{\section}{0pt}{0.65\baselineskip}{0.3\baselineskip}
-\titlespacing*{\subsection}{0pt}{0.65\baselineskip}{0.3\baselineskip}
-\titlespacing*{\subsubsection}{0pt}{0.6\baselineskip}{0.3\baselineskip}
-\setlist{topsep=0.25\baselineskip,itemsep=0pt,parsep=0pt,leftmargin=*}
+\titlespacing*{\section}{0pt}{0.45\baselineskip}{0.2\baselineskip}
+\titlespacing*{\subsection}{0pt}{0.45\baselineskip}{0.2\baselineskip}
+\titlespacing*{\subsubsection}{0pt}{0.45\baselineskip}{0.2\baselineskip}
+\setlist{topsep=0.15\baselineskip,itemsep=0pt,parsep=0pt,leftmargin=*}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Publication Lists
@@ -101,19 +101,24 @@
 {
   \list{}
   {
-    \setlength{\labelwidth}{2.4em}
+    \settowidth{\labelwidth}{\texttt{[\int_compare:nNnT
+          {\g__csresume_bib_total_int} < {10} {0}
+          \int_use:N \g__csresume_bib_total_int]}}
     \setlength{\labelsep}{0.6em}
     \setlength{\leftmargin}{\labelwidth}
     \addtolength{\leftmargin}{\labelsep}
     \setlength{\itemindent}{0pt}
+    \setlength{\topsep}{0pt}
+    \setlength{\partopsep}{0pt}
     \setlength{\itemsep}{\bibitemsep}
     \setlength{\parsep}{\bibparsep}
+    \cs_set:Npn \makelabel ##1 {##1\hfil}
   }
 }
 {\endlist}
 {
   \int_gincr:N \g__csresume_bib_printed_int
-  \item[\cvright{(\__csresume_bib_number:)}]
+  \item[\texttt{[\__csresume_bib_number:]}]
 }
 \cs_new_protected:Npn \__csresume_dagger:
 {(\textcolor{SteelBlue4}{\textdagger})}
@@ -247,7 +252,7 @@
 \cs_new_protected:Npn \__csresume_entry_space:n #1
 {
   \par
-  \addvspace{0.45\baselineskip}
+  \addvspace{0.35\baselineskip}
   \bool_if:NF \g__csresume_allowbreaks_bool
   {\Needspace{#1\baselineskip}}
 }
@@ -327,7 +332,7 @@
   \pagestyle{csresume}
 }
 \NewDocumentEnvironment{refcolumns}{}
-{\setlength{\columnsep}{2em}\begin{multicols}{2}}
+{\setlength{\columnsep}{2em}\setlength{\multicolsep}{0.35\baselineskip}\begin{multicols}{2}}
 {\end{multicols}}
 \NewDocumentEnvironment{ditemize}{}
 {\begin{multicols}{2}\begin{itemize}}
