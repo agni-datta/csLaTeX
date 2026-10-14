@@ -1,3 +1,11 @@
+---
+title: README
+aliases: README
+linter-yaml-title-alias: README
+date created: Monday, October 12th 2026, 12:22:57 am
+date modified: Wednesday, October 14th 2026, 3:27:55 am
+---
+
 <!-- @format -->
 
 ## csresume 4.4
