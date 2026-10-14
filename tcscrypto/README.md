@@ -1,6 +1,14 @@
+---
+title: README
+aliases: README
+linter-yaml-title-alias: README
+date created: Monday, October 12th 2026, 12:22:57 am
+date modified: Wednesday, October 14th 2026, 3:27:55 am
+---
+
 <!-- @format -->
 
-# tcscrypto 3.9.0
+## tcscrypto 3.9.0
 
 Notation for complexity theory, cryptography and mathematical writing. The package includes complexity classes, computational problems, primitives, algorithms, probability notation, pseudocode keywords and protocol boxes.
 
@@ -16,7 +24,7 @@ $\NP,\TFNP,\CLS;\quad\MCSP,\MKTP,\MKtP,\LWE$.
 
 Use pdfLaTeX or LuaLaTeX. Load csmath before tcscrypto when using both. For LNCS, select `notoc` and leave fonts and theorems to the class. Do not load `complexity.sty` alongside tcscrypto.
 
-## Options
+### Options
 
 | Option       | Default | Effect                                                                         |
 | ------------ | ------- | ------------------------------------------------------------------------------ |
@@ -24,12 +32,12 @@ Use pdfLaTeX or LuaLaTeX. Load csmath before tcscrypto when using both. For LNCS
 | `small`      | false   | Smaller class, algorithm and problem-acronym lettering.                        |
 | `noemph`     | false   | Sans-serif emphasis.                                                           |
 | `toc`        | true    | Loads tocbibind and, outside LNCS, setspace; defines `\toc`.                   |
-| `notoc`      | —       | Disables TOC setup.                                                            |
+| `notoc`      |—| Disables TOC setup.                                                            |
 | `venuestyle` | false   | Omits appendix loading and adjusts venue spacing. Do not use with llncscrypto. |
 
-Boolean options accept `=true` and `=false`. The package uses the document's fonts. Particular commands may need AMS symbols, color, graphics or reference packages; load these separately if the document does not use csmath.
+Boolean options accept `=true` and `=false`. The package uses the document’s fonts. Particular commands may need AMS symbols, color, graphics or reference packages; load these separately if the document does not use csmath.
 
-## Classes and problems
+### Classes and problems
 
 Classes use bold upright sans serif through `\ComplexityClassStyle`; problem acronyms use plain sans serif through `\problemacronymstyle`. Their styles can be changed separately. Full problem names use small capitals through `\probstyle`.
 
@@ -50,11 +58,11 @@ The setting applies to the whole class name, including `\psdNP`. It does not cha
 \RenewDocumentCommand{\problemacronymstyle}{m}{\ensuremath{\mathtt{#1}}}
 ```
 
-`\MKtP` keeps its superscript `t`. Use `\MCSPProb`, `\MKTPProb` and the other `...Prob` commands for full names. For ambiguous abbreviations, descriptive names such as `\ClosestVectorProblem` and `\CircuitValueProblem` specify the problem.
+`\MKtP` keeps its superscript `t`. Use `\MCSPProb`, `\MKTPProb` and the other `…Prob` commands for full names. For ambiguous abbreviations, descriptive names such as `\ClosestVectorProblem` and `\CircuitValueProblem` specify the problem.
 
-## Defining notation
+### Defining notation
 
-`\mbf{...}` and `\vec{...}` use upright bold for vectors and matrices, including Greek letters. With Unicode math they use `\symbfup`; legacy math uses upright Greek glyphs locally, without changing scalar lettering. Generated `\MatA`–`\MatZ` commands remain upright bold.
+`\mbf{…}` and `\vec{…}` use upright bold for vectors and matrices, including Greek letters. With Unicode math they use `\symbfup`; legacy math uses upright Greek glyphs locally, without changing scalar lettering. Generated `\MatA`–`\MatZ` commands remain upright bold.
 
 CSV entries take the form `Name/Display`. Use `Name*/{expression}` for a compound expression with its own styling. Braces protect commas inside a display.
 
@@ -78,9 +86,9 @@ CSV entries take the form `Name/Display`. Use `Name*/{expression}` for a compoun
 | `\cryptoDefineOracleCSV`          | `\oraclestyle`         |
 | `\cryptoDefineProbCSV`            | `\probstyle`           |
 
-CSV constructors keep existing commands. `\newclass`, `\newlang` and `\newfunc` take a command and its display, for example `\newclass{\MyClass}{MyClass}`; their `\renew...` counterparts change an existing command. The alphabet constructors `\newbb`, `\newcal`, `\newscr` and `\newsf` take the same two arguments.
+CSV constructors keep existing commands. `\newclass`, `\newlang` and `\newfunc` take a command and its display, for example `\newclass{\MyClass}{MyClass}`; their `\renew…` counterparts change an existing command. The alphabet constructors `\newbb`, `\newcal`, `\newscr` and `\newsf` take the same two arguments.
 
-## Primitives and operations
+### Primitives and operations
 
 Define primitive names and their operations by family:
 
@@ -97,7 +105,7 @@ This defines `\MyFHEGen` as MyFHE.Gen. `Verify/Vrfy` gives a command suffix and 
 
 `\cryptoDefineExpressionCSV{Name/{expression}}` defines aliases or other complete expressions. It also accepts a starred form that rejects existing names.
 
-OWF and PRF operations keep their F prefixes. PCP operations use `\ProbabilisticallyCheckableProof`, TM operations use `\TMFHE`, and DJ operations use `\DJScheme`, leaving LaTeX's `\DJ` letter available.
+OWF and PRF operations keep their F prefixes. PCP operations use `\ProbabilisticallyCheckableProof`, TM operations use `\TMFHE`, and DJ operations use `\DJScheme`, leaving LaTeX’s `\DJ` letter available.
 
 Some names have separate mathematical and cryptographic meanings:
 
@@ -112,7 +120,7 @@ Some names have separate mathematical and cryptographic meanings:
 | `\IND`                         | Arithmetic induction                                                             |
 | `\LFHE`                        | Leveled fully homomorphic encryption                                             |
 
-## Adversaries and pseudocode
+### Adversaries and pseudocode
 
 `\advA` through `\advZ` are calligraphic letters. The commands `\adv`, `\bdv`, `\cdv`, `\ddv` and `\zdv` are aliases for the corresponding letters. Derivative commands such as `\mdv`, `\odv` and `\pdv` keep their usual meanings.
 
@@ -124,9 +132,9 @@ Some names have separate mathematical and cryptographic meanings:
 
 `\proofsystem{Frege}` prints a sans-serif proof-system name. `\hybchange` and `\HybridChange` highlight text with `IndianRed1`.
 
-`\indicator{event}` prints a bold one with square brackets. `\mbar` and `\ConditionalBar` give a spaced conditional bar inside `\left...\right`. Outside LuaLaTeX, `\emptyset` uses `\varnothing`.
+`\indicator{event}` prints a bold one with square brackets. `\mbar` and `\ConditionalBar` give a spaced conditional bar inside `\left…\right`. Outside LuaLaTeX, `\emptyset` uses `\varnothing`.
 
-## Boxes and document headings
+### Boxes and document headings
 
 `proofbox`, `openproblemframe` and `protocolbox` use mdframed and can split across pages. Pass mdframed settings in the first optional argument. A protocol title belongs in the second optional argument:
 
@@ -146,9 +154,9 @@ Some names have separate mathematical and cryptographic meanings:
 
 For a protocol title with default settings, use `\begin{protocolbox}[][Title]`. Older single-argument titles need the empty first argument.
 
-`\keywords{alpha \and beta}` prints keywords with centered-dot separators. The heading uses the class's `\keywordname`, or bold “Keywords:” when the class has none. `aidisclosure` starts a paragraph headed “AI Disclosure and Provenance”; write the disclosure text inside the environment.
+`\keywords{alpha \and beta}` prints keywords with centered-dot separators. The heading uses the class’s `\keywordname`, or bold “Keywords:” when the class has none. `aidisclosure` starts a paragraph headed “AI Disclosure and Provenance”; write the disclosure text inside the environment.
 
-## Regression check for moving arguments
+### Regression check for moving arguments
 
 From this package directory, run:
 
@@ -158,7 +166,7 @@ TEXINPUTS="$PWD:" latexmk -cd -pdf -interaction=nonstopmode tests/moving-argumen
 
 The fixture checks bold class names in headings and captions, upright Latin/Greek vectors, and styled vector arguments with `bm` loaded. latexmk repeats compilation so the generated contents and figure lists are read back. The bold wrapper must remain protected in moving arguments; the original AMS implementation supplies the font handling, and PDF-string registration preserves class text in bookmarks.
 
-## Finding a command
+### Finding a command
 
 The definitions in `tcscrypto.sty` are grouped by topic:
 
@@ -172,13 +180,13 @@ The definitions in `tcscrypto.sty` are grouped by topic:
 
 Author: Agni Datta. License: LPPL 1.3c.
 
-### Class and codelines compatibility
+#### Class and codelines compatibility
 
-`\DescriptionEncoding{...}` always supplies the mathematical encoding delimiters. The shorter `\Description` name remains available when a class does not already own it; ACM retains its figure-accessibility command. Similarly, `\StateVar` supplies the mathematical state variable while an existing class-owned `\state` remains intact.
+`\DescriptionEncoding{…}` always supplies the mathematical encoding delimiters. The shorter `\Description` name remains available when a class does not already own it; ACM retains its figure-accessibility command. Similarly, `\StateVar` supplies the mathematical state variable while an existing class-owned `\state` remains intact.
 
 When codelines is loaded, it owns the shared `\codecomment` callback. Both package-loading orders are supported.
 
-## Protocol glyph and document headings
+### Protocol glyph and document headings
 
 `\Prot` and `\Protocol` use the native upright sans-serif capital Pi. With pdfLaTeX, a dedicated OT1 math-symbol declaration keeps its Greek slot independent of T1 text/math alphabet choices. Indexed and superscripted protocols retain their math semantics; the Unicode branch remains available without changing global alphabet settings. Protected bold-symbol expansion prevents unsafe moving arguments from corrupting generated contents.
 
