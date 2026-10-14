@@ -1,6 +1,14 @@
+---
+title: README
+aliases: README
+linter-yaml-title-alias: README
+date created: Monday, October 12th 2026, 12:22:57 am
+date modified: Wednesday, October 14th 2026, 3:27:55 am
+---
+
 <!-- @format -->
 
-# csthm 4.2.1
+## csthm 4.2.1
 
 Standalone theorem environments for theoretical computer science, built on `ntheorem`. Requires LaTeX **2022-06-01** or later. Supports pdfLaTeX, LuaLaTeX and XeLaTeX.
 
@@ -29,7 +37,7 @@ By \cref{thm:cook}, SAT is NP-complete.
 | ------------------------------------------------ | --------- | ----------------------------------------------------------------------------------------------- |
 | `style=normal`, `style=fancy`, `style=oldschool` | No style  | Select the presentation for all theorem families.                                               |
 | `normal`, `fancy`, `oldschool`                   | No style  | Bare aliases for the corresponding `style` value.                                               |
-| `numberwithin=section`                           | `section` | Reset each environment's counter at each section; prefix with `\thesection`.                    |
+| `numberwithin=section`                           | `section` | Reset each environment’s counter at each section; prefix with `\thesection`.                    |
 | `numberwithin=chapter`                           |           | Reset at each chapter; prefix with `\thechapter`. Requires a chapter counter.                   |
 | `numberwithin=none`                              |           | Continuous, unprefixed numbering for each environment.                                          |
 | `cleveref=auto`                                  | `auto`    | At the end of the preamble, load `cleveref` if `hyperref` is loaded and `cleveref` is absent.   |
@@ -92,7 +100,7 @@ Each of these accepts an optional title and has an unnumbered `*` variant, for e
 | `\CsthmEndMark`                                                  | Render the default colored lower-right corner.                                   |
 | `\setqedsymbol{content}`, `\SetQEDSymbol{content}`               | Replace the proof QED symbol globally.                                           |
 | `\settheoremendsymbol{content}`, `\SetTheoremEndSymbol{content}` | Replace the theorem end symbol globally.                                         |
-| `\NoEndMark`                                                     | Suppress the current environment's final mark (provided by `ntheorem`).          |
+| `\NoEndMark`                                                     | Suppress the current environment’s final mark (provided by `ntheorem`).          |
 
 Accent changes can occur in the preamble or between environments and affect subsequent default marks. They do **not** recolor ruled frames, headers, or the fixed `fancy` palette. A replacement symbol controls its own color unless it explicitly uses a colored command. `fancy` still omits theorem end marks after global symbol customization; an explicit family `end-symbol` enables them. The `ntheorem` proof controls, including `\qed`, remain available; compile three times when checking marks after displays or lists.
 
@@ -124,7 +132,7 @@ Supported orders include:
 \crefname{theorem}{Theorem}{Theorems}
 ```
 
-With `auto`, `hyperref` may also be loaded after `csthm`. Deferred loading uses the kernel's `begindocument/before` end-of-preamble hook; `\cref` is not available earlier unless `cleveref` was loaded explicitly. Automatic loads request `capitalize,nameinlink,noabbrev`. Existing cleveref options are never re-requested or changed. Name registration happens once when both packages are available, independently of the loading option; customize names afterward.
+With `auto`, `hyperref` may also be loaded after `csthm`. Deferred loading uses the kernel’s `begindocument/before` end-of-preamble hook; `\cref` is not available earlier unless `cleveref` was loaded explicitly. Automatic loads request `capitalize,nameinlink,noabbrev`. Existing cleveref options are never re-requested or changed. Name registration happens once when both packages are available, independently of the loading option; customize names afterward.
 
 `cleveref` must follow `amsmath` and, when used, `hyperref`. `csthm` diagnoses reversed orders, including ones completed before it loads. With `cleveref=true`, load `hyperref` before `csthm` if hyperlinks are wanted. No `hyperref` is required for `cleveref=true`, and no warning is issued for documents without hyperlink integration. Broader `zref` integration is unchanged.
 
@@ -145,7 +153,7 @@ With `auto`, `hyperref` may also be loaded after `csthm`. Deferred loading uses 
 | `families=standard\|extended`                    | `standard`    | 45 or 52 environment pairs; extended requires a style.                                                                                          |
 | `starred=unnumbered\|legacy`                     | `unnumbered`  | Ordinary non-stepping stars, or the explicitly requested historical numbered/stepping aliases.                                                  |
 | `appearance=modern\|legacy-article\|legacy-book` | `modern`      | Modern presentation, historical article group styling with `oldschool`, or book group styling with `normal`. A contradictory style is an error. |
-| `family-style={group={settings},...}`            | Empty         | Initial typography for `theorem`, `definition`, `remark`, or `highlight`.                                                                       |
+| `family-style={group={settings},…}`            | Empty         | Initial typography for `theorem`, `definition`, `remark`, or `highlight`.                                                                       |
 
 Counter/reset/family/star/appearance configuration is fixed at initial package loading. Repeated identical selections are allowed; contradictory or late changes fail. `numberwithin` remains independent of counter sharing. For example:
 
@@ -196,21 +204,30 @@ Use `solution=proof` for an unnumbered solution with a proof ending.
 | `solution=proof`   | Exclude the numbered solution before declaration and provide an unnumbered proof-style `solution[complete heading]`, default heading small-caps Solution and a local diamond QED. No theorem counter is advanced. No `solution*` theorem is declared. |
 
 Select counters, numbering, and family policies explicitly. Lecture documents
+
 use the same theorem styles and unnumbered stars as other modern documents.
+
 Counter, star, family, appearance and solution ownership are immutable after
+
 initialization. `\CsthmSetupFamily`
+
 continues to control preamble typography and symbols.
 
 `\CsthmConfiguration{solution}` queries ownership.
+
 `\CsthmMapFamilies{\Callback}` invokes `\Callback{environment}{singular}{plural}`
+
 for every declared numbered family in metadata order. It excludes a proof-owned
+
 solution and does nothing in auxiliary-only mode. This permits another reference
+
 provider to register names without copying declaration lists; it does not declare
+
 new environments or expose internal counters.
 
 ### Hyperlink targets
 
-Call `\CsthmUseHeadingTargets` in the preamble to place theorem links at their headings. Cslecture enables this automatically. The command requires hyperref's `\MakeLinkTarget`, `\LinkTargetOff` and `\LinkTargetOn` commands.
+Call `\CsthmUseHeadingTargets` in the preamble to place theorem links at their headings. Cslecture enables this automatically. The command requires hyperref’s `\MakeLinkTarget`, `\LinkTargetOff` and `\LinkTargetOn` commands.
 
 ### Examples
 
