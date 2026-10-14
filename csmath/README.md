@@ -1,8 +1,16 @@
+---
+title: README
+aliases: README
+linter-yaml-title-alias: README
+date created: Monday, October 12th 2026, 12:22:57 am
+date modified: Wednesday, October 14th 2026, 3:27:55 am
+---
+
 <!-- @format -->
 
-# csmath
+## csmath
 
-A mathematical foundation with explicit font selection, theorem integration through `csthm`, and optional manuscript utilities. Author: Agni Datta. License: LPPL v1.3c. Version 1.2.1.
+A mathematical foundation with explicit font selection, theorem integration through `csthm`, and optional manuscript utilities. Author: Agni Datta. License: LPPL v1.3c. Version 1.2.2.
 
 Requires LaTeX 2022-06-01 or newer, pdfLaTeX or LuaLaTeX, and `csthm` 4.2.1 or newer. Distribute **both** `csmath.sty` and `csthm.sty`. XeLaTeX is not supported. Documents select their own languages.
 
@@ -17,7 +25,7 @@ Requires LaTeX 2022-06-01 or newer, pdfLaTeX or LuaLaTeX, and `csthm` 4.2.1 or n
 \end{document}
 ```
 
-## Defaults and modes
+### Defaults and modes
 
 The defaults are `mode=article`, `font=inherit`, `font-policy=compatible`, `theorems=oldschool`, `numberwithin=section`, `equations=inherit`, `paragraphs=runin`, `cleveref=auto`, `compatibility=none`, `counters=independent`, `families=standard`, `starred=unnumbered`, `appearance=modern`, empty `family-style`, and **all feature options disabled**. An already-loaded `csthm` is inherited by default. Book and venue change the defaults indicated below.
 
@@ -39,7 +47,7 @@ The defaults are `mode=article`, `font=inherit`, `font-policy=compatible`, `theo
 \usepackage[mode=venue]{csmath}
 ```
 
-## Complete option reference
+### Complete option reference
 
 Every selection is validated. Repeated identical values are harmless; contradictory values, unknown keys, invalid choices, and values on bare font aliases are errors. Options cannot reinitialize an already loaded package.
 
@@ -62,7 +70,7 @@ Every selection is validated. Repeated identical values are harmless; contradict
 
 `numberwithin` configures csthm-owned theorems; it does not alter a class-owned theorem system under `theorems=inherit`. `lastpage` changes only the optional book header. `draft,annotations=false` and `lastpage,layout=false` are contradictory requests.
 
-## Selective feature loading
+### Selective feature loading
 
 ```latex
 \usepackage[table,caption,float]{csmath}
@@ -74,7 +82,7 @@ Every selection is validated. Repeated identical values are harmless; contradict
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `table`       | `xcolor[dvipsnames,table,x11names]`, `array`, `booktabs`, `tabularx`, `longtable`, `multirow`, `makecell`, `threeparttable`, `tabularray`. Professional rules, flexible-width and multipage tables, cells, notes, and `tblr`. Does not imply captions. |
 | `caption`     | `caption`, `subcaption`. Includes `subfigure`/`subtable`. Outside venue: roman small text, small-caps labels, period separator, 5pt skip, justified captions.                                                                                          |
-| `float`       | `floatrow`; provides `\ffigbox`, `\ttabbox`, float layouts. It loads `caption3` and `rotating` transitively but does not imply the caption feature. Use floatrow's interface, not a conflicting float implementation.                                  |
+| `float`       | `floatrow`; provides `\ffigbox`, `\ttabbox`, float layouts. It loads `caption3` and `rotating` transitively but does not imply the caption feature. Use floatrow’s interface, not a conflicting float implementation.                                  |
 | `graphics`    | `graphicx`, `adjustbox`. No TikZ or PGFPlots.                                                                                                                                                                                                          |
 | `lists`       | `enumitem`, `paralist[oldenum,olditem]`; compact lists. Enumerate labels `(1)`, `(i)`, `(I)`; book uses `(a)` at level two. Itemize uses bullet/circle/star. No list setting changes without the feature.                                              |
 | `references`  | `hyperref`, `nameref`, `xurl`, `xr`; immediate `cleveref` unless false. SteelBlue4 links and section-sign structural references outside venue. Existing hyperref and cleveref are reused without additional load options.                              |
@@ -103,7 +111,7 @@ A full-featured article example:
 \end{document}
 ```
 
-## Fonts and mathematical alphabets
+### Fonts and mathematical alphabets
 
 | Requested font | pdfLaTeX effective configuration                     | LuaLaTeX effective configuration                                                      |
 | -------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------- |
@@ -123,13 +131,13 @@ All named configurations retain lining/tabular numeral requests. OpenType faces 
 
 Named fonts use CM calligraphic for Latin Modern/Concrete, STIX calligraphic for the other families, STIX blackboard alphabets (BBOLDX upright for Palatino), and Dutch script. Public alphabets are `\mathcal`, `\mathbfcal`, `\mathbb`, `\mathbfbb`, `\mathbbi`, `\mathbfbbi`, `\mathscr`, `\mathbfscr`, `\mathsf`, and `\mathtt`. Palatino has STIX italic blackboard forms as well as its established BBOLDX upright forms. Under inherit, existing alphabets are left intact; using an unavailable extended alphabet produces an explanatory error instead of silently selecting a different font.
 
-pdfLaTeX loads `bm` after font setup, with `bmmax=0`, `hmmax=0` if not already supplied. Local math-family reuse is disabled (`localmathalphabets=0`) because nested matrices can otherwise change earlier glyphs in a formula. Bold calligraphic, script and blackboard helpers reuse their declared bold versions through `\boldsymbol`; `\mathbf` uses `\boldsymbol{\mathrm{...}}`. This also bolds Greek input, unlike traditional pdfTeX's Latin-only `\mathbf`. pdfTeX still has a hard 16-family limit; documents using further custom alphabets may need LuaLaTeX. LuaLaTeX uses unicode-math bold facilities. The Concrete profile requires an Euler Math font containing mathematical italic Greek. The KP profile requires a `kpfonts-otf` release providing its `fakedscripts` option. Euler, Latin Modern, Garamond and Pagella math bases retain the legacy synthetic bold/slant settings where no separate bold math face is selected; KP Math uses its supplied bold face. Mathematical sans/mono settings retain the original per-font choices; KP Fonts retains its native mathematical sans/mono alphabets. Latin Modern uses its actual bold sans/mono faces; LuaLaTeX mono bold uses `lmmonolt10-bold.otf` and its bold oblique companion.
+pdfLaTeX loads `bm` after font setup, with `bmmax=0`, `hmmax=0` if not already supplied. Local math-family reuse is disabled (`localmathalphabets=0`) because nested matrices can otherwise change earlier glyphs in a formula. Bold calligraphic, script and blackboard helpers reuse their declared bold versions through `\boldsymbol`; `\mathbf` uses `\boldsymbol{\mathrm{…}}`. This also bolds Greek input, unlike traditional pdfTeX’s Latin-only `\mathbf`. pdfTeX still has a hard 16-family limit; documents using further custom alphabets may need LuaLaTeX. LuaLaTeX uses unicode-math bold facilities. The Concrete profile requires an Euler Math font containing mathematical italic Greek. The KP profile requires a `kpfonts-otf` release providing its `fakedscripts` option. Euler, Latin Modern, Garamond and Pagella math bases retain the legacy synthetic bold/slant settings where no separate bold math face is selected; KP Math uses its supplied bold face. Mathematical sans/mono settings retain the original per-font choices; KP Fonts retains its native mathematical sans/mono alphabets. Latin Modern uses its actual bold sans/mono faces; LuaLaTeX mono bold uses `lmmonolt10-bold.otf` and its bold oblique companion.
 
-A named selection is authoritative. The resolver executes once; `\docufont` cannot switch body or mathematics fonts. Later font packages can of course override a document's fonts, so load them deliberately. `inherit` is the safest choice for classes with their own font policy.
+A named selection is authoritative. The resolver executes once; `\docufont` cannot switch body or mathematics fonts. Later font packages can of course override a document’s fonts, so load them deliberately. `inherit` is the safest choice for classes with their own font policy.
 
-## Theorems and references
+### Theorems and references
 
-`normal` is ruled, `fancy` uses colored headers and tinted frames, and `oldschool` is unframed. `normal` and `fancy` load mdframed's TikZ backend; oldschool does not. See [csthm](../csthm/README.md) for theorem environments and symbol settings.
+`normal` is ruled, `fancy` uses colored headers and tinted frames, and `oldschool` is unframed. `normal` and `fancy` load mdframed’s TikZ backend; oldschool does not. See [csthm](../csthm/README.md) for theorem environments and symbol settings.
 
 `theorems=none` loads csthm in auxiliary mode: proof, case, accent and symbol controls remain, but no named theorem families or extra proof helpers are declared. `theorems=inherit` does not load csthm and leaves a class/user theorem system untouched. A preloaded csthm defaults to inheritance; explicit incompatible styles, numbering, or cleveref policies are rejected. With no preloaded csthm, the default defines all 45 csthm families, starred variants, `proofsketch`, `proofidea`, and `proofofclaim`. Ordinary `\ref` needs no optional reference feature. The legacy inline `\qedhere` helper is supplied when csthm is active; it places the current QED at the right margin and suppresses the automatic mark. It is not the full amsthm display-placement implementation.
 
@@ -140,11 +148,11 @@ A named selection is authoritative. The resolver executes once; `\docufont` cann
 
 `cleveref=auto` loads cleveref at `begindocument/before` only if hyperref is present. `true` makes its commands available during the preamble; load hyperref first if it will be used. `false` prevents implicit cleveref loading. The references feature loads hyperref before theorem setup and makes auto immediate. Existing cleveref options remain untouched. Use `\hypersetup` to change link settings. csthm registers theorem names independently; lowercase `\cref` and title-case `\Cref` are distinct.
 
-Supported orders include hyperref → csmath, csmath → hyperref → cleveref, and amsmath → hyperref → cleveref → csmath. cleveref before amsmath or hyperref after cleveref is diagnosed. References does not force bibliography backreferences, metadata, PDF version, or a language. If the caller enables hyperref's pagebackref, automatic “Cited on page” / “Cited on pages” callbacks are configured with distinct linked citation pages. Use `\hypersetup` for document metadata.
+Supported orders include hyperref → csmath, csmath → hyperref → cleveref, and amsmath → hyperref → cleveref → csmath. cleveref before amsmath or hyperref after cleveref is diagnosed. References does not force bibliography backreferences, metadata, PDF version, or a language. If the caller enables hyperref’s pagebackref, automatic “Cited on page” / “Cited on pages” callbacks are configured with distinct linked citation pages. Use `\hypersetup` for document metadata.
 
 **Numbering migration:** modern defaults use independent counters, while both legacy packages shared `theorem` and reset by section, including in books. Use `compatibility=legacy-article` or `compatibility=legacy-book` for historical theorem semantics. These profiles also reproduce the 42 numbered, stepping starred aliases; ordinary modern stars remain unnumbered and non-stepping. Seven restored families are available through `families=extended`.
 
-## Theorem settings
+### Theorem settings
 
 These options control theorem numbering and appearance.
 
@@ -169,9 +177,10 @@ These options control theorem numbering and appearance.
 
 Preloaded csthm settings are inherited unless explicitly requested. Conflicting counter/family/star/appearance/numbering/reference/style requests fail. Without csthm ownership, theorem-specific settings fail rather than changing a class’s theorem system. `family-style` is passed before new theorem declarations; a preloaded csthm receives only preamble typography updates through its public API.
 
-## Retired wrappers
+### Retired wrappers
 
 `csamsmath` and `csbook` have been removed. Load `csmath` directly and select
+
 its article or book mode. Do not load the old wrappers together with csmath.
 
 ```latex
@@ -183,6 +192,7 @@ its article or book mode. Do not load the old wrappers together with csmath.
 ```
 
 To retain historical theorem numbering and appearance, use one of these
+
 profiles and add the font and features the document needs:
 
 ```latex
@@ -194,14 +204,20 @@ profiles and add the font and features the document needs:
 ```
 
 These alternatives belong in separate documents. They preserve the selected
+
 historical theorem profile without automatically enabling every convenience.
-The wrappers' tcolorbox libraries, xpatch, verbatim and timestamp footer are
+
+The wrappers’ tcolorbox libraries, xpatch, verbatim and timestamp footer are
+
 no longer loaded automatically; documents using them load those packages
-explicitly. Use `\SetTheoremEndSymbol{...}` in place of the wrapper aliases
-`\thmendsymb` or `\commonsymb`, and `\SetTheoremStartSymbol{...}` in place of
+
+explicitly. Use `\SetTheoremEndSymbol{…}` in place of the wrapper aliases
+
+`\thmendsymb` or `\commonsymb`, and `\SetTheoremStartSymbol{…}` in place of
+
 `\commonstartsymb`.
 
-## Paragraphs, structure and public helpers
+### Paragraphs, structure and public helpers
 
 `\parhead{title}` gives a bold run-in heading; `\subparhead{title}` uses small caps. Both begin a paragraph with a small vertical skip, add a period unless the purified title ends in `.`, `?`, `!`, or `:`, and insert 0.30em before following text. Expandable title macros and ordinary formatting commands such as `\textbf` are handled; the original title is typeset once. Opaque, non-expandable custom commands may need explicit punctuation outside the command.
 
@@ -209,20 +225,39 @@ In runin mode, `\paragraph` and `\subparagraph` accept starred and optional-shor
 
 `\docufont{keys}` is preamble-only. It supports `parhead`, `parheadfont`, `subparhead`, `subparheadfont`; with layout, also `section`, `sections`, `subsection`, and `subsubsection`. Values are font switches or `normal`, `roman`, `bold`, `italic`, `italics`, `smallcaps`, `sans`, `boldsans`. Partial calls retain omitted settings. The theorem keys `theoremhdr`, `theorembody`, `definitionhdr`, `defintionhdr` (historical spelling), `definitionbody`, `remarkhdr`, `remarkbody`, `highlighthdr`, and `highlightbody` call csthm’s public group styling API. They require theorem ownership. In legacy book appearance, replacing `definitionhdr` also clears its diamond, matching the historical combined header macro; direct `\CsthmSetupFamily` keeps font and symbol independent.
 
-Core `\Pr` intentionally uses `\mathop{\mathsf{Pr}}`. It is set during package loading, so later `tcscrypto` may replace it with that package's operator and limit policy. `\annotation{text}` is a plain footnote and retains the native footnote interface. Unicode math aliases `\leadsto` and `\square` are bound at begin-document when unicode-math is loaded, after its symbols have initialized.
+Core `\Pr` intentionally uses `\mathop{\mathsf{Pr}}`. It is set during package loading, so later `tcscrypto` may replace it with that package’s operator and limit policy. `\annotation{text}` is a plain footnote and retains the native footnote interface. Unicode math aliases `\leadsto` and `\square` are bound at begin-document when unicode-math is loaded, after its symbols have initialized.
 
-With boxes, `\begin{nestedbar}[width] ... \end{nestedbar}` supports nesting and page splits (default width `\hsize`). With index, `\term{text}` writes an index entry and italicizes the text. These do not load their dependencies on first use; term diagnoses a disabled feature.
+With boxes, `\begin{nestedbar}[width] … \end{nestedbar}` supports nesting and page splits (default width `\hsize`). With index, `\term{text}` writes an index entry and italicizes the text. These do not load their dependencies on first use; term diagnoses a disabled feature.
 
 With layout, the retained font-setting commands are `\partfont`, `\partlabelfont`, `\chapterfont`, `\chapterlabelfont`, `\sectionfont`, `\sectionnumfont`, `\subsectionfont`, `\subsubsectionfont`, `\titlefont`, `\subtitlefont`, `\authorfont`, `\institutefont`, and `\datefont`. They accept font switches. `\subtitle` and `\institute` store text displayed on the optional title; `\goldenunit` controls book-title spacing. Book layout applies ruled part/chapter headings, small-caps section/TOC typography, running headers and the legacy title design. Article/manuscript layout uses the legacy article section/title conventions. Chapter/part controls affect the book design; title and section controls affect their respective layouts. Avoid layout with classes whose heading system must remain authoritative.
 
 With annotations, `\added`, `\changed`, `\missing`, `\removed`, `\citelater`, `\fixme`, `\notes`, `\query`, and `\todo` accept one argument. Arguments may contain paragraphs. Draft shows colored text and margin stars; removed content has a colored “Removed” label, supporting mathematics and paragraphs without fragile strikeout processing. **Final retains the argument of `\added` and `\changed` as accepted text.** `\changed` has one mandatory argument, not old/new arguments. Removed content and other editorial commands disappear. `\XXX[label]` shows a flag in draft and errors in final. `\newguymarker{name}{initials}{color}` accepts a command name with or without a backslash and creates an author annotation. Disabled annotation commands explain which feature to enable. Margin notes remain subject to normal narrow-margin/float placement constraints.
 
-## Loading with other packages
+### Loading with other packages
 
 Load csmath before tcscrypto and csextras. Use `theorems=inherit` with a class or package that already defines its theorem environments. Eudoxus provides a separate mathematical framework and cannot be loaded with csmath.
 
 `\CsmathConfiguration{key}` returns a resolved option. `\CsmathCheckConfiguration{options}` checks requested settings against an existing configuration; cslecture uses these commands when csmath is already loaded.
 
-## Project-owned title descriptions
+### Project-owned title descriptions
 
-With `layout`, csmath retains its own titling/authblk implementation, deeply inspired by hep-title 1.5's metadata/rendering separation. It does not load hep-title or select it as a fallback. `\csMathTitleDescription{content}` adds an optional small, centered publication description after the native article title. Existing title, author, affiliation, institute and date font controls remain available. Venue mode inherits class title ownership. The Papers common prefix supplies explicit `PaperAffiliation`, `PaperAuthor`, `PaperDate` and publication declarations, with class-native adapters and anonymous PDF metadata.
+With `layout`, csmath retains its own titling/authblk implementation, deeply inspired by hep-title 1.5‘s metadata/rendering separation. It does not load hep-title or select it as a fallback. `\csMathTitleDescription{content}` adds an optional small, centered publication description after the native article title. Existing title, author, affiliation, institute and date font controls remain available. Venue mode inherits class title ownership. The Papers common prefix supplies explicit `PaperAffiliation`, `PaperAuthor`, `PaperDate` and publication declarations, with class-native adapters and anonymous PDF metadata.
+
+With `layout`, `\preprint{<text>}` stores a first-page report identifier using the hep-title 1.5 interface. Repeated calls append separate lines; `\preprintfont{<font switches>}` controls the font, defaulting to small, ragged-left small caps. The identifier appears at the upper right of the title page, separately from the centered publication description, without replacing native author/affiliation rendering. An empty identifier produces no mark. Declare metadata before `\maketitle`; the mark is placed once, on that title's first shipped page. This implementation uses the kernel shipout hook and does not load hep-title.
+
+```tex
+\usepackage[layout]{csmath}
+\preprint{Author manuscript}
+\preprint{Report ABC-2026-01}
+```
+
+The command belongs to csmath's title-layout branch. Do not enable csmath layout merely to override a publisher class. In an inherited venue layout, use that class's supported metadata. In particular, llncscrypto's older `\preprint[left][right]` header command has a different signature and must not be mistaken for this mandatory-argument title interface.
+
+The [preprint fixture](tests/preprint.tex) exercises two report lines and a second page. From the csmath directory, build outside the source tree:
+
+```sh
+mkdir -p /tmp/csmath-preprint-test
+TEXINPUTS="$PWD:$PWD/../csthm:" pdflatex -interaction=nonstopmode -halt-on-error -output-directory=/tmp/csmath-preprint-test tests/preprint.tex
+```
+
+Inspect both pages: the report lines should appear once at the upper right of the title page, with the normal title/author layout retained. Empty metadata and `\preprintfont` overrides should be checked when changing this implementation. The layout dependency list additionally includes `varwidth` for report-line sizing.
