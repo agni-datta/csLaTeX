@@ -4,7 +4,7 @@
 % Author: Agni Datta | https://github.com/agni-datta/csLaTeX
 % License: LaTeX Project Public License v1.3c
 \NeedsTeXFormat{LaTeX2e}[2022/06/01]
-\ProvidesPackage{csmath}[2026/10/10 v1.2.1 Mathematical foundation and document utilities]
+\ProvidesPackage{csmath}[2026/10/14 v1.2.2 Mathematical foundation and document utilities]
 \makeatletter
 \ExplSyntaxOn
 
@@ -2756,6 +2756,40 @@
 
     % Project-owned title descriptions, deeply inspired by hep-title 1.5.
     % Native titling/authblk layout remains the owner of author and affiliation rendering.
+    % Preprint interface adapted from hep-title 1.5, Jan Hajer, LPPL 1.3c.
+    % Use the kernel shipout hook so existing titling hooks remain untouched.
+    \RequirePackage{varwidth}
+    \newsavebox{\csMathPreprintBox}
+    \def\csMathPreprintText{}
+    \def\csMathPreprintFont{\scshape\small\raggedleft}
+    \newif\ifcsMathPreprintPlaced
+    \NewDocumentCommand{\preprintfont}{m}{%
+        \gdef\csMathPreprintFont{#1}%
+    }
+    \NewDocumentCommand{\preprint}{m}{%
+        \ifx\csMathPreprintText\@empty
+            \gdef\csMathPreprintText{#1}%
+        \else
+            \g@addto@macro\csMathPreprintText{\\#1}%
+        \fi
+    }
+    \AddToHook{cmd/maketitle/before}[csmath/preprint]{%
+        \ifcsMathPreprintPlaced\else
+            \ifx\csMathPreprintText\@empty\else
+                \global\csMathPreprintPlacedtrue
+                \AddToHookNext{shipout/foreground}{%
+                    \sbox\csMathPreprintBox{%
+                        \begin{varwidth}{\textwidth}%
+                            \normalfont\csMathPreprintFont\csMathPreprintText
+                        \end{varwidth}%
+                    }%
+                    \put(\dimexpr 1in+\oddsidemargin+\textwidth-\wd\csMathPreprintBox\relax,%
+                        \dimexpr -1in-\topmargin-2pt-\ht\csMathPreprintBox\relax){%
+                        \usebox\csMathPreprintBox}%
+                }%
+            \fi
+        \fi
+    }
     \NewDocumentCommand{\csMathTitleDescription}{m}{%
         \AddToHook{cmd/maketitle/after}[csmath/title-description]{%
             \begin{center}\small\normalfont #1\end{center}%
