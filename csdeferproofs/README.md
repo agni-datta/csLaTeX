@@ -1,10 +1,18 @@
+---
+title: README
+aliases: README
+linter-yaml-title-alias: README
+date created: Monday, October 12th 2026, 12:22:57 am
+date modified: Wednesday, October 14th 2026, 3:27:55 am
+---
+
 <!-- @format -->
 
-# csdeferproofs 3.0.2
+## csdeferproofs 3.0.2
 
 In-memory deferred proofs for conference and full-version sources. Author: Agni Datta. License: LPPL v1.3c. Requires LaTeX 2022-06-01 or newer. It loads no theorem package, reference package, or external proof framework and writes no external proof-body file.
 
-## One source, two modes
+### One source, two modes
 
 ```latex
 \usepackage{csmath} % or an independent theorem provider
@@ -33,7 +41,7 @@ With `appendix=true`, the statement stays in place and the proof is printed at t
 
 For an intentionally shortened submission that omits collected proofs, explicitly select `unprinted=ignore` (or `warning`). The default error prevents accidental loss of full arguments.
 
-## Options
+### Options
 
 Native kernel keys validate choices and reject unknown options. Repeated identical selections are harmless; contradictory repeated selections are errors. Blank text options retain their historical fallback defaults.
 
@@ -48,16 +56,16 @@ Native kernel keys validate choices and reject unknown options. Repeated identic
 
 `category` does not select queues or introduce a category-management system. The optional compatibility argument to the statement declaration is likewise retained and ignored.
 
-## Complete command and environment API
+### Complete command and environment API
 
 | Interface                                                             | Signature and behavior                                                                                                                                                    |
 | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `\NewDeferredThm[compatibility-options]{envE}{base-env}`              | Declare a statement wrapper in **both** modes. It accepts one optional theorem title and uses the base environment unchanged.                                             |
 | `\NewDeferredThmAlias{envE}{base-env}`                                | Compatible spelling for the same declaration. An identical prior mapping is accepted; a different mapping or occupied environment name is an error.                       |
-| `\begin{deferproof}{label}[heading] ... \end{deferproof}`             | Explicitly associated full proof. Default deferred heading: “Proof of <reference>”; default inline heading: proofname.                                                    |
-| `\begin{deferproofsketch}{label}[heading] ... \end{deferproofsketch}` | Explicit sketch, with sketchname in its default heading.                                                                                                                  |
-| `\begin{proofE}[heading] ... \end{proofE}`                            | Implicit full proof of the single pending wrapped statement. With no pending statement, requires a custom heading.                                                        |
-| `\begin{proofEsketch}[heading] ... \end{proofEsketch}`                | Corresponding implicit sketch.                                                                                                                                            |
+| `\begin{deferproof}{label}[heading] … \end{deferproof}`             | Explicitly associated full proof. Default deferred heading: “Proof of <reference>”; default inline heading: proofname.                                                    |
+| `\begin{deferproofsketch}{label}[heading] … \end{deferproofsketch}` | Explicit sketch, with sketchname in its default heading.                                                                                                                  |
+| `\begin{proofE}[heading] … \end{proofE}`                            | Implicit full proof of the single pending wrapped statement. With no pending statement, requires a custom heading.                                                        |
+| `\begin{proofEsketch}[heading] … \end{proofEsketch}`                | Corresponding implicit sketch.                                                                                                                                            |
 | `\printDeferredProofs[heading-prefix]`                                | Print and consume the collected queue in capture order. Default full-proof prefix is “Proof of”. Custom entry headings and default sketch headings retain their own text. |
 | `\IfDeferredProofsActive{true-code}{false-code}`                      | Branch on appendix mode.                                                                                                                                                  |
 
@@ -73,7 +81,7 @@ The base theorem environment must exist when used. Wrappers do not declare, shar
 \end{proofE}
 ```
 
-## Association and duplicate policy
+### Association and duplicate policy
 
 In appendix mode, a wrapped statement receives a private label and a unique identifier. Its ordinary or native zref labels are associated with that identifier while the current reference value/counter belongs to the statement. Labeled equations inside a statement do not become statement aliases. Private identifiers use their own integer and never step theorem counters.
 
@@ -97,17 +105,17 @@ An explicit reference to an ordinary theorem works without a wrapper:
 
 In inline mode, association is unnecessary: proofs print at their source location. The explicit label is retained for source sharing but does not create an appendix heading.
 
-## Queue safety
+### Queue safety
 
 Printing removes the current queue before typesetting it. Calling the print command again emits “No new deferred proofs to print” and produces no repeated body. An initially empty queue behaves the same way. Proofs collected later remain in the queue for a subsequent print. Recursive printing from a queued body is an error.
 
 At document end, remaining captured bodies trigger the configured unprinted policy and report their count. This concerns captured proof bodies, not statements for which no proof was supplied. `appendix=false` does not collect bodies and produces no unprinted-proof diagnostic.
 
-## References
+### References
 
 The default `commandref=cref` does **not** load cleveref. Load its provider in the preamble, or choose `commandref=ref` for ordinary LaTeX references. `Cref` and custom one-argument commands are also supported. Command names may contain letters and `@`; pass the name without `\`.
 
-A missing command is an explicit error when a generated deferred heading needs it. A custom heading needs no generated reference. Undefined labels retain the selected reference system's visible unresolved-label diagnostics; compile sufficiently many times to resolve forward references.
+A missing command is an explicit error when a generated deferred heading needs it. A custom heading needs no generated reference. Undefined labels retain the selected reference system’s visible unresolved-label diagnostics; compile sufficiently many times to resolve forward references.
 
 Native zref is a separate label store:
 
@@ -124,15 +132,15 @@ Native zref is a separate label store:
 \printDeferredProofs
 ```
 
-`commandref=zref` works with zref-user. With zref-clever's normal label mirroring enabled, ordinary labels can also populate its store. The package writes private statement labels once in each available store, disabling mirroring locally for that private write to avoid duplication. It does not silently manufacture a zref label for an arbitrary external ordinary theorem label.
+`commandref=zref` works with zref-user. With zref-clever’s normal label mirroring enabled, ordinary labels can also populate its store. The package writes private statement labels once in each available store, disabling mirroring locally for that private write to avoid duplication. It does not silently manufacture a zref label for an arbitrary external ordinary theorem label.
 
 Modern llncscrypto keeps cleveref and zref-clever separate; use the selected provider’s proper label store and reference command. Codelines references can occur inside stored proofs without changing theorem association.
 
-## Proof headings and end marks
+### Proof headings and end marks
 
-When `proof` exists, both modes use that environment with the resolved optional heading. The active theorem system owns font, spacing and QED placement; csdeferproofs appends no extra mark. Its documented symbol setters remain effective. Display endings follow that provider's rules: with amsthm, use its `\qedhere` when a mark inside the display is wanted. No automatic amsthm display-placement extension is claimed.
+When `proof` exists, both modes use that environment with the resolved optional heading. The active theorem system owns font, spacing and QED placement; csdeferproofs appends no extra mark. Its documented symbol setters remain effective. Display endings follow that provider’s rules: with amsthm, use its `\qedhere` when a mark inside the display is wanted. No automatic amsthm display-placement extension is claimed.
 
-Without a proof environment, a small local fallback uses `\parhead` if available, otherwise an italic run-in heading. It uses an available public proof symbol or a small drawn square. It does not redefine `\paragraph`, choose fonts, or alter page layout. The fallback's final mark is a paragraph-end mark, not an automatic display-equation placement system.
+Without a proof environment, a small local fallback uses `\parhead` if available, otherwise an italic run-in heading. It uses an available public proof symbol or a small drawn square. It does not redefine `\paragraph`, choose fonts, or alter page layout. The fallback’s final mark is a paragraph-end mark, not an automatic display-equation placement system.
 
 Independent usage:
 
@@ -146,15 +154,15 @@ Independent usage:
 
 Csthm, csmath and LNCS documents keep their existing proof environments.
 
-## Body capture and limitations
+### Body capture and limitations
 
 Bodies and custom headings are retained as unexpanded tokens. Label names are expanded and frozen at capture time, so redefining a label-name macro cannot redirect a later proof heading. Displays, alignments, lists, equation labels, references, footnotes, formatting and tcscrypto notation execute when the proof prints. Footnotes, equation counters and embedded algorithm line counters therefore belong to the print location in appendix mode. Inline mode executes them at the source location.
 
 Macro meanings are **not snapshotted**. Define delayed notation globally or keep its defining scope alive until printing. A later redefinition is observed by a captured body. Local definitions that have expired before printing cannot be recovered. Verbatim, catcode-dependent input and environments that require uncaptured source scanning are not supported inside these captured bodies. Both modes use the same capture interface, making this limitation consistent.
 
-A queue can contain many or long proofs, subject to the TeX engine's ordinary memory limits. No serialization, shell escape, runtime Python, or external proof file is used.
+A queue can contain many or long proofs, subject to the TeX engine’s ordinary memory limits. No serialization, shell escape, runtime Python, or external proof file is used.
 
-## Migration from 2.0
+### Migration from 2.0
 
 The old implementation overwrote the previous pending statement, retained printed bodies, omitted unprinted bodies silently, and required an undocumented parhead provider. These are corrected. Unknown options now error. Declarations work in both modes, and identical alias declarations are harmless.
 
