@@ -1,12 +1,23 @@
+---
+title: README
+aliases: README
+linter-yaml-title-alias: README
+date created: Monday, October 12th 2026, 12:22:57 am
+date modified: Wednesday, October 14th 2026, 3:27:55 am
+---
+
 <!-- @format -->
 
-# csextras 2.0
+## csextras 2.0
 
 Explicit optional features for mathematical and TCS documents. Requires LaTeX 2022-06-01 or later. Supports pdfLaTeX and LuaLaTeX; XeLaTeX is rejected. Optional dependencies can require a newer kernel.
 
 A blank `\usepackage{csextras}` loads only xcolor and supplies the historical
+
 seven-color palette and `\SetExtraColor{name}{color}`. It selects no fonts,
+
 theorems, layout, citation backend, reference provider, index or algorithm.
+
 Standalone features do not require csmath.
 
 ```latex
@@ -27,32 +38,48 @@ See \cref{alg:first,line:init} and \zcref{zalg:first,zline:init}.
 \end{document}
 ```
 
-## Configuration
+### Configuration
 
 All Boolean options default to false. A bare name means true; `=false` disables
+
 it. Identical repetitions work. Unknown keys, invalid/missing values,
+
 contradictions and unavailable prerequisites produce errors. Explicit requests
+
 never silently disappear. Third-party packages must be installed when selected.
 
 Csmath must precede csextras for features depending on its resolved mode or
+
 already initialized providers. Detection uses only `\CsmathConfiguration{mode}`
-and `\CsmathCheckConfiguration{...}`. Article and manuscript both support the
+
+and `\CsmathCheckConfiguration{…}`. Article and manuscript both support the
+
 article conveniences. Book features also require actual chapter support.
+
 Lecture modes are recognized by their resolved csmath configuration.
+
 A request cannot turn on a csmath feature after initialization: select `table`
+
 or `index` on csmath first. Indexed article documents select `index=true`
+
 on csmath, plus their required font and features. Csextras cannot change
+
 the initialized configuration. No separate font/theorem resolver exists here.
 
 Venue inheritance rejects layout, beautify, figureposition, footnotes,
+
 informalheaders, titlepage, tocspacing, numbering, crazynumbering, tightcaptions,
+
 parskip, indentfirst, tocbibind, abstract and epigraph. Independent utilities
+
 remain available.
 
-## Options and direct dependencies
+### Options and direct dependencies
 
 The packages below are direct feature requests; those packages may load their
+
 own dependencies. An existing compatible provider is reused. Default xcolor
+
 applies to every row. No broad xcolor palette options are forced.
 
 | Option                                            | Effect and direct packages                                                                                                                                                                                              |
@@ -68,7 +95,7 @@ applies to every row. No broad xcolor palette options are forced.
 | `extralists`                                      | `enumitem`; legacy mathematics uses `amssymb` if needed. Unicode mathematics uses its square and a local `pifont` checkmark (Garamond-Math lacks that glyph). Four local list types; document math fonts are unchanged. |
 | `extramath`                                       | `nicefrac`, `mleftright`, `upgreek` (Symbol on pdfLaTeX), `bbm`, `bm`, `braket`, `esvect`; mathpzc/mathsc/mathbi helpers without replacing existing definitions.                                                        |
 | `extratables`                                     | With csmath: validate table=true. Standalone: `array,booktabs,longtable,makecell,multirow,tabularx`. Both add `rotating[figuresright],ltxtable`.                                                                        |
-| `figureposition`                                  | Float fractions .92/.82/.06/.78 and top/bottom/total counts 3/2/4. No package.                                                                                                                                          |
+| `figureposition`                                  | Float fractions.92/.82/.06/.78 and top/bottom/total counts 3/2/4. No package.                                                                                                                                          |
 | `footnotes`                                       | `bigfoot`, `footnote`, `footmisc[bottom,multiple,hang]`; explicit global footnote presentation.                                                                                                                         |
 | `forest`                                          | `forest[linguistics]`; diagrams only when selected.                                                                                                                                                                     |
 | `glossary`                                        | `glossaries[acronym,toc]`; author runs makeglossaries explicitly.                                                                                                                                                       |
@@ -111,10 +138,12 @@ applies to every row. No broad xcolor palette options are forced.
 | `layout=none\|balanced\|legacy`                   | Default none; balanced loads geometry[margin=1in], retains paper size, line spread1.05. Legacy additionally sets emergencystretch2em, interfootnotelinepenalty10000, and allowdisplaybreaks when amsmath exists.        |
 
 Layout refuses to overwrite an already loaded geometry provider. Neither preset
+
 changes hbadness/vbadness/hfuzz/vfuzz, equation numbering or section depths.
+
 The legacy preset intentionally excludes historical warning suppression.
 
-## Commands
+### Commands
 
 - Palette: accentcolor, bordercolor, figurecolor, backgroundcolor,
   diagrambackground, diagramborder, draftcolor; SetExtraColor changes a named color.
@@ -132,7 +161,7 @@ The legacy preset intentionally excludes historical warning suppression.
   `\currenttime`. These helpers do not overwrite caller PDF title/author fields.
 - Index: `\term{text}`, `\indexsee{entry}{target}`,
   `\indexseealso{entry}{target}`, ordinary-footnote `\annotation{text}` when
-  not already provided. Run makeindex outside LaTeX and include the .ind when
+  not already provided. Run makeindex outside LaTeX and include the.ind when
   submitting a source bundle that cannot run it.
 - Glossary: `\glossaryentry{label}{name}{description}` and native
   `\newacronym{label}{short}{long}`. Use the native glossaries formatter for acronym entries.
@@ -144,47 +173,72 @@ The legacy preset intentionally excludes historical warning suppression.
   semantics remain untouched. Standalone metadata markers are explicitly visible
   whenever that feature is requested; there is no separate csextras draft mode.
 - Native references: `\Zcref[options]{labels}` is a capitalized zcref convenience,
-  never an impersonation of cleveref's Cref.
+  never an impersonation of cleveref’s Cref.
 
-## References, bibliography and execution
+### References, bibliography and execution
 
 Ordinary labels and native zref labels are independent. Use both commands at the
+
 same object if both stores are needed. Codelines owns every line reference type
+
 and unique anchor. Csextras owns only the algorithm float type, and uses the
+
 public csthm family iterator for native theorem names. Explicit provider-level
+
 name overrides retain precedence; register cleveref overrides after its setup.
+
 Enhanced providers load at the end of csextras initialization, after selected
+
 mathematical facilities, still in the preamble. Load csmath before csextras when
-combining them with enhanced references. Hyperref's existing options and metadata
+
+combining them with enhanced references. Hyperref’s existing options and metadata
+
 are reused.
 
 Biblatex works before or after csextras when bibliography/crazybib are disabled.
+
 Actual conflicting backend features reject biblatex in either order. Ordinary
+
 csextras never chooses a citation style. For BibTeX, run LaTeX, BibTeX and enough
+
 LaTeX passes; for biblatex use the backend selected by the document.
 
 Minted 3 can use an approved restricted latexminted executable; older versions
+
 have different requirements. Csextras does not enable shell escape, invoke
+
 external tools itself, or claim that every minted version works in a disabled
+
 execution environment. With `-no-shell-escape`, its minted option errors clearly;
+
 a document needing a frozen-cache workflow should configure minted directly.
+
 Listings and codelines need no external execution.
 
-## Installation
+### Installation
 
 Select extra X11/DVIPS palettes at the first xcolor load. Boxes use the ordinary backend and square corners by default;
+
 TikZ diagrams remain explicitly available. Table spacing stays caller-owned.
 
 For an exercises-package workflow use standalone csextras or
+
 `\usepackage[theorems=inherit]{csmath}` before selecting exercises. For ordinary
+
 csmath exercises, omit the csextras exercises option. For a lecture title select
+
 the cslecture title policy. For annotations use the existing csmath provider or
+
 standalone todonotes, not both definitions of todo.
 
 To install: csextras.sty alone suffices for independent installed-package
+
 features. Algorithm additionally needs codelines.sty. Tcscrypto additionally
+
 needs tcscrypto.sty. Csmath-dependent features need csmath.sty and csthm.sty; cslecture adds its own canonical closure. See
+
 the required package files listed above.
 
 Author: Agni Datta. Maintained under LPPL 1.3c or later; see repository LICENSE
+
 and lppl.txt.
