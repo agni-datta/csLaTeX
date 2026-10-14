@@ -1,6 +1,14 @@
-# Contributing to csLaTeX
+---
+title: CONTRIBUTION
+aliases: CONTRIBUTION
+linter-yaml-title-alias: CONTRIBUTION
+date created: Monday, October 12th 2026, 12:22:57 am
+date modified: Wednesday, October 14th 2026, 3:27:53 am
+---
 
-Read the package guide and keep changes within that package's purpose. Csmath handles shared mathematics and fonts, csthm handles theorems and proofs, codelines handles pseudocode lines, and csdeferproofs handles deferred proofs. Eudoxus is a separate mathematical framework.
+## Contributing to csLaTeX
+
+Read the package guide and keep changes within that package’s purpose. Csmath handles shared mathematics and fonts, csthm handles theorems and proofs, codelines handles pseudocode lines, and csdeferproofs handles deferred proofs. Eudoxus is a separate mathematical framework.
 
 Preserve public command names and arguments unless a change has been agreed. Use lowercase option names with hyphens between words. Unknown options and conflicting settings should give useful errors. Load optional dependencies only when their features are selected.
 

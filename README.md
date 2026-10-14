@@ -1,15 +1,23 @@
+---
+title: README
+aliases: README
+linter-yaml-title-alias: README
+date created: Monday, October 12th 2026, 12:22:57 am
+date modified: Wednesday, October 14th 2026, 3:27:54 am
+---
+
 <!-- @format -->
 
-# csLaTeX
+## csLaTeX
 
 LaTeX packages for mathematics, theoretical computer science, cryptography and teaching.
 
-## Packages
+### Packages
 
 | Package                                     | Version | Purpose                                                              |
 | ------------------------------------------- | ------- | -------------------------------------------------------------------- |
 | [codelines](codelines/README.md)            | 2.0.1   | Pseudocode with nested line numbering and references.                |
-| [csmath](csmath/README.md)                  | 1.2.1   | Mathematics, fonts, theorems and optional document features.         |
+| [csmath](csmath/README.md)                  | 1.2.2   | Mathematics, fonts, theorems and optional document features.         |
 | [csdeferproofs](csdeferproofs/README.md)    | 3.0.2   | Inline proofs or proofs deferred to an appendix.                     |
 | [csextras](csextras/README.md)              | 2.0     | Optional tables, diagrams, lists, bibliography and other utilities.  |
 | [cslecture](cslecture/README.md)            | 4.0.1   | Individual lectures, course books and scribe notes.                  |
@@ -21,22 +29,22 @@ LaTeX packages for mathematics, theoretical computer science, cryptography and t
 | [llncscrypto](llncscrypto/README.md)        | 4.0.2   | Extensions for Springer LNCS papers.                                 |
 | [tcscrypto](tcscrypto/README.md)            | 3.9.0   | Complexity and cryptography notation, pseudocode and protocol boxes. |
 
-## Installation
+### Installation
 
-Copy the package's `.sty` file beside your document, or install it in a personal TEXMF tree. Install third-party dependencies through your TeX distribution.
+Copy the package’s `.sty` file beside your document, or install it in a personal TEXMF tree. Install third-party dependencies through your TeX distribution.
 
 | Package                                    | Files to copy                                                                          |
 | ------------------------------------------ | -------------------------------------------------------------------------------------- |
 | csmath                                     | `csmath.sty`, `csthm.sty`                                                              |
 | cslecture                                  | `cslecture.sty`, `csmath.sty`, `csthm.sty`                                             |
-| csthm, codelines, csdeferproofs, tcscrypto | The package's own `.sty` file                                                          |
+| csthm, codelines, csdeferproofs, tcscrypto | The package’s own `.sty` file                                                          |
 | csextras                                   | `csextras.sty`, plus first-party packages for selected features                        |
 | llncscrypto                                | `llncscrypto.sty`; the optional Libertine preprint setting also needs csmath and csthm |
 | eudoxus                                    | `eudoxus.sty`; the `tcs` option also needs tcscrypto                                   |
 
 The other package guides list their requirements.
 
-## Mathematical writing
+### Mathematical writing
 
 ```latex
 \documentclass{article}
@@ -52,11 +60,11 @@ See \cref{thm:first}.
 \end{document}
 ```
 
-Csmath inherits the document's fonts unless a font is selected. It supports pdfLaTeX and LuaLaTeX. For books, select `mode=book`; for a class that supplies its own fonts and theorem environments, use `mode=venue`.
+Csmath inherits the document’s fonts unless a font is selected. It supports pdfLaTeX and LuaLaTeX. For books, select `mode=book`; for a class that supplies its own fonts and theorem environments, use `mode=venue`.
 
 The old csamsmath and csbook packages have been replaced by direct csmath loading. The [csmath guide](csmath/README.md#retired-wrappers) explains the article and book settings.
 
-## Lecture notes
+### Lecture notes
 
 ```latex
 \documentclass{article}
@@ -74,12 +82,12 @@ Lecture text.
 
 Use `mode=single` for individual lectures and `mode=series` with the ordinary `book` class for a course book. Cslecture replaces the old cslectureseries class.
 
-## LNCS papers
+### LNCS papers
 
 Use the Springer template and load llncscrypto for the extra features you need. Use `notoc` on tcscrypto. The [LNCS guide](llncscrypto/README.md) covers theorem extensions, references, notes and preprint settings.
 
 Eudoxus supplies its own mathematical setup and should be used separately from csmath and csthm. Tcscrypto includes complexity notation; do not also load `complexity.sty`.
 
-## License
+### License
 
 Agni Datta. LaTeX Project Public License v1.3c or later; see [LICENSE](LICENSE) and [lppl.txt](lppl.txt).
