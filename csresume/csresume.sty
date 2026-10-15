@@ -4,15 +4,19 @@
 % Author: Agni Datta | https://github.com/agni-datta/csLaTeX
 % License: LaTeX Project Public License v1.3c
 \NeedsTeXFormat{LaTeX2e}[2022/06/01]
-\ProvidesExplPackage{csresume}{2026/10/14}{5.4}{Compact academic CVs}
+\ProvidesExplPackage{csresume}{2026/10/15}{5.5}{Compact academic CVs}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Options
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \bool_new:N \g__csresume_allowbreaks_bool
+\tl_new:N \g__csresume_accent_tl
 \keys_define:nn {csresume}
 {
+  accent .tl_gset:N = \g__csresume_accent_tl,
+  accent .value_required:n = true,
+  accent .initial:n = SteelBlue4,
   allowbreaks .bool_gset:N = \g__csresume_allowbreaks_bool,
   allowbreaks .default:n = true,
   allowbreaks .initial:n = false
@@ -35,6 +39,9 @@
 \RequirePackage{enumitem}
 \RequirePackage{multicol}
 \RequirePackage[x11names]{xcolor}
+\ExplSyntaxOn
+\exp_args:NnV \colorlet {csresumeAccent} \g__csresume_accent_tl
+\ExplSyntaxOff
 \RequirePackage[colorlinks]{hyperref}
 \RequirePackage{lastpage}
 \RequirePackage[
@@ -53,7 +60,7 @@
 \setlength{\parskip}{0pt}
 \setcounter{secnumdepth}{0}
 \raggedbottom
-\hypersetup{allcolors=SteelBlue4,pdftitle={Curriculum Vitae}}
+\hypersetup{allcolors=csresumeAccent,pdftitle={Curriculum Vitae}}
 \urlstyle{tt}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -121,7 +128,7 @@
   \item[\texttt{[\__csresume_bib_number:]}]
 }
 \cs_new_protected:Npn \__csresume_dagger:
-{(\textcolor{SteelBlue4}{\textdagger})}
+{(\textcolor{csresumeAccent}{\textdagger})}
 \NewDocumentCommand{\cvrandomized}{}
 {\hyperlink{cv:authorship}{\__csresume_dagger:}}
 \NewDocumentCommand{\cvauthorshiplegend}{}
@@ -214,11 +221,29 @@
 % Letterhead
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\seq_new:N \l__csresume_header_name_seq
+\cs_new_protected:Npn \__csresume_header_name:n #1
+{
+  \group_begin:
+  \seq_set_split:Nnn \l__csresume_header_name_seq {~} {#1}
+  \seq_remove_all:Nn \l__csresume_header_name_seq {}
+  \seq_map_indexed_inline:Nn \l__csresume_header_name_seq
+  {
+    \int_compare:nNnT {##1} > {1} {~}
+    \bool_lazy_or:nnTF
+    {\int_compare_p:nNn {##1} = {1}}
+    {\int_compare_p:nNn {##1} = {\seq_count:N \l__csresume_header_name_seq}}
+    {\textcolor{csresumeAccent}{\tl_head:n {##2}}\tl_tail:n {##2}}
+    {##2}
+  }
+  \group_end:
+}
+
 \NewDocumentCommand{\cvheader}{m m m m m m m m m}
 {
   \par
   \noindent
-  {\huge\sffamily\mdseries #4\par}
+  {\huge\sffamily\mdseries\__csresume_header_name:n {#4}\par}
   \addvspace{0.35\baselineskip}
   \hrule height 0.4pt
   \addvspace{0.45\baselineskip}
@@ -231,7 +256,7 @@
   \end{minipage}
   \hfill
   \begin{minipage}[t]{0.38\linewidth}
-    \raggedleft\sffamily
+    \raggedleft\normalfont
     \tl_if_blank:nF {#1} {#1\par}
     \tl_if_blank:nF {#2} {#2\par}
     #3\par

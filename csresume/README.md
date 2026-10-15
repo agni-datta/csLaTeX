@@ -1,8 +1,8 @@
 <!-- @format -->
 
-# csresume 5.4
+# csresume 5.5
 
-An academic CV package with a compact institutional letterhead, dated entries, referee columns, and BibLaTeX publication lists. It uses the document class’s default Computer Modern roman, sans-serif, and math fonts. There are no font-selection or color options.
+An academic CV package with a compact institutional letterhead, dated entries, referee columns, and BibLaTeX publication lists. It uses the document class’s default Computer Modern roman, sans-serif, and math fonts. There are no font-selection options. The `accent` option selects the shared color for name initials, links, and authorship markers.
 
 ## Requirements
 
@@ -12,7 +12,7 @@ Use an 11pt `article` document with pdfLaTeX. Publication lists use BibLaTeX’s
 
 ```tex
 \documentclass[english,letterpaper,11pt]{article}
-\usepackage{csresume}
+\usepackage[accent=RoyalBlue4]{csresume}
 \addbibresource{publications.bib}
 \cvbibname{Ada}{Example}
 \finishcv{\today}{https://example.edu}
@@ -35,7 +35,7 @@ Use an 11pt `article` document with pdfLaTeX. Publication lists use BibLaTeX’s
 ## Commands
 
 - `\cvorcid{Identifier}` declares an optional linked ORCID, displayed on a separate typewriter line in the header. The nine-argument header API is unchanged.
-- `\cvheader{Institution}{Department}{Address}{Name}{Position}{Email}{Website}{ScholarID}{DBLPID}` follows an institutional letterhead layout: a larger, regular sans-serif name at left above a thin rule; position and electronic contacts at left and institution/department/address at right below it. Optional fields may be empty. Use plain text for the name; it also sets the PDF author metadata. Website arguments accept either a complete HTTP(S) URL or a bare domain. Scholar and DBLP links display their service names, not raw identifiers.
+- `\cvheader{Institution}{Department}{Address}{Name}{Position}{Email}{Website}{ScholarID}{DBLPID}` follows an institutional letterhead layout: a larger, regular sans-serif name at left above a thin rule; position and electronic contacts at left and institution/department/address at right below it. Optional fields may be empty. Use plain text for the name; the header automatically colors the first letter of its first and last space-separated words in the accent color. Middle words retain their normal color. The unformatted name sets the PDF author metadata. Website arguments accept either a complete HTTP(S) URL or a bare domain. Scholar and DBLP links display their service names, not raw identifiers.
 - `\contactblock{Name}{Position}{Address}{Email}{Website}{ScholarID}{DBLPID}` preserves the previous seven-argument API. Use `\cvheader` for the complete institutional letterhead.
 - `\cvbibname{GivenName}{FamilyName}` highlights the exact matching bibliography name in roman small capitals, using BibLaTeX’s name-formatting hooks. Keep author fields in the databases as plain names. No name is highlighted unless declared.
 - `\details{Dates}{Role}{Institution}{Description}` places a wrapping role at left and dates at right, with the institution on the second line and the description below. Empty institution or description fields produce no blank line. Entries can break naturally after their opening lines.
@@ -49,13 +49,13 @@ The `allowbreaks` option disables the small space reservation at the start of an
 
 ## Typography and Migration
 
-Text and rules are black; hyperlink text uses the X11 color `SteelBlue4`. URLs, email addresses, Scholar, DBLP, and ORCID use Computer Modern typewriter. Section and subsection headings sit left-aligned between two full-width thin rules and use regular sans-serif type without letter spacing or forced capitals. Sections use `\large`; subsections use `\normalsize`, with `\smallskip` around the rules and compact, consistent gaps between sections. Referee columns use a smaller outer gap. Right-aligned appointment dates, postal addresses, and compact metadata use sans-serif type. Publication titles are italic; author punctuation, venue details, and dates use the native numeric bibliography layout. Publication dates remain in the entries rather than a separate right-hand column.
+Text and rules are black; name initials, hyperlinks, and authorship markers use the accent color. `accent=RoyalBlue4` selects an X11 color; omitting the option retains `SteelBlue4`. The option accepts colors or color expressions available through the loaded X11 xcolor configuration. URLs, email addresses, Scholar, DBLP, and ORCID use Computer Modern typewriter. Section and subsection headings sit left-aligned between two full-width thin rules and use regular sans-serif type without letter spacing or forced capitals. Sections use `\large`; subsections use `\normalsize`, with `\smallskip` around the rules and compact, consistent gaps between sections. Referee columns use a smaller outer gap. Right-aligned appointment dates and compact metadata use sans-serif type. The institution, department, and postal address use normal roman text while retaining right alignment. Publication titles are italic; author punctuation, venue details, and dates use the native numeric bibliography layout. Publication dates remain in the entries rather than a separate right-hand column.
 
 Visible bibliography labels count down across all printed categories in typewriter font (`\texttt`) with square brackets, padded to at least two digits, such as `[09]` through `[01]`. The total is counted from loaded bibliography records; print every loaded record exactly once to obtain a complete descending sequence. This customization applies to the publication-list labels; inline citations retain the native numeric citation labels. Labels align with the heading’s left edge; the bibliography adds no extra space above or below the list. Original keys, sorting, author order, and source records are preserved. Deferred native numbering supports split categories without package warnings. ISBNs, ISSNs, and book-series names are omitted from the CV display; bibliography records retain those fields.
 
-Version 5.0 removes `font=...`, `gfsdidot`, `libertinus`, `baskerville`, and `euler`. Remove those options from existing documents. The package no longer loads fontspec, unicode-math, custom font providers, marginnote, or PDF-version patches. Internal state and helpers use expl3; public commands and environments use the LaTeX document-command interface. Standard geometry, table, heading, and bibliography packages keep their native configuration APIs.
+Version 5.0 removes `font=...`, `gfsdidot`, `libertinus`, `baskerville`, and `euler`. Remove obsolete font-selection and bare color options from existing documents; the supported color setting is now `accent=<color>`. The package no longer loads fontspec, unicode-math, custom font providers, marginnote, or PDF-version patches. Internal state and helpers use expl3; public commands and environments use the LaTeX document-command interface. Standard geometry, table, heading, and bibliography packages keep their native configuration APIs.
 
-Mark records with `keywords = {randomized-authorship}` to append a parenthesized SteelBlue4 dagger linked to the authorship explanation. Place `\cvauthorshiplegend` exactly once in that explanation to create its destination. `\cvrandomized` prints the linked marker elsewhere. Both commands keep the glyph outside italic title formatting.
+Mark records with `keywords = {randomized-authorship}` to append a parenthesized dagger in the accent color linked to the authorship explanation. Place `\cvauthorshiplegend` exactly once in that explanation to create its destination. `\cvrandomized` prints the linked marker elsewhere. Both commands keep the glyph outside italic title formatting.
 
 `\cvlabel{Text}` sets an education or other item label in roman small capitals. `\&` uses only the upright Biolinum ampersand, including in sans-serif contexts and math mode. The local font selection leaves surrounding text and default fonts unchanged. TeX Live’s `libertine` font files supply this isolated glyph; the package does not load the Biolinum font package.
 
