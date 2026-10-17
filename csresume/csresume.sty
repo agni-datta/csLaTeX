@@ -4,7 +4,7 @@
 % Author: Agni Datta | https://github.com/agni-datta/csLaTeX
 % License: LaTeX Project Public License v1.3c
 \NeedsTeXFormat{LaTeX2e}[2022/06/01]
-\ProvidesExplPackage{csresume}{2026/10/15}{5.5}{Compact academic CVs}
+\ProvidesExplPackage{csresume}{2026/10/17}{5.5.7}{Compact academic CVs}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Options
@@ -28,10 +28,12 @@
 % Dependencies and Typography
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\RequirePackage{fix-cm}
 \RequirePackage{babel}
 \RequirePackage[autostyle=true]{csquotes}
 \RequirePackage{microtype}
 \RequirePackage{setspace}
+\RequirePackage{moresize}
 \RequirePackage[margin=0.8in,heightrounded]{geometry}
 \RequirePackage{needspace}
 \RequirePackage{tabularx}
@@ -67,13 +69,13 @@
 % Section Headings and Lists
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\titleformat{\section}[block]{\large\sffamily\mdseries\filright}{}{0pt}
-{\titleline{\titlerule[0.3pt]}\smallskip}%
+\titleformat{\section}[block]{\large\sffamily\bfseries\filright}{}{0pt}
+{\titleline{\titlerule[0.3pt]}\smallskip\MakeUppercase}%
 [{\smallskip\titleline{\titlerule[0.3pt]}\smallskip}]
-\titleformat{\subsection}[block]{\normalsize\sffamily\mdseries\filright}{}{0pt}
-{\titleline{\titlerule[0.25pt]}\smallskip}%
+\titleformat{\subsection}[block]{\normalsize\sffamily\bfseries\filright}{}{0pt}
+{\titleline{\titlerule[0.25pt]}\smallskip\MakeUppercase}%
 [{\smallskip\titleline{\titlerule[0.25pt]}\smallskip}]
-\titleformat{\subsubsection}{\normalsize\sffamily\mdseries}{}{0pt}{}
+\titleformat{\subsubsection}{\normalsize\sffamily\bfseries}{}{0pt}{\MakeUppercase}
 \titlespacing*{\section}{0pt}{0.45\baselineskip}{0.2\baselineskip}
 \titlespacing*{\subsection}{0pt}{0.45\baselineskip}{0.2\baselineskip}
 \titlespacing*{\subsubsection}{0pt}{0.45\baselineskip}{0.2\baselineskip}
@@ -243,7 +245,7 @@
 {
   \par
   \noindent
-  {\huge\sffamily\mdseries\__csresume_header_name:n {#4}\par}
+  {\HUGE\sffamily\mdseries\__csresume_header_name:n {#4}\par}
   \addvspace{0.35\baselineskip}
   \hrule height 0.4pt
   \addvspace{0.45\baselineskip}
@@ -289,7 +291,7 @@
   \end{tabularx}
   \par\nopagebreak[4]
 }
-\NewDocumentCommand{\cvright}{m} {{\small\sffamily #1}}
+\NewDocumentCommand{\cvright}{m} {{\normalfont\small #1}}
 \NewDocumentCommand{\cvlabel}{m} {\textsc{#1}}
 \NewDocumentCommand{\years}{m} {\par\noindent\hfill\cvright{#1}\par}
 \NewDocumentCommand{\details}{m m m m}
@@ -330,7 +332,7 @@
         {\exp_args:NV \__csresume_site:n \g__csresume_footer_site_tl}}}
     \hfil\thepage\hfil
     \int_compare:nNnT {\value{page}} = {\getpagerefnumber{LastPage}}
-    {{\small\sffamily\hbox_overlap_left:n
+    {{\normalfont\small\hbox_overlap_left:n
         {Updated~\tl_use:N \g__csresume_footer_date_tl}}}
   }
   \cs_set_eq:cc {@evenfoot} {@oddfoot}
