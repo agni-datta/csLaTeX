@@ -4,7 +4,7 @@
 % Author: Agni Datta | https://github.com/agni-datta/csLaTeX
 % License: LaTeX Project Public License v1.3c
 \NeedsTeXFormat{LaTeX2e}[2022/06/01]
-\ProvidesPackage{csmath}[2026/10/14 v1.2.2 Mathematical foundation and document utilities]
+\ProvidesPackage{csmath}[2026/11/01 v1.2.3 Mathematical foundation and document utilities]
 \makeatletter
 \ExplSyntaxOn
 
@@ -2014,13 +2014,6 @@
 % Proof End Marks
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\@ifpackageloaded {csthm}
-{
-    \ProvideDocumentCommand \qedhere {}
-    {
-        \unskip \nobreak \hfill \the \qedsymbol \NoEndMark
-    }
-} {}
 \cs_new_protected:Npn \csMathLoadCleveref
 {
     \@ifpackageloaded {cleveref} {}

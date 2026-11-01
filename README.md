@@ -17,7 +17,7 @@ LaTeX packages for mathematics, theoretical computer science, cryptography and t
 | Package                                     | Version | Purpose                                                              |
 | ------------------------------------------- | ------- | -------------------------------------------------------------------- |
 | [codelines](codelines/README.md)            | 2.0.1   | Pseudocode with nested line numbering and references.                |
-| [csmath](csmath/README.md)                  | 1.2.2   | Mathematics, fonts, theorems and optional document features.         |
+| [csmath](csmath/README.md)                  | 1.2.3   | Mathematics, fonts, theorems and optional document features.         |
 | [csdeferproofs](csdeferproofs/README.md)    | 3.0.2   | Inline proofs or proofs deferred to an appendix.                     |
 | [csextras](csextras/README.md)              | 2.0     | Optional tables, diagrams, lists, bibliography and other utilities.  |
 | [cslecture](cslecture/README.md)            | 4.0.1   | Individual lectures, course books and scribe notes.                  |
@@ -26,7 +26,7 @@ LaTeX packages for mathematics, theoretical computer science, cryptography and t
 | [csthm](csthm/README.md)                    | 4.2.1   | Theorem and proof environments.                                      |
 | [cswhitepaper](cswhitepaper/README.md)      | 5.2     | Technical reports and author annotations.                            |
 | [eudoxus](eudoxus/README.md)                | 2.0.1   | An independent pdfLaTeX mathematics framework.                       |
-| [llncscrypto](llncscrypto/README.md)        | 4.0.2   | Extensions for Springer LNCS papers.                                 |
+| [llncscrypto](llncscrypto/README.md)        | 4.0.3   | Extensions for Springer LNCS papers.                                 |
 | [tcscrypto](tcscrypto/README.md)            | 3.9.0   | Complexity and cryptography notation, pseudocode and protocol boxes. |
 
 ### Installation

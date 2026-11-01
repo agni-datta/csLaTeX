@@ -5,7 +5,7 @@
 % GitHub  : https://github.com/agni-datta/csLaTeX
 % License : LPPL v1.3c
 \NeedsTeXFormat{LaTeX2e}[2022/06/01]
-\ProvidesPackage{llncscrypto}[2026/10/10 v4.0.2 Publisher-preserving LNCS extensions]
+\ProvidesPackage{llncscrypto}[2026/11/01 v4.0.3 Publisher-preserving LNCS extensions]
 \ExplSyntaxOn
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -719,7 +719,6 @@
 
 \cs_new_eq:NN \csLlncsOriginalQed \qed
 \bool_new:N \l_csLlncsQedPlaced_bool
-\ProvideDocumentCommand \qedhere {} {\qed}
 \csLlncsIf:nnT {proof-headings} {complete}
 {
     \NewCommandCopy \csLlncsNativeProof \proof

@@ -8,7 +8,7 @@ date modified: Wednesday, October 14th 2026, 3:27:55 am
 
 <!-- @format -->
 
-## llncscrypto 4.0.2
+## llncscrypto 4.0.3
 
 Research-paper conveniences for the Springer **LNCS** class. Camera-ready mode is the default: the package inherits the class and document’s fonts, layout, headings, theorem counters, captions, bibliography, title and running heads. It does **not** load a mathematical suite, font package, reference provider or formatting dependency by default.
 
@@ -42,7 +42,7 @@ Bare boolean options mean `true`. Repeated identical selections are allowed; con
 | `references`       | `none`; `hyperref`, `cleveref`, `zref`, `both` | Loads hyperref and the selected enhanced providers only when absent. Bare means `cleveref`.                                                                  |
 | `reference-names`  | `inherit`; `legacy`                            | Inherit provider conventions and explicit caller names; legacy explicitly requests historical capitalized family names and section symbols.                  |
 | `proof-headings`   | `native`; `complete`                           | Native optional proof title is parenthesized. Complete treats it as the entire heading; useful for `csdeferproofs`.                                          |
-| `proof-qed`        | `false`; boolean                               | Opt-in automatic end marks for proof helpers and native proofs; explicit `\qed`/`\qedhere` suppress a second mark.                                           |
+| `proof-qed`        | `false`; boolean                               | Opt-in automatic end marks for proof helpers and native proofs; explicit `\qed` suppress a second mark.                                           |
 | `lists`            | `false`; boolean                               | `enumitem`; local `points`, `checkbox`, `deflist`, `codelist`.                                                                                               |
 | `boxes`            | `false`; boolean                               | `framed`; breakable `simplebox`, `nestedbar`. Existing compatible environments win.                                                                          |
 | `subfigures`       | `false`; boolean                               | `subfig[caption=false,font=small]` and its caption3 support; preserves the main LNCS caption renderer. Uses `\subfloat`, independently of caption restyling. |

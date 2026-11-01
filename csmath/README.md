@@ -10,7 +10,7 @@ date modified: Wednesday, October 14th 2026, 3:27:55 am
 
 ## csmath
 
-A mathematical foundation with explicit font selection, theorem integration through `csthm`, and optional manuscript utilities. Author: Agni Datta. License: LPPL v1.3c. Version 1.2.2.
+A mathematical foundation with explicit font selection, theorem integration through `csthm`, and optional manuscript utilities. Author: Agni Datta. License: LPPL v1.3c. Version 1.2.3.
 
 Requires LaTeX 2022-06-01 or newer, pdfLaTeX or LuaLaTeX, and `csthm` 4.2.1 or newer. Distribute **both** `csmath.sty` and `csthm.sty`. XeLaTeX is not supported. Documents select their own languages.
 
@@ -261,3 +261,5 @@ TEXINPUTS="$PWD:$PWD/../csthm:" pdflatex -interaction=nonstopmode -halt-on-error
 ```
 
 Inspect both pages: the report lines should appear once at the upper right of the title page, with the normal title/author layout retained. Empty metadata and `\preprintfont` overrides should be checked when changing this implementation. The layout dependency list additionally includes `varwidth` for report-line sizing.
+
+Proof endings use the native theorem backend. The former display-ending compatibility alias has been removed; the workspace forbids manual end-mark placement.
