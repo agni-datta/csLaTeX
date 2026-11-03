@@ -1502,9 +1502,9 @@
         }
 
     }
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Math Alphabets
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Math Alphabets
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \def \csMathDeclareCMCal
     {%
         \DeclareFontFamily{U}{cmsy}%
@@ -1615,9 +1615,9 @@
             \SetMathAlphabet{\mathtt}{normal}{T1}{zi4}{m}{n}%
             \SetMathAlphabet{\mathtt}{bold}{T1}{zi4}{b}{n}%
         }
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Alphabet Allocation
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % Alphabet Allocation
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         \providecommand \bmmax{0}%
         \providecommand \hmmax{0}
         \RequirePackage{bm}
@@ -2214,9 +2214,9 @@
             #2 = {#3}
         }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Book Headers
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % Book Headers
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
         \str_if_eq:eeT
         {
@@ -2501,17 +2501,6 @@
         shrink = 30,
         step = 1
     }
-    \SetProtrusion
-    {
-        encoding = *,
-        family = *
-    }
-    {
-        period = {,50},
-        comma = {,40},
-        colon = {,30},
-        semicolon = {,30}
-    }
 }
 \csMathIfFeature {index}
 {
@@ -2639,8 +2628,8 @@
         multicol%
     }
     %
-        \RequirePackage{titling}%
-        \RequirePackage[auth-sc]{authblk}%
+    \RequirePackage{titling}%
+    \RequirePackage[auth-sc]{authblk}%
 
 
     \def \csMathPartFont
@@ -2777,7 +2766,7 @@
                         \end{varwidth}%
                     }%
                     \put(\dimexpr 1in+\oddsidemargin+\textwidth-\wd\csMathPreprintBox\relax,%
-                        \dimexpr -1in-\topmargin-2pt-\ht\csMathPreprintBox\relax){%
+                    \dimexpr -1in-\topmargin-2pt-\ht\csMathPreprintBox\relax){%
                         \usebox\csMathPreprintBox}%
                 }%
             \fi
@@ -2925,9 +2914,9 @@
 
         \titlespacing *{\subsubsection}{0pt}{1em}{1em}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Table of contents
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % Table of contents
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
         \RequirePackage{etoc}
         \RequirePackage[nottoc]{tocbibind}
