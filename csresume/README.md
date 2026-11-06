@@ -1,6 +1,6 @@
 <!-- @format -->
 
-# csresume 5.5.7
+# csresume 5.5.8
 
 An academic CV package with a compact institutional letterhead, dated entries, referee columns, and BibLaTeX publication lists. It uses the document class’s default Computer Modern roman, sans-serif, and math fonts. The `moresize` package supplies `\HUGE`; `fix-cm` enables its actual size in Computer Modern without font-size substitutions. There are no font-selection options. The `accent` option selects the shared color for name initials, links, and authorship markers.
 
@@ -52,6 +52,8 @@ The `allowbreaks` option disables the small space reservation at the start of an
 Text and rules are black; name initials, hyperlinks, and authorship markers use the accent color. `accent=RoyalBlue4` selects an X11 color; omitting the option retains `SteelBlue4`. The option accepts colors or color expressions available through the loaded X11 xcolor configuration. URLs, email addresses, Scholar, DBLP, and ORCID use Computer Modern typewriter. Section and subsection headings sit left-aligned between two full-width thin rules and use uppercase bold sans-serif type without letter spacing. Sections use `\large`; subsections use `\normalsize`, with `\smallskip` around the rules and compact, consistent gaps between sections. Referee columns use a smaller outer gap. Right-aligned dates, compact metadata, and the final update date use normal upright roman type. The institution, department, and postal address use normal roman text while retaining right alignment. Publication titles are italic; author punctuation, venue details, and dates use the native numeric bibliography layout. Publication dates remain in the entries rather than a separate right-hand column.
 
 Visible bibliography labels count down across all printed categories in typewriter font (`\texttt`) with square brackets, padded to at least two digits, such as `[09]` through `[01]`. The total is counted from loaded bibliography records; print every loaded record exactly once to obtain a complete descending sequence. This customization applies to the publication-list labels; inline citations retain the native numeric citation labels. Labels align with the heading’s left edge; the bibliography adds no extra space above or below the list. Original keys, sorting, author order, and source records are preserved. Deferred native numbering supports split categories without package warnings. ISBNs, ISSNs, and book-series names are omitted from the CV display; bibliography records retain those fields.
+
+The native BibLaTeX `labelnumberwidth` field format controls the visible descending labels. Its default is `\texttt{[#1]}`. A document can redeclare that format to color publication numbers by category while retaining the default font and label width, independently of entry text and hyperlinks.
 
 Version 5.0 removes `font=...`, `gfsdidot`, `libertinus`, `baskerville`, and `euler`. Remove obsolete font-selection and bare color options from existing documents; the supported color setting is now `accent=<color>`. The package no longer loads fontspec, unicode-math, custom font providers, marginnote, or PDF-version patches. Internal state and helpers use expl3; public commands and environments use the LaTeX document-command interface. Standard geometry, table, heading, and bibliography packages keep their native configuration APIs.
 
