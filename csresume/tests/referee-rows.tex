@@ -1,0 +1,74 @@
+\documentclass[english,letterpaper,11pt]{article}
+\usepackage{csresume}
+\finishcv{November 17, 2026}{https://example.edu}
+
+\begin{document}
+
+\section{Horizontal Referees}
+
+% Bold name, small-cap position, roman affiliations, and both contacts.
+\refereerow{Dr. Ada Example}
+{\cvlabel{Professor of Computer Science}\newline
+  Department of Computing\newline
+  Example University\newline
+  Example City, Example Country}
+{ada@example.edu}
+{https://example.edu/ada}
+
+% Email without a website: no trailing separator.
+\refereerow{Dr. Blair Example}
+{\cvlabel{Research Fellow}\newline Example Institute}
+{blair@example.edu}
+{}
+
+% A bare website domain without email: no leading separator.
+\refereerow{Dr. Casey Example}
+{\cvlabel{Visiting Researcher}\newline Example Laboratory}
+{}
+{example.edu/casey}
+
+% Contacts without professional details: no empty opening detail line.
+\refereerow{Dr. Devon Example}
+{}
+{devon@example.edu}
+{example.edu/devon}
+
+% Professional details without contacts: no empty contact line.
+\refereerow{Dr. Emery Example}
+{\cvlabel{Research Director}\newline Example Centre}
+{}
+{}
+
+% All trailing fields empty: retain the name without stray punctuation.
+\refereerow{Dr. Finley Example}{}{}{}
+
+\newpage
+\section{Page Boundary}
+
+This paragraph should remain on the preceding page when the next referee row moves intact to the following page.
+\par
+
+% The heading, paragraph, and this proportional fill leave less room than
+% the following row needs, so the whole row should move to the next page.
+\vspace*{0.8\textheight}
+% Permit, without forcing, a break after the artificial spacer.
+\pagebreak[0]
+
+\refereerow{Dr. Gray Example}
+{\cvlabel{Senior Research Scientist}\newline
+  Department of Computer Science\newline
+  School of Computing\newline
+  Example University\newline
+  Example Research Centre\newline
+  Example City\newline
+  Example Country}
+{gray@example.edu}
+{example.edu/gray}
+
+% The next call is a separate row; it should follow the intact moved row.
+\refereerow{Dr. Harper Example}
+{\cvlabel{Postdoctoral Researcher}\newline Example Institute}
+{harper@example.edu}
+{example.edu/harper}
+
+\end{document}

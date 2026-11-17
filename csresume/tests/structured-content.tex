@@ -1,0 +1,81 @@
+\documentclass[british,a4paper,11pt]{article}
+\usepackage{csresume}
+\addbibresource{csresume/tests/structured-content.bib}
+\cvpublicationcategory{examplecrypto}{SpringGreen4}{exampleconference}
+\cvpublicationcategory{exampleproof}{DarkOrchid4}{examplenote}
+% A repeated registration changes the colour while retaining membership.
+\cvpublicationcategory{examplecrypto}{RoyalBlue4}{}
+% Unregistered notes must preserve the format active at registration time.
+\DeclareFieldFormat{note}{\mkbibbrackets{#1}\isdot}
+\cvpublicationnote{examplenote}{Public preprint}
+\cvprofile{
+  name = {Ada Example},
+  position = {Researcher\\Example Laboratory},
+  institution = {Example University},
+  department = {Department of Computer Science},
+  address = {1 Example Street\\Example City},
+  email = {ada@example.edu},
+  website = {example.edu},
+  scholar = {example-scholar},
+  dblp = {1/2},
+  orcid = {0000-0000-0000-0000},
+  bib-given = {Ada},
+  bib-family = {Example},
+}
+\finishcv{17 November 2026}{example.edu}
+
+\begin{document}
+\makecvheader
+
+\begin{cvsection}[reserve=6]{Appointments}
+  \begin{cventry}{2024--present}{Research Fellow}{Example University}
+    \begin{cvitems}
+      \item \cvlabel{Research:} Algorithms and complexity.
+      \item \cvlabel{Host:} Prof. Blair Example.
+    \end{cvitems}
+  \end{cventry}
+  \begin{cventry}{2023}{Visiting Researcher}{}
+    A description without an institution.
+  \end{cventry}
+  \details{2022}{Legacy Appointment}{Example Institute}{}
+\end{cvsection}
+
+\begin{cvsection}{Ad Hoc Reviewing}
+  \cvdatedline{2026}{Example Conference; Example Journal}
+\end{cvsection}
+
+\begin{cvsection}[reserve=8]{Publications}
+  Topics include \cvtopic{RoyalBlue4}{Cryptography} and
+  \cvtopic{DarkOrchid4}{Proof Complexity}. See
+  \cvlink{https://example.edu/archive}{the archive}.
+  \nocite{*}
+  \cvpublicationgroup{inproceedings}{Conference Papers}
+  \cvpublicationgroup[reserve=3]{unpublished}{Research Notes}
+\end{cvsection}
+
+\newpage
+% Updating some keys preserves the name and institutional metadata;
+% explicitly empty contact keys remove those optional fields.
+\cvprofile{
+  position = {Visiting Researcher},
+  email = {}, website = {}, scholar = {}, dblp = {}, orcid = {},
+}
+\makecvheader
+
+\begin{cvsection}{Academic Referees}
+  \begin{cvreferee}{Dr. Blair Example}{Professor}
+    {blair@example.edu}{https://example.edu/blair}
+    \cvaffiliation{Example University}
+    \cvaffiliation{Example Research Centre}
+    \cvlocation{Example City, Example Country}
+  \end{cvreferee}
+  \begin{cvreferee}{Dr. Casey Example}{}{}{example.edu/casey}
+    \cvaffiliation{Example Institute}
+  \end{cvreferee}
+  \begin{cvreferee}{Dr. Devon Example}{}{}{}
+  \end{cvreferee}
+  \refereerow{Dr. Emery Example}
+  {\cvlabel{Legacy Referee}\\Example Laboratory}
+  {emery@example.edu}{}
+\end{cvsection}
+\end{document}

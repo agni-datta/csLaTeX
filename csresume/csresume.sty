@@ -4,7 +4,7 @@
 % Author: Agni Datta | https://github.com/agni-datta/csLaTeX
 % License: LaTeX Project Public License v1.3c
 \NeedsTeXFormat{LaTeX2e}[2022/06/01]
-\ProvidesExplPackage{csresume}{2026/11/06}{5.5.8}{Compact academic CVs}
+\ProvidesExplPackage{csresume}{2026/11/17}{5.7.0}{Compact academic CVs}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Options
@@ -72,9 +72,9 @@
 \titleformat{\section}[block]{\large\sffamily\bfseries\filright}{}{0pt}
 {\titleline{\titlerule[0.3pt]}\smallskip\MakeUppercase}%
 [{\smallskip\titleline{\titlerule[0.3pt]}\smallskip}]
-\titleformat{\subsection}[block]{\normalsize\sffamily\bfseries\filright}{}{0pt}
-{\titleline{\titlerule[0.25pt]}\smallskip\MakeUppercase}%
-[{\smallskip\titleline{\titlerule[0.25pt]}\smallskip}]
+\titleformat{\subsection}[block]{\small\sffamily\bfseries\filright}{}{0pt}
+{\MakeUppercase}%
+[{\smallskip\titleline{\titlerule[0.2pt]}\smallskip}]
 \titleformat{\subsubsection}{\normalsize\sffamily\bfseries}{}{0pt}{\MakeUppercase}
 \titlespacing*{\section}{0pt}{0.45\baselineskip}{0.2\baselineskip}
 \titlespacing*{\subsection}{0pt}{0.45\baselineskip}{0.2\baselineskip}
@@ -86,13 +86,61 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \DeclareNameAlias{default}{given-family}
-\DeclareFieldFormat{labelnumberwidth}{\texttt{[#1]}}
 \DeclareFieldFormat[article,inproceedings,incollection,inbook,book,thesis,unpublished]{title}{\mkbibemph{#1}\ifkeyword{randomized-authorship}{\addspace\cvrandomized}{}\isdot}
 \AtEveryBibitem{\clearfield{issn}\clearfield{series}}
 \setlength{\bibitemsep}{0.55\baselineskip}
 \setlength{\bibparsep}{0pt}
 
 \ExplSyntaxOn
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Publication Categories and Notes
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\seq_new:N \g__csresume_bib_categories_seq
+\prop_new:N \g__csresume_bib_colours_prop
+\prop_new:N \g__csresume_bib_notes_prop
+\bool_new:N \g__csresume_bib_notes_bool
+\tl_new:N \l__csresume_bib_note_tl
+\cs_new_protected:Npn \__csresume_bib_label:n #1
+{
+  \group_begin:
+  \seq_map_inline:Nn \g__csresume_bib_categories_seq
+  {
+    \ifcategory{##1}
+    {\exp_args:Ne \color {\prop_item:Nn \g__csresume_bib_colours_prop {##1}}}
+    {}
+  }
+  \texttt{[#1]}
+  \group_end:
+}
+\cs_generate_variant:Nn \prop_get:NnNTF {NeNTF}
+\cs_new_protected:Npn \__csresume_bib_note:n #1
+{
+  \prop_get:NeNTF \g__csresume_bib_notes_prop {\thefield{entrykey}} \l__csresume_bib_note_tl
+  {\tl_use:N \l__csresume_bib_note_tl}
+  {\group_begin:\restorefieldformat{note}\printtext[note]{#1}\group_end:}
+}
+\DeclareFieldFormat{labelnumberwidth}{\__csresume_bib_label:n {#1}}
+\NewDocumentCommand{\cvpublicationcategory}{m m m}
+{
+  \seq_if_in:NnTF \g__csresume_bib_categories_seq {#1}
+  {\seq_gremove_all:Nn \g__csresume_bib_categories_seq {#1}}
+  {\DeclareBibliographyCategory{#1}}
+  \addtocategory{#1}{#3}
+  \seq_gput_right:Nn \g__csresume_bib_categories_seq {#1}
+  \prop_gput:Nnn \g__csresume_bib_colours_prop {#1}{#2}
+}
+\NewDocumentCommand{\cvpublicationnote}{m +m}
+{
+  \bool_if:NF \g__csresume_bib_notes_bool
+  {
+    \savefieldformat{note}
+    \DeclareFieldFormat{note}{\__csresume_bib_note:n {##1}}
+    \bool_gset_true:N \g__csresume_bib_notes_bool
+  }
+  \prop_gput:Nnn \g__csresume_bib_notes_prop {#1}{#2}
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Publication Numbering and Authorship
@@ -186,6 +234,8 @@
 
 \tl_new:N \g__csresume_orcid_tl
 \NewDocumentCommand{\cvorcid}{m}{\tl_gset:Nn \g__csresume_orcid_tl {#1}}
+\NewDocumentCommand{\cvlink}{m m}
+{\href{\tl_to_str:n {#1}}{\texttt{#2}}}
 \cs_new_protected:Npn \__csresume_orcid:n #1
 {\href{\tl_to_str:n {https://orcid.org/#1}}{\texttt{ORCID:}\,\nolinkurl{#1}}}
 \cs_new_protected:Npn \__csresume_email:n #1
@@ -274,6 +324,59 @@
 {\cvheader{}{}{#3}{#1}{#2}{#4}{#5}{#6}{#7}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Named Profile Fields
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\tl_new:N \g__csresume_profile_address_tl
+\tl_new:N \g__csresume_profile_dblp_tl
+\tl_new:N \g__csresume_profile_department_tl
+\tl_new:N \g__csresume_profile_email_tl
+\tl_new:N \g__csresume_profile_institution_tl
+\tl_new:N \g__csresume_profile_name_tl
+\tl_new:N \g__csresume_profile_position_tl
+\tl_new:N \g__csresume_profile_scholar_tl
+\tl_new:N \g__csresume_profile_website_tl
+\keys_define:nn {csresume/profile}
+{
+  address .tl_gset:N = \g__csresume_profile_address_tl,
+  bib-family .tl_gset:N = \g__csresume_bib_family_tl,
+  bib-given .tl_gset:N = \g__csresume_bib_given_tl,
+  dblp .tl_gset:N = \g__csresume_profile_dblp_tl,
+  department .tl_gset:N = \g__csresume_profile_department_tl,
+  email .tl_gset:N = \g__csresume_profile_email_tl,
+  institution .tl_gset:N = \g__csresume_profile_institution_tl,
+  name .tl_gset:N = \g__csresume_profile_name_tl,
+  orcid .tl_gset:N = \g__csresume_orcid_tl,
+  position .tl_gset:N = \g__csresume_profile_position_tl,
+  scholar .tl_gset:N = \g__csresume_profile_scholar_tl,
+  website .tl_gset:N = \g__csresume_profile_website_tl
+}
+\msg_new:nnn {csresume}{missing-profile-name}
+{Declare~a~nonempty~name~with~\token_to_str:N \cvprofile~before~\token_to_str:N \makecvheader.}
+\NewDocumentCommand{\cvprofile}{m}
+{\keys_set:nn {csresume/profile}{#1}}
+\NewDocumentCommand{\makecvheader}{}
+{
+  \tl_if_blank:VTF \g__csresume_profile_name_tl
+  {\msg_error:nn {csresume}{missing-profile-name}}
+  {
+    \use:e
+    {
+      \exp_not:N \cvheader
+      {\exp_not:V \g__csresume_profile_institution_tl}
+      {\exp_not:V \g__csresume_profile_department_tl}
+      {\exp_not:V \g__csresume_profile_address_tl}
+      {\exp_not:V \g__csresume_profile_name_tl}
+      {\exp_not:V \g__csresume_profile_position_tl}
+      {\exp_not:V \g__csresume_profile_email_tl}
+      {\exp_not:V \g__csresume_profile_website_tl}
+      {\exp_not:V \g__csresume_profile_scholar_tl}
+      {\exp_not:V \g__csresume_profile_dblp_tl}
+    }
+  }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Dated Entries
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -317,6 +420,48 @@
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Structured Sections and Entries
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\int_new:N \l__csresume_reserve_int
+\keys_define:nn {csresume/block}
+{reserve .int_set:N = \l__csresume_reserve_int}
+\msg_new:nnn {csresume}{negative-reserve}
+{The~reserve~value~must~be~a~nonnegative~number~of~lines;~received~#1.}
+\cs_new_protected:Npn \__csresume_reserve:n #1
+{
+  \int_zero:N \l__csresume_reserve_int
+  \keys_set:nn {csresume/block}{#1}
+  \int_compare:nNnT {\l__csresume_reserve_int} < {0}
+    {
+      \msg_error:nnx {csresume}{negative-reserve}{\int_use:N \l__csresume_reserve_int}
+      \int_zero:N \l__csresume_reserve_int
+    }
+  \int_compare:nNnT {\l__csresume_reserve_int} > {0}
+    {\Needspace{\l__csresume_reserve_int\baselineskip}}
+}
+\NewDocumentEnvironment{cvsection}{O{} m}
+{\__csresume_reserve:n {#1}\section{#2}\ignorespaces}
+{\par\ignorespacesafterend}
+\NewDocumentEnvironment{cventry}{m m m}
+{\details{#1}{#2}{#3}{}\ignorespaces}
+{\par\ignorespacesafterend}
+\NewDocumentEnvironment{cvitems}{}
+{\begin{itemize}}
+{\end{itemize}}
+\NewDocumentCommand{\cvdatedline}{m m}
+{\details{#1}{\textnormal{#2}}{}{}}
+\NewDocumentCommand{\cvpublicationgroup}{O{} m m}
+{
+  \group_begin:
+  \__csresume_reserve:n {#1}
+  \printbibliography[type=#2,heading=subbibliography,title={#3}]
+  \group_end:
+}
+\NewDocumentCommand{\cvtopic}{m m}
+{\textsc{\textcolor{#1}{#2}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Referees and Footer
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -339,6 +484,42 @@
   \cs_set_eq:cc {@evenfoot} {@oddfoot}
 }
 
+\cs_new_protected:Npn \__csresume_referee:nnnnn #1#2#3#4#5
+{
+  \par\noindent
+  \begin{minipage}[b]{\linewidth}
+    \raggedright
+    \textbf{#1}
+    \tl_if_blank:nF {#2} {,~#2}
+    \par
+    \tl_if_blank:nF {#3} {#3\par}
+    {
+      \small
+      \tl_if_blank:nF {#4}
+      {\href{\tl_to_str:n {mailto:#4}}{\nolinkurl{#4}}}
+      \tl_if_blank:nF {#5}
+      {
+        \tl_if_blank:nF {#4} {\enspace\textbullet\enspace}
+        \__csresume_site:n {#5}
+      }
+      \par
+    }
+  \end{minipage}
+  \par\addvspace{0.65\baselineskip}
+}
+\NewDocumentCommand{\refereerow}{m +m m m}
+{\__csresume_referee:nnnnn {#1}{#2}{}{#3}{#4}}
+\NewDocumentEnvironment{cvreferee}{m m m m +b}
+{
+  \tl_if_blank:nTF {#2}
+  {\__csresume_referee:nnnnn {#1}{}{#5}{#3}{#4}}
+  {\__csresume_referee:nnnnn {#1}{\cvlabel{#2}}{#5}{#3}{#4}}
+}
+{}
+\NewDocumentCommand{\cvaffiliation}{+m}
+{\par{\normalfont #1\par}}
+\NewDocumentCommand{\cvlocation}{+m}
+{\par{\normalfont #1\par}}
 \NewDocumentCommand{\referals}{m m m m m m m m}
 {
   \par\noindent
