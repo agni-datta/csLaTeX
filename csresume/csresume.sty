@@ -4,7 +4,7 @@
 % Author: Agni Datta | https://github.com/agni-datta/csLaTeX
 % License: LaTeX Project Public License v1.3c
 \NeedsTeXFormat{LaTeX2e}[2022/06/01]
-\ProvidesExplPackage{csresume}{2026/11/19}{5.11.1}{Compact academic CVs}
+\ProvidesExplPackage{csresume}{2026/11/19}{5.13.0}{Compact academic CVs}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Options
@@ -40,6 +40,7 @@
 \RequirePackage{needspace}
 \RequirePackage{setspace}
 \RequirePackage{tabularx}
+\RequirePackage{tikz}
 \RequirePackage{titlesec}
 \ExplSyntaxOn
 \exp_args:NnV \colorlet {csresumeAccent} \g__csresume_accent_tl
@@ -252,18 +253,31 @@
 \prop_new:N \g__csresume_bib_notes_prop
 \prop_new:N \g__csresume_bib_venues_prop
 \bool_new:N \g__csresume_bib_notes_bool
+\tl_new:N \l__csresume_bib_label_colour_tl
 \tl_new:N \l__csresume_bib_note_tl
 \tl_new:N \l__csresume_bib_venue_tl
+\cs_new_protected:Npn \__csresume_bib_badge:nn #1#2
+{
+  \group_begin:
+  \normalfont\small\ttfamily
+  \tikz[baseline=(csresumeBadge.base)]
+  \node[fill=#1,draw=none,text=white,rounded~corners=1.2pt,
+    minimum~size=1.35em,inner~xsep=0.15em,inner~ysep=0pt,
+    outer~sep=0pt] (csresumeBadge) {#2};
+  \group_end:
+}
 \cs_new_protected:Npn \__csresume_bib_label:n #1
 {
   \group_begin:
+  \tl_set:Nn \l__csresume_bib_label_colour_tl {black}
   \seq_map_inline:Nn \g__csresume_bib_categories_seq
   {
     \ifcategory{##1}
-    {\exp_args:Ne \color {\prop_item:Nn \g__csresume_bib_colours_prop {##1}}}
+    {\tl_set:Ne \l__csresume_bib_label_colour_tl
+      {\prop_item:Nn \g__csresume_bib_colours_prop {##1}}}
     {}
   }
-  {\normalsize\texttt{[#1]}}
+  \exp_args:NV \__csresume_bib_badge:nn \l__csresume_bib_label_colour_tl {#1}
   \group_end:
 }
 \cs_generate_variant:Nn \prop_get:NnNTF {NeNTF}
@@ -320,9 +334,10 @@
 {
   \list{}
   {
-    \settowidth{\labelwidth}{{\normalsize\texttt{[\int_compare:nNnT
-            {\g__csresume_bib_total_int} < {10} {0}
-            \int_use:N \g__csresume_bib_total_int]}}}
+    \settowidth{\labelwidth}{\__csresume_bib_badge:nn {black}
+      {\int_compare:nNnT
+        {\g__csresume_bib_total_int} < {10} {0}
+        \int_use:N \g__csresume_bib_total_int}}
     \setlength{\labelsep}{0.45em}
     \setlength{\leftmargin}{\labelwidth}
     \addtolength{\leftmargin}{\labelsep}
@@ -380,7 +395,7 @@
   \str_if_eq:eeTF {\namepartgiven} {\g__csresume_bib_given_tl}
   {
     \str_if_eq:eeTF {\namepartfamily} {\g__csresume_bib_family_tl}
-    {\textsc{#2}} {#1{#2}}
+    {\textsf{#2}} {#1{#2}}
   }
   {#1{#2}}
 }
