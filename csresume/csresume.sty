@@ -4,7 +4,7 @@
 % Author: Agni Datta | https://github.com/agni-datta/csLaTeX
 % License: LaTeX Project Public License v1.3c
 \NeedsTeXFormat{LaTeX2e}[2022/06/01]
-\ProvidesExplPackage{csresume}{2026/11/17}{5.7.0}{Compact academic CVs}
+\ProvidesExplPackage{csresume}{2026/11/19}{5.11.1}{Compact academic CVs}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Options
@@ -28,19 +28,19 @@
 % Dependencies and Typography
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage{fix-cm}
-\RequirePackage{babel}
 \RequirePackage[autostyle=true]{csquotes}
-\RequirePackage{microtype}
-\RequirePackage{setspace}
-\RequirePackage{moresize}
 \RequirePackage[margin=0.8in,heightrounded]{geometry}
+\RequirePackage[x11names]{xcolor}
+\RequirePackage{babel}
+\RequirePackage{enumitem}
+\RequirePackage{fix-cm}
+\RequirePackage{microtype}
+\RequirePackage{moresize}
+\RequirePackage{multicol}
 \RequirePackage{needspace}
+\RequirePackage{setspace}
 \RequirePackage{tabularx}
 \RequirePackage{titlesec}
-\RequirePackage{enumitem}
-\RequirePackage{multicol}
-\RequirePackage[x11names]{xcolor}
 \ExplSyntaxOn
 \exp_args:NnV \colorlet {csresumeAccent} \g__csresume_accent_tl
 \ExplSyntaxOff
@@ -56,8 +56,8 @@
   giveninits=false
 ]{biblatex}
 
-% Inherit the article class's Computer Modern roman, sans, and math fonts.
-\setstretch{1.075}
+% Inherit the article class's Computer Modern roman, sans, mono, and math fonts.
+\setstretch{1.05}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0pt}
 \setcounter{secnumdepth}{0}
@@ -86,10 +86,160 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \DeclareNameAlias{default}{given-family}
-\DeclareFieldFormat[article,inproceedings,incollection,inbook,book,thesis,unpublished]{title}{\mkbibemph{#1}\ifkeyword{randomized-authorship}{\addspace\cvrandomized}{}\isdot}
+\DeclareFieldFormat[article,inproceedings,incollection,inbook,book,thesis,unpublished]{title}{\textsc{#1}\ifkeyword{randomized-authorship}{\addnbspace\cvrandomized}{}\isdot}
+\DeclareFieldFormat{maintitle}{#1}
+\DeclareFieldFormat{booktitle}{#1}
+\DeclareFieldFormat{journaltitle}{#1\isdot}
+\DeclareFieldFormat{issuetitle}{#1}
+\DeclareFieldFormat{doi}{%
+  \ifhyperref
+  {\href{https://doi.org/#1}{\texttt{doi:}\nolinkurl{#1}}}
+  {\texttt{doi:}\nolinkurl{#1}}}
+\DeclareFieldFormat{pages}{%
+  \begingroup
+  \let\bibstring\biblstring
+  \mkpageprefix[bookpagination]{#1}%
+  \endgroup}
 \AtEveryBibitem{\clearfield{issn}\clearfield{series}}
+\AtBeginBibliography{\raggedright}
 \setlength{\bibitemsep}{0.55\baselineskip}
 \setlength{\bibparsep}{0pt}
+
+% Deferred block boundaries survive native title/contributor macros, but produce
+% no paragraph when the following block has no printable data. BibLaTeX's
+% insertion flag records earlier output even when a final optional field is empty;
+% horizontal mode alone cannot distinguish text from a bibliography item anchor.
+\newbibmacro*{csresume:blockpunct}{\addperiod\par\nobreak}
+\newbibmacro*{csresume:block}{%
+  \iftoggle{blx@insert}{\printunit{\usebibmacro{csresume:blockpunct}}}{}}
+\newbibmacro*{csresume:comma}{\setunit{\addcomma\space}}
+\newbibmacro*{csresume:volumes}{%
+  \iffieldundef{maintitle}
+  {\printfield{volume}\printfield{part}}
+  {}%
+  \usebibmacro{csresume:comma}%
+  \printfield{volumes}%
+  \usebibmacro{csresume:comma}%
+  \usebibmacro{series+number}}
+\newbibmacro*{csresume:contributors}{%
+  \printlist{language}%
+  \newunit
+  \usebibmacro{byauthor}%
+  \newunit
+  \usebibmacro{byeditor+others}%
+  \newunit}
+\newbibmacro*{csresume:identifiers}{%
+  \iftoggle{bbx:doi}
+  {\usebibmacro{csresume:block}\printfield{doi}}
+  {}%
+  \iftoggle{bbx:eprint}
+  {\usebibmacro{csresume:block}\usebibmacro{eprint}}
+  {}%
+  \iftoggle{bbx:url}
+  {\usebibmacro{csresume:block}\usebibmacro{url+urldate}}
+  {}}
+\newbibmacro*{csresume:entry}[3]{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{#2}%
+  \usebibmacro{csresume:block}%
+  \usebibmacro{#1}%
+  \usebibmacro{csresume:block}%
+  \usebibmacro{csresume:contributors}%
+  \usebibmacro{csresume:details}{#3}%
+  \newunit
+  \iftoggle{bbx:isbn}
+  {\ifentrytype{article}{\printfield{issn}}{\printfield{isbn}}}
+  {}%
+  \ifentrytype{unpublished}
+  {}%
+  {\usebibmacro{csresume:block}\printfield{note}}%
+  \usebibmacro{csresume:identifiers}%
+  \usebibmacro{csresume:block}%
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \newunit\newblock
+  \iftoggle{bbx:related}
+  {\usebibmacro{related:init}\usebibmacro{related}}
+  {}%
+  \usebibmacro{finentry}}
+
+% Type-specific details retain native metadata while placing pages before the
+% full publication date. Titles and publication details use upright type.
+\newbibmacro*{csresume:article}{%
+  \printfield{version}%
+  \newunit
+  \usebibmacro{journal}%
+  \setunit{\addspace}%
+  \usebibmacro{volume+number+eid}%
+  \usebibmacro{csresume:comma}%
+  \printfield{issue}%
+  \usebibmacro{csresume:comma}%
+  \usebibmacro{issue}%
+  \usebibmacro{csresume:comma}%
+  \printfield{pages}%
+  \usebibmacro{csresume:comma}%
+  \usebibmacro{date}}
+\newbibmacro*{csresume:book}{%
+  \printfield{edition}%
+  \usebibmacro{csresume:comma}%
+  \usebibmacro{csresume:volumes}%
+  \usebibmacro{csresume:comma}%
+  \usebibmacro{chapter+pages}%
+  \usebibmacro{csresume:comma}%
+  \printfield{pagetotal}%
+  \usebibmacro{csresume:comma}%
+  \usebibmacro{publisher+location+date}}
+\newbibmacro*{csresume:collection}{%
+  \ifentrytype{inbook}{\usebibmacro{bybookauthor}\newunit}{}%
+  \usebibmacro{maintitle+booktitle}%
+  \usebibmacro{csresume:comma}%
+  \ifentrytype{inproceedings}
+  {\usebibmacro{event+venue+date}}
+  {\printfield{edition}}%
+  \usebibmacro{csresume:comma}%
+  \usebibmacro{csresume:volumes}%
+  \usebibmacro{csresume:comma}%
+  \ifentrytype{inproceedings}{\printlist{organization}}{}%
+  \usebibmacro{csresume:comma}%
+  \usebibmacro{chapter+pages}%
+  \usebibmacro{csresume:comma}%
+  \usebibmacro{publisher+location+date}}
+\newbibmacro*{csresume:thesis}{%
+  \printfield{type}%
+  \usebibmacro{csresume:comma}%
+  \usebibmacro{chapter+pages}%
+  \usebibmacro{csresume:comma}%
+  \printfield{pagetotal}%
+  \usebibmacro{csresume:comma}%
+  \usebibmacro{institution+location+date}}
+\newbibmacro*{csresume:unpublished}{%
+  \printfield{howpublished}%
+  \usebibmacro{csresume:comma}%
+  \printfield{type}%
+  \usebibmacro{csresume:comma}%
+  \usebibmacro{event+venue+date}%
+  \usebibmacro{csresume:comma}%
+  \printfield{note}%
+  \usebibmacro{csresume:comma}%
+  \usebibmacro{institution+location+date}}
+
+\DeclareBibliographyDriver{article}{%
+  \usebibmacro{csresume:entry}{author/translator+others}{title}{csresume:article}}
+\DeclareBibliographyDriver{book}{%
+  \usebibmacro{csresume:entry}{author/editor+others/translator+others}
+  {maintitle+title}{csresume:book}}
+\DeclareBibliographyDriver{inbook}{%
+  \usebibmacro{csresume:entry}{author/translator+others}{title}{csresume:collection}}
+\DeclareBibliographyDriver{incollection}{%
+  \usebibmacro{csresume:entry}{author/translator+others}{title}{csresume:collection}}
+\DeclareBibliographyDriver{inproceedings}{%
+  \usebibmacro{csresume:entry}{author/translator+others}{title}{csresume:collection}}
+\DeclareBibliographyDriver{thesis}{%
+  \usebibmacro{csresume:entry}{author/translator+others}{title}{csresume:thesis}}
+\DeclareBibliographyDriver{unpublished}{%
+  \usebibmacro{csresume:entry}{author/translator+others}{title}{csresume:unpublished}}
 
 \ExplSyntaxOn
 
@@ -100,8 +250,10 @@
 \seq_new:N \g__csresume_bib_categories_seq
 \prop_new:N \g__csresume_bib_colours_prop
 \prop_new:N \g__csresume_bib_notes_prop
+\prop_new:N \g__csresume_bib_venues_prop
 \bool_new:N \g__csresume_bib_notes_bool
 \tl_new:N \l__csresume_bib_note_tl
+\tl_new:N \l__csresume_bib_venue_tl
 \cs_new_protected:Npn \__csresume_bib_label:n #1
 {
   \group_begin:
@@ -111,10 +263,17 @@
     {\exp_args:Ne \color {\prop_item:Nn \g__csresume_bib_colours_prop {##1}}}
     {}
   }
-  \texttt{[#1]}
+  {\normalsize\texttt{[#1]}}
   \group_end:
 }
 \cs_generate_variant:Nn \prop_get:NnNTF {NeNTF}
+\newbibmacro*{csresume:details}[1]
+{
+  \prop_get:NeNTF \g__csresume_bib_venues_prop {\thefield{entrykey}}
+  \l__csresume_bib_venue_tl
+  {\printtext{\tl_use:N \l__csresume_bib_venue_tl}}
+  {\usebibmacro{#1}}
+}
 \cs_new_protected:Npn \__csresume_bib_note:n #1
 {
   \prop_get:NeNTF \g__csresume_bib_notes_prop {\thefield{entrykey}} \l__csresume_bib_note_tl
@@ -141,6 +300,8 @@
   }
   \prop_gput:Nnn \g__csresume_bib_notes_prop {#1}{#2}
 }
+\NewDocumentCommand{\cvpublicationvenue}{m +m}
+{\prop_gput:Nnn \g__csresume_bib_venues_prop {#1}{#2}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Publication Numbering and Authorship
@@ -159,10 +320,10 @@
 {
   \list{}
   {
-    \settowidth{\labelwidth}{\texttt{[\int_compare:nNnT
-          {\g__csresume_bib_total_int} < {10} {0}
-          \int_use:N \g__csresume_bib_total_int]}}
-    \setlength{\labelsep}{0.6em}
+    \settowidth{\labelwidth}{{\normalsize\texttt{[\int_compare:nNnT
+            {\g__csresume_bib_total_int} < {10} {0}
+            \int_use:N \g__csresume_bib_total_int]}}}
+    \setlength{\labelsep}{0.45em}
     \setlength{\leftmargin}{\labelwidth}
     \addtolength{\leftmargin}{\labelsep}
     \setlength{\itemindent}{0pt}

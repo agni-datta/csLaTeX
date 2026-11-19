@@ -1,0 +1,20 @@
+\documentclass[british,a4paper,11pt]{article}
+\usepackage[accent=RoyalBlue4]{csresume}
+\addbibresource{csresume/tests/bibliography-layout.bib}
+\ExecuteBibliographyOptions{sorting=none,date=long,backref=true}
+\cvbibname{Ada}{Example}
+\cvpublicationcategory{example}{DarkOrchid4}{conference-detail,article-eid}
+\cvpublicationnote{conference-detail}{Accepted for publication}
+\cvpublicationvenue{compact-container}{ExampleConf 2026}
+
+\begin{document}
+\begin{cvsection}{Publication Layout}
+  The first entry uses the supplied example with its title first. The remaining
+  synthetic records exercise optional metadata and missing fields.
+  \cvauthorshiplegend\ marks randomised author order.
+  \nocite{clark-wilson}
+  A citation supplies a native back-reference: \cite{article-eid}.
+  \nocite{*}
+  \printbibliography[heading=none]
+\end{cvsection}
+\end{document}

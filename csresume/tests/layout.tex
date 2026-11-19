@@ -4,9 +4,9 @@
 \cvorcid{0000-0000-0000-0000}
 
 \ExplSyntaxOn
-\msg_new:nnn {csresume-test}{font}{Expected~the~default~Computer~Modern~#1~font.}
-\str_if_eq:eeF {\rmdefault}{cmr}{\msg_error:nnn {csresume-test}{font}{roman}}
-\str_if_eq:eeF {\sfdefault}{cmss}{\msg_error:nnn {csresume-test}{font}{sans}}
+\msg_new:nnn {csresume-test}{font}{Expected~the~default~#1~font.}
+\str_if_eq:eeF {\rmdefault}{cmr}{\msg_error:nnn {csresume-test}{font}{Computer~Modern~roman}}
+\str_if_eq:eeF {\sfdefault}{cmss}{\msg_error:nnn {csresume-test}{font}{Computer~Modern~sans}}
 \ExplSyntaxOff
 
 \begin{document}
