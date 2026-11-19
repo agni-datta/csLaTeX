@@ -4,7 +4,7 @@
 % Author: Agni Datta | https://github.com/agni-datta/csLaTeX
 % License: LaTeX Project Public License v1.3c
 \NeedsTeXFormat{LaTeX2e}[2022/06/01]
-\ProvidesExplPackage{csresume}{2026/11/19}{5.13.1}{Compact academic CVs}
+\ProvidesExplPackage{csresume}{2026/11/19}{5.14.1}{Compact academic CVs}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Options
@@ -268,15 +268,15 @@
   \dim_set:Nn \l__csresume_bib_badge_cap_dim
   {\box_ht:N \l__csresume_bib_badge_cap_box}
   \hbox_set:Nn \l__csresume_bib_badge_digits_box
-  {\normalfont\small\ttfamily\color{white}#2}
+  {\normalfont\footnotesize\ttfamily\color{white}#2}
   \dim_set:Nn \l__csresume_bib_badge_side_dim
   {\dim_max:nn {16pt}{\box_wd:N \l__csresume_bib_badge_digits_box+4pt}}
   \smash{
     \begin{tikzpicture}[baseline=0pt]
-      \path[fill=#1,draw=none,rounded~corners=1.5pt]
-      (0pt,\dim_eval:n {\l__csresume_bib_badge_cap_dim-\l__csresume_bib_badge_side_dim})
-      rectangle
-      (\dim_use:N \l__csresume_bib_badge_side_dim,\dim_use:N \l__csresume_bib_badge_cap_dim);
+      \path[fill=#1,draw=none]
+      (\dim_eval:n {\l__csresume_bib_badge_side_dim/2},
+      \dim_eval:n {\l__csresume_bib_badge_cap_dim-\l__csresume_bib_badge_side_dim/2})
+      circle[radius=\dim_eval:n {\l__csresume_bib_badge_side_dim/2}];
       \node[inner~sep=0pt,outer~sep=0pt] at
       (\dim_eval:n {\l__csresume_bib_badge_side_dim/2},
       \dim_eval:n {\l__csresume_bib_badge_cap_dim-\l__csresume_bib_badge_side_dim/2})
