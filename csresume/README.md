@@ -1,6 +1,6 @@
 <!-- @format -->
 
-# csresume 5.13.0
+# csresume 5.13.1
 
 An academic CV package with a compact institutional letterhead, dated entries, referee rows and columns, and BibLaTeX publication lists. It inherits the document class’s Computer Modern roman, sans-serif, typewriter and mathematics fonts. The `moresize` package supplies `\HUGE`. There are no font-selection options. The `accent` option selects the colour for the header initials, links and authorship markers.
 
@@ -122,7 +122,7 @@ Publication entries have separate blocks for the unquoted small-capital title, a
 
 Visible bibliography labels count down across all printed categories as white typewriter digits in rounded TikZ colour boxes, padded to at least two digits, such as `09` through `01`. The boxes replace the former square brackets. The total is counted from loaded bibliography records; print every loaded record exactly once to obtain a complete descending sequence. This customization applies to the publication-list labels; inline citations retain the native numeric citation labels. The labels align with the heading’s left edge; each entry hangs from a consistent text inset inside the page’s text area. The bibliography adds no extra space above or below the list. Original keys, sorting, author order, and source records are preserved. Deferred native numbering supports split categories without package warnings. ISBNs, ISSNs, and book-series names are omitted from the CV display; bibliography records retain those fields.
 
-The native BibLaTeX `labelnumberwidth` field format controls the visible descending labels. The default renderer uses slightly smaller `\small` white typewriter numbers in compact rounded category-coloured boxes drawn with TikZ. Two-digit labels have a square outline; longer numbers can widen the box. Rendering and label-width measurement use the same helper, including its padding and baseline alignment. A document can redeclare the field format for a different label presentation, independently of entry text and hyperlinks.
+The native BibLaTeX `labelnumberwidth` field format controls the visible descending labels. The default renderer uses slightly smaller `\small` white typewriter numbers in compact rounded category-coloured boxes drawn with TikZ. Each box is drawn with equal width and height; longer numbers enlarge both dimensions together. The top edge aligns with the first publication-title line. Rendering and label-width measurement use the same helper, including its padding and alignment. A document can redeclare the field format for a different label presentation, independently of entry text and hyperlinks.
 
 Version 5.0 removes `font=...`, `gfsdidot`, `libertinus`, `baskerville`, and `euler`. Remove obsolete font-selection and bare color options from existing documents; the supported color setting is now `accent=<color>`. The package inherits the class’s fonts and does not load fontspec, unicode-math, custom font providers, marginnote or PDF-version patches. Internal state and helpers use expl3; public commands and environments use the LaTeX document-command interface. Standard geometry, table, heading, and bibliography packages keep their native configuration APIs.
 

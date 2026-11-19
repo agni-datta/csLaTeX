@@ -4,7 +4,7 @@
 % Author: Agni Datta | https://github.com/agni-datta/csLaTeX
 % License: LaTeX Project Public License v1.3c
 \NeedsTeXFormat{LaTeX2e}[2022/06/01]
-\ProvidesExplPackage{csresume}{2026/11/19}{5.13.0}{Compact academic CVs}
+\ProvidesExplPackage{csresume}{2026/11/19}{5.13.1}{Compact academic CVs}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Options
@@ -256,14 +256,33 @@
 \tl_new:N \l__csresume_bib_label_colour_tl
 \tl_new:N \l__csresume_bib_note_tl
 \tl_new:N \l__csresume_bib_venue_tl
+\box_new:N \l__csresume_bib_badge_digits_box
+\box_new:N \l__csresume_bib_badge_cap_box
+\dim_new:N \l__csresume_bib_badge_cap_dim
+\dim_new:N \l__csresume_bib_badge_side_dim
 \cs_new_protected:Npn \__csresume_bib_badge:nn #1#2
 {
   \group_begin:
-  \normalfont\small\ttfamily
-  \tikz[baseline=(csresumeBadge.base)]
-  \node[fill=#1,draw=none,text=white,rounded~corners=1.2pt,
-    minimum~size=1.35em,inner~xsep=0.15em,inner~ysep=0pt,
-    outer~sep=0pt] (csresumeBadge) {#2};
+  \hbox_set:Nn \l__csresume_bib_badge_cap_box
+  {\normalfont\normalsize\scshape X}
+  \dim_set:Nn \l__csresume_bib_badge_cap_dim
+  {\box_ht:N \l__csresume_bib_badge_cap_box}
+  \hbox_set:Nn \l__csresume_bib_badge_digits_box
+  {\normalfont\small\ttfamily\color{white}#2}
+  \dim_set:Nn \l__csresume_bib_badge_side_dim
+  {\dim_max:nn {16pt}{\box_wd:N \l__csresume_bib_badge_digits_box+4pt}}
+  \smash{
+    \begin{tikzpicture}[baseline=0pt]
+      \path[fill=#1,draw=none,rounded~corners=1.5pt]
+      (0pt,\dim_eval:n {\l__csresume_bib_badge_cap_dim-\l__csresume_bib_badge_side_dim})
+      rectangle
+      (\dim_use:N \l__csresume_bib_badge_side_dim,\dim_use:N \l__csresume_bib_badge_cap_dim);
+      \node[inner~sep=0pt,outer~sep=0pt] at
+      (\dim_eval:n {\l__csresume_bib_badge_side_dim/2},
+      \dim_eval:n {\l__csresume_bib_badge_cap_dim-\l__csresume_bib_badge_side_dim/2})
+      {\box_use_drop:N \l__csresume_bib_badge_digits_box};
+    \end{tikzpicture}
+  }
   \group_end:
 }
 \cs_new_protected:Npn \__csresume_bib_label:n #1
